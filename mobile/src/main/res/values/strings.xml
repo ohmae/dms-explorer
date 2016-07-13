@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">DMS Explorer</string>
+    <string name="no_available_network">There is no available network connection.</string>
+    <string name="title_dialog_select_resource">Select resource</string>
+    <string name="toast_not_support_drm">This app does not support playback of DRM content.</string>
+    <string name="network_tb">TB</string>
+    <string name="network_bs">BS</string>
+    <string name="network_cs">CS</string>
+    <string name="prop_title">Title:</string>
+    <string name="prop_channel">Channel:</string>
+    <string name="prop_date">Date:</string>
+    <string name="prop_schedule">Schedule:</string>
+    <string name="prop_genre">Genre:</string>
+    <string name="prop_album">Album:</string>
+    <string name="prop_artist">Artist:</string>
+    <string name="prop_actor">Actor:</string>
+    <string name="prop_author">Author:</string>
+    <string name="prop_creator">Creator:</string>
+    <string name="prop_description">Description:</string>
+    <string name="prop_long_description">Long Description:</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_settings">Settings</string>
+    <string name="pref_header_general">General</string>
+    <string name="pref_message_launch_app_on">Play by this app. (poor ability)</string>
+    <string name="pref_message_launch_app_off">Rely other app.</string>
+    <string name="pref_title_launch_app_movie">Play movie</string>
+    <string name="pref_title_launch_app_photo">Show Photo</string>
+    <string name="pref_title_launch_app_music">Play music</string>
+    <string name="pref_header_information">Information</string>
+    <string name="pref_title_play_store">Google Play</string>
+    <string name="pref_message_play_store">Go to Google Play</string>
+    <string name="pref_title_copyright">Copyright</string>
+    <string name="pref_message_copyright">Copyright© 2016 大前良介 (OHMAE Ryosuke)</string>
+    <string name="pref_title_version_number">Version</string>
+    <string name="pref_title_license">License Information</string>
+</resources>

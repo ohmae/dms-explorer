@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="fab_margin">16dp</dimen>
+    <dimen name="app_bar_height">200dp</dimen>
+    <dimen name="sub_app_bar_height">130dp</dimen>
+    <dimen name="item_width">400dp</dimen>
+    <dimen name="text_margin">16dp</dimen>
+    <dimen name="accent_size">48dp</dimen>
+    <dimen name="accent_radius">24dp</dimen>
+    <dimen name="horizontal_margin">4dp</dimen>
+    <dimen name="text_size_title">28sp</dimen>
+    <dimen name="text_size_accent">22dp</dimen>
+    <dimen name="text_size_main">16sp</dimen>
+    <dimen name="text_size_sub">12sp</dimen>
+    <dimen name="raise_focus">5dp</dimen>
+</resources>

@@ -1,0 +1,16 @@
+<!--
+  ~ Copyright (c) 2016 大前良介(OHMAE Ryosuke)
+  -->
+
+<preference-headers xmlns:android="http://schemas.android.com/apk/res/android">
+    <header
+        android:fragment="net.mm2d.dmsexplorer.SettingsActivity$GeneralPreferenceFragment"
+        android:icon="@drawable/ic_settings"
+        android:title="@string/pref_header_general"/>
+
+    <header
+        android:fragment="net.mm2d.dmsexplorer.SettingsActivity$InformationPreferenceFragment"
+        android:icon="@drawable/ic_info"
+        android:title="@string/pref_header_information"/>
+
+</preference-headers>
