@@ -73,7 +73,7 @@ public class MovieActivity extends AppCompatActivity {
         actionBar.setTitle(mObject.getTitle());
         mControlPanel = (ControlView) findViewById(R.id.controlPanel);
         assert mControlPanel != null;
-        mControlPanel.setSyncVisiblity(toolbar);
+        mControlPanel.setSyncVisibility(toolbar);
         mControlPanel.setAutoHide(true);
         mControlPanel.setVisible();
         mControlPanel.setOnCompletionListener(new OnCompletionListener() {

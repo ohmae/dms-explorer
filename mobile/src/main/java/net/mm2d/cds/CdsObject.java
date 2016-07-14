@@ -65,8 +65,8 @@ public class CdsObject implements Parcelable {
     public static final String RES_BITRATE = "res@bitrate";
     public static final String BITRATE = "bitrate";
     public static final String ARIB_OBJECT_TYPE = "arib:objectType";
-    public static final String ARIB_AUDIO_COMPONENE_TYPE = "arib:audioComponentType";
-    public static final String ARIB_AUDIO_COMPONENE_TYPE_QI = "arib:audioComponentType@qualityIndicator";
+    public static final String ARIB_AUDIO_COMPONENT_TYPE = "arib:audioComponentType";
+    public static final String ARIB_AUDIO_COMPONENT_TYPE_QI = "arib:audioComponentType@qualityIndicator";
     public static final String ARIB_CA_PROGRAM_INFO = "arib:caProgramInfo";
     public static final String ARIB_CAPTION_INFO = "arib:captionInfo";
     public static final String ARIB_DATE_PROGRAM_INFO = "arib:dataProgramInfo";

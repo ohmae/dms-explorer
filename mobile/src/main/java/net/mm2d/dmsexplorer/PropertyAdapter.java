@@ -116,7 +116,7 @@ public class PropertyAdapter
         return mList.size();
     }
 
-    private OnClickListener mOnClickListener = new OnClickListener() {
+    private final OnClickListener mOnClickListener = new OnClickListener() {
         @Override
         public void onClick(View v) {
             if (mListener != null) {

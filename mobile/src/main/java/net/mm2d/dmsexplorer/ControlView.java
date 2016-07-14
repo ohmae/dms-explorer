@@ -268,7 +268,7 @@ public class ControlView extends LinearLayout
         return String.format(Locale.US, "%01d:%02d:%02d", hour, minute % 60, second % 60);
     }
 
-    public void setSyncVisiblity(View view) {
+    public void setSyncVisibility(View view) {
         mSyncView = view;
     }
 
