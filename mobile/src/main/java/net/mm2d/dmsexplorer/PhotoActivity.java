@@ -12,8 +12,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
-import android.os.Build.VERSION;
-import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.AppBarLayout;
@@ -67,7 +65,7 @@ public class PhotoActivity extends AppCompatActivity {
         mObject = intent.getParcelableExtra(Const.EXTRA_OBJECT);
         final Uri uri = intent.getData();
         mHandler = new Handler();
-        if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             final AppBarLayout appBarLayout = (AppBarLayout) findViewById(R.id.app_bar);
             assert appBarLayout != null;
             appBarLayout.setElevation(0);

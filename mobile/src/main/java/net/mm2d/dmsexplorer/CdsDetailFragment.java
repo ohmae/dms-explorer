@@ -17,6 +17,7 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.text.format.DateFormat;
 import android.view.LayoutInflater;
@@ -79,7 +80,7 @@ public class CdsDetailFragment extends Fragment
             if (protectedResource) {
                 fab.setBackgroundTintList(ColorStateList.valueOf(Color.GRAY));
             } else {
-                fab.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.accent)));
+                fab.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(getContext(), R.color.accent)));
             }
             fab.setOnClickListener(new View.OnClickListener() {
                 @Override

@@ -8,7 +8,7 @@
 package net.mm2d.dmsexplorer;
 
 import android.content.Context;
-import android.content.res.Resources;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.text.SpannableString;
 import android.text.Spanned;
@@ -142,9 +142,8 @@ public class PropertyAdapter
         }
 
         public void applyItem(Entry entry) {
-            final Resources resources = mContext.getResources();
-            final int defaultColor = resources.getColor(R.color.textMain);
-            final int linkColor = resources.getColor(R.color.textLink);
+            final int defaultColor = ContextCompat.getColor(mContext, R.color.textMain);
+            final int linkColor = ContextCompat.getColor(mContext, R.color.textLink);
             mText1.setText(entry.getName());
             final String value = entry.getValue();
             if (entry.isAutoLink()) {

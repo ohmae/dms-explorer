@@ -52,6 +52,7 @@ public class DataHolder {
     public void clearCache() {
         mCacheQueue.clear();
     }
+
     public void popCache() {
         mCacheQueue.pop();
     }
