@@ -9,6 +9,9 @@ package net.mm2d.cds;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.text.TextUtils;
 
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -30,6 +33,7 @@ import java.util.Map.Entry;
  * @author <a href="mailto:ryo@mm2d.net">大前良介(OHMAE Ryosuke)</a>
  */
 public class CdsObject implements Parcelable {
+    // XML関係の定義
     public static final String CONTAINER = "container";
     public static final String ITEM = "item";
     public static final String ID = "@id";
@@ -76,21 +80,72 @@ public class CdsObject implements Parcelable {
     public static final String ARIB_MULTI_VIEW_INFO = "arib:multiViewInfo";
     public static final String ARIB_VIDEO_COMPONENT_TYPE = "arib:videoComponentType";
 
+    // オブジェクト種別の定義
+    /**
+     * 未定義
+     */
     public static final int TYPE_UNKNOWN = 0;
+    /**
+     * 動画
+     */
     public static final int TYPE_VIDEO = 1;
+    /**
+     * 音楽
+     */
     public static final int TYPE_AUDIO = 2;
+    /**
+     * 画像
+     */
     public static final int TYPE_IMAGE = 3;
+    /**
+     * コンテナ
+     */
     public static final int TYPE_CONTAINER = 4;
 
+    /**
+     * このオブジェクトがitemか否か、itemのときtrue
+     */
     private final boolean mItem;
+    /**
+     * XMLのタグ情報。
+     *
+     * タグ名をKeyとして、TagのListを保持する。
+     * 同一のタグが複数ある場合はListに出現順に格納する。
+     */
     private final Map<String, List<Tag>> mTagMap;
+    /**
+     * \@idの値。
+     */
     private String mObjectId;
+    /**
+     * \@parentIDの値。
+     */
     private String mParentId;
+    /**
+     * dc:titleの値
+     */
     private String mTitle;
+    /**
+     * upnp:classの値
+     */
     private String mUpnpClass;
+    /**
+     * upnp:classのint値表現。
+     *
+     * @see #TYPE_UNKNOWN
+     * @see #TYPE_VIDEO
+     * @see #TYPE_AUDIO
+     * @see #TYPE_IMAGE
+     * @see #TYPE_CONTAINER
+     */
     private int mType;
 
-    CdsObject(Element element) {
+    /**
+     * elementをもとにインスタンス作成
+     *
+     * @param element objectを示すelement
+     */
+    CdsObject(@NonNull Element element) {
         mTagMap = new LinkedHashMap<>();
         final String tagName = element.getTagName();
         switch (tagName) {
@@ -103,10 +158,15 @@ public class CdsObject implements Parcelable {
             default:
                 throw new IllegalArgumentException();
         }
-        setElement(element);
+        parseElement(element);
     }
 
-    private void setElement(Element element) {
+    /**
+     * 子要素の情報をパースし、格納する。
+     *
+     * @param element objectを示すelement
+     */
+    private void parseElement(@NonNull Element element) {
         putTag("", new Tag(element, true));
         Node node = element.getFirstChild();
         for (; node != null; node = node.getNextSibling()) {
@@ -116,10 +176,16 @@ public class CdsObject implements Parcelable {
             final String name = node.getNodeName();
             putTag(name, new Tag((Element) node));
         }
-        setCache();
+        prepareCache();
     }
 
-    private void putTag(String name, Tag tag) {
+    /**
+     * タグ情報を格納する。
+     *
+     * @param name タグ名
+     * @param tag  格納するタグ情報
+     */
+    private void putTag(@NonNull String name, @NonNull Tag tag) {
         List<Tag> tags = mTagMap.get(name);
         if (tags == null) {
             tags = new ArrayList<>(1);
@@ -128,11 +194,17 @@ public class CdsObject implements Parcelable {
         tags.add(tag);
     }
 
-    private void setCache() {
+    /**
+     * パース結果からパラメータの初期化を行う。
+     */
+    private void prepareCache() {
         mObjectId = getValue(ID);
         mParentId = getValue(PARENT_ID);
         mTitle = getValue(DC_TITLE);
         mUpnpClass = getValue(UPNP_CLASS);
+        if (mObjectId == null || mParentId == null || mTitle == null || mUpnpClass == null) {
+            throw new IllegalArgumentException("Malformed item");
+        }
         if (!mItem) {
             mType = TYPE_CONTAINER;
         } else if (mUpnpClass.startsWith(IMAGE_ITEM)) {
@@ -146,68 +218,185 @@ public class CdsObject implements Parcelable {
         }
     }
 
+    /**
+     * コンテナであるか否かを返す。
+     *
+     * @return trueのときコンテナ。
+     */
     public boolean isContainer() {
         return !mItem;
     }
 
+    /**
+     * アイテムであるか否かを返す。
+     *
+     * @return trueのときアイテム。
+     */
     public boolean isItem() {
         return mItem;
     }
 
+    /**
+     * Typeの値を返す。
+     *
+     * @return Type値
+     */
     public int getType() {
         return mType;
     }
 
+    /**
+     * \@idの値を返す。
+     *
+     * @return \@idの値
+     */
+    @NonNull
     public String getObjectId() {
         return mObjectId;
     }
 
+    /**
+     * \@parentIDの値を返す。
+     *
+     * @return \@parentIDの値
+     */
+    @NonNull
     public String getParentId() {
         return mParentId;
     }
 
+    /**
+     * upnp:classの値を返す。
+     *
+     * @return upnp:classの値
+     */
+    @NonNull
     public String getUpnpClass() {
         return mUpnpClass;
     }
 
+    /**
+     * dc:titleの値を返す。
+     *
+     * @return dc:titleの値
+     */
+    @NonNull
     public String getTitle() {
         return mTitle;
     }
 
-    public String getValue(String xpath) {
+    /**
+     * XPATH風の指定で示された値を返す。
+     *
+     * XPATHはitemもしくはcontainerをルートとして指定する。
+     * 名前空間はシンボルをそのまま記述する。
+     * 例えば'item@id'及び'container@id'はともに'@id'を指定する。
+     * 'item/dc:title'であれば'dc:title'を指定する。
+     *
+     * 複数同一のタグがあった場合は最初に現れた要素の値を返す。
+     * {@link #getValue(String, int)}で第二引数に0を指定するのと等価
+     *
+     * @param xpath パラメータの位置を表現するXPATH風の指定
+     * @return 指定された値。見つからない場合はnull
+     * @see #getValue(String, int)
+     */
+    @Nullable
+    public String getValue(@NonNull String xpath) {
         return getValue(xpath, 0);
     }
 
-    public String getValue(String xpath, int index) {
+    /**
+     * XPATH風の指定で示された値を返す。
+     *
+     * XPATHはitemもしくはcontainerをルートとして指定する。
+     * 名前空間はシンボルをそのまま記述する。
+     * 例えば'item@id'及び'container@id'はともに'@id'を指定する。
+     * 'item/dc:title'であれば'dc:title'を指定する。
+     *
+     * 複数同一のタグがあった場合は現れた順にインデックスが付けられる。
+     * 属性値はタグと同じインデックスに格納される。
+     * 例えば、aというタグが複数あるが、
+     * 一つ目に現れたタグにはbという属性はなく、
+     * 二つ目に現れたタグにbという属性がある状態で、
+     * 'a@b'を指定したとすると、インデックス0の値はnullとなる。
+     * 二つ目に現れた属性bの値を取り出すには、インデックス1の値を取り出す必要がある。
+     *
+     * @param xpath パラメータの位置を表現するXPATH風の指定
+     * @param index インデックス値
+     * @return 指定された値。見つからない場合はnull
+     */
+    @Nullable
+    public String getValue(@NonNull String xpath, int index) {
         final int pos = xpath.indexOf('@');
         if (pos < 0) {
             return getValue(xpath, null, index);
         }
         final String tagName = xpath.substring(0, pos);
         final String attrName = xpath.substring(pos + 1);
-        return getValue(tagName, attrName);
+        return getValue(tagName, attrName, index);
     }
 
-    public String getValue(String tagName, String attrName) {
+    /**
+     * タグ名と属性名を指定して値を取り出す。
+     *
+     * 複数の同一タグがある場合は最初に現れたタグの情報を返す。
+     * {@link #getValue(String, String, int)}の第三引数に0を指定したものと等価。
+     *
+     * @param tagName  タグ名
+     * @param attrName 属性名、タグの値を取得するときはnullを指定する。
+     * @return 指定された値。見つからない場合はnull
+     * @see #getValue(String, String, int)
+     */
+    @Nullable
+    public String getValue(@Nullable String tagName, @Nullable String attrName) {
         return getValue(tagName, attrName, 0);
     }
 
-    public String getValue(String tagName, String attrName, int index) {
+    /**
+     * タグ名と属性名を指定して値を取り出す。
+     *
+     * 複数同一のタグがあった場合は現れた順にインデックスが付けられる。
+     * 属性値はタグと同じインデックスに格納される。
+     *
+     * @param tagName  タグ名、ルート要素を指定する場合はnullもしくは空文字列
+     * @param attrName 属性名、タグの値を取得するときはnullを指定する。
+     * @param index    インデックス値
+     * @return 指定された値。見つからない場合はnull
+     */
+    @Nullable
+    public String getValue(@Nullable String tagName, @Nullable String attrName, int index) {
         final Tag tag = getTag(tagName, index);
         if (tag == null) {
             return null;
         }
-        if (attrName == null) {
+        if (TextUtils.isEmpty(attrName)) {
             return tag.getValue();
         }
         return tag.getAttribute(attrName);
     }
 
-    public Tag getTag(String tagName) {
+    /**
+     * 指定したタグ名のTagインスタンスを返す。
+     *
+     * 複数同一タグが存在した場合は最初に現れたタグ。
+     *
+     * @param tagName タグ名、ルート要素を指定する場合はnullもしくは空文字列
+     * @return Tagインスタンス、見つからない場合はnull
+     */
+    @Nullable
+    public Tag getTag(@Nullable String tagName) {
         return getTag(tagName, 0);
     }
 
-    public Tag getTag(String tagName, int index) {
+    /**
+     * 指定したタグ名、インデックスのTagインスタンスを返す。
+     *
+     * @param tagName タグ名、ルート要素を指定する場合はnullもしくは空文字列
+     * @param index   インデックス値
+     * @return Tagインスタンス、見つからない場合はnull
+     */
+    @Nullable
+    public Tag getTag(@Nullable String tagName, int index) {
         final List<Tag> list = getTagList(tagName);
         if (list == null || list.size() <= index) {
             return null;
@@ -215,35 +404,99 @@ public class CdsObject implements Parcelable {
         return list.get(index);
     }
 
-    public List<Tag> getTagList(String tagName) {
+    /**
+     * 指定したタグ名のTagインスタンスリストを返す。
+     *
+     * @param tagName タグ名、ルート要素を指定する場合はnullもしくは空文字列
+     * @return Tagインスタンスリスト
+     */
+    @Nullable
+    public List<Tag> getTagList(@Nullable String tagName) {
         if (tagName == null) {
             tagName = "";
         }
         return mTagMap.get(tagName);
     }
 
-    public int getIntValue(String xpath, int defaultValue) {
-        return parseInt(getValue(xpath), defaultValue);
+    /**
+     * XPATH風の指定で示された値をInt値として返す。
+     *
+     * {@link #getValue(String)} の結果を {@link #parseIntSafely(String, int)} に渡すことと等価
+     *
+     * @param xpath        パラメータの位置を表現するXPATH風の指定
+     * @param defaultValue 値が見つからない場合、Int値にパースできない値だった場合のデフォルト値
+     * @return 指定された値
+     * @see #getValue(String)
+     */
+    public int getIntValue(@NonNull String xpath, int defaultValue) {
+        return parseIntSafely(getValue(xpath), defaultValue);
     }
 
-    public int getIntValue(String xpath, int index, int defaultValue) {
-        return parseInt(getValue(xpath, index), defaultValue);
+    /**
+     * XPATH風の指定で示された値をInt値として返す。
+     *
+     * {@link #getValue(String, int)} の結果を {@link #parseIntSafely(String, int)} に渡すことと等価
+     *
+     * @param xpath        パラメータの位置を表現するXPATH風の指定
+     * @param index        インデックス値
+     * @param defaultValue 値が見つからない場合、Int値にパースできない値だった場合のデフォルト値
+     * @return 指定された値
+     * @see #getValue(String, int)
+     */
+    public int getIntValue(@NonNull String xpath, int index, int defaultValue) {
+        return parseIntSafely(getValue(xpath, index), defaultValue);
     }
 
-    public Date getDateValue(String xpath) {
+    /**
+     * XPATH風の指定で示された値をDateとして返す。
+     *
+     * {@link #getValue(String)} の結果を {@link #parseDate(String)} に渡すことと等価
+     *
+     * @param xpath パラメータの位置を表現するXPATH風の指定
+     * @return 指定された値。値が見つからない場合、パースできない値の場合null
+     * @see #getValue(String, int)
+     */
+    @Nullable
+    public Date getDateValue(@NonNull String xpath) {
         return parseDate(getValue(xpath));
     }
 
-    public Date getDateValue(String xpath, int index) {
+    /**
+     * XPATH風の指定で示された値をDateとして返す。
+     *
+     * {@link #getValue(String, int)} の結果を {@link #parseDate(String)} に渡すことと等価
+     *
+     * @param xpath パラメータの位置を表現するXPATH風の指定
+     * @param index インデックス値
+     * @return 指定された値。値が見つからない場合、パースできない値の場合null
+     * @see #getValue(String, int)
+     */
+    @Nullable
+    public Date getDateValue(@NonNull String xpath, int index) {
         return parseDate(getValue(xpath, index));
     }
 
-    public static int parseInt(String value, int defaultValue) {
-        return parseInt(value, 10, defaultValue);
+    /**
+     * 与えられた文字列を10進数としてパースする。
+     *
+     * @param value        パースする文字列
+     * @param defaultValue パースできない場合のデフォルト値
+     * @return パース結果
+     */
+    public static int parseIntSafely(@Nullable String value, int defaultValue) {
+        return parseIntSafely(value, 10, defaultValue);
     }
 
-    public static int parseInt(String value, int radix, int defaultValue) {
-        if (value == null) {
+    /**
+     * 与えられた文字列をradix進数としてパースする。
+     *
+     * @param value        パースする文字列
+     * @param radix        パースする文字列の基数
+     * @param defaultValue パースできない場合のデフォルト値
+     * @return パース結果
+     */
+    public static int parseIntSafely(@Nullable String value, int radix, int defaultValue) {
+        if (TextUtils.isEmpty(value)) {
             return defaultValue;
         }
         try {
@@ -257,8 +510,18 @@ public class CdsObject implements Parcelable {
     private static final DateFormat FORMAT_T = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.JAPAN);
     private static final DateFormat FORMAT_Z = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ", Locale.JAPAN);
 
-    public static Date parseDate(String value) {
-        if (value == null || value.isEmpty()) {
+    /**
+     * 与えられた文字列をパースしてDateとして戻す。
+     *
+     * CDSで使用される日付フォーマットにはいくつかバリエーションがあるが、
+     * 該当するフォーマットでパースを行う。
+     *
+     * @param value パースする文字列
+     * @return パース結果、パースできない場合null
+     */
+    @Nullable
+    public static Date parseDate(@Nullable String value) {
+        if (TextUtils.isEmpty(value)) {
             return null;
         }
         try {
@@ -284,8 +547,15 @@ public class CdsObject implements Parcelable {
         }
     }
 
-    public static String getMimeTypeFromProtocolInfo(String protocolInfo) {
-        if (protocolInfo == null) {
+    /**
+     * protocolInfoの文字列からMimeTypeの文字列を抽出する。
+     *
+     * @param protocolInfo protocolInfo
+     * @return MimeTypeの文字列。抽出に失敗した場合null
+     */
+    @Nullable
+    public static String extractMimeTypeFromProtocolInfo(@Nullable String protocolInfo) {
+        if (TextUtils.isEmpty(protocolInfo)) {
             return null;
         }
         final String[] protocols = protocolInfo.split(";");
@@ -299,8 +569,15 @@ public class CdsObject implements Parcelable {
         return sections[2];
     }
 
-    public static String getProtocolFromProtocolInfo(String protocolInfo) {
-        if (protocolInfo == null) {
+    /**
+     * protocolInfoの文字列からProtocolの文字列を抽出する。
+     *
+     * @param protocolInfo protocolInfo
+     * @return Protocolの文字列。抽出に失敗した場合null
+     */
+    @Nullable
+    public static String extractProtocolFromProtocolInfo(@Nullable String protocolInfo) {
+        if (TextUtils.isEmpty(protocolInfo)) {
             return null;
         }
         final String[] protocols = protocolInfo.split(";");
@@ -315,10 +592,17 @@ public class CdsObject implements Parcelable {
     }
 
     @Override
+    @NonNull
     public String toString() {
         return getTitle();
     }
 
+    /**
+     * 全情報をダンプした文字列を返す。
+     *
+     * @return ダンプ文字列
+     */
+    @NonNull
     public String toDumpString() {
         final StringBuilder sb = new StringBuilder();
         for (final Entry<String, List<Tag>> entry : mTagMap.entrySet()) {
@@ -354,7 +638,7 @@ public class CdsObject implements Parcelable {
     }
 
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(@Nullable Object o) {
         if (this == o) {
             return true;
         }
@@ -365,7 +649,12 @@ public class CdsObject implements Parcelable {
         return mTagMap.equals(obj.mTagMap);
     }
 
-    protected CdsObject(Parcel in) {
+    /**
+     * Parcelable用のコンストラクタ。
+     *
+     * @param in Parcel
+     */
+    protected CdsObject(@NonNull Parcel in) {
         mItem = in.readByte() != 0;
         final int size = in.readInt();
         mTagMap = new LinkedHashMap<>(size);
@@ -380,11 +669,11 @@ public class CdsObject implements Parcelable {
             }
             mTagMap.put(name, list);
         }
-        setCache();
+        prepareCache();
     }
 
     @Override
-    public void writeToParcel(Parcel dest, int flags) {
+    public void writeToParcel(@NonNull Parcel dest, int flags) {
         dest.writeByte((byte) (mItem ? 1 : 0));
         dest.writeInt(mTagMap.size());
         for (final Entry<String, List<Tag>> entry : mTagMap.entrySet()) {
@@ -402,6 +691,9 @@ public class CdsObject implements Parcelable {
         return 0;
     }
 
+    /**
+     * Parcelableのためのフィールド
+     */
     public static final Creator<CdsObject> CREATOR = new Creator<CdsObject>() {
         @Override
         public CdsObject createFromParcel(Parcel in) {
@@ -413,5 +705,4 @@ public class CdsObject implements Parcelable {
             return new CdsObject[size];
         }
     };
-
 }

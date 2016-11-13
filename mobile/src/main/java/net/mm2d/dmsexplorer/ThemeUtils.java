@@ -12,7 +12,7 @@ import android.graphics.Color;
 /**
  * @author <a href="mailto:ryo@mm2d.net">大前良介(OHMAE Ryosuke)</a>
  */
-public class Utils {
+public class ThemeUtils {
     public static int getAccentColor(String name) {
         final char c = name.isEmpty() ? ' ' : name.charAt(0);
         final float[] hsv = new float[3];

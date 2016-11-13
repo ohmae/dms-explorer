@@ -159,7 +159,7 @@ public class ServerListAdapter
             } else {
                 mAccent.setText("");
             }
-            mAccentBackground.setColor(Utils.getAccentColor(name));
+            mAccentBackground.setColor(ThemeUtils.getAccentColor(name));
             mText1.setText(name);
             final StringBuilder sb = new StringBuilder();
             sb.append("IP: ");

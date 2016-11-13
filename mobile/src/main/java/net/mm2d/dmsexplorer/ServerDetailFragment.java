@@ -45,7 +45,7 @@ public class ServerDetailFragment extends Fragment
         final TextView titleView = (TextView) rootView.findViewById(R.id.title);
         if (titleView != null) {
             titleView.setText(server.getFriendlyName());
-            titleView.setBackgroundColor(Utils.getAccentColor(server.getFriendlyName()));
+            titleView.setBackgroundColor(ThemeUtils.getAccentColor(server.getFriendlyName()));
         }
         final RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.server_detail);
         final PropertyAdapter adapter = new PropertyAdapter(getContext());

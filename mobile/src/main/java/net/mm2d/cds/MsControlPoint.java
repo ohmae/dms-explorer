@@ -7,6 +7,9 @@
 
 package net.mm2d.cds;
 
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+
 import net.mm2d.upnp.ControlPoint;
 import net.mm2d.upnp.ControlPoint.DiscoveryListener;
 import net.mm2d.upnp.ControlPoint.NotifyEventListener;
@@ -22,20 +25,43 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * MediaServerのControlPoint機能。
+ *
  * @author <a href="mailto:ryo@mm2d.net">大前良介(OHMAE Ryosuke)</a>
  */
 public class MsControlPoint {
+    /**
+     * 機器発見のイベントを通知するリスナー。
+     */
     public interface MsDiscoveryListener {
-        void onDiscover(MediaServer server);
+        /**
+         * 機器発見時に通知される。
+         *
+         * @param server 発見したMediaServer
+         */
+        void onDiscover(@NonNull MediaServer server);
 
-        void onLost(MediaServer server);
+        /**
+         * 機器喪失時に通知される。
+         *
+         * @param server 喪失したMediaServer
+         */
+        void onLost(@NonNull MediaServer server);
     }
 
+    /**
+     * ContainerUpdateIdsのsubscribeイベントを通知するリスナー。
+     */
     public interface ContainerUpdateIdsListener {
-        void onContainerUpdateIds(MediaServer server, List<String> ids);
+        /**
+         * ContainerUpdateIdsが通知されたときにコールされる。
+         *
+         * @param server イベントを発行したMediaServer
+         * @param ids    更新のあったID
+         */
+        void onContainerUpdateIds(@NonNull MediaServer server, @NonNull List<String> ids);
     }
 
-    private ControlPoint mControlPoint;
     private final DiscoveryListener mDiscoveryListener = new DiscoveryListener() {
         @Override
         public void onDiscover(Device device) {
@@ -71,20 +97,30 @@ public class MsControlPoint {
         }
     };
 
+    private ControlPoint mControlPoint;
     private boolean mInitialized = false;
     private final Map<String, MediaServer> mMediaServerMap;
     private MsDiscoveryListener mMsDiscoveryListener;
     private ContainerUpdateIdsListener mContainerUpdateIdsListener;
 
+    /**
+     * インスタンス作成。
+     */
     public MsControlPoint() {
         mMediaServerMap = Collections.synchronizedMap(new LinkedHashMap<String, MediaServer>());
     }
 
+    /**
+     * ラップしているControlPointのインスタンスを返す。
+     *
+     * @return ControlPoint
+     */
+    @Nullable
     public ControlPoint getControlPoint() {
         return mControlPoint;
     }
 
-    private void discoverDevice(Device device) {
+    private void discoverDevice(@NonNull Device device) {
         if (!device.getDeviceType().startsWith(Cds.MS_DEVICE_TYPE)) {
             return;
         }
@@ -95,7 +131,7 @@ public class MsControlPoint {
         }
     }
 
-    private void lostDevice(Device device) {
+    private void lostDevice(@NonNull Device device) {
         final MediaServer server = getMediaServer(device.getUdn());
         if (server == null) {
             return;
@@ -106,41 +142,92 @@ public class MsControlPoint {
         mMediaServerMap.remove(server.getUdn());
     }
 
-    public void setMsDiscoveryListener(MsDiscoveryListener listener) {
+    /**
+     * 機器発見の通知リスナーを登録する。
+     *
+     * @param listener リスナー
+     */
+    public void setMsDiscoveryListener(@Nullable MsDiscoveryListener listener) {
         mMsDiscoveryListener = listener;
     }
 
-    public void setContainerUpdateIdsListener(ContainerUpdateIdsListener listener) {
+    /**
+     * ContainerUpdateIdsの通知リスナーを登録する。
+     *
+     * @param listener リスナー
+     */
+    public void setContainerUpdateIdsListener(@Nullable ContainerUpdateIdsListener listener) {
         mContainerUpdateIdsListener = listener;
     }
 
+    /**
+     * 保持しているMediaServerの個数を返す。
+     *
+     * @return MediaServerの個数
+     */
     public int getMediaServerListSize() {
         return mMediaServerMap.size();
     }
 
+    /**
+     * MediaServerのリストを返す。
+     *
+     * 内部Mapのコピーを返すため使用注意。
+     *
+     * @return MediaServerのリスト。
+     */
+    @NonNull
     public List<MediaServer> getMediaServerList() {
         synchronized (mMediaServerMap) {
             return new ArrayList<>(mMediaServerMap.values());
         }
     }
 
-    public MediaServer getMediaServer(String udn) {
+    /**
+     * 指定UDNに対応したMediaServerを返す。
+     *
+     * @param udn UDN
+     * @return MediaServer、見つからない場合null
+     */
+    @Nullable
+    public MediaServer getMediaServer(@Nullable String udn) {
         return mMediaServerMap.get(udn);
     }
 
+    /**
+     * SSDP Searchを実行する。
+     *
+     * Searchパケットを一つ投げるのみであり、定期的に実行するにはアプリ側での実装が必要。
+     */
     public void search() {
+        if (!mInitialized) {
+            throw new IllegalStateException("ControlPoint is not initialized");
+        }
         mControlPoint.search();
     }
 
+    /**
+     * 初期化が完了しているか。
+     *
+     * @return 初期化完了していればtrue
+     */
     public boolean isInitialized() {
         return mInitialized;
     }
 
+    /**
+     * 初期化する。
+     */
     public void initialize() {
         initialize(null);
     }
 
-    public void initialize(Collection<NetworkInterface> interfaces) {
+    /**
+     * 初期化する。
+     *
+     * @param interfaces 使用するインターフェース
+     */
+    public void initialize(@Nullable Collection<NetworkInterface> interfaces) {
         if (mInitialized) {
             terminate();
         }
@@ -151,14 +238,29 @@ public class MsControlPoint {
         mControlPoint.initialize();
     }
 
+    /**
+     * 処理を開始する。
+     */
     public void start() {
+        if (!mInitialized) {
+            throw new IllegalStateException("ControlPoint is not initialized");
+        }
         mControlPoint.start();
     }
 
+    /**
+     * 処理を終了する。
+     */
     public void stop() {
+        if (!mInitialized) {
+            throw new IllegalStateException("ControlPoint is not initialized");
+        }
         mControlPoint.stop();
     }
 
+    /**
+     * 終了する。
+     */
     public void terminate() {
         if (!mInitialized) {
             return;

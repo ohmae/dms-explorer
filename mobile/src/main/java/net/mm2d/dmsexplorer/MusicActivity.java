@@ -96,7 +96,7 @@ public class MusicActivity extends AppCompatActivity implements PropertyAdapter.
         actionBar.setDisplayHomeAsUpEnabled(true);
         final String title = Arib.toDisplayableString(mObject.getTitle());
         actionBar.setTitle(title);
-        final int bgColor = Utils.getAccentColor(mObject.getTitle());
+        final int bgColor = ThemeUtils.getAccentColor(mObject.getTitle());
         actionBar.setBackgroundDrawable(new ColorDrawable(bgColor));
         mControlPanel.setBackgroundColor(bgColor);
         final RecyclerView recyclerView = (RecyclerView) findViewById(R.id.detail);

@@ -37,6 +37,7 @@ import net.mm2d.widget.DividerItemDecoration;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 /**
  * @author <a href="mailto:ryo@mm2d.net">大前良介(OHMAE Ryosuke)</a>
@@ -178,7 +179,7 @@ public class CdsListActivity extends AppCompatActivity
         final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         assert toolbar != null;
         setSupportActionBar(toolbar);
-        toolbar.setBackgroundColor(Utils.getAccentColor(name));
+        toolbar.setBackgroundColor(ThemeUtils.getAccentColor(name));
         final ActionBar actionBar = getSupportActionBar();
         assert actionBar != null;
         actionBar.setDisplayHomeAsUpEnabled(true);
@@ -341,18 +342,23 @@ public class CdsListActivity extends AppCompatActivity
     }
 
     @Override
-    public void onCompletion(List<CdsObject> result) {
+    public void onCompletion(BrowseResult result) {
         if (mBrowseResult.isCancelled()) {
             return;
         }
         final History history = mHistories.peekLast();
-        mDataHolder.pushCache(history.getId(), result);
-        updateListViewAsync(result, true);
+        try {
+            final List<CdsObject> list = result.get();
+            mDataHolder.pushCache(history.getId(), list);
+            updateListViewAsync(list, true);
+        } catch (InterruptedException | ExecutionException ignored) {
+            // 完了状態のためこれらExceptionが発生することはない
+        }
     }
 
     @Override
-    public void onProgressUpdate(List<CdsObject> result) {
-        updateListViewAsync(result, false);
+    public void onProgressUpdate(BrowseResult result) {
+        updateListViewAsync(result.getProgress(), false);
     }
 
     private void updateListViewAsync(final List<CdsObject> result, final boolean completion) {
@@ -379,6 +385,7 @@ public class CdsListActivity extends AppCompatActivity
     }
 
     private void updateListView(List<CdsObject> result, boolean completion) {
+        int beforeCount = mCdsListAdapter.getItemCount();
         mCdsListAdapter.clear();
         if (result != null) {
             mCdsListAdapter.addAll(result);
@@ -390,6 +397,7 @@ public class CdsListActivity extends AppCompatActivity
         final ActionBar actionBar = getSupportActionBar();
         assert actionBar != null;
         actionBar.setSubtitle(mSubtitle + "  [" + count + "]");
-        mCdsListAdapter.notifyDataSetChanged();
+        mCdsListAdapter.notifyItemRangeInserted(beforeCount, count - beforeCount);
+        //mCdsListAdapter.notifyDataSetChanged();
     }
 }

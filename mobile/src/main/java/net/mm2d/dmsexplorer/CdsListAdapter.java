@@ -163,7 +163,7 @@ public class CdsListAdapter
             } else {
                 mAccent.setText("");
             }
-            mAccentBackground.setColor(Utils.getAccentColor(name));
+            mAccentBackground.setColor(ThemeUtils.getAccentColor(name));
             mText1.setText(Arib.toDisplayableString(name));
             mText2.setText(obj.getUpnpClass());
             switch (obj.getType()) {

@@ -9,6 +9,8 @@ package net.mm2d.cds;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
@@ -20,21 +22,51 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 /**
+ * CdsObjectのタグ情報を表現するクラス
+ *
+ * Elementのままでは情報の参照コストが高いため、
+ * よりシンプルな構造に格納するためのクラス。
+ * CdsObjectのXMLはタグが入れ子になることはないため
+ * タグ＋値、属性＋値の情報を表現できれば十分。
+ *
  * @author <a href="mailto:ryo@mm2d.net">大前良介(OHMAE Ryosuke)</a>
  */
 public class Tag implements Parcelable {
+    private final String mName;
     private final String mValue;
     private final Map<String, String> mAttribute;
 
-    Tag(Element element) {
+    /**
+     * インスタンス作成。
+     *
+     * パッケージ外でのインスタンス化禁止
+     *
+     * @param element タグ情報
+     */
+    Tag(@NonNull Element element) {
         this(element, false);
     }
 
-    Tag(Element element, boolean root) {
+    /**
+     * インスタンス作成。
+     *
+     * パッケージ外でのインスタンス化禁止
+     *
+     * @param element タグ情報
+     * @param root    タグがitem/containerのときtrue
+     */
+    Tag(@NonNull Element element, boolean root) {
         this(element, root ? "" : element.getTextContent());
     }
 
-    private Tag(Element element, String value) {
+    /**
+     * インスタンス作成。
+     *
+     * @param element タグ情報
+     * @param value   タグの値
+     */
+    private Tag(@NonNull Element element, @NonNull String value) {
+        mName = element.getTagName();
         mValue = value;
         final NamedNodeMap attributes = element.getAttributes();
         final int size = attributes.getLength();
@@ -49,14 +81,43 @@ public class Tag implements Parcelable {
         }
     }
 
+    /**
+     * タグ名を返す。
+     *
+     * @return タグ名
+     */
+    @NonNull
+    public String getName() {
+        return mName;
+    }
+
+    /**
+     * タグの値を返す。
+     *
+     * @return タグの値
+     */
+    @NonNull
     public String getValue() {
         return mValue;
     }
 
-    public String getAttribute(String name) {
+    /**
+     * 属性値を返す。
+     *
+     * @param name 属性名
+     * @return 属性値、見つからない場合null
+     */
+    @Nullable
+    public String getAttribute(@Nullable String name) {
         return mAttribute.get(name);
     }
 
+    /**
+     * 属性値を格納したMapを返す。
+     *
+     * @return 属性値を格納したUnmodifiable Map
+     */
+    @NonNull
     public Map<String, String> getAttributes() {
         if (mAttribute.size() == 0) {
             return Collections.emptyMap();
@@ -78,7 +139,13 @@ public class Tag implements Parcelable {
         return sb.toString();
     }
 
-    protected Tag(Parcel in) {
+    /**
+     * Parcelable用のコンストラクタ。
+     *
+     * @param in Parcel
+     */
+    protected Tag(@NonNull Parcel in) {
+        mName = in.readString();
         mValue = in.readString();
         final int size = in.readInt();
         if (size == 0) {
@@ -94,7 +161,8 @@ public class Tag implements Parcelable {
     }
 
     @Override
-    public void writeToParcel(Parcel dest, int flags) {
+    public void writeToParcel(@NonNull Parcel dest, int flags) {
+        dest.writeString(mName);
         dest.writeString(mValue);
         dest.writeInt(mAttribute.size());
         for (final Entry<String, String> entry : mAttribute.entrySet()) {
@@ -108,6 +176,9 @@ public class Tag implements Parcelable {
         return 0;
     }
 
+    /**
+     * Parcelableのためのフィールド
+     */
     public static final Creator<Tag> CREATOR = new Creator<Tag>() {
         @Override
         public Tag createFromParcel(Parcel in) {

@@ -70,7 +70,7 @@ public class SelectResourceDialog extends DialogFragment {
         assert object != null;
         final String protocolInfo = tag.getAttribute(CdsObject.PROTOCOL_INFO);
         assert protocolInfo != null;
-        final String mimeType = CdsObject.getMimeTypeFromProtocolInfo(protocolInfo);
+        final String mimeType = CdsObject.extractMimeTypeFromProtocolInfo(protocolInfo);
         final Uri uri = Uri.parse(tag.getValue());
         final Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.setDataAndType(uri, mimeType);
@@ -114,8 +114,8 @@ public class SelectResourceDialog extends DialogFragment {
             final String bitrate = tag.getAttribute(CdsObject.BITRATE);
             final String resolution = tag.getAttribute(CdsObject.RESOLUTION);
             final String protocolInfo = tag.getAttribute(CdsObject.PROTOCOL_INFO);
-            final String mimeType = CdsObject.getMimeTypeFromProtocolInfo(protocolInfo);
-            final String protocol = CdsObject.getProtocolFromProtocolInfo(protocolInfo);
+            final String mimeType = CdsObject.extractMimeTypeFromProtocolInfo(protocolInfo);
+            final String protocol = CdsObject.extractProtocolFromProtocolInfo(protocolInfo);
             final StringBuilder sb = new StringBuilder();
             if (protocol != null) {
                 sb.append(protocol);

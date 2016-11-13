@@ -40,7 +40,7 @@ public class ServerDetailActivity extends AppCompatActivity {
             finish();
             return;
         }
-        toolbar.setBackgroundColor(Utils.getAccentColor(server.getFriendlyName()));
+        toolbar.setBackgroundColor(ThemeUtils.getAccentColor(server.getFriendlyName()));
         final ActionBar actionBar = getSupportActionBar();
         assert actionBar != null;
         actionBar.setDisplayHomeAsUpEnabled(true);

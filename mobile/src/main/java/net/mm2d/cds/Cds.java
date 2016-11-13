@@ -8,19 +8,21 @@
 package net.mm2d.cds;
 
 /**
+ * 内部で使用する定数を定義する。
+ *
  * @author <a href="mailto:ryo@mm2d.net">大前良介(OHMAE Ryosuke)</a>
  */
 final class Cds {
     /**
-     * MediaServerのデバイスタイプ
+     * MediaServerのデバイスタイプ。
      */
     static final String MS_DEVICE_TYPE = "urn:schemas-upnp-org:device:MediaServer";
     /**
-     * ContentDirectoryのサービスID
+     * ContentDirectoryのサービスID。
      */
     static final String CDS_SERVICE_ID = "urn:upnp-org:serviceId:ContentDirectory";
     /**
-     * ContainerUpdateIDsのタイプ名
+     * ContainerUpdateIDsのタイプ名。
      */
     static final String CONTAINER_UPDATE_IDS = "ContainerUpdateIDs";
 }

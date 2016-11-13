@@ -37,7 +37,7 @@ public class CdsDetailActivity extends AppCompatActivity {
             finish();
             return;
         }
-        toolbar.setBackgroundColor(Utils.getAccentColor(object.getTitle()));
+        toolbar.setBackgroundColor(ThemeUtils.getAccentColor(object.getTitle()));
         final ActionBar actionBar = getSupportActionBar();
         assert actionBar != null;
         actionBar.setDisplayHomeAsUpEnabled(true);

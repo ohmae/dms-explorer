@@ -194,6 +194,9 @@ public class ControlView extends LinearLayout
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
                 mTracking = false;
+                if (mMediaPlayer == null) {
+                    return;
+                }
                 mMediaPlayer.seekTo(seekBar.getProgress());
                 if (!mMediaPlayer.isPlaying()) {
                     mMediaPlayer.start();
@@ -209,6 +212,9 @@ public class ControlView extends LinearLayout
         mPlay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (mMediaPlayer == null) {
+                    return;
+                }
                 if (mMediaPlayer.isPlaying()) {
                     mMediaPlayer.pause();
                     mPlay.setImageResource(R.drawable.ic_play);

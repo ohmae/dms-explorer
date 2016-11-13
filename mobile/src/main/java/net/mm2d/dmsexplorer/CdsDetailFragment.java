@@ -58,7 +58,7 @@ public class CdsDetailFragment extends Fragment
         final TextView titleView = (TextView) rootView.findViewById(R.id.title);
         if (titleView != null) {
             titleView.setText(Arib.toDisplayableString(title));
-            titleView.setBackgroundColor(Utils.getAccentColor(title));
+            titleView.setBackgroundColor(ThemeUtils.getAccentColor(title));
         }
         final RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.cds_detail);
         final PropertyAdapter adapter = new PropertyAdapter(getContext());
@@ -108,7 +108,7 @@ public class CdsDetailFragment extends Fragment
         }
         for (final Tag tag : tagList) {
             final String protocolInfo = tag.getAttribute(CdsObject.PROTOCOL_INFO);
-            final String mimeType = CdsObject.getMimeTypeFromProtocolInfo(protocolInfo);
+            final String mimeType = CdsObject.extractMimeTypeFromProtocolInfo(protocolInfo);
             if (mimeType.equals("application/x-dtcp1")) {
                 return true;
             }
