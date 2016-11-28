@@ -9,7 +9,6 @@ package net.mm2d.dmsexplorer;
 
 import android.app.ActivityOptions;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -25,12 +24,23 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import net.mm2d.cds.MediaServer;
+import net.mm2d.util.LaunchUtils;
+import net.mm2d.util.ThemeUtils;
 
 /**
  * @author <a href="mailto:ryo@mm2d.net">大前良介(OHMAE Ryosuke)</a>
  */
 public class ServerDetailFragment extends Fragment
         implements PropertyAdapter.OnItemLinkClickListener {
+
+    public static ServerDetailFragment newInstance(String udn) {
+        final ServerDetailFragment instance = new ServerDetailFragment();
+        final Bundle arguments = new Bundle();
+        arguments.putString(Const.EXTRA_UDN, udn);
+        instance.setArguments(arguments);
+        return instance;
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -61,8 +71,7 @@ public class ServerDetailFragment extends Fragment
             fab.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    final Intent intent = new Intent(getContext(), CdsListActivity.class);
-                    intent.putExtra(Const.EXTRA_UDN, udn);
+                    final Intent intent = CdsListActivity.makeIntent(getContext(), udn);
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                         final TransitionSet ts = new TransitionSet();
                         ts.addTransition(new Slide(Gravity.START));
@@ -98,12 +107,6 @@ public class ServerDetailFragment extends Fragment
 
     @Override
     public void onItemLinkClick(String link) {
-        final Uri uri = Uri.parse(link);
-        final Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-        try {
-            startActivity(intent);
-        } catch (final Exception e) {
-            e.printStackTrace();
-        }
+        LaunchUtils.openUri(getContext(), link);
     }
 }

@@ -21,7 +21,6 @@ import android.support.annotation.NonNull;
 
 import net.mm2d.cds.CdsObject;
 import net.mm2d.cds.Tag;
-import net.mm2d.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,7 +44,6 @@ public class SelectResourceDialog extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         final CdsObject object = getArguments().getParcelable(KEY_OBJECT);
-        assert object != null;
         final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle(R.string.title_dialog_select_resource);
         final String[] selection = makeSelection(object);
@@ -53,8 +51,8 @@ public class SelectResourceDialog extends DialogFragment {
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        final Tag tag = object.getTag(CdsObject.RES, which);
-                        launch(tag);
+                        final Tag res = object.getTag(CdsObject.RES, which);
+                        launch(res);
                     }
                 });
         if (selection.length == 1) {
@@ -63,20 +61,17 @@ public class SelectResourceDialog extends DialogFragment {
         return builder.create();
     }
 
-    private void launch(Tag tag) {
-        Log.d(TAG, tag.toString());
+    private void launch(Tag res) {
         final SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getActivity());
         final CdsObject object = getArguments().getParcelable(KEY_OBJECT);
-        assert object != null;
-        final String protocolInfo = tag.getAttribute(CdsObject.PROTOCOL_INFO);
-        assert protocolInfo != null;
+        final String protocolInfo = res.getAttribute(CdsObject.PROTOCOL_INFO);
         final String mimeType = CdsObject.extractMimeTypeFromProtocolInfo(protocolInfo);
-        final Uri uri = Uri.parse(tag.getValue());
+        final Uri uri = Uri.parse(res.getValue());
         final Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.setDataAndType(uri, mimeType);
         switch (object.getType()) {
             case CdsObject.TYPE_VIDEO:
-                if (pref.getBoolean("LAUNCH_APP_MOVIE", true)) {
+                if (pref.getBoolean(Const.LAUNCH_APP_MOVIE, true)) {
                     intent.setClass(getActivity(), MovieActivity.class);
                     intent.putExtra(Const.EXTRA_OBJECT, object);
                 } else {
@@ -84,7 +79,7 @@ public class SelectResourceDialog extends DialogFragment {
                 }
                 break;
             case CdsObject.TYPE_AUDIO:
-                if (pref.getBoolean("LAUNCH_APP_MUSIC", true)) {
+                if (pref.getBoolean(Const.LAUNCH_APP_MUSIC, true)) {
                     intent.setClass(getActivity(), MusicActivity.class);
                     intent.putExtra(Const.EXTRA_OBJECT, object);
                 } else {
@@ -92,13 +87,16 @@ public class SelectResourceDialog extends DialogFragment {
                 }
                 break;
             case CdsObject.TYPE_IMAGE:
-                if (pref.getBoolean("LAUNCH_APP_PHOTO", true)) {
+                if (pref.getBoolean(Const.LAUNCH_APP_PHOTO, true)) {
                     intent.setClass(getActivity(), PhotoActivity.class);
                     intent.putExtra(Const.EXTRA_OBJECT, object);
                 } else {
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 }
                 break;
+            default:
+                dismiss();
+                return;
         }
         try {
             startActivity(intent);

@@ -117,7 +117,7 @@ final class CdsObjectFactory {
             } else if (name.equals(CdsObject.CONTAINER)) {
                 return new CdsObject(element);
             }
-        } catch (IllegalArgumentException e) {
+        } catch (final IllegalArgumentException e) {
             Log.w(TAG, e);
         }
         return null;

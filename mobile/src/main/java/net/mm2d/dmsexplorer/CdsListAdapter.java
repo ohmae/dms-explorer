@@ -19,6 +19,7 @@ import android.widget.TextView;
 
 import net.mm2d.cds.CdsObject;
 import net.mm2d.util.Arib;
+import net.mm2d.util.ThemeUtils;
 
 import java.util.ArrayList;
 import java.util.Collection;

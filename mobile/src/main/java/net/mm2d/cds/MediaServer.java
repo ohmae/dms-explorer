@@ -50,7 +50,7 @@ public class MediaServer {
      *
      * パッケージ外でのインスタンス化禁止
      *
-     * @param device
+     * @param device デバイス
      */
     MediaServer(@NonNull Device device) {
         if (!device.getDeviceType().startsWith(Cds.MS_DEVICE_TYPE)) {

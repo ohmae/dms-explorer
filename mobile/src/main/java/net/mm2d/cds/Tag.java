@@ -144,7 +144,7 @@ public class Tag implements Parcelable {
      *
      * @param in Parcel
      */
-    protected Tag(@NonNull Parcel in) {
+    private Tag(@NonNull Parcel in) {
         mName = in.readString();
         mValue = in.readString();
         final int size = in.readInt();

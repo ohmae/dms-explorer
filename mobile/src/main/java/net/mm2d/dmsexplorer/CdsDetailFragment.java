@@ -7,18 +7,16 @@
 
 package net.mm2d.dmsexplorer;
 
-import android.content.ActivityNotFoundException;
 import android.content.Context;
-import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,18 +27,40 @@ import net.mm2d.cds.CdsObject;
 import net.mm2d.cds.MediaServer;
 import net.mm2d.cds.Tag;
 import net.mm2d.util.Arib;
+import net.mm2d.util.LaunchUtils;
 import net.mm2d.util.Log;
+import net.mm2d.util.ThemeUtils;
 
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
 /**
+ * CDSアイテムの詳細情報を表示するFragment。
+ *
  * @author <a href="mailto:ryo@mm2d.net">大前良介(OHMAE Ryosuke)</a>
  */
 public class CdsDetailFragment extends Fragment
         implements PropertyAdapter.OnItemLinkClickListener {
     private static final String TAG = "CdsDetailFragment";
+
+    /**
+     * インスタンスを作成する。
+     *
+     * Bundleによって引数渡しを行う。
+     *
+     * @param udn 表示するサーバのUDN
+     * @param object 表示するObject
+     * @return
+     */
+    public static CdsDetailFragment newInstance(String udn, CdsObject object) {
+        final CdsDetailFragment instance = new CdsDetailFragment();
+        final Bundle arguments = new Bundle();
+        arguments.putString(Const.EXTRA_UDN, udn);
+        arguments.putParcelable(Const.EXTRA_OBJECT, object);
+        instance.setArguments(arguments);
+        return instance;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -109,7 +129,7 @@ public class CdsDetailFragment extends Fragment
         for (final Tag tag : tagList) {
             final String protocolInfo = tag.getAttribute(CdsObject.PROTOCOL_INFO);
             final String mimeType = CdsObject.extractMimeTypeFromProtocolInfo(protocolInfo);
-            if (mimeType.equals("application/x-dtcp1")) {
+            if (!TextUtils.isEmpty(mimeType) && mimeType.equals("application/x-dtcp1")) {
                 return true;
             }
         }
@@ -118,19 +138,14 @@ public class CdsDetailFragment extends Fragment
 
     @Override
     public void onItemLinkClick(String link) {
-        final Uri uri = Uri.parse(link);
-        final Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-        try {
-            startActivity(intent);
-        } catch (final ActivityNotFoundException e) {
-            Log.w(TAG, e);
-        }
+        LaunchUtils.openUri(getContext(), link);
     }
 
     private static String sTb;
     private static String sBs;
     private static String sCs;
 
+    // 初回に変換して保持しておく
     private static void setupString(Context context) {
         if (sTb != null) {
             return;

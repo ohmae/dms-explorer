@@ -19,6 +19,7 @@ import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
 import android.support.v7.app.AppCompatActivity;
@@ -91,10 +92,7 @@ public class ServerListActivity extends AppCompatActivity {
                 if (mSelectedServer != null && mSelectedServer.equals(server)) {
                     return;
                 }
-                final Bundle arguments = new Bundle();
-                arguments.putString(Const.EXTRA_UDN, server.getUdn());
-                mServerDetailFragment = new ServerDetailFragment();
-                mServerDetailFragment.setArguments(arguments);
+                mServerDetailFragment = ServerDetailFragment.newInstance(server.getUdn());
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                     mServerDetailFragment.setEnterTransition(new Slide(Gravity.START));
                 }
@@ -105,8 +103,7 @@ public class ServerListActivity extends AppCompatActivity {
                 mSelectedServer = server;
             } else {
                 final Context context = v.getContext();
-                final Intent intent = new Intent(context, ServerDetailActivity.class);
-                intent.putExtra(Const.EXTRA_UDN, server.getUdn());
+                final Intent intent = ServerDetailActivity.makeIntent(context, server.getUdn());
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                     startActivity(intent, ActivityOptions
                             .makeSceneTransitionAnimation(ServerListActivity.this, accent, "share")
@@ -120,12 +117,9 @@ public class ServerListActivity extends AppCompatActivity {
 
     private boolean hasAvailableNetwork() {
         final NetworkInfo ni = mConnectivityManager.getActiveNetworkInfo();
-        if (ni != null && ni.isConnected()
+        return ni != null && ni.isConnected()
                 && (ni.getType() == ConnectivityManager.TYPE_WIFI
-                || ni.getType() == ConnectivityManager.TYPE_ETHERNET)) {
-            return true;
-        }
-        return false;
+                || ni.getType() == ConnectivityManager.TYPE_ETHERNET);
     }
 
     private Collection<NetworkInterface> getWifiInterface() {
@@ -185,7 +179,7 @@ public class ServerListActivity extends AppCompatActivity {
 
     private final MsDiscoveryListener mDiscoveryListener = new MsDiscoveryListener() {
         @Override
-        public void onDiscover(final MediaServer server) {
+        public void onDiscover(@NonNull final MediaServer server) {
             mHandler.post(new Runnable() {
                 @Override
                 public void run() {
@@ -195,7 +189,7 @@ public class ServerListActivity extends AppCompatActivity {
         }
 
         @Override
-        public void onLost(final MediaServer server) {
+        public void onLost(@NonNull final MediaServer server) {
             mHandler.post(new Runnable() {
                 @Override
                 public void run() {
@@ -339,7 +333,7 @@ public class ServerListActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         final int id = item.getItemId();
         if (id == R.id.action_settings) {
-            startActivity(new Intent(this, SettingsActivity.class));
+            startActivity(SettingsActivity.makeIntent(this));
             return true;
         }
         return super.onOptionsItemSelected(item);

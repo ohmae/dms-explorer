@@ -86,13 +86,13 @@ public class BrowseResult implements Future<List<CdsObject>> {
     @Override
     public synchronized boolean cancel(boolean mayInterruptIfRunning) {
         if (isDone()) {
-            return true;
+            return false;
         }
         mCancelled = true;
         if (mayInterruptIfRunning && mThread != null) {
             mThread.interrupt();
         }
-        return isDone();
+        return true;
     }
 
     @Override
@@ -171,7 +171,7 @@ public class BrowseResult implements Future<List<CdsObject>> {
      *
      * @param result BrowseDirectChildrenの結果
      */
-    protected synchronized void set(@Nullable List<CdsObject> result) {
+    synchronized void set(@Nullable List<CdsObject> result) {
         mResult = result;
         mDone = true;
         notifyAll();
@@ -188,7 +188,7 @@ public class BrowseResult implements Future<List<CdsObject>> {
      *
      * @param progress 取得できているBrowseDirectChildrenの結果
      */
-    protected synchronized void setProgress(@NonNull List<CdsObject> progress) {
+    synchronized void setProgress(@NonNull List<CdsObject> progress) {
         mProgress = progress;
         if (!isCancelled() && mListener != null) {
             mListener.onProgressUpdate(this);

@@ -70,13 +70,13 @@ public class BrowseMetadataResult implements Future<CdsObject> {
     @Override
     public synchronized boolean cancel(boolean mayInterruptIfRunning) {
         if (isDone()) {
-            return true;
+            return false;
         }
         mCancelled = true;
         if (mayInterruptIfRunning && mThread != null) {
             mThread.interrupt();
         }
-        return isDone();
+        return true;
     }
 
     @Override
@@ -136,7 +136,7 @@ public class BrowseMetadataResult implements Future<CdsObject> {
      *
      * @param result BrowseMetadataの結果
      */
-    protected synchronized void set(@Nullable CdsObject result) {
+    synchronized void set(@Nullable CdsObject result) {
         mResult = result;
         mDone = true;
         notifyAll();

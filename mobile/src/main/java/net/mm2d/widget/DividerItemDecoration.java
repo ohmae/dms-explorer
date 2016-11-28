@@ -1,10 +1,3 @@
-/*
- * Copyright (c) 2016 大前良介 (OHMAE Ryosuke)
- *
- * This software is released under the MIT License.
- * http://opensource.org/licenses/MIT
- */
-
 package net.mm2d.widget;
 
 import android.content.Context;
@@ -16,17 +9,11 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView.LayoutParams;
 import android.view.View;
 
-/**
- * @author <a href="mailto:ryo@mm2d.net">大前良介(OHMAE Ryosuke)</a>
- */
 public class DividerItemDecoration extends RecyclerView.ItemDecoration {
-    private static final int[] ATTRS = new int[]{
-            android.R.attr.listDivider
-    };
     private final Drawable mDivider;
 
     public DividerItemDecoration(Context context) {
-        final TypedArray a = context.obtainStyledAttributes(ATTRS);
+        final TypedArray a = context.obtainStyledAttributes(new int[]{android.R.attr.listDivider});
         mDivider = a.getDrawable(0);
         a.recycle();
     }
@@ -35,9 +22,7 @@ public class DividerItemDecoration extends RecyclerView.ItemDecoration {
     public void onDraw(Canvas c, RecyclerView parent, RecyclerView.State state) {
         final int left = parent.getPaddingLeft();
         final int right = parent.getWidth() - parent.getPaddingRight();
-
-        final int childCount = parent.getChildCount();
-        for (int i = 0; i < childCount; i++) {
+        for (int i = 0; i < parent.getChildCount(); i++) {
             final View child = parent.getChildAt(i);
             final LayoutParams params = (LayoutParams) child.getLayoutParams();
             final int top = child.getBottom() + params.bottomMargin;

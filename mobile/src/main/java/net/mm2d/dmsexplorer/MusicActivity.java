@@ -7,7 +7,6 @@
 
 package net.mm2d.dmsexplorer;
 
-import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -28,7 +27,9 @@ import android.widget.ImageView;
 
 import net.mm2d.cds.CdsObject;
 import net.mm2d.util.Arib;
+import net.mm2d.util.LaunchUtils;
 import net.mm2d.util.Log;
+import net.mm2d.util.ThemeUtils;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -175,13 +176,7 @@ public class MusicActivity extends AppCompatActivity implements PropertyAdapter.
 
     @Override
     public void onItemLinkClick(String link) {
-        final Uri uri = Uri.parse(link);
-        final Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-        try {
-            startActivity(intent);
-        } catch (final ActivityNotFoundException e) {
-            Log.w(TAG, e);
-        }
+        LaunchUtils.openUri(this, link);
     }
 
     @Override

@@ -7,6 +7,7 @@
 
 package net.mm2d.dmsexplorer;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
@@ -18,11 +19,21 @@ import android.view.MenuItem;
 import net.mm2d.cds.CdsObject;
 import net.mm2d.cds.MediaServer;
 import net.mm2d.util.Arib;
+import net.mm2d.util.ThemeUtils;
 
 /**
+ * CDSアイテムの詳細情報を表示するActivity。
+ *
  * @author <a href="mailto:ryo@mm2d.net">大前良介(OHMAE Ryosuke)</a>
  */
 public class CdsDetailActivity extends AppCompatActivity {
+    public static Intent makeIntent(Context context, String udn, CdsObject object) {
+        final Intent intent = new Intent(context, CdsDetailActivity.class);
+        intent.putExtra(Const.EXTRA_UDN, udn);
+        intent.putExtra(Const.EXTRA_OBJECT, object);
+        return intent;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,11 +55,7 @@ public class CdsDetailActivity extends AppCompatActivity {
         final String title = Arib.toDisplayableString(object.getTitle());
         actionBar.setTitle(title);
         if (savedInstanceState == null) {
-            final Bundle arguments = new Bundle();
-            arguments.putString(Const.EXTRA_UDN, udn);
-            arguments.putParcelable(Const.EXTRA_OBJECT, object);
-            final CdsDetailFragment fragment = new CdsDetailFragment();
-            fragment.setArguments(arguments);
+            final CdsDetailFragment fragment = CdsDetailFragment.newInstance(udn, object);
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.cds_detail_container, fragment)
                     .commit();
@@ -66,7 +73,7 @@ public class CdsDetailActivity extends AppCompatActivity {
         final int id = item.getItemId();
         switch (id) {
             case R.id.action_settings:
-                startActivity(new Intent(this, SettingsActivity.class));
+                startActivity(SettingsActivity.makeIntent(this));
                 return true;
             case android.R.id.home:
                 onBackPressed();

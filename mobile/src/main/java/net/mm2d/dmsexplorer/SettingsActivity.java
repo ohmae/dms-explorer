@@ -13,7 +13,6 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.res.Configuration;
-import android.net.Uri;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceClickListener;
@@ -21,7 +20,7 @@ import android.preference.PreferenceFragment;
 import android.support.v7.app.ActionBar;
 import android.view.MenuItem;
 
-import net.mm2d.util.Log;
+import net.mm2d.util.LaunchUtils;
 
 import java.util.List;
 
@@ -30,6 +29,10 @@ import java.util.List;
  */
 public class SettingsActivity extends AppCompatPreferenceActivity {
     private static final String TAG = "SettingsActivity";
+
+    public static Intent makeIntent(Context context) {
+        return new Intent(context, SettingsActivity.class);
+    }
 
     private static boolean isXLargeTablet(Context context) {
         return (context.getResources().getConfiguration().screenLayout
@@ -89,10 +92,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                 @Override
                 public boolean onPreferenceClick(Preference preference) {
                     final Context context = preference.getContext();
-                    final Uri uri = Uri.parse("market://details?id=" + context.getPackageName());
-                    final Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-                    context.startActivity(intent);
-                    Log.e(TAG, intent.toString());
+                    LaunchUtils.openUri(context, "market://details?id=" + context.getPackageName());
                     return true;
                 }
             });
@@ -110,15 +110,13 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         }
 
         private String getVersionName(Context context) {
-            final PackageManager pm = context.getPackageManager();
-            String versionName = "";
             try {
+                final PackageManager pm = context.getPackageManager();
                 final PackageInfo pi = pm.getPackageInfo(context.getPackageName(), 0);
-                versionName = pi.versionName;
-            } catch (final NameNotFoundException e) {
-                e.printStackTrace();
+                return pi.versionName;
+            } catch (final NameNotFoundException ignored) {
             }
-            return versionName;
+            return "";
         }
     }
 }

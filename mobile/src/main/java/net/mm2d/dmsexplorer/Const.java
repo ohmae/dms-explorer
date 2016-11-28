@@ -13,4 +13,8 @@ package net.mm2d.dmsexplorer;
 public class Const {
     public static final String EXTRA_UDN = "EXTRA_UDN";
     public static final String EXTRA_OBJECT = "EXTRA_OBJECT";
+
+    public static final String LAUNCH_APP_MOVIE = "LAUNCH_APP_MOVIE";
+    public static final String LAUNCH_APP_MUSIC = "LAUNCH_APP_MUSIC";
+    public static final String LAUNCH_APP_PHOTO = "LAUNCH_APP_PHOTO";
 }

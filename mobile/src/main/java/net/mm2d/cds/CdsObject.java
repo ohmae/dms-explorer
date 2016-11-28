@@ -1249,7 +1249,7 @@ public class CdsObject implements Parcelable {
     }
 
     @Override
-    public boolean equals(@Nullable Object o) {
+    public boolean equals(Object o) {
         if (this == o) {
             return true;
         }
@@ -1265,7 +1265,7 @@ public class CdsObject implements Parcelable {
      *
      * @param in Parcel
      */
-    protected CdsObject(@NonNull Parcel in) {
+    private CdsObject(@NonNull Parcel in) {
         mItem = in.readByte() != 0;
         final int size = in.readInt();
         mTagMap = new LinkedHashMap<>(size);
