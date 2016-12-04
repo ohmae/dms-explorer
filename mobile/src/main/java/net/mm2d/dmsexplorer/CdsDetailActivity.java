@@ -16,10 +16,10 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import net.mm2d.cds.CdsObject;
-import net.mm2d.cds.MediaServer;
-import net.mm2d.util.Arib;
-import net.mm2d.util.ThemeUtils;
+import net.mm2d.android.cds.CdsObject;
+import net.mm2d.android.cds.MediaServer;
+import net.mm2d.android.util.Arib;
+import net.mm2d.android.util.ThemeUtils;
 
 /**
  * CDSアイテムの詳細情報を表示するActivity。

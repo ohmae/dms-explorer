@@ -23,13 +23,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import net.mm2d.cds.CdsObject;
-import net.mm2d.cds.MediaServer;
-import net.mm2d.cds.Tag;
-import net.mm2d.util.Arib;
-import net.mm2d.util.LaunchUtils;
+import net.mm2d.android.cds.CdsObject;
+import net.mm2d.android.cds.MediaServer;
+import net.mm2d.android.cds.Tag;
+import net.mm2d.android.util.Arib;
+import net.mm2d.android.util.LaunchUtils;
 import net.mm2d.util.Log;
-import net.mm2d.util.ThemeUtils;
+import net.mm2d.android.util.ThemeUtils;
 
 import java.util.Date;
 import java.util.List;

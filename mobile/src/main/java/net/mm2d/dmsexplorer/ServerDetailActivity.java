@@ -16,8 +16,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import net.mm2d.cds.MediaServer;
-import net.mm2d.util.ThemeUtils;
+import net.mm2d.android.cds.MediaServer;
+import net.mm2d.android.util.ThemeUtils;
 
 /**
  * @author <a href="mailto:ryo@mm2d.net">大前良介(OHMAE Ryosuke)</a>

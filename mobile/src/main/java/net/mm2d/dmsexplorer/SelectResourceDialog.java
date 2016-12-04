@@ -19,8 +19,8 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 
-import net.mm2d.cds.CdsObject;
-import net.mm2d.cds.Tag;
+import net.mm2d.android.cds.CdsObject;
+import net.mm2d.android.cds.Tag;
 
 import java.util.ArrayList;
 import java.util.List;

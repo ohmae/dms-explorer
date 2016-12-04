@@ -32,11 +32,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
-import net.mm2d.cds.MediaServer;
-import net.mm2d.cds.MsControlPoint;
-import net.mm2d.cds.MsControlPoint.MsDiscoveryListener;
+import net.mm2d.android.cds.MediaServer;
+import net.mm2d.android.cds.MsControlPoint;
+import net.mm2d.android.cds.MsControlPoint.MsDiscoveryListener;
 import net.mm2d.dmsexplorer.ServerListAdapter.OnItemClickListener;
-import net.mm2d.widget.DividerItemDecoration;
+import net.mm2d.android.widget.DividerItemDecoration;
 
 import java.net.InetAddress;
 import java.net.InterfaceAddress;

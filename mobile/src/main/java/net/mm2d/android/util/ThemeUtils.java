@@ -5,7 +5,7 @@
  * http://opensource.org/licenses/MIT
  */
 
-package net.mm2d.util;
+package net.mm2d.android.util;
 
 import android.graphics.Color;
 import android.text.TextUtils;

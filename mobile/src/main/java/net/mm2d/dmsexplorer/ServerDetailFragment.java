@@ -23,9 +23,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import net.mm2d.cds.MediaServer;
-import net.mm2d.util.LaunchUtils;
-import net.mm2d.util.ThemeUtils;
+import net.mm2d.android.cds.MediaServer;
+import net.mm2d.android.util.LaunchUtils;
+import net.mm2d.android.util.ThemeUtils;
 
 /**
  * @author <a href="mailto:ryo@mm2d.net">大前良介(OHMAE Ryosuke)</a>

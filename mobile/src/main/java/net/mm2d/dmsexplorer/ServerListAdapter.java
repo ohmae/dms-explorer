@@ -17,8 +17,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import net.mm2d.cds.MediaServer;
-import net.mm2d.util.ThemeUtils;
+import net.mm2d.android.cds.MediaServer;
+import net.mm2d.android.util.ThemeUtils;
 
 import java.util.ArrayList;
 import java.util.Collection;

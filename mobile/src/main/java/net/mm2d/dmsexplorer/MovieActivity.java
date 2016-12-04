@@ -25,7 +25,7 @@ import android.view.View.OnClickListener;
 import android.view.View.OnSystemUiVisibilityChangeListener;
 import android.widget.VideoView;
 
-import net.mm2d.cds.CdsObject;
+import net.mm2d.android.cds.CdsObject;
 
 /**
  * @author <a href="mailto:ryo@mm2d.net">大前良介(OHMAE Ryosuke)</a>

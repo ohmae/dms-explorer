@@ -23,7 +23,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
 
-import net.mm2d.cds.CdsObject;
+import net.mm2d.android.cds.CdsObject;
 import net.mm2d.util.Log;
 
 import java.io.ByteArrayOutputStream;

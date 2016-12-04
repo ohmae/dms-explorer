@@ -25,11 +25,11 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.widget.ImageView;
 
-import net.mm2d.cds.CdsObject;
-import net.mm2d.util.Arib;
-import net.mm2d.util.LaunchUtils;
+import net.mm2d.android.cds.CdsObject;
+import net.mm2d.android.util.Arib;
+import net.mm2d.android.util.LaunchUtils;
 import net.mm2d.util.Log;
-import net.mm2d.util.ThemeUtils;
+import net.mm2d.android.util.ThemeUtils;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;

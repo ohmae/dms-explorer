@@ -5,12 +5,14 @@
  * http://opensource.org/licenses/MIT
  */
 
-package net.mm2d.util;
+package net.mm2d.android.util;
 
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+
+import net.mm2d.util.Log;
 
 /**
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>

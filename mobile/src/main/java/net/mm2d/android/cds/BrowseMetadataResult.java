@@ -5,20 +5,18 @@
  * http://opensource.org/licenses/MIT
  */
 
-package net.mm2d.cds;
+package net.mm2d.android.cds;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import java.util.Collections;
-import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
 /**
- * Browse(BrowseDirectChildren)のResultを表現するFutureオブジェクト。
+ * Browse(BrowseMetadata)のResultを表現するFutureオブジェクト。
  *
  * Browse実行によってこのオブジェクトが即座に返される。
  * Browseコマンド自体は非同期に実行され、このオブジェクトから結果を取り出す処理がブロックされる。
@@ -26,7 +24,7 @@ import java.util.concurrent.TimeoutException;
  *
  * @author <a href="mailto:ryo@mm2d.net">大前良介(OHMAE Ryosuke)</a>
  */
-public class BrowseResult implements Future<List<CdsObject>> {
+public class BrowseMetadataResult implements Future<CdsObject> {
     /**
      * 進捗状態通知のリスナー
      */
@@ -43,27 +41,13 @@ public class BrowseResult implements Future<List<CdsObject>> {
          * @param result 結果
          * @see #get()
          */
-        void onCompletion(@NonNull BrowseResult result);
-
-        /**
-         * 部分的に取得更新が行われたときにコールされる。
-         *
-         * ネットワーク処理のスレッド上からコールされるため、
-         * このメソッド内でブロック動作はさせないこと。
-         * この時点では{@link #get()}をコールしても結果を取得できずブロック動作となる。
-         * 途中結果を取得する場合はgetProgress()をコールすること。
-         *
-         * @param result 結果
-         * @see #onProgressUpdate(BrowseResult)
-         */
-        void onProgressUpdate(@NonNull BrowseResult result);
+        void onCompletion(@NonNull BrowseMetadataResult result);
     }
 
     private Thread mThread;
     private boolean mDone;
     private boolean mCancelled;
-    private List<CdsObject> mResult;
-    private List<CdsObject> mProgress = Collections.emptyList();
+    private CdsObject mResult;
     private StatusListener mListener;
 
     /**
@@ -71,7 +55,7 @@ public class BrowseResult implements Future<List<CdsObject>> {
      *
      * パッケージの外ではインスタンス作成禁止
      */
-    BrowseResult() {
+    BrowseMetadataResult() {
     }
 
     /**
@@ -107,7 +91,7 @@ public class BrowseResult implements Future<List<CdsObject>> {
 
     @Override
     @Nullable
-    public synchronized List<CdsObject> get()
+    public synchronized CdsObject get()
             throws InterruptedException, ExecutionException {
         while (!isDone()) {
             wait();
@@ -117,7 +101,7 @@ public class BrowseResult implements Future<List<CdsObject>> {
 
     @Override
     @Nullable
-    public synchronized List<CdsObject> get(long timeout, @NonNull TimeUnit unit)
+    public synchronized CdsObject get(long timeout, @NonNull TimeUnit unit)
             throws InterruptedException, ExecutionException, TimeoutException {
         if (!isDone()) {
             wait(unit.toMillis(timeout));
@@ -129,7 +113,7 @@ public class BrowseResult implements Future<List<CdsObject>> {
     }
 
     /**
-     * 進捗状態を通知するリスナーを登録する。
+     * コマンド実行完了及び結果を通知するリスナーを登録する。
      *
      * このメソッドをコールした時点で完了していた場合は、
      * このスレッド上でonCompletion()がコールされたのち、処理が戻る。
@@ -138,28 +122,9 @@ public class BrowseResult implements Future<List<CdsObject>> {
      */
     public synchronized void setStatusListener(@Nullable StatusListener listener) {
         mListener = listener;
-        if (!isCancelled() && isDone() && mListener != null) {
+        if (isDone() && mListener != null) {
             mListener.onCompletion(this);
         }
-    }
-
-    /**
-     * 現在までに取得できている途中結果を返す。
-     *
-     * 今後更新される情報のためunmodifiableListとして返す。
-     * 途中経過がない場合は空のListとなり、nullにはならない。
-     *
-     * @return 途中結果
-     */
-    @NonNull
-    public synchronized List<CdsObject> getProgress() {
-        if (isDone()) {
-            if (mResult == null) {
-                return Collections.emptyList();
-            }
-            return Collections.unmodifiableList(mResult);
-        }
-        return Collections.unmodifiableList(mProgress);
     }
 
     /**
@@ -169,29 +134,14 @@ public class BrowseResult implements Future<List<CdsObject>> {
      * 結果取得待ちのスレッドへnotifyを行い、
      * リスナーが登録されていた場合はリスナー通知も行う。
      *
-     * @param result BrowseDirectChildrenの結果
+     * @param result BrowseMetadataの結果
      */
-    synchronized void set(@Nullable List<CdsObject> result) {
+    synchronized void set(@Nullable CdsObject result) {
         mResult = result;
         mDone = true;
         notifyAll();
-        if (!isCancelled() && mListener != null) {
+        if (mListener != null) {
             mListener.onCompletion(this);
-        }
-    }
-
-    /**
-     * 結果取得の進捗を通知する。
-     *
-     * このメソッドコールでは完了状態にならないため、
-     * 結果取得待ちのスレッドは待たされたままである。
-     *
-     * @param progress 取得できているBrowseDirectChildrenの結果
-     */
-    synchronized void setProgress(@NonNull List<CdsObject> progress) {
-        mProgress = progress;
-        if (!isCancelled() && mListener != null) {
-            mListener.onProgressUpdate(this);
         }
     }
 }

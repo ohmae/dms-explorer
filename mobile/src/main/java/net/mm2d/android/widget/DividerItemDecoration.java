@@ -1,4 +1,4 @@
-package net.mm2d.widget;
+package net.mm2d.android.widget;
 
 import android.content.Context;
 import android.content.res.TypedArray;

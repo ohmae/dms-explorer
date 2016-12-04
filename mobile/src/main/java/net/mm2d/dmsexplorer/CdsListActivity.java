@@ -30,11 +30,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
-import net.mm2d.cds.BrowseResult;
-import net.mm2d.cds.CdsObject;
-import net.mm2d.cds.MediaServer;
-import net.mm2d.util.ThemeUtils;
-import net.mm2d.widget.DividerItemDecoration;
+import net.mm2d.android.cds.BrowseResult;
+import net.mm2d.android.cds.CdsObject;
+import net.mm2d.android.cds.MediaServer;
+import net.mm2d.android.util.ThemeUtils;
+import net.mm2d.android.widget.DividerItemDecoration;
 
 import java.util.Collections;
 import java.util.LinkedList;

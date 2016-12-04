@@ -17,9 +17,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import net.mm2d.cds.CdsObject;
-import net.mm2d.util.Arib;
-import net.mm2d.util.ThemeUtils;
+import net.mm2d.android.cds.CdsObject;
+import net.mm2d.android.util.Arib;
+import net.mm2d.android.util.ThemeUtils;
 
 import java.util.ArrayList;
 import java.util.Collection;
