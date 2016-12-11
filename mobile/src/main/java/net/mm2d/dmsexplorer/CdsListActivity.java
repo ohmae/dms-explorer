@@ -33,7 +33,6 @@ import android.view.View;
 import net.mm2d.android.cds.BrowseResult;
 import net.mm2d.android.cds.CdsObject;
 import net.mm2d.android.cds.MediaServer;
-import net.mm2d.android.util.ThemeUtils;
 import net.mm2d.android.widget.DividerItemDecoration;
 
 import java.util.Collections;
@@ -42,6 +41,8 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 /**
+ * MediaServerのContentDirectoryを表示、操作するActivity。
+ *
  * @author <a href="mailto:ryo@mm2d.net">大前良介(OHMAE Ryosuke)</a>
  */
 public class CdsListActivity extends AppCompatActivity
@@ -63,6 +64,15 @@ public class CdsListActivity extends AppCompatActivity
     private RecyclerView mRecyclerView;
     private CdsListAdapter mCdsListAdapter;
 
+    /**
+     * インスタンスを作成する。
+     *
+     * <p>Bundleへの値の設定と読み出しをこのクラス内で完結させる。
+     *
+     * @param context コンテキスト
+     * @param udn     MediaServerのUDN
+     * @return インスタンス
+     */
     public static Intent makeIntent(Context context, String udn) {
         final Intent intent = new Intent(context, CdsListActivity.class);
         intent.putExtra(Const.EXTRA_UDN, udn);

@@ -25,11 +25,22 @@ import net.mm2d.android.util.LaunchUtils;
 import java.util.List;
 
 /**
+ * アプリ設定を行うActivity。
+ *
  * @author <a href="mailto:ryo@mm2d.net">大前良介(OHMAE Ryosuke)</a>
  */
 public class SettingsActivity extends AppCompatPreferenceActivity {
     private static final String TAG = "SettingsActivity";
 
+    /**
+     * このActivityを起動するためのIntentを作成する。
+     *
+     * <p>Extraの設定と読み出しをこのクラス内で完結させる。
+     * 現時点ではExtraは設定していない。
+     *
+     * @param context コンテキスト
+     * @return このActivityを起動するためのIntent
+     */
     public static Intent makeIntent(Context context) {
         return new Intent(context, SettingsActivity.class);
     }

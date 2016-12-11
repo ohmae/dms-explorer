@@ -41,8 +41,11 @@ public class MediaServer {
     private static final String RESULT = "Result";
     private static final String NUMBER_RETURNED = "NumberReturned";
     private static final String TOTAL_MATCHES = "TotalMatches";
+    @NonNull
     private final Device mDevice;
+    @NonNull
     private final Service mCdsService;
+    @NonNull
     private final Action mBrowse;
 
     /**
@@ -58,7 +61,13 @@ public class MediaServer {
         }
         mDevice = device;
         mCdsService = mDevice.findServiceById(Cds.CDS_SERVICE_ID);
+        if (mCdsService == null) {
+            throw new IllegalArgumentException("Device don't have cds service");
+        }
         mBrowse = mCdsService.findAction(BROWSE);
+        if (mBrowse == null) {
+            throw new IllegalArgumentException("Device don't have browse action");
+        }
     }
 
     /**

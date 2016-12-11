@@ -26,12 +26,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * マルチリソースのコンテンツの再生時にリソースの選択を促すダイアログ。
+ *
  * @author <a href="mailto:ryo@mm2d.net">大前良介(OHMAE Ryosuke)</a>
  */
 public class SelectResourceDialog extends DialogFragment {
     private static final String KEY_OBJECT = "KEY_OBJECT";
     private static final String TAG = "SelectResourceDialog";
 
+    /**
+     * インスタンスを作成する。
+     *
+     * <p>Bundleの設定と読み出しをこのクラス内で完結させる。
+     *
+     * @param object 対象コンテンツのObject情報
+     * @return インスタンス。
+     */
     public static SelectResourceDialog newInstance(CdsObject object) {
         final Bundle arguments = new Bundle();
         arguments.putParcelable(KEY_OBJECT, object);

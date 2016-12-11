@@ -59,11 +59,15 @@ public class BrowseResult implements Future<List<CdsObject>> {
         void onProgressUpdate(@NonNull BrowseResult result);
     }
 
+    @Nullable
     private Thread mThread;
     private boolean mDone;
     private boolean mCancelled;
+    @Nullable
     private List<CdsObject> mResult;
+    @NonNull
     private List<CdsObject> mProgress = Collections.emptyList();
+    @Nullable
     private StatusListener mListener;
 
     /**

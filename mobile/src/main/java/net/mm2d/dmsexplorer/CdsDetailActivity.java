@@ -10,6 +10,7 @@ package net.mm2d.dmsexplorer;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -18,8 +19,7 @@ import android.view.MenuItem;
 
 import net.mm2d.android.cds.CdsObject;
 import net.mm2d.android.cds.MediaServer;
-import net.mm2d.android.util.Arib;
-import net.mm2d.android.util.ThemeUtils;
+import net.mm2d.android.util.AribUtils;
 
 /**
  * CDSアイテムの詳細情報を表示するActivity。
@@ -27,7 +27,17 @@ import net.mm2d.android.util.ThemeUtils;
  * @author <a href="mailto:ryo@mm2d.net">大前良介(OHMAE Ryosuke)</a>
  */
 public class CdsDetailActivity extends AppCompatActivity {
-    public static Intent makeIntent(Context context, String udn, CdsObject object) {
+    /**
+     * このActivityを起動するためのIntentを作成する。
+     *
+     * <p>Extraの設定と読み出しをこのクラス内で完結させる。
+     *
+     * @param context コンテキスト
+     * @param udn     メディアサーバのUDN
+     * @param object  表示するコンテンツのObject情報
+     * @return このActivityを起動するためのIntent
+     */
+    public static Intent makeIntent(@NonNull Context context, String udn, CdsObject object) {
         final Intent intent = new Intent(context, CdsDetailActivity.class);
         intent.putExtra(Const.EXTRA_UDN, udn);
         intent.putExtra(Const.EXTRA_OBJECT, object);
@@ -52,7 +62,7 @@ public class CdsDetailActivity extends AppCompatActivity {
         final ActionBar actionBar = getSupportActionBar();
         assert actionBar != null;
         actionBar.setDisplayHomeAsUpEnabled(true);
-        final String title = Arib.toDisplayableString(object.getTitle());
+        final String title = AribUtils.toDisplayableString(object.getTitle());
         actionBar.setTitle(title);
         if (savedInstanceState == null) {
             final CdsDetailFragment fragment = CdsDetailFragment.newInstance(udn, object);

@@ -32,8 +32,11 @@ import java.util.Map.Entry;
  * @author <a href="mailto:ryo@mm2d.net">大前良介(OHMAE Ryosuke)</a>
  */
 public class Tag implements Parcelable {
+    @NonNull
     private final String mName;
+    @NonNull
     private final String mValue;
+    @NonNull
     private final Map<String, String> mAttribute;
 
     /**
@@ -72,9 +75,9 @@ public class Tag implements Parcelable {
         final int size = attributes.getLength();
         if (size == 0) {
             mAttribute = Collections.emptyMap();
-        } else {
-            mAttribute = new LinkedHashMap<>(size);
+            return;
         }
+        mAttribute = new LinkedHashMap<>(size);
         for (int i = 0; i < size; i++) {
             final Node attr = attributes.item(i);
             mAttribute.put(attr.getNodeName(), attr.getNodeValue());

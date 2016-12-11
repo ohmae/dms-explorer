@@ -7,15 +7,27 @@
 
 package net.mm2d.android.util;
 
+import android.support.annotation.NonNull;
+
 /**
+ * ARIB特有の処理を行うユーティリティクラス。
+ *
  * @author <a href="mailto:ryo@mm2d.net">大前良介(OHMAE Ryosuke)</a>
  */
-public class Arib {
-    public static String toDisplayableString(String string) {
+public class AribUtils {
+    /**
+     * 文字列に含まれるARIB外字を通常のフォントでも表示できる文字コードに変換する。
+     *
+     * @param string 変換する文字列
+     * @return 変換後の文字列
+     */
+    @NonNull
+    public static String toDisplayableString(@NonNull String string) {
         final StringBuilder sb = new StringBuilder();
         final char[] array = string.toCharArray();
         for (final char c : array) {
             switch (c) {
+                // 四角で囲んだ文字、フォントが無いため文字列で置換
                 case 0xE0F8:
                     sb.append("[HV]");
                     break;
@@ -127,6 +139,7 @@ public class Arib {
                 case 0xE19C:
                     sb.append("[ほか]");
                     break;
+                // かつて外字に割り当てられていたがUnicodeに追加されたもの、Unicodeに置換
                 case 0xE080: // 㐂
                     sb.append((char) 0x3402);
                     break;

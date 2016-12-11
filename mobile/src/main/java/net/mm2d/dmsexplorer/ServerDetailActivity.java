@@ -17,14 +17,24 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import net.mm2d.android.cds.MediaServer;
-import net.mm2d.android.util.ThemeUtils;
 
 /**
+ * メディアサーバの詳細情報を表示するActivity。
+ *
  * @author <a href="mailto:ryo@mm2d.net">大前良介(OHMAE Ryosuke)</a>
  */
 public class ServerDetailActivity extends AppCompatActivity {
     public static final String TAG = "ServerDetailActivity";
 
+    /**
+     * このActivityを起動するためのIntentを作成する。
+     *
+     * <p>Extraの設定と読み出しをこのクラス内で完結させる。
+     *
+     * @param context コンテキスト
+     * @param udn     メディアサーバのUDN
+     * @return このActivityを起動するためのIntent
+     */
     public static Intent makeIntent(Context context, String udn) {
         final Intent intent = new Intent(context, ServerDetailActivity.class);
         intent.putExtra(Const.EXTRA_UDN, udn);

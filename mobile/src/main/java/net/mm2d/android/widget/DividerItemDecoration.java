@@ -1,3 +1,10 @@
+/*
+ * Copyright (c) 2016 大前良介 (OHMAE Ryosuke)
+ *
+ * This software is released under the MIT License.
+ * http://opensource.org/licenses/MIT
+ */
+
 package net.mm2d.android.widget;
 
 import android.content.Context;
@@ -5,14 +12,22 @@ import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView.LayoutParams;
 import android.view.View;
 
+/**
+ * RecyclerViewでListViewと同様のDividerを描画するためのDecorationクラス。
+ *
+ * <p>ほぼ同じ内容のスニペットがあちこちから入手可能で、
+ * 誰がどのように書いても同じような内容になってしまうため著作権表記が難しい。
+ */
 public class DividerItemDecoration extends RecyclerView.ItemDecoration {
+    @NonNull
     private final Drawable mDivider;
 
-    public DividerItemDecoration(Context context) {
+    public DividerItemDecoration(@NonNull Context context) {
         final TypedArray a = context.obtainStyledAttributes(new int[]{android.R.attr.listDivider});
         mDivider = a.getDrawable(0);
         a.recycle();

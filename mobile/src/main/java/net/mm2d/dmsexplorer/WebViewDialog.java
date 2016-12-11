@@ -15,12 +15,23 @@ import android.support.annotation.NonNull;
 import android.webkit.WebView;
 
 /**
+ * コンテンツ内容をWebViewで表示するダイアログ。
+ *
  * @author <a href="mailto:ryo@mm2d.net">大前良介(OHMAE Ryosuke)</a>
  */
 public class WebViewDialog extends DialogFragment {
     private static final String KEY_TITLE = "KEY_TITLE";
     private static final String KEY_URL = "KEY_URL";
 
+    /**
+     * インスタンスを作成する。
+     *
+     * <p>Bundleの設定と読み出しをこのクラス内で完結させる。
+     *
+     * @param title ダイアログのタイトル
+     * @param url   ダイアログに表示するコンテンツを指すURL
+     * @return インスタンス
+     */
     public static WebViewDialog newInstance(String title, String url) {
         final Bundle args = new Bundle();
         args.putString(KEY_TITLE, title);

@@ -18,13 +18,14 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import net.mm2d.android.cds.MediaServer;
-import net.mm2d.android.util.ThemeUtils;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
 /**
+ * MediaServerをRecyclerViewへ表示するためのAdapter。
+ *
  * @author <a href="mailto:ryo@mm2d.net">大前良介(OHMAE Ryosuke)</a>
  */
 public class ServerListAdapter

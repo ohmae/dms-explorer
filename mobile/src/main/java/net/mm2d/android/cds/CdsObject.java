@@ -539,7 +539,7 @@ public class CdsObject implements Parcelable {
      */
     public static final String ARIB_AUDIO_COMPONENT_TYPE = "arib:audioComponentType";
     /**
-     *"arib:audioComponentType@qualityIndicator".
+     * "arib:audioComponentType@qualityIndicator".
      *
      * <p><b>ARIB</b>
      * 音声コンポーネントの音質モードを表す。
@@ -727,18 +727,22 @@ public class CdsObject implements Parcelable {
     /**
      * \@idの値。
      */
+    @NonNull
     private String mObjectId;
     /**
      * \@parentIDの値。
      */
+    @NonNull
     private String mParentId;
     /**
      * dc:titleの値
      */
+    @NonNull
     private String mTitle;
     /**
      * upnp:classの値
      */
+    @NonNull
     private String mUpnpClass;
     /**
      * upnp:classのint値表現。
@@ -899,12 +903,12 @@ public class CdsObject implements Parcelable {
     /**
      * XPATH風の指定で示された値を返す。
      *
-     * XPATHはitemもしくはcontainerをルートとして指定する。
+     * <p>XPATHはitemもしくはcontainerをルートとして指定する。
      * 名前空間はシンボルをそのまま記述する。
      * 例えば'item@id'及び'container@id'はともに'@id'を指定する。
      * 'item/dc:title'であれば'dc:title'を指定する。
      *
-     * 複数同一のタグがあった場合は最初に現れた要素の値を返す。
+     * <p>複数同一のタグがあった場合は最初に現れた要素の値を返す。
      * {@link #getValue(String, int)}で第二引数に0を指定するのと等価
      *
      * @param xpath パラメータの位置を表現するXPATH風の指定
@@ -919,12 +923,12 @@ public class CdsObject implements Parcelable {
     /**
      * XPATH風の指定で示された値を返す。
      *
-     * XPATHはitemもしくはcontainerをルートとして指定する。
+     * <p>XPATHはitemもしくはcontainerをルートとして指定する。
      * 名前空間はシンボルをそのまま記述する。
      * 例えば'item@id'及び'container@id'はともに'@id'を指定する。
      * 'item/dc:title'であれば'dc:title'を指定する。
      *
-     * 複数同一のタグがあった場合は現れた順にインデックスが付けられる。
+     * <p>複数同一のタグがあった場合は現れた順にインデックスが付けられる。
      * 属性値はタグと同じインデックスに格納される。
      * 例えば、aというタグが複数あるが、
      * 一つ目に現れたタグにはbという属性はなく、

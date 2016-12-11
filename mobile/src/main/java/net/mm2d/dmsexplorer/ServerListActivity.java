@@ -35,8 +35,8 @@ import android.widget.Toast;
 import net.mm2d.android.cds.MediaServer;
 import net.mm2d.android.cds.MsControlPoint;
 import net.mm2d.android.cds.MsControlPoint.MsDiscoveryListener;
-import net.mm2d.dmsexplorer.ServerListAdapter.OnItemClickListener;
 import net.mm2d.android.widget.DividerItemDecoration;
+import net.mm2d.dmsexplorer.ServerListAdapter.OnItemClickListener;
 
 import java.net.InetAddress;
 import java.net.InterfaceAddress;
@@ -49,6 +49,10 @@ import java.util.Enumeration;
 import java.util.List;
 
 /**
+ * MediaServerのサーチ、選択を行うActivity。
+ *
+ * <p>アプリ起動時最初に表示されるActivity
+ *
  * @author <a href="mailto:ryo@mm2d.net">大前良介(OHMAE Ryosuke)</a>
  */
 public class ServerListActivity extends AppCompatActivity {

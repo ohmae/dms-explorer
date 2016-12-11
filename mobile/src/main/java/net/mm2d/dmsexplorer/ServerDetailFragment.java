@@ -25,14 +25,23 @@ import android.widget.TextView;
 
 import net.mm2d.android.cds.MediaServer;
 import net.mm2d.android.util.LaunchUtils;
-import net.mm2d.android.util.ThemeUtils;
 
 /**
+ * メディアサーバの詳細情報を表示するFragment。
+ *
  * @author <a href="mailto:ryo@mm2d.net">大前良介(OHMAE Ryosuke)</a>
  */
 public class ServerDetailFragment extends Fragment
         implements PropertyAdapter.OnItemLinkClickListener {
 
+    /**
+     * インスタンスを作成する。
+     *
+     * <p>Bundleの設定と読み出しをこのクラス内で完結させる。
+     *
+     * @param udn メディアサーバーのUDN
+     * @return インスタンス
+     */
     public static ServerDetailFragment newInstance(String udn) {
         final ServerDetailFragment instance = new ServerDetailFragment();
         final Bundle arguments = new Bundle();

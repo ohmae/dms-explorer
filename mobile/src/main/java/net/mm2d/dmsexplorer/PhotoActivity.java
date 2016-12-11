@@ -33,6 +33,8 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 /**
+ * 静止画表示のActivity。
+ *
  * @author <a href="mailto:ryo@mm2d.net">大前良介(OHMAE Ryosuke)</a>
  */
 public class PhotoActivity extends AppCompatActivity {

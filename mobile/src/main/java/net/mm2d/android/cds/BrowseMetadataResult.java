@@ -18,7 +18,7 @@ import java.util.concurrent.TimeoutException;
 /**
  * Browse(BrowseMetadata)のResultを表現するFutureオブジェクト。
  *
- * Browse実行によってこのオブジェクトが即座に返される。
+ * <p>Browse実行によってこのオブジェクトが即座に返される。
  * Browseコマンド自体は非同期に実行され、このオブジェクトから結果を取り出す処理がブロックされる。
  * また、Futureのインターフェース以外に、コールバックを経由したイベントドリブンな結果取得も提供する。
  *
@@ -32,7 +32,7 @@ public class BrowseMetadataResult implements Future<CdsObject> {
         /**
          * 取得完了時にコールされる。
          *
-         * ネットワーク処理のスレッド上からコールされるため、
+         * <p>ネットワーク処理のスレッド上からコールされるため、
          * このメソッド内でブロック動作はさせないこと。
          * このメソッド内、及びこのメソッドがコールされたあとは、
          * {@link #get()}がブロックされずに結果を取得でき、
@@ -44,10 +44,13 @@ public class BrowseMetadataResult implements Future<CdsObject> {
         void onCompletion(@NonNull BrowseMetadataResult result);
     }
 
+    @Nullable
     private Thread mThread;
     private boolean mDone;
     private boolean mCancelled;
+    @Nullable
     private CdsObject mResult;
+    @Nullable
     private StatusListener mListener;
 
     /**

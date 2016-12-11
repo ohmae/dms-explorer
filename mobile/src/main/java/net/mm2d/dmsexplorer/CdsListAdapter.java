@@ -18,14 +18,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import net.mm2d.android.cds.CdsObject;
-import net.mm2d.android.util.Arib;
-import net.mm2d.android.util.ThemeUtils;
+import net.mm2d.android.util.AribUtils;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
 /**
+ * CDSのコンテンツリストをRecyclerViewへ表示するためのAdapter。
+ *
  * @author <a href="mailto:ryo@mm2d.net">大前良介(OHMAE Ryosuke)</a>
  */
 public class CdsListAdapter
@@ -160,12 +161,12 @@ public class CdsListAdapter
             final String name = obj.getTitle();
             if (!name.isEmpty()) {
                 final String c = name.substring(0, 1);
-                mAccent.setText(Arib.toDisplayableString(c));
+                mAccent.setText(AribUtils.toDisplayableString(c));
             } else {
                 mAccent.setText("");
             }
             mAccentBackground.setColor(ThemeUtils.getAccentColor(name));
-            mText1.setText(Arib.toDisplayableString(name));
+            mText1.setText(AribUtils.toDisplayableString(name));
             mText2.setText(obj.getUpnpClass());
             switch (obj.getType()) {
                 case CdsObject.TYPE_CONTAINER:

@@ -25,11 +25,14 @@ import net.mm2d.util.Log;
 import java.util.Locale;
 
 /**
+ * 動画、音楽再生においてプレーヤーのコントロールUIを提供するView。
+ *
  * @author <a href="mailto:ryo@mm2d.net">大前良介(OHMAE Ryosuke)</a>
  */
 public class ControlView extends LinearLayout
         implements OnPreparedListener {
     private static final String TAG = "ControlView";
+    private static final int MEDIA_ERROR_SYSTEM = -2147483648;
     private MediaPlayer mMediaPlayer;
     private TextView mProgress;
     private TextView mDuration;
@@ -43,47 +46,10 @@ public class ControlView extends LinearLayout
     private OnCompletionListener mOnCompletionListener;
     private final OnErrorListener mMyOnErrorListener = new OnErrorListener() {
         private boolean mNoError = true;
-        private static final int MEDIA_ERROR_SYSTEM = -2147483648;
 
         @Override
         public boolean onError(MediaPlayer mp, int what, int extra) {
-            final String wh;
-            switch (what) {
-                case MediaPlayer.MEDIA_ERROR_SERVER_DIED:
-                    wh = "MEDIA_ERROR_SERVER_DIED";
-                    break;
-                case MediaPlayer.MEDIA_ERROR_UNKNOWN:
-                    wh = "MEDIA_ERROR_UNKNOWN";
-                    break;
-                default:
-                    wh = "";
-                    break;
-            }
-            final String ex;
-            switch (extra) {
-                case MediaPlayer.MEDIA_ERROR_IO:
-                    ex = "MEDIA_ERROR_IO";
-                    break;
-                case MediaPlayer.MEDIA_ERROR_MALFORMED:
-                    ex = "MEDIA_ERROR_MALFORMED";
-                    break;
-                case MediaPlayer.MEDIA_ERROR_TIMED_OUT:
-                    ex = "MEDIA_ERROR_TIMED_OUT";
-                    break;
-                case MediaPlayer.MEDIA_ERROR_UNSUPPORTED:
-                    ex = "MEDIA_ERROR_UNSUPPORTED";
-                    break;
-                case MediaPlayer.MEDIA_ERROR_NOT_VALID_FOR_PROGRESSIVE_PLAYBACK:
-                    ex = "MEDIA_ERROR_NOT_VALID_FOR_PROGRESSIVE_PLAYBACK";
-                    break;
-                case MEDIA_ERROR_SYSTEM:
-                    ex = "MEDIA_ERROR_SYSTEM";
-                    break;
-                default:
-                    ex = "";
-                    break;
-            }
-            Log.e(TAG, "onError:w" + what + " " + wh + " e" + extra + " " + ex);
+            logError(what, extra);
             if (mOnErrorListener != null) {
                 mOnErrorListener.onError(mp, what, extra);
             }
@@ -94,46 +60,11 @@ public class ControlView extends LinearLayout
             return true;
         }
     };
+
     private final OnInfoListener mMyOnInfoListener = new OnInfoListener() {
         @Override
         public boolean onInfo(MediaPlayer mp, int what, int extra) {
-            final String wh;
-            switch (what) {
-                case MediaPlayer.MEDIA_INFO_UNKNOWN:
-                    wh = "MEDIA_INFO_UNKNOWN";
-                    break;
-                case MediaPlayer.MEDIA_INFO_VIDEO_TRACK_LAGGING:
-                    wh = "MEDIA_INFO_VIDEO_TRACK_LAGGING";
-                    break;
-                case MediaPlayer.MEDIA_INFO_VIDEO_RENDERING_START:
-                    wh = "MEDIA_INFO_VIDEO_RENDERING_START";
-                    break;
-                case MediaPlayer.MEDIA_INFO_BUFFERING_START:
-                    wh = "MEDIA_INFO_BUFFERING_START";
-                    break;
-                case MediaPlayer.MEDIA_INFO_BUFFERING_END:
-                    wh = "MEDIA_INFO_BUFFERING_END";
-                    break;
-                case MediaPlayer.MEDIA_INFO_BAD_INTERLEAVING:
-                    wh = "MEDIA_INFO_BAD_INTERLEAVING";
-                    break;
-                case MediaPlayer.MEDIA_INFO_NOT_SEEKABLE:
-                    wh = "MEDIA_INFO_NOT_SEEKABLE";
-                    break;
-                case MediaPlayer.MEDIA_INFO_METADATA_UPDATE:
-                    wh = "MEDIA_INFO_METADATA_UPDATE";
-                    break;
-                case MediaPlayer.MEDIA_INFO_UNSUPPORTED_SUBTITLE:
-                    wh = "MEDIA_INFO_UNSUPPORTED_SUBTITLE";
-                    break;
-                case MediaPlayer.MEDIA_INFO_SUBTITLE_TIMED_OUT:
-                    wh = "MEDIA_INFO_SUBTITLE_TIMED_OUT";
-                    break;
-                default:
-                    wh = "";
-                    break;
-            }
-            Log.d(TAG, "onInfo:w:" + what + " " + wh + " e:" + extra);
+            logInfo(what, extra);
             if (mOnInfoListener != null) {
                 mOnInfoListener.onInfo(mp, what, extra);
             }
@@ -325,5 +256,85 @@ public class ControlView extends LinearLayout
         post(mGetPositionTask);
         mPlay.setImageResource(R.drawable.ic_pause);
         mp.start();
+    }
+
+    private void logError(int what, int extra) {
+        final String wh;
+        switch (what) {
+            case MediaPlayer.MEDIA_ERROR_SERVER_DIED:
+                wh = "MEDIA_ERROR_SERVER_DIED";
+                break;
+            case MediaPlayer.MEDIA_ERROR_UNKNOWN:
+                wh = "MEDIA_ERROR_UNKNOWN";
+                break;
+            default:
+                wh = "";
+                break;
+        }
+        final String ex;
+        switch (extra) {
+            case MediaPlayer.MEDIA_ERROR_IO:
+                ex = "MEDIA_ERROR_IO";
+                break;
+            case MediaPlayer.MEDIA_ERROR_MALFORMED:
+                ex = "MEDIA_ERROR_MALFORMED";
+                break;
+            case MediaPlayer.MEDIA_ERROR_TIMED_OUT:
+                ex = "MEDIA_ERROR_TIMED_OUT";
+                break;
+            case MediaPlayer.MEDIA_ERROR_UNSUPPORTED:
+                ex = "MEDIA_ERROR_UNSUPPORTED";
+                break;
+            case MediaPlayer.MEDIA_ERROR_NOT_VALID_FOR_PROGRESSIVE_PLAYBACK:
+                ex = "MEDIA_ERROR_NOT_VALID_FOR_PROGRESSIVE_PLAYBACK";
+                break;
+            case MEDIA_ERROR_SYSTEM:
+                ex = "MEDIA_ERROR_SYSTEM";
+                break;
+            default:
+                ex = "";
+                break;
+        }
+        Log.e(TAG, "onError:w" + what + " " + wh + " e" + extra + " " + ex);
+    }
+
+    private void logInfo(int what, int extra) {
+        final String wh;
+        switch (what) {
+            case MediaPlayer.MEDIA_INFO_UNKNOWN:
+                wh = "MEDIA_INFO_UNKNOWN";
+                break;
+            case MediaPlayer.MEDIA_INFO_VIDEO_TRACK_LAGGING:
+                wh = "MEDIA_INFO_VIDEO_TRACK_LAGGING";
+                break;
+            case MediaPlayer.MEDIA_INFO_VIDEO_RENDERING_START:
+                wh = "MEDIA_INFO_VIDEO_RENDERING_START";
+                break;
+            case MediaPlayer.MEDIA_INFO_BUFFERING_START:
+                wh = "MEDIA_INFO_BUFFERING_START";
+                break;
+            case MediaPlayer.MEDIA_INFO_BUFFERING_END:
+                wh = "MEDIA_INFO_BUFFERING_END";
+                break;
+            case MediaPlayer.MEDIA_INFO_BAD_INTERLEAVING:
+                wh = "MEDIA_INFO_BAD_INTERLEAVING";
+                break;
+            case MediaPlayer.MEDIA_INFO_NOT_SEEKABLE:
+                wh = "MEDIA_INFO_NOT_SEEKABLE";
+                break;
+            case MediaPlayer.MEDIA_INFO_METADATA_UPDATE:
+                wh = "MEDIA_INFO_METADATA_UPDATE";
+                break;
+            case MediaPlayer.MEDIA_INFO_UNSUPPORTED_SUBTITLE:
+                wh = "MEDIA_INFO_UNSUPPORTED_SUBTITLE";
+                break;
+            case MediaPlayer.MEDIA_INFO_SUBTITLE_TIMED_OUT:
+                wh = "MEDIA_INFO_SUBTITLE_TIMED_OUT";
+                break;
+            default:
+                wh = "";
+                break;
+        }
+        Log.d(TAG, "onInfo:w:" + what + " " + wh + " e:" + extra);
     }
 }

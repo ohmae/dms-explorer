@@ -26,10 +26,9 @@ import android.view.MenuItem;
 import android.widget.ImageView;
 
 import net.mm2d.android.cds.CdsObject;
-import net.mm2d.android.util.Arib;
+import net.mm2d.android.util.AribUtils;
 import net.mm2d.android.util.LaunchUtils;
 import net.mm2d.util.Log;
-import net.mm2d.android.util.ThemeUtils;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -38,6 +37,8 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 /**
+ * 音楽再生のActivity。
+ *
  * @author <a href="mailto:ryo@mm2d.net">大前良介(OHMAE Ryosuke)</a>
  */
 public class MusicActivity extends AppCompatActivity implements PropertyAdapter.OnItemLinkClickListener {
@@ -95,7 +96,7 @@ public class MusicActivity extends AppCompatActivity implements PropertyAdapter.
         final ActionBar actionBar = getSupportActionBar();
         assert actionBar != null;
         actionBar.setDisplayHomeAsUpEnabled(true);
-        final String title = Arib.toDisplayableString(mObject.getTitle());
+        final String title = AribUtils.toDisplayableString(mObject.getTitle());
         actionBar.setTitle(title);
         final int bgColor = ThemeUtils.getAccentColor(mObject.getTitle());
         actionBar.setBackgroundDrawable(new ColorDrawable(bgColor));
