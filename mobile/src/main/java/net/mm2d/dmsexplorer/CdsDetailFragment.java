@@ -89,15 +89,15 @@ public class CdsDetailFragment extends Fragment
         setupPropertyAdapter(getActivity(), adapter, object);
         recyclerView.setAdapter(adapter);
 
+        setupFloatingActionButton(rootView, object);
+        return rootView;
+    }
+
+    private void setupFloatingActionButton(View rootView, final CdsObject object) {
         FloatingActionButton fab = (FloatingActionButton) rootView.findViewById(R.id.fab);
         if (fab == null) {
             fab = (FloatingActionButton) getActivity().findViewById(R.id.fab);
         }
-        setupFloatingActionButton(fab, object);
-        return rootView;
-    }
-
-    private void setupFloatingActionButton(FloatingActionButton fab, final CdsObject object) {
         if (fab == null) {
             return;
         }

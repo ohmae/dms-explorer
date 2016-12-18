@@ -75,7 +75,8 @@ public class CdsListActivity extends AppCompatActivity
      * @param udn     MediaServerのUDN
      * @return インスタンス
      */
-    public static Intent makeIntent(Context context, String udn) {
+    @NonNull
+    public static Intent makeIntent(@NonNull Context context, @NonNull String udn) {
         final Intent intent = new Intent(context, CdsListActivity.class);
         intent.putExtra(Const.EXTRA_UDN, udn);
         return intent;
@@ -86,7 +87,7 @@ public class CdsListActivity extends AppCompatActivity
         private final String mId;
         private final String mTitle;
 
-        public History(int position, String id, String title) {
+        public History(int position, @NonNull String id, @NonNull String title) {
             mPosition = position;
             mId = id;
             mTitle = title;
@@ -187,15 +188,13 @@ public class CdsListActivity extends AppCompatActivity
         }
         setContentView(R.layout.act_cds_list);
         final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        assert toolbar != null;
         setSupportActionBar(toolbar);
         toolbar.setBackgroundColor(ThemeUtils.getAccentColor(name));
         final ActionBar actionBar = getSupportActionBar();
-        assert actionBar != null;
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setTitle(name);
+
         mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeRefresh);
-        assert mSwipeRefreshLayout != null;
         mSwipeRefreshLayout.setColorSchemeResources(
                 R.color.progress1, R.color.progress2, R.color.progress3, R.color.progress4);
         mSwipeRefreshLayout.setOnRefreshListener(() -> {
@@ -205,7 +204,6 @@ public class CdsListActivity extends AppCompatActivity
         mCdsListAdapter = new CdsListAdapter(this);
         mCdsListAdapter.setOnItemClickListener(this::onCdsItemClick);
         mRecyclerView = (RecyclerView) findViewById(R.id.cds_list);
-        assert mRecyclerView != null;
         mRecyclerView.setAdapter(mCdsListAdapter);
         mRecyclerView.addItemDecoration(new DividerItemDecoration(this));
 
@@ -214,33 +212,36 @@ public class CdsListActivity extends AppCompatActivity
         }
         if (savedInstanceState == null) {
             browse(0, "0", "", true);
+        }
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        final History[] histories = (History[]) savedInstanceState.getParcelableArray(KEY_HISTORY);
+        Collections.addAll(mHistories, histories);
+        final History history = mHistories.peekLast();
+        if (history.getId().equals(mDataHolder.getCurrentContainer())) {
+            prepareViewState();
+            updateListView(mDataHolder.getCurrentList(), true);
         } else {
-            final History[] histories = (History[]) savedInstanceState.getParcelableArray(KEY_HISTORY);
-            assert histories != null;
-            Collections.addAll(mHistories, histories);
-            final History history = mHistories.peekLast();
-            if (history.getId().equals(mDataHolder.getCurrentContainer())) {
-                prepareViewState();
-                updateListView(mDataHolder.getCurrentList(), true);
-            } else {
-                browse(history.getPosition(), history.getId(), history.getTitle(), false);
-            }
-            mSelectedObject = savedInstanceState.getParcelable(KEY_SELECTED);
-            final int position = savedInstanceState.getInt(KEY_POSITION, -1);
-            mCdsListAdapter.setSelection(position);
-            if (position >= 0) {
-                mRecyclerView.scrollToPosition(position);
-            }
-            if (mTwoPane && mSelectedObject != null) {
-                final Bundle arguments = new Bundle();
-                arguments.putString(Const.EXTRA_UDN, mServer.getUdn());
-                arguments.putParcelable(Const.EXTRA_OBJECT, mSelectedObject);
-                mCdsDetailFragment = new CdsDetailFragment();
-                mCdsDetailFragment.setArguments(arguments);
-                getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.cds_detail_container, mCdsDetailFragment)
-                        .commit();
-            }
+            browse(history.getPosition(), history.getId(), history.getTitle(), false);
+        }
+        mSelectedObject = savedInstanceState.getParcelable(KEY_SELECTED);
+        final int position = savedInstanceState.getInt(KEY_POSITION, -1);
+        mCdsListAdapter.setSelection(position);
+        if (position >= 0) {
+            mRecyclerView.scrollToPosition(position);
+        }
+        if (mTwoPane && mSelectedObject != null) {
+            final Bundle arguments = new Bundle();
+            arguments.putString(Const.EXTRA_UDN, mServer.getUdn());
+            arguments.putParcelable(Const.EXTRA_OBJECT, mSelectedObject);
+            mCdsDetailFragment = new CdsDetailFragment();
+            mCdsDetailFragment.setArguments(arguments);
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.cds_detail_container, mCdsDetailFragment)
+                    .commit();
         }
     }
 
@@ -327,7 +328,6 @@ public class CdsListActivity extends AppCompatActivity
         mCdsDetailFragment = null;
         mSelectedObject = null;
         final ActionBar actionBar = getSupportActionBar();
-        assert actionBar != null;
         final StringBuilder sb = new StringBuilder();
         for (final History history : mHistories) {
             if (sb.length() != 0) {
@@ -405,6 +405,5 @@ public class CdsListActivity extends AppCompatActivity
         assert actionBar != null;
         actionBar.setSubtitle(mSubtitle + "  [" + count + "]");
         mCdsListAdapter.notifyItemRangeInserted(beforeCount, count - beforeCount);
-        //mCdsListAdapter.notifyDataSetChanged();
     }
 }

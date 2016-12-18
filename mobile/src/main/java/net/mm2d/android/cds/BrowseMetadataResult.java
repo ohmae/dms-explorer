@@ -56,7 +56,7 @@ public class BrowseMetadataResult implements Future<CdsObject> {
     /**
      * インスタンス作成。
      *
-     * パッケージの外ではインスタンス作成禁止
+     * <p>パッケージの外ではインスタンス作成禁止
      */
     BrowseMetadataResult() {
     }
@@ -118,7 +118,7 @@ public class BrowseMetadataResult implements Future<CdsObject> {
     /**
      * コマンド実行完了及び結果を通知するリスナーを登録する。
      *
-     * このメソッドをコールした時点で完了していた場合は、
+     * <p>このメソッドをコールした時点で完了していた場合は、
      * このスレッド上でonCompletion()がコールされたのち、処理が戻る。
      *
      * @param listener リスナー
@@ -133,7 +133,7 @@ public class BrowseMetadataResult implements Future<CdsObject> {
     /**
      * 結果を登録する。
      *
-     * 結果が即座に取得できるようになるほか、
+     * <p>結果が即座に取得できるようになるほか、
      * 結果取得待ちのスレッドへnotifyを行い、
      * リスナーが登録されていた場合はリスナー通知も行う。
      *

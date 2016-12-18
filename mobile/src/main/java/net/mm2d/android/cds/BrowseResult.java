@@ -20,7 +20,7 @@ import java.util.concurrent.TimeoutException;
 /**
  * Browse(BrowseDirectChildren)のResultを表現するFutureオブジェクト。
  *
- * Browse実行によってこのオブジェクトが即座に返される。
+ * <p>Browse実行によってこのオブジェクトが即座に返される。
  * Browseコマンド自体は非同期に実行され、このオブジェクトから結果を取り出す処理がブロックされる。
  * また、Futureのインターフェース以外に、コールバックを経由したイベントドリブンな結果取得も提供する。
  *
@@ -34,7 +34,7 @@ public class BrowseResult implements Future<List<CdsObject>> {
         /**
          * 取得完了時にコールされる。
          *
-         * ネットワーク処理のスレッド上からコールされるため、
+         * <p>ネットワーク処理のスレッド上からコールされるため、
          * このメソッド内でブロック動作はさせないこと。
          * このメソッド内、及びこのメソッドがコールされたあとは、
          * {@link #get()}がブロックされずに結果を取得でき、
@@ -48,7 +48,7 @@ public class BrowseResult implements Future<List<CdsObject>> {
         /**
          * 部分的に取得更新が行われたときにコールされる。
          *
-         * ネットワーク処理のスレッド上からコールされるため、
+         * <p>ネットワーク処理のスレッド上からコールされるため、
          * このメソッド内でブロック動作はさせないこと。
          * この時点では{@link #get()}をコールしても結果を取得できずブロック動作となる。
          * 途中結果を取得する場合はgetProgress()をコールすること。
@@ -73,7 +73,7 @@ public class BrowseResult implements Future<List<CdsObject>> {
     /**
      * インスタンス作成。
      *
-     * パッケージの外ではインスタンス作成禁止
+     * <p>パッケージの外ではインスタンス作成禁止
      */
     BrowseResult() {
     }
@@ -135,7 +135,7 @@ public class BrowseResult implements Future<List<CdsObject>> {
     /**
      * 進捗状態を通知するリスナーを登録する。
      *
-     * このメソッドをコールした時点で完了していた場合は、
+     * <p>このメソッドをコールした時点で完了していた場合は、
      * このスレッド上でonCompletion()がコールされたのち、処理が戻る。
      *
      * @param listener リスナー
@@ -150,7 +150,7 @@ public class BrowseResult implements Future<List<CdsObject>> {
     /**
      * 現在までに取得できている途中結果を返す。
      *
-     * 今後更新される情報のためunmodifiableListとして返す。
+     * <p>今後更新される情報のためunmodifiableListとして返す。
      * 途中経過がない場合は空のListとなり、nullにはならない。
      *
      * @return 途中結果
@@ -169,7 +169,7 @@ public class BrowseResult implements Future<List<CdsObject>> {
     /**
      * 結果を登録する。
      *
-     * 結果が即座に取得できるようになるほか、
+     * <p>結果が即座に取得できるようになるほか、
      * 結果取得待ちのスレッドへnotifyを行い、
      * リスナーが登録されていた場合はリスナー通知も行う。
      *
@@ -187,7 +187,7 @@ public class BrowseResult implements Future<List<CdsObject>> {
     /**
      * 結果取得の進捗を通知する。
      *
-     * このメソッドコールでは完了状態にならないため、
+     * <p>このメソッドコールでは完了状態にならないため、
      * 結果取得待ちのスレッドは待たされたままである。
      *
      * @param progress 取得できているBrowseDirectChildrenの結果

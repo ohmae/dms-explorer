@@ -9,4 +9,5 @@
     <dimen name="text_size_main">16sp</dimen>
     <dimen name="text_size_sub">12sp</dimen>
     <dimen name="raise_focus">5dp</dimen>
+    <dimen name="status_bar_size">25dp</dimen>
 </resources>

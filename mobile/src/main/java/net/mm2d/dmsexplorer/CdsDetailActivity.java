@@ -39,7 +39,7 @@ public class CdsDetailActivity extends AppCompatActivity {
      * @param object  表示するコンテンツのObject情報
      * @return このActivityを起動するためのIntent
      */
-    public static Intent makeIntent(@NonNull Context context, String udn, CdsObject object) {
+    public static Intent makeIntent(@NonNull Context context, @NonNull String udn, @NonNull CdsObject object) {
         final Intent intent = new Intent(context, CdsDetailActivity.class);
         intent.putExtra(Const.EXTRA_UDN, udn);
         intent.putExtra(Const.EXTRA_OBJECT, object);
@@ -50,10 +50,12 @@ public class CdsDetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_cds_detail);
+
         final CdsObject object = getIntent().getParcelableExtra(Const.EXTRA_OBJECT);
         final String udn = getIntent().getStringExtra(Const.EXTRA_UDN);
         final DataHolder dataHolder = DataHolder.getInstance();
         final MediaServer server = dataHolder.getMsControlPoint().getMediaServer(udn);
+
         final String rawTitle = object.getTitle();
         if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
             getWindow().setStatusBarColor(ThemeUtils.getAccentDarkColor(rawTitle));
@@ -68,6 +70,7 @@ public class CdsDetailActivity extends AppCompatActivity {
         final ActionBar actionBar = getSupportActionBar();
         assert actionBar != null;
         actionBar.setDisplayHomeAsUpEnabled(true);
+
         final String title = AribUtils.toDisplayableString(rawTitle);
         actionBar.setTitle(title);
         if (savedInstanceState == null) {

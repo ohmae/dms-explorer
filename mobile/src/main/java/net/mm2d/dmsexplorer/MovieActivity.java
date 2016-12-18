@@ -118,9 +118,11 @@ public class MovieActivity extends AppCompatActivity {
 
     private void adjustControlPanel(int right, int bottom) {
         mControlPanel.setPadding(0, 0, right, bottom);
+        final int topPadding = getResources().getDimensionPixelSize(R.dimen.status_bar_size);
+        mToolbar.setPadding(0, topPadding, right, 0);
     }
 
-    private Runnable mHideNavigationTask = this::hideNavigation;
+    private final Runnable mHideNavigationTask = this::hideNavigation;
 
     private void postHideNavigation() {
         mHandler.removeCallbacks(mHideNavigationTask);

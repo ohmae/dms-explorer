@@ -135,7 +135,7 @@ public class PhotoActivity extends AppCompatActivity {
 
         @Override
         public void run() {
-            final byte[] data = getImageData(mUri);
+            final byte[] data = downloadImageData(mUri);
             if (data == null) {
                 return;
             }
@@ -176,7 +176,7 @@ public class PhotoActivity extends AppCompatActivity {
     }
 
     @Nullable
-    private byte[] getImageData(@NonNull Uri uri) {
+    private byte[] downloadImageData(@NonNull Uri uri) {
         if (uri.toString() == null) {
             return null;
         }

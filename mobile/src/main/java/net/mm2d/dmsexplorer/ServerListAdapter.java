@@ -109,7 +109,7 @@ public class ServerListAdapter
         }
     };
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    class ViewHolder extends RecyclerView.ViewHolder {
         private final View mView;
         private final View mMark;
         private final TextView mAccent;
@@ -119,7 +119,7 @@ public class ServerListAdapter
         private MediaServer mServer;
         private final GradientDrawable mAccentBackground;
 
-        public ViewHolder(View itemView) {
+        ViewHolder(View itemView) {
             super(itemView);
             mView = itemView;
             mMark = mView.findViewById(R.id.mark);
@@ -135,7 +135,7 @@ public class ServerListAdapter
             mAccent.setBackground(mAccentBackground);
         }
 
-        public void applyItem(int position, MediaServer server) {
+        void applyItem(int position, MediaServer server) {
             mPosition = position;
             if (position == mSelection) {
                 mMark.setVisibility(View.VISIBLE);
@@ -174,15 +174,15 @@ public class ServerListAdapter
             mText2.setText(sb.toString());
         }
 
-        public View getAccent() {
+        View getAccent() {
             return mAccent;
         }
 
-        public MediaServer getItem() {
+        MediaServer getItem() {
             return mServer;
         }
 
-        public int getListPosition() {
+        int getListPosition() {
             return mPosition;
         }
     }

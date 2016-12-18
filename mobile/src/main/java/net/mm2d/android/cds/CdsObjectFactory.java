@@ -31,9 +31,7 @@ import javax.xml.parsers.ParserConfigurationException;
 /**
  * CdsObjectのファクトリークラス。
  *
- * BrowseDirectChildrenの結果及び
- * BrowseMetadataの結果を
- * CdsObjectに変換して返す。
+ * <p>BrowseDirectChildrenの結果及びBrowseMetadataの結果をCdsObjectに変換して返す。
  *
  * @author <a href="mailto:ryo@mm2d.net">大前良介(OHMAE Ryosuke)</a>
  */

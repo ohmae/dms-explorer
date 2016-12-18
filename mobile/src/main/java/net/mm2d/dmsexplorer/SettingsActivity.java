@@ -9,9 +9,6 @@ package net.mm2d.dmsexplorer;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.res.Configuration;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
@@ -83,6 +80,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         loadHeadersFromResource(R.xml.pref_headers, target);
     }
 
+    @Override
     protected boolean isValidFragment(String fragmentName) {
         return PreferenceFragment.class.getName().equals(fragmentName)
                 || GeneralPreferenceFragment.class.getName().equals(fragmentName)
@@ -108,7 +106,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                 LaunchUtils.openUri(context, "market://details?id=" + context.getPackageName());
                 return true;
             });
-            findPreference("VERSION_NUMBER").setSummary(getVersionName(getActivity()));
+            findPreference("VERSION_NUMBER").setSummary(BuildConfig.VERSION_NAME);
             findPreference("LICENSE").setOnPreferenceClickListener(preference -> {
                 final WebViewDialog dialog = WebViewDialog.newInstance(
                         getString(R.string.pref_title_license),
@@ -116,16 +114,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                 dialog.show(getFragmentManager(), "");
                 return true;
             });
-        }
-
-        private String getVersionName(Context context) {
-            try {
-                final PackageManager pm = context.getPackageManager();
-                final PackageInfo pi = pm.getPackageInfo(context.getPackageName(), 0);
-                return pi.versionName;
-            } catch (final NameNotFoundException ignored) {
-            }
-            return "";
         }
     }
 }

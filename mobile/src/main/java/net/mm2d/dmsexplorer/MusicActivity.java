@@ -68,10 +68,11 @@ public class MusicActivity extends AppCompatActivity implements PropertyAdapter.
         final Uri uri = intent.getData();
         mHandler = new Handler();
         mArtView = (ImageView) findViewById(R.id.art);
+
         final ControlView controlPanel = (ControlView) findViewById(R.id.controlPanel);
-        assert controlPanel != null;
         controlPanel.setOnErrorListener(mOnErrorListener);
         controlPanel.setOnCompletionListener(mp -> onBackPressed());
+
         mMediaPlayer = new MediaPlayer();
         mMediaPlayer.setOnPreparedListener(controlPanel);
         mMediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
@@ -81,18 +82,18 @@ public class MusicActivity extends AppCompatActivity implements PropertyAdapter.
         } catch (final IOException e) {
             e.printStackTrace();
         }
+
         final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         final ActionBar actionBar = getSupportActionBar();
-        assert actionBar != null;
         actionBar.setDisplayHomeAsUpEnabled(true);
         final String title = AribUtils.toDisplayableString(object.getTitle());
         actionBar.setTitle(title);
         final int bgColor = ThemeUtils.getAccentColor(object.getTitle());
         actionBar.setBackgroundDrawable(new ColorDrawable(bgColor));
+
         controlPanel.setBackgroundColor(bgColor);
         final RecyclerView recyclerView = (RecyclerView) findViewById(R.id.detail);
-        assert recyclerView != null;
         final PropertyAdapter adapter = new PropertyAdapter(this);
         adapter.setOnItemLinkClickListener(this);
         CdsDetailFragment.setupPropertyAdapter(this, adapter, object);

@@ -720,7 +720,7 @@ public class CdsObject implements Parcelable {
     /**
      * XMLのタグ情報。
      *
-     * タグ名をKeyとして、TagのListを保持する。
+     * <p>タグ名をKeyとして、TagのListを保持する。
      * 同一のタグが複数ある場合はListに出現順に格納する。
      */
     private final Map<String, List<Tag>> mTagMap;
@@ -954,7 +954,7 @@ public class CdsObject implements Parcelable {
     /**
      * タグ名と属性名を指定して値を取り出す。
      *
-     * 複数の同一タグがある場合は最初に現れたタグの情報を返す。
+     * <p>複数の同一タグがある場合は最初に現れたタグの情報を返す。
      * {@link #getValue(String, String, int)}の第三引数に0を指定したものと等価。
      *
      * @param tagName  タグ名
@@ -970,7 +970,7 @@ public class CdsObject implements Parcelable {
     /**
      * タグ名と属性名を指定して値を取り出す。
      *
-     * 複数同一のタグがあった場合は現れた順にインデックスが付けられる。
+     * <p>複数同一のタグがあった場合は現れた順にインデックスが付けられる。
      * 属性値はタグと同じインデックスに格納される。
      *
      * @param tagName  タグ名、ルート要素を指定する場合はnullもしくは空文字列
@@ -993,7 +993,7 @@ public class CdsObject implements Parcelable {
     /**
      * 指定したタグ名のTagインスタンスを返す。
      *
-     * 複数同一タグが存在した場合は最初に現れたタグ。
+     * <p>複数同一タグが存在した場合は最初に現れたタグ。
      *
      * @param tagName タグ名、ルート要素を指定する場合はnullもしくは空文字列
      * @return Tagインスタンス、見つからない場合はnull
@@ -1036,7 +1036,7 @@ public class CdsObject implements Parcelable {
     /**
      * XPATH風の指定で示された値をInt値として返す。
      *
-     * {@link #getValue(String)} の結果を {@link #parseIntSafely(String, int)} に渡すことと等価
+     * <p>{@link #getValue(String)} の結果を {@link #parseIntSafely(String, int)} に渡すことと等価
      *
      * @param xpath        パラメータの位置を表現するXPATH風の指定
      * @param defaultValue 値が見つからない場合、Int値にパースできない値だった場合のデフォルト値
@@ -1050,7 +1050,7 @@ public class CdsObject implements Parcelable {
     /**
      * XPATH風の指定で示された値をInt値として返す。
      *
-     * {@link #getValue(String, int)} の結果を {@link #parseIntSafely(String, int)} に渡すことと等価
+     * <p>{@link #getValue(String, int)} の結果を {@link #parseIntSafely(String, int)} に渡すことと等価
      *
      * @param xpath        パラメータの位置を表現するXPATH風の指定
      * @param index        インデックス値
@@ -1065,7 +1065,7 @@ public class CdsObject implements Parcelable {
     /**
      * XPATH風の指定で示された値をDateとして返す。
      *
-     * {@link #getValue(String)} の結果を {@link #parseDate(String)} に渡すことと等価
+     * <p>{@link #getValue(String)} の結果を {@link #parseDate(String)} に渡すことと等価
      *
      * @param xpath パラメータの位置を表現するXPATH風の指定
      * @return 指定された値。値が見つからない場合、パースできない値の場合null
@@ -1079,7 +1079,7 @@ public class CdsObject implements Parcelable {
     /**
      * XPATH風の指定で示された値をDateとして返す。
      *
-     * {@link #getValue(String, int)} の結果を {@link #parseDate(String)} に渡すことと等価
+     * <p>{@link #getValue(String, int)} の結果を {@link #parseDate(String)} に渡すことと等価
      *
      * @param xpath パラメータの位置を表現するXPATH風の指定
      * @param index インデックス値
@@ -1128,7 +1128,7 @@ public class CdsObject implements Parcelable {
     /**
      * 与えられた文字列をパースしてDateとして戻す。
      *
-     * CDSで使用される日付フォーマットにはいくつかバリエーションがあるが、
+     * <p>CDSで使用される日付フォーマットにはいくつかバリエーションがあるが、
      * 該当するフォーマットでパースを行う。
      *
      * @param value パースする文字列

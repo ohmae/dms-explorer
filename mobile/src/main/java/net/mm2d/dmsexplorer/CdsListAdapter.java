@@ -110,7 +110,7 @@ public class CdsListAdapter
         }
     };
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    class ViewHolder extends RecyclerView.ViewHolder {
         private final View mView;
         private final View mMark;
         private final TextView mAccent;
@@ -121,7 +121,7 @@ public class CdsListAdapter
         private CdsObject mObject;
         private final GradientDrawable mAccentBackground;
 
-        public ViewHolder(View itemView) {
+        ViewHolder(View itemView) {
             super(itemView);
             mView = itemView;
             mMark = mView.findViewById(R.id.mark);
@@ -138,7 +138,7 @@ public class CdsListAdapter
             mAccent.setBackground(mAccentBackground);
         }
 
-        public void applyItem(int position, CdsObject obj) {
+        void applyItem(int position, CdsObject obj) {
             mPosition = position;
             if (position == mSelection) {
                 mMark.setVisibility(View.VISIBLE);
@@ -166,35 +166,34 @@ public class CdsListAdapter
             mAccentBackground.setColor(ThemeUtils.getAccentColor(name));
             mText1.setText(AribUtils.toDisplayableString(name));
             mText2.setText(obj.getUpnpClass());
-            switch (obj.getType()) {
+            mImage.setImageResource(getImageResource(obj.getType()));
+        }
+
+        private int getImageResource(int type) {
+            switch (type) {
                 case CdsObject.TYPE_CONTAINER:
-                    mImage.setImageResource(R.drawable.ic_folder);
-                    break;
+                    return R.drawable.ic_folder;
                 case CdsObject.TYPE_AUDIO:
-                    mImage.setImageResource(R.drawable.ic_music);
-                    break;
+                    return R.drawable.ic_music;
                 case CdsObject.TYPE_IMAGE:
-                    mImage.setImageResource(R.drawable.ic_image);
-                    break;
+                    return R.drawable.ic_image;
                 case CdsObject.TYPE_VIDEO:
-                    mImage.setImageResource(R.drawable.ic_movie);
-                    break;
+                    return R.drawable.ic_movie;
                 case CdsObject.TYPE_UNKNOWN:
                 default:
-                    mImage.setImageResource(0);
-                    break;
+                    return 0;
             }
         }
 
-        public View getAccent() {
+        View getAccent() {
             return mAccent;
         }
 
-        public CdsObject getItem() {
+        CdsObject getItem() {
             return mObject;
         }
 
-        public int getListPosition() {
+        int getListPosition() {
             return mPosition;
         }
     }
