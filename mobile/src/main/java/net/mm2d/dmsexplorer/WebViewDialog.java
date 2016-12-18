@@ -44,14 +44,14 @@ public class WebViewDialog extends DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         final Bundle args = getArguments();
-        builder.setTitle(args.getString(KEY_TITLE));
         final WebView webView = new WebView(getActivity());
         webView.getSettings().setSupportZoom(false);
         webView.getSettings().setDisplayZoomControls(false);
         webView.loadUrl(args.getString(KEY_URL));
-        builder.setView(webView);
-        return builder.create();
+        return new AlertDialog.Builder(getActivity())
+                .setTitle(args.getString(KEY_TITLE))
+                .setView(webView)
+                .create();
     }
 }
