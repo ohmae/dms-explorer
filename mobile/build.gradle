@@ -10,6 +10,14 @@ android {
         targetSdkVersion 24
         versionCode 600
         versionName "0.6.0"
+        vectorDrawables.useSupportLibrary = true
+        jackOptions {
+            enabled true
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
     buildTypes {
         debug {

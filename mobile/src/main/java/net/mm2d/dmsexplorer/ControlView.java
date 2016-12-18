@@ -29,8 +29,10 @@ import java.util.Locale;
  *
  * @author <a href="mailto:ryo@mm2d.net">大前良介(OHMAE Ryosuke)</a>
  */
-public class ControlView extends LinearLayout
-        implements OnPreparedListener {
+public class ControlView extends LinearLayout implements OnPreparedListener {
+    public interface OnVisibilityChangeListener {
+        void onVisibilityChange(boolean visible);
+    }
     private static final String TAG = "ControlView";
     private static final int MEDIA_ERROR_SYSTEM = -2147483648;
     private MediaPlayer mMediaPlayer;
@@ -38,9 +40,9 @@ public class ControlView extends LinearLayout
     private TextView mDuration;
     private ImageView mPlay;
     private final SeekBar mSeekBar;
-    private View mSyncView;
     private boolean mTracking;
     private boolean mHide;
+    private OnVisibilityChangeListener mOnVisibilityChangeListener;
     private OnErrorListener mOnErrorListener;
     private OnInfoListener mOnInfoListener;
     private OnCompletionListener mOnCompletionListener;
@@ -187,7 +189,7 @@ public class ControlView extends LinearLayout
     private final Runnable mHideControlTask = new Runnable() {
         @Override
         public void run() {
-            setVisibility(INVISIBLE);
+            setVisibility(GONE);
         }
     };
 
@@ -205,8 +207,8 @@ public class ControlView extends LinearLayout
         return String.format(Locale.US, "%01d:%02d:%02d", hour, minute % 60, second % 60);
     }
 
-    public void setSyncVisibility(View view) {
-        mSyncView = view;
+    public void setOnVisibilityChangeListener(OnVisibilityChangeListener listener) {
+        mOnVisibilityChangeListener = listener;
     }
 
     public void setAutoHide(boolean enable) {
@@ -229,8 +231,8 @@ public class ControlView extends LinearLayout
     @Override
     public void setVisibility(int visibility) {
         super.setVisibility(visibility);
-        if (mSyncView != null) {
-            mSyncView.setVisibility(visibility);
+        if (mOnVisibilityChangeListener != null) {
+            mOnVisibilityChangeListener.onVisibilityChange(visibility == VISIBLE);
         }
     }
 

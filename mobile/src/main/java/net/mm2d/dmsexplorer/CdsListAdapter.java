@@ -173,7 +173,7 @@ public class CdsListAdapter
                     mImage.setImageResource(R.drawable.ic_folder);
                     break;
                 case CdsObject.TYPE_AUDIO:
-                    mImage.setImageResource(R.drawable.ic_audio);
+                    mImage.setImageResource(R.drawable.ic_music);
                     break;
                 case CdsObject.TYPE_IMAGE:
                     mImage.setImageResource(R.drawable.ic_image);

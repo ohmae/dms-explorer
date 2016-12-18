@@ -17,23 +17,37 @@
     <net.mm2d.dmsexplorer.ControlView
         android:id="@+id/controlPanel"
         android:layout_width="match_parent"
-        android:layout_height="68dp"
+        android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        android:background="#60000000"/>
+        android:background="@color/translucent_control"/>
 
-    <android.support.design.widget.AppBarLayout
-        android:id="@+id/app_bar"
+    <LinearLayout
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#00000000"
-        android:theme="@style/AppTheme.AppBarOverlay">
+        android:background="@color/translucent_control"
+        android:orientation="horizontal"
+        android:paddingTop="25dp">
 
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="#60000000"
-            app:popupTheme="@style/AppTheme.PopupOverlay"/>
+        <ImageView
+            android:id="@+id/barBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginRight="16dp"
+            android:padding="16dp"
+            android:background="@drawable/bg_back_button"
+            app:srcCompat="@drawable/ic_arrow_back"/>
 
-    </android.support.design.widget.AppBarLayout>
+        <TextView
+            android:id="@+id/barTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="タイトルのテスト"
+            android:textColor="#FFFFFF"
+            android:textSize="20sp"/>
+    </LinearLayout>
 </FrameLayout>

@@ -8,6 +8,8 @@
 package net.mm2d.dmsexplorer;
 
 import android.content.Intent;
+import android.content.res.Configuration;
+import android.graphics.Point;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnCompletionListener;
 import android.media.MediaPlayer.OnErrorListener;
@@ -15,17 +17,18 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.design.widget.AppBarLayout;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+import android.view.Display;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnSystemUiVisibilityChangeListener;
+import android.view.ViewTreeObserver.OnGlobalLayoutListener;
+import android.widget.TextView;
 import android.widget.VideoView;
 
 import net.mm2d.android.cds.CdsObject;
+import net.mm2d.dmsexplorer.ControlView.OnVisibilityChangeListener;
 
 /**
  * 動画再生のActivity。
@@ -56,24 +59,39 @@ public class MovieActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_movie);
+        mRoot = findViewById(R.id.root);
+        mRoot.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mControlPanel.setVisible();
+            }
+        });
         final Intent intent = getIntent();
         mObject = intent.getParcelableExtra(Const.EXTRA_OBJECT);
         final Uri uri = intent.getData();
         mHandler = new Handler();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            final AppBarLayout appBarLayout = (AppBarLayout) findViewById(R.id.app_bar);
-            assert appBarLayout != null;
-            appBarLayout.setElevation(0);
-        }
-        final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        final ActionBar actionBar = getSupportActionBar();
-        assert actionBar != null;
-        actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setTitle(mObject.getTitle());
+        findViewById(R.id.barBack).setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackPressed();
+            }
+        });
+        final TextView title = (TextView) findViewById(R.id.barTitle);
+        title.setText(mObject.getTitle());
+        final View toolbar = findViewById(R.id.toolbar);
         mControlPanel = (ControlView) findViewById(R.id.controlPanel);
         assert mControlPanel != null;
-        mControlPanel.setSyncVisibility(toolbar);
+        mControlPanel.setOnVisibilityChangeListener(new OnVisibilityChangeListener() {
+            @Override
+            public void onVisibilityChange(boolean visible) {
+                toolbar.setVisibility(visible ? View.VISIBLE : View.GONE);
+                if (visible) {
+                    showNavigation();
+                } else {
+                    hideNavigation();
+                }
+            }
+        });
         mControlPanel.setAutoHide(true);
         mControlPanel.setVisible();
         mControlPanel.setOnCompletionListener(new OnCompletionListener() {
@@ -87,29 +105,42 @@ public class MovieActivity extends AppCompatActivity {
         assert mVideoView != null;
         mVideoView.setOnPreparedListener(mControlPanel);
         mVideoView.setVideoURI(uri);
-        mRoot = findViewById(R.id.root);
-        mRoot.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mControlPanel.setVisible();
-            }
-        });
         mRoot.setOnSystemUiVisibilityChangeListener(new OnSystemUiVisibilityChangeListener() {
             @Override
             public void onSystemUiVisibilityChange(int visibility) {
-                postHideNavigation();
+                if ((visibility & View.SYSTEM_UI_FLAG_HIDE_NAVIGATION) == 0) {
+                    mControlPanel.setVisibility(View.VISIBLE);
+                }
             }
         });
-        hideNavigation();
+        adjustControlPanel();
+        showNavigation();
     }
 
-    private void postHideNavigation() {
-        mHandler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                hideNavigation();
-            }
-        }, 3000);
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        adjustControlPanel();
+    }
+
+    private void adjustControlPanel() {
+        final Display display = getWindowManager().getDefaultDisplay();
+        final Point p1 = new Point();
+        display.getSize(p1);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            final Point p2 = new Point();
+            display.getRealSize(p2);
+            mControlPanel.setPadding(0, 0, p2.x - p1.x, p2.y - p1.y);
+        } else {
+            final View v = getWindow().getDecorView();
+            v.getViewTreeObserver().addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
+                @Override
+                public void onGlobalLayout() {
+                    v.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                    mControlPanel.setPadding(0, 0, v.getWidth() - p1.x, v.getHeight() - p1.y);
+                }
+            });
+        }
     }
 
     private void hideNavigation() {
@@ -117,7 +148,7 @@ public class MovieActivity extends AppCompatActivity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             visibility = View.SYSTEM_UI_FLAG_FULLSCREEN
                     | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                    | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+                    | View.SYSTEM_UI_FLAG_IMMERSIVE
                     | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
                     | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION;
         } else {
@@ -127,6 +158,10 @@ public class MovieActivity extends AppCompatActivity {
                     | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION;
         }
         mRoot.setSystemUiVisibility(visibility);
+    }
+
+    private void showNavigation() {
+        mRoot.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE);
     }
 
     @Override
