@@ -24,8 +24,6 @@
             android:id="@+id/cds_detail"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:paddingLeft="@dimen/horizontal_margin"
-            android:paddingRight="@dimen/horizontal_margin"
             app:layoutManager="LinearLayoutManager"
             tools:listitem="@layout/li_property"/>
 

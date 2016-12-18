@@ -11,8 +11,6 @@
         android:id="@+id/server_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginLeft="@dimen/horizontal_margin"
-        android:layout_marginRight="@dimen/horizontal_margin"
         app:layoutManager="LinearLayoutManager"
         tools:context=".ServerListActivity"
         tools:listitem="@layout/li_server"/>
