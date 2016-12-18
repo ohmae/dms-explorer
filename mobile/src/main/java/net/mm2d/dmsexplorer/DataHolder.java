@@ -7,8 +7,8 @@
 
 package net.mm2d.dmsexplorer;
 
-import net.mm2d.cds.CdsObject;
-import net.mm2d.cds.MsControlPoint;
+import net.mm2d.android.cds.CdsObject;
+import net.mm2d.android.cds.MsControlPoint;
 
 import java.util.LinkedList;
 import java.util.List;

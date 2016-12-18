@@ -1,9 +1,4 @@
-<!--
-  ~ Copyright (c) 2016 大前良介(OHMAE Ryosuke)
-  -->
-
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-
     <SwitchPreference
         android:defaultValue="true"
         android:key="LAUNCH_APP_MOVIE"

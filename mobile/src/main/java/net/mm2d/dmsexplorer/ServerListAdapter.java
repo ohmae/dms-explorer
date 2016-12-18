@@ -11,18 +11,21 @@ import android.content.Context;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Build;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import net.mm2d.cds.MediaServer;
+import net.mm2d.android.cds.MediaServer;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
 /**
+ * MediaServerをRecyclerViewへ表示するためのAdapter。
+ *
  * @author <a href="mailto:ryo@mm2d.net">大前良介(OHMAE Ryosuke)</a>
  */
 public class ServerListAdapter
@@ -33,15 +36,13 @@ public class ServerListAdapter
         void onItemClick(View v, View accent, int position, MediaServer server);
     }
 
-    private final Context mContext;
     private final LayoutInflater mInflater;
     private final List<MediaServer> mList;
     private OnItemClickListener mListener;
     private int mSelection = -1;
 
     public ServerListAdapter(Context context, Collection<? extends MediaServer> servers) {
-        mContext = context;
-        mInflater = LayoutInflater.from(mContext);
+        mInflater = LayoutInflater.from(context);
         if (servers == null) {
             mList = new ArrayList<>();
         } else {
@@ -108,7 +109,7 @@ public class ServerListAdapter
         }
     };
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    class ViewHolder extends RecyclerView.ViewHolder {
         private final View mView;
         private final View mMark;
         private final TextView mAccent;
@@ -118,7 +119,7 @@ public class ServerListAdapter
         private MediaServer mServer;
         private final GradientDrawable mAccentBackground;
 
-        public ViewHolder(View itemView) {
+        ViewHolder(View itemView) {
             super(itemView);
             mView = itemView;
             mMark = mView.findViewById(R.id.mark);
@@ -134,7 +135,7 @@ public class ServerListAdapter
             mAccent.setBackground(mAccentBackground);
         }
 
-        public void applyItem(int position, MediaServer server) {
+        void applyItem(int position, MediaServer server) {
             mPosition = position;
             if (position == mSelection) {
                 mMark.setVisibility(View.VISIBLE);
@@ -153,13 +154,13 @@ public class ServerListAdapter
             }
             mServer = server;
             final String name = server.getFriendlyName();
-            if (!name.isEmpty()) {
+            if (!TextUtils.isEmpty(name)) {
                 final String c = name.substring(0, 1);
                 mAccent.setText(c);
             } else {
                 mAccent.setText("");
             }
-            mAccentBackground.setColor(Utils.getAccentColor(name));
+            mAccentBackground.setColor(ThemeUtils.getAccentColor(name));
             mText1.setText(name);
             final StringBuilder sb = new StringBuilder();
             sb.append("IP: ");
@@ -173,15 +174,15 @@ public class ServerListAdapter
             mText2.setText(sb.toString());
         }
 
-        public View getAccent() {
+        View getAccent() {
             return mAccent;
         }
 
-        public MediaServer getItem() {
+        MediaServer getItem() {
             return mServer;
         }
 
-        public int getListPosition() {
+        int getListPosition() {
             return mPosition;
         }
     }

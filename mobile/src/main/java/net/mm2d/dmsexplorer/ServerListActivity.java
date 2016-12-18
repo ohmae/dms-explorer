@@ -17,10 +17,13 @@ import android.net.NetworkInfo;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Build;
+import android.os.Build.VERSION;
+import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -31,11 +34,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
-import net.mm2d.cds.MediaServer;
-import net.mm2d.cds.MsControlPoint;
-import net.mm2d.cds.MsControlPoint.MsDiscoveryListener;
+import net.mm2d.android.cds.MediaServer;
+import net.mm2d.android.cds.MsControlPoint;
+import net.mm2d.android.cds.MsControlPoint.MsDiscoveryListener;
+import net.mm2d.android.widget.DividerItemDecoration;
 import net.mm2d.dmsexplorer.ServerListAdapter.OnItemClickListener;
-import net.mm2d.widget.DividerItemDecoration;
 
 import java.net.InetAddress;
 import java.net.InterfaceAddress;
@@ -48,6 +51,10 @@ import java.util.Enumeration;
 import java.util.List;
 
 /**
+ * MediaServerのサーチ、選択を行うActivity。
+ *
+ * <p>アプリ起動時最初に表示されるActivity
+ *
  * @author <a href="mailto:ryo@mm2d.net">大前良介(OHMAE Ryosuke)</a>
  */
 public class ServerListActivity extends AppCompatActivity {
@@ -91,10 +98,7 @@ public class ServerListActivity extends AppCompatActivity {
                 if (mSelectedServer != null && mSelectedServer.equals(server)) {
                     return;
                 }
-                final Bundle arguments = new Bundle();
-                arguments.putString(Const.EXTRA_UDN, server.getUdn());
-                mServerDetailFragment = new ServerDetailFragment();
-                mServerDetailFragment.setArguments(arguments);
+                mServerDetailFragment = ServerDetailFragment.newInstance(server.getUdn());
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                     mServerDetailFragment.setEnterTransition(new Slide(Gravity.START));
                 }
@@ -105,8 +109,7 @@ public class ServerListActivity extends AppCompatActivity {
                 mSelectedServer = server;
             } else {
                 final Context context = v.getContext();
-                final Intent intent = new Intent(context, ServerDetailActivity.class);
-                intent.putExtra(Const.EXTRA_UDN, server.getUdn());
+                final Intent intent = ServerDetailActivity.makeIntent(context, server.getUdn());
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                     startActivity(intent, ActivityOptions
                             .makeSceneTransitionAnimation(ServerListActivity.this, accent, "share")
@@ -120,12 +123,9 @@ public class ServerListActivity extends AppCompatActivity {
 
     private boolean hasAvailableNetwork() {
         final NetworkInfo ni = mConnectivityManager.getActiveNetworkInfo();
-        if (ni != null && ni.isConnected()
+        return ni != null && ni.isConnected()
                 && (ni.getType() == ConnectivityManager.TYPE_WIFI
-                || ni.getType() == ConnectivityManager.TYPE_ETHERNET)) {
-            return true;
-        }
-        return false;
+                || ni.getType() == ConnectivityManager.TYPE_ETHERNET);
     }
 
     private Collection<NetworkInterface> getWifiInterface() {
@@ -185,23 +185,13 @@ public class ServerListActivity extends AppCompatActivity {
 
     private final MsDiscoveryListener mDiscoveryListener = new MsDiscoveryListener() {
         @Override
-        public void onDiscover(final MediaServer server) {
-            mHandler.post(new Runnable() {
-                @Override
-                public void run() {
-                    onDiscoverServer(server);
-                }
-            });
+        public void onDiscover(@NonNull final MediaServer server) {
+            mHandler.post(() -> onDiscoverServer(server));
         }
 
         @Override
-        public void onLost(final MediaServer server) {
-            mHandler.post(new Runnable() {
-                @Override
-                public void run() {
-                    onLostServer(server);
-                }
-            });
+        public void onLost(@NonNull final MediaServer server) {
+            mHandler.post(() -> onLostServer(server));
         }
     };
 
@@ -246,6 +236,9 @@ public class ServerListActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
+            getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.defaultStatusBar));
+        }
         setContentView(R.layout.act_server_list);
         mHandler = new Handler();
         mConnectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -274,20 +267,17 @@ public class ServerListActivity extends AppCompatActivity {
         mSwipeRefreshLayout.setColorSchemeResources(
                 R.color.progress1, R.color.progress2, R.color.progress3, R.color.progress4);
         mSwipeRefreshLayout.setRefreshing(mServerListAdapter.getItemCount() == 0);
-        mSwipeRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                if (!hasAvailableNetwork()) {
-                    return;
-                }
-                synchronized (mMsControlPoint) {
-                    mMsControlPoint.stop();
-                    mMsControlPoint.terminate();
-                    mServerListAdapter.clear();
-                    mServerListAdapter.notifyDataSetChanged();
-                    mMsControlPoint.initialize(getWifiInterface());
-                    mMsControlPoint.start();
-                }
+        mSwipeRefreshLayout.setOnRefreshListener(() -> {
+            if (!hasAvailableNetwork()) {
+                return;
+            }
+            synchronized (mMsControlPoint) {
+                mMsControlPoint.stop();
+                mMsControlPoint.terminate();
+                mServerListAdapter.clear();
+                mServerListAdapter.notifyDataSetChanged();
+                mMsControlPoint.initialize(getWifiInterface());
+                mMsControlPoint.start();
             }
         });
         final RecyclerView recyclerView = (RecyclerView) findViewById(R.id.server_list);
@@ -339,7 +329,7 @@ public class ServerListActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         final int id = item.getItemId();
         if (id == R.id.action_settings) {
-            startActivity(new Intent(this, SettingsActivity.class));
+            startActivity(SettingsActivity.makeIntent(this));
             return true;
         }
         return super.onOptionsItemSelected(item);

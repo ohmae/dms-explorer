@@ -6,34 +6,48 @@
     android:id="@+id/root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="net.mm2d.dmsexplorer.PhotoActivity"
-    android:background="#000000">
+    tools:context="net.mm2d.dmsexplorer.PhotoActivity">
 
     <ImageView
+        android:id="@+id/imageView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/imageView"
         android:layout_gravity="center"/>
 
     <ProgressBar
+        android:id="@+id/progressBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/progressBar"
         android:layout_gravity="center"/>
 
-    <android.support.design.widget.AppBarLayout
-        android:id="@+id/app_bar"
+    <!-- コード上でpaddingを調整する -->
+    <LinearLayout
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#00000000"
-        android:theme="@style/AppTheme.AppBarOverlay">
+        android:background="@color/translucent_control"
+        android:orientation="horizontal"
+        android:paddingTop="@dimen/status_bar_size">
 
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="#60000000"
-            app:popupTheme="@style/AppTheme.PopupOverlay"/>
+        <ImageView
+            android:id="@+id/toolbarBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginEnd="16dp"
+            android:layout_marginRight="16dp"
+            android:background="@drawable/bg_back_button"
+            android:padding="16dp"
+            app:srcCompat="@drawable/ic_arrow_back"/>
 
-    </android.support.design.widget.AppBarLayout>
+        <TextView
+            android:id="@+id/toolbarTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textColor="#FFFFFF"
+            android:textSize="20sp"/>
+    </LinearLayout>
 </FrameLayout>

@@ -17,14 +17,16 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import net.mm2d.cds.CdsObject;
-import net.mm2d.util.Arib;
+import net.mm2d.android.cds.CdsObject;
+import net.mm2d.android.util.AribUtils;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
 /**
+ * CDSのコンテンツリストをRecyclerViewへ表示するためのAdapter。
+ *
  * @author <a href="mailto:ryo@mm2d.net">大前良介(OHMAE Ryosuke)</a>
  */
 public class CdsListAdapter
@@ -35,15 +37,13 @@ public class CdsListAdapter
         void onItemClick(View v, View accent, int position, CdsObject object);
     }
 
-    private final Context mContext;
     private final LayoutInflater mInflater;
     private final List<CdsObject> mList;
     private OnItemClickListener mListener;
     private int mSelection = -1;
 
     public CdsListAdapter(Context context) {
-        mContext = context;
-        mInflater = LayoutInflater.from(mContext);
+        mInflater = LayoutInflater.from(context);
         mList = new ArrayList<>();
     }
 
@@ -110,7 +110,7 @@ public class CdsListAdapter
         }
     };
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    class ViewHolder extends RecyclerView.ViewHolder {
         private final View mView;
         private final View mMark;
         private final TextView mAccent;
@@ -121,7 +121,7 @@ public class CdsListAdapter
         private CdsObject mObject;
         private final GradientDrawable mAccentBackground;
 
-        public ViewHolder(View itemView) {
+        ViewHolder(View itemView) {
             super(itemView);
             mView = itemView;
             mMark = mView.findViewById(R.id.mark);
@@ -138,7 +138,7 @@ public class CdsListAdapter
             mAccent.setBackground(mAccentBackground);
         }
 
-        public void applyItem(int position, CdsObject obj) {
+        void applyItem(int position, CdsObject obj) {
             mPosition = position;
             if (position == mSelection) {
                 mMark.setVisibility(View.VISIBLE);
@@ -159,42 +159,41 @@ public class CdsListAdapter
             final String name = obj.getTitle();
             if (!name.isEmpty()) {
                 final String c = name.substring(0, 1);
-                mAccent.setText(Arib.toDisplayableString(c));
+                mAccent.setText(AribUtils.toDisplayableString(c));
             } else {
                 mAccent.setText("");
             }
-            mAccentBackground.setColor(Utils.getAccentColor(name));
-            mText1.setText(Arib.toDisplayableString(name));
+            mAccentBackground.setColor(ThemeUtils.getAccentColor(name));
+            mText1.setText(AribUtils.toDisplayableString(name));
             mText2.setText(obj.getUpnpClass());
-            switch (obj.getType()) {
+            mImage.setImageResource(getImageResource(obj.getType()));
+        }
+
+        private int getImageResource(int type) {
+            switch (type) {
                 case CdsObject.TYPE_CONTAINER:
-                    mImage.setImageResource(R.drawable.ic_folder);
-                    break;
+                    return R.drawable.ic_folder;
                 case CdsObject.TYPE_AUDIO:
-                    mImage.setImageResource(R.drawable.ic_audio);
-                    break;
+                    return R.drawable.ic_music;
                 case CdsObject.TYPE_IMAGE:
-                    mImage.setImageResource(R.drawable.ic_image);
-                    break;
+                    return R.drawable.ic_image;
                 case CdsObject.TYPE_VIDEO:
-                    mImage.setImageResource(R.drawable.ic_movie);
-                    break;
+                    return R.drawable.ic_movie;
                 case CdsObject.TYPE_UNKNOWN:
                 default:
-                    mImage.setImageResource(0);
-                    break;
+                    return 0;
             }
         }
 
-        public View getAccent() {
+        View getAccent() {
             return mAccent;
         }
 
-        public CdsObject getItem() {
+        CdsObject getItem() {
             return mObject;
         }
 
-        public int getListPosition() {
+        int getListPosition() {
             return mPosition;
         }
     }

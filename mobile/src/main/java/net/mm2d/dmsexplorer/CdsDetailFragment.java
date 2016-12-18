@@ -7,28 +7,29 @@
 
 package net.mm2d.dmsexplorer;
 
-import android.content.ActivityNotFoundException;
 import android.content.Context;
-import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
-import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import net.mm2d.cds.CdsObject;
-import net.mm2d.cds.MediaServer;
-import net.mm2d.cds.Tag;
-import net.mm2d.util.Arib;
+import net.mm2d.android.cds.CdsObject;
+import net.mm2d.android.cds.MediaServer;
+import net.mm2d.android.cds.Tag;
+import net.mm2d.android.util.AribUtils;
+import net.mm2d.android.util.LaunchUtils;
 import net.mm2d.util.Log;
 
 import java.util.Date;
@@ -36,65 +37,82 @@ import java.util.List;
 import java.util.Locale;
 
 /**
+ * CDSアイテムの詳細情報を表示するFragment。
+ *
  * @author <a href="mailto:ryo@mm2d.net">大前良介(OHMAE Ryosuke)</a>
  */
 public class CdsDetailFragment extends Fragment
         implements PropertyAdapter.OnItemLinkClickListener {
     private static final String TAG = "CdsDetailFragment";
 
+    /**
+     * インスタンスを作成する。
+     *
+     * <p>Bundleの設定と読み出しをこのクラス内で完結させる。
+     *
+     * @param udn    表示するサーバのUDN
+     * @param object 表示するObject
+     * @return インスタンス。
+     */
+    public static CdsDetailFragment newInstance(String udn, CdsObject object) {
+        final CdsDetailFragment instance = new CdsDetailFragment();
+        final Bundle arguments = new Bundle();
+        arguments.putString(Const.EXTRA_UDN, udn);
+        arguments.putParcelable(Const.EXTRA_OBJECT, object);
+        instance.setArguments(arguments);
+        return instance;
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         final View rootView = inflater.inflate(R.layout.frg_cds_detail, container, false);
+
         final String udn = getArguments().getString(Const.EXTRA_UDN);
-        final DataHolder dataHolder = DataHolder.getInstance();
-        final MediaServer server = dataHolder.getMsControlPoint().getMediaServer(udn);
+        final MediaServer server = DataHolder.getInstance().getMsControlPoint().getMediaServer(udn);
         final CdsObject object = getArguments().getParcelable(Const.EXTRA_OBJECT);
         if (object == null || server == null) {
             getActivity().finish();
             return rootView;
         }
-        final String title = object.getTitle();
+
         final TextView titleView = (TextView) rootView.findViewById(R.id.title);
         if (titleView != null) {
-            titleView.setText(Arib.toDisplayableString(title));
-            titleView.setBackgroundColor(Utils.getAccentColor(title));
+            final String title = object.getTitle();
+            titleView.setText(AribUtils.toDisplayableString(title));
+            titleView.setBackgroundColor(ThemeUtils.getAccentColor(title));
         }
+
         final RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.cds_detail);
         final PropertyAdapter adapter = new PropertyAdapter(getContext());
         adapter.setOnItemLinkClickListener(this);
         setupPropertyAdapter(getActivity(), adapter, object);
         recyclerView.setAdapter(adapter);
+
+        setupFloatingActionButton(rootView, object);
+        return rootView;
+    }
+
+    private void setupFloatingActionButton(View rootView, final CdsObject object) {
         FloatingActionButton fab = (FloatingActionButton) rootView.findViewById(R.id.fab);
         if (fab == null) {
             fab = (FloatingActionButton) getActivity().findViewById(R.id.fab);
         }
-        if (fab != null) {
-            final boolean hasResource = hasResource(object);
-            if (hasResource) {
-                fab.setVisibility(View.VISIBLE);
-            } else {
-                fab.setVisibility(View.GONE);
-            }
-            final boolean protectedResource = hasProtectedResource(object);
-            if (protectedResource) {
-                fab.setBackgroundTintList(ColorStateList.valueOf(Color.GRAY));
-            } else {
-                fab.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(getContext(), R.color.accent)));
-            }
-            fab.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if (protectedResource) {
-                        Snackbar.make(view, R.string.toast_not_support_drm, Snackbar.LENGTH_LONG).show();
-                    } else {
-                        final SelectResourceDialog dialog = SelectResourceDialog.newInstance(object);
-                        dialog.show(getActivity().getFragmentManager(), "");
-                    }
-                }
-            });
+        if (fab == null) {
+            return;
         }
-        return rootView;
+        fab.setVisibility(hasResource(object) ? View.VISIBLE : View.GONE);
+        final boolean protectedResource = hasProtectedResource(object);
+        final int color = protectedResource ? Color.GRAY : ContextCompat.getColor(getContext(), R.color.accent);
+        fab.setBackgroundTintList(ColorStateList.valueOf(color));
+        fab.setOnClickListener(view -> {
+            if (protectedResource) {
+                Snackbar.make(view, R.string.toast_not_support_drm, Snackbar.LENGTH_LONG).show();
+            } else {
+                final SelectResourceDialog dialog = SelectResourceDialog.newInstance(object);
+                dialog.show(getActivity().getFragmentManager(), "");
+            }
+        });
     }
 
     private static boolean hasResource(CdsObject object) {
@@ -108,8 +126,8 @@ public class CdsDetailFragment extends Fragment
         }
         for (final Tag tag : tagList) {
             final String protocolInfo = tag.getAttribute(CdsObject.PROTOCOL_INFO);
-            final String mimeType = CdsObject.getMimeTypeFromProtocolInfo(protocolInfo);
-            if (mimeType.equals("application/x-dtcp1")) {
+            final String mimeType = CdsObject.extractMimeTypeFromProtocolInfo(protocolInfo);
+            if (!TextUtils.isEmpty(mimeType) && mimeType.equals("application/x-dtcp1")) {
                 return true;
             }
         }
@@ -118,19 +136,14 @@ public class CdsDetailFragment extends Fragment
 
     @Override
     public void onItemLinkClick(String link) {
-        final Uri uri = Uri.parse(link);
-        final Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-        try {
-            startActivity(intent);
-        } catch (final ActivityNotFoundException e) {
-            Log.w(TAG, e);
-        }
+        LaunchUtils.openUri(getContext(), link);
     }
 
     private static String sTb;
     private static String sBs;
     private static String sCs;
 
+    // 初回に変換して保持しておく
     private static void setupString(Context context) {
         if (sTb != null) {
             return;
@@ -140,11 +153,13 @@ public class CdsDetailFragment extends Fragment
         sCs = context.getString(R.string.network_cs);
     }
 
-    static void setupPropertyAdapter(Context context, PropertyAdapter adapter, CdsObject object) {
+    static void setupPropertyAdapter(@NonNull Context context,
+                                     @NonNull PropertyAdapter adapter,
+                                     @NonNull CdsObject object) {
         Log.d(TAG, object.toDumpString());
         setupString(context);
         adapter.addEntry(context.getString(R.string.prop_title),
-                Arib.toDisplayableString(object.getTitle()));
+                AribUtils.toDisplayableString(object.getTitle()));
         adapter.addEntry(context.getString(R.string.prop_channel),
                 getChannel(object));
         adapter.addEntry(context.getString(R.string.prop_date),
@@ -173,7 +188,8 @@ public class CdsDetailFragment extends Fragment
                 object.getUpnpClass());
     }
 
-    private static String jointTagValue(CdsObject object, String tagName) {
+    @Nullable
+    private static String jointTagValue(@NonNull CdsObject object, String tagName) {
         final List<Tag> tagList = object.getTagList(tagName);
         if (tagList == null) {
             return null;
@@ -185,10 +201,11 @@ public class CdsDetailFragment extends Fragment
             }
             sb.append(tag.getValue());
         }
-        return Arib.toDisplayableString(sb.toString());
+        return AribUtils.toDisplayableString(sb.toString());
     }
 
-    private static String jointMembers(CdsObject object, String tagName) {
+    @Nullable
+    private static String jointMembers(@NonNull CdsObject object, String tagName) {
         final List<Tag> tagList = object.getTagList(tagName);
         if (tagList == null) {
             return null;
@@ -208,7 +225,8 @@ public class CdsDetailFragment extends Fragment
         return sb.toString();
     }
 
-    private static String getChannel(CdsObject object) {
+    @Nullable
+    private static String getChannel(@NonNull CdsObject object) {
         final StringBuilder sb = new StringBuilder();
         final String network = getNetworkString(object);
         if (network != null) {
@@ -237,7 +255,8 @@ public class CdsDetailFragment extends Fragment
         return sb.length() == 0 ? null : sb.toString();
     }
 
-    private static String getNetworkString(CdsObject object) {
+    @Nullable
+    private static String getNetworkString(@NonNull CdsObject object) {
         final String net = object.getValue(CdsObject.ARIB_OBJECT_TYPE);
         if (net == null) {
             return null;
@@ -254,7 +273,8 @@ public class CdsDetailFragment extends Fragment
         }
     }
 
-    private static String getDate(CdsObject object) {
+    @Nullable
+    private static String getDate(@NonNull CdsObject object) {
         final String str = object.getValue(CdsObject.DC_DATE);
         final Date date = CdsObject.parseDate(str);
         if (date == null) {
@@ -266,7 +286,8 @@ public class CdsDetailFragment extends Fragment
         return DateFormat.format("yyyy/M/d (E) kk:mm:ss", date).toString();
     }
 
-    private static String getSchedule(CdsObject object) {
+    @Nullable
+    private static String getSchedule(@NonNull CdsObject object) {
         final Date start = object.getDateValue(CdsObject.UPNP_SCHEDULED_START_TIME);
         final Date end = object.getDateValue(CdsObject.UPNP_SCHEDULED_END_TIME);
         if (start == null || end == null) {

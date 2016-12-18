@@ -6,8 +6,8 @@
     android:orientation="vertical"
     android:paddingTop="8dp"
     android:paddingBottom="16dp"
-    android:paddingLeft="8dp"
-    android:paddingRight="8dp">
+    android:paddingLeft="@dimen/horizontal_padding"
+    android:paddingRight="@dimen/horizontal_padding">
 
     <TextView
         android:id="@+id/text1"

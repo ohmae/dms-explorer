@@ -7,14 +7,12 @@
 
 package net.mm2d.dmsexplorer;
 
-import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.ColorDrawable;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
-import android.media.MediaPlayer.OnCompletionListener;
 import android.media.MediaPlayer.OnErrorListener;
 import android.net.Uri;
 import android.os.Bundle;
@@ -26,8 +24,9 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.widget.ImageView;
 
-import net.mm2d.cds.CdsObject;
-import net.mm2d.util.Arib;
+import net.mm2d.android.cds.CdsObject;
+import net.mm2d.android.util.AribUtils;
+import net.mm2d.android.util.LaunchUtils;
 import net.mm2d.util.Log;
 
 import java.io.ByteArrayOutputStream;
@@ -37,6 +36,8 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 /**
+ * 音楽再生のActivity。
+ *
  * @author <a href="mailto:ryo@mm2d.net">大前良介(OHMAE Ryosuke)</a>
  */
 public class MusicActivity extends AppCompatActivity implements PropertyAdapter.OnItemLinkClickListener {
@@ -45,8 +46,6 @@ public class MusicActivity extends AppCompatActivity implements PropertyAdapter.
     private MediaPlayer mMediaPlayer;
     private ImageView mArtView;
     private Bitmap mBitmap;
-    private ControlView mControlPanel;
-    private CdsObject mObject;
     private final OnErrorListener mOnErrorListener = new OnErrorListener() {
         private boolean mNoError = true;
 
@@ -65,23 +64,17 @@ public class MusicActivity extends AppCompatActivity implements PropertyAdapter.
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_music);
         final Intent intent = getIntent();
-        mObject = intent.getParcelableExtra(Const.EXTRA_OBJECT);
+        final CdsObject object = intent.getParcelableExtra(Const.EXTRA_OBJECT);
         final Uri uri = intent.getData();
         mHandler = new Handler();
         mArtView = (ImageView) findViewById(R.id.art);
-        mControlPanel = (ControlView) findViewById(R.id.controlPanel);
-        assert mControlPanel != null;
-        mControlPanel.setAutoHide(false);
-        mControlPanel.setVisible();
-        mControlPanel.setOnErrorListener(mOnErrorListener);
-        mControlPanel.setOnCompletionListener(new OnCompletionListener() {
-            @Override
-            public void onCompletion(MediaPlayer mp) {
-                onBackPressed();
-            }
-        });
+
+        final ControlView controlPanel = (ControlView) findViewById(R.id.controlPanel);
+        controlPanel.setOnErrorListener(mOnErrorListener);
+        controlPanel.setOnCompletionListener(mp -> onBackPressed());
+
         mMediaPlayer = new MediaPlayer();
-        mMediaPlayer.setOnPreparedListener(mControlPanel);
+        mMediaPlayer.setOnPreparedListener(controlPanel);
         mMediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
         try {
             mMediaPlayer.setDataSource(this, uri);
@@ -89,23 +82,23 @@ public class MusicActivity extends AppCompatActivity implements PropertyAdapter.
         } catch (final IOException e) {
             e.printStackTrace();
         }
+
         final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         final ActionBar actionBar = getSupportActionBar();
-        assert actionBar != null;
         actionBar.setDisplayHomeAsUpEnabled(true);
-        final String title = Arib.toDisplayableString(mObject.getTitle());
+        final String title = AribUtils.toDisplayableString(object.getTitle());
         actionBar.setTitle(title);
-        final int bgColor = Utils.getAccentColor(mObject.getTitle());
+        final int bgColor = ThemeUtils.getAccentColor(object.getTitle());
         actionBar.setBackgroundDrawable(new ColorDrawable(bgColor));
-        mControlPanel.setBackgroundColor(bgColor);
+
+        controlPanel.setBackgroundColor(bgColor);
         final RecyclerView recyclerView = (RecyclerView) findViewById(R.id.detail);
-        assert recyclerView != null;
         final PropertyAdapter adapter = new PropertyAdapter(this);
         adapter.setOnItemLinkClickListener(this);
-        CdsDetailFragment.setupPropertyAdapter(this, adapter, mObject);
+        CdsDetailFragment.setupPropertyAdapter(this, adapter, object);
         recyclerView.setAdapter(adapter);
-        final String albumArtUri = mObject.getValue(CdsObject.UPNP_ALBUM_ART_URI);
+        final String albumArtUri = object.getValue(CdsObject.UPNP_ALBUM_ART_URI);
         if (albumArtUri != null) {
             new Thread(new GetImage(albumArtUri)).start();
         }
@@ -151,12 +144,7 @@ public class MusicActivity extends AppCompatActivity implements PropertyAdapter.
     }
 
     private void setImage() {
-        mHandler.post(new Runnable() {
-            @Override
-            public void run() {
-                mArtView.setImageBitmap(mBitmap);
-            }
-        });
+        mHandler.post(() -> mArtView.setImageBitmap(mBitmap));
     }
 
     @Override
@@ -175,13 +163,7 @@ public class MusicActivity extends AppCompatActivity implements PropertyAdapter.
 
     @Override
     public void onItemLinkClick(String link) {
-        final Uri uri = Uri.parse(link);
-        final Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-        try {
-            startActivity(intent);
-        } catch (final ActivityNotFoundException e) {
-            Log.w(TAG, e);
-        }
+        LaunchUtils.openUri(this, link);
     }
 
     @Override

@@ -14,7 +14,6 @@ import android.media.MediaPlayer.OnErrorListener;
 import android.media.MediaPlayer.OnInfoListener;
 import android.media.MediaPlayer.OnPreparedListener;
 import android.util.AttributeSet;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
@@ -25,65 +24,35 @@ import net.mm2d.util.Log;
 import java.util.Locale;
 
 /**
+ * 動画、音楽再生においてプレーヤーのコントロールUIを提供するView。
+ *
  * @author <a href="mailto:ryo@mm2d.net">大前良介(OHMAE Ryosuke)</a>
  */
-public class ControlView extends LinearLayout
-        implements OnPreparedListener {
+public class ControlView extends LinearLayout implements OnPreparedListener {
+    public interface OnUserActionListener {
+        void onUserAction();
+    }
+
+    private static final OnUserActionListener ON_USER_ACTION_LISTENER = () -> {
+    };
     private static final String TAG = "ControlView";
+    private static final int MEDIA_ERROR_SYSTEM = -2147483648;
     private MediaPlayer mMediaPlayer;
     private TextView mProgress;
     private TextView mDuration;
     private ImageView mPlay;
     private final SeekBar mSeekBar;
-    private View mSyncView;
     private boolean mTracking;
-    private boolean mHide;
+    private OnUserActionListener mOnUserActionListener = ON_USER_ACTION_LISTENER;
     private OnErrorListener mOnErrorListener;
     private OnInfoListener mOnInfoListener;
     private OnCompletionListener mOnCompletionListener;
     private final OnErrorListener mMyOnErrorListener = new OnErrorListener() {
         private boolean mNoError = true;
-        private static final int MEDIA_ERROR_SYSTEM = -2147483648;
 
         @Override
         public boolean onError(MediaPlayer mp, int what, int extra) {
-            final String wh;
-            switch (what) {
-                case MediaPlayer.MEDIA_ERROR_SERVER_DIED:
-                    wh = "MEDIA_ERROR_SERVER_DIED";
-                    break;
-                case MediaPlayer.MEDIA_ERROR_UNKNOWN:
-                    wh = "MEDIA_ERROR_UNKNOWN";
-                    break;
-                default:
-                    wh = "";
-                    break;
-            }
-            final String ex;
-            switch (extra) {
-                case MediaPlayer.MEDIA_ERROR_IO:
-                    ex = "MEDIA_ERROR_IO";
-                    break;
-                case MediaPlayer.MEDIA_ERROR_MALFORMED:
-                    ex = "MEDIA_ERROR_MALFORMED";
-                    break;
-                case MediaPlayer.MEDIA_ERROR_TIMED_OUT:
-                    ex = "MEDIA_ERROR_TIMED_OUT";
-                    break;
-                case MediaPlayer.MEDIA_ERROR_UNSUPPORTED:
-                    ex = "MEDIA_ERROR_UNSUPPORTED";
-                    break;
-                case MediaPlayer.MEDIA_ERROR_NOT_VALID_FOR_PROGRESSIVE_PLAYBACK:
-                    ex = "MEDIA_ERROR_NOT_VALID_FOR_PROGRESSIVE_PLAYBACK";
-                    break;
-                case MEDIA_ERROR_SYSTEM:
-                    ex = "MEDIA_ERROR_SYSTEM";
-                    break;
-                default:
-                    ex = "";
-                    break;
-            }
-            Log.e(TAG, "onError:w" + what + " " + wh + " e" + extra + " " + ex);
+            logError(what, extra);
             if (mOnErrorListener != null) {
                 mOnErrorListener.onError(mp, what, extra);
             }
@@ -94,46 +63,11 @@ public class ControlView extends LinearLayout
             return true;
         }
     };
+
     private final OnInfoListener mMyOnInfoListener = new OnInfoListener() {
         @Override
         public boolean onInfo(MediaPlayer mp, int what, int extra) {
-            final String wh;
-            switch (what) {
-                case MediaPlayer.MEDIA_INFO_UNKNOWN:
-                    wh = "MEDIA_INFO_UNKNOWN";
-                    break;
-                case MediaPlayer.MEDIA_INFO_VIDEO_TRACK_LAGGING:
-                    wh = "MEDIA_INFO_VIDEO_TRACK_LAGGING";
-                    break;
-                case MediaPlayer.MEDIA_INFO_VIDEO_RENDERING_START:
-                    wh = "MEDIA_INFO_VIDEO_RENDERING_START";
-                    break;
-                case MediaPlayer.MEDIA_INFO_BUFFERING_START:
-                    wh = "MEDIA_INFO_BUFFERING_START";
-                    break;
-                case MediaPlayer.MEDIA_INFO_BUFFERING_END:
-                    wh = "MEDIA_INFO_BUFFERING_END";
-                    break;
-                case MediaPlayer.MEDIA_INFO_BAD_INTERLEAVING:
-                    wh = "MEDIA_INFO_BAD_INTERLEAVING";
-                    break;
-                case MediaPlayer.MEDIA_INFO_NOT_SEEKABLE:
-                    wh = "MEDIA_INFO_NOT_SEEKABLE";
-                    break;
-                case MediaPlayer.MEDIA_INFO_METADATA_UPDATE:
-                    wh = "MEDIA_INFO_METADATA_UPDATE";
-                    break;
-                case MediaPlayer.MEDIA_INFO_UNSUPPORTED_SUBTITLE:
-                    wh = "MEDIA_INFO_UNSUPPORTED_SUBTITLE";
-                    break;
-                case MediaPlayer.MEDIA_INFO_SUBTITLE_TIMED_OUT:
-                    wh = "MEDIA_INFO_SUBTITLE_TIMED_OUT";
-                    break;
-                default:
-                    wh = "";
-                    break;
-            }
-            Log.d(TAG, "onInfo:w:" + what + " " + wh + " e:" + extra);
+            logInfo(what, extra);
             if (mOnInfoListener != null) {
                 mOnInfoListener.onInfo(mp, what, extra);
             }
@@ -182,7 +116,7 @@ public class ControlView extends LinearLayout
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 if (fromUser) {
                     mProgress.setText(makeTimeText(progress));
-                    postHideControlTask();
+                    mOnUserActionListener.onUserAction();
                 }
             }
 
@@ -194,6 +128,9 @@ public class ControlView extends LinearLayout
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
                 mTracking = false;
+                if (mMediaPlayer == null) {
+                    return;
+                }
                 mMediaPlayer.seekTo(seekBar.getProgress());
                 if (!mMediaPlayer.isPlaying()) {
                     mMediaPlayer.start();
@@ -206,18 +143,18 @@ public class ControlView extends LinearLayout
         mPlay = (ImageView) findViewById(R.id.play);
         assert mPlay != null;
         mPlay.setImageResource(R.drawable.ic_play);
-        mPlay.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (mMediaPlayer.isPlaying()) {
-                    mMediaPlayer.pause();
-                    mPlay.setImageResource(R.drawable.ic_play);
-                } else {
-                    mMediaPlayer.start();
-                    mPlay.setImageResource(R.drawable.ic_pause);
-                }
-                postHideControlTask();
+        mPlay.setOnClickListener(v -> {
+            if (mMediaPlayer == null) {
+                return;
             }
+            if (mMediaPlayer.isPlaying()) {
+                mMediaPlayer.pause();
+                mPlay.setImageResource(R.drawable.ic_play);
+            } else {
+                mMediaPlayer.start();
+                mPlay.setImageResource(R.drawable.ic_pause);
+            }
+            mOnUserActionListener.onUserAction();
         });
     }
 
@@ -247,20 +184,6 @@ public class ControlView extends LinearLayout
         }
     };
 
-    private final Runnable mHideControlTask = new Runnable() {
-        @Override
-        public void run() {
-            setVisibility(INVISIBLE);
-        }
-    };
-
-    private void postHideControlTask() {
-        if (mHide) {
-            removeCallbacks(mHideControlTask);
-            postDelayed(mHideControlTask, 5000);
-        }
-    }
-
     private String makeTimeText(long millisecond) {
         final long second = millisecond / 1000;
         final long minute = second / 60;
@@ -268,33 +191,8 @@ public class ControlView extends LinearLayout
         return String.format(Locale.US, "%01d:%02d:%02d", hour, minute % 60, second % 60);
     }
 
-    public void setSyncVisibility(View view) {
-        mSyncView = view;
-    }
-
-    public void setAutoHide(boolean enable) {
-        mHide = enable;
-        if (mHide) {
-            postHideControlTask();
-        } else {
-            removeCallbacks(mHideControlTask);
-            setVisibility(VISIBLE);
-        }
-    }
-
-    public void setVisible() {
-        setVisibility(VISIBLE);
-        if (mHide) {
-            postHideControlTask();
-        }
-    }
-
-    @Override
-    public void setVisibility(int visibility) {
-        super.setVisibility(visibility);
-        if (mSyncView != null) {
-            mSyncView.setVisibility(visibility);
-        }
+    public void setOnUserActionListener(OnUserActionListener listener) {
+        mOnUserActionListener = listener != null ? listener : ON_USER_ACTION_LISTENER;
     }
 
     @Override
@@ -319,5 +217,85 @@ public class ControlView extends LinearLayout
         post(mGetPositionTask);
         mPlay.setImageResource(R.drawable.ic_pause);
         mp.start();
+    }
+
+    private void logError(int what, int extra) {
+        final String wh;
+        switch (what) {
+            case MediaPlayer.MEDIA_ERROR_SERVER_DIED:
+                wh = "MEDIA_ERROR_SERVER_DIED";
+                break;
+            case MediaPlayer.MEDIA_ERROR_UNKNOWN:
+                wh = "MEDIA_ERROR_UNKNOWN";
+                break;
+            default:
+                wh = "";
+                break;
+        }
+        final String ex;
+        switch (extra) {
+            case MediaPlayer.MEDIA_ERROR_IO:
+                ex = "MEDIA_ERROR_IO";
+                break;
+            case MediaPlayer.MEDIA_ERROR_MALFORMED:
+                ex = "MEDIA_ERROR_MALFORMED";
+                break;
+            case MediaPlayer.MEDIA_ERROR_TIMED_OUT:
+                ex = "MEDIA_ERROR_TIMED_OUT";
+                break;
+            case MediaPlayer.MEDIA_ERROR_UNSUPPORTED:
+                ex = "MEDIA_ERROR_UNSUPPORTED";
+                break;
+            case MediaPlayer.MEDIA_ERROR_NOT_VALID_FOR_PROGRESSIVE_PLAYBACK:
+                ex = "MEDIA_ERROR_NOT_VALID_FOR_PROGRESSIVE_PLAYBACK";
+                break;
+            case MEDIA_ERROR_SYSTEM:
+                ex = "MEDIA_ERROR_SYSTEM";
+                break;
+            default:
+                ex = "";
+                break;
+        }
+        Log.e(TAG, "onError:w" + what + " " + wh + " e" + extra + " " + ex);
+    }
+
+    private void logInfo(int what, int extra) {
+        final String wh;
+        switch (what) {
+            case MediaPlayer.MEDIA_INFO_UNKNOWN:
+                wh = "MEDIA_INFO_UNKNOWN";
+                break;
+            case MediaPlayer.MEDIA_INFO_VIDEO_TRACK_LAGGING:
+                wh = "MEDIA_INFO_VIDEO_TRACK_LAGGING";
+                break;
+            case MediaPlayer.MEDIA_INFO_VIDEO_RENDERING_START:
+                wh = "MEDIA_INFO_VIDEO_RENDERING_START";
+                break;
+            case MediaPlayer.MEDIA_INFO_BUFFERING_START:
+                wh = "MEDIA_INFO_BUFFERING_START";
+                break;
+            case MediaPlayer.MEDIA_INFO_BUFFERING_END:
+                wh = "MEDIA_INFO_BUFFERING_END";
+                break;
+            case MediaPlayer.MEDIA_INFO_BAD_INTERLEAVING:
+                wh = "MEDIA_INFO_BAD_INTERLEAVING";
+                break;
+            case MediaPlayer.MEDIA_INFO_NOT_SEEKABLE:
+                wh = "MEDIA_INFO_NOT_SEEKABLE";
+                break;
+            case MediaPlayer.MEDIA_INFO_METADATA_UPDATE:
+                wh = "MEDIA_INFO_METADATA_UPDATE";
+                break;
+            case MediaPlayer.MEDIA_INFO_UNSUPPORTED_SUBTITLE:
+                wh = "MEDIA_INFO_UNSUPPORTED_SUBTITLE";
+                break;
+            case MediaPlayer.MEDIA_INFO_SUBTITLE_TIMED_OUT:
+                wh = "MEDIA_INFO_SUBTITLE_TIMED_OUT";
+                break;
+            default:
+                wh = "";
+                break;
+        }
+        Log.d(TAG, "onInfo:w:" + what + " " + wh + " e:" + extra);
     }
 }

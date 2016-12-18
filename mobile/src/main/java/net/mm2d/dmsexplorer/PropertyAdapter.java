@@ -28,6 +28,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
+ * 詳細情報の各項目をRecyclerViewを使用して表示するためのAdapter。
+ *
  * @author <a href="mailto:ryo@mm2d.net">大前良介(OHMAE Ryosuke)</a>
  */
 public class PropertyAdapter
@@ -43,26 +45,26 @@ public class PropertyAdapter
         private final boolean mLink;
         private final boolean mAutoLink;
 
-        public Entry(String name, String value, boolean link, boolean auto) {
+        Entry(String name, String value, boolean link, boolean auto) {
             mName = name;
             mValue = value;
             mLink = link;
             mAutoLink = auto;
         }
 
-        public String getName() {
+        String getName() {
             return mName;
         }
 
-        public String getValue() {
+        String getValue() {
             return mValue;
         }
 
-        public boolean isLink() {
+        boolean isLink() {
             return mLink;
         }
 
-        public boolean isAutoLink() {
+        boolean isAutoLink() {
             return mAutoLink;
         }
     }
@@ -129,19 +131,19 @@ public class PropertyAdapter
     private static final Pattern URL_PATTERN =
             Pattern.compile("https?://[\\w/:%#\\$&\\?\\(\\)~\\.=\\+\\-]+");
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    class ViewHolder extends RecyclerView.ViewHolder {
         private final View mView;
         private final TextView mText1;
         private final TextView mText2;
 
-        public ViewHolder(View itemView) {
+        ViewHolder(View itemView) {
             super(itemView);
             mView = itemView;
             mText1 = (TextView) mView.findViewById(R.id.text1);
             mText2 = (TextView) mView.findViewById(R.id.text2);
         }
 
-        public void applyItem(Entry entry) {
+        void applyItem(Entry entry) {
             final int defaultColor = ContextCompat.getColor(mContext, R.color.textMain);
             final int linkColor = ContextCompat.getColor(mContext, R.color.textLink);
             mText1.setText(entry.getName());
