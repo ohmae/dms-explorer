@@ -9,6 +9,8 @@ package net.mm2d.dmsexplorer;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build.VERSION;
+import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -44,7 +46,6 @@ public class ServerDetailActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.act_server_detail);
         final String udn = getIntent().getStringExtra(Const.EXTRA_UDN);
         final DataHolder dataHolder = DataHolder.getInstance();
         final MediaServer server = dataHolder.getMsControlPoint().getMediaServer(udn);
@@ -52,13 +53,18 @@ public class ServerDetailActivity extends AppCompatActivity {
             finish();
             return;
         }
+        final String friendlyName = server.getFriendlyName();
+        if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
+            getWindow().setStatusBarColor(ThemeUtils.getAccentDarkColor(friendlyName));
+        }
+        setContentView(R.layout.act_server_detail);
         final Toolbar toolbar = (Toolbar) findViewById(R.id.detail_toolbar);
         setSupportActionBar(toolbar);
         if (toolbar == null) {
             finish();
             return;
         }
-        toolbar.setBackgroundColor(ThemeUtils.getAccentColor(server.getFriendlyName()));
+        toolbar.setBackgroundColor(ThemeUtils.getAccentColor(friendlyName));
         final ActionBar actionBar = getSupportActionBar();
         assert actionBar != null;
         actionBar.setDisplayHomeAsUpEnabled(true);

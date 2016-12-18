@@ -9,6 +9,8 @@ package net.mm2d.dmsexplorer;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build.VERSION;
+import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.ActionBar;
@@ -52,17 +54,21 @@ public class CdsDetailActivity extends AppCompatActivity {
         final String udn = getIntent().getStringExtra(Const.EXTRA_UDN);
         final DataHolder dataHolder = DataHolder.getInstance();
         final MediaServer server = dataHolder.getMsControlPoint().getMediaServer(udn);
+        final String rawTitle = object.getTitle();
+        if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
+            getWindow().setStatusBarColor(ThemeUtils.getAccentDarkColor(rawTitle));
+        }
         final Toolbar toolbar = (Toolbar) findViewById(R.id.detail_toolbar);
         setSupportActionBar(toolbar);
         if (toolbar == null || server == null) {
             finish();
             return;
         }
-        toolbar.setBackgroundColor(ThemeUtils.getAccentColor(object.getTitle()));
+        toolbar.setBackgroundColor(ThemeUtils.getAccentColor(rawTitle));
         final ActionBar actionBar = getSupportActionBar();
         assert actionBar != null;
         actionBar.setDisplayHomeAsUpEnabled(true);
-        final String title = AribUtils.toDisplayableString(object.getTitle());
+        final String title = AribUtils.toDisplayableString(rawTitle);
         actionBar.setTitle(title);
         if (savedInstanceState == null) {
             final CdsDetailFragment fragment = CdsDetailFragment.newInstance(udn, object);

@@ -11,6 +11,8 @@ import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
+import android.os.Build.VERSION;
+import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Parcel;
@@ -166,13 +168,12 @@ public class CdsListActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+        if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
             final TransitionSet ts = new TransitionSet();
             ts.addTransition(new Slide(Gravity.END));
             ts.addTransition(new Fade());
             getWindow().setEnterTransition(ts);
         }
-        setContentView(R.layout.act_cds_list);
         mHandler = new Handler();
         final String udn = getIntent().getStringExtra(Const.EXTRA_UDN);
         mServer = mDataHolder.getMsControlPoint().getMediaServer(udn);
@@ -181,6 +182,10 @@ public class CdsListActivity extends AppCompatActivity
             return;
         }
         final String name = mServer.getFriendlyName();
+        if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
+            getWindow().setStatusBarColor(ThemeUtils.getAccentDarkColor(name));
+        }
+        setContentView(R.layout.act_cds_list);
         final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         assert toolbar != null;
         setSupportActionBar(toolbar);
