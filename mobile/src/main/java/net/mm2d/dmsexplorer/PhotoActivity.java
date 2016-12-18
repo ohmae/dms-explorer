@@ -14,6 +14,8 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.View;
@@ -103,13 +105,6 @@ public class PhotoActivity extends AppCompatActivity {
         mRoot.setSystemUiVisibility(visibility);
     }
 
-    private void setImage() {
-        mHandler.post(() -> {
-            mImageView.setImageBitmap(mBitmap);
-            mProgress.setVisibility(View.GONE);
-        });
-    }
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         final int id = item.getItemId();
@@ -140,33 +135,76 @@ public class PhotoActivity extends AppCompatActivity {
 
         @Override
         public void run() {
-            try {
-                final URL url = new URL(mUri.toString());
-                final HttpURLConnection con = (HttpURLConnection) url.openConnection();
-                con.setRequestMethod("GET");
-                con.setDoInput(true);
-                con.connect();
-                if (con.getResponseCode() != HttpURLConnection.HTTP_OK) {
-                    return;
-                }
-                final InputStream is = con.getInputStream();
-                final ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                final byte[] buffer = new byte[1024];
-                while (true) {
-                    final int size = is.read(buffer);
-                    if (size <= 0) {
-                        break;
-                    }
-                    baos.write(buffer, 0, size);
-                }
-                is.close();
-                con.disconnect();
-                final byte[] array = baos.toByteArray();
-                mBitmap = BitmapFactory.decodeByteArray(array, 0, array.length);
-                setImage();
-            } catch (final IOException e) {
-                Log.w(TAG, e);
+            final byte[] data = getImageData(mUri);
+            if (data == null) {
+                return;
+            }
+            setImage(data);
+        }
+    }
+
+    private void setImage(@NonNull byte[] data) {
+        mBitmap = decodeBitmap(data);
+        mHandler.post(() -> {
+            mImageView.setImageBitmap(mBitmap);
+            mProgress.setVisibility(View.GONE);
+        });
+    }
+
+    @NonNull
+    private Bitmap decodeBitmap(@NonNull byte[] data) {
+        final BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds = true;
+        BitmapFactory.decodeByteArray(data, 0, data.length, options);
+        final int width = mImageView.getWidth();
+        final int height = mImageView.getHeight();
+        if (options.outWidth * height > width * options.outHeight) {
+            if (options.outWidth > width) {
+                options.inSampleSize = options.outWidth / width;
+            } else {
+                options.inSampleSize = 1;
+            }
+        } else {
+            if (options.outHeight > height) {
+                options.inSampleSize = options.outHeight / height;
+            } else {
+                options.inSampleSize = 1;
             }
         }
+        options.inJustDecodeBounds = false;
+        return BitmapFactory.decodeByteArray(data, 0, data.length, options);
+    }
+
+    @Nullable
+    private byte[] getImageData(@NonNull Uri uri) {
+        if (uri.toString() == null) {
+            return null;
+        }
+        try {
+            final URL url = new URL(uri.toString());
+            final HttpURLConnection con = (HttpURLConnection) url.openConnection();
+            con.setRequestMethod("GET");
+            con.setDoInput(true);
+            con.connect();
+            if (con.getResponseCode() != HttpURLConnection.HTTP_OK) {
+                return null;
+            }
+            final InputStream is = con.getInputStream();
+            final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            final byte[] buffer = new byte[1024];
+            while (true) {
+                final int size = is.read(buffer);
+                if (size <= 0) {
+                    break;
+                }
+                baos.write(buffer, 0, size);
+            }
+            is.close();
+            con.disconnect();
+            return baos.toByteArray();
+        } catch (final IOException e) {
+            Log.w(TAG, e);
+        }
+        return null;
     }
 }
