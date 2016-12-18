@@ -14,7 +14,6 @@ import android.media.MediaPlayer.OnErrorListener;
 import android.media.MediaPlayer.OnInfoListener;
 import android.media.MediaPlayer.OnPreparedListener;
 import android.util.AttributeSet;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
@@ -30,9 +29,12 @@ import java.util.Locale;
  * @author <a href="mailto:ryo@mm2d.net">大前良介(OHMAE Ryosuke)</a>
  */
 public class ControlView extends LinearLayout implements OnPreparedListener {
-    public interface OnVisibilityChangeListener {
-        void onVisibilityChange(boolean visible);
+    public interface OnUserActionListener {
+        void onUserAction();
     }
+
+    private static final OnUserActionListener ON_USER_ACTION_LISTENER = () -> {
+    };
     private static final String TAG = "ControlView";
     private static final int MEDIA_ERROR_SYSTEM = -2147483648;
     private MediaPlayer mMediaPlayer;
@@ -41,8 +43,7 @@ public class ControlView extends LinearLayout implements OnPreparedListener {
     private ImageView mPlay;
     private final SeekBar mSeekBar;
     private boolean mTracking;
-    private boolean mHide;
-    private OnVisibilityChangeListener mOnVisibilityChangeListener;
+    private OnUserActionListener mOnUserActionListener = ON_USER_ACTION_LISTENER;
     private OnErrorListener mOnErrorListener;
     private OnInfoListener mOnInfoListener;
     private OnCompletionListener mOnCompletionListener;
@@ -115,7 +116,7 @@ public class ControlView extends LinearLayout implements OnPreparedListener {
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 if (fromUser) {
                     mProgress.setText(makeTimeText(progress));
-                    postHideControlTask();
+                    mOnUserActionListener.onUserAction();
                 }
             }
 
@@ -142,21 +143,18 @@ public class ControlView extends LinearLayout implements OnPreparedListener {
         mPlay = (ImageView) findViewById(R.id.play);
         assert mPlay != null;
         mPlay.setImageResource(R.drawable.ic_play);
-        mPlay.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (mMediaPlayer == null) {
-                    return;
-                }
-                if (mMediaPlayer.isPlaying()) {
-                    mMediaPlayer.pause();
-                    mPlay.setImageResource(R.drawable.ic_play);
-                } else {
-                    mMediaPlayer.start();
-                    mPlay.setImageResource(R.drawable.ic_pause);
-                }
-                postHideControlTask();
+        mPlay.setOnClickListener(v -> {
+            if (mMediaPlayer == null) {
+                return;
             }
+            if (mMediaPlayer.isPlaying()) {
+                mMediaPlayer.pause();
+                mPlay.setImageResource(R.drawable.ic_play);
+            } else {
+                mMediaPlayer.start();
+                mPlay.setImageResource(R.drawable.ic_pause);
+            }
+            mOnUserActionListener.onUserAction();
         });
     }
 
@@ -186,20 +184,6 @@ public class ControlView extends LinearLayout implements OnPreparedListener {
         }
     };
 
-    private final Runnable mHideControlTask = new Runnable() {
-        @Override
-        public void run() {
-            setVisibility(GONE);
-        }
-    };
-
-    private void postHideControlTask() {
-        if (mHide) {
-            removeCallbacks(mHideControlTask);
-            postDelayed(mHideControlTask, 5000);
-        }
-    }
-
     private String makeTimeText(long millisecond) {
         final long second = millisecond / 1000;
         final long minute = second / 60;
@@ -207,33 +191,8 @@ public class ControlView extends LinearLayout implements OnPreparedListener {
         return String.format(Locale.US, "%01d:%02d:%02d", hour, minute % 60, second % 60);
     }
 
-    public void setOnVisibilityChangeListener(OnVisibilityChangeListener listener) {
-        mOnVisibilityChangeListener = listener;
-    }
-
-    public void setAutoHide(boolean enable) {
-        mHide = enable;
-        if (mHide) {
-            postHideControlTask();
-        } else {
-            removeCallbacks(mHideControlTask);
-            setVisibility(VISIBLE);
-        }
-    }
-
-    public void setVisible() {
-        setVisibility(VISIBLE);
-        if (mHide) {
-            postHideControlTask();
-        }
-    }
-
-    @Override
-    public void setVisibility(int visibility) {
-        super.setVisibility(visibility);
-        if (mOnVisibilityChangeListener != null) {
-            mOnVisibilityChangeListener.onVisibilityChange(visibility == VISIBLE);
-        }
+    public void setOnUserActionListener(OnUserActionListener listener) {
+        mOnUserActionListener = listener != null ? listener : ON_USER_ACTION_LISTENER;
     }
 
     @Override

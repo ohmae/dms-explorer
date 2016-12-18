@@ -21,7 +21,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -184,22 +183,12 @@ public class ServerListActivity extends AppCompatActivity {
     private final MsDiscoveryListener mDiscoveryListener = new MsDiscoveryListener() {
         @Override
         public void onDiscover(@NonNull final MediaServer server) {
-            mHandler.post(new Runnable() {
-                @Override
-                public void run() {
-                    onDiscoverServer(server);
-                }
-            });
+            mHandler.post(() -> onDiscoverServer(server));
         }
 
         @Override
         public void onLost(@NonNull final MediaServer server) {
-            mHandler.post(new Runnable() {
-                @Override
-                public void run() {
-                    onLostServer(server);
-                }
-            });
+            mHandler.post(() -> onLostServer(server));
         }
     };
 
@@ -272,20 +261,17 @@ public class ServerListActivity extends AppCompatActivity {
         mSwipeRefreshLayout.setColorSchemeResources(
                 R.color.progress1, R.color.progress2, R.color.progress3, R.color.progress4);
         mSwipeRefreshLayout.setRefreshing(mServerListAdapter.getItemCount() == 0);
-        mSwipeRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                if (!hasAvailableNetwork()) {
-                    return;
-                }
-                synchronized (mMsControlPoint) {
-                    mMsControlPoint.stop();
-                    mMsControlPoint.terminate();
-                    mServerListAdapter.clear();
-                    mServerListAdapter.notifyDataSetChanged();
-                    mMsControlPoint.initialize(getWifiInterface());
-                    mMsControlPoint.start();
-                }
+        mSwipeRefreshLayout.setOnRefreshListener(() -> {
+            if (!hasAvailableNetwork()) {
+                return;
+            }
+            synchronized (mMsControlPoint) {
+                mMsControlPoint.stop();
+                mMsControlPoint.terminate();
+                mServerListAdapter.clear();
+                mServerListAdapter.notifyDataSetChanged();
+                mMsControlPoint.initialize(getWifiInterface());
+                mMsControlPoint.start();
             }
         });
         final RecyclerView recyclerView = (RecyclerView) findViewById(R.id.server_list);

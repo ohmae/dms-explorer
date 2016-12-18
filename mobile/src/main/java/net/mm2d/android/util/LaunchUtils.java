@@ -31,7 +31,7 @@ public class LaunchUtils {
      * 戻り値で結果を通知する。
      *
      * @param context コンテキスト
-     * @param uri URI
+     * @param uri     URI
      * @return 起動ができた場合true、何らかの理由で起動できない場合false
      */
     public static boolean openUri(@NonNull Context context, @Nullable String uri) {

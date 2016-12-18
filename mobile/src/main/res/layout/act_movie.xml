@@ -30,23 +30,23 @@
         android:paddingTop="25dp">
 
         <ImageView
-            android:id="@+id/barBack"
+            android:id="@+id/toolbarBack"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
+            android:layout_marginEnd="16dp"
             android:layout_marginRight="16dp"
-            android:padding="16dp"
             android:background="@drawable/bg_back_button"
+            android:padding="16dp"
             app:srcCompat="@drawable/ic_arrow_back"/>
 
         <TextView
-            android:id="@+id/barTitle"
+            android:id="@+id/toolbarTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:ellipsize="end"
             android:maxLines="1"
-            android:text="タイトルのテスト"
             android:textColor="#FFFFFF"
             android:textSize="20sp"/>
     </LinearLayout>

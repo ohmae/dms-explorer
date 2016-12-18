@@ -37,15 +37,13 @@ public class CdsListAdapter
         void onItemClick(View v, View accent, int position, CdsObject object);
     }
 
-    private final Context mContext;
     private final LayoutInflater mInflater;
     private final List<CdsObject> mList;
     private OnItemClickListener mListener;
     private int mSelection = -1;
 
     public CdsListAdapter(Context context) {
-        mContext = context;
-        mInflater = LayoutInflater.from(mContext);
+        mInflater = LayoutInflater.from(context);
         mList = new ArrayList<>();
     }
 

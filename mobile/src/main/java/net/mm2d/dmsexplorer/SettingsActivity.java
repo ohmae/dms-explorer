@@ -14,8 +14,6 @@ import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.preference.Preference;
-import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceFragment;
 import android.support.v7.app.ActionBar;
 import android.view.MenuItem;
@@ -99,24 +97,18 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             addPreferencesFromResource(R.xml.pref_information);
-            findPreference("PLAY_STORE").setOnPreferenceClickListener(new OnPreferenceClickListener() {
-                @Override
-                public boolean onPreferenceClick(Preference preference) {
-                    final Context context = preference.getContext();
-                    LaunchUtils.openUri(context, "market://details?id=" + context.getPackageName());
-                    return true;
-                }
+            findPreference("PLAY_STORE").setOnPreferenceClickListener(preference -> {
+                final Context context = preference.getContext();
+                LaunchUtils.openUri(context, "market://details?id=" + context.getPackageName());
+                return true;
             });
             findPreference("VERSION_NUMBER").setSummary(getVersionName(getActivity()));
-            findPreference("LICENSE").setOnPreferenceClickListener(new OnPreferenceClickListener() {
-                @Override
-                public boolean onPreferenceClick(Preference preference) {
-                    final WebViewDialog dialog = WebViewDialog.newInstance(
-                            getString(R.string.pref_title_license),
-                            "file:///android_asset/license.html");
-                    dialog.show(getFragmentManager(), "");
-                    return true;
-                }
+            findPreference("LICENSE").setOnPreferenceClickListener(preference -> {
+                final WebViewDialog dialog = WebViewDialog.newInstance(
+                        getString(R.string.pref_title_license),
+                        "file:///android_asset/license.html");
+                dialog.show(getFragmentManager(), "");
+                return true;
             });
         }
 

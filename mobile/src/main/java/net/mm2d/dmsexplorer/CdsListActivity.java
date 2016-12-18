@@ -193,20 +193,12 @@ public class CdsListActivity extends AppCompatActivity
         assert mSwipeRefreshLayout != null;
         mSwipeRefreshLayout.setColorSchemeResources(
                 R.color.progress1, R.color.progress2, R.color.progress3, R.color.progress4);
-        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                mDataHolder.popCache();
-                reload();
-            }
+        mSwipeRefreshLayout.setOnRefreshListener(() -> {
+            mDataHolder.popCache();
+            reload();
         });
         mCdsListAdapter = new CdsListAdapter(this);
-        mCdsListAdapter.setOnItemClickListener(new CdsListAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(View v, View accent, int position, CdsObject object) {
-                onCdsItemClick(v, accent, position, object);
-            }
-        });
+        mCdsListAdapter.setOnItemClickListener(this::onCdsItemClick);
         mRecyclerView = (RecyclerView) findViewById(R.id.cds_list);
         assert mRecyclerView != null;
         mRecyclerView.setAdapter(mCdsListAdapter);

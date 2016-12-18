@@ -77,21 +77,18 @@ public class ServerDetailFragment extends Fragment
             fab = (FloatingActionButton) getActivity().findViewById(R.id.fab);
         }
         if (fab != null) {
-            fab.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    final Intent intent = CdsListActivity.makeIntent(getContext(), udn);
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                        final TransitionSet ts = new TransitionSet();
-                        ts.addTransition(new Slide(Gravity.START));
-                        ts.addTransition(new Fade());
-                        getActivity().getWindow().setExitTransition(ts);
-                        startActivity(intent, ActivityOptions
-                                .makeSceneTransitionAnimation(getActivity(), view, "share")
-                                .toBundle());
-                    } else {
-                        startActivity(intent);
-                    }
+            fab.setOnClickListener(view -> {
+                final Intent intent = CdsListActivity.makeIntent(getContext(), udn);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    final TransitionSet ts = new TransitionSet();
+                    ts.addTransition(new Slide(Gravity.START));
+                    ts.addTransition(new Fade());
+                    getActivity().getWindow().setExitTransition(ts);
+                    startActivity(intent, ActivityOptions
+                            .makeSceneTransitionAnimation(getActivity(), view, "share")
+                            .toBundle());
+                } else {
+                    startActivity(intent);
                 }
             });
         }

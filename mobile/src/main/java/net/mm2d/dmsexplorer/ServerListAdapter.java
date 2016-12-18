@@ -36,15 +36,13 @@ public class ServerListAdapter
         void onItemClick(View v, View accent, int position, MediaServer server);
     }
 
-    private final Context mContext;
     private final LayoutInflater mInflater;
     private final List<MediaServer> mList;
     private OnItemClickListener mListener;
     private int mSelection = -1;
 
     public ServerListAdapter(Context context, Collection<? extends MediaServer> servers) {
-        mContext = context;
-        mInflater = LayoutInflater.from(mContext);
+        mInflater = LayoutInflater.from(context);
         if (servers == null) {
             mList = new ArrayList<>();
         } else {

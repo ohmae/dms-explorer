@@ -11,7 +11,6 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.ActivityNotFoundException;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
@@ -58,12 +57,9 @@ public class SelectResourceDialog extends DialogFragment {
         builder.setTitle(R.string.title_dialog_select_resource);
         final String[] selection = makeSelection(object);
         builder.setItems(selection,
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        final Tag res = object.getTag(CdsObject.RES, which);
-                        launch(res);
-                    }
+                (dialog, which) -> {
+                    final Tag res = object.getTag(CdsObject.RES, which);
+                    launch(res);
                 });
         if (selection.length == 1) {
             launch(object.getTag(CdsObject.RES, 0));

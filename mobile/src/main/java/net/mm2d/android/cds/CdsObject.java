@@ -490,8 +490,8 @@ public class CdsObject implements Parcelable {
      * "res@protocolInfo".
      *
      * <p>A string that identifies the recommended HTTP protocol for transmitting the resource
-     * (see also UPnP A/V Conection Manager Service template, section 2.5.2).
-     * If not present, then the content has not yet been fully imported by CDS and is not yet accesible for playback purposes.
+     * (see also UPnP A/V Connection Manager Service template, section 2.5.2).
+     * If not present, then the content has not yet been fully imported by CDS and is not yet accessible for playback purposes.
      *
      * <p>Namespace: DIDL-Lite / Type: string
      */

@@ -105,15 +105,12 @@ public class CdsDetailFragment extends Fragment
         final boolean protectedResource = hasProtectedResource(object);
         final int color = protectedResource ? Color.GRAY : ContextCompat.getColor(getContext(), R.color.accent);
         fab.setBackgroundTintList(ColorStateList.valueOf(color));
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (protectedResource) {
-                    Snackbar.make(view, R.string.toast_not_support_drm, Snackbar.LENGTH_LONG).show();
-                } else {
-                    final SelectResourceDialog dialog = SelectResourceDialog.newInstance(object);
-                    dialog.show(getActivity().getFragmentManager(), "");
-                }
+        fab.setOnClickListener(view -> {
+            if (protectedResource) {
+                Snackbar.make(view, R.string.toast_not_support_drm, Snackbar.LENGTH_LONG).show();
+            } else {
+                final SelectResourceDialog dialog = SelectResourceDialog.newInstance(object);
+                dialog.show(getActivity().getFragmentManager(), "");
             }
         });
     }

@@ -14,14 +14,11 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.design.widget.AppBarLayout;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import net.mm2d.android.cds.CdsObject;
 import net.mm2d.util.Log;
@@ -31,6 +28,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.concurrent.TimeUnit;
 
 /**
  * 静止画表示のActivity。
@@ -39,83 +37,61 @@ import java.net.URL;
  */
 public class PhotoActivity extends AppCompatActivity {
     private static final String TAG = "PhotoActivity";
+    private static final long NAVIGATION_INTERVAL = TimeUnit.SECONDS.toMillis(3);
     private Handler mHandler;
     private View mRoot;
-    private Toolbar mToolbar;
-    private CdsObject mObject;
     private View mProgress;
     private ImageView mImageView;
     private Bitmap mBitmap;
-
-    private final Runnable mHideControlTask = new Runnable() {
-        @Override
-        public void run() {
-            mToolbar.setVisibility(View.INVISIBLE);
-        }
-    };
-
-    private void postHideControlTask() {
-        mHandler.removeCallbacks(mHideControlTask);
-        mHandler.postDelayed(mHideControlTask, 5000);
-    }
+    private View mToolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_photo);
         final Intent intent = getIntent();
-        mObject = intent.getParcelableExtra(Const.EXTRA_OBJECT);
+        final CdsObject object = intent.getParcelableExtra(Const.EXTRA_OBJECT);
         final Uri uri = intent.getData();
         mHandler = new Handler();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            final AppBarLayout appBarLayout = (AppBarLayout) findViewById(R.id.app_bar);
-            assert appBarLayout != null;
-            appBarLayout.setElevation(0);
-        }
-        mToolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(mToolbar);
-        final ActionBar actionBar = getSupportActionBar();
-        assert actionBar != null;
-        actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setTitle(mObject.getTitle());
+
+        findViewById(R.id.toolbarBack).setOnClickListener(view -> onBackPressed());
+        final TextView title = (TextView) findViewById(R.id.toolbarTitle);
+        title.setText(object.getTitle());
+        mToolbar = findViewById(R.id.toolbar);
+
         mImageView = (ImageView) findViewById(R.id.imageView);
         mProgress = findViewById(R.id.progressBar);
         assert mProgress != null;
         mProgress.setVisibility(View.VISIBLE);
         new Thread(new GetImage(uri)).start();
         mRoot = findViewById(R.id.root);
-        mRoot.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mToolbar.setVisibility(View.VISIBLE);
-                postHideControlTask();
-            }
+        mRoot.setOnClickListener(v -> {
+            showNavigation();
+            postHideControlTask();
         });
-        mRoot.setOnSystemUiVisibilityChangeListener(new View.OnSystemUiVisibilityChangeListener() {
-            @Override
-            public void onSystemUiVisibilityChange(int visibility) {
-                postHideNavigation();
-            }
-        });
-        hideNavigation();
+        showNavigation();
         postHideControlTask();
     }
 
-    private void postHideNavigation() {
-        mHandler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                hideNavigation();
-            }
-        }, 3000);
+    private final Runnable mHideControlTask = this::hideNavigation;
+
+    private void postHideControlTask() {
+        mHandler.removeCallbacks(mHideControlTask);
+        mHandler.postDelayed(mHideControlTask, NAVIGATION_INTERVAL);
+    }
+
+    private void showNavigation() {
+        mToolbar.setVisibility(View.VISIBLE);
+        mRoot.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE);
     }
 
     private void hideNavigation() {
+        mToolbar.setVisibility(View.GONE);
         final int visibility;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             visibility = View.SYSTEM_UI_FLAG_FULLSCREEN
                     | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                    | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+                    | View.SYSTEM_UI_FLAG_IMMERSIVE
                     | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
                     | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION;
         } else {
@@ -128,12 +104,9 @@ public class PhotoActivity extends AppCompatActivity {
     }
 
     private void setImage() {
-        mHandler.post(new Runnable() {
-            @Override
-            public void run() {
-                mImageView.setImageBitmap(mBitmap);
-                mProgress.setVisibility(View.GONE);
-            }
+        mHandler.post(() -> {
+            mImageView.setImageBitmap(mBitmap);
+            mProgress.setVisibility(View.GONE);
         });
     }
 
