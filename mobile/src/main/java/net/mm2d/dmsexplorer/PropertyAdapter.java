@@ -8,17 +8,13 @@
 package net.mm2d.dmsexplorer;
 
 import android.content.Context;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.text.SpannableString;
 import android.text.Spanned;
-import android.text.TextPaint;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
-import android.text.style.UnderlineSpan;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
@@ -118,15 +114,20 @@ public class PropertyAdapter
         return mList.size();
     }
 
-    private final OnClickListener mOnClickListener = new OnClickListener() {
+    private class LinkSpan extends ClickableSpan {
+        private final String mLink;
+
+        LinkSpan(String link) {
+            mLink = link;
+        }
+
         @Override
-        public void onClick(View v) {
+        public void onClick(View widget) {
             if (mListener != null) {
-                final String link = (String) v.getTag();
-                mListener.onItemLinkClick(link);
+                mListener.onItemLinkClick(mLink);
             }
         }
-    };
+    }
 
     private static final Pattern URL_PATTERN =
             Pattern.compile("https?://[\\w/:%#\\$&\\?\\(\\)~\\.=\\+\\-]+");
@@ -141,55 +142,33 @@ public class PropertyAdapter
             mView = itemView;
             mText1 = (TextView) mView.findViewById(R.id.text1);
             mText2 = (TextView) mView.findViewById(R.id.text2);
+            mText2.setMovementMethod(LinkMovementMethod.getInstance());
         }
 
         void applyItem(Entry entry) {
-            final int defaultColor = ContextCompat.getColor(mContext, R.color.textMain);
-            final int linkColor = ContextCompat.getColor(mContext, R.color.textLink);
             mText1.setText(entry.getName());
             final String value = entry.getValue();
             if (entry.isAutoLink()) {
-                final SpannableString ss = new SpannableString(value);
-                final Matcher matcher = URL_PATTERN.matcher(value);
-                while (matcher.find()) {
-                    final int start = matcher.start();
-                    final int end = matcher.end();
-                    final String link = value.substring(start, end);
-                    ss.setSpan(new ClickableSpan() {
-                        @Override
-                        public void updateDrawState(TextPaint ds) {
-                            super.updateDrawState(ds);
-                            ds.setColor(linkColor);
-                            ds.setUnderlineText(true);
-                        }
-
-                        @Override
-                        public void onClick(View widget) {
-                            if (mListener != null) {
-                                mListener.onItemLinkClick(link);
-                            }
-                        }
-                    }, start, end, Spanned.SPAN_INCLUSIVE_INCLUSIVE);
-                }
-                mText2.setTextColor(defaultColor);
-                mText2.setText(ss);
-                mText2.setMovementMethod(LinkMovementMethod.getInstance());
-                mView.setTag(null);
-                mView.setOnClickListener(null);
+                mText2.setText(makeLinkString(value));
             } else if (entry.isLink()) {
                 final SpannableString ss = new SpannableString(value);
-                final UnderlineSpan us = new UnderlineSpan();
-                ss.setSpan(us, 0, value.length(), ss.getSpanFlags(us));
-                mText2.setTextColor(linkColor);
+                ss.setSpan(new LinkSpan(value), 0, value.length(), Spanned.SPAN_MARK_POINT);
                 mText2.setText(ss);
-                mView.setTag(value);
-                mView.setOnClickListener(mOnClickListener);
             } else {
-                mText2.setTextColor(defaultColor);
                 mText2.setText(value);
-                mView.setTag(null);
-                mView.setOnClickListener(null);
             }
+        }
+
+        private SpannableString makeLinkString(String string) {
+            final SpannableString ss = new SpannableString(string);
+            final Matcher matcher = URL_PATTERN.matcher(string);
+            while (matcher.find()) {
+                final int start = matcher.start();
+                final int end = matcher.end();
+                ss.setSpan(new LinkSpan(string.substring(start, end)),
+                        start, end, Spanned.SPAN_MARK_POINT);
+            }
+            return ss;
         }
     }
 }
