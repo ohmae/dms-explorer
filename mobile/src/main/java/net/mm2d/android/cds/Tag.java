@@ -26,7 +26,7 @@ import java.util.Map.Entry;
  *
  * Elementのままでは情報の参照コストが高いため、
  * よりシンプルな構造に格納するためのクラス。
- * CdsObjectのXMLはタグが入れ子になることはないため
+ * CdsObjectのXMLはElementが入れ子になることはないため
  * タグ＋値、属性＋値の情報を表現できれば十分。
  *
  * @author <a href="mailto:ryo@mm2d.net">大前良介(OHMAE Ryosuke)</a>

@@ -19,13 +19,9 @@ import org.w3c.dom.Node;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
-import java.util.Map.Entry;
 
 /**
  * ContentDirectoryServiceのObjectを表現するクラス。
@@ -723,7 +719,7 @@ public class CdsObject implements Parcelable {
      * <p>タグ名をKeyとして、TagのListを保持する。
      * 同一のタグが複数ある場合はListに出現順に格納する。
      */
-    private final Map<String, List<Tag>> mTagMap;
+    private final TagMap mTagMap;
     /**
      * \@idの値。
      */
@@ -755,25 +751,51 @@ public class CdsObject implements Parcelable {
      */
     private int mType;
 
+    private static class Param {
+        @NonNull private final String mObjectId;
+        @NonNull private final String mParentId;
+        @NonNull private final String mTitle;
+        @NonNull private final String mUpnpClass;
+        Param(TagMap map) {
+            final String objectId = map.getValue(ID);
+            final String parentId = map.getValue(PARENT_ID);
+            final String title = map.getValue(DC_TITLE);
+            final String upnpClass = map.getValue(UPNP_CLASS);
+            if (objectId == null || parentId == null || title == null || upnpClass == null) {
+                throw new IllegalArgumentException("Malformed item");
+            }
+            mObjectId = objectId;
+            mParentId = parentId;
+            mTitle = title;
+            mUpnpClass = upnpClass;
+        }
+    }
+
     /**
      * elementをもとにインスタンス作成
      *
      * @param element objectを示すelement
      */
     CdsObject(@NonNull Element element) {
-        mTagMap = new LinkedHashMap<>();
-        final String tagName = element.getTagName();
+        mItem = isItem(element.getTagName());
+        mTagMap = parseElement(element);
+        final Param param = new Param(mTagMap);
+        mObjectId = param.mObjectId;
+        mParentId = param.mParentId;
+        mTitle = param.mTitle;
+        mUpnpClass = param.mUpnpClass;
+        mType = getType(mItem, mUpnpClass);
+    }
+
+    private static boolean isItem(String tagName) {
         switch (tagName) {
             case ITEM:
-                mItem = true;
-                break;
+                return true;
             case CONTAINER:
-                mItem = false;
-                break;
+                return false;
             default:
                 throw new IllegalArgumentException();
         }
-        parseElement(element);
     }
 
     /**
@@ -781,56 +803,30 @@ public class CdsObject implements Parcelable {
      *
      * @param element objectを示すelement
      */
-    private void parseElement(@NonNull Element element) {
-        putTag("", new Tag(element, true));
+    private static TagMap parseElement(@NonNull Element element) {
+        final TagMap map = new TagMap();
+        map.putTag("", new Tag(element, true));
         Node node = element.getFirstChild();
         for (; node != null; node = node.getNextSibling()) {
             if (node.getNodeType() != Node.ELEMENT_NODE) {
                 continue;
             }
-            final String name = node.getNodeName();
-            putTag(name, new Tag((Element) node));
+            map.putTag(node.getNodeName(), new Tag((Element) node));
         }
-        prepareCache();
+        return map;
     }
 
-    /**
-     * タグ情報を格納する。
-     *
-     * @param name タグ名
-     * @param tag  格納するタグ情報
-     */
-    private void putTag(@NonNull String name, @NonNull Tag tag) {
-        List<Tag> tags = mTagMap.get(name);
-        if (tags == null) {
-            tags = new ArrayList<>(1);
-            mTagMap.put(name, tags);
+    private static int getType(boolean isItem, String upnpClass) {
+        if (!isItem) {
+            return TYPE_CONTAINER;
+        } else if (upnpClass.startsWith(IMAGE_ITEM)) {
+            return  TYPE_IMAGE;
+        } else if (upnpClass.startsWith(AUDIO_ITEM)) {
+            return TYPE_AUDIO;
+        } else if (upnpClass.startsWith(VIDEO_ITEM)) {
+            return TYPE_VIDEO;
         }
-        tags.add(tag);
-    }
-
-    /**
-     * パース結果からパラメータの初期化を行う。
-     */
-    private void prepareCache() {
-        mObjectId = getValue(ID);
-        mParentId = getValue(PARENT_ID);
-        mTitle = getValue(DC_TITLE);
-        mUpnpClass = getValue(UPNP_CLASS);
-        if (mObjectId == null || mParentId == null || mTitle == null || mUpnpClass == null) {
-            throw new IllegalArgumentException("Malformed item");
-        }
-        if (!mItem) {
-            mType = TYPE_CONTAINER;
-        } else if (mUpnpClass.startsWith(IMAGE_ITEM)) {
-            mType = TYPE_IMAGE;
-        } else if (mUpnpClass.startsWith(AUDIO_ITEM)) {
-            mType = TYPE_AUDIO;
-        } else if (mUpnpClass.startsWith(VIDEO_ITEM)) {
-            mType = TYPE_VIDEO;
-        } else {
-            mType = TYPE_UNKNOWN;
-        }
+        return TYPE_UNKNOWN;
     }
 
     /**
@@ -917,7 +913,7 @@ public class CdsObject implements Parcelable {
      */
     @Nullable
     public String getValue(@NonNull String xpath) {
-        return getValue(xpath, 0);
+        return mTagMap.getValue(xpath);
     }
 
     /**
@@ -942,13 +938,7 @@ public class CdsObject implements Parcelable {
      */
     @Nullable
     public String getValue(@NonNull String xpath, int index) {
-        final int pos = xpath.indexOf('@');
-        if (pos < 0) {
-            return getValue(xpath, null, index);
-        }
-        final String tagName = xpath.substring(0, pos);
-        final String attrName = xpath.substring(pos + 1);
-        return getValue(tagName, attrName, index);
+        return mTagMap.getValue(xpath, index);
     }
 
     /**
@@ -964,7 +954,7 @@ public class CdsObject implements Parcelable {
      */
     @Nullable
     public String getValue(@Nullable String tagName, @Nullable String attrName) {
-        return getValue(tagName, attrName, 0);
+        return mTagMap.getValue(tagName, attrName);
     }
 
     /**
@@ -980,14 +970,7 @@ public class CdsObject implements Parcelable {
      */
     @Nullable
     public String getValue(@Nullable String tagName, @Nullable String attrName, int index) {
-        final Tag tag = getTag(tagName, index);
-        if (tag == null) {
-            return null;
-        }
-        if (TextUtils.isEmpty(attrName)) {
-            return tag.getValue();
-        }
-        return tag.getAttribute(attrName);
+        return mTagMap.getValue(tagName, attrName, index);
     }
 
     /**
@@ -1000,7 +983,7 @@ public class CdsObject implements Parcelable {
      */
     @Nullable
     public Tag getTag(@Nullable String tagName) {
-        return getTag(tagName, 0);
+        return mTagMap.getTag(tagName);
     }
 
     /**
@@ -1012,11 +995,7 @@ public class CdsObject implements Parcelable {
      */
     @Nullable
     public Tag getTag(@Nullable String tagName, int index) {
-        final List<Tag> list = getTagList(tagName);
-        if (list == null || list.size() <= index) {
-            return null;
-        }
-        return list.get(index);
+        return mTagMap.getTag(tagName, index);
     }
 
     /**
@@ -1027,10 +1006,7 @@ public class CdsObject implements Parcelable {
      */
     @Nullable
     public List<Tag> getTagList(@Nullable String tagName) {
-        if (tagName == null) {
-            tagName = "";
-        }
-        return mTagMap.get(tagName);
+        return mTagMap.getTagList(tagName);
     }
 
     /**
@@ -1219,32 +1195,7 @@ public class CdsObject implements Parcelable {
      */
     @NonNull
     public String toDumpString() {
-        final StringBuilder sb = new StringBuilder();
-        for (final Entry<String, List<Tag>> entry : mTagMap.entrySet()) {
-            final List<Tag> tags = entry.getValue();
-            for (int i = 0; i < tags.size(); i++) {
-                final Tag tag = tags.get(i);
-                sb.append(entry.getKey());
-                if (tags.size() == 1) {
-                    sb.append(" => ");
-                } else {
-                    sb.append("[");
-                    sb.append(String.valueOf(i));
-                    sb.append("] => ");
-                }
-                sb.append(tag.getValue());
-                sb.append("\n");
-                final Map<String, String> attrs = tag.getAttributes();
-                for (final Entry<String, String> e : attrs.entrySet()) {
-                    sb.append("      @");
-                    sb.append(e.getKey());
-                    sb.append(" => ");
-                    sb.append(e.getValue());
-                    sb.append("\n");
-                }
-            }
-        }
-        return sb.toString();
+        return mTagMap.toString();
     }
 
     @Override
@@ -1271,34 +1222,19 @@ public class CdsObject implements Parcelable {
      */
     private CdsObject(@NonNull Parcel in) {
         mItem = in.readByte() != 0;
-        final int size = in.readInt();
-        mTagMap = new LinkedHashMap<>(size);
-        final ClassLoader classLoader = Tag.class.getClassLoader();
-        for (int i = 0; i < size; i++) {
-            final String name = in.readString();
-            final int length = in.readInt();
-            final List<Tag> list = new ArrayList<>(length);
-            for (int j = 0; j < length; j++) {
-                final Tag tag = in.readParcelable(classLoader);
-                list.add(tag);
-            }
-            mTagMap.put(name, list);
-        }
-        prepareCache();
+        mTagMap = in.readParcelable(TagMap.class.getClassLoader());
+        final Param param = new Param(mTagMap);
+        mObjectId = param.mObjectId;
+        mParentId = param.mParentId;
+        mTitle = param.mTitle;
+        mUpnpClass = param.mUpnpClass;
+        mType = getType(mItem, mUpnpClass);
     }
 
     @Override
     public void writeToParcel(@NonNull Parcel dest, int flags) {
         dest.writeByte((byte) (mItem ? 1 : 0));
-        dest.writeInt(mTagMap.size());
-        for (final Entry<String, List<Tag>> entry : mTagMap.entrySet()) {
-            dest.writeString(entry.getKey());
-            final List<Tag> list = entry.getValue();
-            dest.writeInt(list.size());
-            for (final Tag tag : list) {
-                dest.writeParcelable(tag, flags);
-            }
-        }
+        dest.writeParcelable(mTagMap, flags);
     }
 
     @Override
