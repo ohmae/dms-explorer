@@ -17,10 +17,13 @@ import android.media.MediaPlayer.OnErrorListener;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.MenuItem;
 import android.widget.ImageView;
 
@@ -113,38 +116,50 @@ public class MusicActivity extends AppCompatActivity implements PropertyAdapter.
 
         @Override
         public void run() {
-            try {
-                final URL url = new URL(mUri);
-                final HttpURLConnection con = (HttpURLConnection) url.openConnection();
-                con.setRequestMethod("GET");
-                con.setDoInput(true);
-                con.connect();
-                if (con.getResponseCode() != HttpURLConnection.HTTP_OK) {
-                    return;
-                }
-                final InputStream is = con.getInputStream();
-                final ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                final byte[] buffer = new byte[1024];
-                while (true) {
-                    final int size = is.read(buffer);
-                    if (size <= 0) {
-                        break;
-                    }
-                    baos.write(buffer, 0, size);
-                }
-                is.close();
-                con.disconnect();
-                final byte[] array = baos.toByteArray();
-                mBitmap = BitmapFactory.decodeByteArray(array, 0, array.length);
-                setImage();
-            } catch (final IOException e) {
-                Log.w(TAG, e);
+            final byte[] data = downloadData(mUri);
+            if (data == null) {
+                return;
             }
+            setImage(data);
         }
     }
 
-    private void setImage() {
+    private void setImage(@NonNull byte[] data) {
+        mBitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
         mHandler.post(() -> mArtView.setImageBitmap(mBitmap));
+    }
+
+    @Nullable
+    private static byte[] downloadData(@NonNull String uri) {
+        if (TextUtils.isEmpty(uri)) {
+            return null;
+        }
+        try {
+            final URL url = new URL(uri);
+            final HttpURLConnection con = (HttpURLConnection) url.openConnection();
+            con.setRequestMethod("GET");
+            con.setDoInput(true);
+            con.connect();
+            if (con.getResponseCode() != HttpURLConnection.HTTP_OK) {
+                return null;
+            }
+            final InputStream is = con.getInputStream();
+            final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            final byte[] buffer = new byte[1024];
+            while (true) {
+                final int size = is.read(buffer);
+                if (size <= 0) {
+                    break;
+                }
+                baos.write(buffer, 0, size);
+            }
+            is.close();
+            con.disconnect();
+            return baos.toByteArray();
+        } catch (final IOException e) {
+            Log.w(TAG, e);
+        }
+        return null;
     }
 
     @Override

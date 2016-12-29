@@ -172,11 +172,7 @@ public class ControlView extends LinearLayout implements OnPreparedListener {
                     }
                     sleep = 1001 - position % 1000;
                 }
-                if (sleep > 1000) {
-                    sleep = 1000;
-                } else if (sleep < 100) {
-                    sleep = 100;
-                }
+                sleep = Math.min(Math.max(sleep, 100), 1000);
                 removeCallbacks(this);
                 postDelayed(this, sleep);
             } catch (final IllegalStateException ignored) {

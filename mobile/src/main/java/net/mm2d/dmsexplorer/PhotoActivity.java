@@ -9,7 +9,6 @@ package net.mm2d.dmsexplorer;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -17,12 +16,15 @@ import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import net.mm2d.android.cds.CdsObject;
+import net.mm2d.android.util.BitmapUtils;
+import net.mm2d.android.util.ViewUtils;
 import net.mm2d.util.Log;
 
 import java.io.ByteArrayOutputStream;
@@ -135,53 +137,31 @@ public class PhotoActivity extends AppCompatActivity {
 
         @Override
         public void run() {
-            final byte[] data = downloadImageData(mUri);
+            final byte[] data = downloadData(mUri.toString());
             if (data == null) {
                 return;
             }
-            setImage(data);
+            mHandler.post(() -> setImage(data));
         }
     }
 
-    private void setImage(@NonNull byte[] data) {
-        mBitmap = decodeBitmap(data);
-        mHandler.post(() -> {
-            mImageView.setImageBitmap(mBitmap);
-            mProgress.setVisibility(View.GONE);
-        });
+    private void setImage(final @NonNull byte[] data) {
+        ViewUtils.execAfterAllocateSize(mImageView, () -> setImageInner(data));
     }
 
-    @NonNull
-    private Bitmap decodeBitmap(@NonNull byte[] data) {
-        final BitmapFactory.Options options = new BitmapFactory.Options();
-        options.inJustDecodeBounds = true;
-        BitmapFactory.decodeByteArray(data, 0, data.length, options);
-        final int width = mImageView.getWidth();
-        final int height = mImageView.getHeight();
-        if (options.outWidth * height > width * options.outHeight) {
-            if (options.outWidth > width) {
-                options.inSampleSize = options.outWidth / width;
-            } else {
-                options.inSampleSize = 1;
-            }
-        } else {
-            if (options.outHeight > height) {
-                options.inSampleSize = options.outHeight / height;
-            } else {
-                options.inSampleSize = 1;
-            }
-        }
-        options.inJustDecodeBounds = false;
-        return BitmapFactory.decodeByteArray(data, 0, data.length, options);
+    private void setImageInner(final @NonNull byte[] data) {
+        mBitmap = BitmapUtils.decodeBitmap(data, mImageView.getWidth(), mImageView.getHeight());
+        mImageView.setImageBitmap(mBitmap);
+        mProgress.setVisibility(View.GONE);
     }
 
     @Nullable
-    private byte[] downloadImageData(@NonNull Uri uri) {
-        if (uri.toString() == null) {
+    private static byte[] downloadData(@NonNull String uri) {
+        if (TextUtils.isEmpty(uri)) {
             return null;
         }
         try {
-            final URL url = new URL(uri.toString());
+            final URL url = new URL(uri);
             final HttpURLConnection con = (HttpURLConnection) url.openConnection();
             con.setRequestMethod("GET");
             con.setDoInput(true);

@@ -8,6 +8,7 @@
 package net.mm2d.dmsexplorer;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Build;
 import android.support.v7.widget.RecyclerView;
@@ -32,6 +33,8 @@ import java.util.List;
 public class CdsListAdapter
         extends RecyclerView.Adapter<CdsListAdapter.ViewHolder> {
     private static final String TAG = "CdsListAdapter";
+    private final int mSelectedZ;
+    private final int mAccentRadius;
 
     public interface OnItemClickListener {
         void onItemClick(View v, View accent, int position, CdsObject object);
@@ -45,6 +48,9 @@ public class CdsListAdapter
     public CdsListAdapter(Context context) {
         mInflater = LayoutInflater.from(context);
         mList = new ArrayList<>();
+        final Resources res = context.getResources();
+        mSelectedZ = res.getDimensionPixelSize(R.dimen.raise_focus);
+        mAccentRadius = res.getDimensionPixelSize(R.dimen.accent_radius);
     }
 
     @Override
@@ -131,10 +137,8 @@ public class CdsListAdapter
             mImage = (ImageView) mView.findViewById(R.id.image);
             mView.setOnClickListener(mItemClickListener);
             mView.setTag(this);
-            final int radius = mView.getContext().getResources()
-                    .getDimensionPixelSize(R.dimen.accent_radius);
             mAccentBackground = new GradientDrawable();
-            mAccentBackground.setCornerRadius(radius);
+            mAccentBackground.setCornerRadius(mAccentRadius);
             mAccent.setBackground(mAccentBackground);
         }
 
@@ -144,9 +148,7 @@ public class CdsListAdapter
                 mMark.setVisibility(View.VISIBLE);
                 mView.setBackgroundResource(R.drawable.bg_list_item_selected);
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    final int z = mView.getContext().getResources()
-                            .getDimensionPixelSize(R.dimen.raise_focus);
-                    mView.setTranslationZ(z);
+                    mView.setTranslationZ(mSelectedZ);
                 }
             } else {
                 mMark.setVisibility(View.INVISIBLE);
