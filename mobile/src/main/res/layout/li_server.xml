@@ -11,15 +11,27 @@
         android:layout_height="match_parent"
         android:background="@color/markListItemSelected"/>
 
-    <TextView
-        android:id="@+id/textAccent"
+    <FrameLayout
+        android:id="@+id/accent"
         android:layout_width="@dimen/accent_size"
         android:layout_height="@dimen/accent_size"
-        android:layout_gravity="center_vertical"
-        android:layout_margin="12dp"
-        android:gravity="center"
-        android:textColor="@color/textPrimary"
-        android:textSize="@dimen/text_size_accent"/>
+        android:layout_margin="12dp">
+
+        <TextView
+            android:id="@+id/textAccent"
+            android:layout_width="@dimen/accent_size"
+            android:layout_height="@dimen/accent_size"
+            android:layout_gravity="center_vertical"
+            android:gravity="center"
+            android:textColor="@color/textPrimary"
+            android:textSize="@dimen/text_size_accent"/>
+
+        <ImageView
+            android:id="@+id/imageAccent"
+            android:layout_width="@dimen/accent_size"
+            android:layout_height="@dimen/accent_size"
+            android:scaleType="centerInside"/>
+    </FrameLayout>
 
     <LinearLayout
         android:layout_width="0dp"

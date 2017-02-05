@@ -13,6 +13,7 @@ import android.text.TextUtils;
 
 import net.mm2d.upnp.Action;
 import net.mm2d.upnp.Device;
+import net.mm2d.upnp.Icon;
 import net.mm2d.upnp.Service;
 import net.mm2d.util.Log;
 
@@ -70,7 +71,6 @@ public class MediaServer {
         }
     }
 
-
     /**
      * このクラスがwrapしているDeviceのインスタンスを返す。
      *
@@ -85,6 +85,25 @@ public class MediaServer {
     @NonNull
     protected Device getDevice() {
         return mDevice;
+    }
+
+    /**
+     * Deviceの有効なIconを返す。
+     *
+     * <p>MsControlPointにてダウンロードするIconを一つのみに限定しているため、
+     * Binaryデータがダウンロード済みのものがあればそれを返す。
+     *
+     * @return Iconインスタンス、ない場合はnullが返る。
+     */
+    @Nullable
+    public Icon getIcon() {
+        final List<Icon> iconList = mDevice.getIconList();
+        for (Icon icon : iconList) {
+            if (icon.getBinary() != null) {
+                return icon;
+            }
+        }
+        return null;
     }
 
     /**
