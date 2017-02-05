@@ -14,15 +14,20 @@ import net.mm2d.upnp.ControlPoint;
 import net.mm2d.upnp.ControlPoint.DiscoveryListener;
 import net.mm2d.upnp.ControlPoint.NotifyEventListener;
 import net.mm2d.upnp.Device;
+import net.mm2d.upnp.Icon;
+import net.mm2d.upnp.IconFilter;
 import net.mm2d.upnp.Service;
 
 import java.net.NetworkInterface;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.annotation.Nonnull;
 
 /**
  * MediaServerのControlPoint機能。
@@ -76,6 +81,7 @@ public class MsControlPoint {
             lostDevice(device);
         }
     };
+
     private final NotifyEventListener mNotifyEventListener = new NotifyEventListener() {
         @Override
         public void onNotifyEvent(@NonNull Service service, long seq, String variable, String value) {
@@ -98,6 +104,51 @@ public class MsControlPoint {
             final MediaServer server = getMediaServer(udn);
             mContainerUpdateIdsListener.onContainerUpdateIds(server, ids);
         }
+    };
+
+    private static final IconFilter ICON_FILTER = new IconFilter() {
+        @Nonnull
+        @Override
+        public List<Icon> filter(@Nonnull List<Icon> list) {
+            return Collections.singletonList(Collections.max(list, ICON_COMPARATOR));
+        }
+    };
+
+    private static final String MIME_JPEG = "image/jpeg";
+    private static final String MIME_PNG = "image/png";
+    private static final Comparator<Icon> ICON_COMPARATOR = (icon1, icon2) -> {
+        final String mime1 = icon1.getMimeType();
+        final String mime2 = icon2.getMimeType();
+        // jpeg png 以外を最下位にする
+        if (!mime1.equals(mime2)) {
+            if (!mime1.equals(MIME_JPEG) && !mime1.equals(MIME_PNG)) {
+                return -1;
+            }
+            if (!mime2.equals(MIME_JPEG) && !mime2.equals(MIME_PNG)) {
+                return 1;
+            }
+        }
+        // 色深度の大きなものを優先する
+        if (icon1.getDepth() != icon2.getDepth()) {
+            return icon1.getDepth() - icon2.getDepth();
+        }
+        // サイズの大きなものを優先する
+        final int size1 = icon1.getWidth() * icon1.getHeight();
+        final int size2 = icon2.getWidth() * icon2.getHeight();
+        if (size1 != size2) {
+            return size1 - size2;
+        }
+        // jpeg と png なら png を優先する
+        if (mime1.equals(mime2)) {
+            return 0;
+        }
+        if (mime1.equals(MIME_PNG)) {
+            return 1;
+        }
+        if (mime2.equals(MIME_PNG)) {
+            return -1;
+        }
+        return 0;
     };
 
     private ControlPoint mControlPoint;
@@ -252,6 +303,7 @@ public class MsControlPoint {
         }
         mInitialized = true;
         mControlPoint = new ControlPoint(interfaces);
+        mControlPoint.setIconFilter(ICON_FILTER);
         mControlPoint.addDiscoveryListener(mDiscoveryListener);
         mControlPoint.addNotifyEventListener(mNotifyEventListener);
         mControlPoint.initialize();

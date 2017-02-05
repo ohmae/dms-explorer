@@ -8,8 +8,8 @@ android {
         applicationId "net.mm2d.dmsexplorer"
         minSdkVersion 16
         targetSdkVersion 24
-        versionCode 601
-        versionName "0.6.1"
+        versionCode 602
+        versionName "0.6.2"
         vectorDrawables.useSupportLibrary = true
         jackOptions {
             enabled true
@@ -29,13 +29,11 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-    signingConfigs {
-        debug {
-            storeFile file("../../product.keystore")
-            storePassword STORE_PASSWORD
-            keyAlias KEY_ALIAS
-            keyPassword KEY_PASSWORD
-        }
+}
+
+repositories {
+    maven {
+        url 'https://ohmae.github.com/mmupnp/maven'
     }
 }
 
@@ -46,5 +44,5 @@ dependencies {
     compile 'com.android.support:support-v4:24.2.1'
     compile 'com.android.support:recyclerview-v7:24.2.1'
     compile 'com.android.support:design:24.2.1'
-    compile files('libs/mmupnp.jar')
+    compile 'net.mm2d.mmupnp:mmupnp:1.0.6'
 }

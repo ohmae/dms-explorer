@@ -183,7 +183,7 @@ public class CdsDetailFragment extends Fragment
         adapter.addEntry(context.getString(R.string.prop_description),
                 jointTagValue(object, CdsObject.DC_DESCRIPTION));
         adapter.addEntryAutoLink(context.getString(R.string.prop_long_description),
-                jointTagValue(object, CdsObject.ARIB_LONG_DESCRIPTION));
+                jointLongDescription(object));
         adapter.addEntry(CdsObject.UPNP_CLASS + ":",
                 object.getUpnpClass());
     }
@@ -200,6 +200,31 @@ public class CdsDetailFragment extends Fragment
                 sb.append('\n');
             }
             sb.append(tag.getValue());
+        }
+        return AribUtils.toDisplayableString(sb.toString());
+    }
+
+    @NonNull
+    private static String jointLongDescription(@NonNull CdsObject object) {
+        final List<Tag> tagList = object.getTagList(CdsObject.ARIB_LONG_DESCRIPTION);
+        if (tagList == null) {
+            return null;
+        }
+        final StringBuffer sb = new StringBuffer();
+        for (final Tag tag : tagList) {
+            if (sb.length() != 0) {
+                sb.append('\n');
+                sb.append('\n');
+            }
+            final String value = tag.getValue();
+            final byte[] bytes = value.getBytes();
+            final int length = Math.min(24, bytes.length);
+            final String title = new String(bytes, 0, length);
+            sb.append(title.trim());
+            if (value.length() > title.length()) {
+                sb.append('\n');
+                sb.append(value.substring(title.length()));
+            }
         }
         return AribUtils.toDisplayableString(sb.toString());
     }

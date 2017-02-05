@@ -128,30 +128,15 @@ public class ServerListActivity extends AppCompatActivity {
                 || ni.getType() == ConnectivityManager.TYPE_ETHERNET);
     }
 
+    // TODO: 複数のWIFIやEtherも考慮
     private Collection<NetworkInterface> getWifiInterface() {
         final NetworkInfo ni = mConnectivityManager.getActiveNetworkInfo();
         if (ni == null || !ni.isConnected()
                 || ni.getType() != ConnectivityManager.TYPE_WIFI) {
             return null;
         }
-        final WifiManager wm = (WifiManager) getSystemService(WIFI_SERVICE);
-        final WifiInfo wi = wm.getConnectionInfo();
-        if (wi == null) {
-            return null;
-        }
-        int ip = wi.getIpAddress();
-        final byte[] addr = new byte[4];
-        addr[0] = (byte) (ip & 0xff);
-        ip >>= 8;
-        addr[1] = (byte) (ip & 0xff);
-        ip >>= 8;
-        addr[2] = (byte) (ip & 0xff);
-        ip >>= 8;
-        addr[3] = (byte) (ip & 0xff);
-        final InetAddress ipaddr;
-        try {
-            ipaddr = InetAddress.getByAddress(addr);
-        } catch (final UnknownHostException ignored) {
+        final InetAddress address = getWifiInetAddress();
+        if (address == null) {
             return null;
         }
         final Enumeration<NetworkInterface> nis;
@@ -171,7 +156,7 @@ public class ServerListActivity extends AppCompatActivity {
                 }
                 final List<InterfaceAddress> ifas = nif.getInterfaceAddresses();
                 for (final InterfaceAddress a : ifas) {
-                    if (a.getAddress().equals(ipaddr)) {
+                    if (a.getAddress().equals(address)) {
                         final Collection<NetworkInterface> c = new ArrayList<>();
                         c.add(nif);
                         return c;
@@ -181,6 +166,30 @@ public class ServerListActivity extends AppCompatActivity {
             }
         }
         return null;
+    }
+
+    private InetAddress getWifiInetAddress() {
+        final WifiInfo wi = ((WifiManager) getSystemService(WIFI_SERVICE)).getConnectionInfo();
+        if (wi == null) {
+            return null;
+        }
+        try {
+            return InetAddress.getByAddress(intToByteArray(wi.getIpAddress()));
+        } catch (final UnknownHostException ignored) {
+        }
+        return null;
+    }
+
+    private byte[] intToByteArray(int ip) {
+        final byte[] array = new byte[4];
+        array[0] = (byte) (ip & 0xff);
+        ip >>= 8;
+        array[1] = (byte) (ip & 0xff);
+        ip >>= 8;
+        array[2] = (byte) (ip & 0xff);
+        ip >>= 8;
+        array[3] = (byte) (ip & 0xff);
+        return array;
     }
 
     private final MsDiscoveryListener mDiscoveryListener = new MsDiscoveryListener() {

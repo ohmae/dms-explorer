@@ -10,8 +10,6 @@ package net.mm2d.dmsexplorer;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Point;
-import android.media.MediaPlayer;
-import android.media.MediaPlayer.OnErrorListener;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -42,19 +40,6 @@ public class MovieActivity extends AppCompatActivity {
     private ControlView mControlPanel;
     private Handler mHandler;
 
-    private final OnErrorListener mOnErrorListener = new OnErrorListener() {
-        private boolean mNoError = true;
-
-        @Override
-        public boolean onError(MediaPlayer mp, int what, int extra) {
-            if (mNoError) {
-                mNoError = false;
-                return false;
-            }
-            return true;
-        }
-    };
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,7 +59,6 @@ public class MovieActivity extends AppCompatActivity {
         mToolbar = findViewById(R.id.toolbar);
         mControlPanel = (ControlView) findViewById(R.id.controlPanel);
         mControlPanel.setOnCompletionListener(mp -> onBackPressed());
-        mControlPanel.setOnErrorListener(mOnErrorListener);
         mControlPanel.setOnUserActionListener(this::postHideNavigation);
         mVideoView = (VideoView) findViewById(R.id.videoView);
         assert mVideoView != null;

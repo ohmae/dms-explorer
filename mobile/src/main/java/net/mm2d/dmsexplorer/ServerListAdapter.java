@@ -8,6 +8,8 @@
 package net.mm2d.dmsexplorer;
 
 import android.content.Context;
+import android.content.res.Resources;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Build;
 import android.support.v7.widget.RecyclerView;
@@ -15,9 +17,11 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import net.mm2d.android.cds.MediaServer;
+import net.mm2d.upnp.Icon;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -31,6 +35,8 @@ import java.util.List;
 public class ServerListAdapter
         extends RecyclerView.Adapter<ServerListAdapter.ViewHolder> {
     private static final String TAG = "ServerListAdapter";
+    private final int mSelectedZ;
+    private final int mAccentRadius;
 
     public interface OnItemClickListener {
         void onItemClick(View v, View accent, int position, MediaServer server);
@@ -48,6 +54,9 @@ public class ServerListAdapter
         } else {
             mList = new ArrayList<>(servers);
         }
+        final Resources res = context.getResources();
+        mSelectedZ = res.getDimensionPixelSize(R.dimen.raise_focus);
+        mAccentRadius = res.getDimensionPixelSize(R.dimen.accent_radius);
     }
 
     @Override
@@ -112,7 +121,9 @@ public class ServerListAdapter
     class ViewHolder extends RecyclerView.ViewHolder {
         private final View mView;
         private final View mMark;
-        private final TextView mAccent;
+        private final View mAccent;
+        private final ImageView mImageAccent;
+        private final TextView mTextAccent;
         private final TextView mText1;
         private final TextView mText2;
         private int mPosition;
@@ -123,16 +134,16 @@ public class ServerListAdapter
             super(itemView);
             mView = itemView;
             mMark = mView.findViewById(R.id.mark);
-            mAccent = (TextView) mView.findViewById(R.id.textAccent);
+            mAccent = mView.findViewById(R.id.accent);
+            mImageAccent = (ImageView) mView.findViewById(R.id.imageAccent);
+            mTextAccent = (TextView) mView.findViewById(R.id.textAccent);
             mText1 = (TextView) mView.findViewById(R.id.text1);
             mText2 = (TextView) mView.findViewById(R.id.text2);
             mView.setOnClickListener(mItemClickListener);
             mView.setTag(this);
-            final int radius = mView.getContext().getResources()
-                    .getDimensionPixelSize(R.dimen.accent_radius);
             mAccentBackground = new GradientDrawable();
-            mAccentBackground.setCornerRadius(radius);
-            mAccent.setBackground(mAccentBackground);
+            mAccentBackground.setCornerRadius(mAccentRadius);
+            mTextAccent.setBackground(mAccentBackground);
         }
 
         void applyItem(int position, MediaServer server) {
@@ -141,9 +152,7 @@ public class ServerListAdapter
                 mMark.setVisibility(View.VISIBLE);
                 mView.setBackgroundResource(R.drawable.bg_list_item_selected);
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    final int z = mView.getContext().getResources()
-                            .getDimensionPixelSize(R.dimen.raise_focus);
-                    mView.setTranslationZ(z);
+                    mView.setTranslationZ(mSelectedZ);
                 }
             } else {
                 mMark.setVisibility(View.INVISIBLE);
@@ -154,13 +163,25 @@ public class ServerListAdapter
             }
             mServer = server;
             final String name = server.getFriendlyName();
-            if (!TextUtils.isEmpty(name)) {
-                final String c = name.substring(0, 1);
-                mAccent.setText(c);
+            final Icon icon = server.getIcon();
+            if (icon != null) {
+                mTextAccent.setText(null);
+                mTextAccent.setVisibility(View.GONE);
+                final byte[] binary = icon.getBinary();
+                mImageAccent.setImageBitmap(BitmapFactory.decodeByteArray(binary, 0, binary.length));
+                mImageAccent.setVisibility(View.VISIBLE);
             } else {
-                mAccent.setText("");
+                mImageAccent.setImageBitmap(null);
+                mImageAccent.setVisibility(View.GONE);
+                mTextAccent.setVisibility(View.VISIBLE);
+                if (!TextUtils.isEmpty(name)) {
+                    final String c = name.substring(0, 1);
+                    mTextAccent.setText(c);
+                } else {
+                    mTextAccent.setText(null);
+                }
+                mAccentBackground.setColor(ThemeUtils.getAccentColor(name));
             }
-            mAccentBackground.setColor(ThemeUtils.getAccentColor(name));
             mText1.setText(name);
             final StringBuilder sb = new StringBuilder();
             sb.append("IP: ");
