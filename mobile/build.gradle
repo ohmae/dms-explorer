@@ -31,6 +31,12 @@ android {
     }
 }
 
+repositories {
+    maven {
+        url 'https://ohmae.github.com/mmupnp/maven'
+    }
+}
+
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     testCompile 'junit:junit:4.12'
@@ -38,5 +44,5 @@ dependencies {
     compile 'com.android.support:support-v4:24.2.1'
     compile 'com.android.support:recyclerview-v7:24.2.1'
     compile 'com.android.support:design:24.2.1'
-    compile files('libs/mmupnp.jar')
+    compile 'net.mm2d.mmupnp:mmupnp:1.0.6'
 }
