@@ -724,22 +724,22 @@ public class CdsObject implements Parcelable {
      * \@idの値。
      */
     @NonNull
-    private String mObjectId;
+    private final String mObjectId;
     /**
      * \@parentIDの値。
      */
     @NonNull
-    private String mParentId;
+    private final String mParentId;
     /**
      * dc:titleの値
      */
     @NonNull
-    private String mTitle;
+    private final String mTitle;
     /**
      * upnp:classの値
      */
     @NonNull
-    private String mUpnpClass;
+    private final String mUpnpClass;
     /**
      * upnp:classのint値表現。
      *
@@ -749,13 +749,18 @@ public class CdsObject implements Parcelable {
      * @see #TYPE_IMAGE
      * @see #TYPE_CONTAINER
      */
-    private int mType;
+    private final int mType;
 
     private static class Param {
-        @NonNull private final String mObjectId;
-        @NonNull private final String mParentId;
-        @NonNull private final String mTitle;
-        @NonNull private final String mUpnpClass;
+        @NonNull
+        private final String mObjectId;
+        @NonNull
+        private final String mParentId;
+        @NonNull
+        private final String mTitle;
+        @NonNull
+        private final String mUpnpClass;
+
         Param(TagMap map) {
             final String objectId = map.getValue(ID);
             final String parentId = map.getValue(PARENT_ID);
@@ -820,7 +825,7 @@ public class CdsObject implements Parcelable {
         if (!isItem) {
             return TYPE_CONTAINER;
         } else if (upnpClass.startsWith(IMAGE_ITEM)) {
-            return  TYPE_IMAGE;
+            return TYPE_IMAGE;
         } else if (upnpClass.startsWith(AUDIO_ITEM)) {
             return TYPE_AUDIO;
         } else if (upnpClass.startsWith(VIDEO_ITEM)) {

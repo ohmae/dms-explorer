@@ -60,7 +60,7 @@ public class BitmapUtils {
      * @return ダウンサンプル数
      */
     private static int calcSampleSize(int sourceWidth, int sourceHeight,
-                                     int targetWidth, int targetHeight) {
+                                      int targetWidth, int targetHeight) {
         if (targetWidth == 0 || targetHeight == 0) {
             return 1; // avoid divide by zero
         }

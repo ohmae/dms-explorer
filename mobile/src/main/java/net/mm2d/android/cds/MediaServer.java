@@ -60,15 +60,17 @@ public class MediaServer {
         if (!device.getDeviceType().startsWith(Cds.MS_DEVICE_TYPE)) {
             throw new IllegalArgumentException("device is not MediaServer");
         }
-        mDevice = device;
-        mCdsService = mDevice.findServiceById(Cds.CDS_SERVICE_ID);
-        if (mCdsService == null) {
+        final Service cdsService = device.findServiceById(Cds.CDS_SERVICE_ID);
+        if (cdsService == null) {
             throw new IllegalArgumentException("Device don't have cds service");
         }
-        mBrowse = mCdsService.findAction(BROWSE);
-        if (mBrowse == null) {
+        final Action browse = cdsService.findAction(BROWSE);
+        if (browse == null) {
             throw new IllegalArgumentException("Device don't have browse action");
         }
+        mDevice = device;
+        mCdsService = cdsService;
+        mBrowse = browse;
     }
 
     /**
@@ -98,7 +100,7 @@ public class MediaServer {
     @Nullable
     public Icon getIcon() {
         final List<Icon> iconList = mDevice.getIconList();
-        for (Icon icon : iconList) {
+        for (final Icon icon : iconList) {
             if (icon.getBinary() != null) {
                 return icon;
             }
@@ -125,7 +127,7 @@ public class MediaServer {
      *
      * @return UDNタグの値
      */
-    @Nullable
+    @NonNull
     public String getUdn() {
         return mDevice.getUdn();
     }
@@ -137,7 +139,7 @@ public class MediaServer {
      *
      * @return friendlyNameタグの値
      */
-    @Nullable
+    @NonNull
     public String getFriendlyName() {
         return mDevice.getFriendlyName();
     }
@@ -173,7 +175,7 @@ public class MediaServer {
      *
      * @return modelNameタグの値
      */
-    @Nullable
+    @NonNull
     public String getModelName() {
         return mDevice.getModelName();
     }

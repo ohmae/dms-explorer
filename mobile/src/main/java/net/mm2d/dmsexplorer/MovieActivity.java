@@ -12,6 +12,8 @@ import android.content.res.Configuration;
 import android.graphics.Point;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Build.VERSION;
+import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
@@ -81,10 +83,14 @@ public class MovieActivity extends AppCompatActivity {
     }
 
     private void adjustControlPanel() {
+        if (VERSION.SDK_INT >= VERSION_CODES.N && isInMultiWindowMode()) {
+            adjustControlPanel(0, 0);
+            return;
+        }
         final Display display = getWindowManager().getDefaultDisplay();
         final Point p1 = new Point();
         display.getSize(p1);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+        if (VERSION.SDK_INT >= VERSION_CODES.JELLY_BEAN_MR1) {
             final Point p2 = new Point();
             display.getRealSize(p2);
             adjustControlPanel(p2.x - p1.x, p2.y - p1.y);

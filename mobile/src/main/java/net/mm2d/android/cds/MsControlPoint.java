@@ -84,7 +84,8 @@ public class MsControlPoint {
 
     private final NotifyEventListener mNotifyEventListener = new NotifyEventListener() {
         @Override
-        public void onNotifyEvent(@NonNull Service service, long seq, String variable, String value) {
+        public void onNotifyEvent(@NonNull Service service, long seq,
+                                  @NonNull String variable, @NonNull String value) {
             if (mContainerUpdateIdsListener == null) {
                 return;
             }
@@ -102,6 +103,9 @@ public class MsControlPoint {
             }
             final String udn = service.getDevice().getUdn();
             final MediaServer server = getMediaServer(udn);
+            if (server == null) {
+                return;
+            }
             mContainerUpdateIdsListener.onContainerUpdateIds(server, ids);
         }
     };

@@ -212,7 +212,7 @@ public class CdsDetailFragment extends Fragment
             return null;
         }
         try {
-            final StringBuffer sb = new StringBuffer();
+            final StringBuilder sb = new StringBuilder();
             for (final Tag tag : tagList) {
                 if (sb.length() != 0) {
                     sb.append('\n');
@@ -232,7 +232,7 @@ public class CdsDetailFragment extends Fragment
                 }
             }
             return AribUtils.toDisplayableString(sb.toString());
-        } catch (UnsupportedEncodingException ignored) {
+        } catch (final UnsupportedEncodingException ignored) {
         }
         return null;
     }

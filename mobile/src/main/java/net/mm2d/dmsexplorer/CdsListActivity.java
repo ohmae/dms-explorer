@@ -327,7 +327,6 @@ public class CdsListActivity extends AppCompatActivity
         mCdsListAdapter.setSelection(-1);
         mCdsDetailFragment = null;
         mSelectedObject = null;
-        final ActionBar actionBar = getSupportActionBar();
         final StringBuilder sb = new StringBuilder();
         for (final History history : mHistories) {
             if (sb.length() != 0) {
@@ -336,6 +335,7 @@ public class CdsListActivity extends AppCompatActivity
             sb.append(history.getTitle());
         }
         mSubtitle = sb.toString();
+        final ActionBar actionBar = getSupportActionBar();
         actionBar.setSubtitle(mSubtitle);
     }
 
