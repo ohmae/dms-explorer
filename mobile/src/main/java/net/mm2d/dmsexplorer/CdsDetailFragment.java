@@ -32,6 +32,7 @@ import net.mm2d.android.util.AribUtils;
 import net.mm2d.android.util.LaunchUtils;
 import net.mm2d.util.Log;
 
+import java.io.UnsupportedEncodingException;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -204,29 +205,36 @@ public class CdsDetailFragment extends Fragment
         return AribUtils.toDisplayableString(sb.toString());
     }
 
-    @NonNull
+    @Nullable
     private static String jointLongDescription(@NonNull CdsObject object) {
         final List<Tag> tagList = object.getTagList(CdsObject.ARIB_LONG_DESCRIPTION);
         if (tagList == null) {
             return null;
         }
-        final StringBuffer sb = new StringBuffer();
-        for (final Tag tag : tagList) {
-            if (sb.length() != 0) {
-                sb.append('\n');
-                sb.append('\n');
+        try {
+            final StringBuffer sb = new StringBuffer();
+            for (final Tag tag : tagList) {
+                if (sb.length() != 0) {
+                    sb.append('\n');
+                    sb.append('\n');
+                }
+                final String value = tag.getValue();
+                if (TextUtils.isEmpty(value)) {
+                    continue;
+                }
+                final byte[] bytes = value.getBytes("UTF-8");
+                final int length = Math.min(24, bytes.length);
+                final String title = new String(bytes, 0, length, "UTF-8");
+                sb.append(title.trim());
+                if (value.length() > title.length()) {
+                    sb.append('\n');
+                    sb.append(value.substring(title.length()));
+                }
             }
-            final String value = tag.getValue();
-            final byte[] bytes = value.getBytes();
-            final int length = Math.min(24, bytes.length);
-            final String title = new String(bytes, 0, length);
-            sb.append(title.trim());
-            if (value.length() > title.length()) {
-                sb.append('\n');
-                sb.append(value.substring(title.length()));
-            }
+            return AribUtils.toDisplayableString(sb.toString());
+        } catch (UnsupportedEncodingException ignored) {
         }
-        return AribUtils.toDisplayableString(sb.toString());
+        return null;
     }
 
     @Nullable
