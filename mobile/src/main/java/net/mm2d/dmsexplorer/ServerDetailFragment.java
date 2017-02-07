@@ -11,6 +11,7 @@ import android.app.ActivityOptions;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
@@ -42,7 +43,7 @@ public class ServerDetailFragment extends Fragment
      * @param udn メディアサーバーのUDN
      * @return インスタンス
      */
-    public static ServerDetailFragment newInstance(String udn) {
+    public static ServerDetailFragment newInstance(@NonNull String udn) {
         final ServerDetailFragment instance = new ServerDetailFragment();
         final Bundle arguments = new Bundle();
         arguments.putString(Const.EXTRA_UDN, udn);

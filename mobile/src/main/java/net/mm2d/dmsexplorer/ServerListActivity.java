@@ -93,7 +93,8 @@ public class ServerListActivity extends AppCompatActivity {
     };
     private final OnItemClickListener mOnItemClickListener = new OnItemClickListener() {
         @Override
-        public void onItemClick(View v, View accent, int position, MediaServer server) {
+        public void onItemClick(final @NonNull View v, final @NonNull View accent,
+                                final int position, final @NonNull MediaServer server) {
             if (mTwoPane) {
                 if (mSelectedServer != null && mSelectedServer.equals(server)) {
                     return;

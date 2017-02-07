@@ -66,13 +66,11 @@ public class PropertyAdapter
     }
 
     private final List<Entry> mList;
-    private final Context mContext;
     private final LayoutInflater mInflater;
     private OnItemLinkClickListener mListener;
 
     public PropertyAdapter(Context context) {
-        mContext = context;
-        mInflater = LayoutInflater.from(mContext);
+        mInflater = LayoutInflater.from(context);
         mList = new ArrayList<>();
     }
 

@@ -24,6 +24,8 @@ import net.mm2d.android.cds.Tag;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 /**
  * マルチリソースのコンテンツの再生時にリソースの選択を促すダイアログ。
  *
@@ -41,7 +43,7 @@ public class SelectResourceDialog extends DialogFragment {
      * @param object 対象コンテンツのObject情報
      * @return インスタンス。
      */
-    public static SelectResourceDialog newInstance(CdsObject object) {
+    public static SelectResourceDialog newInstance(@Nonnull CdsObject object) {
         final Bundle arguments = new Bundle();
         arguments.putParcelable(KEY_OBJECT, object);
         final SelectResourceDialog instance = new SelectResourceDialog();

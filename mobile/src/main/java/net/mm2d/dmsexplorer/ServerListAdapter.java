@@ -12,6 +12,7 @@ import android.content.res.Resources;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Build;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -27,6 +28,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 /**
  * MediaServerをRecyclerViewへ表示するためのAdapter。
  *
@@ -39,7 +42,7 @@ public class ServerListAdapter
     private final int mAccentRadius;
 
     public interface OnItemClickListener {
-        void onItemClick(View v, View accent, int position, MediaServer server);
+        void onItemClick(@NonNull View v, @NonNull View accent, int position, @NonNull MediaServer server);
     }
 
     private final LayoutInflater mInflater;
@@ -146,8 +149,24 @@ public class ServerListAdapter
             mTextAccent.setBackground(mAccentBackground);
         }
 
-        void applyItem(int position, MediaServer server) {
+        void applyItem(final int position, final @NonNull MediaServer server) {
             mPosition = position;
+            mServer = server;
+            setSelectionMark(position);
+            setIconAndTitle(server.getIcon(), server.getFriendlyName());
+            final StringBuilder sb = new StringBuilder();
+            sb.append("IP: ");
+            sb.append(server.getIpAddress());
+            final String serial = server.getSerialNumber();
+            if (serial != null && !serial.isEmpty()) {
+                sb.append("  ");
+                sb.append("Serial: ");
+                sb.append(serial);
+            }
+            mText2.setText(sb.toString());
+        }
+
+        private void setSelectionMark(final int position) {
             if (position == mSelection) {
                 mMark.setVisibility(View.VISIBLE);
                 mView.setBackgroundResource(R.drawable.bg_list_item_selected);
@@ -161,9 +180,9 @@ public class ServerListAdapter
                     mView.setTranslationZ(0);
                 }
             }
-            mServer = server;
-            final String name = server.getFriendlyName();
-            final Icon icon = server.getIcon();
+        }
+
+        private void setIconAndTitle(final @Nullable Icon icon, final @NonNull String title) {
             if (icon != null) {
                 mTextAccent.setText(null);
                 mTextAccent.setVisibility(View.GONE);
@@ -174,25 +193,15 @@ public class ServerListAdapter
                 mImageAccent.setImageBitmap(null);
                 mImageAccent.setVisibility(View.GONE);
                 mTextAccent.setVisibility(View.VISIBLE);
-                if (!TextUtils.isEmpty(name)) {
-                    final String c = name.substring(0, 1);
+                if (!TextUtils.isEmpty(title)) {
+                    final String c = title.substring(0, 1);
                     mTextAccent.setText(c);
                 } else {
                     mTextAccent.setText(null);
                 }
-                mAccentBackground.setColor(ThemeUtils.getAccentColor(name));
+                mAccentBackground.setColor(ThemeUtils.getAccentColor(title));
             }
-            mText1.setText(name);
-            final StringBuilder sb = new StringBuilder();
-            sb.append("IP: ");
-            sb.append(server.getIpAddress());
-            final String serial = server.getSerialNumber();
-            if (serial != null && !serial.isEmpty()) {
-                sb.append("  ");
-                sb.append("Serial: ");
-                sb.append(serial);
-            }
-            mText2.setText(sb.toString());
+            mText1.setText(title);
         }
 
         View getAccent() {
