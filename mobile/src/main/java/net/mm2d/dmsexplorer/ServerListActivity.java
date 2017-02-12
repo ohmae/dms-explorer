@@ -13,9 +13,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
-import android.net.wifi.WifiInfo;
-import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
@@ -37,18 +34,9 @@ import android.widget.Toast;
 import net.mm2d.android.cds.MediaServer;
 import net.mm2d.android.cds.MsControlPoint;
 import net.mm2d.android.cds.MsControlPoint.MsDiscoveryListener;
+import net.mm2d.android.net.Lan;
 import net.mm2d.android.widget.DividerItemDecoration;
 import net.mm2d.dmsexplorer.ServerListAdapter.OnItemClickListener;
-
-import java.net.InetAddress;
-import java.net.InterfaceAddress;
-import java.net.NetworkInterface;
-import java.net.SocketException;
-import java.net.UnknownHostException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Enumeration;
-import java.util.List;
 
 /**
  * MediaServerのサーチ、選択を行うActivity。
@@ -68,16 +56,17 @@ public class ServerListActivity extends AppCompatActivity {
     private MediaServer mSelectedServer;
     private ServerDetailFragment mServerDetailFragment;
     private ServerListAdapter mServerListAdapter;
-    private ConnectivityManager mConnectivityManager;
     private SwipeRefreshLayout mSwipeRefreshLayout;
+    private Lan mLan;
+
     private final BroadcastReceiver mConnectivityReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            final boolean available = hasAvailableNetwork();
+            final boolean available = mLan.hasAvailableInterface();
             if (mNetworkAvailable != available) {
                 synchronized (mMsControlPoint) {
                     if (available) {
-                        mMsControlPoint.initialize(getWifiInterface());
+                        mMsControlPoint.initialize(mLan.getAvailableInterfaces());
                         mMsControlPoint.start();
                     } else {
                         mMsControlPoint.stop();
@@ -121,77 +110,6 @@ public class ServerListActivity extends AppCompatActivity {
             }
         }
     };
-
-    private boolean hasAvailableNetwork() {
-        final NetworkInfo ni = mConnectivityManager.getActiveNetworkInfo();
-        return ni != null && ni.isConnected()
-                && (ni.getType() == ConnectivityManager.TYPE_WIFI
-                || ni.getType() == ConnectivityManager.TYPE_ETHERNET);
-    }
-
-    // TODO: 複数のWIFIやEtherも考慮
-    private Collection<NetworkInterface> getWifiInterface() {
-        final NetworkInfo ni = mConnectivityManager.getActiveNetworkInfo();
-        if (ni == null || !ni.isConnected()
-                || ni.getType() != ConnectivityManager.TYPE_WIFI) {
-            return null;
-        }
-        final InetAddress address = getWifiInetAddress();
-        if (address == null) {
-            return null;
-        }
-        final Enumeration<NetworkInterface> nis;
-        try {
-            nis = NetworkInterface.getNetworkInterfaces();
-        } catch (final SocketException e) {
-            return null;
-        }
-        while (nis.hasMoreElements()) {
-            final NetworkInterface nif = nis.nextElement();
-            try {
-                if (nif.isLoopback()
-                        || nif.isPointToPoint()
-                        || nif.isVirtual()
-                        || !nif.isUp()) {
-                    continue;
-                }
-                final List<InterfaceAddress> ifas = nif.getInterfaceAddresses();
-                for (final InterfaceAddress a : ifas) {
-                    if (a.getAddress().equals(address)) {
-                        final Collection<NetworkInterface> c = new ArrayList<>();
-                        c.add(nif);
-                        return c;
-                    }
-                }
-            } catch (final SocketException ignored) {
-            }
-        }
-        return null;
-    }
-
-    private InetAddress getWifiInetAddress() {
-        final WifiInfo wi = ((WifiManager) getSystemService(WIFI_SERVICE)).getConnectionInfo();
-        if (wi == null) {
-            return null;
-        }
-        try {
-            return InetAddress.getByAddress(intToByteArray(wi.getIpAddress()));
-        } catch (final UnknownHostException ignored) {
-        }
-        return null;
-    }
-
-    private byte[] intToByteArray(int ip) {
-        final byte[] array = new byte[4];
-        array[0] = (byte) (ip & 0xff);
-        ip >>= 8;
-        array[1] = (byte) (ip & 0xff);
-        ip >>= 8;
-        array[2] = (byte) (ip & 0xff);
-        ip >>= 8;
-        array[3] = (byte) (ip & 0xff);
-        return array;
-    }
 
     private final MsDiscoveryListener mDiscoveryListener = new MsDiscoveryListener() {
         @Override
@@ -251,7 +169,7 @@ public class ServerListActivity extends AppCompatActivity {
         }
         setContentView(R.layout.act_server_list);
         mHandler = new Handler();
-        mConnectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        mLan = Lan.createInstance(this);
         final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         assert toolbar != null;
         setSupportActionBar(toolbar);
@@ -259,11 +177,11 @@ public class ServerListActivity extends AppCompatActivity {
         mMsControlPoint.setMsDiscoveryListener(mDiscoveryListener);
         mServerListAdapter = new ServerListAdapter(this, mMsControlPoint.getMediaServerList());
         mServerListAdapter.setOnItemClickListener(mOnItemClickListener);
-        mNetworkAvailable = hasAvailableNetwork();
+        mNetworkAvailable = mLan.hasAvailableInterface();
         synchronized (mMsControlPoint) {
             if (mNetworkAvailable) {
                 if (savedInstanceState == null) {
-                    mMsControlPoint.initialize(getWifiInterface());
+                    mMsControlPoint.initialize(mLan.getAvailableInterfaces());
                     mMsControlPoint.start();
                 }
             } else {
@@ -278,7 +196,7 @@ public class ServerListActivity extends AppCompatActivity {
                 R.color.progress1, R.color.progress2, R.color.progress3, R.color.progress4);
         mSwipeRefreshLayout.setRefreshing(mServerListAdapter.getItemCount() == 0);
         mSwipeRefreshLayout.setOnRefreshListener(() -> {
-            if (!hasAvailableNetwork()) {
+            if (!mLan.hasAvailableInterface()) {
                 return;
             }
             synchronized (mMsControlPoint) {
@@ -286,7 +204,7 @@ public class ServerListActivity extends AppCompatActivity {
                 mMsControlPoint.terminate();
                 mServerListAdapter.clear();
                 mServerListAdapter.notifyDataSetChanged();
-                mMsControlPoint.initialize(getWifiInterface());
+                mMsControlPoint.initialize(mLan.getAvailableInterfaces());
                 mMsControlPoint.start();
             }
         });
@@ -317,7 +235,7 @@ public class ServerListActivity extends AppCompatActivity {
         super.onResume();
         mSearchThread = new SearchThread();
         mSearchThread.start();
-        if (!hasAvailableNetwork()) {
+        if (!mLan.hasAvailableInterface()) {
             showToast(R.string.no_available_network);
         }
     }

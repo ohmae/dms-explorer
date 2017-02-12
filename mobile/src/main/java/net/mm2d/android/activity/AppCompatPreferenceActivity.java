@@ -5,7 +5,7 @@
  * http://opensource.org/licenses/MIT
  */
 
-package net.mm2d.dmsexplorer;
+package net.mm2d.android.activity;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
