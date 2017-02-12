@@ -16,11 +16,17 @@ import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Display;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.ViewGroup.LayoutParams;
+import android.view.ViewGroup.MarginLayoutParams;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 import android.widget.VideoView;
 
@@ -42,10 +48,16 @@ public class MovieActivity extends AppCompatActivity {
     private ControlView mControlPanel;
     private Handler mHandler;
 
+    private Animation mEnterFromTop;
+    private Animation mEnterFromBottom;
+    private Animation mExitToTop;
+    private Animation mExitToBottom;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_movie);
+        loadAnimation();
         mRoot = findViewById(R.id.root);
         mRoot.setOnClickListener(v -> {
             showNavigation();
@@ -74,6 +86,13 @@ public class MovieActivity extends AppCompatActivity {
         adjustControlPanel();
         showNavigation();
         postHideNavigation();
+    }
+
+    private void loadAnimation() {
+        mEnterFromTop = AnimationUtils.loadAnimation(this, R.anim.enter_from_top);
+        mEnterFromBottom = AnimationUtils.loadAnimation(this, R.anim.enter_from_bottom);
+        mExitToTop = AnimationUtils.loadAnimation(this, R.anim.exit_to_top);
+        mExitToBottom = AnimationUtils.loadAnimation(this, R.anim.exit_to_bottom);
     }
 
     @Override
@@ -107,9 +126,21 @@ public class MovieActivity extends AppCompatActivity {
     }
 
     private void adjustControlPanel(int right, int bottom) {
-        mControlPanel.setPadding(0, 0, right, bottom);
+        mControlPanel.setPadding(0, 0, 0, bottom);
+        setLayoutMarginRight(mControlPanel, right);
         final int topPadding = getResources().getDimensionPixelSize(R.dimen.status_bar_size);
-        mToolbar.setPadding(0, topPadding, right, 0);
+        mToolbar.setPadding(0, topPadding, 0, 0);
+        setLayoutMarginRight(mToolbar, right);
+    }
+
+    private static void setLayoutMarginRight(View view, int rightMargin) {
+        LayoutParams params = view.getLayoutParams();
+        if (!(params instanceof MarginLayoutParams)){
+            return;
+        }
+        MarginLayoutParams marginParams = (MarginLayoutParams) params;
+        marginParams.rightMargin = rightMargin;
+        view.setLayoutParams(params);
     }
 
     private final Runnable mHideNavigationTask = this::hideNavigation;
@@ -120,13 +151,21 @@ public class MovieActivity extends AppCompatActivity {
     }
 
     private void showNavigation() {
+        if (mToolbar.getVisibility() != View.VISIBLE) {
+            mToolbar.startAnimation(mEnterFromTop);
+        }
         mToolbar.setVisibility(View.VISIBLE);
+        if (mControlPanel.getVisibility() != View.VISIBLE) {
+            mControlPanel.startAnimation(mEnterFromBottom);
+        }
         mControlPanel.setVisibility(View.VISIBLE);
         mRoot.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE);
     }
 
     private void hideNavigation() {
+        mToolbar.startAnimation(mExitToTop);
         mToolbar.setVisibility(View.GONE);
+        mControlPanel.startAnimation(mExitToBottom);
         mControlPanel.setVisibility(View.GONE);
         final int visibility;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {

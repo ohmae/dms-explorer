@@ -20,5 +20,5 @@
     <color name="progress3">#BB9933</color>
     <color name="progress4">#33BB55</color>
     <color name="translucent_ripple">#40ffffff</color>
-    <color name="translucent_control">#60000000</color>
+    <color name="translucent_control">#66000000</color>
 </resources>
