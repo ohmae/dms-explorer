@@ -163,7 +163,7 @@ public class DmrActivity extends AppCompatActivity
 
         final String title = AribUtils.toDisplayableString(object.getTitle());
         actionBar.setTitle(title);
-        actionBar.setSubtitle(mMediaRenderer.getFriendlyName() + " ← " + server.getFriendlyName());
+        actionBar.setSubtitle(mMediaRenderer.getFriendlyName() + "  ←  " + server.getFriendlyName());
 
         final ImageView image = (ImageView) findViewById(R.id.image);
         image.setImageResource(getImageResource(object));
@@ -175,19 +175,25 @@ public class DmrActivity extends AppCompatActivity
         recyclerView.setAdapter(adapter);
 
         mPlay = (ImageView) findViewById(R.id.play);
-        setUpPlay(mPlay);
         mNext = findViewById(R.id.next);
-        mNext.setOnClickListener(v -> goNext());
         mPrevious = findViewById(R.id.previous);
-        mPrevious.setOnClickListener(v -> goPrevious());
         mChapterMark = (ChapterMark) findViewById(R.id.chapterMark);
         mSeekBar = (SeekBar) findViewById(R.id.seekBar);
         mProgressText = (TextView) findViewById(R.id.textProgress);
         mDurationText = (TextView) findViewById(R.id.textDuration);
         mMediaRenderer.subscribe();
-        start(object, uri);
+
+        if (object.getType() == CdsObject.TYPE_IMAGE) {
+            findViewById(R.id.seekPanel).setVisibility(View.INVISIBLE);
+            start(object, uri);
+            return;
+        }
+        setUpPlay(mPlay);
+        mNext.setOnClickListener(v -> goNext());
+        mPrevious.setOnClickListener(v -> goPrevious());
         setUpSeekBar(mSeekBar);
 
+        start(object, uri);
         mHandler.postDelayed(mGetPositionTask, 1000);
         getChapterInfo(object);
     }
