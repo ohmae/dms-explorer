@@ -9,13 +9,13 @@ package net.mm2d.android.cds;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.text.TextUtils;
 
+import net.mm2d.android.upnp.DeviceWrapper;
 import net.mm2d.upnp.Action;
 import net.mm2d.upnp.Device;
-import net.mm2d.upnp.Icon;
 import net.mm2d.upnp.Service;
 import net.mm2d.util.Log;
+import net.mm2d.util.TextParseUtils;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -28,7 +28,7 @@ import java.util.Map;
  *
  * @author <a href="mailto:ryo@mm2d.net">大前良介(OHMAE Ryosuke)</a>
  */
-public class MediaServer {
+public class MediaServer extends DeviceWrapper {
     private static final String TAG = "MediaServer";
     private static final String BROWSE = "Browse";
     private static final String OBJECT_ID = "ObjectID";
@@ -43,8 +43,6 @@ public class MediaServer {
     private static final String NUMBER_RETURNED = "NumberReturned";
     private static final String TOTAL_MATCHES = "TotalMatches";
     @NonNull
-    private final Device mDevice;
-    @NonNull
     private final Service mCdsService;
     @NonNull
     private final Action mBrowse;
@@ -57,6 +55,7 @@ public class MediaServer {
      * @param device デバイス
      */
     MediaServer(@NonNull Device device) {
+        super(device);
         if (!device.getDeviceType().startsWith(Cds.MS_DEVICE_TYPE)) {
             throw new IllegalArgumentException("device is not MediaServer");
         }
@@ -68,214 +67,34 @@ public class MediaServer {
         if (browse == null) {
             throw new IllegalArgumentException("Device don't have browse action");
         }
-        mDevice = device;
         mCdsService = cdsService;
         mBrowse = browse;
     }
 
     /**
-     * このクラスがwrapしているDeviceのインスタンスを返す。
-     *
-     * <p>取扱い注意！
-     * このクラスが提供していない機能を利用する場合に必要となるため、
-     * 取得インターフェースを用意しているが、
-     * 外部で直接操作することを想定していないため、
-     * 利用する場合は必ずこのクラスの実装を理解した上で使用すること。
-     *
-     * @return Device
-     */
-    @NonNull
-    protected Device getDevice() {
-        return mDevice;
-    }
-
-    /**
-     * Deviceの有効なIconを返す。
-     *
-     * <p>MsControlPointにてダウンロードするIconを一つのみに限定しているため、
-     * Binaryデータがダウンロード済みのものがあればそれを返す。
-     *
-     * @return Iconインスタンス、ない場合はnullが返る。
-     */
-    @Nullable
-    public Icon getIcon() {
-        final List<Icon> iconList = mDevice.getIconList();
-        for (final Icon icon : iconList) {
-            if (icon.getBinary() != null) {
-                return icon;
-            }
-        }
-        return null;
-    }
-
-    /**
-     * Locationに記述のIPアドレスを返す。
-     *
-     * 記述に異常がある場合は空文字が返る。
-     *
-     * @return IPアドレス
-     */
-    @NonNull
-    public String getIpAddress() {
-        return mDevice.getIpAddress();
-    }
-
-    /**
-     * UDNタグの値を返す。
-     *
-     * 値が存在しない場合nullが返る。
-     *
-     * @return UDNタグの値
-     */
-    @NonNull
-    public String getUdn() {
-        return mDevice.getUdn();
-    }
-
-    /**
-     * friendlyNameタグの値を返す。
-     *
-     * 値が存在しない場合nullが返る。
-     *
-     * @return friendlyNameタグの値
-     */
-    @NonNull
-    public String getFriendlyName() {
-        return mDevice.getFriendlyName();
-    }
-
-    /**
-     * manufacturerタグの値を返す。
-     *
-     * 値が存在しない場合nullが返る。
-     *
-     * @return manufacturerタグの値
-     */
-    @Nullable
-    public String getManufacture() {
-        return mDevice.getManufacture();
-    }
-
-    /**
-     * manufacturerURLタグの値を返す。
-     *
-     * 値が存在しない場合nullが返る。
-     *
-     * @return manufacturerURLタグの値
-     */
-    @Nullable
-    public String getManufactureUrl() {
-        return mDevice.getManufactureUrl();
-    }
-
-    /**
-     * modelNameタグの値を返す。
-     *
-     * 値が存在しない場合nullが返る。
-     *
-     * @return modelNameタグの値
-     */
-    @NonNull
-    public String getModelName() {
-        return mDevice.getModelName();
-    }
-
-    /**
-     * modelURLタグの値を返す。
-     *
-     * 値が存在しない場合nullが返る。
-     *
-     * @return modelURLタグの値
-     */
-    @Nullable
-    public String getModelUrl() {
-        return mDevice.getModelUrl();
-    }
-
-    /**
-     * modelDescriptionタグの値を返す。
-     *
-     * 値が存在しない場合nullが返る。
-     *
-     * @return modelDescriptionタグの値
-     */
-    @Nullable
-    public String getModelDescription() {
-        return mDevice.getModelDescription();
-    }
-
-    /**
-     * modelNumberタグの値を返す。
-     *
-     * 値が存在しない場合nullが返る。
-     *
-     * @return modelNumberタグの値
-     */
-    @Nullable
-    public String getModelNumber() {
-        return mDevice.getModelNumber();
-    }
-
-    /**
-     * serialNumberタグの値を返す。
-     *
-     * 値が存在しない場合nullが返る。
-     *
-     * @return serialNumberタグの値
-     */
-    @Nullable
-    public String getSerialNumber() {
-        return mDevice.getSerialNumber();
-    }
-
-    /**
-     * presentationURLタグの値を返す。
-     *
-     * 値が存在しない場合nullが返る。
-     *
-     * @return presentationURLタグの値
-     */
-    @Nullable
-    public String getPresentationUrl() {
-        return mDevice.getPresentationUrl();
-    }
-
-    /**
-     * SSDPパケットに記述されているLocationヘッダの値を返す。
-     *
-     * @return Locationヘッダの値
-     */
-    @Nullable
-    public String getLocation() {
-        return mDevice.getLocation();
-    }
-
-    /**
      * CDSサービスを購読する。
-     *
-     * @return 成功時true
      */
-    public boolean subscribe() {
-        try {
-            return mCdsService.subscribe(true);
-        } catch (final IOException e) {
-            Log.w(TAG, e);
-        }
-        return false;
+    public void subscribe() {
+        new Thread(() -> {
+            try {
+                mCdsService.subscribe(true);
+            } catch (final IOException e) {
+                Log.w(TAG, e);
+            }
+        }).start();
     }
 
     /**
      * CDSサービスの購読を中止する。
-     *
-     * @return 成功時true
      */
-    public boolean unsubscribe() {
-        try {
-            return mCdsService.unsubscribe();
-        } catch (final IOException e) {
-            Log.w(TAG, e);
-        }
-        return false;
+    public void unsubscribe() {
+        new Thread(() -> {
+            try {
+                mCdsService.unsubscribe();
+            } catch (final IOException e) {
+                Log.w(TAG, e);
+            }
+        }).start();
     }
 
     private synchronized void execute(@NonNull Runnable command) {
@@ -393,13 +212,16 @@ public class MediaServer {
      */
     private static class BrowseTask implements Runnable {
         private static final int REQUEST_MAX = 10;
+        @NonNull
         private final Action mBrowse;
+        @NonNull
         private final BrowseRequest mRequest;
+        @NonNull
         private final BrowseResult mResult;
 
-        BrowseTask(@NonNull Action browse,
-                   @NonNull BrowseRequest request,
-                   @NonNull BrowseResult result) {
+        BrowseTask(final @NonNull Action browse,
+                   final @NonNull BrowseRequest request,
+                   final @NonNull BrowseResult result) {
             mBrowse = browse;
             mRequest = request;
             mResult = result;
@@ -416,21 +238,15 @@ public class MediaServer {
             int start = mRequest.startingIndex;
             int request = mRequest.requestedCount;
             request = request == 0 ? Integer.MAX_VALUE : request;
-            final Map<String, String> arg = new HashMap<>();
-            arg.put(OBJECT_ID, mRequest.objectId);
-            arg.put(BROWSE_FLAG, BROWSE_DIRECT_CHILDREN);
-            arg.put(FILTER, mRequest.filter);
-            arg.put(SORT_CRITERIA, mRequest.sortCriteria);
+            final Map<String, String> argument = makeArgument();
             try {
                 while (!mResult.isCancelled()) {
                     final int count = request > REQUEST_MAX ? REQUEST_MAX : request;
-                    arg.put(START_INDEX, String.valueOf(start));
-                    arg.put(REQUESTED_COUNT, String.valueOf(count));
-                    final Map<String, String> res = mBrowse.invoke(arg);
+                    final Map<String, String> res = mBrowse.invoke(setCount(argument, start, count));
                     final List<CdsObject> result = CdsObjectFactory
                             .parseDirectChildren(res.get(RESULT));
-                    final int number = parseIntSafely(res.get(NUMBER_RETURNED), -1);
-                    final int total = parseIntSafely(res.get(TOTAL_MATCHES), -1);
+                    final int number = TextParseUtils.parseIntSafely(res.get(NUMBER_RETURNED), -1);
+                    final int total = TextParseUtils.parseIntSafely(res.get(TOTAL_MATCHES), -1);
                     if (number == 0 || total == 0) {
                         mResult.set(list);
                         return;
@@ -445,14 +261,28 @@ public class MediaServer {
                     if (start >= total || request == 0) {
                         mResult.set(list);
                         return;
-                    } else {
-                        mResult.setProgress(list);
                     }
+                    mResult.setProgress(list);
                 }
             } catch (final IOException e) {
                 Log.w(TAG, e);
             }
             mResult.set(null);
+        }
+
+        private Map<String, String> makeArgument() {
+            final Map<String, String> argument = new HashMap<>();
+            argument.put(OBJECT_ID, mRequest.objectId);
+            argument.put(BROWSE_FLAG, BROWSE_DIRECT_CHILDREN);
+            argument.put(FILTER, mRequest.filter);
+            argument.put(SORT_CRITERIA, mRequest.sortCriteria);
+            return argument;
+        }
+
+        private Map<String, String> setCount(Map<String, String> argument, int start, int count) {
+            argument.put(START_INDEX, String.valueOf(start));
+            argument.put(REQUESTED_COUNT, String.valueOf(count));
+            return argument;
         }
     }
 
@@ -460,10 +290,12 @@ public class MediaServer {
      * BrowseMetadataの引数をまとめるクラス。
      */
     private static class BrowseMetadataRequest {
+        @NonNull
         private final String objectId;
+        @Nullable
         private final String filter;
 
-        BrowseMetadataRequest(@NonNull String objectId, @Nullable String filter) {
+        BrowseMetadataRequest(final @NonNull String objectId, final @Nullable String filter) {
             this.objectId = objectId;
             this.filter = filter;
         }
@@ -477,9 +309,9 @@ public class MediaServer {
         private final BrowseMetadataRequest mRequest;
         private final BrowseMetadataResult mResult;
 
-        BrowseMetadataTask(@NonNull Action browse,
-                           @NonNull BrowseMetadataRequest request,
-                           @NonNull BrowseMetadataResult result) {
+        BrowseMetadataTask(final @NonNull Action browse,
+                           final @NonNull BrowseMetadataRequest request,
+                           final @NonNull BrowseMetadataResult result) {
             mBrowse = browse;
             mRequest = request;
             mResult = result;
@@ -492,18 +324,11 @@ public class MediaServer {
                 mResult.set(null);
                 return;
             }
-            final Map<String, String> arg = new HashMap<>();
-            arg.put(OBJECT_ID, mRequest.objectId);
-            arg.put(BROWSE_FLAG, BROWSE_METADATA);
-            arg.put(FILTER, mRequest.filter);
-            arg.put(SORT_CRITERIA, "");
-            arg.put(START_INDEX, "0");
-            arg.put(REQUESTED_COUNT, "0");
             try {
-                final Map<String, String> res = mBrowse.invoke(arg);
+                final Map<String, String> res = mBrowse.invoke(makeArgument());
                 final CdsObject result = CdsObjectFactory.parseMetadata(res.get(RESULT));
-                final int number = parseIntSafely(res.get(NUMBER_RETURNED), -1);
-                final int total = parseIntSafely(res.get(TOTAL_MATCHES), -1);
+                final int number = TextParseUtils.parseIntSafely(res.get(NUMBER_RETURNED), -1);
+                final int total = TextParseUtils.parseIntSafely(res.get(TOTAL_MATCHES), -1);
                 if (result == null || number < 0 || total < 0) {
                     mResult.set(null);
                 } else {
@@ -514,38 +339,16 @@ public class MediaServer {
                 mResult.set(null);
             }
         }
-    }
 
-    private static int parseIntSafely(@Nullable String value, int defaultValue) {
-        if (TextUtils.isEmpty(value)) {
-            return defaultValue;
+        private Map<String, String> makeArgument() {
+            final Map<String, String> argument = new HashMap<>();
+            argument.put(OBJECT_ID, mRequest.objectId);
+            argument.put(BROWSE_FLAG, BROWSE_METADATA);
+            argument.put(FILTER, mRequest.filter);
+            argument.put(SORT_CRITERIA, "");
+            argument.put(START_INDEX, "0");
+            argument.put(REQUESTED_COUNT, "0");
+            return argument;
         }
-        try {
-            return Integer.parseInt(value);
-        } catch (final NumberFormatException e) {
-            return defaultValue;
-        }
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (o == this) {
-            return true;
-        }
-        if (!(o instanceof MediaServer)) {
-            return false;
-        }
-        final MediaServer m = (MediaServer) o;
-        return mDevice.equals(m.mDevice);
-    }
-
-    @Override
-    public int hashCode() {
-        return mDevice.hashCode();
-    }
-
-    @Override
-    public String toString() {
-        return getFriendlyName();
     }
 }

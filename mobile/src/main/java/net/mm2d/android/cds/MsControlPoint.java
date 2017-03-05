@@ -10,34 +10,27 @@ package net.mm2d.android.cds;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import net.mm2d.android.upnp.ControlPointWrapper;
 import net.mm2d.upnp.ControlPoint;
 import net.mm2d.upnp.ControlPoint.DiscoveryListener;
 import net.mm2d.upnp.ControlPoint.NotifyEventListener;
 import net.mm2d.upnp.Device;
-import net.mm2d.upnp.Icon;
-import net.mm2d.upnp.IconFilter;
 import net.mm2d.upnp.Service;
 
-import java.net.NetworkInterface;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-
-import javax.annotation.Nonnull;
 
 /**
  * MediaServerのControlPoint機能。
  *
  * <p>ControlPointは継承しておらず、MediaServerとしてのインターフェースのみを提供する。
- * UPnPのActionを直接叩く必要がある場合は、getControlPoint
  *
  * @author <a href="mailto:ryo@mm2d.net">大前良介(OHMAE Ryosuke)</a>
  */
-public class MsControlPoint {
+public class MsControlPoint implements ControlPointWrapper {
     /**
      * 機器発見のイベントを通知するリスナー。
      */
@@ -89,6 +82,11 @@ public class MsControlPoint {
             if (mContainerUpdateIdsListener == null) {
                 return;
             }
+            final String udn = service.getDevice().getUdn();
+            final MediaServer server = getDevice(udn);
+            if (server == null) {
+                return;
+            }
             if (!service.getServiceId().equals(Cds.CDS_SERVICE_ID)
                     || !variable.equals(Cds.CONTAINER_UPDATE_IDS)) {
                 return;
@@ -101,87 +99,22 @@ public class MsControlPoint {
             for (int i = 0; i < values.length; i += 2) {
                 ids.add(values[i]);
             }
-            final String udn = service.getDevice().getUdn();
-            final MediaServer server = getMediaServer(udn);
-            if (server == null) {
-                return;
-            }
             mContainerUpdateIdsListener.onContainerUpdateIds(server, ids);
         }
     };
 
-    private static final IconFilter ICON_FILTER = new IconFilter() {
-        @Nonnull
-        @Override
-        public List<Icon> filter(@Nonnull List<Icon> list) {
-            return Collections.singletonList(Collections.max(list, ICON_COMPARATOR));
-        }
-    };
-
-    private static final String MIME_JPEG = "image/jpeg";
-    private static final String MIME_PNG = "image/png";
-    private static final Comparator<Icon> ICON_COMPARATOR = (icon1, icon2) -> {
-        final String mime1 = icon1.getMimeType();
-        final String mime2 = icon2.getMimeType();
-        // jpeg png 以外を最下位にする
-        if (!mime1.equals(mime2)) {
-            if (!mime1.equals(MIME_JPEG) && !mime1.equals(MIME_PNG)) {
-                return -1;
-            }
-            if (!mime2.equals(MIME_JPEG) && !mime2.equals(MIME_PNG)) {
-                return 1;
-            }
-        }
-        // 色深度の大きなものを優先する
-        if (icon1.getDepth() != icon2.getDepth()) {
-            return icon1.getDepth() - icon2.getDepth();
-        }
-        // サイズの大きなものを優先する
-        final int size1 = icon1.getWidth() * icon1.getHeight();
-        final int size2 = icon2.getWidth() * icon2.getHeight();
-        if (size1 != size2) {
-            return size1 - size2;
-        }
-        // jpeg と png なら png を優先する
-        if (mime1.equals(mime2)) {
-            return 0;
-        }
-        if (mime1.equals(MIME_PNG)) {
-            return 1;
-        }
-        if (mime2.equals(MIME_PNG)) {
-            return -1;
-        }
-        return 0;
-    };
-
-    private ControlPoint mControlPoint;
     private boolean mInitialized = false;
     private final Map<String, MediaServer> mMediaServerMap;
+    @Nullable
     private MsDiscoveryListener mMsDiscoveryListener;
+    @Nullable
     private ContainerUpdateIdsListener mContainerUpdateIdsListener;
 
     /**
      * インスタンス作成。
      */
     public MsControlPoint() {
-        mMediaServerMap = Collections.synchronizedMap(new LinkedHashMap<String, MediaServer>());
-    }
-
-    /**
-     * ラップしているControlPointのインスタンスを返す。
-     *
-     * <p>取扱い注意！
-     * このクラスが提供していない機能を利用する場合に必要となるため、
-     * 取得インターフェースを用意しているが、
-     * 外部で直接操作することを想定していないため、
-     * 利用する場合は必ずこのクラスの実装を理解した上で使用すること。
-     *
-     * @return ControlPoint
-     */
-    @Nullable
-    public ControlPoint getControlPoint() {
-        return mControlPoint;
+        mMediaServerMap = Collections.synchronizedMap(new LinkedHashMap<>());
     }
 
     /**
@@ -206,14 +139,13 @@ public class MsControlPoint {
     }
 
     private void lostDevice(@NonNull Device device) {
-        final MediaServer server = getMediaServer(device.getUdn());
+        final MediaServer server = mMediaServerMap.remove(device.getUdn());
         if (server == null) {
             return;
         }
         if (mMsDiscoveryListener != null) {
             mMsDiscoveryListener.onLost(server);
         }
-        mMediaServerMap.remove(server.getUdn());
     }
 
     /**
@@ -239,7 +171,8 @@ public class MsControlPoint {
      *
      * @return MediaServerの個数
      */
-    public int getMediaServerListSize() {
+    @Override
+    public int getDeviceListSize() {
         return mMediaServerMap.size();
     }
 
@@ -251,7 +184,8 @@ public class MsControlPoint {
      * @return MediaServerのリスト。
      */
     @NonNull
-    public List<MediaServer> getMediaServerList() {
+    @Override
+    public List<MediaServer> getDeviceList() {
         synchronized (mMediaServerMap) {
             return new ArrayList<>(mMediaServerMap.values());
         }
@@ -264,86 +198,38 @@ public class MsControlPoint {
      * @return MediaServer、見つからない場合null
      */
     @Nullable
-    public MediaServer getMediaServer(@Nullable String udn) {
+    @Override
+    public MediaServer getDevice(@Nullable String udn) {
         return mMediaServerMap.get(udn);
     }
 
     /**
-     * SSDP Searchを実行する。
-     *
-     * Searchパケットを一つ投げるのみであり、定期的に実行するにはアプリ側での実装が必要。
-     */
-    public void search() {
-        if (!mInitialized) {
-            throw new IllegalStateException("ControlPoint is not initialized");
-        }
-        mControlPoint.search();
-    }
-
-    /**
-     * 初期化が完了しているか。
-     *
-     * @return 初期化完了していればtrue
-     */
-    public boolean isInitialized() {
-        return mInitialized;
-    }
-
-    /**
-     * 初期化する。
-     */
-    public void initialize() {
-        initialize(null);
-    }
-
-    /**
      * 初期化する。
      *
-     * @param interfaces 使用するインターフェース
+     * @param controlPoint ControlPoint
      */
-    public void initialize(@Nullable Collection<NetworkInterface> interfaces) {
+    @Override
+    public void initialize(@NonNull ControlPoint controlPoint) {
         if (mInitialized) {
-            terminate();
+            terminate(controlPoint);
         }
-        mInitialized = true;
-        mControlPoint = new ControlPoint(interfaces);
-        mControlPoint.setIconFilter(ICON_FILTER);
-        mControlPoint.addDiscoveryListener(mDiscoveryListener);
-        mControlPoint.addNotifyEventListener(mNotifyEventListener);
-        mControlPoint.initialize();
-    }
-
-    /**
-     * 処理を開始する。
-     */
-    public void start() {
-        if (!mInitialized) {
-            throw new IllegalStateException("ControlPoint is not initialized");
-        }
-        mControlPoint.start();
-    }
-
-    /**
-     * 処理を終了する。
-     */
-    public void stop() {
-        if (!mInitialized) {
-            throw new IllegalStateException("ControlPoint is not initialized");
-        }
-        mControlPoint.stop();
+        mMediaServerMap.clear();
+        controlPoint.addDiscoveryListener(mDiscoveryListener);
+        controlPoint.addNotifyEventListener(mNotifyEventListener);
     }
 
     /**
      * 終了する。
+     *
+     * @param controlPoint ControlPoint
      */
-    public void terminate() {
+    @Override
+    public void terminate(@NonNull ControlPoint controlPoint) {
         if (!mInitialized) {
             return;
         }
-        mInitialized = false;
-        mControlPoint.terminate();
-        mControlPoint.removeDiscoveryListener(mDiscoveryListener);
-        mControlPoint.removeNotifyEventListener(mNotifyEventListener);
+        controlPoint.removeDiscoveryListener(mDiscoveryListener);
+        controlPoint.removeNotifyEventListener(mNotifyEventListener);
         mMediaServerMap.clear();
     }
 }

@@ -20,7 +20,10 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 /**
- * CDC ObjectのXML情報を格納するクラス。
+ * シンプルなXML情報を表現するクラス。
+ *
+ * <p>親要素とその子要素、以外に入れ子関係を持たない
+ * シンプルなXML構造を表現する。
  *
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
  */

@@ -40,6 +40,7 @@ import net.mm2d.android.widget.DividerItemDecoration;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.concurrent.ExecutionException;
 
 /**
@@ -78,7 +79,7 @@ public class CdsListActivity extends AppCompatActivity
     @NonNull
     public static Intent makeIntent(@NonNull Context context, @NonNull String udn) {
         final Intent intent = new Intent(context, CdsListActivity.class);
-        intent.putExtra(Const.EXTRA_UDN, udn);
+        intent.putExtra(Const.EXTRA_SERVER_UDN, udn);
         return intent;
     }
 
@@ -176,8 +177,8 @@ public class CdsListActivity extends AppCompatActivity
             getWindow().setEnterTransition(ts);
         }
         mHandler = new Handler();
-        final String udn = getIntent().getStringExtra(Const.EXTRA_UDN);
-        mServer = mDataHolder.getMsControlPoint().getMediaServer(udn);
+        final String udn = getIntent().getStringExtra(Const.EXTRA_SERVER_UDN);
+        mServer = mDataHolder.getMsControlPoint().getDevice(udn);
         if (mServer == null) {
             finish();
             return;
@@ -235,7 +236,7 @@ public class CdsListActivity extends AppCompatActivity
         }
         if (mTwoPane && mSelectedObject != null) {
             final Bundle arguments = new Bundle();
-            arguments.putString(Const.EXTRA_UDN, mServer.getUdn());
+            arguments.putString(Const.EXTRA_SERVER_UDN, mServer.getUdn());
             arguments.putParcelable(Const.EXTRA_OBJECT, mSelectedObject);
             mCdsDetailFragment = new CdsDetailFragment();
             mCdsDetailFragment.setArguments(arguments);
@@ -328,9 +329,11 @@ public class CdsListActivity extends AppCompatActivity
         mCdsDetailFragment = null;
         mSelectedObject = null;
         final StringBuilder sb = new StringBuilder();
-        for (final History history : mHistories) {
-            if (sb.length() != 0) {
-                sb.append(" > ");
+        for (final ListIterator<History> i = mHistories.listIterator(mHistories.size());
+             i.hasPrevious(); ) {
+            final History history = i.previous();
+            if (sb.length() != 0 && !history.getId().equals("0")) {
+                sb.append(" < ");
             }
             sb.append(history.getTitle());
         }
@@ -403,7 +406,7 @@ public class CdsListActivity extends AppCompatActivity
         final int count = mCdsListAdapter.getItemCount();
         final ActionBar actionBar = getSupportActionBar();
         assert actionBar != null;
-        actionBar.setSubtitle(mSubtitle + "  [" + count + "]");
+        actionBar.setSubtitle("[" + count + "] " + mSubtitle);
         mCdsListAdapter.notifyItemRangeInserted(beforeCount, count - beforeCount);
     }
 }

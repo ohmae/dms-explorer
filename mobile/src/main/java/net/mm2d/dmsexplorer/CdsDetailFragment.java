@@ -25,6 +25,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import net.mm2d.android.avt.MrControlPoint;
 import net.mm2d.android.cds.CdsObject;
 import net.mm2d.android.cds.MediaServer;
 import net.mm2d.android.cds.Tag;
@@ -58,7 +59,7 @@ public class CdsDetailFragment extends Fragment
     public static CdsDetailFragment newInstance(String udn, CdsObject object) {
         final CdsDetailFragment instance = new CdsDetailFragment();
         final Bundle arguments = new Bundle();
-        arguments.putString(Const.EXTRA_UDN, udn);
+        arguments.putString(Const.EXTRA_SERVER_UDN, udn);
         arguments.putParcelable(Const.EXTRA_OBJECT, object);
         instance.setArguments(arguments);
         return instance;
@@ -69,8 +70,8 @@ public class CdsDetailFragment extends Fragment
                              Bundle savedInstanceState) {
         final View rootView = inflater.inflate(R.layout.frg_cds_detail, container, false);
 
-        final String udn = getArguments().getString(Const.EXTRA_UDN);
-        final MediaServer server = DataHolder.getInstance().getMsControlPoint().getMediaServer(udn);
+        final String udn = getArguments().getString(Const.EXTRA_SERVER_UDN);
+        final MediaServer server = DataHolder.getInstance().getMsControlPoint().getDevice(udn);
         final CdsObject object = getArguments().getParcelable(Const.EXTRA_OBJECT);
         if (object == null || server == null) {
             getActivity().finish();
@@ -90,18 +91,13 @@ public class CdsDetailFragment extends Fragment
         setupPropertyAdapter(getActivity(), adapter, object);
         recyclerView.setAdapter(adapter);
 
-        setupFloatingActionButton(rootView, object);
+        setUpPlayButton(rootView, object);
+        setUpSendButton(rootView, udn, object);
         return rootView;
     }
 
-    private void setupFloatingActionButton(View rootView, final CdsObject object) {
-        FloatingActionButton fab = (FloatingActionButton) rootView.findViewById(R.id.fab);
-        if (fab == null) {
-            fab = (FloatingActionButton) getActivity().findViewById(R.id.fab);
-        }
-        if (fab == null) {
-            return;
-        }
+    private void setUpPlayButton(View rootView, final CdsObject object) {
+        final FloatingActionButton fab = (FloatingActionButton) rootView.findViewById(R.id.fab_play);
         fab.setVisibility(hasResource(object) ? View.VISIBLE : View.GONE);
         final boolean protectedResource = hasProtectedResource(object);
         final int color = protectedResource ? Color.GRAY : ContextCompat.getColor(getContext(), R.color.accent);
@@ -110,10 +106,28 @@ public class CdsDetailFragment extends Fragment
             if (protectedResource) {
                 Snackbar.make(view, R.string.toast_not_support_drm, Snackbar.LENGTH_LONG).show();
             } else {
-                final SelectResourceDialog dialog = SelectResourceDialog.newInstance(object);
-                dialog.show(getActivity().getFragmentManager(), "");
+                ItemSelectHelper.play(getActivity(), object, 0);
             }
         });
+        fab.setOnLongClickListener(view -> {
+            if (protectedResource) {
+                Snackbar.make(view, R.string.toast_not_support_drm, Snackbar.LENGTH_LONG).show();
+            } else {
+                ItemSelectHelper.play(getActivity(), object);
+            }
+            return true;
+        });
+    }
+
+    private void setUpSendButton(View rootView, final String udn, final CdsObject object) {
+        final FloatingActionButton fab = (FloatingActionButton) rootView.findViewById(R.id.fab_send);
+        final MrControlPoint cp = DataHolder.getInstance().getMrControlPoint();
+        if (cp.getDeviceListSize() == 0) {
+            fab.setVisibility(View.GONE);
+            return;
+        }
+        fab.setVisibility(View.VISIBLE);
+        fab.setOnClickListener(v -> ItemSelectHelper.send(getActivity(), udn, object));
     }
 
     private static boolean hasResource(CdsObject object) {

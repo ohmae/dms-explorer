@@ -16,12 +16,10 @@ import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.view.ViewCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Display;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.view.ViewGroup.MarginLayoutParams;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
@@ -134,11 +132,11 @@ public class MovieActivity extends AppCompatActivity {
     }
 
     private static void setLayoutMarginRight(View view, int rightMargin) {
-        LayoutParams params = view.getLayoutParams();
-        if (!(params instanceof MarginLayoutParams)){
+        final LayoutParams params = view.getLayoutParams();
+        if (!(params instanceof MarginLayoutParams)) {
             return;
         }
-        MarginLayoutParams marginParams = (MarginLayoutParams) params;
+        final MarginLayoutParams marginParams = (MarginLayoutParams) params;
         marginParams.rightMargin = rightMargin;
         view.setLayoutParams(params);
     }

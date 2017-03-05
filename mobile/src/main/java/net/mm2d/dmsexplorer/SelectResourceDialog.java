@@ -10,12 +10,7 @@ package net.mm2d.dmsexplorer;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
-import android.content.ActivityNotFoundException;
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.net.Uri;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 
 import net.mm2d.android.cds.CdsObject;
@@ -57,63 +52,13 @@ public class SelectResourceDialog extends DialogFragment {
         final CdsObject object = getArguments().getParcelable(KEY_OBJECT);
         final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle(R.string.title_dialog_select_resource);
-        final String[] selection = makeSelection(object);
-        builder.setItems(selection,
-                (dialog, which) -> {
-                    final Tag res = object.getTag(CdsObject.RES, which);
-                    launch(res);
-                });
-        if (selection.length == 1) {
-            launch(object.getTag(CdsObject.RES, 0));
-        }
+        final String[] choices = makeChoices(object);
+        builder.setItems(choices,
+                (dialog, which) -> ItemSelectHelper.play(getActivity(), object, which));
         return builder.create();
     }
 
-    private void launch(Tag res) {
-        final SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        final CdsObject object = getArguments().getParcelable(KEY_OBJECT);
-        final String protocolInfo = res.getAttribute(CdsObject.PROTOCOL_INFO);
-        final String mimeType = CdsObject.extractMimeTypeFromProtocolInfo(protocolInfo);
-        final Uri uri = Uri.parse(res.getValue());
-        final Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.setDataAndType(uri, mimeType);
-        switch (object.getType()) {
-            case CdsObject.TYPE_VIDEO:
-                if (pref.getBoolean(Const.LAUNCH_APP_MOVIE, true)) {
-                    intent.setClass(getActivity(), MovieActivity.class);
-                    intent.putExtra(Const.EXTRA_OBJECT, object);
-                } else {
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                }
-                break;
-            case CdsObject.TYPE_AUDIO:
-                if (pref.getBoolean(Const.LAUNCH_APP_MUSIC, true)) {
-                    intent.setClass(getActivity(), MusicActivity.class);
-                    intent.putExtra(Const.EXTRA_OBJECT, object);
-                } else {
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                }
-                break;
-            case CdsObject.TYPE_IMAGE:
-                if (pref.getBoolean(Const.LAUNCH_APP_PHOTO, true)) {
-                    intent.setClass(getActivity(), PhotoActivity.class);
-                    intent.putExtra(Const.EXTRA_OBJECT, object);
-                } else {
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                }
-                break;
-            default:
-                dismiss();
-                return;
-        }
-        try {
-            startActivity(intent);
-        } catch (final ActivityNotFoundException ignored) {
-        }
-        dismiss();
-    }
-
-    private String[] makeSelection(CdsObject object) {
+    private String[] makeChoices(CdsObject object) {
         final List<String> itemList = new ArrayList<>();
         final List<Tag> tagList = object.getTagList(CdsObject.RES);
         for (final Tag tag : tagList) {

@@ -39,16 +39,16 @@ public class ServerDetailActivity extends AppCompatActivity {
      */
     public static Intent makeIntent(Context context, String udn) {
         final Intent intent = new Intent(context, ServerDetailActivity.class);
-        intent.putExtra(Const.EXTRA_UDN, udn);
+        intent.putExtra(Const.EXTRA_SERVER_UDN, udn);
         return intent;
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        final String udn = getIntent().getStringExtra(Const.EXTRA_UDN);
+        final String udn = getIntent().getStringExtra(Const.EXTRA_SERVER_UDN);
         final DataHolder dataHolder = DataHolder.getInstance();
-        final MediaServer server = dataHolder.getMsControlPoint().getMediaServer(udn);
+        final MediaServer server = dataHolder.getMsControlPoint().getDevice(udn);
         if (server == null) {
             finish();
             return;

@@ -46,7 +46,7 @@ public class ServerDetailFragment extends Fragment
     public static ServerDetailFragment newInstance(@NonNull String udn) {
         final ServerDetailFragment instance = new ServerDetailFragment();
         final Bundle arguments = new Bundle();
-        arguments.putString(Const.EXTRA_UDN, udn);
+        arguments.putString(Const.EXTRA_SERVER_UDN, udn);
         instance.setArguments(arguments);
         return instance;
     }
@@ -55,9 +55,9 @@ public class ServerDetailFragment extends Fragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         final View rootView = inflater.inflate(R.layout.frg_server_detail, container, false);
-        final String udn = getArguments().getString(Const.EXTRA_UDN);
+        final String udn = getArguments().getString(Const.EXTRA_SERVER_UDN);
         final DataHolder dataHolder = DataHolder.getInstance();
-        final MediaServer server = dataHolder.getMsControlPoint().getMediaServer(udn);
+        final MediaServer server = dataHolder.getMsControlPoint().getDevice(udn);
         if (server == null) {
             getActivity().finish();
             return rootView;
@@ -73,10 +73,7 @@ public class ServerDetailFragment extends Fragment
         adapter.setOnItemLinkClickListener(this);
         recyclerView.setAdapter(adapter);
 
-        FloatingActionButton fab = (FloatingActionButton) rootView.findViewById(R.id.fab);
-        if (fab == null) {
-            fab = (FloatingActionButton) getActivity().findViewById(R.id.fab);
-        }
+        final FloatingActionButton fab = (FloatingActionButton) rootView.findViewById(R.id.fab);
         if (fab != null) {
             fab.setOnClickListener(view -> {
                 final Intent intent = CdsListActivity.makeIntent(getContext(), udn);
@@ -109,7 +106,6 @@ public class ServerDetailFragment extends Fragment
         adapter.addEntry("ModelNumber:", server.getModelNumber());
         adapter.addEntry("PresentationUrl:", server.getPresentationUrl(), true);
         adapter.addEntry("Location:", server.getLocation());
-        adapter.addEntry(" ", " ");
     }
 
     @Override

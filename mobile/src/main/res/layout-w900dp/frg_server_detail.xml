@@ -12,6 +12,8 @@
         android:id="@+id/title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:maxLines="1"
         android:padding="16dp"
         android:textColor="@color/textPrimary"
         android:textSize="@dimen/text_size_accent"
@@ -25,6 +27,8 @@
             android:id="@+id/server_detail"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:paddingBottom="@dimen/server_property_margin"
+            android:clipToPadding="false"
             app:layoutManager="LinearLayoutManager"
             tools:listitem="@layout/li_property"/>
 
@@ -33,7 +37,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|end"
-            android:layout_margin="@dimen/fab_margin"
-            android:src="@drawable/ic_fab_play"/>
+            android:layout_marginBottom="@dimen/fab_margin"
+            android:layout_marginEnd="@dimen/fab_margin"
+            android:layout_marginRight="@dimen/fab_margin"
+            app:srcCompat="@drawable/ic_arrow_forward"/>
     </FrameLayout>
 </LinearLayout>

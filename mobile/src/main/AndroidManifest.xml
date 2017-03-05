@@ -69,6 +69,11 @@
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
+        <activity
+            android:name=".DmrActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:theme="@style/AppTheme.NoActionBar.Dark">
+        </activity>
     </application>
 
 </manifest>

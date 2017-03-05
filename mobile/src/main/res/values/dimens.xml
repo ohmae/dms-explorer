@@ -10,4 +10,12 @@
     <dimen name="text_size_sub">12sp</dimen>
     <dimen name="raise_focus">5dp</dimen>
     <dimen name="status_bar_size">25dp</dimen>
+    <dimen name="server_property_margin">100dp</dimen>
+    <dimen name="cds_property_margin">100dp</dimen>
+    <dimen name="music_image_margin">16dp</dimen>
+    <dimen name="control_height">56dp</dimen>
+    <dimen name="control_margin">24dp</dimen>
+    <dimen name="seek_padding">16dp</dimen>
+    <dimen name="chapter_padding">16dp</dimen>
+    <dimen name="chapter_radius">4dp</dimen>
 </resources>

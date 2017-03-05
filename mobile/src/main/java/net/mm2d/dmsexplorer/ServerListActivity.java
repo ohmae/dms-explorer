@@ -35,6 +35,7 @@ import net.mm2d.android.cds.MediaServer;
 import net.mm2d.android.cds.MsControlPoint;
 import net.mm2d.android.cds.MsControlPoint.MsDiscoveryListener;
 import net.mm2d.android.net.Lan;
+import net.mm2d.android.upnp.AvControlPointManager;
 import net.mm2d.android.widget.DividerItemDecoration;
 import net.mm2d.dmsexplorer.ServerListAdapter.OnItemClickListener;
 
@@ -52,6 +53,7 @@ public class ServerListActivity extends AppCompatActivity {
     private Handler mHandler;
     private SearchThread mSearchThread;
     private final DataHolder mDataHolder = DataHolder.getInstance();
+    private final AvControlPointManager mAvCpManager = mDataHolder.getAvControlPointManager();
     private final MsControlPoint mMsControlPoint = mDataHolder.getMsControlPoint();
     private MediaServer mSelectedServer;
     private ServerDetailFragment mServerDetailFragment;
@@ -64,13 +66,13 @@ public class ServerListActivity extends AppCompatActivity {
         public void onReceive(Context context, Intent intent) {
             final boolean available = mLan.hasAvailableInterface();
             if (mNetworkAvailable != available) {
-                synchronized (mMsControlPoint) {
+                synchronized (mAvCpManager) {
                     if (available) {
-                        mMsControlPoint.initialize(mLan.getAvailableInterfaces());
-                        mMsControlPoint.start();
+                        mAvCpManager.initialize(mLan.getAvailableInterfaces());
+                        mAvCpManager.start();
                     } else {
-                        mMsControlPoint.stop();
-                        mMsControlPoint.terminate();
+                        mAvCpManager.stop();
+                        mAvCpManager.terminate();
                         showToast(R.string.no_available_network);
                         mServerListAdapter.clear();
                         mServerListAdapter.notifyDataSetChanged();
@@ -125,10 +127,10 @@ public class ServerListActivity extends AppCompatActivity {
 
     private void onDiscoverServer(MediaServer server) {
         mSwipeRefreshLayout.setRefreshing(false);
-        if (mMsControlPoint.getMediaServerListSize()
+        if (mMsControlPoint.getDeviceListSize()
                 != mServerListAdapter.getItemCount() + 1) {
             mServerListAdapter.clear();
-            mServerListAdapter.addAll(mMsControlPoint.getMediaServerList());
+            mServerListAdapter.addAll(mMsControlPoint.getDeviceList());
             mServerListAdapter.notifyDataSetChanged();
         } else {
             final int position = mServerListAdapter.add(server);
@@ -139,12 +141,12 @@ public class ServerListActivity extends AppCompatActivity {
     private void onLostServer(MediaServer server) {
         final int position = mServerListAdapter.remove(server);
         if (position >= 0) {
-            if (mMsControlPoint.getMediaServerListSize()
+            if (mMsControlPoint.getDeviceListSize()
                     == mServerListAdapter.getItemCount()) {
                 mServerListAdapter.notifyItemRemoved(position);
             } else {
                 mServerListAdapter.clear();
-                mServerListAdapter.addAll(mMsControlPoint.getMediaServerList());
+                mServerListAdapter.addAll(mMsControlPoint.getDeviceList());
                 mServerListAdapter.notifyDataSetChanged();
             }
         }
@@ -175,17 +177,17 @@ public class ServerListActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         toolbar.setTitle(getTitle());
         mMsControlPoint.setMsDiscoveryListener(mDiscoveryListener);
-        mServerListAdapter = new ServerListAdapter(this, mMsControlPoint.getMediaServerList());
+        mServerListAdapter = new ServerListAdapter(this, mMsControlPoint.getDeviceList());
         mServerListAdapter.setOnItemClickListener(mOnItemClickListener);
         mNetworkAvailable = mLan.hasAvailableInterface();
-        synchronized (mMsControlPoint) {
+        synchronized (mAvCpManager) {
             if (mNetworkAvailable) {
                 if (savedInstanceState == null) {
-                    mMsControlPoint.initialize(mLan.getAvailableInterfaces());
-                    mMsControlPoint.start();
+                    mAvCpManager.initialize(mLan.getAvailableInterfaces());
+                    mAvCpManager.start();
                 }
             } else {
-                mMsControlPoint.terminate();
+                mAvCpManager.terminate();
             }
         }
         registerReceiver(mConnectivityReceiver,
@@ -199,13 +201,13 @@ public class ServerListActivity extends AppCompatActivity {
             if (!mLan.hasAvailableInterface()) {
                 return;
             }
-            synchronized (mMsControlPoint) {
-                mMsControlPoint.stop();
-                mMsControlPoint.terminate();
+            synchronized (mAvCpManager) {
+                mAvCpManager.stop();
+                mAvCpManager.terminate();
                 mServerListAdapter.clear();
                 mServerListAdapter.notifyDataSetChanged();
-                mMsControlPoint.initialize(mLan.getAvailableInterfaces());
-                mMsControlPoint.start();
+                mAvCpManager.initialize(mLan.getAvailableInterfaces());
+                mAvCpManager.start();
             }
         });
         final RecyclerView recyclerView = (RecyclerView) findViewById(R.id.server_list);
@@ -223,9 +225,9 @@ public class ServerListActivity extends AppCompatActivity {
         super.onDestroy();
         unregisterReceiver(mConnectivityReceiver);
         if (isFinishing()) {
-            synchronized (mMsControlPoint) {
+            synchronized (mAvCpManager) {
                 mMsControlPoint.setMsDiscoveryListener(null);
-                mMsControlPoint.terminate();
+                mAvCpManager.terminate();
             }
         }
     }
@@ -276,9 +278,9 @@ public class ServerListActivity extends AppCompatActivity {
         public void run() {
             try {
                 while (!interrupted()) {
-                    synchronized (mMsControlPoint) {
-                        if (mMsControlPoint.isInitialized()) {
-                            mMsControlPoint.search();
+                    synchronized (mAvCpManager) {
+                        if (mAvCpManager.isInitialized()) {
+                            mAvCpManager.search();
                         }
                     }
                     Thread.sleep(5000);

@@ -2,7 +2,8 @@
 <resources>
     <string name="app_name">DMS Explorer</string>
     <string name="no_available_network">There is no available network connection.</string>
-    <string name="title_dialog_select_resource">Select resource</string>
+    <string name="title_dialog_select_resource">Resource</string>
+    <string name="title_dialog_select_device">Playback device</string>
     <string name="toast_not_support_drm">This app does not support playback of DRM content.</string>
     <string name="network_tb">TB</string>
     <string name="network_bs">BS</string>

@@ -20,18 +20,10 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
+            android:theme="@style/AppTheme.AppBarOverlay"
             app:popupTheme="@style/AppTheme.PopupOverlay"/>
 
     </android.support.design.widget.AppBarLayout>
-
-    <ImageView
-        android:id="@+id/art"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="top|end"
-        android:adjustViewBounds="true"
-        android:alpha="0.3"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -39,13 +31,28 @@
         android:orientation="vertical"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/detail"
+        <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1"
-            app:layoutManager="LinearLayoutManager"
-            tools:listitem="@layout/li_property"/>
+            android:layout_weight="1">
+
+            <ImageView
+                android:id="@+id/art"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="top|end"
+                android:layout_margin="@dimen/music_image_margin"
+                android:adjustViewBounds="true"
+                android:alpha="0.3"/>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/detail"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layoutManager="LinearLayoutManager"
+                tools:listitem="@layout/li_property"/>
+
+        </FrameLayout>
 
         <net.mm2d.dmsexplorer.ControlView
             android:id="@+id/controlPanel"

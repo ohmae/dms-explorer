@@ -180,7 +180,7 @@ public class ControlView extends LinearLayout implements OnPreparedListener {
         }
     };
 
-    private String makeTimeText(long millisecond) {
+    private static String makeTimeText(long millisecond) {
         final long second = millisecond / 1000;
         final long minute = second / 60;
         final long hour = minute / 60;

@@ -38,10 +38,10 @@ repositories {
 }
 
 dependencies {
+    compile 'com.android.support:appcompat-v7:25.2.0'
+    compile 'com.android.support:support-v4:25.2.0'
+    compile 'com.android.support:recyclerview-v7:25.2.0'
+    compile 'com.android.support:design:25.2.0'
+    compile 'net.mm2d.mmupnp:mmupnp:1.0.9'
     testCompile 'junit:junit:4.12'
-    compile 'com.android.support:appcompat-v7:25.1.1'
-    compile 'com.android.support:support-v4:25.1.1'
-    compile 'com.android.support:recyclerview-v7:25.1.1'
-    compile 'com.android.support:design:25.1.1'
-    compile 'net.mm2d.mmupnp:mmupnp:1.0.7'
 }

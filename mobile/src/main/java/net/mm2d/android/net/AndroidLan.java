@@ -13,6 +13,7 @@ import android.net.NetworkInfo;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import net.mm2d.util.NetworkUtils;
 
@@ -33,7 +34,9 @@ import static android.content.Context.WIFI_SERVICE;
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
  */
 class AndroidLan extends Lan {
+    @NonNull
     private final WifiManager mWifiManager;
+    @NonNull
     private final ConnectivityManager mConnectivityManager;
 
     /**
@@ -41,9 +44,10 @@ class AndroidLan extends Lan {
      *
      * @param context コンストラクタ
      */
-    AndroidLan(Context context) {
-        mWifiManager = (WifiManager) context.getSystemService(WIFI_SERVICE);
-        mConnectivityManager = (ConnectivityManager) context.getSystemService(CONNECTIVITY_SERVICE);
+    AndroidLan(final @NonNull Context context) {
+        final Context appContext = context.getApplicationContext();
+        mWifiManager = (WifiManager) appContext.getSystemService(WIFI_SERVICE);
+        mConnectivityManager = (ConnectivityManager) appContext.getSystemService(CONNECTIVITY_SERVICE);
     }
 
     @Override
@@ -54,6 +58,7 @@ class AndroidLan extends Lan {
                 || ni.getType() == ConnectivityManager.TYPE_ETHERNET);
     }
 
+    @Nullable
     @Override
     public Collection<NetworkInterface> getAvailableInterfaces() {
         if (!hasWifiConnection()) {
@@ -64,7 +69,7 @@ class AndroidLan extends Lan {
             return null;
         }
         final List<NetworkInterface> netIfList = NetworkUtils.getNetworkInterfaceList();
-        for (NetworkInterface netIf : netIfList) {
+        for (final NetworkInterface netIf : netIfList) {
             if (hasAddress(netIf, address)) {
                 return Collections.singletonList(netIf);
             }
@@ -72,7 +77,8 @@ class AndroidLan extends Lan {
         return null;
     }
 
-    private static boolean hasAddress(@NonNull NetworkInterface netIf, @NonNull InetAddress targetAddress) {
+    private static boolean hasAddress(final @NonNull NetworkInterface netIf,
+                                      final @NonNull InetAddress targetAddress) {
         final List<InterfaceAddress> addressList = netIf.getInterfaceAddresses();
         for (final InterfaceAddress address : addressList) {
             if (address.getAddress().equals(targetAddress)) {
@@ -87,6 +93,7 @@ class AndroidLan extends Lan {
         return info != null && info.isConnected() && info.getType() == ConnectivityManager.TYPE_WIFI;
     }
 
+    @Nullable
     private InetAddress getWifiInetAddress() {
         final WifiInfo wifiInfo = mWifiManager.getConnectionInfo();
         if (wifiInfo == null) {
@@ -99,6 +106,7 @@ class AndroidLan extends Lan {
         return null;
     }
 
+    @NonNull
     private byte[] intToByteArray(int ip) {
         final byte[] array = new byte[4];
         array[0] = (byte) (ip & 0xff);

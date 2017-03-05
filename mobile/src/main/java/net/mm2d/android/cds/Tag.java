@@ -22,12 +22,13 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 /**
- * CdsObjectのタグ情報を表現するクラス
+ * シンプルなXMLのタグ情報を表現するクラス
  *
- * Elementのままでは情報の参照コストが高いため、
+ * <p>Elementのままでは情報の参照コストが高いため、
  * よりシンプルな構造に格納するためのクラス。
- * CdsObjectのXMLはElementが入れ子になることはないため
- * タグ＋値、属性＋値の情報を表現できれば十分。
+ * CdsObjectのXMLのようにElementが入れ子になることのない
+ * タグ＋値、属性＋値の情報を表現できれば十分なものを表現するのに使用する。
+ * 入れ子関係を持つXMLは表現できない。
  *
  * @author <a href="mailto:ryo@mm2d.net">大前良介(OHMAE Ryosuke)</a>
  */

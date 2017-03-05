@@ -41,7 +41,7 @@ public class CdsDetailActivity extends AppCompatActivity {
      */
     public static Intent makeIntent(@NonNull Context context, @NonNull String udn, @NonNull CdsObject object) {
         final Intent intent = new Intent(context, CdsDetailActivity.class);
-        intent.putExtra(Const.EXTRA_UDN, udn);
+        intent.putExtra(Const.EXTRA_SERVER_UDN, udn);
         intent.putExtra(Const.EXTRA_OBJECT, object);
         return intent;
     }
@@ -52,9 +52,9 @@ public class CdsDetailActivity extends AppCompatActivity {
         setContentView(R.layout.act_cds_detail);
 
         final CdsObject object = getIntent().getParcelableExtra(Const.EXTRA_OBJECT);
-        final String udn = getIntent().getStringExtra(Const.EXTRA_UDN);
+        final String udn = getIntent().getStringExtra(Const.EXTRA_SERVER_UDN);
         final DataHolder dataHolder = DataHolder.getInstance();
-        final MediaServer server = dataHolder.getMsControlPoint().getMediaServer(udn);
+        final MediaServer server = dataHolder.getMsControlPoint().getDevice(udn);
 
         final String rawTitle = object.getTitle();
         if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {

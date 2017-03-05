@@ -15,6 +15,8 @@ import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnErrorListener;
 import android.net.Uri;
+import android.os.Build.VERSION;
+import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -43,7 +45,8 @@ import java.net.URL;
  *
  * @author <a href="mailto:ryo@mm2d.net">大前良介(OHMAE Ryosuke)</a>
  */
-public class MusicActivity extends AppCompatActivity implements PropertyAdapter.OnItemLinkClickListener {
+public class MusicActivity extends AppCompatActivity
+        implements PropertyAdapter.OnItemLinkClickListener {
     private static final String TAG = "MusicActivity";
     private Handler mHandler;
     private MediaPlayer mMediaPlayer;
@@ -94,6 +97,9 @@ public class MusicActivity extends AppCompatActivity implements PropertyAdapter.
         actionBar.setTitle(title);
         final int bgColor = ThemeUtils.getAccentColor(object.getTitle());
         actionBar.setBackgroundDrawable(new ColorDrawable(bgColor));
+        if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
+            getWindow().setStatusBarColor(ThemeUtils.getAccentDarkColor(object.getTitle()));
+        }
 
         controlPanel.setBackgroundColor(bgColor);
         final RecyclerView recyclerView = (RecyclerView) findViewById(R.id.detail);
