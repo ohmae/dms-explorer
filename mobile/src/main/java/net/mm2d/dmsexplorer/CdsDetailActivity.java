@@ -19,8 +19,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import net.mm2d.android.cds.CdsObject;
-import net.mm2d.android.cds.MediaServer;
+import net.mm2d.android.upnp.cds.CdsObject;
+import net.mm2d.android.upnp.cds.MediaServer;
 import net.mm2d.android.util.AribUtils;
 
 /**

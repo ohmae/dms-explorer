@@ -9,9 +9,9 @@ package net.mm2d.dmsexplorer;
 
 import android.support.annotation.NonNull;
 
-import net.mm2d.android.avt.MrControlPoint;
-import net.mm2d.android.cds.CdsObject;
-import net.mm2d.android.cds.MsControlPoint;
+import net.mm2d.android.upnp.avt.MrControlPoint;
+import net.mm2d.android.upnp.cds.CdsObject;
+import net.mm2d.android.upnp.cds.MsControlPoint;
 import net.mm2d.android.upnp.AvControlPointManager;
 
 import java.util.LinkedList;

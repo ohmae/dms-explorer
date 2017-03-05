@@ -22,7 +22,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import net.mm2d.android.cds.CdsObject;
+import net.mm2d.android.upnp.cds.CdsObject;
 import net.mm2d.android.util.BitmapUtils;
 import net.mm2d.android.util.ViewUtils;
 import net.mm2d.util.Log;

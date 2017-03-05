@@ -16,8 +16,8 @@ import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 
-import net.mm2d.android.cds.CdsObject;
-import net.mm2d.android.cds.Tag;
+import net.mm2d.android.upnp.cds.CdsObject;
+import net.mm2d.android.upnp.cds.Tag;
 
 import java.util.List;
 

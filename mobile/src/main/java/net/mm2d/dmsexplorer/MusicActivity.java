@@ -29,7 +29,7 @@ import android.text.TextUtils;
 import android.view.MenuItem;
 import android.widget.ImageView;
 
-import net.mm2d.android.cds.CdsObject;
+import net.mm2d.android.upnp.cds.CdsObject;
 import net.mm2d.android.util.AribUtils;
 import net.mm2d.android.util.LaunchUtils;
 import net.mm2d.util.Log;

@@ -24,7 +24,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import net.mm2d.android.cds.MediaServer;
+import net.mm2d.android.upnp.cds.MediaServer;
 import net.mm2d.android.util.LaunchUtils;
 
 /**

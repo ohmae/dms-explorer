@@ -31,9 +31,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
-import net.mm2d.android.cds.MediaServer;
-import net.mm2d.android.cds.MsControlPoint;
-import net.mm2d.android.cds.MsControlPoint.MsDiscoveryListener;
+import net.mm2d.android.upnp.cds.MediaServer;
+import net.mm2d.android.upnp.cds.MsControlPoint;
+import net.mm2d.android.upnp.cds.MsControlPoint.MsDiscoveryListener;
 import net.mm2d.android.net.Lan;
 import net.mm2d.android.upnp.AvControlPointManager;
 import net.mm2d.android.widget.DividerItemDecoration;

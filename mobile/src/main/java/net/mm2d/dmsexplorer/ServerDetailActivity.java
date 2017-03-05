@@ -18,7 +18,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import net.mm2d.android.cds.MediaServer;
+import net.mm2d.android.upnp.cds.MediaServer;
 
 /**
  * メディアサーバの詳細情報を表示するActivity。

@@ -25,10 +25,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import net.mm2d.android.avt.MrControlPoint;
-import net.mm2d.android.cds.CdsObject;
-import net.mm2d.android.cds.MediaServer;
-import net.mm2d.android.cds.Tag;
+import net.mm2d.android.upnp.avt.MrControlPoint;
+import net.mm2d.android.upnp.cds.CdsObject;
+import net.mm2d.android.upnp.cds.MediaServer;
+import net.mm2d.android.upnp.cds.Tag;
 import net.mm2d.android.util.AribUtils;
 import net.mm2d.android.util.LaunchUtils;
 import net.mm2d.util.Log;

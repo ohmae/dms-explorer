@@ -24,10 +24,10 @@ import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 
-import net.mm2d.android.avt.MediaRenderer;
-import net.mm2d.android.cds.CdsObject;
-import net.mm2d.android.cds.ChapterInfo;
-import net.mm2d.android.cds.MediaServer;
+import net.mm2d.android.upnp.avt.MediaRenderer;
+import net.mm2d.android.upnp.cds.CdsObject;
+import net.mm2d.android.upnp.cds.ChapterInfo;
+import net.mm2d.android.upnp.cds.MediaServer;
 import net.mm2d.android.util.AribUtils;
 import net.mm2d.android.util.LaunchUtils;
 

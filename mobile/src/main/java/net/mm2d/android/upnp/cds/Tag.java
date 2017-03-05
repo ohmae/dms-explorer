@@ -5,7 +5,7 @@
  * http://opensource.org/licenses/MIT
  */
 
-package net.mm2d.android.cds;
+package net.mm2d.android.upnp.cds;
 
 import android.os.Parcel;
 import android.os.Parcelable;

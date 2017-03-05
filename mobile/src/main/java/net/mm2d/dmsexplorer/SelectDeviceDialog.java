@@ -13,9 +13,9 @@ import android.app.DialogFragment;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 
-import net.mm2d.android.avt.MediaRenderer;
-import net.mm2d.android.avt.MrControlPoint;
-import net.mm2d.android.cds.CdsObject;
+import net.mm2d.android.upnp.avt.MediaRenderer;
+import net.mm2d.android.upnp.avt.MrControlPoint;
+import net.mm2d.android.upnp.cds.CdsObject;
 
 import java.util.List;
 

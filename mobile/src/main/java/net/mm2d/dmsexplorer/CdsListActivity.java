@@ -32,9 +32,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
-import net.mm2d.android.cds.BrowseResult;
-import net.mm2d.android.cds.CdsObject;
-import net.mm2d.android.cds.MediaServer;
+import net.mm2d.android.upnp.cds.BrowseResult;
+import net.mm2d.android.upnp.cds.CdsObject;
+import net.mm2d.android.upnp.cds.MediaServer;
 import net.mm2d.android.widget.DividerItemDecoration;
 
 import java.util.Collections;

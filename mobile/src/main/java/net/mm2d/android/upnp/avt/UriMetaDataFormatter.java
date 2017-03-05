@@ -5,12 +5,12 @@
  * http://opensource.org/licenses/MIT
  */
 
-package net.mm2d.android.avt;
+package net.mm2d.android.upnp.avt;
 
 import android.support.annotation.NonNull;
 
-import net.mm2d.android.cds.CdsObject;
-import net.mm2d.android.cds.Tag;
+import net.mm2d.android.upnp.cds.CdsObject;
+import net.mm2d.android.upnp.cds.Tag;
 import net.mm2d.util.XmlUtils;
 
 import org.w3c.dom.Document;

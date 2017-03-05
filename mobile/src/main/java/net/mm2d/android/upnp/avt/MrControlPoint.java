@@ -5,7 +5,7 @@
  * http://opensource.org/licenses/MIT
  */
 
-package net.mm2d.android.avt;
+package net.mm2d.android.upnp.avt;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;

@@ -13,8 +13,8 @@ import android.app.DialogFragment;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 
-import net.mm2d.android.cds.CdsObject;
-import net.mm2d.android.cds.Tag;
+import net.mm2d.android.upnp.cds.CdsObject;
+import net.mm2d.android.upnp.cds.Tag;
 
 import java.util.ArrayList;
 import java.util.List;

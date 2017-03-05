@@ -5,7 +5,7 @@
  * http://opensource.org/licenses/MIT
  */
 
-package net.mm2d.android.cds;
+package net.mm2d.android.upnp.cds;
 
 /**
  * 内部で使用する定数を定義する。
