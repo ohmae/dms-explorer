@@ -23,8 +23,10 @@ import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import net.mm2d.android.upnp.avt.MediaRenderer;
+import net.mm2d.android.upnp.avt.MediaRenderer.ActionCallback;
 import net.mm2d.android.upnp.cds.CdsObject;
 import net.mm2d.android.upnp.cds.ChapterInfo;
 import net.mm2d.android.upnp.cds.MediaServer;
@@ -39,7 +41,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * @author <a href="mailto:ryo@mm2d.net">大前良介(OHMAE Ryosuke)</a>
  */
-public class DmrActivity extends AppCompatActivity
+public class DmcActivity extends AppCompatActivity
         implements PropertyAdapter.OnItemLinkClickListener {
 
     /**
@@ -59,7 +61,7 @@ public class DmrActivity extends AppCompatActivity
                                     final @NonNull CdsObject object,
                                     final @NonNull String uri,
                                     final @NonNull String rendererUdn) {
-        final Intent intent = new Intent(context, DmrActivity.class);
+        final Intent intent = new Intent(context, DmcActivity.class);
         intent.putExtra(Const.EXTRA_SERVER_UDN, serverUdn);
         intent.putExtra(Const.EXTRA_OBJECT, object);
         intent.putExtra(Const.EXTRA_URI, uri);
@@ -69,7 +71,8 @@ public class DmrActivity extends AppCompatActivity
 
     private static final int CHAPTER_MARGIN = (int) TimeUnit.SECONDS.toMillis(5);
     private Handler mHandler;
-    private Runnable mGetPositionTask = new Runnable() {
+    @NonNull
+    private final Runnable mGetPositionTask = new Runnable() {
         @Override
         public void run() {
             mMediaRenderer.getPositionInfo((success, result) -> {
@@ -78,6 +81,12 @@ public class DmrActivity extends AppCompatActivity
                 }
             });
             mMediaRenderer.getTransportInfo((success, result) -> onGetTransportInfo(result));
+        }
+    };
+    @NonNull
+    private final ActionCallback mShowToastOnError = (success, result) -> {
+        if (!success) {
+            mHandler.post(() -> Toast.makeText(this, R.string.toast_command_error_occurred, Toast.LENGTH_LONG).show());
         }
     };
     private MediaRenderer mMediaRenderer;
@@ -217,9 +226,9 @@ public class DmrActivity extends AppCompatActivity
         play.setVisibility(View.VISIBLE);
         play.setOnClickListener(v -> {
             if (mPlaying) {
-                mMediaRenderer.pause(null);
+                mMediaRenderer.pause(mShowToastOnError);
             } else {
-                mMediaRenderer.play(null);
+                mMediaRenderer.play(mShowToastOnError);
             }
         });
     }
@@ -227,7 +236,12 @@ public class DmrActivity extends AppCompatActivity
     private void start(CdsObject object, String uri) {
         mMediaRenderer.setAVTransportURI(object, uri, (success, result) -> {
             if (success) {
-                mMediaRenderer.play(null);
+                mMediaRenderer.play(mShowToastOnError);
+            } else {
+                mHandler.post(() -> {
+                    Toast.makeText(this, R.string.toast_command_error_occurred, Toast.LENGTH_LONG).show();
+                    finish();
+                });
             }
         });
     }
@@ -256,7 +270,7 @@ public class DmrActivity extends AppCompatActivity
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                mMediaRenderer.seek(seekBar.getProgress(), null);
+                mMediaRenderer.seek(seekBar.getProgress(), mShowToastOnError);
                 mHandler.postDelayed(mTrackingCancel, 1000);
             }
         });
@@ -281,7 +295,7 @@ public class DmrActivity extends AppCompatActivity
     private void goNext() {
         final int chapter = getCurrentChapter() + 1;
         if (chapter < mChapterInfo.size()) {
-            mMediaRenderer.seek(mChapterInfo.get(chapter), null);
+            mMediaRenderer.seek(mChapterInfo.get(chapter), mShowToastOnError);
         }
     }
 
@@ -291,7 +305,7 @@ public class DmrActivity extends AppCompatActivity
             chapter--;
         }
         if (chapter >= 0) {
-            mMediaRenderer.seek(mChapterInfo.get(chapter), null);
+            mMediaRenderer.seek(mChapterInfo.get(chapter), mShowToastOnError);
         }
     }
 

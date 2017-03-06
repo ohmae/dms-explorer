@@ -105,7 +105,7 @@ class ItemSelectHelper {
         if (res == null) {
             return;
         }
-        final Intent intent = DmrActivity.makeIntent(
+        final Intent intent = DmcActivity.makeIntent(
                 context, serverUdn, object, res.getValue(), rendererUdn);
         context.startActivity(intent);
     }
