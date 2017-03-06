@@ -8,8 +8,8 @@ android {
         applicationId "net.mm2d.dmsexplorer"
         minSdkVersion 16
         targetSdkVersion 25
-        versionCode 604
-        versionName "0.6.4"
+        versionCode 605
+        versionName "0.6.5"
         vectorDrawables.useSupportLibrary = true
         jackOptions {
             enabled true
