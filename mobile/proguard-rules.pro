@@ -15,3 +15,5 @@
 #-keepclassmembers class fqcn.of.javascript.interface.for.webview {
 #   public *;
 #}
+# for android support library
+-keep class android.support.v7.widget.DefaultItemAnimator { *; }

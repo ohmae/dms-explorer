@@ -10,6 +10,7 @@ android {
         targetSdkVersion 25
         versionCode 605
         versionName "0.6.5"
+        resConfigs "en", "ja"
         vectorDrawables.useSupportLibrary = true
         jackOptions {
             enabled true
@@ -25,7 +26,7 @@ android {
             signingConfig signingConfigs.debug
         }
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
