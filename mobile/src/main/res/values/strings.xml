@@ -21,6 +21,7 @@
     <string name="prop_creator">Creator:</string>
     <string name="prop_description">Description:</string>
     <string name="prop_long_description">Long Description:</string>
+    <string name="prop_chapter_info">Chapter Info:</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_settings">Settings</string>
     <string name="pref_header_general">General</string>

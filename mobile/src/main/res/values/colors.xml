@@ -25,5 +25,6 @@
     <color name="progress4">#33BB55</color>
     <color name="translucent_ripple">#40ffffff</color>
     <color name="translucent_control">#66000000</color>
-    <color name="chapterMark">#80808080</color>
+    <color name="chapterMark">#80ffffff</color>
+    <color name="progressBackground">#80ffffff</color>
 </resources>

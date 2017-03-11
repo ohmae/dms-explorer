@@ -89,6 +89,8 @@ public class DmcActivity extends AppCompatActivity
             mHandler.post(() -> Toast.makeText(this, R.string.toast_command_error_occurred, Toast.LENGTH_LONG).show());
         }
     };
+
+    private static final char EN_SPACE = 0x2002; // &ensp;
     private MediaRenderer mMediaRenderer;
     private ImageView mPlay;
     private View mNext;
@@ -102,6 +104,7 @@ public class DmcActivity extends AppCompatActivity
     private boolean mTracking;
     private boolean mPlaying;
     private List<Integer> mChapterInfo;
+    private PropertyAdapter mPropertyAdapter;
 
     private boolean onGetPositionInfo(Map<String, String> result) {
         if (result == null) {
@@ -140,17 +143,17 @@ public class DmcActivity extends AppCompatActivity
         mChapterMark.setDuration(mDuration);
     }
 
-    private static String makeTimeText(long millisecond) {
-        final long second = millisecond / 1000;
-        final long minute = second / 60;
-        final long hour = minute / 60;
-        return String.format(Locale.US, "%01d:%02d:%02d", hour, minute % 60, second % 60);
+    private static String makeTimeText(int millisecond) {
+        final long second = (millisecond / 1000) % 60;
+        final long minute = (millisecond / 60000) % 60;
+        final long hour =  millisecond / 3600000;
+        return String.format(Locale.US, "%01d:%02d:%02d", hour, minute, second);
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.act_dmr);
+        setContentView(R.layout.act_dmc);
         mHandler = new Handler();
 
         final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -178,10 +181,10 @@ public class DmcActivity extends AppCompatActivity
         image.setImageResource(getImageResource(object));
 
         final RecyclerView recyclerView = (RecyclerView) findViewById(R.id.detail);
-        final PropertyAdapter adapter = new PropertyAdapter(this);
-        adapter.setOnItemLinkClickListener(this);
-        CdsDetailFragment.setupPropertyAdapter(this, adapter, object);
-        recyclerView.setAdapter(adapter);
+        mPropertyAdapter = new PropertyAdapter(this);
+        mPropertyAdapter.setOnItemLinkClickListener(this);
+        CdsDetailFragment.setupPropertyAdapter(this, mPropertyAdapter, object);
+        recyclerView.setAdapter(mPropertyAdapter);
 
         mPlay = (ImageView) findViewById(R.id.play);
         mNext = findViewById(R.id.next);
@@ -280,16 +283,35 @@ public class DmcActivity extends AppCompatActivity
         ChapterInfo.get(object, result -> mHandler.post(() -> setChapterInfo(result)));
     }
 
-    private void setChapterInfo(@Nullable List<Integer> result) {
-        if (result == null) {
+    private void setChapterInfo(@Nullable List<Integer> chapterInfo) {
+        if (chapterInfo == null) {
             return;
         }
-        mChapterInfo = result;
-        mHandler.post(() -> {
-            mNext.setVisibility(View.VISIBLE);
-            mPrevious.setVisibility(View.VISIBLE);
-            mChapterMark.setChapterInfo(mChapterInfo);
-        });
+        mChapterInfo = chapterInfo;
+        mNext.setVisibility(View.VISIBLE);
+        mPrevious.setVisibility(View.VISIBLE);
+        mChapterMark.setChapterInfo(mChapterInfo);
+        final int count = mPropertyAdapter.getItemCount();
+        mPropertyAdapter.addEntry(getString(R.string.prop_chapter_info),
+                makeChapterString(chapterInfo));
+        mPropertyAdapter.notifyItemInserted(count);
+    }
+
+    private String makeChapterString(List<Integer> chapterInfo) {
+        final StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < chapterInfo.size(); i++) {
+            if (sb.length() != 0) {
+                sb.append("\n");
+            }
+            if (i < 9) {
+                sb.append(EN_SPACE);
+            }
+            sb.append(String.valueOf(i + 1));
+            sb.append(" : ");
+            final int chapter = chapterInfo.get(i);
+            sb.append(makeTimeText(chapter));
+        }
+        return sb.toString();
     }
 
     private void goNext() {

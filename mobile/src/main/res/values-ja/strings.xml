@@ -21,6 +21,7 @@
     <string name="prop_creator">製作者:</string>
     <string name="prop_description">情報:</string>
     <string name="prop_long_description">詳細情報:</string>
+    <string name="prop_chapter_info">チャプター情報:</string>
     <string name="action_settings">設定</string>
     <string name="title_activity_settings">設定</string>
     <string name="pref_header_general">全般</string>

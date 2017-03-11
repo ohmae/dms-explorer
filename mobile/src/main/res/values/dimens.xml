@@ -13,9 +13,15 @@
     <dimen name="server_property_margin">100dp</dimen>
     <dimen name="cds_property_margin">100dp</dimen>
     <dimen name="music_image_margin">16dp</dimen>
+
     <dimen name="control_height">56dp</dimen>
     <dimen name="control_margin">24dp</dimen>
     <dimen name="seek_padding">16dp</dimen>
+
     <dimen name="chapter_padding">16dp</dimen>
-    <dimen name="chapter_radius">4dp</dimen>
+    <dimen name="chapter_width">2dp</dimen>
+    <dimen name="chapter_height">16dp</dimen>
+
+    <dimen name="seek_bar_track_background_height">2dp</dimen>
+    <dimen name="seek_bar_track_progress_height">2dp</dimen>
 </resources>

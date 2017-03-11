@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="RecyclerTheme">
+        <attr name="propertyTitleColor" format="color"/>
+        <attr name="propertyMessageColor" format="color"/>
+        <attr name="propertyLinkColor" format="color"/>
+    </declare-styleable>
+</resources>

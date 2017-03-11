@@ -15,7 +15,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="4dp"
         android:text="Small Text"
-        android:textColor="?android:attr/textColorHighlight"
+        android:textColor="?attr/propertyTitleColor"
         android:textSize="@dimen/text_size_sub"/>
 
     <TextView
@@ -23,8 +23,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Large Text"
-        android:textColor="?android:attr/textColorPrimary"
-        android:textColorLink="?android:attr/textColorLink"
+        android:textColor="?attr/propertyMessageColor"
+        android:textColorLink="?attr/propertyLinkColor"
         android:textSize="@dimen/text_size_main"/>
 
 </LinearLayout>

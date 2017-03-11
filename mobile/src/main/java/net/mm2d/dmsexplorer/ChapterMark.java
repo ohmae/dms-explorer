@@ -8,6 +8,7 @@
 package net.mm2d.dmsexplorer;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.support.annotation.NonNull;
@@ -24,7 +25,7 @@ import java.util.List;
 public class ChapterMark extends View {
     @NonNull
     private final Paint mPaint;
-    private final float mRadius;
+    private final float mHalfHeight;
     @Nullable
     private List<Integer> mChapterInfo;
     private int mDuration;
@@ -42,7 +43,9 @@ public class ChapterMark extends View {
         mPaint = new Paint();
         mPaint.setColor(ContextCompat.getColor(context, R.color.chapterMark));
         mPaint.setAntiAlias(true);
-        mRadius = context.getResources().getDimension(R.dimen.chapter_radius);
+        final Resources res = context.getResources();
+        mHalfHeight = res.getDimension(R.dimen.chapter_height) / 2;
+        mPaint.setStrokeWidth(res.getDimension(R.dimen.chapter_width));
     }
 
     public void setChapterInfo(@NonNull List<Integer> chapterInfo) {
@@ -63,10 +66,10 @@ public class ChapterMark extends View {
         }
         final int width = getWidth() - getPaddingLeft() - getPaddingRight();
         final int margin = getPaddingLeft();
-        final int centerVertical = getHeight() / 2;
+        final int cy = getHeight() / 2;
         for (final int position : mChapterInfo) {
             final int x = (int) (((float) position) / mDuration * width) + margin;
-            canvas.drawCircle(x, centerVertical, mRadius, mPaint);
+            canvas.drawLine(x, cy - mHalfHeight, x, cy + mHalfHeight, mPaint);
         }
     }
 }

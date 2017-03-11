@@ -8,17 +8,17 @@
     </style>
 
     <style name="AppTheme.NoActionBar">
+        <item name="propertyMessageColor">@color/textMain</item>
+        <item name="propertyLinkColor">@color/textLink</item>
+        <item name="propertyTitleColor">@color/textHighlight</item>
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
-        <item name="android:textColorPrimary">@color/textMain</item>
-        <item name="android:textColorLink">@color/textLink</item>
-        <item name="android:textColorHighlight">@color/textHighlight</item>
     </style>
 
     <style name="AppTheme.NoActionBar.Dark">
-        <item name="android:textColorPrimary">@color/textMainDark</item>
-        <item name="android:textColorLink">@color/textLinkDark</item>
-        <item name="android:textColorHighlight">@color/textHighlightDark</item>
+        <item name="propertyMessageColor">@color/textMainDark</item>
+        <item name="propertyLinkColor">@color/textLinkDark</item>
+        <item name="propertyTitleColor">@color/textHighlightDark</item>
         <item name="android:windowBackground">@android:color/black</item>
         <item name="android:colorBackground">@android:color/black</item>
     </style>
