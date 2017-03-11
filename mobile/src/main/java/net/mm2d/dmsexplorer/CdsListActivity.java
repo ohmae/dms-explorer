@@ -325,7 +325,7 @@ public class CdsListActivity extends AppCompatActivity
             getSupportFragmentManager().beginTransaction()
                     .remove(mCdsDetailFragment).commit();
         }
-        mCdsListAdapter.setSelection(-1);
+        mCdsListAdapter.clearSelection();
         mCdsDetailFragment = null;
         mSelectedObject = null;
         final StringBuilder sb = new StringBuilder();

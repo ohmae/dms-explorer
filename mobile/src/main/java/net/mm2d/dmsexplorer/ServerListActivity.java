@@ -31,13 +31,15 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import net.mm2d.android.net.Lan;
+import net.mm2d.android.upnp.AvControlPointManager;
 import net.mm2d.android.upnp.cds.MediaServer;
 import net.mm2d.android.upnp.cds.MsControlPoint;
 import net.mm2d.android.upnp.cds.MsControlPoint.MsDiscoveryListener;
-import net.mm2d.android.net.Lan;
-import net.mm2d.android.upnp.AvControlPointManager;
 import net.mm2d.android.widget.DividerItemDecoration;
 import net.mm2d.dmsexplorer.ServerListAdapter.OnItemClickListener;
+
+import java.util.List;
 
 /**
  * MediaServerのサーチ、選択を行うActivity。
@@ -150,17 +152,23 @@ public class ServerListActivity extends AppCompatActivity {
                 mServerListAdapter.notifyDataSetChanged();
             }
         }
-        if (mTwoPane && server.equals(mSelectedServer)) {
-            if (mServerDetailFragment != null) {
-                getSupportFragmentManager()
-                        .beginTransaction()
-                        .remove(mServerDetailFragment)
-                        .commit();
-                mServerDetailFragment = null;
-                mServerListAdapter.setSelection(-1);
-                mSelectedServer = null;
-            }
+        if (server.equals(mSelectedServer)) {
+            mServerListAdapter.clearSelection();
+            removeDetailFragment();
         }
+    }
+
+    private void removeDetailFragment() {
+        if (!mTwoPane || mServerDetailFragment == null) {
+            return;
+        }
+        getSupportFragmentManager()
+                .beginTransaction()
+                .remove(mServerDetailFragment)
+                .commit();
+        mServerDetailFragment = null;
+        mServerListAdapter.setSelection(-1);
+        mSelectedServer = null;
     }
 
     @Override
@@ -176,7 +184,6 @@ public class ServerListActivity extends AppCompatActivity {
         assert toolbar != null;
         setSupportActionBar(toolbar);
         toolbar.setTitle(getTitle());
-        mMsControlPoint.setMsDiscoveryListener(mDiscoveryListener);
         mServerListAdapter = new ServerListAdapter(this, mMsControlPoint.getDeviceList());
         mServerListAdapter.setOnItemClickListener(mOnItemClickListener);
         mNetworkAvailable = mLan.hasAvailableInterface();
@@ -226,10 +233,29 @@ public class ServerListActivity extends AppCompatActivity {
         unregisterReceiver(mConnectivityReceiver);
         if (isFinishing()) {
             synchronized (mAvCpManager) {
-                mMsControlPoint.setMsDiscoveryListener(null);
                 mAvCpManager.terminate();
             }
         }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        mMsControlPoint.setMsDiscoveryListener(mDiscoveryListener);
+        final List<MediaServer> list = mMsControlPoint.getDeviceList();
+        mServerListAdapter.clear();
+        mServerListAdapter.addAll(list);
+        mServerListAdapter.notifyDataSetChanged();
+        if (mSelectedServer != null && !list.contains(mSelectedServer)) {
+            mServerListAdapter.clearSelection();
+            removeDetailFragment();
+        }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        mMsControlPoint.setMsDiscoveryListener(null);
     }
 
     @Override

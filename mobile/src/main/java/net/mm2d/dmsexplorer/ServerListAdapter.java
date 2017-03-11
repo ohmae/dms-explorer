@@ -38,17 +38,18 @@ import javax.annotation.Nullable;
 public class ServerListAdapter
         extends RecyclerView.Adapter<ServerListAdapter.ViewHolder> {
     private static final String TAG = "ServerListAdapter";
-    private final int mSelectedZ;
-    private final int mAccentRadius;
 
     public interface OnItemClickListener {
         void onItemClick(@NonNull View v, @NonNull View accent, int position, @NonNull MediaServer server);
     }
 
+    private static final int NOT_SELECTED = -1;
+    private final int mSelectedZ;
+    private final int mAccentRadius;
     private final LayoutInflater mInflater;
     private final List<MediaServer> mList;
     private OnItemClickListener mListener;
-    private int mSelection = -1;
+    private int mSelection = NOT_SELECTED;
 
     public ServerListAdapter(Context context, Collection<? extends MediaServer> servers) {
         mInflater = LayoutInflater.from(context);
@@ -104,8 +105,23 @@ public class ServerListAdapter
     }
 
     public void setSelection(int position) {
+        final int previous = mSelection;
         mSelection = position;
-        notifyDataSetChanged();
+        if (previous != position) {
+            notifyItemChangedIfPossible(previous);
+        }
+        notifyItemChangedIfPossible(position);
+    }
+
+    private void notifyItemChangedIfPossible(int position) {
+        if (position == NOT_SELECTED || position >= getItemCount()) {
+            return;
+        }
+        notifyItemChanged(position);
+    }
+
+    public void clearSelection() {
+        setSelection(NOT_SELECTED);
     }
 
     private final View.OnClickListener mItemClickListener = new View.OnClickListener() {
@@ -169,13 +185,13 @@ public class ServerListAdapter
         private void setSelectionMark(final int position) {
             if (position == mSelection) {
                 mMark.setVisibility(View.VISIBLE);
-                mView.setBackgroundResource(R.drawable.bg_list_item_selected);
+                mView.setSelected(true);
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                     mView.setTranslationZ(mSelectedZ);
                 }
             } else {
                 mMark.setVisibility(View.INVISIBLE);
-                mView.setBackgroundResource(R.drawable.bg_list_item_normal);
+                mView.setSelected(false);
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                     mView.setTranslationZ(0);
                 }

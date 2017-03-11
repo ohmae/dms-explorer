@@ -33,17 +33,18 @@ import java.util.List;
 public class CdsListAdapter
         extends RecyclerView.Adapter<CdsListAdapter.ViewHolder> {
     private static final String TAG = "CdsListAdapter";
-    private final int mSelectedZ;
-    private final int mAccentRadius;
 
     public interface OnItemClickListener {
         void onItemClick(View v, View accent, int position, CdsObject object);
     }
 
+    private static final int NOT_SELECTED = -1;
+    private final int mSelectedZ;
+    private final int mAccentRadius;
     private final LayoutInflater mInflater;
     private final List<CdsObject> mList;
     private OnItemClickListener mListener;
-    private int mSelection = -1;
+    private int mSelection = NOT_SELECTED;
 
     public CdsListAdapter(Context context) {
         mInflater = LayoutInflater.from(context);
@@ -95,8 +96,23 @@ public class CdsListAdapter
     }
 
     public void setSelection(int position) {
+        final int previous = mSelection;
         mSelection = position;
-        notifyDataSetChanged();
+        if (previous != position) {
+            notifyItemChangedIfPossible(previous);
+        }
+        notifyItemChangedIfPossible(position);
+    }
+
+    private void notifyItemChangedIfPossible(int position) {
+        if (position == NOT_SELECTED || position >= getItemCount()) {
+            return;
+        }
+        notifyItemChanged(position);
+    }
+
+    public void clearSelection() {
+        setSelection(NOT_SELECTED);
     }
 
     public int getSelection() {
@@ -146,13 +162,13 @@ public class CdsListAdapter
             mPosition = position;
             if (position == mSelection) {
                 mMark.setVisibility(View.VISIBLE);
-                mView.setBackgroundResource(R.drawable.bg_list_item_selected);
+                mView.setSelected(true);
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                     mView.setTranslationZ(mSelectedZ);
                 }
             } else {
                 mMark.setVisibility(View.INVISIBLE);
-                mView.setBackgroundResource(R.drawable.bg_list_item_normal);
+                mView.setSelected(false);
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                     mView.setTranslationZ(0);
                 }
