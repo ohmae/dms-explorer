@@ -175,7 +175,7 @@ public class ServerListAdapter
                 }
             } else {
                 mMark.setVisibility(View.INVISIBLE);
-                mView.setBackgroundResource(R.drawable.bg_list_item);
+                mView.setBackgroundResource(R.drawable.bg_list_item_normal);
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                     mView.setTranslationZ(0);
                 }
