@@ -6,13 +6,15 @@
     android:id="@+id/root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="net.mm2d.dmsexplorer.MovieActivity">
+    tools:context="net.mm2d.dmsexplorer.MovieActivity"
+    >
 
     <VideoView
         android:id="@+id/videoView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_gravity="center"/>
+        android:layout_gravity="center"
+        />
 
     <!-- コード上でpaddingを調整する -->
     <net.mm2d.dmsexplorer.ControlView
@@ -20,7 +22,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        android:background="@color/translucent_control"/>
+        android:background="@color/translucent_control"
+        />
 
     <!-- コード上でpaddingを調整する -->
     <LinearLayout
@@ -29,7 +32,8 @@
         android:layout_height="wrap_content"
         android:background="@color/translucent_control"
         android:orientation="horizontal"
-        android:paddingTop="@dimen/status_bar_size">
+        android:paddingTop="@dimen/status_bar_size"
+        >
 
         <ImageView
             android:id="@+id/toolbarBack"
@@ -40,7 +44,8 @@
             android:layout_marginRight="16dp"
             android:background="@drawable/bg_back_button"
             android:padding="16dp"
-            app:srcCompat="@drawable/ic_arrow_back"/>
+            app:srcCompat="@drawable/ic_arrow_back"
+            />
 
         <TextView
             android:id="@+id/toolbarTitle"
@@ -50,6 +55,9 @@
             android:ellipsize="end"
             android:maxLines="1"
             android:textColor="#FFFFFF"
-            android:textSize="20sp"/>
+            android:textSize="20sp"
+            />
+
     </LinearLayout>
+
 </FrameLayout>

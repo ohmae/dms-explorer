@@ -8,20 +8,23 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     tools:context=".MusicActivity"
-    tools:ignore="MergeRootFrame">
+    tools:ignore="MergeRootFrame"
+    >
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/app_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:theme="@style/AppTheme.AppBarOverlay">
+        android:theme="@style/AppTheme.AppBarOverlay"
+        >
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:theme="@style/AppTheme.AppBarOverlay"
-            app:popupTheme="@style/AppTheme.PopupOverlay"/>
+            app:popupTheme="@style/AppTheme.PopupOverlay"
+            />
 
     </android.support.design.widget.AppBarLayout>
 
@@ -29,12 +32,14 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        >
 
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1">
+            android:layout_weight="1"
+            >
 
             <ImageView
                 android:id="@+id/art"
@@ -43,13 +48,15 @@
                 android:layout_gravity="top|end"
                 android:layout_margin="@dimen/music_image_margin"
                 android:adjustViewBounds="true"
-                android:alpha="0.3"/>
+                android:alpha="0.3"
+                />
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/detail"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                tools:listitem="@layout/li_property"/>
+                tools:listitem="@layout/li_property"
+                />
 
         </FrameLayout>
 
@@ -58,6 +65,9 @@
             android:layout_width="match_parent"
             android:layout_height="68dp"
             android:layout_gravity="bottom"
-            android:background="@color/primary"/>
+            android:background="@color/primary"
+            />
+
     </LinearLayout>
+
 </android.support.design.widget.CoordinatorLayout>

@@ -5,11 +5,14 @@
     android:id="@+id/swipeRefresh"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".CdsListActivity">
+    tools:context=".CdsListActivity"
+    >
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/cds_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:listitem="@layout/li_cds"/>
+        tools:listitem="@layout/li_cds"
+        />
+
 </android.support.v4.widget.SwipeRefreshLayout>

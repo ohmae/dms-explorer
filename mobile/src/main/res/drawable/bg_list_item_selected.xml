@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:state_pressed="true" android:drawable="@color/bgListItemSelectedPressed"/>
-    <item android:state_pressed="false" android:drawable="@color/bgListItemSelected"/>
+    <item
+        android:drawable="@color/bgListItemSelectedPressed"
+        android:state_pressed="true"
+        />
+    <item
+        android:drawable="@color/bgListItemSelected"
+        android:state_pressed="false"
+        />
 </selector>

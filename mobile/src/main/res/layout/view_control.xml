@@ -3,7 +3,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    >
 
     <ImageView
         android:id="@+id/play"
@@ -12,7 +13,8 @@
         android:layout_gravity="center_vertical"
         android:foregroundGravity="center_vertical"
         android:padding="4dp"
-        app:srcCompat="@drawable/ic_play"/>
+        app:srcCompat="@drawable/ic_play"
+        />
 
     <TextView
         android:id="@+id/textProgress"
@@ -22,7 +24,8 @@
         android:gravity="end"
         android:text="0:00:00"
         android:textColor="@color/textPrimary"
-        android:textSize="@dimen/text_size_main"/>
+        android:textSize="@dimen/text_size_main"
+        />
 
     <SeekBar
         android:id="@+id/seekBar"
@@ -31,7 +34,8 @@
         android:layout_gravity="center_vertical"
         android:layout_weight="1"
         android:paddingBottom="@dimen/seek_padding"
-        android:paddingTop="@dimen/seek_padding"/>
+        android:paddingTop="@dimen/seek_padding"
+        />
 
     <TextView
         android:id="@+id/textDuration"
@@ -41,5 +45,7 @@
         android:gravity="start"
         android:text="0:00:00"
         android:textColor="@color/textPrimary"
-        android:textSize="@dimen/text_size_main"/>
+        android:textSize="@dimen/text_size_main"
+        />
+
 </merge>

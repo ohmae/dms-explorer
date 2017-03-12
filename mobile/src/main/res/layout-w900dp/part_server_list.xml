@@ -8,25 +8,30 @@
     android:divider="?android:attr/dividerHorizontal"
     android:orientation="horizontal"
     android:showDividers="middle"
-    tools:context=".ServerListActivity">
+    tools:context=".ServerListActivity"
+    >
 
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/swipeRefresh"
         android:layout_width="@dimen/item_width"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        >
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/server_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             tools:context=".ServerListActivity"
-            tools:listitem="@layout/li_server"/>
+            tools:listitem="@layout/li_server"
+            />
+
     </android.support.v4.widget.SwipeRefreshLayout>
 
     <FrameLayout
         android:id="@+id/server_detail_container"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="1"/>
+        android:layout_weight="1"
+        />
 
 </LinearLayout>

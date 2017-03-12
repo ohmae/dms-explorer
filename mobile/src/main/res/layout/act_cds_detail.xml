@@ -4,26 +4,30 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    >
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/app_bar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/app_bar_height"
-        android:theme="@style/AppTheme.AppBarOverlay">
+        android:theme="@style/AppTheme.AppBarOverlay"
+        >
 
         <android.support.design.widget.CollapsingToolbarLayout
             android:id="@+id/toolbar_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed">
+            app:layout_scrollFlags="scroll|exitUntilCollapsed"
+            >
 
             <android.support.v7.widget.Toolbar
                 android:id="@+id/detail_toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 app:layout_collapseMode="pin"
-                app:popupTheme="@style/AppTheme.PopupOverlay"/>
+                app:popupTheme="@style/AppTheme.PopupOverlay"
+                />
 
         </android.support.design.widget.CollapsingToolbarLayout>
     </android.support.design.widget.AppBarLayout>
@@ -35,7 +39,8 @@
         android:clipToPadding="false"
         android:paddingBottom="@dimen/cds_property_margin"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        tools:listitem="@layout/li_property"/>
+        tools:listitem="@layout/li_property"
+        />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab_send"
@@ -46,7 +51,9 @@
         android:layout_marginEnd="@dimen/fab_margin"
         android:layout_marginRight="@dimen/fab_margin"
         app:backgroundTint="@color/primary"
-        app:srcCompat="@drawable/ic_send_device"/>
+        app:rippleColor="@android:color/white"
+        app:srcCompat="@drawable/ic_send_device"
+        />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab_play"
@@ -54,6 +61,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
-        android:src="@drawable/ic_fab_play"/>
+        app:rippleColor="@android:color/white"
+        app:srcCompat="@drawable/ic_fab_play"
+        />
 
 </android.support.design.widget.CoordinatorLayout>

@@ -7,7 +7,8 @@
     android:paddingBottom="16dp"
     android:paddingLeft="@dimen/horizontal_padding"
     android:paddingRight="@dimen/horizontal_padding"
-    android:paddingTop="8dp">
+    android:paddingTop="8dp"
+    >
 
     <TextView
         android:id="@+id/text1"
@@ -16,7 +17,8 @@
         android:layout_marginBottom="4dp"
         android:text="Small Text"
         android:textColor="?attr/propertyTitleColor"
-        android:textSize="@dimen/text_size_sub"/>
+        android:textSize="@dimen/text_size_sub"
+        />
 
     <TextView
         android:id="@+id/text2"
@@ -25,6 +27,7 @@
         android:text="Large Text"
         android:textColor="?attr/propertyMessageColor"
         android:textColorLink="?attr/propertyLinkColor"
-        android:textSize="@dimen/text_size_main"/>
+        android:textSize="@dimen/text_size_main"
+        />
 
 </LinearLayout>
