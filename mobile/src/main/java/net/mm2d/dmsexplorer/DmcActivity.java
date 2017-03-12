@@ -9,6 +9,7 @@ package net.mm2d.dmsexplorer;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -192,6 +193,10 @@ public class DmcActivity extends AppCompatActivity {
         mProgressText = (TextView) findViewById(R.id.textProgress);
         mDurationText = (TextView) findViewById(R.id.textDuration);
         mMediaRenderer.subscribe();
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            mSeekBar.setProgressDrawable(getDrawable(R.drawable.seekbar_track));
+        }
 
         if (object.getType() == CdsObject.TYPE_IMAGE) {
             findViewById(R.id.seekPanel).setVisibility(View.INVISIBLE);

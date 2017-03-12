@@ -14,6 +14,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.Fragment;
 
+import net.mm2d.android.upnp.cds.CdsObject;
 import net.mm2d.android.upnp.cds.MediaServer;
 
 /**
@@ -42,6 +43,37 @@ public class ToolbarThemeHelper {
         final String friendlyName = server.getFriendlyName();
         int primaryColor = ThemeUtils.getAccentColor(friendlyName);
         int secondaryColor = ThemeUtils.getAccentDarkColor(friendlyName);
+        toolbarLayout.setBackgroundColor(primaryColor);
+        toolbarLayout.setContentScrimColor(primaryColor);
+        if (!fragmentTheme
+                && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP
+                && context instanceof Activity) {
+            ((Activity) context).getWindow().setStatusBarColor(secondaryColor);
+        }
+    }
+
+    public static void setCdsObjectTheme(
+            final @NonNull Activity activity,
+            final @NonNull CdsObject object,
+            final @NonNull CollapsingToolbarLayout toolbarLayout) {
+        setCdsObjectTheme(activity, object, toolbarLayout, false);
+    }
+
+    public static void setCdsObjectTheme(
+            final @NonNull Fragment fragment,
+            final @NonNull CdsObject object,
+            final @NonNull CollapsingToolbarLayout toolbarLayout) {
+        setCdsObjectTheme(fragment.getActivity(), object, toolbarLayout, true);
+    }
+
+    private static void setCdsObjectTheme(
+            final @NonNull Context context,
+            final @NonNull CdsObject object,
+            final @NonNull CollapsingToolbarLayout toolbarLayout,
+            boolean fragmentTheme) {
+        final String title = object.getTitle();
+        int primaryColor = ThemeUtils.getAccentColor(title);
+        int secondaryColor = ThemeUtils.getAccentDarkColor(title);
         toolbarLayout.setBackgroundColor(primaryColor);
         toolbarLayout.setContentScrimColor(primaryColor);
         if (!fragmentTheme

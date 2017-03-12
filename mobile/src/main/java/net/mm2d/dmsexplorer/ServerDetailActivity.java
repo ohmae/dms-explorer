@@ -62,12 +62,8 @@ public class ServerDetailActivity extends AppCompatActivity {
             return;
         }
         setContentView(R.layout.act_server_detail);
-        final Toolbar toolbar = (Toolbar) findViewById(R.id.detail_toolbar);
-        setSupportActionBar(toolbar);
-        if (toolbar == null) {
-            finish();
-            return;
-        }
+        setSupportActionBar((Toolbar) findViewById(R.id.detail_toolbar));
+
         final ActionBar actionBar = getSupportActionBar();
         assert actionBar != null;
         actionBar.setDisplayHomeAsUpEnabled(true);

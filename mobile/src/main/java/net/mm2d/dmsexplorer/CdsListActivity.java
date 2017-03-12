@@ -249,6 +249,7 @@ public class CdsListActivity extends AppCompatActivity
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
+        removeDetailFragment();
         super.onSaveInstanceState(outState);
         outState.putParcelableArray(KEY_HISTORY, mHistories.toArray(new History[mHistories.size()]));
         outState.putInt(KEY_POSITION, mCdsListAdapter.getSelection());
@@ -321,15 +322,22 @@ public class CdsListActivity extends AppCompatActivity
         reload();
     }
 
-    private void prepareViewState() {
-        if (mTwoPane && mCdsDetailFragment != null) {
-            getSupportFragmentManager().beginTransaction()
-                    .remove(mCdsDetailFragment).commit();
+    private void removeDetailFragment() {
+        if (!mTwoPane || mCdsDetailFragment == null) {
+            return;
         }
+        getSupportFragmentManager()
+                .beginTransaction()
+                .remove(mCdsDetailFragment)
+                .commit();
+        mCdsDetailFragment = null;
+    }
+
+    private void prepareViewState() {
+        removeDetailFragment();
         mCdsListAdapter.clear();
         mCdsListAdapter.clearSelection();
         mCdsListAdapter.notifyDataSetChanged();
-        mCdsDetailFragment = null;
         mSelectedObject = null;
         final StringBuilder sb = new StringBuilder();
         for (final ListIterator<History> i = mHistories.listIterator(mHistories.size());

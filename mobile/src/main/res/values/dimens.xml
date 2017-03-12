@@ -3,6 +3,8 @@
     <dimen name="app_bar_height">180dp</dimen>
 
     <dimen name="fab_margin">16dp</dimen>
+    <dimen name="fab2_bottom_margin">88dp</dimen>
+
     <dimen name="item_width">400dp</dimen>
     <dimen name="accent_size">48dp</dimen>
     <dimen name="accent_radius">24dp</dimen>
@@ -18,7 +20,7 @@
 
     <dimen name="control_height">56dp</dimen>
     <dimen name="control_margin">24dp</dimen>
-    <dimen name="seek_padding">16dp</dimen>
+    <dimen name="seek_padding">12dp</dimen>
 
     <dimen name="chapter_padding">16dp</dimen>
     <dimen name="chapter_width">2dp</dimen>

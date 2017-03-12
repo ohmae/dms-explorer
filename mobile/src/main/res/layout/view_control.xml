@@ -30,8 +30,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
         android:layout_weight="1"
-        android:paddingBottom="16dp"
-        android:paddingTop="16dp"/>
+        android:paddingBottom="@dimen/seek_padding"
+        android:paddingTop="@dimen/seek_padding"/>
 
     <TextView
         android:id="@+id/textDuration"

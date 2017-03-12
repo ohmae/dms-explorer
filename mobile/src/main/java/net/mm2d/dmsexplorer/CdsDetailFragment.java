@@ -7,20 +7,22 @@
 
 package net.mm2d.dmsexplorer;
 
+import android.app.Activity;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import net.mm2d.android.upnp.avt.MrControlPoint;
 import net.mm2d.android.upnp.cds.CdsObject;
@@ -64,59 +66,55 @@ public class CdsDetailFragment extends Fragment {
         final String udn = getArguments().getString(Const.EXTRA_SERVER_UDN);
         final MediaServer server = DataHolder.getInstance().getMsControlPoint().getDevice(udn);
         final CdsObject object = getArguments().getParcelable(Const.EXTRA_OBJECT);
-        if (object == null || server == null) {
+        final Toolbar toolbar = (Toolbar) rootView.findViewById(R.id.fragment_toolbar);
+        if (object == null || server == null || toolbar == null) {
             getActivity().finish();
             return rootView;
         }
+        toolbar.setTitle(AribUtils.toDisplayableString(object.getTitle()));
 
-        final TextView titleView = (TextView) rootView.findViewById(R.id.fragment_toolbar);
-        if (titleView != null) {
-            final String title = object.getTitle();
-            titleView.setText(AribUtils.toDisplayableString(title));
-            titleView.setBackgroundColor(ThemeUtils.getAccentColor(title));
-        }
+        ToolbarThemeHelper.setCdsObjectTheme(this, object,
+                (CollapsingToolbarLayout) rootView.findViewById(R.id.toolbar_layout));
 
         final RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.cds_detail);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setAdapter(new CdsPropertyAdapter(getActivity(), object));
 
-        setUpPlayButton(rootView, object);
-        setUpSendButton(rootView, udn, object);
+        setUpPlayButton(getActivity(), (FloatingActionButton) rootView.findViewById(R.id.fab_play), object);
+        setUpSendButton(getActivity(), (FloatingActionButton) rootView.findViewById(R.id.fab_send), udn, object);
         return rootView;
     }
 
-    private void setUpPlayButton(View rootView, final CdsObject object) {
-        final FloatingActionButton fab = (FloatingActionButton) rootView.findViewById(R.id.fab_play);
+    public static void setUpPlayButton(final Activity activity, FloatingActionButton fab, final CdsObject object) {
         fab.setVisibility(hasResource(object) ? View.VISIBLE : View.GONE);
         final boolean protectedResource = hasProtectedResource(object);
-        final int color = protectedResource ? Color.GRAY : ContextCompat.getColor(getContext(), R.color.accent);
+        final int color = protectedResource ? Color.GRAY : ContextCompat.getColor(activity, R.color.accent);
         fab.setBackgroundTintList(ColorStateList.valueOf(color));
         fab.setOnClickListener(view -> {
             if (protectedResource) {
                 Snackbar.make(view, R.string.toast_not_support_drm, Snackbar.LENGTH_LONG).show();
             } else {
-                ItemSelectHelper.play(getActivity(), object, 0);
+                ItemSelectHelper.play(activity, object, 0);
             }
         });
         fab.setOnLongClickListener(view -> {
             if (protectedResource) {
                 Snackbar.make(view, R.string.toast_not_support_drm, Snackbar.LENGTH_LONG).show();
             } else {
-                ItemSelectHelper.play(getActivity(), object);
+                ItemSelectHelper.play(activity, object);
             }
             return true;
         });
     }
 
-    private void setUpSendButton(View rootView, final String udn, final CdsObject object) {
-        final FloatingActionButton fab = (FloatingActionButton) rootView.findViewById(R.id.fab_send);
+    public static void setUpSendButton(final Activity activity, FloatingActionButton fab, final String udn, final CdsObject object) {
         final MrControlPoint cp = DataHolder.getInstance().getMrControlPoint();
         if (cp.getDeviceListSize() == 0) {
             fab.setVisibility(View.GONE);
             return;
         }
         fab.setVisibility(View.VISIBLE);
-        fab.setOnClickListener(v -> ItemSelectHelper.send(getActivity(), udn, object));
+        fab.setOnClickListener(v -> ItemSelectHelper.send(activity, udn, object));
     }
 
     private static boolean hasResource(CdsObject object) {
