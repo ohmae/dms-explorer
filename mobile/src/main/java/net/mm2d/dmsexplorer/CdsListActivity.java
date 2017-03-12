@@ -150,7 +150,8 @@ public class CdsListActivity extends AppCompatActivity
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 mCdsDetailFragment.setEnterTransition(new Slide(Gravity.START));
             }
-            getSupportFragmentManager().beginTransaction()
+            getSupportFragmentManager()
+                    .beginTransaction()
                     .replace(R.id.cds_detail_container, mCdsDetailFragment)
                     .commit();
         } else {
@@ -235,16 +236,7 @@ public class CdsListActivity extends AppCompatActivity
         if (position >= 0) {
             mRecyclerView.scrollToPosition(position);
         }
-        if (mTwoPane && mSelectedObject != null) {
-            final Bundle arguments = new Bundle();
-            arguments.putString(Const.EXTRA_SERVER_UDN, mServer.getUdn());
-            arguments.putParcelable(Const.EXTRA_OBJECT, mSelectedObject);
-            mCdsDetailFragment = new CdsDetailFragment();
-            mCdsDetailFragment.setArguments(arguments);
-            getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.cds_detail_container, mCdsDetailFragment)
-                    .commit();
-        }
+        restoreDetailFragment();
     }
 
     @Override
@@ -266,6 +258,21 @@ public class CdsListActivity extends AppCompatActivity
         }
         if (isFinishing()) {
             mDataHolder.clearCache();
+        }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        restoreDetailFragment();
+    }
+
+    private void restoreDetailFragment() {
+        if (mTwoPane && mSelectedObject != null && mCdsDetailFragment == null) {
+            mCdsDetailFragment = CdsDetailFragment.newInstance(mServer.getUdn(), mSelectedObject);
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.cds_detail_container, mCdsDetailFragment)
+                    .commit();
         }
     }
 
