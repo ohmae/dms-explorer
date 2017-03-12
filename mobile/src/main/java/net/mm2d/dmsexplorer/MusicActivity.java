@@ -23,6 +23,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
@@ -31,7 +32,6 @@ import android.widget.ImageView;
 
 import net.mm2d.android.upnp.cds.CdsObject;
 import net.mm2d.android.util.AribUtils;
-import net.mm2d.android.util.LaunchUtils;
 import net.mm2d.util.Log;
 
 import java.io.ByteArrayOutputStream;
@@ -45,8 +45,7 @@ import java.net.URL;
  *
  * @author <a href="mailto:ryo@mm2d.net">大前良介(OHMAE Ryosuke)</a>
  */
-public class MusicActivity extends AppCompatActivity
-        implements PropertyAdapter.OnItemLinkClickListener {
+public class MusicActivity extends AppCompatActivity {
     private static final String TAG = "MusicActivity";
     private Handler mHandler;
     private MediaPlayer mMediaPlayer;
@@ -95,18 +94,16 @@ public class MusicActivity extends AppCompatActivity
         actionBar.setDisplayHomeAsUpEnabled(true);
         final String title = AribUtils.toDisplayableString(object.getTitle());
         actionBar.setTitle(title);
-        final int bgColor = ThemeUtils.getAccentColor(object.getTitle());
+        final int bgColor = ThemeUtils.getAccentColor(title);
         actionBar.setBackgroundDrawable(new ColorDrawable(bgColor));
         if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
-            getWindow().setStatusBarColor(ThemeUtils.getAccentDarkColor(object.getTitle()));
+            getWindow().setStatusBarColor(ThemeUtils.getAccentDarkColor(title));
         }
 
         controlPanel.setBackgroundColor(bgColor);
         final RecyclerView recyclerView = (RecyclerView) findViewById(R.id.detail);
-        final PropertyAdapter adapter = new PropertyAdapter(this);
-        adapter.setOnItemLinkClickListener(this);
-        CdsDetailFragment.setupPropertyAdapter(this, adapter, object);
-        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(new CdsPropertyAdapter(this, object));
         final String albumArtUri = object.getValue(CdsObject.UPNP_ALBUM_ART_URI);
         if (albumArtUri != null) {
             new Thread(new GetImage(albumArtUri)).start();
@@ -180,11 +177,6 @@ public class MusicActivity extends AppCompatActivity
             mBitmap = null;
             mArtView.setImageBitmap(null);
         }
-    }
-
-    @Override
-    public void onItemLinkClick(String link) {
-        LaunchUtils.openUri(this, link);
     }
 
     @Override

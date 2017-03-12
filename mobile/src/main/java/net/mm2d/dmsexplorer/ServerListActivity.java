@@ -22,6 +22,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.transition.Slide;
@@ -99,8 +100,6 @@ public class ServerListActivity extends AppCompatActivity {
                 getSupportFragmentManager().beginTransaction()
                         .replace(R.id.server_detail_container, mServerDetailFragment)
                         .commit();
-                mServerListAdapter.setSelection(position);
-                mSelectedServer = server;
             } else {
                 final Context context = v.getContext();
                 final Intent intent = ServerDetailActivity.makeIntent(context, server.getUdn());
@@ -112,6 +111,8 @@ public class ServerListActivity extends AppCompatActivity {
                     startActivity(intent);
                 }
             }
+            mServerListAdapter.setSelection(position);
+            mSelectedServer = server;
         }
     };
 
@@ -155,6 +156,8 @@ public class ServerListActivity extends AppCompatActivity {
         if (server.equals(mSelectedServer)) {
             mServerListAdapter.clearSelection();
             removeDetailFragment();
+            mServerListAdapter.clearSelection();
+            mSelectedServer = null;
         }
     }
 
@@ -167,8 +170,6 @@ public class ServerListActivity extends AppCompatActivity {
                 .remove(mServerDetailFragment)
                 .commit();
         mServerDetailFragment = null;
-        mServerListAdapter.setSelection(-1);
-        mSelectedServer = null;
     }
 
     @Override
@@ -219,11 +220,16 @@ public class ServerListActivity extends AppCompatActivity {
         });
         final RecyclerView recyclerView = (RecyclerView) findViewById(R.id.server_list);
         assert recyclerView != null;
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(mServerListAdapter);
         recyclerView.addItemDecoration(new DividerItemDecoration(this));
 
         if (findViewById(R.id.server_detail_container) != null) {
             mTwoPane = true;
+        }
+        if (savedInstanceState != null) {
+            final String udn = savedInstanceState.getString(Const.EXTRA_SERVER_UDN);
+            mSelectedServer = mMsControlPoint.getDevice(udn);
         }
     }
 
@@ -239,6 +245,16 @@ public class ServerListActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        removeDetailFragment();
+        mServerListAdapter.clearSelection();
+        super.onSaveInstanceState(outState);
+        if (mSelectedServer != null) {
+            outState.putString(Const.EXTRA_SERVER_UDN, mSelectedServer.getUdn());
+        }
+    }
+
+    @Override
     protected void onStart() {
         super.onStart();
         mMsControlPoint.setMsDiscoveryListener(mDiscoveryListener);
@@ -246,9 +262,18 @@ public class ServerListActivity extends AppCompatActivity {
         mServerListAdapter.clear();
         mServerListAdapter.addAll(list);
         mServerListAdapter.notifyDataSetChanged();
-        if (mSelectedServer != null && !list.contains(mSelectedServer)) {
-            mServerListAdapter.clearSelection();
+        final int position = list.indexOf(mSelectedServer);
+        if (position < 0) {
             removeDetailFragment();
+            mServerListAdapter.clearSelection();
+        } else {
+            if (mTwoPane) {
+                mServerDetailFragment = ServerDetailFragment.newInstance(mSelectedServer.getUdn());
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.server_detail_container, mServerDetailFragment)
+                        .commit();
+            }
+            mServerListAdapter.setSelection(position);
         }
     }
 

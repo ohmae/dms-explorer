@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <dimen name="app_bar_height">180dp</dimen>
+
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="item_width">400dp</dimen>
     <dimen name="accent_size">48dp</dimen>

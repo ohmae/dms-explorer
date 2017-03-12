@@ -12,7 +12,6 @@
         android:layout_height="match_parent"
         android:paddingBottom="@dimen/server_property_margin"
         android:clipToPadding="false"
-        app:layoutManager="LinearLayoutManager"
         tools:listitem="@layout/li_property"/>
 
     <android.support.design.widget.FloatingActionButton

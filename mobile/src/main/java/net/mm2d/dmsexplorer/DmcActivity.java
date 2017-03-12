@@ -15,6 +15,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
@@ -31,7 +32,6 @@ import net.mm2d.android.upnp.cds.CdsObject;
 import net.mm2d.android.upnp.cds.ChapterInfo;
 import net.mm2d.android.upnp.cds.MediaServer;
 import net.mm2d.android.util.AribUtils;
-import net.mm2d.android.util.LaunchUtils;
 
 import java.util.List;
 import java.util.Locale;
@@ -41,8 +41,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * @author <a href="mailto:ryo@mm2d.net">大前良介(OHMAE Ryosuke)</a>
  */
-public class DmcActivity extends AppCompatActivity
-        implements PropertyAdapter.OnItemLinkClickListener {
+public class DmcActivity extends AppCompatActivity {
 
     /**
      * このActivityを起動するためのIntentを作成する。
@@ -146,7 +145,7 @@ public class DmcActivity extends AppCompatActivity
     private static String makeTimeText(int millisecond) {
         final long second = (millisecond / 1000) % 60;
         final long minute = (millisecond / 60000) % 60;
-        final long hour =  millisecond / 3600000;
+        final long hour = millisecond / 3600000;
         return String.format(Locale.US, "%01d:%02d:%02d", hour, minute, second);
     }
 
@@ -180,10 +179,9 @@ public class DmcActivity extends AppCompatActivity
         final ImageView image = (ImageView) findViewById(R.id.image);
         image.setImageResource(getImageResource(object));
 
+        mPropertyAdapter = new CdsPropertyAdapter(this, object);
         final RecyclerView recyclerView = (RecyclerView) findViewById(R.id.detail);
-        mPropertyAdapter = new PropertyAdapter(this);
-        mPropertyAdapter.setOnItemLinkClickListener(this);
-        CdsDetailFragment.setupPropertyAdapter(this, mPropertyAdapter, object);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(mPropertyAdapter);
 
         mPlay = (ImageView) findViewById(R.id.play);
@@ -350,11 +348,6 @@ public class DmcActivity extends AppCompatActivity
             mMediaRenderer.clearAVTransportURI(null);
             mMediaRenderer.unsubscribe();
         }
-    }
-
-    @Override
-    public void onItemLinkClick(String link) {
-        LaunchUtils.openUri(this, link);
     }
 
     @Override

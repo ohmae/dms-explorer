@@ -205,6 +205,7 @@ public class CdsListActivity extends AppCompatActivity
         mCdsListAdapter = new CdsListAdapter(this);
         mCdsListAdapter.setOnItemClickListener(this::onCdsItemClick);
         mRecyclerView = (RecyclerView) findViewById(R.id.cds_list);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setAdapter(mCdsListAdapter);
         mRecyclerView.addItemDecoration(new DividerItemDecoration(this));
 
@@ -325,7 +326,9 @@ public class CdsListActivity extends AppCompatActivity
             getSupportFragmentManager().beginTransaction()
                     .remove(mCdsDetailFragment).commit();
         }
+        mCdsListAdapter.clear();
         mCdsListAdapter.clearSelection();
+        mCdsListAdapter.notifyDataSetChanged();
         mCdsDetailFragment = null;
         mSelectedObject = null;
         final StringBuilder sb = new StringBuilder();

@@ -65,13 +65,19 @@ public class PropertyAdapter
         }
     }
 
+    private final Context mContext;
     private final List<Entry> mList;
     private final LayoutInflater mInflater;
     private OnItemLinkClickListener mListener;
 
     public PropertyAdapter(Context context) {
+        mContext = context;
         mInflater = LayoutInflater.from(context);
         mList = new ArrayList<>();
+    }
+
+    protected Context getContext() {
+        return mContext;
     }
 
     public void addEntry(String name, String value) {

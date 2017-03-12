@@ -7,14 +7,16 @@
 
 package net.mm2d.dmsexplorer;
 
-import android.app.ActivityOptions;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.transition.Fade;
 import android.transition.Slide;
 import android.transition.TransitionSet;
@@ -22,18 +24,15 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import net.mm2d.android.upnp.cds.MediaServer;
-import net.mm2d.android.util.LaunchUtils;
 
 /**
  * メディアサーバの詳細情報を表示するFragment。
  *
  * @author <a href="mailto:ryo@mm2d.net">大前良介(OHMAE Ryosuke)</a>
  */
-public class ServerDetailFragment extends Fragment
-        implements PropertyAdapter.OnItemLinkClickListener {
+public class ServerDetailFragment extends Fragment {
 
     /**
      * インスタンスを作成する。
@@ -62,54 +61,29 @@ public class ServerDetailFragment extends Fragment
             getActivity().finish();
             return rootView;
         }
-        final TextView titleView = (TextView) rootView.findViewById(R.id.title);
-        if (titleView != null) {
-            titleView.setText(server.getFriendlyName());
-            titleView.setBackgroundColor(ThemeUtils.getAccentColor(server.getFriendlyName()));
-        }
+        final Toolbar toolbar = (Toolbar) rootView.findViewById(R.id.fragment_toolbar);
+        toolbar.setTitle(server.getFriendlyName());
+
+        ToolbarThemeHelper.setServerTheme(this, server,
+                (CollapsingToolbarLayout) rootView.findViewById(R.id.toolbar_layout));
+
         final RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.server_detail);
-        final PropertyAdapter adapter = new PropertyAdapter(getContext());
-        setupPropertyAdapter(adapter, server);
-        adapter.setOnItemLinkClickListener(this);
-        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recyclerView.setAdapter(new ServerPropertyAdapter(getActivity(), server));
 
         final FloatingActionButton fab = (FloatingActionButton) rootView.findViewById(R.id.fab);
-        if (fab != null) {
-            fab.setOnClickListener(view -> {
-                final Intent intent = CdsListActivity.makeIntent(getContext(), udn);
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    final TransitionSet ts = new TransitionSet();
-                    ts.addTransition(new Slide(Gravity.START));
-                    ts.addTransition(new Fade());
-                    getActivity().getWindow().setExitTransition(ts);
-                    startActivity(intent, ActivityOptions
-                            .makeSceneTransitionAnimation(getActivity(), view, "share")
-                            .toBundle());
-                } else {
-                    startActivity(intent);
-                }
-            });
-        }
+        fab.setOnClickListener(view -> {
+            final Intent intent = CdsListActivity.makeIntent(getContext(), udn);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                final TransitionSet ts = new TransitionSet();
+                ts.addTransition(new Slide(Gravity.START));
+                ts.addTransition(new Fade());
+                getActivity().getWindow().setExitTransition(ts);
+                startActivity(intent);
+            } else {
+                startActivity(intent);
+            }
+        });
         return rootView;
-    }
-
-    private void setupPropertyAdapter(PropertyAdapter adapter, MediaServer server) {
-        adapter.addEntry("FriendlyName:", server.getFriendlyName());
-        adapter.addEntry("SerialNumber:", server.getSerialNumber());
-        adapter.addEntry("IP Address:", server.getIpAddress());
-        adapter.addEntry("UDN:", server.getUdn());
-        adapter.addEntry("Manufacture:", server.getManufacture());
-        adapter.addEntry("ManufactureUrl:", server.getManufactureUrl(), true);
-        adapter.addEntry("ModelName:", server.getModelName());
-        adapter.addEntry("ModelUrl:", server.getModelUrl(), true);
-        adapter.addEntry("ModelDescription:", server.getModelDescription());
-        adapter.addEntry("ModelNumber:", server.getModelNumber());
-        adapter.addEntry("PresentationUrl:", server.getPresentationUrl(), true);
-        adapter.addEntry("Location:", server.getLocation());
-    }
-
-    @Override
-    public void onItemLinkClick(String link) {
-        LaunchUtils.openUri(getContext(), link);
     }
 }

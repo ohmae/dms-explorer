@@ -37,7 +37,6 @@
             android:overScrollMode="never"
             android:paddingBottom="@dimen/control_height"
             android:paddingTop="@dimen/control_height"
-            app:layoutManager="LinearLayoutManager"
             tools:listitem="@layout/li_property"/>
 
         <View

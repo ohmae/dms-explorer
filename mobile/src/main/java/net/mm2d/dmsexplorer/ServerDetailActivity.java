@@ -9,16 +9,24 @@ package net.mm2d.dmsexplorer;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build.VERSION;
-import android.os.Build.VERSION_CODES;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.transition.Fade;
+import android.transition.Slide;
+import android.transition.TransitionSet;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import net.mm2d.android.upnp.cds.MediaServer;
+
 
 /**
  * メディアサーバの詳細情報を表示するActivity。
@@ -53,10 +61,6 @@ public class ServerDetailActivity extends AppCompatActivity {
             finish();
             return;
         }
-        final String friendlyName = server.getFriendlyName();
-        if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
-            getWindow().setStatusBarColor(ThemeUtils.getAccentDarkColor(friendlyName));
-        }
         setContentView(R.layout.act_server_detail);
         final Toolbar toolbar = (Toolbar) findViewById(R.id.detail_toolbar);
         setSupportActionBar(toolbar);
@@ -64,17 +68,31 @@ public class ServerDetailActivity extends AppCompatActivity {
             finish();
             return;
         }
-        toolbar.setBackgroundColor(ThemeUtils.getAccentColor(friendlyName));
         final ActionBar actionBar = getSupportActionBar();
         assert actionBar != null;
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setTitle(server.getFriendlyName());
-        if (savedInstanceState == null) {
-            final ServerDetailFragment fragment = ServerDetailFragment.newInstance(udn);
-            getSupportFragmentManager().beginTransaction()
-                    .add(R.id.server_detail_container, fragment)
-                    .commit();
-        }
+
+        ToolbarThemeHelper.setServerTheme(this, server,
+                (CollapsingToolbarLayout) findViewById(R.id.toolbar_layout));
+
+        final RecyclerView recyclerView = (RecyclerView) findViewById(R.id.server_detail);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(new ServerPropertyAdapter(this, server));
+
+        final FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(view -> {
+            final Intent intent = CdsListActivity.makeIntent(this, udn);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                final TransitionSet ts = new TransitionSet();
+                ts.addTransition(new Slide(Gravity.START));
+                ts.addTransition(new Fade());
+                getWindow().setExitTransition(ts);
+                startActivity(intent);
+            } else {
+                startActivity(intent);
+            }
+        });
     }
 
     @Override

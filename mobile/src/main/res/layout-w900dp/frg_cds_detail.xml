@@ -8,13 +8,13 @@
     android:orientation="vertical">
 
     <TextView
-        android:id="@+id/title"
+        android:id="@+id/fragment_toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="16dp"
-        android:textColor="@color/textPrimary"
         android:ellipsize="end"
         android:maxLines="1"
+        android:padding="16dp"
+        android:textColor="@color/textPrimary"
         android:textSize="@dimen/text_size_accent"
         android:translationZ="@dimen/raise_focus"/>
 
@@ -26,9 +26,8 @@
             android:id="@+id/cds_detail"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:paddingBottom="@dimen/cds_property_margin"
             android:clipToPadding="false"
-            app:layoutManager="LinearLayoutManager"
+            android:paddingBottom="@dimen/cds_property_margin"
             tools:listitem="@layout/li_property"/>
 
         <LinearLayout
