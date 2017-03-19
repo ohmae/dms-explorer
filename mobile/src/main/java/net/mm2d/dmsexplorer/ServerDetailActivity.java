@@ -8,13 +8,11 @@
 package net.mm2d.dmsexplorer;
 
 import android.annotation.TargetApi;
-import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -24,8 +22,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import net.mm2d.android.upnp.cds.MediaServer;
-import net.mm2d.util.Log;
 import net.opacapp.multilinecollapsingtoolbar.CollapsingToolbarLayout;
+
+import static net.mm2d.dmsexplorer.ServerDetailFragment.setUpGoButton;
 
 
 /**
@@ -68,33 +67,21 @@ public class ServerDetailActivity extends AppCompatActivity {
             return;
         }
         setSupportActionBar(toolbar);
-
         final ActionBar actionBar = getSupportActionBar();
         assert actionBar != null;
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setTitle(server.getFriendlyName());
 
-        final CollapsingToolbarLayout toolbarLayout =
-                (CollapsingToolbarLayout) findViewById(R.id.toolbar_layout);
-        ToolbarThemeHelper.setServerDetailTheme(this, server, toolbarLayout);
+        ToolbarThemeHelper.setServerDetailTheme(this, server,
+                (CollapsingToolbarLayout) findViewById(R.id.toolbar_layout));
 
         final RecyclerView recyclerView = (RecyclerView) findViewById(R.id.server_detail);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(new ServerPropertyAdapter(this, server));
 
-        final FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(view -> {
-            final Intent intent = CdsListActivity.makeIntent(this, udn);
-            startActivity(intent,
-                    ActivityOptions.makeScaleUpAnimation(view, 0, 0, view.getWidth(), view.getHeight()).toBundle());
-        });
-        prepareTransition();
-    }
+        setUpGoButton(this, findViewById(R.id.fab), udn);
 
-    @Override
-    public void supportFinishAfterTransition() {
-        super.supportFinishAfterTransition();
-        Log.e(null, "supportFinishAfterTransition");
+        prepareTransition();
     }
 
     @Override

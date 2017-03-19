@@ -143,7 +143,6 @@ public class ServerListAdapter
     class ViewHolder extends RecyclerView.ViewHolder {
         private final View mView;
         private final View mMark;
-        private final View mAccent;
         private final ImageView mImageAccent;
         private final TextView mTextAccent;
         private final TextView mText1;
@@ -156,7 +155,6 @@ public class ServerListAdapter
             super(itemView);
             mView = itemView;
             mMark = mView.findViewById(R.id.mark);
-            mAccent = mView.findViewById(R.id.accent);
             mImageAccent = (ImageView) mView.findViewById(R.id.imageAccent);
             mTextAccent = (TextView) mView.findViewById(R.id.textAccent);
             mText1 = (TextView) mView.findViewById(R.id.text1);

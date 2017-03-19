@@ -29,12 +29,12 @@ public class ServerPropertyAdapter extends PropertyAdapter {
         adapter.addEntry("IP Address:", server.getIpAddress());
         adapter.addEntry("UDN:", server.getUdn());
         adapter.addEntry("Manufacture:", server.getManufacture());
-        adapter.addEntry("ManufactureUrl:", server.getManufactureUrl(), true);
+        adapter.addEntry("ManufactureUrl:", server.getManufactureUrl(), Type.LINK);
         adapter.addEntry("ModelName:", server.getModelName());
-        adapter.addEntry("ModelUrl:", server.getModelUrl(), true);
+        adapter.addEntry("ModelUrl:", server.getModelUrl(), Type.LINK);
         adapter.addEntry("ModelDescription:", server.getModelDescription());
         adapter.addEntry("ModelNumber:", server.getModelNumber());
-        adapter.addEntry("PresentationUrl:", server.getPresentationUrl(), true);
+        adapter.addEntry("PresentationUrl:", server.getPresentationUrl(), Type.LINK);
         adapter.addEntry("Location:", server.getLocation());
     }
 }

@@ -16,6 +16,7 @@ import android.text.TextUtils;
  * @author <a href="mailto:ryo@mm2d.net">大前良介(OHMAE Ryosuke)</a>
  */
 public class ThemeUtils {
+    private static final float DARKER_RATIO = 0.7f;
     /**
      * リストアイテムのアクセントカラーをタイトルの文字から決定する。
      *
@@ -31,17 +32,6 @@ public class ThemeUtils {
         return Color.HSVToColor(hsv);
     }
 
-    /**
-     * ステータスバー用の色をタイトルの文字から決定する。
-     *
-     * @param title アイテムのタイトル
-     * @return 先頭の文字から決定したアクセントカラー
-     */
-    public static int getStatusBarColor(String title) {
-        return getDarkerColor(getAccentColor(title));
-    }
-
-    private static final float DARKER_RATIO = 0.7f;
     public static int getDarkerColor(int color) {
         final int a = Color.alpha(color);
         final int r = (int)(Color.red(color) * DARKER_RATIO + 0.5f);

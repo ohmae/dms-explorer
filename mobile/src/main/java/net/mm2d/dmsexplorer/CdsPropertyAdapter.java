@@ -74,8 +74,8 @@ public class CdsPropertyAdapter extends PropertyAdapter {
 
         adapter.addEntry(context.getString(R.string.prop_description),
                 jointTagValue(object, CdsObject.DC_DESCRIPTION));
-        adapter.addEntryAutoLink(context.getString(R.string.prop_long_description),
-                jointLongDescription(object));
+        adapter.addEntry(context.getString(R.string.prop_long_description),
+                jointLongDescription(object), Type.COMPLEX);
         adapter.addEntry(CdsObject.UPNP_CLASS + ":",
                 object.getUpnpClass());
     }
@@ -116,6 +116,7 @@ public class CdsPropertyAdapter extends PropertyAdapter {
                 final byte[] bytes = value.getBytes("UTF-8");
                 final int length = Math.min(24, bytes.length);
                 final String title = new String(bytes, 0, length, "UTF-8");
+                sb.append(TITLE_PREFIX);
                 sb.append(title.trim());
                 if (value.length() > title.length()) {
                     sb.append('\n');

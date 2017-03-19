@@ -7,11 +7,12 @@
 
 package net.mm2d.dmsexplorer;
 
+import android.app.Activity;
 import android.app.ActivityOptions;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -49,12 +50,13 @@ public class ServerDetailFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        final Activity activity = getActivity();
         final View rootView = inflater.inflate(R.layout.frg_server_detail, container, false);
         final String udn = getArguments().getString(Const.EXTRA_SERVER_UDN);
         final DataHolder dataHolder = DataHolder.getInstance();
         final MediaServer server = dataHolder.getMsControlPoint().getDevice(udn);
         if (server == null) {
-            getActivity().finish();
+            activity.finish();
             return rootView;
         }
         final Toolbar toolbar = (Toolbar) rootView.findViewById(R.id.server_detail_toolbar);
@@ -64,15 +66,20 @@ public class ServerDetailFragment extends Fragment {
                 (CollapsingToolbarLayout) rootView.findViewById(R.id.toolbar_layout));
 
         final RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.server_detail);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        recyclerView.setAdapter(new ServerPropertyAdapter(getActivity(), server));
+        recyclerView.setLayoutManager(new LinearLayoutManager(activity));
+        recyclerView.setAdapter(new ServerPropertyAdapter(activity, server));
 
-        final FloatingActionButton fab = (FloatingActionButton) rootView.findViewById(R.id.fab);
-        fab.setOnClickListener(view -> {
-            final Intent intent = CdsListActivity.makeIntent(getContext(), udn);
-            startActivity(intent,
-                    ActivityOptions.makeScaleUpAnimation(view, 0, 0, view.getWidth(), view.getHeight()).toBundle());
-        });
+        setUpGoButton(activity, rootView.findViewById(R.id.fab), udn);
         return rootView;
+    }
+
+    static void setUpGoButton(final @NonNull Context context,
+                              final @NonNull View button, final @NonNull String udn) {
+        button.setOnClickListener(view -> {
+            final Intent intent = CdsListActivity.makeIntent(context, udn);
+            context.startActivity(intent, ActivityOptions.makeScaleUpAnimation(
+                    view, 0, 0, view.getWidth(), view.getHeight())
+                    .toBundle());
+        });
     }
 }

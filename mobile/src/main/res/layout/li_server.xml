@@ -3,8 +3,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal"
     android:background="@drawable/bg_list_item"
+    android:orientation="horizontal"
     >
 
     <View
@@ -53,20 +53,20 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="4dp"
+            android:layout_marginTop="8dp"
             android:text="Large Text"
             android:textColor="@color/textMain"
             android:textSize="@dimen/text_size_main"
-            android:layout_marginTop="8dp"
             />
 
         <TextView
             android:id="@+id/text2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
             android:text="Small Text"
             android:textColor="@color/textWeak"
             android:textSize="@dimen/text_size_sub"
-            android:layout_marginBottom="8dp"
             />
 
     </LinearLayout>

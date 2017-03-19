@@ -11,6 +11,7 @@ import android.app.Activity;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
@@ -90,21 +91,23 @@ public class CdsDetailFragment extends Fragment {
         final boolean protectedResource = hasProtectedResource(object);
         final int color = protectedResource ? Color.GRAY : ContextCompat.getColor(activity, R.color.accent);
         fab.setBackgroundTintList(ColorStateList.valueOf(color));
-        fab.setOnClickListener(view -> {
-            if (protectedResource) {
+        if (protectedResource) {
+            fab.setOnClickListener(CdsDetailFragment::showNotSupportDrmSnackbar);
+            fab.setOnLongClickListener(view -> {
                 Snackbar.make(view, R.string.toast_not_support_drm, Snackbar.LENGTH_LONG).show();
-            } else {
-                ItemSelectHelper.play(activity, object, 0);
-            }
-        });
+                return true;
+            });
+            return;
+        }
+        fab.setOnClickListener(view -> ItemSelectHelper.play(activity, object, 0));
         fab.setOnLongClickListener(view -> {
-            if (protectedResource) {
-                Snackbar.make(view, R.string.toast_not_support_drm, Snackbar.LENGTH_LONG).show();
-            } else {
-                ItemSelectHelper.play(activity, object);
-            }
+            ItemSelectHelper.play(activity, object);
             return true;
         });
+    }
+
+    private static void showNotSupportDrmSnackbar(@NonNull View view) {
+        Snackbar.make(view, R.string.toast_not_support_drm, Snackbar.LENGTH_LONG).show();
     }
 
     public static void setUpSendButton(final Activity activity, FloatingActionButton fab, final String udn, final CdsObject object) {
