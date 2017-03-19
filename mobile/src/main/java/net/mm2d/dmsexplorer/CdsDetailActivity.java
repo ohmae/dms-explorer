@@ -54,7 +54,7 @@ public class CdsDetailActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.act_cds_detail);
+        setContentView(R.layout.cds_detail_activity);
 
         final String udn = getIntent().getStringExtra(Const.EXTRA_SERVER_UDN);
         final DataHolder dataHolder = DataHolder.getInstance();

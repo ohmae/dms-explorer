@@ -107,7 +107,7 @@ public class ControlView extends LinearLayout implements OnPreparedListener {
     public ControlView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         setOrientation(HORIZONTAL);
-        inflate(context, R.layout.view_control, this);
+        inflate(context, R.layout.control_view, this);
         mSeekBar = (SeekBar) findViewById(R.id.seekBar);
         assert mSeekBar != null;
         mSeekBar.setEnabled(false);

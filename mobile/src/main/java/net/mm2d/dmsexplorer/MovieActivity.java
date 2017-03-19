@@ -54,7 +54,7 @@ public class MovieActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.act_movie);
+        setContentView(R.layout.movie_activity);
         loadAnimation();
         mRoot = findViewById(R.id.root);
         mRoot.setOnClickListener(v -> {

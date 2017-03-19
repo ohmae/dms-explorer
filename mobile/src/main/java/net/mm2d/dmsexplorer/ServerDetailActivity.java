@@ -60,7 +60,7 @@ public class ServerDetailActivity extends AppCompatActivity {
             finish();
             return;
         }
-        setContentView(R.layout.act_server_detail);
+        setContentView(R.layout.server_detail_activity);
         final Toolbar toolbar = (Toolbar) findViewById(R.id.server_detail_toolbar);
         if (toolbar == null) {
             finish();

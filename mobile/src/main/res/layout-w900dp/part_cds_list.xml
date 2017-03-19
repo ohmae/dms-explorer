@@ -23,7 +23,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             tools:context=".CdsListActivity"
-            tools:listitem="@layout/li_cds"
+            tools:listitem="@layout/cds_list_item"
             />
 
     </android.support.v4.widget.SwipeRefreshLayout>

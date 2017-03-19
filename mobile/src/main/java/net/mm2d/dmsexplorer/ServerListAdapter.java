@@ -65,7 +65,7 @@ public class ServerListAdapter
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        final View view = mInflater.inflate(R.layout.li_server, parent, false);
+        final View view = mInflater.inflate(R.layout.server_list_item, parent, false);
         return new ViewHolder(view);
     }
 

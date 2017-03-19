@@ -56,7 +56,7 @@ public class CdsListAdapter
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        final View view = mInflater.inflate(R.layout.li_cds, parent, false);
+        final View view = mInflater.inflate(R.layout.cds_list_item, parent, false);
         return new ViewHolder(view);
     }
 

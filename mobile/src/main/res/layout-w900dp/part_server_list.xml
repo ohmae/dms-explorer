@@ -22,7 +22,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             tools:context=".ServerListActivity"
-            tools:listitem="@layout/li_server"
+            tools:listitem="@layout/server_list_item"
             />
 
     </android.support.v4.widget.SwipeRefreshLayout>

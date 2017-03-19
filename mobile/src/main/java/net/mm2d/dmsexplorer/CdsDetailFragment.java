@@ -62,7 +62,7 @@ public class CdsDetailFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        final View rootView = inflater.inflate(R.layout.frg_cds_detail, container, false);
+        final View rootView = inflater.inflate(R.layout.cds_detail_fragment, container, false);
 
         final String udn = getArguments().getString(Const.EXTRA_SERVER_UDN);
         final MediaServer server = DataHolder.getInstance().getMsControlPoint().getDevice(udn);

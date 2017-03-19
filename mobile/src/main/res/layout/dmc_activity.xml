@@ -41,7 +41,7 @@
             android:overScrollMode="never"
             android:paddingBottom="@dimen/control_height"
             android:paddingTop="@dimen/control_height"
-            tools:listitem="@layout/li_property"
+            tools:listitem="@layout/property_list_item"
             />
 
         <View

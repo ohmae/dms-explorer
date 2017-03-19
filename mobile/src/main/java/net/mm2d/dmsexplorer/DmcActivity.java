@@ -153,7 +153,7 @@ public class DmcActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.act_dmc);
+        setContentView(R.layout.dmc_activity);
         mHandler = new Handler();
 
         final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);

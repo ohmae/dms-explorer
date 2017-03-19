@@ -169,7 +169,7 @@ public class CdsListActivity extends AppCompatActivity
             return;
         }
         final String name = mServer.getFriendlyName();
-        setContentView(R.layout.act_cds_list);
+        setContentView(R.layout.cds_list_activity);
         final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         final ActionBar actionBar = getSupportActionBar();

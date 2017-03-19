@@ -51,7 +51,7 @@ public class ServerDetailFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         final Activity activity = getActivity();
-        final View rootView = inflater.inflate(R.layout.frg_server_detail, container, false);
+        final View rootView = inflater.inflate(R.layout.server_detail_fragment, container, false);
         final String udn = getArguments().getString(Const.EXTRA_SERVER_UDN);
         final DataHolder dataHolder = DataHolder.getInstance();
         final MediaServer server = dataHolder.getMsControlPoint().getDevice(udn);

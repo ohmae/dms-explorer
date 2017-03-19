@@ -197,7 +197,7 @@ public class ServerListActivity extends AppCompatActivity {
         if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
             getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.defaultStatusBar));
         }
-        setContentView(R.layout.act_server_list);
+        setContentView(R.layout.server_list_activity);
         mHandler = new Handler();
         mLan = Lan.createInstance(this);
         final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);

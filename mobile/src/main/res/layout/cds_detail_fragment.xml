@@ -19,7 +19,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:collapsedTitleTextAppearance="@style/CollapsedToolbarText"
-            app:contentScrim="@color/primary"
             app:expandedTitleTextAppearance="@style/ExpandedToolbarText"
             app:layout_scrollFlags="scroll|exitUntilCollapsed"
             >
@@ -34,7 +33,7 @@
                 />
 
             <android.support.v7.widget.Toolbar
-                android:id="@+id/server_detail_toolbar"
+                android:id="@+id/cds_detail_toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 app:layout_collapseMode="pin"
@@ -45,23 +44,36 @@
     </android.support.design.widget.AppBarLayout>
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/server_detail"
+        android:id="@+id/cds_detail"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:clipToPadding="false"
-        android:paddingBottom="@dimen/server_property_margin"
+        android:paddingBottom="@dimen/cds_property_margin"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        tools:listitem="@layout/li_property"
+        tools:listitem="@layout/property_list_item"
         />
 
     <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab"
+        android:id="@+id/fab_send"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_marginBottom="@dimen/fab2_bottom_margin"
+        android:layout_marginEnd="@dimen/fab_margin"
+        android:layout_marginRight="@dimen/fab_margin"
+        app:backgroundTint="@color/primary"
+        app:rippleColor="@color/fabRipple"
+        app:srcCompat="@drawable/ic_send_device"
+        />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab_play"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
         app:rippleColor="@color/fabRipple"
-        app:srcCompat="@drawable/ic_arrow_forward"
+        app:srcCompat="@drawable/ic_fab_play"
         />
 
 </android.support.design.widget.CoordinatorLayout>
