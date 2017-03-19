@@ -19,6 +19,7 @@ import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.SharedElementCallback;
 import android.support.v4.content.ContextCompat;
@@ -28,12 +29,12 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.transition.Slide;
+import android.transition.Transition;
 import android.util.Pair;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.widget.Toast;
 
 import net.mm2d.android.net.Lan;
@@ -42,6 +43,7 @@ import net.mm2d.android.upnp.cds.MediaServer;
 import net.mm2d.android.upnp.cds.MsControlPoint;
 import net.mm2d.android.upnp.cds.MsControlPoint.MsDiscoveryListener;
 import net.mm2d.android.widget.DividerItemDecoration;
+import net.mm2d.android.widget.TransitionListenerAdapter;
 import net.mm2d.dmsexplorer.ServerListAdapter.OnItemClickListener;
 
 import java.util.List;
@@ -275,39 +277,52 @@ public class ServerListActivity extends AppCompatActivity {
         super.onStart();
         mMsControlPoint.setMsDiscoveryListener(mDiscoveryListener);
         final List<MediaServer> list = mMsControlPoint.getDeviceList();
-        mServerListAdapter.clear();
-        mServerListAdapter.addAll(list);
-        mServerListAdapter.notifyDataSetChanged();
         final int position = list.indexOf(mSelectedServer);
-        if (position < 0) {
-            removeDetailFragment();
-            mServerListAdapter.clearSelection();
-        } else {
-            if (mTwoPane) {
-                mServerDetailFragment = ServerDetailFragment.newInstance(mSelectedServer.getUdn());
-                getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.server_detail_container, mServerDetailFragment)
-                        .commit();
-            }
-            mServerListAdapter.setSelection(position);
-            if (!mTwoPane) {
-                supportStartPostponedEnterTransition();
-                mRecyclerView.getViewTreeObserver().addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
-                    @Override
-                    public void onGlobalLayout() {
-                        mRecyclerView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                        supportStartPostponedEnterTransition();
-                    }
-                });
+        if (position >= 0 && !mTwoPane) {
+            if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
                 setExitSharedElementCallback(new SharedElementCallback() {
                     @Override
                     public void onMapSharedElements(List<String> names, Map<String, View> sharedElements) {
                         sharedElements.clear();
-                        sharedElements.put(Const.SHARE_ELEMENT_NAME_ICON,
-                                mRecyclerView.getLayoutManager().findViewByPosition(position).findViewById(R.id.accent));
+                        final int p = mServerListAdapter.indexOf(mSelectedServer);
+                        final View shared = mRecyclerView.getLayoutManager().findViewByPosition(p);
+                        if (shared != null) {
+                            sharedElements.put(Const.SHARE_ELEMENT_NAME_ICON,
+                                    shared.findViewById(R.id.accent));
+                        }
+                    }
+                });
+                getWindow().getSharedElementExitTransition().addListener(new TransitionListenerAdapter() {
+                    @RequiresApi(api = VERSION_CODES.LOLLIPOP)
+                    @Override
+                    public void onTransitionEnd(Transition transition) {
+                        mServerListAdapter.clear();
+                        mServerListAdapter.addAll(list);
+                        mServerListAdapter.notifyDataSetChanged();
+                        transition.removeListener(this);
                     }
                 });
             }
+            return;
+        }
+        mServerListAdapter.clear();
+        mServerListAdapter.addAll(list);
+        mServerListAdapter.notifyDataSetChanged();
+        if (position < 0) {
+            removeDetailFragment();
+            mServerListAdapter.clearSelection();
+            setExitSharedElementCallback(new SharedElementCallback() {
+                @Override
+                public void onMapSharedElements(List<String> names, Map<String, View> sharedElements) {
+                    sharedElements.clear();
+                }
+            });
+        } else {
+            mServerDetailFragment = ServerDetailFragment.newInstance(mSelectedServer.getUdn());
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.server_detail_container, mServerDetailFragment)
+                    .commit();
+            mServerListAdapter.setSelection(position);
         }
     }
 

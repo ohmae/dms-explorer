@@ -94,14 +94,14 @@ public class CdsDetailFragment extends Fragment {
             if (protectedResource) {
                 Snackbar.make(view, R.string.toast_not_support_drm, Snackbar.LENGTH_LONG).show();
             } else {
-                ItemSelectHelper.play(activity, view, object, 0);
+                ItemSelectHelper.play(activity, object, 0);
             }
         });
         fab.setOnLongClickListener(view -> {
             if (protectedResource) {
                 Snackbar.make(view, R.string.toast_not_support_drm, Snackbar.LENGTH_LONG).show();
             } else {
-                ItemSelectHelper.play(activity, view, object);
+                ItemSelectHelper.play(activity, object);
             }
             return true;
         });

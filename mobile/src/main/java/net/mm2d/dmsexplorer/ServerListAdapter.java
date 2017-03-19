@@ -79,6 +79,10 @@ public class ServerListAdapter
         return mList.size();
     }
 
+    public int indexOf(@NonNull MediaServer server) {
+        return mList.indexOf(server);
+    }
+
     public void setOnItemClickListener(OnItemClickListener l) {
         mListener = l;
     }
