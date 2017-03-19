@@ -12,7 +12,10 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Build;
+import android.os.Build.VERSION;
+import android.os.Build.VERSION_CODES;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -33,43 +36,41 @@ public class ToolbarThemeHelper {
     public static void setServerDetailTheme(
             final @NonNull Activity activity,
             final @NonNull MediaServer server,
-            final @NonNull CollapsingToolbarLayout toolbarLayout,
-            final @NonNull ImageView iconImage) {
-        setServerDetailTheme(activity, server, toolbarLayout, iconImage, true);
+            final @NonNull CollapsingToolbarLayout toolbarLayout) {
+        setServerDetailTheme(activity, server, toolbarLayout, true);
     }
 
     public static void setServerDetailTheme(
             final @NonNull Fragment fragment,
             final @NonNull MediaServer server,
-            final @NonNull CollapsingToolbarLayout toolbarLayout,
-            final @NonNull ImageView iconImage) {
-        setServerDetailTheme(fragment.getActivity(), server, toolbarLayout, iconImage, false);
+            final @NonNull CollapsingToolbarLayout toolbarLayout) {
+        setServerDetailTheme(fragment.getActivity(), server, toolbarLayout, false);
     }
 
     private static void setServerDetailTheme(
             final @NonNull Context context,
             final @NonNull MediaServer server,
             final @NonNull CollapsingToolbarLayout toolbarLayout,
-            final @NonNull ImageView iconImage,
             boolean activityTheme) {
-
-        final String friendlyName = server.getFriendlyName();
-        toolbarLayout.setBackgroundColor(ThemeUtils.getExpandedTitleBarBackground(friendlyName));
-        toolbarLayout.setContentScrimColor(ThemeUtils.getCollapsedTitleBarBackground(friendlyName));
-
+        final ImageView image = (ImageView) toolbarLayout.findViewById(R.id.toolbar_icon);
         final Bitmap icon = createIconBitmap(server.getIcon());
-        iconImage.setImageBitmap(icon);
-
+        if (icon != null) {
+            image.setImageBitmap(icon);
+        } else {
+            final GradientDrawable iconDrawable = new GradientDrawable();
+            iconDrawable.setCornerRadius(context.getResources().getDimension(R.dimen.expanded_toolbar_icon_radius));
+            iconDrawable.setColor(ThemeUtils.getAccentColor(server.getFriendlyName()));
+            image.setBackground(iconDrawable);
+        }
         if (!server.getBooleanTag(Const.KEY_HAS_TOOLBAR_COLOR, false)) {
             setServerThemeColor(server, icon);
         }
-
         final int expandedColor = server.getIntTag(Const.KEY_TOOLBAR_EXPANDED_COLOR, Color.BLACK);
         final int collapsedColor = server.getIntTag(Const.KEY_TOOLBAR_COLLAPSED_COLOR, Color.BLACK);
         toolbarLayout.setBackgroundColor(expandedColor);
         toolbarLayout.setContentScrimColor(collapsedColor);
         if (activityTheme
-                && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP
+                && VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP
                 && context instanceof Activity) {
             final int statusBarColor = ThemeUtils.getDarkerColor(collapsedColor);
             ((Activity) context).getWindow().setStatusBarColor(statusBarColor);

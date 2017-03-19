@@ -8,6 +8,7 @@
 package net.mm2d.dmsexplorer;
 
 import android.app.Activity;
+import android.app.ActivityOptions;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
@@ -15,6 +16,7 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
+import android.view.View;
 
 import net.mm2d.android.upnp.cds.CdsObject;
 import net.mm2d.android.upnp.cds.Tag;
@@ -27,21 +29,21 @@ import java.util.List;
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
  */
 class ItemSelectHelper {
-    static void play(final @NonNull Activity activity,
+    static void play(final @NonNull Activity activity, final @NonNull View view,
                      final @NonNull CdsObject object) {
         final List<Tag> list = object.getTagList(CdsObject.RES);
         if (list == null || list.isEmpty()) {
             return;
         }
         if (list.size() == 1) {
-            play(activity, object, 0);
+            play(activity, view, object, 0);
             return;
         }
         final SelectResourceDialog dialog = SelectResourceDialog.newInstance(object);
         dialog.show(activity.getFragmentManager(), "");
     }
 
-    static void play(final @NonNull Context context,
+    static void play(final @NonNull Context context, final @NonNull View view,
                      final @NonNull CdsObject object, final int index) {
         final SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
         final Tag res = object.getTag(CdsObject.RES, index);
@@ -82,14 +84,17 @@ class ItemSelectHelper {
                 return;
         }
         try {
-            context.startActivity(intent);
+            if (view == null) {
+                context.startActivity(intent);
+            } else {
+                context.startActivity(intent, ActivityOptions.makeScaleUpAnimation(view, 0, 0, view.getWidth(), view.getHeight()).toBundle());
+            }
         } catch (final ActivityNotFoundException ignored) {
         }
     }
 
     static void send(final @NonNull Activity activity,
-                     final @NonNull String udn,
-                     final @NonNull CdsObject object) {
+                     final @NonNull String udn, final @NonNull CdsObject object) {
         if (DataHolder.getInstance().getMrControlPoint().getDeviceListSize() == 0) {
             return;
         }
@@ -98,8 +103,7 @@ class ItemSelectHelper {
     }
 
     static void send(final @NonNull Context context,
-                     final @NonNull String serverUdn,
-                     final @NonNull CdsObject object,
+                     final @NonNull String serverUdn, final @NonNull CdsObject object,
                      final @NonNull String rendererUdn) {
         final Tag res = object.getTag(CdsObject.RES);
         if (res == null) {

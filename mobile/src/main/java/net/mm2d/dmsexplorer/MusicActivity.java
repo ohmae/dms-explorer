@@ -10,7 +10,6 @@ package net.mm2d.dmsexplorer;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.ColorDrawable;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnErrorListener;
@@ -95,9 +94,10 @@ public class MusicActivity extends AppCompatActivity {
         final String title = AribUtils.toDisplayableString(object.getTitle());
         actionBar.setTitle(title);
         final int bgColor = ThemeUtils.getAccentColor(title);
-        actionBar.setBackgroundDrawable(new ColorDrawable(bgColor));
+        // actionBar.setBackgroundDrawable(new ColorDrawable(bgColor));
+        toolbar.setBackgroundColor(bgColor);
         if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
-            getWindow().setStatusBarColor(ThemeUtils.getStatusBarColor(title));
+            getWindow().setStatusBarColor(ThemeUtils.getDarkerColor(bgColor));
         }
 
         controlPanel.setBackgroundColor(bgColor);

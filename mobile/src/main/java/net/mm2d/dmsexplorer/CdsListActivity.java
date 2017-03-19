@@ -11,8 +11,6 @@ import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
-import android.os.Build.VERSION;
-import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Parcel;
@@ -24,9 +22,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.transition.Fade;
 import android.transition.Slide;
-import android.transition.TransitionSet;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -137,7 +133,7 @@ public class CdsListActivity extends AppCompatActivity
         };
     }
 
-    private void onCdsItemClick(final View v, final View accent, int position, CdsObject object) {
+    private void onCdsItemClick(final View v, int position, CdsObject object) {
         if (object.isContainer()) {
             browse(position, object.getObjectId(), object.getTitle(), true);
             return;
@@ -156,13 +152,7 @@ public class CdsListActivity extends AppCompatActivity
                     .commit();
         } else {
             final Intent intent = CdsDetailActivity.makeIntent(v.getContext(), mServer.getUdn(), object);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                startActivity(intent, ActivityOptions
-                        .makeSceneTransitionAnimation(CdsListActivity.this, accent, "share")
-                        .toBundle());
-            } else {
-                startActivity(intent);
-            }
+            startActivity(intent, ActivityOptions.makeScaleUpAnimation(v, 0, 0, v.getWidth(), v.getHeight()).toBundle());
         }
         mSelectedObject = object;
         mCdsListAdapter.setSelection(position);
@@ -171,12 +161,6 @@ public class CdsListActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
-            final TransitionSet ts = new TransitionSet();
-            ts.addTransition(new Slide(Gravity.END));
-            ts.addTransition(new Fade());
-            getWindow().setEnterTransition(ts);
-        }
         mHandler = new Handler();
         final String udn = getIntent().getStringExtra(Const.EXTRA_SERVER_UDN);
         mServer = mDataHolder.getMsControlPoint().getDevice(udn);

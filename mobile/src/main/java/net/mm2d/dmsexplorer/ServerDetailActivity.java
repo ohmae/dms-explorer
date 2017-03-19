@@ -7,9 +7,12 @@
 
 package net.mm2d.dmsexplorer;
 
+import android.annotation.TargetApi;
+import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
+import android.os.Build.VERSION;
+import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.ActionBar;
@@ -17,15 +20,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.transition.Fade;
-import android.transition.Slide;
-import android.transition.TransitionSet;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ImageView;
 
 import net.mm2d.android.upnp.cds.MediaServer;
+import net.mm2d.util.Log;
 import net.opacapp.multilinecollapsingtoolbar.CollapsingToolbarLayout;
 
 
@@ -75,9 +74,9 @@ public class ServerDetailActivity extends AppCompatActivity {
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setTitle(server.getFriendlyName());
 
-        ToolbarThemeHelper.setServerDetailTheme(this, server,
-                (CollapsingToolbarLayout) findViewById(R.id.toolbar_layout),
-                (ImageView) findViewById(R.id.toolbar_icon));
+        final CollapsingToolbarLayout toolbarLayout =
+                (CollapsingToolbarLayout) findViewById(R.id.toolbar_layout);
+        ToolbarThemeHelper.setServerDetailTheme(this, server, toolbarLayout);
 
         final RecyclerView recyclerView = (RecyclerView) findViewById(R.id.server_detail);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -86,16 +85,28 @@ public class ServerDetailActivity extends AppCompatActivity {
         final FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(view -> {
             final Intent intent = CdsListActivity.makeIntent(this, udn);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                final TransitionSet ts = new TransitionSet();
-                ts.addTransition(new Slide(Gravity.START));
-                ts.addTransition(new Fade());
-                getWindow().setExitTransition(ts);
-                startActivity(intent);
-            } else {
-                startActivity(intent);
-            }
+            startActivity(intent,
+                    ActivityOptions.makeScaleUpAnimation(view, 0, 0, view.getWidth(), view.getHeight()).toBundle());
         });
+        prepareTransition();
+    }
+
+    @Override
+    public void supportFinishAfterTransition() {
+        super.supportFinishAfterTransition();
+        Log.e(null, "supportFinishAfterTransition");
+    }
+
+    @Override
+    public void finishAfterTransition() {
+        super.finishAfterTransition();
+    }
+
+    @TargetApi(VERSION_CODES.LOLLIPOP)
+    private void prepareTransition() {
+        if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
+            findViewById(R.id.toolbar_icon).setTransitionName(Const.SHARE_ELEMENT_NAME_ICON);
+        }
     }
 
     @Override

@@ -19,6 +19,8 @@ import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v4.app.SharedElementCallback;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -26,10 +28,12 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.transition.Slide;
+import android.util.Pair;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.widget.Toast;
 
 import net.mm2d.android.net.Lan;
@@ -41,6 +45,7 @@ import net.mm2d.android.widget.DividerItemDecoration;
 import net.mm2d.dmsexplorer.ServerListAdapter.OnItemClickListener;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * MediaServerのサーチ、選択を行うActivity。
@@ -62,6 +67,7 @@ public class ServerListActivity extends AppCompatActivity {
     private ServerDetailFragment mServerDetailFragment;
     private ServerListAdapter mServerListAdapter;
     private SwipeRefreshLayout mSwipeRefreshLayout;
+    private RecyclerView mRecyclerView;
     private Lan mLan;
 
     private final BroadcastReceiver mConnectivityReceiver = new BroadcastReceiver() {
@@ -87,7 +93,7 @@ public class ServerListActivity extends AppCompatActivity {
     };
     private final OnItemClickListener mOnItemClickListener = new OnItemClickListener() {
         @Override
-        public void onItemClick(final @NonNull View v, final @NonNull View accent,
+        public void onItemClick(final @NonNull View v,
                                 final int position, final @NonNull MediaServer server) {
             if (mTwoPane) {
                 if (mSelectedServer != null && mSelectedServer.equals(server)) {
@@ -104,11 +110,22 @@ public class ServerListActivity extends AppCompatActivity {
                 final Context context = v.getContext();
                 final Intent intent = ServerDetailActivity.makeIntent(context, server.getUdn());
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    final View accent = v.findViewById(R.id.accent);
+                    setExitSharedElementCallback(new SharedElementCallback() {
+                        @Override
+                        public void onMapSharedElements(List<String> names, Map<String, View> sharedElements) {
+                            sharedElements.clear();
+                            sharedElements.put(Const.SHARE_ELEMENT_NAME_ICON, accent);
+                        }
+                    });
                     startActivity(intent, ActivityOptions
-                            .makeSceneTransitionAnimation(ServerListActivity.this, accent, "share")
+                            .makeSceneTransitionAnimation(ServerListActivity.this,
+                                    new Pair<>(accent, Const.SHARE_ELEMENT_NAME_ICON))
                             .toBundle());
+
                 } else {
-                    startActivity(intent);
+                    startActivity(intent,
+                            ActivityOptionsCompat.makeScaleUpAnimation(v, 0, 0, v.getWidth(), v.getHeight()).toBundle());
                 }
             }
             mServerListAdapter.setSelection(position);
@@ -218,11 +235,10 @@ public class ServerListActivity extends AppCompatActivity {
                 mAvCpManager.start();
             }
         });
-        final RecyclerView recyclerView = (RecyclerView) findViewById(R.id.server_list);
-        assert recyclerView != null;
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(mServerListAdapter);
-        recyclerView.addItemDecoration(new DividerItemDecoration(this));
+        mRecyclerView = (RecyclerView) findViewById(R.id.server_list);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        mRecyclerView.setAdapter(mServerListAdapter);
+        mRecyclerView.addItemDecoration(new DividerItemDecoration(this));
 
         if (findViewById(R.id.server_detail_container) != null) {
             mTwoPane = true;
@@ -274,6 +290,24 @@ public class ServerListActivity extends AppCompatActivity {
                         .commit();
             }
             mServerListAdapter.setSelection(position);
+            if (!mTwoPane) {
+                supportStartPostponedEnterTransition();
+                mRecyclerView.getViewTreeObserver().addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
+                    @Override
+                    public void onGlobalLayout() {
+                        mRecyclerView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                        supportStartPostponedEnterTransition();
+                    }
+                });
+                setExitSharedElementCallback(new SharedElementCallback() {
+                    @Override
+                    public void onMapSharedElements(List<String> names, Map<String, View> sharedElements) {
+                        sharedElements.clear();
+                        sharedElements.put(Const.SHARE_ELEMENT_NAME_ICON,
+                                mRecyclerView.getLayoutManager().findViewByPosition(position).findViewById(R.id.accent));
+                    }
+                });
+            }
         }
     }
 

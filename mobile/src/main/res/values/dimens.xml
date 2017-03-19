@@ -9,9 +9,12 @@
     <dimen name="accent_size">48dp</dimen>
     <dimen name="accent_radius">24dp</dimen>
     <dimen name="horizontal_padding">12dp</dimen>
-    <dimen name="text_size_accent">22sp</dimen>
+
+    <dimen name="text_size_accent">22dp</dimen>
+    <dimen name="text_size_toolbar_icon">60dp</dimen>
     <dimen name="text_size_main">16sp</dimen>
     <dimen name="text_size_sub">12sp</dimen>
+
     <dimen name="raise_focus">2dp</dimen>
     <dimen name="status_bar_size">25dp</dimen>
     <dimen name="server_property_margin">128dp</dimen>
@@ -27,6 +30,7 @@
     <dimen name="chapter_height">16dp</dimen>
 
     <dimen name="expanded_toolbar_icon_size">120dp</dimen>
+    <dimen name="expanded_toolbar_icon_radius">60dp</dimen>
     <dimen name="expanded_toolbar_icon_margin">16dp</dimen>
 
     <dimen name="seek_bar_track_background_height">2dp</dimen>

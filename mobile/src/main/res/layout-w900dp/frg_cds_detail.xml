@@ -62,7 +62,7 @@
         android:layout_marginEnd="@dimen/fab_margin"
         android:layout_marginRight="@dimen/fab_margin"
         app:backgroundTint="@color/primary"
-        app:rippleColor="@android:color/white"
+        app:rippleColor="@color/fabRipple"
         app:srcCompat="@drawable/ic_send_device"
         />
 
@@ -72,7 +72,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
-        app:rippleColor="@android:color/white"
+        app:rippleColor="@color/fabRipple"
         app:srcCompat="@drawable/ic_fab_play"
         />
 </android.support.design.widget.CoordinatorLayout>

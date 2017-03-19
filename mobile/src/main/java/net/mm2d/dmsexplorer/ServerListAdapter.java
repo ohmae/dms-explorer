@@ -40,7 +40,7 @@ public class ServerListAdapter
     private static final String TAG = "ServerListAdapter";
 
     public interface OnItemClickListener {
-        void onItemClick(@NonNull View v, @NonNull View accent, int position, @NonNull MediaServer server);
+        void onItemClick(@NonNull View v, int position, @NonNull MediaServer server);
     }
 
     private static final int NOT_SELECTED = -1;
@@ -130,9 +130,8 @@ public class ServerListAdapter
             final ViewHolder holder = (ViewHolder) v.getTag();
             final MediaServer server = holder.getItem();
             final int position = holder.getListPosition();
-            final View accent = holder.getAccent();
             if (mListener != null) {
-                mListener.onItemClick(v, accent, position, server);
+                mListener.onItemClick(v, position, server);
             }
         }
     };
@@ -210,18 +209,13 @@ public class ServerListAdapter
                 mImageAccent.setVisibility(View.GONE);
                 mTextAccent.setVisibility(View.VISIBLE);
                 if (!TextUtils.isEmpty(title)) {
-                    final String c = title.substring(0, 1);
-                    mTextAccent.setText(c);
+                    mTextAccent.setText(title.substring(0, 1));
                 } else {
                     mTextAccent.setText(null);
                 }
                 mAccentBackground.setColor(ThemeUtils.getAccentColor(title));
             }
             mText1.setText(title);
-        }
-
-        View getAccent() {
-            return mAccent;
         }
 
         MediaServer getItem() {

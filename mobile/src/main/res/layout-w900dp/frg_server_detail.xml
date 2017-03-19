@@ -18,11 +18,12 @@
             android:id="@+id/toolbar_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed"
-            app:contentScrim="@color/primary"
             app:collapsedTitleTextAppearance="@style/CollapsedToolbarText"
+            app:contentScrim="@color/primary"
             app:expandedTitleTextAppearance="@style/ExpandedToolbarText"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed"
             >
+
             <ImageView
                 android:id="@+id/toolbar_icon"
                 android:layout_width="@dimen/expanded_toolbar_icon_size"
@@ -59,7 +60,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
-        app:rippleColor="@android:color/white"
+        app:rippleColor="@color/fabRipple"
         app:srcCompat="@drawable/ic_arrow_forward"
         />
 

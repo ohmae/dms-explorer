@@ -7,8 +7,8 @@
 
 package net.mm2d.dmsexplorer;
 
+import android.app.ActivityOptions;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -16,14 +16,9 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.transition.Fade;
-import android.transition.Slide;
-import android.transition.TransitionSet;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 
 import net.mm2d.android.upnp.cds.MediaServer;
 import net.opacapp.multilinecollapsingtoolbar.CollapsingToolbarLayout;
@@ -66,8 +61,7 @@ public class ServerDetailFragment extends Fragment {
         toolbar.setTitle(server.getFriendlyName());
 
         ToolbarThemeHelper.setServerDetailTheme(this, server,
-                (CollapsingToolbarLayout) rootView.findViewById(R.id.toolbar_layout),
-                (ImageView) rootView.findViewById(R.id.toolbar_icon));
+                (CollapsingToolbarLayout) rootView.findViewById(R.id.toolbar_layout));
 
         final RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.server_detail);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -76,15 +70,8 @@ public class ServerDetailFragment extends Fragment {
         final FloatingActionButton fab = (FloatingActionButton) rootView.findViewById(R.id.fab);
         fab.setOnClickListener(view -> {
             final Intent intent = CdsListActivity.makeIntent(getContext(), udn);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                final TransitionSet ts = new TransitionSet();
-                ts.addTransition(new Slide(Gravity.START));
-                ts.addTransition(new Fade());
-                getActivity().getWindow().setExitTransition(ts);
-                startActivity(intent);
-            } else {
-                startActivity(intent);
-            }
+            startActivity(intent,
+                    ActivityOptions.makeScaleUpAnimation(view, 0, 0, view.getWidth(), view.getHeight()).toBundle());
         });
         return rootView;
     }

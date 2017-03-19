@@ -35,7 +35,7 @@ public class CdsListAdapter
     private static final String TAG = "CdsListAdapter";
 
     public interface OnItemClickListener {
-        void onItemClick(View v, View accent, int position, CdsObject object);
+        void onItemClick(View v, int position, CdsObject object);
     }
 
     private static final int NOT_SELECTED = -1;
@@ -125,9 +125,8 @@ public class CdsListAdapter
             final ViewHolder holder = (ViewHolder) v.getTag();
             final CdsObject obj = holder.getItem();
             final int position = holder.getListPosition();
-            final View accent = holder.getAccent();
             if (mListener != null) {
-                mListener.onItemClick(v, accent, position, obj);
+                mListener.onItemClick(v, position, obj);
             }
         }
     };
@@ -201,10 +200,6 @@ public class CdsListAdapter
                 default:
                     return 0;
             }
-        }
-
-        View getAccent() {
-            return mAccent;
         }
 
         CdsObject getItem() {
