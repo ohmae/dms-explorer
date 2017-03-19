@@ -11,7 +11,6 @@ import android.app.Activity;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
@@ -29,6 +28,7 @@ import net.mm2d.android.upnp.cds.CdsObject;
 import net.mm2d.android.upnp.cds.MediaServer;
 import net.mm2d.android.upnp.cds.Tag;
 import net.mm2d.android.util.AribUtils;
+import net.opacapp.multilinecollapsingtoolbar.CollapsingToolbarLayout;
 
 import java.util.List;
 
@@ -66,14 +66,14 @@ public class CdsDetailFragment extends Fragment {
         final String udn = getArguments().getString(Const.EXTRA_SERVER_UDN);
         final MediaServer server = DataHolder.getInstance().getMsControlPoint().getDevice(udn);
         final CdsObject object = getArguments().getParcelable(Const.EXTRA_OBJECT);
-        final Toolbar toolbar = (Toolbar) rootView.findViewById(R.id.fragment_toolbar);
+        final Toolbar toolbar = (Toolbar) rootView.findViewById(R.id.cds_detail_toolbar);
         if (object == null || server == null || toolbar == null) {
             getActivity().finish();
             return rootView;
         }
         toolbar.setTitle(AribUtils.toDisplayableString(object.getTitle()));
 
-        ToolbarThemeHelper.setCdsObjectTheme(this, object,
+        ToolbarThemeHelper.setCdsDetailTheme(this, object,
                 (CollapsingToolbarLayout) rootView.findViewById(R.id.toolbar_layout));
 
         final RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.cds_detail);

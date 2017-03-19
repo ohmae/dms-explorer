@@ -11,7 +11,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -24,6 +23,7 @@ import android.view.MenuItem;
 import net.mm2d.android.upnp.cds.CdsObject;
 import net.mm2d.android.upnp.cds.MediaServer;
 import net.mm2d.android.util.AribUtils;
+import net.opacapp.multilinecollapsingtoolbar.CollapsingToolbarLayout;
 
 import static net.mm2d.dmsexplorer.CdsDetailFragment.setUpPlayButton;
 import static net.mm2d.dmsexplorer.CdsDetailFragment.setUpSendButton;
@@ -63,7 +63,7 @@ public class CdsDetailActivity extends AppCompatActivity {
             finish();
             return;
         }
-        final Toolbar toolbar = (Toolbar) findViewById(R.id.detail_toolbar);
+        final Toolbar toolbar = (Toolbar) findViewById(R.id.cds_detail_toolbar);
         if (toolbar == null) {
             finish();
             return;
@@ -76,7 +76,7 @@ public class CdsDetailActivity extends AppCompatActivity {
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setTitle(AribUtils.toDisplayableString(object.getTitle()));
 
-        ToolbarThemeHelper.setCdsObjectTheme(this, object,
+        ToolbarThemeHelper.setCdsDetailTheme(this, object,
                 (CollapsingToolbarLayout) findViewById(R.id.toolbar_layout));
 
         final RecyclerView recyclerView = (RecyclerView) findViewById(R.id.cds_detail);

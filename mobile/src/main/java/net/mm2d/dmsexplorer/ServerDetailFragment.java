@@ -11,7 +11,6 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -24,8 +23,10 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import net.mm2d.android.upnp.cds.MediaServer;
+import net.opacapp.multilinecollapsingtoolbar.CollapsingToolbarLayout;
 
 /**
  * メディアサーバの詳細情報を表示するFragment。
@@ -61,11 +62,12 @@ public class ServerDetailFragment extends Fragment {
             getActivity().finish();
             return rootView;
         }
-        final Toolbar toolbar = (Toolbar) rootView.findViewById(R.id.fragment_toolbar);
+        final Toolbar toolbar = (Toolbar) rootView.findViewById(R.id.server_detail_toolbar);
         toolbar.setTitle(server.getFriendlyName());
 
-        ToolbarThemeHelper.setServerTheme(this, server,
-                (CollapsingToolbarLayout) rootView.findViewById(R.id.toolbar_layout));
+        ToolbarThemeHelper.setServerDetailTheme(this, server,
+                (CollapsingToolbarLayout) rootView.findViewById(R.id.toolbar_layout),
+                (ImageView) rootView.findViewById(R.id.toolbar_icon));
 
         final RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.server_detail);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));

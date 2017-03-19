@@ -97,7 +97,7 @@ public class MusicActivity extends AppCompatActivity {
         final int bgColor = ThemeUtils.getAccentColor(title);
         actionBar.setBackgroundDrawable(new ColorDrawable(bgColor));
         if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
-            getWindow().setStatusBarColor(ThemeUtils.getAccentDarkColor(title));
+            getWindow().setStatusBarColor(ThemeUtils.getStatusBarColor(title));
         }
 
         controlPanel.setBackgroundColor(bgColor);

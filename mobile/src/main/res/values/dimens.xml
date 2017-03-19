@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="app_bar_height">180dp</dimen>
+    <dimen name="app_bar_height">200dp</dimen>
 
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="fab2_bottom_margin">88dp</dimen>
@@ -25,6 +25,9 @@
     <dimen name="chapter_padding">16dp</dimen>
     <dimen name="chapter_width">2dp</dimen>
     <dimen name="chapter_height">16dp</dimen>
+
+    <dimen name="expanded_toolbar_icon_size">120dp</dimen>
+    <dimen name="expanded_toolbar_icon_margin">16dp</dimen>
 
     <dimen name="seek_bar_track_background_height">2dp</dimen>
     <dimen name="seek_bar_track_progress_height">2dp</dimen>

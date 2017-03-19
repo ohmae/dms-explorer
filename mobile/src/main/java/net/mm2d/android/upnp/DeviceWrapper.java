@@ -7,6 +7,7 @@
 
 package net.mm2d.android.upnp;
 
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
@@ -28,6 +29,9 @@ import java.util.List;
 public abstract class DeviceWrapper {
     @NonNull
     private final Device mDevice;
+    @NonNull
+    private final Bundle mArguments = new Bundle();
+
     private boolean mIconSearched;
     @Nullable
     private Icon mIcon;
@@ -78,6 +82,90 @@ public abstract class DeviceWrapper {
             }
         }
         return null;
+    }
+
+    /**
+     * 任意の値を登録する。
+     *
+     * @param name データの名前
+     * @param value 格納する値
+     */
+    public void putBooleanTag(@NonNull String name, boolean value) {
+        mArguments.putBoolean(name, value);
+    }
+
+    /**
+     * 格納された任意の値を取り出す。
+     *
+     * @param name データの名前
+     * @param defaultValue 格納されていなかった場合のデフォルト値
+     * @return データの値
+     */
+    public boolean getBooleanTag(@NonNull String name, boolean defaultValue) {
+        return mArguments.getBoolean(name, defaultValue);
+    }
+
+    /**
+     * 任意の値を登録する。
+     *
+     * @param name データの名前
+     * @param value 格納する値
+     */
+    public void putIntTag(@NonNull String name, int value) {
+        mArguments.putInt(name, value);
+    }
+
+    /**
+     * 格納された任意の値を取り出す。
+     *
+     * @param name データの名前
+     * @param defaultValue 格納されていなかった場合のデフォルト値
+     * @return データの値
+     */
+    public int getIntTag(@NonNull String name, int defaultValue) {
+        return mArguments.getInt(name, defaultValue);
+    }
+
+    /**
+     * 任意の値を登録する。
+     *
+     * @param name データの名前
+     * @param value 格納する値
+     */
+    public void putLongTag(@NonNull String name, long value) {
+        mArguments.putLong(name, value);
+    }
+
+    /**
+     * 格納された任意の値を取り出す。
+     *
+     * @param name データの名前
+     * @param defaultValue 格納されていなかった場合のデフォルト値
+     * @return データの値
+     */
+    public long getLongTag(@NonNull String name, long defaultValue) {
+        return mArguments.getLong(name, defaultValue);
+    }
+
+    /**
+     * 任意の値を登録する。
+     *
+     * @param name データの名前
+     * @param value 格納する値
+     */
+    public void putStringTag(@NonNull String name, @Nullable String value) {
+        mArguments.putString(name, value);
+    }
+
+    /**
+     * 格納された任意の値を取り出す。
+     *
+     * @param name データの名前
+     * @return データの値
+     */
+    @Nullable
+    public String getStringTag(@NonNull String name) {
+        return mArguments.getString(name);
     }
 
     /**

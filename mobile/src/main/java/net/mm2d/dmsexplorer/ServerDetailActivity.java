@@ -11,7 +11,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -24,8 +23,10 @@ import android.transition.TransitionSet;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
 
 import net.mm2d.android.upnp.cds.MediaServer;
+import net.opacapp.multilinecollapsingtoolbar.CollapsingToolbarLayout;
 
 
 /**
@@ -62,15 +63,21 @@ public class ServerDetailActivity extends AppCompatActivity {
             return;
         }
         setContentView(R.layout.act_server_detail);
-        setSupportActionBar((Toolbar) findViewById(R.id.detail_toolbar));
+        final Toolbar toolbar = (Toolbar) findViewById(R.id.server_detail_toolbar);
+        if (toolbar == null) {
+            finish();
+            return;
+        }
+        setSupportActionBar(toolbar);
 
         final ActionBar actionBar = getSupportActionBar();
         assert actionBar != null;
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setTitle(server.getFriendlyName());
 
-        ToolbarThemeHelper.setServerTheme(this, server,
-                (CollapsingToolbarLayout) findViewById(R.id.toolbar_layout));
+        ToolbarThemeHelper.setServerDetailTheme(this, server,
+                (CollapsingToolbarLayout) findViewById(R.id.toolbar_layout),
+                (ImageView) findViewById(R.id.toolbar_icon));
 
         final RecyclerView recyclerView = (RecyclerView) findViewById(R.id.server_detail);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));

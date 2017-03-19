@@ -185,16 +185,14 @@ public class CdsListActivity extends AppCompatActivity
             return;
         }
         final String name = mServer.getFriendlyName();
-        if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
-            getWindow().setStatusBarColor(ThemeUtils.getAccentDarkColor(name));
-        }
         setContentView(R.layout.act_cds_list);
         final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        toolbar.setBackgroundColor(ThemeUtils.getAccentColor(name));
         final ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setTitle(name);
+
+        ToolbarThemeHelper.setCdsListTheme(this, mServer, toolbar);
 
         mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeRefresh);
         mSwipeRefreshLayout.setColorSchemeResources(
