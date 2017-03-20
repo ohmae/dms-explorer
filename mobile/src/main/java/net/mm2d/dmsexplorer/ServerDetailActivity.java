@@ -35,8 +35,6 @@ import static net.mm2d.dmsexplorer.ServerDetailFragment.setUpGoButton;
  * @author <a href="mailto:ryo@mm2d.net">大前良介(OHMAE Ryosuke)</a>
  */
 public class ServerDetailActivity extends AppCompatActivity {
-    public static final String TAG = "ServerDetailActivity";
-
     /**
      * このActivityを起動するためのIntentを作成する。
      *

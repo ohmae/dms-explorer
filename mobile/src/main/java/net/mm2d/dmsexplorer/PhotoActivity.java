@@ -40,7 +40,7 @@ import java.util.concurrent.TimeUnit;
  * @author <a href="mailto:ryo@mm2d.net">大前良介(OHMAE Ryosuke)</a>
  */
 public class PhotoActivity extends AppCompatActivity {
-    private static final String TAG = "PhotoActivity";
+    private static final String TAG = PhotoActivity.class.getSimpleName();
     private static final long NAVIGATION_INTERVAL = TimeUnit.SECONDS.toMillis(3);
     private Handler mHandler;
     private View mRoot;

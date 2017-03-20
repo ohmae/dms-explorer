@@ -30,7 +30,6 @@ import java.util.List;
  */
 public class CdsListAdapter
         extends RecyclerView.Adapter<CdsListAdapter.ViewHolder> {
-    private static final String TAG = "CdsListAdapter";
 
     public interface OnItemClickListener {
         void onItemClick(View v, int position, CdsObject object);

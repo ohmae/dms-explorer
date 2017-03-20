@@ -30,13 +30,14 @@ import java.util.Locale;
  * @author <a href="mailto:ryo@mm2d.net">大前良介(OHMAE Ryosuke)</a>
  */
 public class ControlView extends LinearLayout implements OnPreparedListener {
+    private static final String TAG = ControlView.class.getSimpleName();
+
     public interface OnUserActionListener {
         void onUserAction();
     }
 
     private static final OnUserActionListener ON_USER_ACTION_LISTENER = () -> {
     };
-    private static final String TAG = "ControlView";
     private static final int MEDIA_ERROR_SYSTEM = -2147483648;
     private MediaPlayer mMediaPlayer;
     private TextView mProgress;

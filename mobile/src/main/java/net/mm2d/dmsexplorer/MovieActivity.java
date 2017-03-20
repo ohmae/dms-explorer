@@ -39,7 +39,6 @@ import java.util.concurrent.TimeUnit;
  * @author <a href="mailto:ryo@mm2d.net">大前良介(OHMAE Ryosuke)</a>
  */
 public class MovieActivity extends AppCompatActivity {
-    private static final String TAG = "MovieActivity";
     private static final long NAVIGATION_INTERVAL = TimeUnit.SECONDS.toMillis(3);
     private VideoView mVideoView;
     private View mRoot;

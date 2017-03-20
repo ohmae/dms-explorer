@@ -25,4 +25,8 @@ final class Cds {
      * ContainerUpdateIDsのタイプ名。
      */
     static final String CONTAINER_UPDATE_IDS = "ContainerUpdateIDs";
+    /**
+     * SystemUpdateIDのタイプ名。
+     */
+    static final String SYSTEM_UPDATE_ID = "SystemUpdateID";
 }

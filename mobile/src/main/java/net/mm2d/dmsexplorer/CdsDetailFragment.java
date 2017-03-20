@@ -42,8 +42,6 @@ import java.util.List;
  * @author <a href="mailto:ryo@mm2d.net">大前良介(OHMAE Ryosuke)</a>
  */
 public class CdsDetailFragment extends Fragment {
-    private static final String TAG = "CdsDetailFragment";
-
     /**
      * インスタンスを作成する。
      *
