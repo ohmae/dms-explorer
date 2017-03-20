@@ -78,11 +78,7 @@ public class DmcActivity extends AppCompatActivity {
     private final Runnable mGetPositionTask = new Runnable() {
         @Override
         public void run() {
-            mMediaRenderer.getPositionInfo((success, result) -> {
-                if (!onGetPositionInfo(result)) {
-                    mHandler.postDelayed(this, 1000);
-                }
-            });
+            mMediaRenderer.getPositionInfo((success, result) -> onGetPositionInfo(result));
             mMediaRenderer.getTransportInfo((success, result) -> onGetTransportInfo(result));
         }
     };
@@ -109,21 +105,22 @@ public class DmcActivity extends AppCompatActivity {
     private List<Integer> mChapterInfo;
     private PropertyAdapter mPropertyAdapter;
 
-    private boolean onGetPositionInfo(Map<String, String> result) {
+    private void onGetPositionInfo(Map<String, String> result) {
         if (result == null) {
-            return false;
+            mHandler.postDelayed(mGetPositionTask, 1000);
+            return ;
         }
         final int duration = MediaRenderer.getDuration(result);
         final int progress = MediaRenderer.getProgress(result);
         if (duration < 0 || progress < 0) {
-            return false;
+            mHandler.postDelayed(mGetPositionTask, 1000);
+            return ;
         }
         mDuration = duration;
         mProgress = progress;
         final long interval = 1000 - mProgress % 1000;
         mHandler.postDelayed(mGetPositionTask, interval);
         mHandler.post(this::updatePosition);
-        return true;
     }
 
     private void onGetTransportInfo(Map<String, String> result) {

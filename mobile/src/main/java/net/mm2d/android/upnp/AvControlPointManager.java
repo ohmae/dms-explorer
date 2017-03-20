@@ -32,7 +32,7 @@ public class AvControlPointManager {
     private static final IconFilter ICON_FILTER = new DownloadIconFilter();
 
     @NonNull
-    private AtomicBoolean mInitialized = new AtomicBoolean();
+    private final AtomicBoolean mInitialized = new AtomicBoolean();
     @Nullable
     private ControlPoint mControlPoint;
     @NonNull

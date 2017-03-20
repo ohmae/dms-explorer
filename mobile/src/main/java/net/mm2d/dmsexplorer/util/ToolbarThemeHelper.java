@@ -110,7 +110,7 @@ public class ToolbarThemeHelper {
         server.putBooleanTag(Const.KEY_HAS_TOOLBAR_COLOR, true);
     }
 
-    @NonNull
+    @Nullable
     private static Swatch selectLightSwatch(Palette palette) {
         Swatch swatch;
         swatch = palette.getVibrantSwatch();
@@ -124,7 +124,7 @@ public class ToolbarThemeHelper {
         return palette.getDominantSwatch();
     }
 
-    @NonNull
+    @Nullable
     private static Swatch selectDarkSwatch(Palette palette) {
         Swatch swatch;
         swatch = palette.getDarkVibrantSwatch();

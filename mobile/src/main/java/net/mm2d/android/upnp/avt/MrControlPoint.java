@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * MediaRenderer用のControlPointインターフェース
@@ -68,7 +69,9 @@ public class MrControlPoint implements ControlPointWrapper {
                                   @NonNull String variable, @NonNull String value) {
         }
     };
-    private boolean mInitialized = false;
+    @NonNull
+    private final AtomicBoolean mInitialized = new AtomicBoolean();
+    @NonNull
     private final Map<String, MediaRenderer> mMediaRendererMap;
     @Nullable
     private MrDiscoveryListener mMrDiscoveryListener;
@@ -165,9 +168,10 @@ public class MrControlPoint implements ControlPointWrapper {
      */
     @Override
     public void initialize(final @NonNull ControlPoint controlPoint) {
-        if (mInitialized) {
+        if (mInitialized.get()) {
             terminate(controlPoint);
         }
+        mInitialized.set(true);
         mExecutorService = Executors.newSingleThreadExecutor();
         mMediaRendererMap.clear();
         controlPoint.addDiscoveryListener(mDiscoveryListener);
@@ -181,16 +185,20 @@ public class MrControlPoint implements ControlPointWrapper {
      */
     @Override
     public void terminate(final @NonNull ControlPoint controlPoint) {
-        if (!mInitialized) {
+        if (!mInitialized.getAndSet(false)) {
             return;
         }
         controlPoint.removeDiscoveryListener(mDiscoveryListener);
         controlPoint.removeNotifyEventListener(mNotifyEventListener);
         mMediaRendererMap.clear();
         mExecutorService.shutdownNow();
+        mExecutorService = null;
     }
 
     void invoke(final @NonNull Runnable runnable) {
+        if (!mInitialized.get()) {
+            return;
+        }
         mExecutorService.execute(runnable);
     }
 }

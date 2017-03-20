@@ -22,6 +22,7 @@ import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * MediaServerのControlPoint機能。
@@ -103,7 +104,9 @@ public class MsControlPoint implements ControlPointWrapper {
         }
     };
 
-    private boolean mInitialized = false;
+    @NonNull
+    private final AtomicBoolean mInitialized = new AtomicBoolean();
+    @NonNull
     private final Map<String, MediaServer> mMediaServerMap;
     @Nullable
     private MsDiscoveryListener mMsDiscoveryListener;
@@ -210,9 +213,10 @@ public class MsControlPoint implements ControlPointWrapper {
      */
     @Override
     public void initialize(@NonNull ControlPoint controlPoint) {
-        if (mInitialized) {
+        if (mInitialized.get()) {
             terminate(controlPoint);
         }
+        mInitialized.set(true);
         mMediaServerMap.clear();
         controlPoint.addDiscoveryListener(mDiscoveryListener);
         controlPoint.addNotifyEventListener(mNotifyEventListener);
@@ -225,7 +229,7 @@ public class MsControlPoint implements ControlPointWrapper {
      */
     @Override
     public void terminate(@NonNull ControlPoint controlPoint) {
-        if (!mInitialized) {
+        if (!mInitialized.getAndSet(false)) {
             return;
         }
         controlPoint.removeDiscoveryListener(mDiscoveryListener);

@@ -85,11 +85,6 @@ public class ServerDetailActivity extends AppCompatActivity {
         prepareTransition();
     }
 
-    @Override
-    public void finishAfterTransition() {
-        super.finishAfterTransition();
-    }
-
     @TargetApi(VERSION_CODES.LOLLIPOP)
     private void prepareTransition() {
         if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
