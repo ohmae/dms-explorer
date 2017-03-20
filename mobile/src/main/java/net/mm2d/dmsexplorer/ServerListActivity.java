@@ -124,7 +124,6 @@ public class ServerListActivity extends AppCompatActivity {
                             .makeSceneTransitionAnimation(ServerListActivity.this,
                                     new Pair<>(accent, Const.SHARE_ELEMENT_NAME_ICON))
                             .toBundle());
-
                 } else {
                     startActivity(intent,
                             ActivityOptionsCompat.makeScaleUpAnimation(v, 0, 0, v.getWidth(), v.getHeight()).toBundle());
@@ -296,21 +295,18 @@ public class ServerListActivity extends AppCompatActivity {
                     @RequiresApi(api = VERSION_CODES.LOLLIPOP)
                     @Override
                     public void onTransitionEnd(Transition transition) {
-                        mServerListAdapter.clear();
-                        mServerListAdapter.addAll(list);
-                        mServerListAdapter.notifyDataSetChanged();
+                        updateListAdapter(list, position);
                         transition.removeListener(this);
                     }
                 });
+                return;
             }
+            updateListAdapter(list, position);
             return;
         }
-        mServerListAdapter.clear();
-        mServerListAdapter.addAll(list);
-        mServerListAdapter.notifyDataSetChanged();
+        updateListAdapter(list, position);
         if (position < 0) {
             removeDetailFragment();
-            mServerListAdapter.clearSelection();
             setExitSharedElementCallback(new SharedElementCallback() {
                 @Override
                 public void onMapSharedElements(List<String> names, Map<String, View> sharedElements) {
@@ -322,8 +318,14 @@ public class ServerListActivity extends AppCompatActivity {
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.server_detail_container, mServerDetailFragment)
                     .commit();
-            mServerListAdapter.setSelection(position);
         }
+    }
+
+    private void updateListAdapter(final @NonNull List<MediaServer> list, final int position) {
+        mServerListAdapter.clear();
+        mServerListAdapter.addAll(list);
+        mServerListAdapter.notifyDataSetChanged();
+        mServerListAdapter.setSelection(position);
     }
 
     @Override

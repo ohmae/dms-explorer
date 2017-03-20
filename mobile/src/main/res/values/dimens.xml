@@ -30,6 +30,7 @@
     <dimen name="chapter_height">16dp</dimen>
 
     <dimen name="expanded_toolbar_icon_size">120dp</dimen>
+    <dimen name="expanded_toolbar_icon_radius">60dp</dimen>
     <dimen name="expanded_toolbar_icon_margin">16dp</dimen>
 
     <dimen name="seek_bar_track_background_height">2dp</dimen>

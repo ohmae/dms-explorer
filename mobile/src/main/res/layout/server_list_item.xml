@@ -1,74 +1,91 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@drawable/bg_list_item"
-    android:orientation="horizontal"
-    >
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <View
-        android:id="@+id/mark"
-        android:layout_width="5dp"
-        android:layout_height="match_parent"
-        android:background="@color/markListItemSelected"
-        />
+    <data>
 
-    <FrameLayout
-        android:id="@+id/accent"
-        android:layout_width="@dimen/accent_size"
-        android:layout_height="@dimen/accent_size"
-        android:layout_margin="12dp"
-        >
-
-        <TextView
-            android:id="@+id/textAccent"
-            android:layout_width="@dimen/accent_size"
-            android:layout_height="@dimen/accent_size"
-            android:layout_gravity="center_vertical"
-            android:gravity="center"
-            android:textColor="@color/textPrimary"
-            android:textSize="@dimen/text_size_accent"
-            />
-
-        <ImageView
-            android:id="@+id/imageAccent"
-            android:layout_width="@dimen/accent_size"
-            android:layout_height="@dimen/accent_size"
-            android:scaleType="centerInside"
-            />
-
-    </FrameLayout>
+        <variable
+            name="model"
+            type="net.mm2d.dmsexplorer.model.ServerItemModel"/>
+    </data>
 
     <LinearLayout
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:layout_weight="1"
-        android:orientation="vertical"
+        android:background="@drawable/bg_list_item"
+        android:orientation="horizontal"
+        android:translationZ="@{model.translationZ}"
         >
 
-        <TextView
-            android:id="@+id/text1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="4dp"
-            android:layout_marginTop="8dp"
-            android:text="Large Text"
-            android:textColor="@color/textMain"
-            android:textSize="@dimen/text_size_main"
+        <View
+            android:id="@+id/mark"
+            android:layout_width="5dp"
+            android:layout_height="match_parent"
+            android:background="@color/markListItemSelected"
+            android:visibility="@{model.markVisibility}"
             />
 
-        <TextView
-            android:id="@+id/text2"
-            android:layout_width="wrap_content"
+        <FrameLayout
+            android:id="@+id/accent"
+            android:layout_width="@dimen/accent_size"
+            android:layout_height="@dimen/accent_size"
+            android:layout_margin="12dp"
+            >
+
+            <TextView
+                android:id="@+id/textAccent"
+                android:layout_width="@dimen/accent_size"
+                android:layout_height="@dimen/accent_size"
+                android:layout_gravity="center_vertical"
+                android:background="@{model.accentBackground}"
+                android:gravity="center"
+                android:visibility="@{model.accentTextVisibility}"
+                android:text="@{model.accentText}"
+                android:textColor="@color/textPrimary"
+                android:textSize="@dimen/text_size_accent"
+                />
+
+            <ImageView
+                android:id="@+id/imageAccent"
+                android:layout_width="@dimen/accent_size"
+                android:layout_height="@dimen/accent_size"
+                android:visibility="@{model.accentImageVisibility}"
+                android:src="@{model.accentIcon}"
+                android:scaleType="centerInside"
+                />
+
+        </FrameLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:text="Small Text"
-            android:textColor="@color/textWeak"
-            android:textSize="@dimen/text_size_sub"
-            />
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            >
+
+            <TextView
+                android:id="@+id/textTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp"
+                android:layout_marginTop="8dp"
+                android:text="@{model.title}"
+                android:textColor="@color/textMain"
+                android:textSize="@dimen/text_size_main"
+                />
+
+            <TextView
+                android:id="@+id/textDescription"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:text="@{model.description}"
+                android:textColor="@color/textWeak"
+                android:textSize="@dimen/text_size_sub"
+                />
+
+        </LinearLayout>
 
     </LinearLayout>
-
-</LinearLayout>
+</layout>

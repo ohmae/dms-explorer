@@ -73,7 +73,6 @@ public class MovieActivity extends AppCompatActivity {
         mControlPanel.setOnCompletionListener(mp -> onBackPressed());
         mControlPanel.setOnUserActionListener(this::postHideNavigation);
         mVideoView = (VideoView) findViewById(R.id.videoView);
-        assert mVideoView != null;
         mVideoView.setOnPreparedListener(mControlPanel);
         mVideoView.setVideoURI(uri);
         mRoot.setOnSystemUiVisibilityChangeListener(visibility -> {

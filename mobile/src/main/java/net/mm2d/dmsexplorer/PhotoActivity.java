@@ -65,7 +65,6 @@ public class PhotoActivity extends AppCompatActivity {
 
         mImageView = (ImageView) findViewById(R.id.imageView);
         mProgress = findViewById(R.id.progressBar);
-        assert mProgress != null;
         mProgress.setVisibility(View.VISIBLE);
         new Thread(new GetImage(uri)).start();
         mRoot = findViewById(R.id.root);

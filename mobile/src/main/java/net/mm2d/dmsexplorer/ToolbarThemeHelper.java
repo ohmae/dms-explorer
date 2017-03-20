@@ -12,17 +12,15 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Build;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v7.graphics.Palette;
 import android.support.v7.graphics.Palette.Swatch;
-import android.support.v7.widget.AppCompatDrawableManager;
 import android.support.v7.widget.Toolbar;
 import android.widget.ImageView;
 
@@ -59,9 +57,10 @@ public class ToolbarThemeHelper {
         if (icon != null) {
             image.setImageBitmap(icon);
         } else {
-            final Drawable drawable = AppCompatDrawableManager.get().getDrawable(context, R.drawable.ic_storage);
-            DrawableCompat.setTint(drawable, ThemeUtils.getAccentColor(server.getFriendlyName()));
-            image.setImageDrawable(drawable);
+            final GradientDrawable iconDrawable = new GradientDrawable();
+            iconDrawable.setCornerRadius(context.getResources().getDimension(R.dimen.expanded_toolbar_icon_radius));
+            iconDrawable.setColor(ThemeUtils.getAccentColor(server.getFriendlyName()));
+            image.setBackground(iconDrawable);
         }
         if (!server.getBooleanTag(Const.KEY_HAS_TOOLBAR_COLOR, false)) {
             setServerThemeColor(server, icon);

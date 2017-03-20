@@ -68,7 +68,6 @@ public class ServerDetailActivity extends AppCompatActivity {
         }
         setSupportActionBar(toolbar);
         final ActionBar actionBar = getSupportActionBar();
-        assert actionBar != null;
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setTitle(server.getFriendlyName());
 

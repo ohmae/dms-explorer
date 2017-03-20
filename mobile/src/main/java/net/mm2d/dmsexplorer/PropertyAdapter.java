@@ -8,6 +8,7 @@
 package net.mm2d.dmsexplorer;
 
 import android.content.Context;
+import android.databinding.DataBindingUtil;
 import android.graphics.Typeface;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -20,7 +21,9 @@ import android.text.style.StyleSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+
+import net.mm2d.dmsexplorer.databinding.PropertyListItemBinding;
+import net.mm2d.dmsexplorer.model.PropertyItemModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,6 +38,7 @@ import java.util.regex.Pattern;
 class PropertyAdapter
         extends RecyclerView.Adapter<PropertyAdapter.ViewHolder> {
     protected static final String TITLE_PREFIX = "##";
+
     public interface OnItemLinkClickListener {
         void onItemLinkClick(String link);
     }
@@ -66,12 +70,11 @@ class PropertyAdapter
                     if (line.startsWith(TITLE_PREFIX)) {
                         final int start = builder.length();
                         builder.append(line.substring(2));
-                        final int end = builder.length();
-                        builder.setSpan(new StyleSpan(Typeface.BOLD), start, end, Spanned.SPAN_POINT_MARK);
+                        builder.setSpan(new StyleSpan(Typeface.BOLD), start, builder.length(), Spanned.SPAN_POINT_MARK);
                         builder.append('\n');
                         continue;
                     }
-                    final int sstart = builder.length();
+                    final int base = builder.length();
                     builder.append(line);
                     builder.append('\n');
                     final Matcher matcher = URL_PATTERN.matcher(line);
@@ -79,7 +82,7 @@ class PropertyAdapter
                         final int start = matcher.start();
                         final int end = matcher.end();
                         builder.setSpan(new LinkSpan(adapter, string.substring(start, end)),
-                                start + sstart, end + sstart, Spanned.SPAN_POINT_MARK);
+                                start + base, end + base, Spanned.SPAN_POINT_MARK);
                     }
                 }
                 return builder;
@@ -109,8 +112,8 @@ class PropertyAdapter
             return mValue;
         }
 
-        Type getType() {
-            return mType;
+        CharSequence getFormatValue(PropertyAdapter adapter) {
+            return mType.format(adapter, mValue);
         }
     }
 
@@ -146,8 +149,8 @@ class PropertyAdapter
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        final View view = mInflater.inflate(R.layout.property_list_item, parent, false);
-        return new ViewHolder(view);
+        return new ViewHolder(DataBindingUtil
+                .inflate(mInflater, R.layout.property_list_item, parent, false));
     }
 
     @Override
@@ -181,21 +184,17 @@ class PropertyAdapter
             Pattern.compile("https?://[\\w/:%#\\$&\\?\\(\\)~\\.=\\+\\-]+");
 
     static class ViewHolder extends RecyclerView.ViewHolder {
-        private final View mView;
-        private final TextView mText1;
-        private final TextView mText2;
+        private final PropertyListItemBinding mBinding;
 
-        ViewHolder(View itemView) {
-            super(itemView);
-            mView = itemView;
-            mText1 = (TextView) mView.findViewById(R.id.text1);
-            mText2 = (TextView) mView.findViewById(R.id.text2);
-            mText2.setMovementMethod(LinkMovementMethod.getInstance());
+        ViewHolder(PropertyListItemBinding binding) {
+            super(binding.getRoot());
+            mBinding = binding;
+            mBinding.description.setMovementMethod(LinkMovementMethod.getInstance());
         }
 
         void applyItem(PropertyAdapter adapter, Entry entry) {
-            mText1.setText(entry.getName());
-            mText2.setText(entry.getType().format(adapter, entry.getValue()));
+            mBinding.setModel(new PropertyItemModel(entry.getName(), entry.getFormatValue(adapter)));
+            mBinding.executePendingBindings();
         }
     }
 }
