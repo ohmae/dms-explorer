@@ -51,7 +51,7 @@
                 android:layout_height="@dimen/accent_size"
                 android:visibility="@{model.accentImageVisibility}"
                 android:src="@{model.accentIcon}"
-                android:scaleType="centerInside"
+                android:scaleType="fitCenter"
                 />
 
         </FrameLayout>
