@@ -50,9 +50,11 @@ public class App extends Application {
         super.onCreate();
         if (BuildConfig.DEBUG) {
             Log.setLogLevel(Log.VERBOSE);
-        } else {
-            Log.setLogLevel(Log.ASSERT);
+            Log.setPrint(new AndroidPrint());
+            return;
         }
-        Log.setPrint(new AndroidPrint());
+        Log.setLogLevel(Log.ASSERT);
+        Log.setPrint((level, tag, message) -> {
+        });
     }
 }
