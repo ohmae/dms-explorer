@@ -15,7 +15,6 @@ import net.mm2d.upnp.ControlPoint;
 import net.mm2d.upnp.ControlPoint.DiscoveryListener;
 import net.mm2d.upnp.ControlPoint.NotifyEventListener;
 import net.mm2d.upnp.Device;
-import net.mm2d.upnp.Service;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -52,16 +51,29 @@ public class MsControlPoint implements ControlPointWrapper {
     }
 
     /**
-     * ContainerUpdateIdsのsubscribeイベントを通知するリスナー。
+     * ContainerUpdateIDsのsubscribeイベントを通知するリスナー。
      */
     public interface ContainerUpdateIdsListener {
         /**
-         * ContainerUpdateIdsが通知されたときにコールされる。
+         * ContainerUpdateIDsが通知されたときにコールされる。
          *
          * @param server イベントを発行したMediaServer
          * @param ids    更新のあったID
          */
         void onContainerUpdateIds(@NonNull MediaServer server, @NonNull List<String> ids);
+    }
+
+    /**
+     * SystemUpdateIDのsubscribeイベントを通知するリスナー。
+     */
+    public interface SystemUpdateIdListener {
+        /**
+         * SystemUpdateIDが通知されたときにコールされる。
+         *
+         * @param server イベントを発行したMediaServer
+         * @param id     UpdateID
+         */
+        void onSystemUpdateId(@NonNull MediaServer server, @NonNull String id);
     }
 
     private final DiscoveryListener mDiscoveryListener = new DiscoveryListener() {
@@ -76,33 +88,42 @@ public class MsControlPoint implements ControlPointWrapper {
         }
     };
 
-    private final NotifyEventListener mNotifyEventListener = new NotifyEventListener() {
-        @Override
-        public void onNotifyEvent(@NonNull Service service, long seq,
-                                  @NonNull String variable, @NonNull String value) {
-            if (mContainerUpdateIdsListener == null) {
-                return;
-            }
-            final String udn = service.getDevice().getUdn();
-            final MediaServer server = getDevice(udn);
-            if (server == null) {
-                return;
-            }
-            if (!service.getServiceId().equals(Cds.CDS_SERVICE_ID)
-                    || !variable.equals(Cds.CONTAINER_UPDATE_IDS)) {
-                return;
-            }
-            final String[] values = value.split(",");
-            if (values.length == 0 || values.length % 2 != 0) {
-                return;
-            }
-            final List<String> ids = new ArrayList<>();
-            for (int i = 0; i < values.length; i += 2) {
-                ids.add(values[i]);
-            }
-            mContainerUpdateIdsListener.onContainerUpdateIds(server, ids);
+    private final NotifyEventListener mNotifyEventListener = (service, seq, variable, value) -> {
+        final String udn = service.getDevice().getUdn();
+        final MediaServer server = getDevice(udn);
+        if (server == null || !service.getServiceId().equals(Cds.CDS_SERVICE_ID)) {
+            return;
+        }
+        if (variable.equals(Cds.CONTAINER_UPDATE_IDS)) {
+            onNotifyContainerUpdateIds(server, value);
+        } else if (variable.equals(Cds.SYSTEM_UPDATE_ID)) {
+            onNotifySystemUpdateId(server, value);
         }
     };
+
+    private void onNotifyContainerUpdateIds(
+            final @NonNull MediaServer server, final @NonNull String value) {
+        if (mContainerUpdateIdsListener == null) {
+            return;
+        }
+        final String[] values = value.split(",");
+        if (values.length == 0 || values.length % 2 != 0) {
+            return;
+        }
+        final List<String> ids = new ArrayList<>();
+        for (int i = 0; i < values.length; i += 2) {
+            ids.add(values[i]);
+        }
+        mContainerUpdateIdsListener.onContainerUpdateIds(server, ids);
+    }
+
+    private void onNotifySystemUpdateId(
+            final @NonNull MediaServer server, final @NonNull String value) {
+        if (mSystemUpdateIdListener == null) {
+            return;
+        }
+        mSystemUpdateIdListener.onSystemUpdateId(server, value);
+    }
 
     @NonNull
     private final AtomicBoolean mInitialized = new AtomicBoolean();
@@ -112,6 +133,8 @@ public class MsControlPoint implements ControlPointWrapper {
     private MsDiscoveryListener mMsDiscoveryListener;
     @Nullable
     private ContainerUpdateIdsListener mContainerUpdateIdsListener;
+    @Nullable
+    private SystemUpdateIdListener mSystemUpdateIdListener;
 
     /**
      * インスタンス作成。
@@ -167,6 +190,15 @@ public class MsControlPoint implements ControlPointWrapper {
      */
     public void setContainerUpdateIdsListener(@Nullable ContainerUpdateIdsListener listener) {
         mContainerUpdateIdsListener = listener;
+    }
+
+    /**
+     * SystemUpdateIdの通知リスナーを登録する。
+     *
+     * @param listener リスナー
+     */
+    public void setSystemUpdateIdListener(@NonNull SystemUpdateIdListener listener) {
+        mSystemUpdateIdListener = listener;
     }
 
     /**

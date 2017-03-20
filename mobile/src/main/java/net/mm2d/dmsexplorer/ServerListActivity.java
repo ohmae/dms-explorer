@@ -131,7 +131,11 @@ public class ServerListActivity extends AppCompatActivity {
                 }
             }
             mServerListAdapter.setSelection(position);
+            if (mSelectedServer != null) {
+                mSelectedServer.unsubscribe();
+            }
             mSelectedServer = server;
+            mSelectedServer.subscribe();
         }
     };
 
@@ -256,6 +260,9 @@ public class ServerListActivity extends AppCompatActivity {
         super.onDestroy();
         unregisterReceiver(mConnectivityReceiver);
         if (isFinishing()) {
+            if (mSelectedServer != null) {
+                mSelectedServer.unsubscribe();
+            }
             synchronized (mAvCpManager) {
                 mAvCpManager.terminate();
             }
