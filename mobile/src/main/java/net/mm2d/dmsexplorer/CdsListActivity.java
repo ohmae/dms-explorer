@@ -48,7 +48,6 @@ import java.util.concurrent.ExecutionException;
  */
 public class CdsListActivity extends AppCompatActivity
         implements BrowseResult.StatusListener {
-    private static final String TAG = "CdsListActivity";
     private static final String KEY_HISTORY = "KEY_HISTORY";
     private static final String KEY_SELECTED = "KEY_SELECTED";
     private static final String KEY_POSITION = "KEY_POSITION";

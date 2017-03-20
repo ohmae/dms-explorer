@@ -48,7 +48,7 @@ import java.net.URL;
  * @author <a href="mailto:ryo@mm2d.net">大前良介(OHMAE Ryosuke)</a>
  */
 public class MusicActivity extends AppCompatActivity {
-    private static final String TAG = "MusicActivity";
+    private static final String TAG = MusicActivity.class.getSimpleName();
     private Handler mHandler;
     private MediaPlayer mMediaPlayer;
     private ImageView mArtView;

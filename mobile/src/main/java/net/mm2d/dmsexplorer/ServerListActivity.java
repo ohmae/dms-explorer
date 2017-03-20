@@ -58,7 +58,6 @@ import java.util.Map;
  * @author <a href="mailto:ryo@mm2d.net">大前良介(OHMAE Ryosuke)</a>
  */
 public class ServerListActivity extends AppCompatActivity {
-    private static final String TAG = "ServerListActivity";
     private boolean mTwoPane;
     private boolean mNetworkAvailable;
     private Handler mHandler;
@@ -72,6 +71,7 @@ public class ServerListActivity extends AppCompatActivity {
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private RecyclerView mRecyclerView;
     private Lan mLan;
+    private boolean mHasReenterTransition;
 
     private final BroadcastReceiver mConnectivityReceiver = new BroadcastReceiver() {
         @Override
@@ -125,6 +125,7 @@ public class ServerListActivity extends AppCompatActivity {
                             .makeSceneTransitionAnimation(ServerListActivity.this,
                                     new Pair<>(accent, Const.SHARE_ELEMENT_NAME_ICON))
                             .toBundle());
+                    mHasReenterTransition = true;
                 } else {
                     startActivity(intent,
                             ActivityOptionsCompat.makeScaleUpAnimation(v, 0, 0, v.getWidth(), v.getHeight()).toBundle());
@@ -286,7 +287,7 @@ public class ServerListActivity extends AppCompatActivity {
         final List<MediaServer> list = mMsControlPoint.getDeviceList();
         final int position = list.indexOf(mSelectedServer);
         if (position >= 0 && !mTwoPane) {
-            if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
+            if (mHasReenterTransition && VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
                 setExitSharedElementCallback(new SharedElementCallback() {
                     @Override
                     public void onMapSharedElements(List<String> names, Map<String, View> sharedElements) {
@@ -307,6 +308,7 @@ public class ServerListActivity extends AppCompatActivity {
                         transition.removeListener(this);
                     }
                 });
+                mHasReenterTransition = false;
                 return;
             }
             updateListAdapter(list, position);
@@ -315,12 +317,14 @@ public class ServerListActivity extends AppCompatActivity {
         updateListAdapter(list, position);
         if (position < 0) {
             removeDetailFragment();
-            setExitSharedElementCallback(new SharedElementCallback() {
-                @Override
-                public void onMapSharedElements(List<String> names, Map<String, View> sharedElements) {
-                    sharedElements.clear();
-                }
-            });
+            if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
+                setExitSharedElementCallback(new SharedElementCallback() {
+                    @Override
+                    public void onMapSharedElements(List<String> names, Map<String, View> sharedElements) {
+                        sharedElements.clear();
+                    }
+                });
+            }
         } else {
             mServerDetailFragment = ServerDetailFragment.newInstance(mSelectedServer.getUdn());
             getSupportFragmentManager().beginTransaction()

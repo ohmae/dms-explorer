@@ -30,7 +30,6 @@ import javax.annotation.Nonnull;
  */
 public class SelectResourceDialog extends DialogFragment {
     private static final String KEY_OBJECT = "KEY_OBJECT";
-    private static final String TAG = "SelectResourceDialog";
 
     /**
      * インスタンスを作成する。

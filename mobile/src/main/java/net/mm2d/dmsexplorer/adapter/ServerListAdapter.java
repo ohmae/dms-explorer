@@ -31,8 +31,6 @@ import java.util.List;
  */
 public class ServerListAdapter
         extends RecyclerView.Adapter<ServerListAdapter.ViewHolder> {
-    private static final String TAG = "ServerListAdapter";
-
     public interface OnItemClickListener {
         void onItemClick(@NonNull View v, int position, @NonNull MediaServer server);
     }
