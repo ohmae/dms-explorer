@@ -29,6 +29,7 @@ import android.widget.TextView;
 import android.widget.VideoView;
 
 import net.mm2d.android.upnp.cds.CdsObject;
+import net.mm2d.dmsexplorer.view.ControlView;
 
 import java.util.concurrent.TimeUnit;
 

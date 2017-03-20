@@ -5,7 +5,7 @@
  * http://opensource.org/licenses/MIT
  */
 
-package net.mm2d.dmsexplorer;
+package net.mm2d.dmsexplorer.dialog;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -16,6 +16,9 @@ import android.support.annotation.NonNull;
 import net.mm2d.android.upnp.avt.MediaRenderer;
 import net.mm2d.android.upnp.avt.MrControlPoint;
 import net.mm2d.android.upnp.cds.CdsObject;
+import net.mm2d.dmsexplorer.DataHolder;
+import net.mm2d.dmsexplorer.util.ItemSelectHelper;
+import net.mm2d.dmsexplorer.R;
 
 import java.util.List;
 

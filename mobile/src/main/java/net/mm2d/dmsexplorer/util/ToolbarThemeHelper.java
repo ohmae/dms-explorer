@@ -5,7 +5,7 @@
  * http://opensource.org/licenses/MIT
  */
 
-package net.mm2d.dmsexplorer;
+package net.mm2d.dmsexplorer.util;
 
 import android.app.Activity;
 import android.content.Context;
@@ -26,6 +26,8 @@ import android.widget.ImageView;
 
 import net.mm2d.android.upnp.cds.CdsObject;
 import net.mm2d.android.upnp.cds.MediaServer;
+import net.mm2d.dmsexplorer.Const;
+import net.mm2d.dmsexplorer.R;
 import net.mm2d.upnp.Icon;
 import net.opacapp.multilinecollapsingtoolbar.CollapsingToolbarLayout;
 
@@ -90,8 +92,8 @@ public class ToolbarThemeHelper {
             final @NonNull MediaServer server,
             final @Nullable Bitmap icon) {
         final String friendlyName = server.getFriendlyName();
-        int expandedColor = ThemeUtils.getExpandedTitleBarBackground(friendlyName);
-        int collapsedColor = ThemeUtils.getCollapsedTitleBarBackground(friendlyName);
+        int expandedColor = ThemeUtils.getPastelColor(friendlyName);
+        int collapsedColor = ThemeUtils.getDeepColor(friendlyName);
         if (icon != null) {
             final Palette palette = new Palette.Builder(icon).generate();
             final Swatch lightSwatch = selectLightSwatch(palette);
@@ -176,7 +178,7 @@ public class ToolbarThemeHelper {
             boolean activityTheme) {
         final String title = object.getTitle();
         final int toolbarColor = ThemeUtils.getAccentColor(title);
-        toolbarLayout.setBackgroundColor(ThemeUtils.getExpandedTitleBarBackground(title));
+        toolbarLayout.setBackgroundColor(ThemeUtils.getPastelColor(title));
         toolbarLayout.setContentScrimColor(toolbarColor);
         if (activityTheme
                 && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP

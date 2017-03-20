@@ -22,6 +22,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import net.mm2d.android.upnp.cds.MediaServer;
+import net.mm2d.dmsexplorer.adapter.ServerPropertyAdapter;
+import net.mm2d.dmsexplorer.util.ToolbarThemeHelper;
 import net.opacapp.multilinecollapsingtoolbar.CollapsingToolbarLayout;
 
 import static net.mm2d.dmsexplorer.ServerDetailFragment.setUpGoButton;

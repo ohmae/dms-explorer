@@ -5,7 +5,7 @@
  * http://opensource.org/licenses/MIT
  */
 
-package net.mm2d.dmsexplorer;
+package net.mm2d.dmsexplorer.adapter;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -17,6 +17,7 @@ import net.mm2d.android.upnp.cds.CdsObject;
 import net.mm2d.android.upnp.cds.Tag;
 import net.mm2d.android.util.AribUtils;
 import net.mm2d.android.util.LaunchUtils;
+import net.mm2d.dmsexplorer.R;
 
 import java.io.UnsupportedEncodingException;
 import java.util.Date;

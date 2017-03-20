@@ -1,21 +1,28 @@
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
     <SwitchPreference
         android:defaultValue="true"
         android:key="LAUNCH_APP_MOVIE"
         android:summaryOff="@string/pref_message_launch_app_off"
         android:summaryOn="@string/pref_message_launch_app_on"
-        android:title="@string/pref_title_launch_app_movie"/>
+        android:title="@string/pref_title_launch_app_movie"
+        />
 
     <SwitchPreference
         android:defaultValue="true"
         android:key="LAUNCH_APP_MUSIC"
         android:summaryOff="@string/pref_message_launch_app_off"
         android:summaryOn="@string/pref_message_launch_app_on"
-        android:title="@string/pref_title_launch_app_music"/>
+        android:title="@string/pref_title_launch_app_music"
+        />
+
     <SwitchPreference
         android:defaultValue="true"
         android:key="LAUNCH_APP_PHOTO"
         android:summaryOff="@string/pref_message_launch_app_off"
         android:summaryOn="@string/pref_message_launch_app_on"
-        android:title="@string/pref_title_launch_app_photo"/>
+        android:title="@string/pref_title_launch_app_photo"
+        />
+
 </PreferenceScreen>

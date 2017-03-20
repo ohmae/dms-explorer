@@ -42,9 +42,10 @@ import net.mm2d.android.upnp.AvControlPointManager;
 import net.mm2d.android.upnp.cds.MediaServer;
 import net.mm2d.android.upnp.cds.MsControlPoint;
 import net.mm2d.android.upnp.cds.MsControlPoint.MsDiscoveryListener;
-import net.mm2d.android.widget.DividerItemDecoration;
-import net.mm2d.android.widget.TransitionListenerAdapter;
-import net.mm2d.dmsexplorer.ServerListAdapter.OnItemClickListener;
+import net.mm2d.android.view.DividerItemDecoration;
+import net.mm2d.android.view.TransitionListenerAdapter;
+import net.mm2d.dmsexplorer.adapter.ServerListAdapter;
+import net.mm2d.dmsexplorer.adapter.ServerListAdapter.OnItemClickListener;
 
 import java.util.List;
 import java.util.Map;

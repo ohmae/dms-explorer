@@ -33,6 +33,9 @@ import net.mm2d.android.upnp.cds.CdsObject;
 import net.mm2d.android.upnp.cds.ChapterInfo;
 import net.mm2d.android.upnp.cds.MediaServer;
 import net.mm2d.android.util.AribUtils;
+import net.mm2d.dmsexplorer.adapter.CdsPropertyAdapter;
+import net.mm2d.dmsexplorer.adapter.PropertyAdapter;
+import net.mm2d.dmsexplorer.view.ChapterMark;
 
 import java.util.List;
 import java.util.Locale;

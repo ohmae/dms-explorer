@@ -19,7 +19,7 @@ import android.view.View;
 import net.mm2d.android.upnp.cds.MediaServer;
 import net.mm2d.android.util.AribUtils;
 import net.mm2d.dmsexplorer.R;
-import net.mm2d.dmsexplorer.ThemeUtils;
+import net.mm2d.dmsexplorer.util.ThemeUtils;
 import net.mm2d.upnp.Icon;
 
 /**

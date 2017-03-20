@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016 大前良介 (OHMAE Ryosuke)
+ * Copyright (c) 2017 大前良介 (OHMAE Ryosuke)
  *
  * This software is released under the MIT License.
  * http://opensource.org/licenses/MIT
@@ -31,7 +31,9 @@ import android.view.View;
 import net.mm2d.android.upnp.cds.BrowseResult;
 import net.mm2d.android.upnp.cds.CdsObject;
 import net.mm2d.android.upnp.cds.MediaServer;
-import net.mm2d.android.widget.DividerItemDecoration;
+import net.mm2d.android.view.DividerItemDecoration;
+import net.mm2d.dmsexplorer.adapter.CdsListAdapter;
+import net.mm2d.dmsexplorer.util.ToolbarThemeHelper;
 
 import java.util.Collections;
 import java.util.LinkedList;

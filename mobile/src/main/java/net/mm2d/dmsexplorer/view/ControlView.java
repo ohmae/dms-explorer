@@ -1,11 +1,11 @@
 /*
- * Copyright (c) 2016 大前良介 (OHMAE Ryosuke)
+ * Copyright (c) 2017 大前良介 (OHMAE Ryosuke)
  *
  * This software is released under the MIT License.
  * http://opensource.org/licenses/MIT
  */
 
-package net.mm2d.dmsexplorer;
+package net.mm2d.dmsexplorer.view;
 
 import android.content.Context;
 import android.media.MediaPlayer;
@@ -19,6 +19,7 @@ import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import net.mm2d.dmsexplorer.R;
 import net.mm2d.util.Log;
 
 import java.util.Locale;

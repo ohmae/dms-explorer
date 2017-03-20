@@ -1,11 +1,11 @@
 /*
- * Copyright (c) 2016 大前良介 (OHMAE Ryosuke)
+ * Copyright (c) 2017 大前良介 (OHMAE Ryosuke)
  *
  * This software is released under the MIT License.
  * http://opensource.org/licenses/MIT
  */
 
-package net.mm2d.dmsexplorer;
+package net.mm2d.dmsexplorer.util;
 
 import android.graphics.Color;
 import android.text.TextUtils;
@@ -40,16 +40,16 @@ public class ThemeUtils {
         return Color.argb(a, r, g, b);
     }
 
-    public static int getExpandedTitleBarBackground(String title) {
+    public static int getPastelColor(String title) {
         final char c = TextUtils.isEmpty(title) ? ' ' : title.charAt(0);
         final float[] hsv = new float[3];
         hsv[0] = (59 * c) % 360;
-        hsv[1] = 144f / 255f;
+        hsv[1] = 124f / 255f;
         hsv[2] = 210f / 255f;
         return Color.HSVToColor(hsv);
     }
 
-    public static int getCollapsedTitleBarBackground(String title) {
+    public static int getDeepColor(String title) {
         final char c = TextUtils.isEmpty(title) ? ' ' : title.charAt(0);
         final float[] hsv = new float[3];
         hsv[0] = (59 * c) % 360;

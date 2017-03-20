@@ -16,7 +16,7 @@ import android.view.View;
 import net.mm2d.android.upnp.cds.CdsObject;
 import net.mm2d.android.util.AribUtils;
 import net.mm2d.dmsexplorer.R;
-import net.mm2d.dmsexplorer.ThemeUtils;
+import net.mm2d.dmsexplorer.util.ThemeUtils;
 
 /**
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>

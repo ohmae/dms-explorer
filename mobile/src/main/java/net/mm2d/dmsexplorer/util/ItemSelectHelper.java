@@ -5,7 +5,7 @@
  * http://opensource.org/licenses/MIT
  */
 
-package net.mm2d.dmsexplorer;
+package net.mm2d.dmsexplorer.util;
 
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
@@ -18,6 +18,14 @@ import android.support.annotation.NonNull;
 
 import net.mm2d.android.upnp.cds.CdsObject;
 import net.mm2d.android.upnp.cds.Tag;
+import net.mm2d.dmsexplorer.Const;
+import net.mm2d.dmsexplorer.DataHolder;
+import net.mm2d.dmsexplorer.DmcActivity;
+import net.mm2d.dmsexplorer.MovieActivity;
+import net.mm2d.dmsexplorer.MusicActivity;
+import net.mm2d.dmsexplorer.PhotoActivity;
+import net.mm2d.dmsexplorer.dialog.SelectDeviceDialog;
+import net.mm2d.dmsexplorer.dialog.SelectResourceDialog;
 
 import java.util.List;
 
@@ -26,8 +34,8 @@ import java.util.List;
  *
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
  */
-class ItemSelectHelper {
-    static void play(final @NonNull Activity activity,
+public class ItemSelectHelper {
+    public static void play(final @NonNull Activity activity,
                      final @NonNull CdsObject object) {
         final List<Tag> list = object.getTagList(CdsObject.RES);
         if (list == null || list.isEmpty()) {
@@ -41,7 +49,7 @@ class ItemSelectHelper {
         dialog.show(activity.getFragmentManager(), "");
     }
 
-    static void play(final @NonNull Context context,
+    public static void play(final @NonNull Context context,
                      final @NonNull CdsObject object, final int index) {
         final SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
         final Tag res = object.getTag(CdsObject.RES, index);
@@ -87,7 +95,7 @@ class ItemSelectHelper {
         }
     }
 
-    static void send(final @NonNull Activity activity,
+    public static void send(final @NonNull Activity activity,
                      final @NonNull String udn, final @NonNull CdsObject object) {
         if (DataHolder.getInstance().getMrControlPoint().getDeviceListSize() == 0) {
             return;
@@ -96,7 +104,7 @@ class ItemSelectHelper {
         dialog.show(activity.getFragmentManager(), "");
     }
 
-    static void send(final @NonNull Context context,
+    public static void send(final @NonNull Context context,
                      final @NonNull String serverUdn, final @NonNull CdsObject object,
                      final @NonNull String rendererUdn) {
         final Tag res = object.getTag(CdsObject.RES);

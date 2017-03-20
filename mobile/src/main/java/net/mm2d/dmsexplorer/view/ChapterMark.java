@@ -5,7 +5,7 @@
  * http://opensource.org/licenses/MIT
  */
 
-package net.mm2d.dmsexplorer;
+package net.mm2d.dmsexplorer.view;
 
 import android.content.Context;
 import android.content.res.Resources;
@@ -16,6 +16,8 @@ import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.View;
+
+import net.mm2d.dmsexplorer.R;
 
 import java.util.List;
 

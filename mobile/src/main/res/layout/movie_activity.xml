@@ -2,11 +2,9 @@
 <FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="net.mm2d.dmsexplorer.MovieActivity"
     >
 
     <VideoView
@@ -17,7 +15,7 @@
         />
 
     <!-- コード上でpaddingを調整する -->
-    <net.mm2d.dmsexplorer.ControlView
+    <net.mm2d.dmsexplorer.view.ControlView
         android:id="@+id/controlPanel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

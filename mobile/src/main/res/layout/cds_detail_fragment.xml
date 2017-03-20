@@ -41,6 +41,7 @@
                 />
 
         </net.opacapp.multilinecollapsingtoolbar.CollapsingToolbarLayout>
+
     </android.support.design.widget.AppBarLayout>
 
     <android.support.v7.widget.RecyclerView

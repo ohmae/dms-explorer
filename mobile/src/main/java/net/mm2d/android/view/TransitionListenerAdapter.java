@@ -5,7 +5,7 @@
  * http://opensource.org/licenses/MIT
  */
 
-package net.mm2d.android.widget;
+package net.mm2d.android.view;
 
 import android.annotation.TargetApi;
 import android.os.Build.VERSION_CODES;

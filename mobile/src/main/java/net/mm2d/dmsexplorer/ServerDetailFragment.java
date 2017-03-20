@@ -22,6 +22,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import net.mm2d.android.upnp.cds.MediaServer;
+import net.mm2d.dmsexplorer.adapter.ServerPropertyAdapter;
+import net.mm2d.dmsexplorer.util.ToolbarThemeHelper;
 import net.opacapp.multilinecollapsingtoolbar.CollapsingToolbarLayout;
 
 /**
