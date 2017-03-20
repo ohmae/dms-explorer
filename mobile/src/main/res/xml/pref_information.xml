@@ -1,21 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
     <Preference
         android:key="VERSION_NUMBER"
-        android:title="@string/pref_title_version_number"/>
+        android:title="@string/pref_title_version_number"
+        />
 
     <Preference
         android:key="PLAY_STORE"
         android:summary="@string/pref_message_play_store"
-        android:title="@string/pref_title_play_store"/>
+        android:title="@string/pref_title_play_store"
+        />
 
     <Preference
         android:key="COPYRIGHT"
         android:summary="@string/pref_message_copyright"
-        android:title="@string/pref_title_copyright"/>
+        android:title="@string/pref_title_copyright"
+        />
 
     <Preference
         android:key="LICENSE"
-        android:title="@string/pref_title_license"/>
+        android:title="@string/pref_title_license"
+        />
 
 </PreferenceScreen>

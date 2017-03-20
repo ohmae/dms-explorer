@@ -18,7 +18,9 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.view.MenuItem;
 
+import net.mm2d.android.activity.AppCompatPreferenceActivity;
 import net.mm2d.android.util.LaunchUtils;
+import net.mm2d.dmsexplorer.dialog.WebViewDialog;
 
 import java.util.List;
 

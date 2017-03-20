@@ -1,4 +1,9 @@
 apply plugin: 'com.android.application'
+apply plugin: 'me.tatarka.retrolambda'
+
+def versionMajor = 0
+def versionMinor = 6
+def versionPatch = 8
 
 android {
     compileSdkVersion 25
@@ -8,16 +13,17 @@ android {
         applicationId "net.mm2d.dmsexplorer"
         minSdkVersion 16
         targetSdkVersion 25
-        versionCode 603
-        versionName "0.6.3"
+        versionCode versionMajor * 10000 + versionMinor * 100 + versionPatch
+        versionName "${versionMajor}.${versionMinor}.${versionPatch}"
+        resConfigs "en", "ja"
         vectorDrawables.useSupportLibrary = true
-        jackOptions {
-            enabled true
-        }
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
+    }
+    dataBinding {
+        enabled = true
     }
     buildTypes {
         debug {
@@ -25,8 +31,8 @@ android {
             signingConfig signingConfigs.debug
         }
         release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
 }
@@ -38,10 +44,12 @@ repositories {
 }
 
 dependencies {
+    compile 'com.android.support:appcompat-v7:25.3.0'
+    compile 'com.android.support:support-v4:25.3.0'
+    compile 'com.android.support:recyclerview-v7:25.3.0'
+    compile 'com.android.support:design:25.3.0'
+    compile 'com.android.support:palette-v7:25.3.0'
+    compile 'net.mm2d.mmupnp:mmupnp:1.0.11'
+    compile 'net.opacapp:multiline-collapsingtoolbar:1.3.1'
     testCompile 'junit:junit:4.12'
-    compile 'com.android.support:appcompat-v7:25.1.1'
-    compile 'com.android.support:support-v4:25.1.1'
-    compile 'com.android.support:recyclerview-v7:25.1.1'
-    compile 'com.android.support:design:25.1.1'
-    compile 'net.mm2d.mmupnp:mmupnp:1.0.6'
 }

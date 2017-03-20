@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/app_bar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/app_bar_height"
+        android:theme="@style/AppTheme.AppBarOverlay"
+        >
+
+        <net.opacapp.multilinecollapsingtoolbar.CollapsingToolbarLayout
+            android:id="@+id/toolbar_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:collapsedTitleTextAppearance="@style/CollapsedToolbarText"
+            app:expandedTitleTextAppearance="@style/ExpandedToolbarText"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed"
+            >
+
+            <ImageView
+                android:id="@+id/toolbar_icon"
+                android:layout_width="@dimen/expanded_toolbar_icon_size"
+                android:layout_height="@dimen/expanded_toolbar_icon_size"
+                android:layout_gravity="bottom|end"
+                android:layout_margin="@dimen/expanded_toolbar_icon_margin"
+                app:layout_collapseMode="parallax"
+                />
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/cds_detail_toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                app:layout_collapseMode="pin"
+                app:popupTheme="@style/AppTheme.PopupOverlay"
+                />
+
+        </net.opacapp.multilinecollapsingtoolbar.CollapsingToolbarLayout>
+
+    </android.support.design.widget.AppBarLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/cds_detail"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipToPadding="false"
+        android:paddingBottom="@dimen/cds_property_margin"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        tools:listitem="@layout/property_list_item"
+        />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab_send"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_marginBottom="@dimen/fab2_bottom_margin"
+        android:layout_marginEnd="@dimen/fab_margin"
+        android:layout_marginRight="@dimen/fab_margin"
+        app:backgroundTint="@color/primary"
+        app:rippleColor="@color/fabRipple"
+        app:srcCompat="@drawable/ic_send_device"
+        />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab_play"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="@dimen/fab_margin"
+        app:rippleColor="@color/fabRipple"
+        app:srcCompat="@drawable/ic_fab_play"
+        />
+
+</android.support.design.widget.CoordinatorLayout>

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016 大前良介 (OHMAE Ryosuke)
+ * Copyright (c) 2017 大前良介 (OHMAE Ryosuke)
  *
  * This software is released under the MIT License.
  * http://opensource.org/licenses/MIT
@@ -11,8 +11,6 @@ import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
-import android.os.Build.VERSION;
-import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Parcel;
@@ -24,22 +22,23 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.transition.Fade;
 import android.transition.Slide;
-import android.transition.TransitionSet;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
-import net.mm2d.android.cds.BrowseResult;
-import net.mm2d.android.cds.CdsObject;
-import net.mm2d.android.cds.MediaServer;
-import net.mm2d.android.widget.DividerItemDecoration;
+import net.mm2d.android.upnp.cds.BrowseResult;
+import net.mm2d.android.upnp.cds.CdsObject;
+import net.mm2d.android.upnp.cds.MediaServer;
+import net.mm2d.android.view.DividerItemDecoration;
+import net.mm2d.dmsexplorer.adapter.CdsListAdapter;
+import net.mm2d.dmsexplorer.util.ToolbarThemeHelper;
 
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.concurrent.ExecutionException;
 
 /**
@@ -78,7 +77,7 @@ public class CdsListActivity extends AppCompatActivity
     @NonNull
     public static Intent makeIntent(@NonNull Context context, @NonNull String udn) {
         final Intent intent = new Intent(context, CdsListActivity.class);
-        intent.putExtra(Const.EXTRA_UDN, udn);
+        intent.putExtra(Const.EXTRA_SERVER_UDN, udn);
         return intent;
     }
 
@@ -136,7 +135,7 @@ public class CdsListActivity extends AppCompatActivity
         };
     }
 
-    private void onCdsItemClick(final View v, final View accent, int position, CdsObject object) {
+    private void onCdsItemClick(final View v, int position, CdsObject object) {
         if (object.isContainer()) {
             browse(position, object.getObjectId(), object.getTitle(), true);
             return;
@@ -149,18 +148,13 @@ public class CdsListActivity extends AppCompatActivity
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 mCdsDetailFragment.setEnterTransition(new Slide(Gravity.START));
             }
-            getSupportFragmentManager().beginTransaction()
+            getSupportFragmentManager()
+                    .beginTransaction()
                     .replace(R.id.cds_detail_container, mCdsDetailFragment)
                     .commit();
         } else {
             final Intent intent = CdsDetailActivity.makeIntent(v.getContext(), mServer.getUdn(), object);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                startActivity(intent, ActivityOptions
-                        .makeSceneTransitionAnimation(CdsListActivity.this, accent, "share")
-                        .toBundle());
-            } else {
-                startActivity(intent);
-            }
+            startActivity(intent, ActivityOptions.makeScaleUpAnimation(v, 0, 0, v.getWidth(), v.getHeight()).toBundle());
         }
         mSelectedObject = object;
         mCdsListAdapter.setSelection(position);
@@ -169,30 +163,22 @@ public class CdsListActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
-            final TransitionSet ts = new TransitionSet();
-            ts.addTransition(new Slide(Gravity.END));
-            ts.addTransition(new Fade());
-            getWindow().setEnterTransition(ts);
-        }
         mHandler = new Handler();
-        final String udn = getIntent().getStringExtra(Const.EXTRA_UDN);
-        mServer = mDataHolder.getMsControlPoint().getMediaServer(udn);
+        final String udn = getIntent().getStringExtra(Const.EXTRA_SERVER_UDN);
+        mServer = mDataHolder.getMsControlPoint().getDevice(udn);
         if (mServer == null) {
             finish();
             return;
         }
         final String name = mServer.getFriendlyName();
-        if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
-            getWindow().setStatusBarColor(ThemeUtils.getAccentDarkColor(name));
-        }
-        setContentView(R.layout.act_cds_list);
+        setContentView(R.layout.cds_list_activity);
         final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        toolbar.setBackgroundColor(ThemeUtils.getAccentColor(name));
         final ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setTitle(name);
+
+        ToolbarThemeHelper.setCdsListTheme(this, mServer, toolbar);
 
         mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeRefresh);
         mSwipeRefreshLayout.setColorSchemeResources(
@@ -204,6 +190,7 @@ public class CdsListActivity extends AppCompatActivity
         mCdsListAdapter = new CdsListAdapter(this);
         mCdsListAdapter.setOnItemClickListener(this::onCdsItemClick);
         mRecyclerView = (RecyclerView) findViewById(R.id.cds_list);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setAdapter(mCdsListAdapter);
         mRecyclerView.addItemDecoration(new DividerItemDecoration(this));
 
@@ -233,20 +220,12 @@ public class CdsListActivity extends AppCompatActivity
         if (position >= 0) {
             mRecyclerView.scrollToPosition(position);
         }
-        if (mTwoPane && mSelectedObject != null) {
-            final Bundle arguments = new Bundle();
-            arguments.putString(Const.EXTRA_UDN, mServer.getUdn());
-            arguments.putParcelable(Const.EXTRA_OBJECT, mSelectedObject);
-            mCdsDetailFragment = new CdsDetailFragment();
-            mCdsDetailFragment.setArguments(arguments);
-            getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.cds_detail_container, mCdsDetailFragment)
-                    .commit();
-        }
+        restoreDetailFragment();
     }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
+        removeDetailFragment();
         super.onSaveInstanceState(outState);
         outState.putParcelableArray(KEY_HISTORY, mHistories.toArray(new History[mHistories.size()]));
         outState.putInt(KEY_POSITION, mCdsListAdapter.getSelection());
@@ -263,6 +242,21 @@ public class CdsListActivity extends AppCompatActivity
         }
         if (isFinishing()) {
             mDataHolder.clearCache();
+        }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        restoreDetailFragment();
+    }
+
+    private void restoreDetailFragment() {
+        if (mTwoPane && mSelectedObject != null && mCdsDetailFragment == null) {
+            mCdsDetailFragment = CdsDetailFragment.newInstance(mServer.getUdn(), mSelectedObject);
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.cds_detail_container, mCdsDetailFragment)
+                    .commit();
         }
     }
 
@@ -319,18 +313,29 @@ public class CdsListActivity extends AppCompatActivity
         reload();
     }
 
-    private void prepareViewState() {
-        if (mTwoPane && mCdsDetailFragment != null) {
-            getSupportFragmentManager().beginTransaction()
-                    .remove(mCdsDetailFragment).commit();
+    private void removeDetailFragment() {
+        if (!mTwoPane || mCdsDetailFragment == null) {
+            return;
         }
-        mCdsListAdapter.setSelection(-1);
+        getSupportFragmentManager()
+                .beginTransaction()
+                .remove(mCdsDetailFragment)
+                .commit();
         mCdsDetailFragment = null;
+    }
+
+    private void prepareViewState() {
+        removeDetailFragment();
+        mCdsListAdapter.clear();
+        mCdsListAdapter.clearSelection();
+        mCdsListAdapter.notifyDataSetChanged();
         mSelectedObject = null;
         final StringBuilder sb = new StringBuilder();
-        for (final History history : mHistories) {
-            if (sb.length() != 0) {
-                sb.append(" > ");
+        for (final ListIterator<History> i = mHistories.listIterator(mHistories.size());
+             i.hasPrevious(); ) {
+            final History history = i.previous();
+            if (sb.length() != 0 && !history.getId().equals("0")) {
+                sb.append(" < ");
             }
             sb.append(history.getTitle());
         }
@@ -403,7 +408,7 @@ public class CdsListActivity extends AppCompatActivity
         final int count = mCdsListAdapter.getItemCount();
         final ActionBar actionBar = getSupportActionBar();
         assert actionBar != null;
-        actionBar.setSubtitle(mSubtitle + "  [" + count + "]");
+        actionBar.setSubtitle("[" + count + "] " + mSubtitle);
         mCdsListAdapter.notifyItemRangeInserted(beforeCount, count - beforeCount);
     }
 }

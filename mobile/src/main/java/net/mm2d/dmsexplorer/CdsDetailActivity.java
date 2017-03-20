@@ -9,19 +9,26 @@ package net.mm2d.dmsexplorer;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build.VERSION;
-import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import net.mm2d.android.cds.CdsObject;
-import net.mm2d.android.cds.MediaServer;
+import net.mm2d.android.upnp.cds.CdsObject;
+import net.mm2d.android.upnp.cds.MediaServer;
 import net.mm2d.android.util.AribUtils;
+import net.mm2d.dmsexplorer.adapter.CdsPropertyAdapter;
+import net.mm2d.dmsexplorer.util.ToolbarThemeHelper;
+import net.opacapp.multilinecollapsingtoolbar.CollapsingToolbarLayout;
+
+import static net.mm2d.dmsexplorer.CdsDetailFragment.setUpPlayButton;
+import static net.mm2d.dmsexplorer.CdsDetailFragment.setUpSendButton;
 
 /**
  * CDSアイテムの詳細情報を表示するActivity。
@@ -41,7 +48,7 @@ public class CdsDetailActivity extends AppCompatActivity {
      */
     public static Intent makeIntent(@NonNull Context context, @NonNull String udn, @NonNull CdsObject object) {
         final Intent intent = new Intent(context, CdsDetailActivity.class);
-        intent.putExtra(Const.EXTRA_UDN, udn);
+        intent.putExtra(Const.EXTRA_SERVER_UDN, udn);
         intent.putExtra(Const.EXTRA_OBJECT, object);
         return intent;
     }
@@ -49,36 +56,37 @@ public class CdsDetailActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.act_cds_detail);
+        setContentView(R.layout.cds_detail_activity);
 
-        final CdsObject object = getIntent().getParcelableExtra(Const.EXTRA_OBJECT);
-        final String udn = getIntent().getStringExtra(Const.EXTRA_UDN);
+        final String udn = getIntent().getStringExtra(Const.EXTRA_SERVER_UDN);
         final DataHolder dataHolder = DataHolder.getInstance();
-        final MediaServer server = dataHolder.getMsControlPoint().getMediaServer(udn);
-
-        final String rawTitle = object.getTitle();
-        if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
-            getWindow().setStatusBarColor(ThemeUtils.getAccentDarkColor(rawTitle));
-        }
-        final Toolbar toolbar = (Toolbar) findViewById(R.id.detail_toolbar);
-        setSupportActionBar(toolbar);
-        if (toolbar == null || server == null) {
+        final MediaServer server = dataHolder.getMsControlPoint().getDevice(udn);
+        if (server == null) {
             finish();
             return;
         }
-        toolbar.setBackgroundColor(ThemeUtils.getAccentColor(rawTitle));
+        final Toolbar toolbar = (Toolbar) findViewById(R.id.cds_detail_toolbar);
+        if (toolbar == null) {
+            finish();
+            return;
+        }
+        setSupportActionBar(toolbar);
+
+        final CdsObject object = getIntent().getParcelableExtra(Const.EXTRA_OBJECT);
         final ActionBar actionBar = getSupportActionBar();
         assert actionBar != null;
         actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setTitle(AribUtils.toDisplayableString(object.getTitle()));
 
-        final String title = AribUtils.toDisplayableString(rawTitle);
-        actionBar.setTitle(title);
-        if (savedInstanceState == null) {
-            final CdsDetailFragment fragment = CdsDetailFragment.newInstance(udn, object);
-            getSupportFragmentManager().beginTransaction()
-                    .add(R.id.cds_detail_container, fragment)
-                    .commit();
-        }
+        ToolbarThemeHelper.setCdsDetailTheme(this, object,
+                (CollapsingToolbarLayout) findViewById(R.id.toolbar_layout));
+
+        final RecyclerView recyclerView = (RecyclerView) findViewById(R.id.cds_detail);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(new CdsPropertyAdapter(this, object));
+
+        setUpPlayButton(this, (FloatingActionButton) findViewById(R.id.fab_play), object);
+        setUpSendButton(this, (FloatingActionButton) findViewById(R.id.fab_send), udn, object);
     }
 
     @Override

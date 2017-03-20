@@ -48,6 +48,11 @@ public class App extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        if (BuildConfig.DEBUG) {
+            Log.setLogLevel(Log.VERBOSE);
+        } else {
+            Log.setLogLevel(Log.ASSERT);
+        }
         Log.setPrint(new AndroidPrint());
     }
 }

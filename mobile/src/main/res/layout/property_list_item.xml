@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <variable
+            name="model"
+            type="net.mm2d.dmsexplorer.model.PropertyItemModel"/>
+    </data>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingBottom="16dp"
+        android:paddingLeft="@dimen/horizontal_padding"
+        android:paddingRight="@dimen/horizontal_padding"
+        android:paddingTop="8dp"
+        >
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
+            android:text="@{model.title}"
+            android:textColor="?attr/propertyTitleColor"
+            android:textSize="@dimen/text_size_sub"
+            />
+
+        <TextView
+            android:id="@+id/description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{model.description}"
+            android:textColor="?attr/propertyMessageColor"
+            android:textColorLink="?attr/propertyLinkColor"
+            android:textSize="@dimen/text_size_main"
+            />
+
+    </LinearLayout>
+</layout>

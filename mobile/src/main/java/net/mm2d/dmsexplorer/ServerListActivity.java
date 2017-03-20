@@ -13,42 +13,42 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
-import android.net.wifi.WifiInfo;
-import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
+import android.support.annotation.RequiresApi;
+import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v4.app.SharedElementCallback;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.transition.Slide;
+import android.transition.Transition;
+import android.util.Pair;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
-import net.mm2d.android.cds.MediaServer;
-import net.mm2d.android.cds.MsControlPoint;
-import net.mm2d.android.cds.MsControlPoint.MsDiscoveryListener;
-import net.mm2d.android.widget.DividerItemDecoration;
-import net.mm2d.dmsexplorer.ServerListAdapter.OnItemClickListener;
+import net.mm2d.android.net.Lan;
+import net.mm2d.android.upnp.AvControlPointManager;
+import net.mm2d.android.upnp.cds.MediaServer;
+import net.mm2d.android.upnp.cds.MsControlPoint;
+import net.mm2d.android.upnp.cds.MsControlPoint.MsDiscoveryListener;
+import net.mm2d.android.view.DividerItemDecoration;
+import net.mm2d.android.view.TransitionListenerAdapter;
+import net.mm2d.dmsexplorer.adapter.ServerListAdapter;
+import net.mm2d.dmsexplorer.adapter.ServerListAdapter.OnItemClickListener;
 
-import java.net.InetAddress;
-import java.net.InterfaceAddress;
-import java.net.NetworkInterface;
-import java.net.SocketException;
-import java.net.UnknownHostException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Enumeration;
 import java.util.List;
+import java.util.Map;
 
 /**
  * MediaServerのサーチ、選択を行うActivity。
@@ -64,24 +64,27 @@ public class ServerListActivity extends AppCompatActivity {
     private Handler mHandler;
     private SearchThread mSearchThread;
     private final DataHolder mDataHolder = DataHolder.getInstance();
+    private final AvControlPointManager mAvCpManager = mDataHolder.getAvControlPointManager();
     private final MsControlPoint mMsControlPoint = mDataHolder.getMsControlPoint();
     private MediaServer mSelectedServer;
     private ServerDetailFragment mServerDetailFragment;
     private ServerListAdapter mServerListAdapter;
-    private ConnectivityManager mConnectivityManager;
     private SwipeRefreshLayout mSwipeRefreshLayout;
+    private RecyclerView mRecyclerView;
+    private Lan mLan;
+
     private final BroadcastReceiver mConnectivityReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            final boolean available = hasAvailableNetwork();
+            final boolean available = mLan.hasAvailableInterface();
             if (mNetworkAvailable != available) {
-                synchronized (mMsControlPoint) {
+                synchronized (mAvCpManager) {
                     if (available) {
-                        mMsControlPoint.initialize(getWifiInterface());
-                        mMsControlPoint.start();
+                        mAvCpManager.initialize(mLan.getAvailableInterfaces());
+                        mAvCpManager.start();
                     } else {
-                        mMsControlPoint.stop();
-                        mMsControlPoint.terminate();
+                        mAvCpManager.stop();
+                        mAvCpManager.terminate();
                         showToast(R.string.no_available_network);
                         mServerListAdapter.clear();
                         mServerListAdapter.notifyDataSetChanged();
@@ -93,7 +96,7 @@ public class ServerListActivity extends AppCompatActivity {
     };
     private final OnItemClickListener mOnItemClickListener = new OnItemClickListener() {
         @Override
-        public void onItemClick(final @NonNull View v, final @NonNull View accent,
+        public void onItemClick(final @NonNull View v,
                                 final int position, final @NonNull MediaServer server) {
             if (mTwoPane) {
                 if (mSelectedServer != null && mSelectedServer.equals(server)) {
@@ -106,92 +109,31 @@ public class ServerListActivity extends AppCompatActivity {
                 getSupportFragmentManager().beginTransaction()
                         .replace(R.id.server_detail_container, mServerDetailFragment)
                         .commit();
-                mServerListAdapter.setSelection(position);
-                mSelectedServer = server;
             } else {
                 final Context context = v.getContext();
                 final Intent intent = ServerDetailActivity.makeIntent(context, server.getUdn());
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    final View accent = v.findViewById(R.id.accent);
+                    setExitSharedElementCallback(new SharedElementCallback() {
+                        @Override
+                        public void onMapSharedElements(List<String> names, Map<String, View> sharedElements) {
+                            sharedElements.clear();
+                            sharedElements.put(Const.SHARE_ELEMENT_NAME_ICON, accent);
+                        }
+                    });
                     startActivity(intent, ActivityOptions
-                            .makeSceneTransitionAnimation(ServerListActivity.this, accent, "share")
+                            .makeSceneTransitionAnimation(ServerListActivity.this,
+                                    new Pair<>(accent, Const.SHARE_ELEMENT_NAME_ICON))
                             .toBundle());
                 } else {
-                    startActivity(intent);
+                    startActivity(intent,
+                            ActivityOptionsCompat.makeScaleUpAnimation(v, 0, 0, v.getWidth(), v.getHeight()).toBundle());
                 }
             }
+            mServerListAdapter.setSelection(position);
+            mSelectedServer = server;
         }
     };
-
-    private boolean hasAvailableNetwork() {
-        final NetworkInfo ni = mConnectivityManager.getActiveNetworkInfo();
-        return ni != null && ni.isConnected()
-                && (ni.getType() == ConnectivityManager.TYPE_WIFI
-                || ni.getType() == ConnectivityManager.TYPE_ETHERNET);
-    }
-
-    // TODO: 複数のWIFIやEtherも考慮
-    private Collection<NetworkInterface> getWifiInterface() {
-        final NetworkInfo ni = mConnectivityManager.getActiveNetworkInfo();
-        if (ni == null || !ni.isConnected()
-                || ni.getType() != ConnectivityManager.TYPE_WIFI) {
-            return null;
-        }
-        final InetAddress address = getWifiInetAddress();
-        if (address == null) {
-            return null;
-        }
-        final Enumeration<NetworkInterface> nis;
-        try {
-            nis = NetworkInterface.getNetworkInterfaces();
-        } catch (final SocketException e) {
-            return null;
-        }
-        while (nis.hasMoreElements()) {
-            final NetworkInterface nif = nis.nextElement();
-            try {
-                if (nif.isLoopback()
-                        || nif.isPointToPoint()
-                        || nif.isVirtual()
-                        || !nif.isUp()) {
-                    continue;
-                }
-                final List<InterfaceAddress> ifas = nif.getInterfaceAddresses();
-                for (final InterfaceAddress a : ifas) {
-                    if (a.getAddress().equals(address)) {
-                        final Collection<NetworkInterface> c = new ArrayList<>();
-                        c.add(nif);
-                        return c;
-                    }
-                }
-            } catch (final SocketException ignored) {
-            }
-        }
-        return null;
-    }
-
-    private InetAddress getWifiInetAddress() {
-        final WifiInfo wi = ((WifiManager) getSystemService(WIFI_SERVICE)).getConnectionInfo();
-        if (wi == null) {
-            return null;
-        }
-        try {
-            return InetAddress.getByAddress(intToByteArray(wi.getIpAddress()));
-        } catch (final UnknownHostException ignored) {
-        }
-        return null;
-    }
-
-    private byte[] intToByteArray(int ip) {
-        final byte[] array = new byte[4];
-        array[0] = (byte) (ip & 0xff);
-        ip >>= 8;
-        array[1] = (byte) (ip & 0xff);
-        ip >>= 8;
-        array[2] = (byte) (ip & 0xff);
-        ip >>= 8;
-        array[3] = (byte) (ip & 0xff);
-        return array;
-    }
 
     private final MsDiscoveryListener mDiscoveryListener = new MsDiscoveryListener() {
         @Override
@@ -207,10 +149,10 @@ public class ServerListActivity extends AppCompatActivity {
 
     private void onDiscoverServer(MediaServer server) {
         mSwipeRefreshLayout.setRefreshing(false);
-        if (mMsControlPoint.getMediaServerListSize()
+        if (mMsControlPoint.getDeviceListSize()
                 != mServerListAdapter.getItemCount() + 1) {
             mServerListAdapter.clear();
-            mServerListAdapter.addAll(mMsControlPoint.getMediaServerList());
+            mServerListAdapter.addAll(mMsControlPoint.getDeviceList());
             mServerListAdapter.notifyDataSetChanged();
         } else {
             final int position = mServerListAdapter.add(server);
@@ -221,26 +163,32 @@ public class ServerListActivity extends AppCompatActivity {
     private void onLostServer(MediaServer server) {
         final int position = mServerListAdapter.remove(server);
         if (position >= 0) {
-            if (mMsControlPoint.getMediaServerListSize()
+            if (mMsControlPoint.getDeviceListSize()
                     == mServerListAdapter.getItemCount()) {
                 mServerListAdapter.notifyItemRemoved(position);
             } else {
                 mServerListAdapter.clear();
-                mServerListAdapter.addAll(mMsControlPoint.getMediaServerList());
+                mServerListAdapter.addAll(mMsControlPoint.getDeviceList());
                 mServerListAdapter.notifyDataSetChanged();
             }
         }
-        if (mTwoPane && server.equals(mSelectedServer)) {
-            if (mServerDetailFragment != null) {
-                getSupportFragmentManager()
-                        .beginTransaction()
-                        .remove(mServerDetailFragment)
-                        .commit();
-                mServerDetailFragment = null;
-                mServerListAdapter.setSelection(-1);
-                mSelectedServer = null;
-            }
+        if (server.equals(mSelectedServer)) {
+            mServerListAdapter.clearSelection();
+            removeDetailFragment();
+            mServerListAdapter.clearSelection();
+            mSelectedServer = null;
         }
+    }
+
+    private void removeDetailFragment() {
+        if (!mTwoPane || mServerDetailFragment == null) {
+            return;
+        }
+        getSupportFragmentManager()
+                .beginTransaction()
+                .remove(mServerDetailFragment)
+                .commit();
+        mServerDetailFragment = null;
     }
 
     @Override
@@ -249,25 +197,24 @@ public class ServerListActivity extends AppCompatActivity {
         if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
             getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.defaultStatusBar));
         }
-        setContentView(R.layout.act_server_list);
+        setContentView(R.layout.server_list_activity);
         mHandler = new Handler();
-        mConnectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        mLan = Lan.createInstance(this);
         final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         assert toolbar != null;
         setSupportActionBar(toolbar);
         toolbar.setTitle(getTitle());
-        mMsControlPoint.setMsDiscoveryListener(mDiscoveryListener);
-        mServerListAdapter = new ServerListAdapter(this, mMsControlPoint.getMediaServerList());
+        mServerListAdapter = new ServerListAdapter(this, mMsControlPoint.getDeviceList());
         mServerListAdapter.setOnItemClickListener(mOnItemClickListener);
-        mNetworkAvailable = hasAvailableNetwork();
-        synchronized (mMsControlPoint) {
+        mNetworkAvailable = mLan.hasAvailableInterface();
+        synchronized (mAvCpManager) {
             if (mNetworkAvailable) {
                 if (savedInstanceState == null) {
-                    mMsControlPoint.initialize(getWifiInterface());
-                    mMsControlPoint.start();
+                    mAvCpManager.initialize(mLan.getAvailableInterfaces());
+                    mAvCpManager.start();
                 }
             } else {
-                mMsControlPoint.terminate();
+                mAvCpManager.terminate();
             }
         }
         registerReceiver(mConnectivityReceiver,
@@ -278,25 +225,29 @@ public class ServerListActivity extends AppCompatActivity {
                 R.color.progress1, R.color.progress2, R.color.progress3, R.color.progress4);
         mSwipeRefreshLayout.setRefreshing(mServerListAdapter.getItemCount() == 0);
         mSwipeRefreshLayout.setOnRefreshListener(() -> {
-            if (!hasAvailableNetwork()) {
+            if (!mLan.hasAvailableInterface()) {
                 return;
             }
-            synchronized (mMsControlPoint) {
-                mMsControlPoint.stop();
-                mMsControlPoint.terminate();
+            synchronized (mAvCpManager) {
+                mAvCpManager.stop();
+                mAvCpManager.terminate();
                 mServerListAdapter.clear();
                 mServerListAdapter.notifyDataSetChanged();
-                mMsControlPoint.initialize(getWifiInterface());
-                mMsControlPoint.start();
+                mAvCpManager.initialize(mLan.getAvailableInterfaces());
+                mAvCpManager.start();
             }
         });
-        final RecyclerView recyclerView = (RecyclerView) findViewById(R.id.server_list);
-        assert recyclerView != null;
-        recyclerView.setAdapter(mServerListAdapter);
-        recyclerView.addItemDecoration(new DividerItemDecoration(this));
+        mRecyclerView = (RecyclerView) findViewById(R.id.server_list);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        mRecyclerView.setAdapter(mServerListAdapter);
+        mRecyclerView.addItemDecoration(new DividerItemDecoration(this));
 
         if (findViewById(R.id.server_detail_container) != null) {
             mTwoPane = true;
+        }
+        if (savedInstanceState != null) {
+            final String udn = savedInstanceState.getString(Const.EXTRA_SERVER_UDN);
+            mSelectedServer = mMsControlPoint.getDevice(udn);
         }
     }
 
@@ -305,11 +256,83 @@ public class ServerListActivity extends AppCompatActivity {
         super.onDestroy();
         unregisterReceiver(mConnectivityReceiver);
         if (isFinishing()) {
-            synchronized (mMsControlPoint) {
-                mMsControlPoint.setMsDiscoveryListener(null);
-                mMsControlPoint.terminate();
+            synchronized (mAvCpManager) {
+                mAvCpManager.terminate();
             }
         }
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        removeDetailFragment();
+        mServerListAdapter.clearSelection();
+        super.onSaveInstanceState(outState);
+        if (mSelectedServer != null) {
+            outState.putString(Const.EXTRA_SERVER_UDN, mSelectedServer.getUdn());
+        }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        mMsControlPoint.setMsDiscoveryListener(mDiscoveryListener);
+        final List<MediaServer> list = mMsControlPoint.getDeviceList();
+        final int position = list.indexOf(mSelectedServer);
+        if (position >= 0 && !mTwoPane) {
+            if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
+                setExitSharedElementCallback(new SharedElementCallback() {
+                    @Override
+                    public void onMapSharedElements(List<String> names, Map<String, View> sharedElements) {
+                        sharedElements.clear();
+                        final int p = mServerListAdapter.indexOf(mSelectedServer);
+                        final View shared = mRecyclerView.getLayoutManager().findViewByPosition(p);
+                        if (shared != null) {
+                            sharedElements.put(Const.SHARE_ELEMENT_NAME_ICON,
+                                    shared.findViewById(R.id.accent));
+                        }
+                    }
+                });
+                getWindow().getSharedElementExitTransition().addListener(new TransitionListenerAdapter() {
+                    @RequiresApi(api = VERSION_CODES.LOLLIPOP)
+                    @Override
+                    public void onTransitionEnd(Transition transition) {
+                        updateListAdapter(list, position);
+                        transition.removeListener(this);
+                    }
+                });
+                return;
+            }
+            updateListAdapter(list, position);
+            return;
+        }
+        updateListAdapter(list, position);
+        if (position < 0) {
+            removeDetailFragment();
+            setExitSharedElementCallback(new SharedElementCallback() {
+                @Override
+                public void onMapSharedElements(List<String> names, Map<String, View> sharedElements) {
+                    sharedElements.clear();
+                }
+            });
+        } else {
+            mServerDetailFragment = ServerDetailFragment.newInstance(mSelectedServer.getUdn());
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.server_detail_container, mServerDetailFragment)
+                    .commit();
+        }
+    }
+
+    private void updateListAdapter(final @NonNull List<MediaServer> list, final int position) {
+        mServerListAdapter.clear();
+        mServerListAdapter.addAll(list);
+        mServerListAdapter.notifyDataSetChanged();
+        mServerListAdapter.setSelection(position);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        mMsControlPoint.setMsDiscoveryListener(null);
     }
 
     @Override
@@ -317,7 +340,7 @@ public class ServerListActivity extends AppCompatActivity {
         super.onResume();
         mSearchThread = new SearchThread();
         mSearchThread.start();
-        if (!hasAvailableNetwork()) {
+        if (!mLan.hasAvailableInterface()) {
             showToast(R.string.no_available_network);
         }
     }
@@ -358,9 +381,9 @@ public class ServerListActivity extends AppCompatActivity {
         public void run() {
             try {
                 while (!interrupted()) {
-                    synchronized (mMsControlPoint) {
-                        if (mMsControlPoint.isInitialized()) {
-                            mMsControlPoint.search();
+                    synchronized (mAvCpManager) {
+                        if (mAvCpManager.isInitialized()) {
+                            mAvCpManager.search();
                         }
                     }
                     Thread.sleep(5000);

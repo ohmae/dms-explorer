@@ -1,13 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <dimen name="app_bar_height">200dp</dimen>
+
     <dimen name="fab_margin">16dp</dimen>
+    <dimen name="fab2_bottom_margin">88dp</dimen>
+
     <dimen name="item_width">400dp</dimen>
     <dimen name="accent_size">48dp</dimen>
     <dimen name="accent_radius">24dp</dimen>
     <dimen name="horizontal_padding">12dp</dimen>
-    <dimen name="text_size_accent">22sp</dimen>
+
+    <dimen name="text_size_accent">22dp</dimen>
     <dimen name="text_size_main">16sp</dimen>
     <dimen name="text_size_sub">12sp</dimen>
-    <dimen name="raise_focus">5dp</dimen>
+
+    <dimen name="raise_focus">2dp</dimen>
     <dimen name="status_bar_size">25dp</dimen>
+    <dimen name="server_property_margin">128dp</dimen>
+    <dimen name="cds_property_margin">200dp</dimen>
+    <dimen name="music_image_margin">16dp</dimen>
+
+    <dimen name="control_height">56dp</dimen>
+    <dimen name="control_margin">24dp</dimen>
+    <dimen name="seek_padding">12dp</dimen>
+
+    <dimen name="chapter_padding">16dp</dimen>
+    <dimen name="chapter_width">2dp</dimen>
+    <dimen name="chapter_height">16dp</dimen>
+
+    <dimen name="expanded_toolbar_icon_size">120dp</dimen>
+    <dimen name="expanded_toolbar_icon_radius">60dp</dimen>
+    <dimen name="expanded_toolbar_icon_margin">16dp</dimen>
+
+    <dimen name="seek_bar_track_background_height">2dp</dimen>
+    <dimen name="seek_bar_track_progress_height">2dp</dimen>
 </resources>

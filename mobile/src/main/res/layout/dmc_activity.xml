@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    >
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:theme="@style/AppTheme.AppBarOverlay"
+        />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        >
+
+        <ImageView
+            android:id="@+id/image"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="top|end"
+            android:layout_marginBottom="@dimen/control_height"
+            android:adjustViewBounds="true"
+            android:alpha="0.1"
+            app:srcCompat="@drawable/ic_music"
+            />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/detail"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:overScrollMode="never"
+            android:paddingBottom="@dimen/control_height"
+            android:paddingTop="@dimen/control_height"
+            tools:listitem="@layout/property_list_item"
+            />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/control_height"
+            android:background="@drawable/fade_bottom_to_top"
+            />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/control_height"
+            android:layout_gravity="bottom"
+            android:background="@drawable/fade_top_to_bottom"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal"
+            >
+
+            <ImageView
+                android:id="@+id/previous"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:foregroundGravity="center_vertical"
+                android:padding="4dp"
+                android:visibility="gone"
+                app:srcCompat="@drawable/ic_skip_previous"
+                />
+
+            <ImageView
+                android:id="@+id/play"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="@dimen/control_margin"
+                android:layout_marginRight="@dimen/control_margin"
+                android:foregroundGravity="center_vertical"
+                android:padding="4dp"
+                android:visibility="gone"
+                app:srcCompat="@drawable/ic_play"
+                />
+
+            <ImageView
+                android:id="@+id/next"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:foregroundGravity="center_vertical"
+                android:padding="4dp"
+                android:visibility="gone"
+                app:srcCompat="@drawable/ic_skip_next"
+                />
+
+        </LinearLayout>
+
+    </FrameLayout>
+
+    <LinearLayout
+        android:id="@+id/seekPanel"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/control_height"
+        android:orientation="horizontal"
+        >
+
+        <TextView
+            android:id="@+id/textProgress"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:gravity="end"
+            android:text="0:00:00"
+            android:textColor="@color/textPrimary"
+            android:textSize="@dimen/text_size_main"
+            />
+
+        <FrameLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            >
+
+            <net.mm2d.dmsexplorer.view.ChapterMark
+                android:id="@+id/chapterMark"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingLeft="@dimen/chapter_padding"
+                android:paddingRight="@dimen/chapter_padding"
+                />
+
+            <SeekBar
+                android:id="@+id/seekBar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:paddingBottom="@dimen/seek_padding"
+                android:paddingTop="@dimen/seek_padding"
+                />
+
+        </FrameLayout>
+
+        <TextView
+            android:id="@+id/textDuration"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:gravity="start"
+            android:text="0:00:00"
+            android:textColor="@color/textPrimary"
+            android:textSize="@dimen/text_size_main"
+            />
+
+    </LinearLayout>
+
+</LinearLayout>

@@ -22,7 +22,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import net.mm2d.android.cds.CdsObject;
+import net.mm2d.android.upnp.cds.CdsObject;
 import net.mm2d.android.util.BitmapUtils;
 import net.mm2d.android.util.ViewUtils;
 import net.mm2d.util.Log;
@@ -52,7 +52,7 @@ public class PhotoActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.act_photo);
+        setContentView(R.layout.photo_activity);
         final Intent intent = getIntent();
         final CdsObject object = intent.getParcelableExtra(Const.EXTRA_OBJECT);
         final Uri uri = intent.getData();
@@ -65,7 +65,6 @@ public class PhotoActivity extends AppCompatActivity {
 
         mImageView = (ImageView) findViewById(R.id.imageView);
         mProgress = findViewById(R.id.progressBar);
-        assert mProgress != null;
         mProgress.setVisibility(View.VISIBLE);
         new Thread(new GetImage(uri)).start();
         mRoot = findViewById(R.id.root);

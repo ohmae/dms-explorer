@@ -9,7 +9,6 @@ package net.mm2d.android.util;
 
 import android.support.annotation.NonNull;
 import android.view.View;
-import android.view.ViewTreeObserver;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 
 /**
@@ -52,11 +51,10 @@ public class ViewUtils {
      * @param runnable 実行する処理
      */
     public static void execOnLayout(final @NonNull View view, final @NonNull Runnable runnable) {
-        final ViewTreeObserver observer = view.getViewTreeObserver();
-        observer.addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
+        view.getViewTreeObserver().addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
-                observer.removeOnGlobalLayoutListener(this);
+                view.getViewTreeObserver().removeOnGlobalLayoutListener(this);
                 runnable.run();
             }
         });
