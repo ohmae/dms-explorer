@@ -61,13 +61,13 @@ public class ServerDetailFragment extends Fragment {
             activity.finish();
             return rootView;
         }
-        final Toolbar toolbar = (Toolbar) rootView.findViewById(R.id.server_detail_toolbar);
+        final Toolbar toolbar = (Toolbar) rootView.findViewById(R.id.serverDetailToolbar);
         toolbar.setTitle(server.getFriendlyName());
 
         ToolbarThemeHelper.setServerDetailTheme(this, server,
-                (CollapsingToolbarLayout) rootView.findViewById(R.id.toolbar_layout));
+                (CollapsingToolbarLayout) rootView.findViewById(R.id.toolbarLayout));
 
-        final RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.server_detail);
+        final RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.serverDetail);
         recyclerView.setLayoutManager(new LinearLayoutManager(activity));
         recyclerView.setAdapter(new ServerPropertyAdapter(activity, server));
 

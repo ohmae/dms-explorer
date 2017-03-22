@@ -54,7 +54,7 @@ public class ToolbarThemeHelper {
             final @NonNull MediaServer server,
             final @NonNull CollapsingToolbarLayout toolbarLayout,
             boolean activityTheme) {
-        final ImageView image = (ImageView) toolbarLayout.findViewById(R.id.toolbar_icon);
+        final ImageView image = (ImageView) toolbarLayout.findViewById(R.id.toolbarIcon);
         final Bitmap icon = createIconBitmap(server.getIcon());
         if (icon != null) {
             image.setImageBitmap(icon);
@@ -69,7 +69,8 @@ public class ToolbarThemeHelper {
         }
         final int expandedColor = server.getIntTag(Const.KEY_TOOLBAR_EXPANDED_COLOR, Color.BLACK);
         final int collapsedColor = server.getIntTag(Const.KEY_TOOLBAR_COLLAPSED_COLOR, Color.BLACK);
-        toolbarLayout.setBackgroundColor(expandedColor);
+        toolbarLayout.findViewById(R.id.toolbarBackground)
+                .setBackgroundColor(expandedColor);
         toolbarLayout.setContentScrimColor(collapsedColor);
         if (activityTheme
                 && VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP
@@ -178,7 +179,8 @@ public class ToolbarThemeHelper {
             boolean activityTheme) {
         final String title = object.getTitle();
         final int toolbarColor = ThemeUtils.getAccentColor(title);
-        toolbarLayout.setBackgroundColor(ThemeUtils.getPastelColor(title));
+        toolbarLayout.findViewById(R.id.toolbarBackground)
+                .setBackgroundColor(ThemeUtils.getPastelColor(title));
         toolbarLayout.setContentScrimColor(toolbarColor);
         if (activityTheme
                 && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP

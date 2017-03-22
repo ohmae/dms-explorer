@@ -20,7 +20,7 @@ public class Const {
     public static final String EXTRA_SERVER_UDN = "EXTRA_SERVER_UDN";
     public static final String EXTRA_RENDERER_UDN = "EXTRA_RENDERER_UDN";
 
-    public static final String SHARE_ELEMENT_NAME_ICON = "SHARE_ELEMENT_NAME_ICON";
+    public static final String SHARE_ELEMENT_NAME_DEVICE_ICON = "SHARE_ELEMENT_NAME_DEVICE_ICON";
 
     public static final String LAUNCH_APP_MOVIE = "LAUNCH_APP_MOVIE";
     public static final String LAUNCH_APP_MUSIC = "LAUNCH_APP_MUSIC";

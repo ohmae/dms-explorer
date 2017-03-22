@@ -65,7 +65,7 @@ public class CdsDetailActivity extends AppCompatActivity {
             finish();
             return;
         }
-        final Toolbar toolbar = (Toolbar) findViewById(R.id.cds_detail_toolbar);
+        final Toolbar toolbar = (Toolbar) findViewById(R.id.cdsDetailToolbar);
         if (toolbar == null) {
             finish();
             return;
@@ -79,14 +79,14 @@ public class CdsDetailActivity extends AppCompatActivity {
         actionBar.setTitle(AribUtils.toDisplayableString(object.getTitle()));
 
         ToolbarThemeHelper.setCdsDetailTheme(this, object,
-                (CollapsingToolbarLayout) findViewById(R.id.toolbar_layout));
+                (CollapsingToolbarLayout) findViewById(R.id.toolbarLayout));
 
-        final RecyclerView recyclerView = (RecyclerView) findViewById(R.id.cds_detail);
+        final RecyclerView recyclerView = (RecyclerView) findViewById(R.id.cdsDetail);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(new CdsPropertyAdapter(this, object));
 
-        setUpPlayButton(this, (FloatingActionButton) findViewById(R.id.fab_play), object);
-        setUpSendButton(this, (FloatingActionButton) findViewById(R.id.fab_send), udn, object);
+        setUpPlayButton(this, (FloatingActionButton) findViewById(R.id.fabPlay), object);
+        setUpSendButton(this, (FloatingActionButton) findViewById(R.id.fabSend), udn, object);
     }
 
     @Override

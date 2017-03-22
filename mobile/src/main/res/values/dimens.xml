@@ -3,7 +3,7 @@
     <dimen name="app_bar_height">200dp</dimen>
 
     <dimen name="fab_margin">16dp</dimen>
-    <dimen name="fab2_bottom_margin">88dp</dimen>
+    <dimen name="fab2_margin">88dp</dimen>
 
     <dimen name="item_width">400dp</dimen>
     <dimen name="accent_size">48dp</dimen>

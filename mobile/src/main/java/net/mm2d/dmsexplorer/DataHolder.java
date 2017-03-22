@@ -13,7 +13,6 @@ import net.mm2d.android.upnp.AvControlPointManager;
 import net.mm2d.android.upnp.avt.MrControlPoint;
 import net.mm2d.android.upnp.cds.CdsObject;
 import net.mm2d.android.upnp.cds.MsControlPoint;
-import net.mm2d.util.Log;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -31,11 +30,6 @@ public class DataHolder {
     private final AvControlPointManager mAvControlPointManager = new AvControlPointManager();
 
     private DataHolder() {
-        final MsControlPoint cp = mAvControlPointManager.getMsControlPoint();
-        cp.setContainerUpdateIdsListener((server, ids) ->
-                Log.d(null, server.getFriendlyName() + " " + ids.toString()));
-        cp.setSystemUpdateIdListener((server, id) ->
-                Log.d(null, server.getFriendlyName() + " " + id));
     }
 
     @NonNull

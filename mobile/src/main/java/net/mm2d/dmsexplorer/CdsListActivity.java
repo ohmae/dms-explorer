@@ -149,7 +149,7 @@ public class CdsListActivity extends AppCompatActivity
             }
             getSupportFragmentManager()
                     .beginTransaction()
-                    .replace(R.id.cds_detail_container, mCdsDetailFragment)
+                    .replace(R.id.cdsDetailContainer, mCdsDetailFragment)
                     .commit();
         } else {
             final Intent intent = CdsDetailActivity.makeIntent(v.getContext(), mServer.getUdn(), object);
@@ -188,12 +188,12 @@ public class CdsListActivity extends AppCompatActivity
         });
         mCdsListAdapter = new CdsListAdapter(this);
         mCdsListAdapter.setOnItemClickListener(this::onCdsItemClick);
-        mRecyclerView = (RecyclerView) findViewById(R.id.cds_list);
+        mRecyclerView = (RecyclerView) findViewById(R.id.cdsList);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setAdapter(mCdsListAdapter);
         mRecyclerView.addItemDecoration(new DividerItemDecoration(this));
 
-        if (findViewById(R.id.cds_detail_container) != null) {
+        if (findViewById(R.id.cdsDetailContainer) != null) {
             mTwoPane = true;
         }
         if (savedInstanceState == null) {
@@ -254,7 +254,7 @@ public class CdsListActivity extends AppCompatActivity
         if (mTwoPane && mSelectedObject != null && mCdsDetailFragment == null) {
             mCdsDetailFragment = CdsDetailFragment.newInstance(mServer.getUdn(), mSelectedObject);
             getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.cds_detail_container, mCdsDetailFragment)
+                    .replace(R.id.cdsDetailContainer, mCdsDetailFragment)
                     .commit();
         }
     }
