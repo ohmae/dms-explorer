@@ -118,12 +118,12 @@ public class ServerListActivity extends AppCompatActivity {
                         @Override
                         public void onMapSharedElements(List<String> names, Map<String, View> sharedElements) {
                             sharedElements.clear();
-                            sharedElements.put(Const.SHARE_ELEMENT_NAME_ICON, accent);
+                            sharedElements.put(Const.SHARE_ELEMENT_NAME_DEVICE_ICON, accent);
                         }
                     });
                     startActivity(intent, ActivityOptions
                             .makeSceneTransitionAnimation(ServerListActivity.this,
-                                    new Pair<>(accent, Const.SHARE_ELEMENT_NAME_ICON))
+                                    new Pair<>(accent, Const.SHARE_ELEMENT_NAME_DEVICE_ICON))
                             .toBundle());
                     mHasReenterTransition = true;
                 } else {
@@ -295,7 +295,7 @@ public class ServerListActivity extends AppCompatActivity {
                         final int p = mServerListAdapter.indexOf(mSelectedServer);
                         final View shared = mRecyclerView.getLayoutManager().findViewByPosition(p);
                         if (shared != null) {
-                            sharedElements.put(Const.SHARE_ELEMENT_NAME_ICON,
+                            sharedElements.put(Const.SHARE_ELEMENT_NAME_DEVICE_ICON,
                                     shared.findViewById(R.id.accent));
                         }
                     }

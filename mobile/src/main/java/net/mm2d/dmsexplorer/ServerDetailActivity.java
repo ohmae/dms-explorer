@@ -10,18 +10,24 @@ package net.mm2d.dmsexplorer;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.transition.Transition;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewAnimationUtils;
 
 import net.mm2d.android.upnp.cds.MediaServer;
+import net.mm2d.android.view.TransitionListenerAdapter;
 import net.mm2d.dmsexplorer.adapter.ServerPropertyAdapter;
 import net.mm2d.dmsexplorer.util.ToolbarThemeHelper;
 import net.opacapp.multilinecollapsingtoolbar.CollapsingToolbarLayout;
@@ -83,11 +89,35 @@ public class ServerDetailActivity extends AppCompatActivity {
         prepareTransition();
     }
 
-    @TargetApi(VERSION_CODES.LOLLIPOP)
     private void prepareTransition() {
         if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
-            findViewById(R.id.toolbar_icon).setTransitionName(Const.SHARE_ELEMENT_NAME_ICON);
+            final View background = findViewById(R.id.toolbar_background);
+            findViewById(R.id.toolbar_icon).setTransitionName(Const.SHARE_ELEMENT_NAME_DEVICE_ICON);
+            background.setVisibility(View.INVISIBLE);
+            getWindow().getSharedElementEnterTransition().addListener(new TransitionListenerAdapter() {
+                @TargetApi(VERSION_CODES.KITKAT)
+                @Override
+                public void onTransitionEnd(final Transition transition) {
+                    transition.removeListener(this);
+                    startAnimation(background);
+                }
+            });
         }
+    }
+
+    @TargetApi(VERSION_CODES.LOLLIPOP)
+    private void startAnimation(final @NonNull View background) {
+        background.setVisibility(View.VISIBLE);
+
+        final Resources res = getResources();
+        final float iconRadius = res.getDimension(R.dimen.expanded_toolbar_icon_radius);
+        final float iconMargin = res.getDimension(R.dimen.expanded_toolbar_icon_margin);
+        final float iconCenter = iconRadius + iconMargin;
+        final float cx = background.getWidth() - iconCenter;
+        final float cy = background.getHeight() - iconCenter;
+
+        ViewAnimationUtils.createCircularReveal(background,
+                (int) cx, (int) cy, iconRadius, (float) Math.sqrt(cx * cx + cy * cy)).start();
     }
 
     @Override

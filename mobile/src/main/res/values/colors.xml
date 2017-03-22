@@ -28,4 +28,5 @@
     <color name="chapterMark">#80ffffff</color>
     <color name="progressBackground">#80ffffff</color>
     <color name="fabRipple">#80ffffff</color>
+    <color name="toolbarBackgroundDefault">#c0c0c0</color>
 </resources>

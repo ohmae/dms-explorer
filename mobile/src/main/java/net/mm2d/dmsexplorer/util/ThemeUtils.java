@@ -54,7 +54,7 @@ public class ThemeUtils {
         final float[] hsv = new float[3];
         hsv[0] = (59 * c) % 360;
         hsv[1] = 192f / 255f;
-        hsv[2] = 128f / 255f;
+        hsv[2] = 96f / 255f;
         return Color.HSVToColor(hsv);
     }
 }

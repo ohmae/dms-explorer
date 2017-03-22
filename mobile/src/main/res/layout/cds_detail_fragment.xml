@@ -23,14 +23,22 @@
             app:layout_scrollFlags="scroll|exitUntilCollapsed"
             >
 
-            <ImageView
-                android:id="@+id/toolbar_icon"
-                android:layout_width="@dimen/expanded_toolbar_icon_size"
-                android:layout_height="@dimen/expanded_toolbar_icon_size"
-                android:layout_gravity="bottom|end"
-                android:layout_margin="@dimen/expanded_toolbar_icon_margin"
+            <FrameLayout
+                android:id="@+id/toolbar_background"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/toolbarBackgroundDefault"
                 app:layout_collapseMode="parallax"
-                />
+                >
+
+                <ImageView
+                    android:id="@+id/toolbar_icon"
+                    android:layout_width="@dimen/expanded_toolbar_icon_size"
+                    android:layout_height="@dimen/expanded_toolbar_icon_size"
+                    android:layout_gravity="bottom|end"
+                    android:layout_margin="@dimen/expanded_toolbar_icon_margin"
+                    />
+            </FrameLayout>
 
             <android.support.v7.widget.Toolbar
                 android:id="@+id/cds_detail_toolbar"
