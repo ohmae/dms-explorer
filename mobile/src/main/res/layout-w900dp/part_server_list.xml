@@ -17,7 +17,7 @@
         >
 
         <android.support.v7.widget.RecyclerView
-            android:id="@+id/server_list"
+            android:id="@+id/serverList"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             tools:context=".ServerListActivity"
@@ -27,7 +27,7 @@
     </android.support.v4.widget.SwipeRefreshLayout>
 
     <FrameLayout
-        android:id="@+id/server_detail_container"
+        android:id="@+id/serverDetailContainer"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"

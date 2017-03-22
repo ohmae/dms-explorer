@@ -17,7 +17,7 @@
         >
 
         <android.support.v7.widget.RecyclerView
-            android:id="@+id/cds_list"
+            android:id="@+id/cdsList"
             android:name="net.mm2d.CdsListFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -27,7 +27,7 @@
     </android.support.v4.widget.SwipeRefreshLayout>
 
     <FrameLayout
-        android:id="@+id/cds_detail_container"
+        android:id="@+id/cdsDetailContainer"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"

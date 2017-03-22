@@ -8,14 +8,14 @@
     >
 
     <android.support.design.widget.AppBarLayout
-        android:id="@+id/app_bar"
+        android:id="@+id/appBar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/app_bar_height"
         android:theme="@style/AppTheme.AppBarOverlay"
         >
 
         <net.opacapp.multilinecollapsingtoolbar.CollapsingToolbarLayout
-            android:id="@+id/toolbar_layout"
+            android:id="@+id/toolbarLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:collapsedTitleTextAppearance="@style/CollapsedToolbarText"
@@ -24,7 +24,7 @@
             >
 
             <FrameLayout
-                android:id="@+id/toolbar_background"
+                android:id="@+id/toolbarBackground"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@color/toolbarBackgroundDefault"
@@ -32,7 +32,7 @@
                 >
 
                 <ImageView
-                    android:id="@+id/toolbar_icon"
+                    android:id="@+id/toolbarIcon"
                     android:layout_width="@dimen/expanded_toolbar_icon_size"
                     android:layout_height="@dimen/expanded_toolbar_icon_size"
                     android:layout_gravity="bottom|end"
@@ -41,7 +41,7 @@
             </FrameLayout>
 
             <android.support.v7.widget.Toolbar
-                android:id="@+id/cds_detail_toolbar"
+                android:id="@+id/cdsDetailToolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 app:layout_collapseMode="pin"
@@ -53,7 +53,7 @@
     </android.support.design.widget.AppBarLayout>
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/cds_detail"
+        android:id="@+id/cdsDetail"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:clipToPadding="false"
@@ -63,7 +63,7 @@
         />
 
     <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab_send"
+        android:id="@+id/fabSend"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
@@ -76,7 +76,7 @@
         />
 
     <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab_play"
+        android:id="@+id/fabPlay"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"

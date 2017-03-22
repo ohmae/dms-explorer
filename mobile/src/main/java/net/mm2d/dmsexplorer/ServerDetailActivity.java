@@ -67,7 +67,7 @@ public class ServerDetailActivity extends AppCompatActivity {
             return;
         }
         setContentView(R.layout.server_detail_activity);
-        final Toolbar toolbar = (Toolbar) findViewById(R.id.server_detail_toolbar);
+        final Toolbar toolbar = (Toolbar) findViewById(R.id.serverDetailToolbar);
         if (toolbar == null) {
             finish();
             return;
@@ -78,9 +78,9 @@ public class ServerDetailActivity extends AppCompatActivity {
         actionBar.setTitle(server.getFriendlyName());
 
         ToolbarThemeHelper.setServerDetailTheme(this, server,
-                (CollapsingToolbarLayout) findViewById(R.id.toolbar_layout));
+                (CollapsingToolbarLayout) findViewById(R.id.toolbarLayout));
 
-        final RecyclerView recyclerView = (RecyclerView) findViewById(R.id.server_detail);
+        final RecyclerView recyclerView = (RecyclerView) findViewById(R.id.serverDetail);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(new ServerPropertyAdapter(this, server));
 
@@ -91,8 +91,8 @@ public class ServerDetailActivity extends AppCompatActivity {
 
     private void prepareTransition() {
         if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
-            final View background = findViewById(R.id.toolbar_background);
-            findViewById(R.id.toolbar_icon).setTransitionName(Const.SHARE_ELEMENT_NAME_DEVICE_ICON);
+            final View background = findViewById(R.id.toolbarBackground);
+            findViewById(R.id.toolbarIcon).setTransitionName(Const.SHARE_ELEMENT_NAME_DEVICE_ICON);
             background.setVisibility(View.INVISIBLE);
             getWindow().getSharedElementEnterTransition().addListener(new TransitionListenerAdapter() {
                 @TargetApi(VERSION_CODES.KITKAT)

@@ -68,7 +68,7 @@ public class CdsDetailFragment extends Fragment {
         final String udn = getArguments().getString(Const.EXTRA_SERVER_UDN);
         final MediaServer server = DataHolder.getInstance().getMsControlPoint().getDevice(udn);
         final CdsObject object = getArguments().getParcelable(Const.EXTRA_OBJECT);
-        final Toolbar toolbar = (Toolbar) rootView.findViewById(R.id.cds_detail_toolbar);
+        final Toolbar toolbar = (Toolbar) rootView.findViewById(R.id.cdsDetailToolbar);
         if (object == null || server == null || toolbar == null) {
             getActivity().finish();
             return rootView;
@@ -76,14 +76,14 @@ public class CdsDetailFragment extends Fragment {
         toolbar.setTitle(AribUtils.toDisplayableString(object.getTitle()));
 
         ToolbarThemeHelper.setCdsDetailTheme(this, object,
-                (CollapsingToolbarLayout) rootView.findViewById(R.id.toolbar_layout));
+                (CollapsingToolbarLayout) rootView.findViewById(R.id.toolbarLayout));
 
-        final RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.cds_detail);
+        final RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.cdsDetail);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setAdapter(new CdsPropertyAdapter(getActivity(), object));
 
-        setUpPlayButton(getActivity(), (FloatingActionButton) rootView.findViewById(R.id.fab_play), object);
-        setUpSendButton(getActivity(), (FloatingActionButton) rootView.findViewById(R.id.fab_send), udn, object);
+        setUpPlayButton(getActivity(), (FloatingActionButton) rootView.findViewById(R.id.fabPlay), object);
+        setUpSendButton(getActivity(), (FloatingActionButton) rootView.findViewById(R.id.fabSend), udn, object);
         return rootView;
     }
 

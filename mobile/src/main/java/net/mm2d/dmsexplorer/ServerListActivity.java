@@ -107,7 +107,7 @@ public class ServerListActivity extends AppCompatActivity {
                     mServerDetailFragment.setEnterTransition(new Slide(Gravity.START));
                 }
                 getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.server_detail_container, mServerDetailFragment)
+                        .replace(R.id.serverDetailContainer, mServerDetailFragment)
                         .commit();
             } else {
                 final Context context = v.getContext();
@@ -242,12 +242,12 @@ public class ServerListActivity extends AppCompatActivity {
                 mAvCpManager.start();
             }
         });
-        mRecyclerView = (RecyclerView) findViewById(R.id.server_list);
+        mRecyclerView = (RecyclerView) findViewById(R.id.serverList);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setAdapter(mServerListAdapter);
         mRecyclerView.addItemDecoration(new DividerItemDecoration(this));
 
-        if (findViewById(R.id.server_detail_container) != null) {
+        if (findViewById(R.id.serverDetailContainer) != null) {
             mTwoPane = true;
         }
         if (savedInstanceState != null) {
@@ -328,7 +328,7 @@ public class ServerListActivity extends AppCompatActivity {
         } else {
             mServerDetailFragment = ServerDetailFragment.newInstance(mSelectedServer.getUdn());
             getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.server_detail_container, mServerDetailFragment)
+                    .replace(R.id.serverDetailContainer, mServerDetailFragment)
                     .commit();
         }
     }
