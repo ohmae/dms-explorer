@@ -3,7 +3,7 @@
     <color name="primary">#3355bb</color>
     <color name="primaryDark">#000000</color>
     <color name="defaultStatusBar">#113399</color>
-    <color name="accent">#FF0040</color>
+    <color name="accent">#2196F3</color>
     <color name="textPrimary">#ffffff</color>
     <color name="textHighlight">#3355bb</color>
     <color name="textMain">#000000</color>
@@ -25,8 +25,9 @@
     <color name="progress4">#33BB55</color>
     <color name="translucent_ripple">#40ffffff</color>
     <color name="translucent_control">#66000000</color>
-    <color name="chapterMark">#80ffffff</color>
-    <color name="progressBackground">#80ffffff</color>
+    <color name="chapterMark">#808080</color>
+    <color name="progressBackground">#808080</color>
+    <color name="fabDisable">#808080</color>
     <color name="fabRipple">#80ffffff</color>
     <color name="toolbarBackgroundDefault">#c0c0c0</color>
 </resources>

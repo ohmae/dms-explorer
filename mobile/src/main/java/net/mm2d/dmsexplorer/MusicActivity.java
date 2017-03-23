@@ -96,7 +96,7 @@ public class MusicActivity extends AppCompatActivity {
         actionBar.setDisplayHomeAsUpEnabled(true);
         final String title = AribUtils.toDisplayableString(object.getTitle());
         actionBar.setTitle(title);
-        final int bgColor = ThemeUtils.getAccentColor(title);
+        final int bgColor = ThemeUtils.getDeepColor(title);
         toolbar.setBackgroundColor(bgColor);
         if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
             getWindow().setStatusBarColor(ThemeUtils.getDarkerColor(bgColor));

@@ -9,7 +9,6 @@ package net.mm2d.dmsexplorer;
 
 import android.app.Activity;
 import android.content.res.ColorStateList;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -90,7 +89,9 @@ public class CdsDetailFragment extends Fragment {
     public static void setUpPlayButton(final Activity activity, FloatingActionButton fab, final CdsObject object) {
         fab.setVisibility(hasResource(object) ? View.VISIBLE : View.GONE);
         final boolean protectedResource = hasProtectedResource(object);
-        final int color = protectedResource ? Color.GRAY : ContextCompat.getColor(activity, R.color.accent);
+        final int color = protectedResource ?
+                ContextCompat.getColor(activity, R.color.fabDisable) :
+                ContextCompat.getColor(activity, R.color.accent);
         fab.setBackgroundTintList(ColorStateList.valueOf(color));
         if (protectedResource) {
             fab.setOnClickListener(CdsDetailFragment::showNotSupportDrmSnackbar);

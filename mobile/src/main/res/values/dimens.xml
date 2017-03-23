@@ -25,7 +25,7 @@
     <dimen name="seek_padding">12dp</dimen>
 
     <dimen name="chapter_padding">16dp</dimen>
-    <dimen name="chapter_width">2dp</dimen>
+    <dimen name="chapter_width">1dp</dimen>
     <dimen name="chapter_height">16dp</dimen>
 
     <dimen name="expanded_toolbar_icon_size">120dp</dimen>
