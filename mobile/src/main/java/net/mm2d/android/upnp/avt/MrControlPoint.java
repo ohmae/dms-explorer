@@ -15,7 +15,6 @@ import net.mm2d.upnp.ControlPoint;
 import net.mm2d.upnp.ControlPoint.DiscoveryListener;
 import net.mm2d.upnp.ControlPoint.NotifyEventListener;
 import net.mm2d.upnp.Device;
-import net.mm2d.upnp.Service;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -63,11 +62,7 @@ public class MrControlPoint implements ControlPointWrapper {
         }
     };
 
-    private final NotifyEventListener mNotifyEventListener = new NotifyEventListener() {
-        @Override
-        public void onNotifyEvent(@NonNull Service service, long seq,
-                                  @NonNull String variable, @NonNull String value) {
-        }
+    private final NotifyEventListener mNotifyEventListener = (service, seq, variable, value) -> {
     };
     @NonNull
     private final AtomicBoolean mInitialized = new AtomicBoolean();
