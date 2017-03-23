@@ -12,6 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/app_bar_height"
         android:theme="@style/AppTheme.AppBarOverlay"
+        android:translationZ="@dimen/app_bar_elevation"
         >
 
         <net.opacapp.multilinecollapsingtoolbar.CollapsingToolbarLayout

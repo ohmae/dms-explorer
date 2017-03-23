@@ -33,7 +33,7 @@ public class CdsItemModel {
     public CdsItemModel(Context context, CdsObject object, boolean selected) {
         markVisibility = selected ? View.VISIBLE : View.INVISIBLE;
         final Resources res = context.getResources();
-        translationZ = selected ? res.getDimension(R.dimen.raise_focus) : 0;
+        translationZ = selected ? res.getDimension(R.dimen.list_item_focus_elevation) : 0;
         final String name = object.getTitle();
         accentText = TextUtils.isEmpty(name) ? ""
                 : AribUtils.toDisplayableString(name.substring(0, 1));
