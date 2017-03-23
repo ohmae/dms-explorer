@@ -25,7 +25,7 @@
     <string name="action_settings">Settings</string>
     <string name="title_activity_settings">Settings</string>
     <string name="pref_header_general">General</string>
-    <string name="pref_message_launch_app_on">Play by this app. (poor ability)</string>
+    <string name="pref_message_launch_app_on">Play by this app.</string>
     <string name="pref_message_launch_app_off">Rely other app.</string>
     <string name="pref_title_launch_app_movie">Play movie</string>
     <string name="pref_title_launch_app_photo">Show Photo</string>
