@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
@@ -50,7 +51,7 @@
                 android:layout_width="@dimen/accent_size"
                 android:layout_height="@dimen/accent_size"
                 android:visibility="@{model.accentImageVisibility}"
-                android:src="@{model.accentIcon}"
+                app:srcBitmap="@{model.accentIcon}"
                 android:scaleType="fitCenter"
                 />
 

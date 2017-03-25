@@ -9,9 +9,8 @@ package net.mm2d.dmsexplorer.model;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.text.TextUtils;
 import android.view.View;
@@ -31,7 +30,7 @@ public class ServerItemModel {
     public final GradientDrawable accentBackground;
     public final String accentText;
     public final int accentTextVisibility;
-    public final Drawable accentIcon;
+    public final Bitmap accentIcon;
     public final int accentImageVisibility;
     public final String title;
     public final String description;
@@ -56,8 +55,7 @@ public class ServerItemModel {
             return;
         }
         final byte[] binary = icon.getBinary();
-        accentIcon = new BitmapDrawable(
-                res, BitmapFactory.decodeByteArray(binary, 0, binary.length));
+        accentIcon = BitmapFactory.decodeByteArray(binary, 0, binary.length);
         accentText = null;
         accentBackground = null;
         accentTextVisibility = View.GONE;
