@@ -13,6 +13,8 @@
     <dimen name="text_size_accent">22dp</dimen>
     <dimen name="text_size_main">16sp</dimen>
     <dimen name="text_size_sub">12sp</dimen>
+    <dimen name="text_size_toolbar">20sp</dimen>
+    <dimen name="text_size_toolbar_expand">28sp</dimen>
 
     <dimen name="list_item_focus_elevation">2dp</dimen>
     <dimen name="app_bar_elevation">4dp</dimen>
@@ -21,6 +23,10 @@
     <dimen name="server_property_margin">128dp</dimen>
     <dimen name="cds_property_margin">200dp</dimen>
     <dimen name="music_image_margin">16dp</dimen>
+
+    <dimen name="toolbar_button_margin">16dp</dimen>
+    <dimen name="toolbar_button_padding">16dp</dimen>
+    <dimen name="tool_button_padding">16dp</dimen>
 
     <dimen name="control_height">56dp</dimen>
     <dimen name="control_margin">24dp</dimen>

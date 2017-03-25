@@ -16,6 +16,7 @@ import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Display;
 import android.view.MenuItem;
@@ -124,12 +125,19 @@ public class MovieActivity extends AppCompatActivity {
 
     private void adjustControlPanel(int right, int bottom) {
         mControlPanel.setPadding(0, 0, 0, bottom);
+        final int height = getResources().getDimensionPixelOffset(R.dimen.control_height);
+        setLayoutHeight(mControlPanel, height + bottom);
         setLayoutMarginRight(mControlPanel, right);
         final int topPadding = getResources().getDimensionPixelSize(R.dimen.status_bar_size);
         mToolbar.setPadding(0, topPadding, 0, 0);
         setLayoutMarginRight(mToolbar, right);
     }
 
+    private static void setLayoutHeight(final @NonNull View view, int height) {
+        final LayoutParams params = view.getLayoutParams();
+        params.height = height;
+        view.setLayoutParams(params);
+    }
     private static void setLayoutMarginRight(View view, int rightMargin) {
         final LayoutParams params = view.getLayoutParams();
         if (!(params instanceof MarginLayoutParams)) {

@@ -61,7 +61,7 @@
         <net.mm2d.dmsexplorer.view.ControlView
             android:id="@+id/controlPanel"
             android:layout_width="match_parent"
-            android:layout_height="68dp"
+            android:layout_height="@dimen/control_height"
             android:layout_gravity="bottom"
             android:background="@color/primary"
             />
