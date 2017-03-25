@@ -150,12 +150,12 @@ public class MovieActivity extends AppCompatActivity {
     private void showNavigation() {
         if (mToolbar.getVisibility() != View.VISIBLE) {
             mToolbar.startAnimation(mEnterFromTop);
+            mToolbar.setVisibility(View.VISIBLE);
         }
-        mToolbar.setVisibility(View.VISIBLE);
         if (mControlPanel.getVisibility() != View.VISIBLE) {
             mControlPanel.startAnimation(mEnterFromBottom);
+            mControlPanel.setVisibility(View.VISIBLE);
         }
-        mControlPanel.setVisibility(View.VISIBLE);
         mRoot.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE);
     }
 

@@ -8,17 +8,27 @@
 package net.mm2d.dmsexplorer;
 
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.graphics.Bitmap;
+import android.graphics.Point;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Build.VERSION;
+import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.view.Display;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup.LayoutParams;
+import android.view.ViewGroup.MarginLayoutParams;
+import android.view.ViewTreeObserver.OnGlobalLayoutListener;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -48,11 +58,14 @@ public class PhotoActivity extends AppCompatActivity {
     private ImageView mImageView;
     private Bitmap mBitmap;
     private View mToolbar;
+    private Animation mEnterFromTop;
+    private Animation mExitToTop;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.photo_activity);
+        loadAnimation();
         final Intent intent = getIntent();
         final CdsObject object = intent.getParcelableExtra(Const.EXTRA_OBJECT);
         final Uri uri = intent.getData();
@@ -72,9 +85,63 @@ public class PhotoActivity extends AppCompatActivity {
             showNavigation();
             postHideControlTask();
         });
+        adjustControlPanel();
         showNavigation();
         postHideControlTask();
     }
+
+    private void loadAnimation() {
+        mEnterFromTop = AnimationUtils.loadAnimation(this, R.anim.enter_from_top);
+        mExitToTop = AnimationUtils.loadAnimation(this, R.anim.exit_to_top);
+    }
+
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        adjustControlPanel();
+    }
+
+    private void adjustControlPanel() {
+        if (VERSION.SDK_INT >= VERSION_CODES.N && isInMultiWindowMode()) {
+            adjustControlPanel(0);
+            return;
+        }
+        final Display display = getWindowManager().getDefaultDisplay();
+        final Point p1 = new Point();
+        display.getSize(p1);
+        if (VERSION.SDK_INT >= VERSION_CODES.JELLY_BEAN_MR1) {
+            final Point p2 = new Point();
+            display.getRealSize(p2);
+            adjustControlPanel(p2.x - p1.x);
+        } else {
+            final View v = getWindow().getDecorView();
+            v.getViewTreeObserver().addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
+                @Override
+                public void onGlobalLayout() {
+                    v.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                    adjustControlPanel(v.getWidth() - p1.x);
+                }
+            });
+        }
+    }
+
+    private void adjustControlPanel(int right) {
+        final int topPadding = getResources().getDimensionPixelSize(R.dimen.status_bar_size);
+        mToolbar.setPadding(0, topPadding, 0, 0);
+        setLayoutMarginRight(mToolbar, right);
+    }
+
+    private static void setLayoutMarginRight(View view, int rightMargin) {
+        final LayoutParams params = view.getLayoutParams();
+        if (!(params instanceof MarginLayoutParams)) {
+            return;
+        }
+        final MarginLayoutParams marginParams = (MarginLayoutParams) params;
+        marginParams.rightMargin = rightMargin;
+        view.setLayoutParams(params);
+    }
+
 
     private final Runnable mHideControlTask = this::hideNavigation;
 
@@ -84,11 +151,15 @@ public class PhotoActivity extends AppCompatActivity {
     }
 
     private void showNavigation() {
-        mToolbar.setVisibility(View.VISIBLE);
+        if (mToolbar.getVisibility() != View.VISIBLE) {
+            mToolbar.startAnimation(mEnterFromTop);
+            mToolbar.setVisibility(View.VISIBLE);
+        }
         mRoot.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE);
     }
 
     private void hideNavigation() {
+        mToolbar.startAnimation(mExitToTop);
         mToolbar.setVisibility(View.GONE);
         final int visibility;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
