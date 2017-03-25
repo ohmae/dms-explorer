@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:drawable="@android:color/transparent"
+        android:drawable="@drawable/bg_toolbar_button_normal"
         android:state_pressed="false"
         />
     <item
-        android:drawable="@drawable/bg_back_button_pressed"
+        android:drawable="@drawable/bg_toolbar_button_pressed"
         android:state_pressed="true"
         />
 </selector>
