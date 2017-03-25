@@ -86,23 +86,27 @@ public class ServerDetailActivity extends AppCompatActivity {
 
         setUpGoButton(this, findViewById(R.id.fab), udn);
 
-        prepareTransition();
+        prepareTransition(savedInstanceState != null);
     }
 
-    private void prepareTransition() {
-        if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
-            final View background = findViewById(R.id.toolbarBackground);
-            findViewById(R.id.toolbarIcon).setTransitionName(Const.SHARE_ELEMENT_NAME_DEVICE_ICON);
-            background.setVisibility(View.INVISIBLE);
-            getWindow().getSharedElementEnterTransition().addListener(new TransitionListenerAdapter() {
-                @TargetApi(VERSION_CODES.KITKAT)
-                @Override
-                public void onTransitionEnd(final Transition transition) {
-                    transition.removeListener(this);
-                    startAnimation(background);
-                }
-            });
+    private void prepareTransition(boolean recreate) {
+        if (VERSION.SDK_INT < VERSION_CODES.LOLLIPOP) {
+            return;
         }
+        findViewById(R.id.toolbarIcon).setTransitionName(Const.SHARE_ELEMENT_NAME_DEVICE_ICON);
+        if (recreate) {
+            return;
+        }
+        final View background = findViewById(R.id.toolbarBackground);
+        background.setVisibility(View.INVISIBLE);
+        getWindow().getSharedElementEnterTransition().addListener(new TransitionListenerAdapter() {
+            @TargetApi(VERSION_CODES.KITKAT)
+            @Override
+            public void onTransitionEnd(final Transition transition) {
+                transition.removeListener(this);
+                startAnimation(background);
+            }
+        });
     }
 
     @TargetApi(VERSION_CODES.LOLLIPOP)

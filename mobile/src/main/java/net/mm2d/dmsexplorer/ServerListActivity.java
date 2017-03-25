@@ -58,6 +58,8 @@ import java.util.Map;
  * @author <a href="mailto:ryo@mm2d.net">大前良介(OHMAE Ryosuke)</a>
  */
 public class ServerListActivity extends AppCompatActivity {
+    private static final String KEY_HAS_REENTER_TRANSITION = "KEY_HAS_REENTER_TRANSITION";
+    private static final String KEY_SELECTED_SERVER_UDN = "KEY_SELECTED_SERVER_UDN";
     private boolean mTwoPane;
     private boolean mNetworkAvailable;
     private Handler mHandler;
@@ -251,8 +253,9 @@ public class ServerListActivity extends AppCompatActivity {
             mTwoPane = true;
         }
         if (savedInstanceState != null) {
-            final String udn = savedInstanceState.getString(Const.EXTRA_SERVER_UDN);
+            final String udn = savedInstanceState.getString(KEY_SELECTED_SERVER_UDN);
             mSelectedServer = mMsControlPoint.getDevice(udn);
+            mHasReenterTransition = savedInstanceState.getBoolean(KEY_HAS_REENTER_TRANSITION);
         }
     }
 
@@ -276,8 +279,9 @@ public class ServerListActivity extends AppCompatActivity {
         mServerListAdapter.clearSelection();
         super.onSaveInstanceState(outState);
         if (mSelectedServer != null) {
-            outState.putString(Const.EXTRA_SERVER_UDN, mSelectedServer.getUdn());
+            outState.putString(KEY_SELECTED_SERVER_UDN, mSelectedServer.getUdn());
         }
+        outState.putBoolean(KEY_HAS_REENTER_TRANSITION, mHasReenterTransition);
     }
 
     @Override
