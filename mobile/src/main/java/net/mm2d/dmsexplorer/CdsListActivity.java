@@ -33,7 +33,7 @@ import net.mm2d.android.upnp.cds.CdsObject;
 import net.mm2d.android.upnp.cds.MediaServer;
 import net.mm2d.android.view.DividerItemDecoration;
 import net.mm2d.dmsexplorer.adapter.CdsListAdapter;
-import net.mm2d.dmsexplorer.util.ToolbarThemeHelper;
+import net.mm2d.dmsexplorer.util.ToolbarThemeUtils;
 
 import java.util.Collections;
 import java.util.LinkedList;
@@ -177,7 +177,7 @@ public class CdsListActivity extends AppCompatActivity
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setTitle(name);
 
-        ToolbarThemeHelper.setCdsListTheme(this, mServer, toolbar);
+        ToolbarThemeUtils.setCdsListTheme(this, mServer, toolbar);
 
         mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeRefresh);
         mSwipeRefreshLayout.setColorSchemeResources(

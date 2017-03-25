@@ -23,7 +23,7 @@ import android.view.ViewGroup;
 
 import net.mm2d.android.upnp.cds.MediaServer;
 import net.mm2d.dmsexplorer.adapter.ServerPropertyAdapter;
-import net.mm2d.dmsexplorer.util.ToolbarThemeHelper;
+import net.mm2d.dmsexplorer.util.ToolbarThemeUtils;
 import net.opacapp.multilinecollapsingtoolbar.CollapsingToolbarLayout;
 
 /**
@@ -64,7 +64,7 @@ public class ServerDetailFragment extends Fragment {
         final Toolbar toolbar = (Toolbar) rootView.findViewById(R.id.serverDetailToolbar);
         toolbar.setTitle(server.getFriendlyName());
 
-        ToolbarThemeHelper.setServerDetailTheme(this, server,
+        ToolbarThemeUtils.setServerDetailTheme(this, server,
                 (CollapsingToolbarLayout) rootView.findViewById(R.id.toolbarLayout));
 
         final RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.serverDetail);

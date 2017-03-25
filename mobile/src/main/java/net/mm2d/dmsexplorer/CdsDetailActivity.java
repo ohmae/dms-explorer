@@ -24,7 +24,7 @@ import net.mm2d.android.upnp.cds.CdsObject;
 import net.mm2d.android.upnp.cds.MediaServer;
 import net.mm2d.android.util.AribUtils;
 import net.mm2d.dmsexplorer.adapter.CdsPropertyAdapter;
-import net.mm2d.dmsexplorer.util.ToolbarThemeHelper;
+import net.mm2d.dmsexplorer.util.ToolbarThemeUtils;
 import net.opacapp.multilinecollapsingtoolbar.CollapsingToolbarLayout;
 
 import static net.mm2d.dmsexplorer.CdsDetailFragment.setUpPlayButton;
@@ -78,7 +78,7 @@ public class CdsDetailActivity extends AppCompatActivity {
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setTitle(AribUtils.toDisplayableString(object.getTitle()));
 
-        ToolbarThemeHelper.setCdsDetailTheme(this, object,
+        ToolbarThemeUtils.setCdsDetailTheme(this, object,
                 (CollapsingToolbarLayout) findViewById(R.id.toolbarLayout));
 
         final RecyclerView recyclerView = (RecyclerView) findViewById(R.id.cdsDetail);

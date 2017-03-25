@@ -29,8 +29,8 @@ import net.mm2d.android.upnp.cds.MediaServer;
 import net.mm2d.android.upnp.cds.Tag;
 import net.mm2d.android.util.AribUtils;
 import net.mm2d.dmsexplorer.adapter.CdsPropertyAdapter;
-import net.mm2d.dmsexplorer.util.ItemSelectHelper;
-import net.mm2d.dmsexplorer.util.ToolbarThemeHelper;
+import net.mm2d.dmsexplorer.util.ItemSelectUtils;
+import net.mm2d.dmsexplorer.util.ToolbarThemeUtils;
 import net.opacapp.multilinecollapsingtoolbar.CollapsingToolbarLayout;
 
 import java.util.List;
@@ -74,7 +74,7 @@ public class CdsDetailFragment extends Fragment {
         }
         toolbar.setTitle(AribUtils.toDisplayableString(object.getTitle()));
 
-        ToolbarThemeHelper.setCdsDetailTheme(this, object,
+        ToolbarThemeUtils.setCdsDetailTheme(this, object,
                 (CollapsingToolbarLayout) rootView.findViewById(R.id.toolbarLayout));
 
         final RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.cdsDetail);
@@ -101,9 +101,9 @@ public class CdsDetailFragment extends Fragment {
             });
             return;
         }
-        fab.setOnClickListener(view -> ItemSelectHelper.play(activity, object, 0));
+        fab.setOnClickListener(view -> ItemSelectUtils.play(activity, object, 0));
         fab.setOnLongClickListener(view -> {
-            ItemSelectHelper.play(activity, object);
+            ItemSelectUtils.play(activity, object);
             return true;
         });
     }
@@ -119,7 +119,7 @@ public class CdsDetailFragment extends Fragment {
             return;
         }
         fab.setVisibility(View.VISIBLE);
-        fab.setOnClickListener(v -> ItemSelectHelper.send(activity, udn, object));
+        fab.setOnClickListener(v -> ItemSelectUtils.send(activity, udn, object));
     }
 
     private static boolean hasResource(CdsObject object) {

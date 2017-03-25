@@ -29,7 +29,7 @@ import android.view.ViewAnimationUtils;
 import net.mm2d.android.upnp.cds.MediaServer;
 import net.mm2d.android.view.TransitionListenerAdapter;
 import net.mm2d.dmsexplorer.adapter.ServerPropertyAdapter;
-import net.mm2d.dmsexplorer.util.ToolbarThemeHelper;
+import net.mm2d.dmsexplorer.util.ToolbarThemeUtils;
 import net.opacapp.multilinecollapsingtoolbar.CollapsingToolbarLayout;
 
 import static net.mm2d.dmsexplorer.ServerDetailFragment.setUpGoButton;
@@ -77,7 +77,7 @@ public class ServerDetailActivity extends AppCompatActivity {
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setTitle(server.getFriendlyName());
 
-        ToolbarThemeHelper.setServerDetailTheme(this, server,
+        ToolbarThemeUtils.setServerDetailTheme(this, server,
                 (CollapsingToolbarLayout) findViewById(R.id.toolbarLayout));
 
         final RecyclerView recyclerView = (RecyclerView) findViewById(R.id.serverDetail);

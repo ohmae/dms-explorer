@@ -15,7 +15,7 @@ import android.support.annotation.NonNull;
 
 import net.mm2d.android.upnp.cds.CdsObject;
 import net.mm2d.android.upnp.cds.Tag;
-import net.mm2d.dmsexplorer.util.ItemSelectHelper;
+import net.mm2d.dmsexplorer.util.ItemSelectUtils;
 import net.mm2d.dmsexplorer.R;
 
 import java.util.ArrayList;
@@ -55,7 +55,7 @@ public class SelectResourceDialog extends DialogFragment {
         builder.setTitle(R.string.title_dialog_select_resource);
         final String[] choices = makeChoices(object);
         builder.setItems(choices,
-                (dialog, which) -> ItemSelectHelper.play(getActivity(), object, which));
+                (dialog, which) -> ItemSelectUtils.play(getActivity(), object, which));
         return builder.create();
     }
 

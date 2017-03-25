@@ -34,11 +34,19 @@ public class ServerListAdapter
     public interface OnItemClickListener {
         void onItemClick(@NonNull View v, int position, @NonNull MediaServer server);
     }
+    private static final OnItemClickListener ON_ITEM_CLICK_LISTENER
+            = (v, position, server) -> {};
+    public interface OnItemLongClickListener {
+        void onItemLongClick(@NonNull View v, int position, @NonNull MediaServer server);
+    }
+    private static final OnItemLongClickListener ON_ITEM_LONG_CLICK_LISTENER
+            = (v, position, server) -> {};
 
     private static final int NOT_SELECTED = -1;
     private final LayoutInflater mInflater;
     private final List<MediaServer> mList;
-    private OnItemClickListener mListener;
+    private OnItemClickListener mClickListener = ON_ITEM_CLICK_LISTENER;
+    private OnItemLongClickListener mLongClickListener = ON_ITEM_LONG_CLICK_LISTENER;
     private int mSelection = NOT_SELECTED;
 
     public ServerListAdapter(Context context, Collection<? extends MediaServer> servers) {
@@ -69,8 +77,12 @@ public class ServerListAdapter
         return mList.indexOf(server);
     }
 
-    public void setOnItemClickListener(OnItemClickListener l) {
-        mListener = l;
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        mClickListener = listener != null ? listener : ON_ITEM_CLICK_LISTENER;
+    }
+
+    public void setOnItemLongClickListener(OnItemLongClickListener listener) {
+        mLongClickListener = listener != null ? listener : ON_ITEM_LONG_CLICK_LISTENER;
     }
 
     public void clear() {
@@ -114,16 +126,18 @@ public class ServerListAdapter
         setSelection(NOT_SELECTED);
     }
 
-    private final View.OnClickListener mItemClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            final ViewHolder holder = (ViewHolder) v.getTag();
-            final MediaServer server = holder.getItem();
-            final int position = holder.getListPosition();
-            if (mListener != null) {
-                mListener.onItemClick(v, position, server);
-            }
-        }
+    private final View.OnClickListener mItemClickListener = v -> {
+        final ViewHolder holder = (ViewHolder) v.getTag();
+        final MediaServer server = holder.getItem();
+        final int position = holder.getListPosition();
+        mClickListener.onItemClick(v, position, server);
+    };
+    private final View.OnLongClickListener mItemLongClickListener = v -> {
+        final ViewHolder holder = (ViewHolder) v.getTag();
+        final MediaServer server = holder.getItem();
+        final int position = holder.getListPosition();
+        mLongClickListener.onItemLongClick(v, position, server);
+        return true;
     };
 
     class ViewHolder extends RecyclerView.ViewHolder {
@@ -134,6 +148,7 @@ public class ServerListAdapter
         ViewHolder(ServerListItemBinding binding) {
             super(binding.getRoot());
             itemView.setOnClickListener(mItemClickListener);
+            itemView.setOnLongClickListener(mItemLongClickListener);
             itemView.setTag(this);
             mBinding = binding;
         }

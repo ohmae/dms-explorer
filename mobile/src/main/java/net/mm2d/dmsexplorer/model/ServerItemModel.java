@@ -19,6 +19,7 @@ import net.mm2d.android.upnp.cds.MediaServer;
 import net.mm2d.android.util.AribUtils;
 import net.mm2d.dmsexplorer.R;
 import net.mm2d.dmsexplorer.util.ThemeUtils;
+import net.mm2d.dmsexplorer.util.ToolbarThemeUtils;
 import net.mm2d.upnp.Icon;
 
 /**
@@ -52,6 +53,7 @@ public class ServerItemModel {
             accentBackground.setColor(ThemeUtils.getAccentColor(name));
             accentTextVisibility = View.VISIBLE;
             accentImageVisibility = View.GONE;
+            ToolbarThemeUtils.setServerThemeColorAsync(server, accentIcon);
             return;
         }
         final byte[] binary = icon.getBinary();
@@ -60,6 +62,7 @@ public class ServerItemModel {
         accentBackground = null;
         accentTextVisibility = View.GONE;
         accentImageVisibility = View.VISIBLE;
+        ToolbarThemeUtils.setServerThemeColorAsync(server, accentIcon);
     }
 
     private String makeDescription(MediaServer server) {

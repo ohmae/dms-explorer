@@ -18,9 +18,7 @@ import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.text.TextUtils;
 import android.view.Display;
 import android.view.MenuItem;
 import android.view.View;
@@ -31,17 +29,11 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import net.mm2d.android.upnp.cds.CdsObject;
-import net.mm2d.android.util.BitmapUtils;
-import net.mm2d.android.util.ViewUtils;
-import net.mm2d.util.Log;
+import net.mm2d.dmsexplorer.util.ImageViewUtils;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -79,12 +71,13 @@ public class PhotoActivity extends AppCompatActivity {
         mImageView = (ImageView) findViewById(R.id.imageView);
         mProgress = findViewById(R.id.progressBar);
         mProgress.setVisibility(View.VISIBLE);
-        new Thread(new GetImage(uri)).start();
         mRoot = findViewById(R.id.root);
         mRoot.setOnClickListener(v -> {
             showNavigation();
             postHideControlTask();
         });
+
+        downloadAndSetImage(uri.toString());
         adjustControlPanel();
         showNavigation();
         postHideControlTask();
@@ -142,7 +135,6 @@ public class PhotoActivity extends AppCompatActivity {
         view.setLayoutParams(params);
     }
 
-
     private final Runnable mHideControlTask = this::hideNavigation;
 
     private void postHideControlTask() {
@@ -191,6 +183,7 @@ public class PhotoActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        mHandler.removeCallbacks(mHideControlTask);
         if (mBitmap != null) {
             mBitmap.recycle();
             mBitmap = null;
@@ -198,63 +191,21 @@ public class PhotoActivity extends AppCompatActivity {
         }
     }
 
-    private class GetImage implements Runnable {
-        private final Uri mUri;
-
-        public GetImage(Uri uri) {
-            mUri = uri;
-        }
-
-        @Override
-        public void run() {
-            final byte[] data = downloadData(mUri.toString());
-            if (data == null) {
-                return;
+    private void downloadAndSetImage(final @NonNull String url) {
+        ImageViewUtils.downloadAndSetImage(mImageView, url, new ImageViewUtils.Callback() {
+            @Override
+            public void onSuccess() {
+                mProgress.setVisibility(View.INVISIBLE);
             }
-            mHandler.post(() -> setImage(data));
-        }
+
+            @Override
+            public void onError() {
+                showToast(R.string.toast_command_error_occurred);
+            }
+        });
     }
 
-    private void setImage(final @NonNull byte[] data) {
-        ViewUtils.execAfterAllocateSize(mImageView, () -> setImageInner(data));
-    }
-
-    private void setImageInner(final @NonNull byte[] data) {
-        mBitmap = BitmapUtils.decodeBitmap(data, mImageView.getWidth(), mImageView.getHeight());
-        mImageView.setImageBitmap(mBitmap);
-        mProgress.setVisibility(View.GONE);
-    }
-
-    @Nullable
-    private static byte[] downloadData(@NonNull String uri) {
-        if (TextUtils.isEmpty(uri)) {
-            return null;
-        }
-        try {
-            final URL url = new URL(uri);
-            final HttpURLConnection con = (HttpURLConnection) url.openConnection();
-            con.setRequestMethod("GET");
-            con.setDoInput(true);
-            con.connect();
-            if (con.getResponseCode() != HttpURLConnection.HTTP_OK) {
-                return null;
-            }
-            final InputStream is = con.getInputStream();
-            final ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            final byte[] buffer = new byte[1024];
-            while (true) {
-                final int size = is.read(buffer);
-                if (size <= 0) {
-                    break;
-                }
-                baos.write(buffer, 0, size);
-            }
-            is.close();
-            con.disconnect();
-            return baos.toByteArray();
-        } catch (final IOException e) {
-            Log.w(TAG, e);
-        }
-        return null;
+    private void showToast(int resId) {
+        Toast.makeText(this, resId, Toast.LENGTH_LONG).show();
     }
 }
