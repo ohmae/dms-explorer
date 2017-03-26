@@ -50,7 +50,7 @@ public class ImageViewUtils {
             @Override
             protected byte[] doInBackground(final Void... params) {
                 try {
-                    final HttpResponse response = new HttpClient().download(new URL(url));
+                    final HttpResponse response = new HttpClient(false).download(new URL(url));
                     if (response.getStatus() == Http.Status.HTTP_OK) {
                         return response.getBodyBinary();
                     }
