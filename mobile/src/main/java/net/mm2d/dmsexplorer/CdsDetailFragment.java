@@ -15,7 +15,6 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
@@ -78,7 +77,6 @@ public class CdsDetailFragment extends Fragment {
                 (CollapsingToolbarLayout) rootView.findViewById(R.id.toolbarLayout));
 
         final RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.cdsDetail);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setAdapter(new CdsPropertyAdapter(getActivity(), object));
 
         setUpPlayButton(getActivity(), (FloatingActionButton) rootView.findViewById(R.id.fabPlay), object);

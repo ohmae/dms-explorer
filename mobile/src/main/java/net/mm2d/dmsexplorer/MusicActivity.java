@@ -20,7 +20,6 @@ import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
@@ -97,7 +96,6 @@ public class MusicActivity extends AppCompatActivity {
 
         controlPanel.setBackgroundColor(bgColor);
         final RecyclerView recyclerView = (RecyclerView) findViewById(R.id.detail);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(new CdsPropertyAdapter(this, object));
         final String albumArtUri = object.getValue(CdsObject.UPNP_ALBUM_ART_URI);
         if (albumArtUri != null) {

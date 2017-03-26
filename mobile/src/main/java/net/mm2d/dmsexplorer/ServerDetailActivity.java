@@ -17,7 +17,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.transition.Transition;
@@ -32,7 +31,7 @@ import net.mm2d.dmsexplorer.adapter.ServerPropertyAdapter;
 import net.mm2d.dmsexplorer.util.ToolbarThemeUtils;
 import net.opacapp.multilinecollapsingtoolbar.CollapsingToolbarLayout;
 
-import static net.mm2d.dmsexplorer.ServerDetailFragment.setUpGoButton;
+import static net.mm2d.dmsexplorer.ServerDetailFragment.*;
 
 
 /**
@@ -81,7 +80,6 @@ public class ServerDetailActivity extends AppCompatActivity {
                 (CollapsingToolbarLayout) findViewById(R.id.toolbarLayout));
 
         final RecyclerView recyclerView = (RecyclerView) findViewById(R.id.serverDetail);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(new ServerPropertyAdapter(this, server));
 
         setUpGoButton(this, findViewById(R.id.fab), udn);

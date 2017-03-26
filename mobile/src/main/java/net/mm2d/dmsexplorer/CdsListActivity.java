@@ -189,7 +189,6 @@ public class CdsListActivity extends AppCompatActivity
         mCdsListAdapter = new CdsListAdapter(this);
         mCdsListAdapter.setOnItemClickListener(this::onCdsItemClick);
         mRecyclerView = (RecyclerView) findViewById(R.id.cdsList);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setAdapter(mCdsListAdapter);
         mRecyclerView.addItemDecoration(new DividerItemDecoration(this));
 

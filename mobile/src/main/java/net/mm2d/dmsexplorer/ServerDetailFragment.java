@@ -14,7 +14,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
@@ -68,7 +67,6 @@ public class ServerDetailFragment extends Fragment {
                 (CollapsingToolbarLayout) rootView.findViewById(R.id.toolbarLayout));
 
         final RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.serverDetail);
-        recyclerView.setLayoutManager(new LinearLayoutManager(activity));
         recyclerView.setAdapter(new ServerPropertyAdapter(activity, server));
 
         setUpGoButton(activity, rootView.findViewById(R.id.fab), udn);

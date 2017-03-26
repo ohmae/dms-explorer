@@ -41,6 +41,7 @@
             android:overScrollMode="never"
             android:paddingBottom="@dimen/control_height"
             android:paddingTop="@dimen/control_height"
+            app:layoutManager="android.support.v7.widget.LinearLayoutManager"
             tools:listitem="@layout/property_list_item"
             />
 
