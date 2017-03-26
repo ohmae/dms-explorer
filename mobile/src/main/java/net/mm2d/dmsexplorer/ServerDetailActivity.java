@@ -84,15 +84,16 @@ public class ServerDetailActivity extends AppCompatActivity {
 
         setUpGoButton(this, findViewById(R.id.fab), udn);
 
-        prepareTransition(savedInstanceState != null);
+        final boolean hasTransition = getIntent().getBooleanExtra(Const.EXTRA_HAS_TRANSITION, false);
+        prepareTransition(hasTransition && savedInstanceState != null);
     }
 
-    private void prepareTransition(boolean recreate) {
+    private void prepareTransition(boolean hasTransition) {
         if (VERSION.SDK_INT < VERSION_CODES.LOLLIPOP) {
             return;
         }
         findViewById(R.id.toolbarIcon).setTransitionName(Const.SHARE_ELEMENT_NAME_DEVICE_ICON);
-        if (recreate) {
+        if (hasTransition) {
             return;
         }
         final View background = findViewById(R.id.toolbarBackground);

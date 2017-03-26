@@ -98,10 +98,7 @@ public class ServerListActivity extends AppCompatActivity {
     private void onItemClick(final @NonNull View v, final int position, final @NonNull MediaServer server) {
         if (mTwoPane) {
             if (mSelectedServer != null && mSelectedServer.equals(server)) {
-                final Intent intent = CdsListActivity.makeIntent(this, server.getUdn());
-                startActivity(intent, ActivityOptions.makeScaleUpAnimation(
-                        v, 0, 0, v.getWidth(), v.getHeight())
-                        .toBundle());
+                startCdsListActivity(v, server);
                 return;
             }
             mServerDetailFragment = ServerDetailFragment.newInstance(server.getUdn());
@@ -115,6 +112,7 @@ public class ServerListActivity extends AppCompatActivity {
             final Context context = v.getContext();
             final Intent intent = ServerDetailActivity.makeIntent(context, server.getUdn());
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                intent.putExtra(Const.EXTRA_HAS_TRANSITION, true);
                 final View accent = v.findViewById(R.id.accent);
                 setExitSharedElementCallback(new SharedElementCallback() {
                     @Override
@@ -142,7 +140,20 @@ public class ServerListActivity extends AppCompatActivity {
     }
 
     private void onItemLongClick(final @NonNull View v, final int position, final @NonNull MediaServer server) {
-        onItemClick(v, position, server);
+        selectItem(v, position, server);
+        startCdsListActivity(v, server);
+    }
+
+    private void selectItem(final @NonNull View v, final int position, final @NonNull MediaServer server) {
+        mServerListAdapter.setSelection(position);
+        if (mSelectedServer != null) {
+            mSelectedServer.unsubscribe();
+        }
+        mSelectedServer = server;
+        mSelectedServer.subscribe();
+    }
+
+    private void startCdsListActivity(final @NonNull View v, final @NonNull MediaServer server) {
         final Intent intent = CdsListActivity.makeIntent(this, server.getUdn());
         startActivity(intent, ActivityOptions.makeScaleUpAnimation(
                 v, 0, 0, v.getWidth(), v.getHeight())

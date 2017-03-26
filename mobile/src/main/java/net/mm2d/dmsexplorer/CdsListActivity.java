@@ -163,16 +163,36 @@ public class CdsListActivity extends AppCompatActivity
     }
 
     private void onItemLongClick(final View v, int position, CdsObject object) {
-        if (object.isContainer() || object.getTagList(CdsObject.RES) == null) {
-            onItemClick(v, position, object);
+        if (object.isContainer()) {
+            browse(position, object.getObjectId(), object.getTitle(), true);
+            return;
+        }
+        if (object.getTagList(CdsObject.RES) == null) {
+            selectItem(v, position, object);
             return;
         }
         if (object.hasProtectedResource()) {
             Snackbar.make(v, R.string.toast_not_support_drm, Snackbar.LENGTH_LONG).show();
-            onItemClick(v, position, object);
+            selectItem(v, position, object);
             return;
         }
         ItemSelectUtils.play(this, object, 0);
+        mSelectedObject = object;
+        mCdsListAdapter.setSelection(position);
+    }
+
+    private void selectItem(final View v, int position, CdsObject object) {
+        if (mTwoPane) {
+            if (mSelectedObject != null && mSelectedObject.equals(object)) {
+                ItemSelectUtils.play(this, object, 0);
+                return;
+            }
+            mCdsDetailFragment = CdsDetailFragment.newInstance(mServer.getUdn(), object);
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.cdsDetailContainer, mCdsDetailFragment)
+                    .commit();
+        }
         mSelectedObject = object;
         mCdsListAdapter.setSelection(position);
     }
