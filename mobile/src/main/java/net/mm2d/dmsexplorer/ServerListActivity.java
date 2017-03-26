@@ -98,6 +98,10 @@ public class ServerListActivity extends AppCompatActivity {
     private void onItemClick(final @NonNull View v, final int position, final @NonNull MediaServer server) {
         if (mTwoPane) {
             if (mSelectedServer != null && mSelectedServer.equals(server)) {
+                final Intent intent = CdsListActivity.makeIntent(this, server.getUdn());
+                startActivity(intent, ActivityOptions.makeScaleUpAnimation(
+                        v, 0, 0, v.getWidth(), v.getHeight())
+                        .toBundle());
                 return;
             }
             mServerDetailFragment = ServerDetailFragment.newInstance(server.getUdn());

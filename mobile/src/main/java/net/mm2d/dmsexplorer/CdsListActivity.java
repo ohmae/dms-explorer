@@ -143,6 +143,7 @@ public class CdsListActivity extends AppCompatActivity
         }
         if (mTwoPane) {
             if (mSelectedObject != null && mSelectedObject.equals(object)) {
+                ItemSelectUtils.play(this, object, 0);
                 return;
             }
             mCdsDetailFragment = CdsDetailFragment.newInstance(mServer.getUdn(), object);
