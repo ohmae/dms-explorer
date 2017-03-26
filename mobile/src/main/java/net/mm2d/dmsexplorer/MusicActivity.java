@@ -16,7 +16,6 @@ import android.net.Uri;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -40,8 +39,6 @@ import java.io.IOException;
  * @author <a href="mailto:ryo@mm2d.net">大前良介(OHMAE Ryosuke)</a>
  */
 public class MusicActivity extends AppCompatActivity {
-    private static final String TAG = MusicActivity.class.getSimpleName();
-    private Handler mHandler;
     private MediaPlayer mMediaPlayer;
     private ImageView mArtView;
     private Bitmap mBitmap;
@@ -65,7 +62,6 @@ public class MusicActivity extends AppCompatActivity {
         final Intent intent = getIntent();
         final CdsObject object = intent.getParcelableExtra(Const.EXTRA_OBJECT);
         final Uri uri = intent.getData();
-        mHandler = new Handler();
         mArtView = (ImageView) findViewById(R.id.art);
 
         final ControlView controlPanel = (ControlView) findViewById(R.id.controlPanel);

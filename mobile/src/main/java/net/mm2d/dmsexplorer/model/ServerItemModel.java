@@ -53,7 +53,7 @@ public class ServerItemModel {
             accentBackground.setColor(ThemeUtils.getAccentColor(name));
             accentTextVisibility = View.VISIBLE;
             accentImageVisibility = View.GONE;
-            ToolbarThemeUtils.setServerThemeColorAsync(server, accentIcon);
+            ToolbarThemeUtils.setServerThemeColorAsync(server, null);
             return;
         }
         final byte[] binary = icon.getBinary();

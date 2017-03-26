@@ -62,6 +62,9 @@ public class SelectResourceDialog extends DialogFragment {
     private String[] makeChoices(CdsObject object) {
         final List<String> itemList = new ArrayList<>();
         final List<Tag> tagList = object.getTagList(CdsObject.RES);
+        if (tagList == null) {
+            return new String[0];
+        }
         for (final Tag tag : tagList) {
             final String bitrate = tag.getAttribute(CdsObject.BITRATE);
             final String resolution = tag.getAttribute(CdsObject.RESOLUTION);

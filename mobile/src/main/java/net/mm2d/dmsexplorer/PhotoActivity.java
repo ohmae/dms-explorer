@@ -112,7 +112,7 @@ public class PhotoActivity extends AppCompatActivity {
 
             @Override
             public void onError() {
-                showToast(R.string.toast_command_error_occurred);
+                showToast(R.string.toast_download_error_occurred);
             }
         });
     }
