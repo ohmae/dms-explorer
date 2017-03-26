@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<transitionSet
+<changeBounds
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:duration="300"
     android:interpolator="@android:interpolator/accelerate_decelerate"
     android:startDelay="0"
-    android:transitionOrdering="together">
-    <changeBounds>
-        <pathMotion class="net.mm2d.android.transition.SmilingCurveMotion"/>
-    </changeBounds>
-</transitionSet>
+    >
+    <pathMotion class="net.mm2d.android.transition.SmilingCurveMotion"/>
+</changeBounds>

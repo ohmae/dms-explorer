@@ -9,17 +9,14 @@ package net.mm2d.dmsexplorer;
 
 import android.app.Activity;
 import android.content.res.ColorStateList;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,14 +24,11 @@ import android.view.ViewGroup;
 import net.mm2d.android.upnp.avt.MrControlPoint;
 import net.mm2d.android.upnp.cds.CdsObject;
 import net.mm2d.android.upnp.cds.MediaServer;
-import net.mm2d.android.upnp.cds.Tag;
 import net.mm2d.android.util.AribUtils;
 import net.mm2d.dmsexplorer.adapter.CdsPropertyAdapter;
-import net.mm2d.dmsexplorer.util.ItemSelectHelper;
-import net.mm2d.dmsexplorer.util.ToolbarThemeHelper;
+import net.mm2d.dmsexplorer.util.ItemSelectUtils;
+import net.mm2d.dmsexplorer.util.ToolbarThemeUtils;
 import net.opacapp.multilinecollapsingtoolbar.CollapsingToolbarLayout;
-
-import java.util.List;
 
 /**
  * CDSアイテムの詳細情報を表示するFragment。
@@ -75,11 +69,10 @@ public class CdsDetailFragment extends Fragment {
         }
         toolbar.setTitle(AribUtils.toDisplayableString(object.getTitle()));
 
-        ToolbarThemeHelper.setCdsDetailTheme(this, object,
+        ToolbarThemeUtils.setCdsDetailTheme(this, object,
                 (CollapsingToolbarLayout) rootView.findViewById(R.id.toolbarLayout));
 
         final RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.cdsDetail);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setAdapter(new CdsPropertyAdapter(getActivity(), object));
 
         setUpPlayButton(getActivity(), (FloatingActionButton) rootView.findViewById(R.id.fabPlay), object);
@@ -89,8 +82,10 @@ public class CdsDetailFragment extends Fragment {
 
     public static void setUpPlayButton(final Activity activity, FloatingActionButton fab, final CdsObject object) {
         fab.setVisibility(hasResource(object) ? View.VISIBLE : View.GONE);
-        final boolean protectedResource = hasProtectedResource(object);
-        final int color = protectedResource ? Color.GRAY : ContextCompat.getColor(activity, R.color.accent);
+        final boolean protectedResource = object.hasProtectedResource();
+        final int color = protectedResource ?
+                ContextCompat.getColor(activity, R.color.fabDisable) :
+                ContextCompat.getColor(activity, R.color.accent);
         fab.setBackgroundTintList(ColorStateList.valueOf(color));
         if (protectedResource) {
             fab.setOnClickListener(CdsDetailFragment::showNotSupportDrmSnackbar);
@@ -100,9 +95,9 @@ public class CdsDetailFragment extends Fragment {
             });
             return;
         }
-        fab.setOnClickListener(view -> ItemSelectHelper.play(activity, object, 0));
+        fab.setOnClickListener(view -> ItemSelectUtils.play(activity, object, 0));
         fab.setOnLongClickListener(view -> {
-            ItemSelectHelper.play(activity, object);
+            ItemSelectUtils.play(activity, object);
             return true;
         });
     }
@@ -118,25 +113,10 @@ public class CdsDetailFragment extends Fragment {
             return;
         }
         fab.setVisibility(View.VISIBLE);
-        fab.setOnClickListener(v -> ItemSelectHelper.send(activity, udn, object));
+        fab.setOnClickListener(v -> ItemSelectUtils.send(activity, udn, object));
     }
 
     private static boolean hasResource(CdsObject object) {
         return object.getTagList(CdsObject.RES) != null;
-    }
-
-    private static boolean hasProtectedResource(CdsObject object) {
-        final List<Tag> tagList = object.getTagList(CdsObject.RES);
-        if (tagList == null) {
-            return false;
-        }
-        for (final Tag tag : tagList) {
-            final String protocolInfo = tag.getAttribute(CdsObject.PROTOCOL_INFO);
-            final String mimeType = CdsObject.extractMimeTypeFromProtocolInfo(protocolInfo);
-            if (!TextUtils.isEmpty(mimeType) && mimeType.equals("application/x-dtcp1")) {
-                return true;
-            }
-        }
-        return false;
     }
 }

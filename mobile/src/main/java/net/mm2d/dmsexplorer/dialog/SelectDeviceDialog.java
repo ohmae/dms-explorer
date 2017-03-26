@@ -17,7 +17,7 @@ import net.mm2d.android.upnp.avt.MediaRenderer;
 import net.mm2d.android.upnp.avt.MrControlPoint;
 import net.mm2d.android.upnp.cds.CdsObject;
 import net.mm2d.dmsexplorer.DataHolder;
-import net.mm2d.dmsexplorer.util.ItemSelectHelper;
+import net.mm2d.dmsexplorer.util.ItemSelectUtils;
 import net.mm2d.dmsexplorer.R;
 
 import java.util.List;
@@ -55,7 +55,7 @@ public class SelectDeviceDialog extends DialogFragment {
         final String udn = getArguments().getString(KEY_UDN);
         final CdsObject object = getArguments().getParcelable(KEY_OBJECT);
         builder.setItems(choices, (dialog, which) ->
-                ItemSelectHelper.send(getActivity(), udn, object, rendererList.get(which).getUdn()));
+                ItemSelectUtils.send(getActivity(), udn, object, rendererList.get(which).getUdn()));
         return builder.create();
     }
 }

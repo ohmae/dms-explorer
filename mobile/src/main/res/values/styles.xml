@@ -35,11 +35,11 @@
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
 
     <style name="CollapsedToolbarText">
-        <item name="android:textSize">20sp</item>
+        <item name="android:textSize">@dimen/text_size_toolbar</item>
     </style>
 
     <style name="ExpandedToolbarText">
-        <item name="android:textSize">28sp</item>
+        <item name="android:textSize">@dimen/text_size_toolbar_expand</item>
         <item name="android:maxLines">3</item>
     </style>
 </resources>

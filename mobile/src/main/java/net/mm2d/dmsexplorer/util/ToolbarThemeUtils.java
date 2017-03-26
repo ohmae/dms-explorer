@@ -34,7 +34,7 @@ import net.opacapp.multilinecollapsingtoolbar.CollapsingToolbarLayout;
 /**
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
  */
-public class ToolbarThemeHelper {
+public class ToolbarThemeUtils {
     public static void setServerDetailTheme(
             final @NonNull Activity activity,
             final @NonNull MediaServer server,
@@ -92,11 +92,27 @@ public class ToolbarThemeHelper {
     private static void setServerThemeColor(
             final @NonNull MediaServer server,
             final @Nullable Bitmap icon) {
+        final Palette palette = icon == null ? null : new Palette.Builder(icon).generate();
+        setServerThemeColorFromPalette(server, palette);
+    }
+
+    public static void setServerThemeColorAsync(
+            final @NonNull MediaServer server,
+            final @Nullable Bitmap icon) {
+        if (icon == null) {
+            setServerThemeColor(server, null);
+            return;
+        }
+        new Palette.Builder(icon).generate(palette -> setServerThemeColorFromPalette(server, palette));
+    }
+
+    private static void setServerThemeColorFromPalette(
+            final @NonNull MediaServer server,
+            final @Nullable Palette palette) {
         final String friendlyName = server.getFriendlyName();
         int expandedColor = ThemeUtils.getPastelColor(friendlyName);
         int collapsedColor = ThemeUtils.getDeepColor(friendlyName);
-        if (icon != null) {
-            final Palette palette = new Palette.Builder(icon).generate();
+        if (palette != null) {
             final Swatch lightSwatch = selectLightSwatch(palette);
             if (lightSwatch != null) {
                 expandedColor = lightSwatch.getRgb();

@@ -15,15 +15,6 @@
         />
 
     <!-- コード上でpaddingを調整する -->
-    <net.mm2d.dmsexplorer.view.ControlView
-        android:id="@+id/controlPanel"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:background="@color/translucent_control"
-        />
-
-    <!-- コード上でpaddingを調整する -->
     <LinearLayout
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
@@ -38,10 +29,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:layout_marginEnd="16dp"
-            android:layout_marginRight="16dp"
-            android:background="@drawable/bg_back_button"
-            android:padding="16dp"
+            android:layout_marginEnd="@dimen/toolbar_button_margin"
+            android:layout_marginRight="@dimen/toolbar_button_margin"
+            android:background="@drawable/bg_tool_button"
+            android:padding="@dimen/toolbar_button_padding"
             app:srcCompat="@drawable/ic_arrow_back"
             />
 
@@ -53,9 +44,18 @@
             android:ellipsize="end"
             android:maxLines="1"
             android:textColor="#FFFFFF"
-            android:textSize="20sp"
+            android:textSize="@dimen/text_size_toolbar"
             />
 
     </LinearLayout>
+
+    <!-- コード上でpaddingを調整する -->
+    <net.mm2d.dmsexplorer.view.ControlView
+        android:id="@+id/controlPanel"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/control_height"
+        android:layout_gravity="bottom"
+        android:background="@color/translucent_control"
+        />
 
 </FrameLayout>

@@ -34,7 +34,7 @@ import java.util.List;
  *
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
  */
-public class ItemSelectHelper {
+public class ItemSelectUtils {
     public static void play(final @NonNull Activity activity,
                      final @NonNull CdsObject object) {
         final List<Tag> list = object.getTagList(CdsObject.RES);

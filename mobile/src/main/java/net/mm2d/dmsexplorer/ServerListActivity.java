@@ -25,7 +25,6 @@ import android.support.v4.app.SharedElementCallback;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.transition.Slide;
@@ -45,7 +44,6 @@ import net.mm2d.android.upnp.cds.MsControlPoint.MsDiscoveryListener;
 import net.mm2d.android.view.DividerItemDecoration;
 import net.mm2d.android.view.TransitionListenerAdapter;
 import net.mm2d.dmsexplorer.adapter.ServerListAdapter;
-import net.mm2d.dmsexplorer.adapter.ServerListAdapter.OnItemClickListener;
 
 import java.util.List;
 import java.util.Map;
@@ -58,6 +56,8 @@ import java.util.Map;
  * @author <a href="mailto:ryo@mm2d.net">大前良介(OHMAE Ryosuke)</a>
  */
 public class ServerListActivity extends AppCompatActivity {
+    private static final String KEY_HAS_REENTER_TRANSITION = "KEY_HAS_REENTER_TRANSITION";
+    private static final String KEY_SELECTED_SERVER_UDN = "KEY_SELECTED_SERVER_UDN";
     private boolean mTwoPane;
     private boolean mNetworkAvailable;
     private Handler mHandler;
@@ -94,51 +94,71 @@ public class ServerListActivity extends AppCompatActivity {
             }
         }
     };
-    private final OnItemClickListener mOnItemClickListener = new OnItemClickListener() {
-        @Override
-        public void onItemClick(final @NonNull View v,
-                                final int position, final @NonNull MediaServer server) {
-            if (mTwoPane) {
-                if (mSelectedServer != null && mSelectedServer.equals(server)) {
-                    return;
-                }
-                mServerDetailFragment = ServerDetailFragment.newInstance(server.getUdn());
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    mServerDetailFragment.setEnterTransition(new Slide(Gravity.START));
-                }
-                getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.serverDetailContainer, mServerDetailFragment)
-                        .commit();
+
+    private void onItemClick(final @NonNull View v, final int position, final @NonNull MediaServer server) {
+        if (mTwoPane) {
+            if (mSelectedServer != null && mSelectedServer.equals(server)) {
+                startCdsListActivity(v, server);
+                return;
+            }
+            mServerDetailFragment = ServerDetailFragment.newInstance(server.getUdn());
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                mServerDetailFragment.setEnterTransition(new Slide(Gravity.START));
+            }
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.serverDetailContainer, mServerDetailFragment)
+                    .commit();
+        } else {
+            final Context context = v.getContext();
+            final Intent intent = ServerDetailActivity.makeIntent(context, server.getUdn());
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                intent.putExtra(Const.EXTRA_HAS_TRANSITION, true);
+                final View accent = v.findViewById(R.id.accent);
+                setExitSharedElementCallback(new SharedElementCallback() {
+                    @Override
+                    public void onMapSharedElements(List<String> names, Map<String, View> sharedElements) {
+                        sharedElements.clear();
+                        sharedElements.put(Const.SHARE_ELEMENT_NAME_DEVICE_ICON, accent);
+                    }
+                });
+                startActivity(intent, ActivityOptions
+                        .makeSceneTransitionAnimation(ServerListActivity.this,
+                                new Pair<>(accent, Const.SHARE_ELEMENT_NAME_DEVICE_ICON))
+                        .toBundle());
+                mHasReenterTransition = true;
             } else {
-                final Context context = v.getContext();
-                final Intent intent = ServerDetailActivity.makeIntent(context, server.getUdn());
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    final View accent = v.findViewById(R.id.accent);
-                    setExitSharedElementCallback(new SharedElementCallback() {
-                        @Override
-                        public void onMapSharedElements(List<String> names, Map<String, View> sharedElements) {
-                            sharedElements.clear();
-                            sharedElements.put(Const.SHARE_ELEMENT_NAME_DEVICE_ICON, accent);
-                        }
-                    });
-                    startActivity(intent, ActivityOptions
-                            .makeSceneTransitionAnimation(ServerListActivity.this,
-                                    new Pair<>(accent, Const.SHARE_ELEMENT_NAME_DEVICE_ICON))
-                            .toBundle());
-                    mHasReenterTransition = true;
-                } else {
-                    startActivity(intent,
-                            ActivityOptionsCompat.makeScaleUpAnimation(v, 0, 0, v.getWidth(), v.getHeight()).toBundle());
-                }
+                startActivity(intent,
+                        ActivityOptionsCompat.makeScaleUpAnimation(v, 0, 0, v.getWidth(), v.getHeight()).toBundle());
             }
-            mServerListAdapter.setSelection(position);
-            if (mSelectedServer != null) {
-                mSelectedServer.unsubscribe();
-            }
-            mSelectedServer = server;
-            mSelectedServer.subscribe();
         }
-    };
+        mServerListAdapter.setSelection(position);
+        if (mSelectedServer != null) {
+            mSelectedServer.unsubscribe();
+        }
+        mSelectedServer = server;
+        mSelectedServer.subscribe();
+    }
+
+    private void onItemLongClick(final @NonNull View v, final int position, final @NonNull MediaServer server) {
+        selectItem(v, position, server);
+        startCdsListActivity(v, server);
+    }
+
+    private void selectItem(final @NonNull View v, final int position, final @NonNull MediaServer server) {
+        mServerListAdapter.setSelection(position);
+        if (mSelectedServer != null) {
+            mSelectedServer.unsubscribe();
+        }
+        mSelectedServer = server;
+        mSelectedServer.subscribe();
+    }
+
+    private void startCdsListActivity(final @NonNull View v, final @NonNull MediaServer server) {
+        final Intent intent = CdsListActivity.makeIntent(this, server.getUdn());
+        startActivity(intent, ActivityOptions.makeScaleUpAnimation(
+                v, 0, 0, v.getWidth(), v.getHeight())
+                .toBundle());
+    }
 
     private final MsDiscoveryListener mDiscoveryListener = new MsDiscoveryListener() {
         @Override
@@ -210,7 +230,8 @@ public class ServerListActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         toolbar.setTitle(getTitle());
         mServerListAdapter = new ServerListAdapter(this, mMsControlPoint.getDeviceList());
-        mServerListAdapter.setOnItemClickListener(mOnItemClickListener);
+        mServerListAdapter.setOnItemClickListener(this::onItemClick);
+        mServerListAdapter.setOnItemLongClickListener(this::onItemLongClick);
         mNetworkAvailable = mLan.hasAvailableInterface();
         synchronized (mAvCpManager) {
             if (mNetworkAvailable) {
@@ -243,7 +264,6 @@ public class ServerListActivity extends AppCompatActivity {
             }
         });
         mRecyclerView = (RecyclerView) findViewById(R.id.serverList);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setAdapter(mServerListAdapter);
         mRecyclerView.addItemDecoration(new DividerItemDecoration(this));
 
@@ -251,8 +271,9 @@ public class ServerListActivity extends AppCompatActivity {
             mTwoPane = true;
         }
         if (savedInstanceState != null) {
-            final String udn = savedInstanceState.getString(Const.EXTRA_SERVER_UDN);
+            final String udn = savedInstanceState.getString(KEY_SELECTED_SERVER_UDN);
             mSelectedServer = mMsControlPoint.getDevice(udn);
+            mHasReenterTransition = savedInstanceState.getBoolean(KEY_HAS_REENTER_TRANSITION);
         }
     }
 
@@ -276,8 +297,9 @@ public class ServerListActivity extends AppCompatActivity {
         mServerListAdapter.clearSelection();
         super.onSaveInstanceState(outState);
         if (mSelectedServer != null) {
-            outState.putString(Const.EXTRA_SERVER_UDN, mSelectedServer.getUdn());
+            outState.putString(KEY_SELECTED_SERVER_UDN, mSelectedServer.getUdn());
         }
+        outState.putBoolean(KEY_HAS_REENTER_TRANSITION, mHasReenterTransition);
     }
 
     @Override

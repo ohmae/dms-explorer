@@ -17,7 +17,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.transition.Transition;
@@ -29,10 +28,10 @@ import android.view.ViewAnimationUtils;
 import net.mm2d.android.upnp.cds.MediaServer;
 import net.mm2d.android.view.TransitionListenerAdapter;
 import net.mm2d.dmsexplorer.adapter.ServerPropertyAdapter;
-import net.mm2d.dmsexplorer.util.ToolbarThemeHelper;
+import net.mm2d.dmsexplorer.util.ToolbarThemeUtils;
 import net.opacapp.multilinecollapsingtoolbar.CollapsingToolbarLayout;
 
-import static net.mm2d.dmsexplorer.ServerDetailFragment.setUpGoButton;
+import static net.mm2d.dmsexplorer.ServerDetailFragment.*;
 
 
 /**
@@ -77,32 +76,36 @@ public class ServerDetailActivity extends AppCompatActivity {
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setTitle(server.getFriendlyName());
 
-        ToolbarThemeHelper.setServerDetailTheme(this, server,
+        ToolbarThemeUtils.setServerDetailTheme(this, server,
                 (CollapsingToolbarLayout) findViewById(R.id.toolbarLayout));
 
         final RecyclerView recyclerView = (RecyclerView) findViewById(R.id.serverDetail);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(new ServerPropertyAdapter(this, server));
 
         setUpGoButton(this, findViewById(R.id.fab), udn);
 
-        prepareTransition();
+        final boolean hasTransition = getIntent().getBooleanExtra(Const.EXTRA_HAS_TRANSITION, false);
+        prepareTransition(hasTransition && savedInstanceState != null);
     }
 
-    private void prepareTransition() {
-        if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
-            final View background = findViewById(R.id.toolbarBackground);
-            findViewById(R.id.toolbarIcon).setTransitionName(Const.SHARE_ELEMENT_NAME_DEVICE_ICON);
-            background.setVisibility(View.INVISIBLE);
-            getWindow().getSharedElementEnterTransition().addListener(new TransitionListenerAdapter() {
-                @TargetApi(VERSION_CODES.KITKAT)
-                @Override
-                public void onTransitionEnd(final Transition transition) {
-                    transition.removeListener(this);
-                    startAnimation(background);
-                }
-            });
+    private void prepareTransition(boolean hasTransition) {
+        if (VERSION.SDK_INT < VERSION_CODES.LOLLIPOP) {
+            return;
         }
+        findViewById(R.id.toolbarIcon).setTransitionName(Const.SHARE_ELEMENT_NAME_DEVICE_ICON);
+        if (hasTransition) {
+            return;
+        }
+        final View background = findViewById(R.id.toolbarBackground);
+        background.setVisibility(View.INVISIBLE);
+        getWindow().getSharedElementEnterTransition().addListener(new TransitionListenerAdapter() {
+            @TargetApi(VERSION_CODES.KITKAT)
+            @Override
+            public void onTransitionEnd(final Transition transition) {
+                transition.removeListener(this);
+                startAnimation(background);
+            }
+        });
     }
 
     @TargetApi(VERSION_CODES.LOLLIPOP)

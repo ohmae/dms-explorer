@@ -12,6 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/app_bar_height"
         android:theme="@style/AppTheme.AppBarOverlay"
+        android:translationZ="@dimen/app_bar_elevation"
         >
 
         <net.opacapp.multilinecollapsingtoolbar.CollapsingToolbarLayout
@@ -63,6 +64,7 @@
         android:layout_height="match_parent"
         android:clipToPadding="false"
         android:paddingBottom="@dimen/server_property_margin"
+        app:layoutManager="android.support.v7.widget.LinearLayoutManager"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         tools:listitem="@layout/property_list_item"
         />

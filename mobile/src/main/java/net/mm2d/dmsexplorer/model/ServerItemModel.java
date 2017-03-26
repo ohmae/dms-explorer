@@ -9,9 +9,8 @@ package net.mm2d.dmsexplorer.model;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.text.TextUtils;
 import android.view.View;
@@ -20,6 +19,7 @@ import net.mm2d.android.upnp.cds.MediaServer;
 import net.mm2d.android.util.AribUtils;
 import net.mm2d.dmsexplorer.R;
 import net.mm2d.dmsexplorer.util.ThemeUtils;
+import net.mm2d.dmsexplorer.util.ToolbarThemeUtils;
 import net.mm2d.upnp.Icon;
 
 /**
@@ -31,7 +31,7 @@ public class ServerItemModel {
     public final GradientDrawable accentBackground;
     public final String accentText;
     public final int accentTextVisibility;
-    public final Drawable accentIcon;
+    public final Bitmap accentIcon;
     public final int accentImageVisibility;
     public final String title;
     public final String description;
@@ -39,7 +39,7 @@ public class ServerItemModel {
     public ServerItemModel(Context context, MediaServer server, boolean selected) {
         markVisibility = selected ? View.VISIBLE : View.INVISIBLE;
         final Resources res = context.getResources();
-        translationZ = selected ? res.getDimension(R.dimen.raise_focus) : 0;
+        translationZ = selected ? res.getDimension(R.dimen.list_item_focus_elevation) : 0;
         final String name = server.getFriendlyName();
         final Icon icon = server.getIcon();
         title = name;
@@ -53,15 +53,16 @@ public class ServerItemModel {
             accentBackground.setColor(ThemeUtils.getAccentColor(name));
             accentTextVisibility = View.VISIBLE;
             accentImageVisibility = View.GONE;
+            ToolbarThemeUtils.setServerThemeColorAsync(server, null);
             return;
         }
         final byte[] binary = icon.getBinary();
-        accentIcon = new BitmapDrawable(
-                res, BitmapFactory.decodeByteArray(binary, 0, binary.length));
+        accentIcon = BitmapFactory.decodeByteArray(binary, 0, binary.length);
         accentText = null;
         accentBackground = null;
         accentTextVisibility = View.GONE;
         accentImageVisibility = View.VISIBLE;
+        ToolbarThemeUtils.setServerThemeColorAsync(server, accentIcon);
     }
 
     private String makeDescription(MediaServer server) {
