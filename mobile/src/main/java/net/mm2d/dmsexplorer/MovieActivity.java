@@ -15,14 +15,13 @@ import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.view.Display;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.VideoView;
 
 import net.mm2d.android.upnp.cds.CdsObject;
-import net.mm2d.dmsexplorer.util.DisplaySizeUtils;
+import net.mm2d.android.util.DisplaySizeUtils;
 import net.mm2d.dmsexplorer.util.FullscreenHelper;
 import net.mm2d.dmsexplorer.util.ViewLayoutUtils;
 import net.mm2d.dmsexplorer.view.ControlView;
@@ -55,6 +54,7 @@ public class MovieActivity extends AppCompatActivity {
                 .setTopView(mToolbar)
                 .setBottomView(mControlPanel)
                 .build();
+        mFullscreenHelper.showNavigation();
 
         mControlPanel.setOnCompletionListener(mp -> onBackPressed());
         mControlPanel.setOnUserActionListener(mFullscreenHelper::postHideNavigation);
@@ -75,10 +75,8 @@ public class MovieActivity extends AppCompatActivity {
             adjustControlPanel(0, 0);
             return;
         }
-        final Display display = getWindowManager().getDefaultDisplay();
-        final Point p1 = new Point();
-        display.getSize(p1);
-        final Point p2 = DisplaySizeUtils.getRealSize(display);
+        final Point p1 = DisplaySizeUtils.getSize(this);
+        final Point p2 = DisplaySizeUtils.getRealSize(this);
         adjustControlPanel(p2.x - p1.x, p2.y - p1.y);
     }
 

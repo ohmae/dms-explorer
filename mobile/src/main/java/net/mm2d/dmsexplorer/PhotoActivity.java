@@ -16,7 +16,6 @@ import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.view.Display;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -24,7 +23,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import net.mm2d.android.upnp.cds.CdsObject;
-import net.mm2d.dmsexplorer.util.DisplaySizeUtils;
+import net.mm2d.android.util.DisplaySizeUtils;
 import net.mm2d.dmsexplorer.util.FullscreenHelper;
 import net.mm2d.dmsexplorer.util.ImageViewUtils;
 import net.mm2d.dmsexplorer.util.ViewLayoutUtils;
@@ -55,6 +54,7 @@ public class PhotoActivity extends AppCompatActivity {
         mFullscreenHelper = new FullscreenHelper.Builder(findViewById(R.id.root))
                 .setTopView(mToolbar)
                 .build();
+        mFullscreenHelper.showNavigation();
 
         mImageView = (ImageView) findViewById(R.id.imageView);
         mProgress = findViewById(R.id.progressBar);
@@ -75,10 +75,8 @@ public class PhotoActivity extends AppCompatActivity {
             adjustControlPanel(0);
             return;
         }
-        final Display display = getWindowManager().getDefaultDisplay();
-        final Point p1 = new Point();
-        display.getSize(p1);
-        final Point p2 = DisplaySizeUtils.getRealSize(display);
+        final Point p1 = DisplaySizeUtils.getSize(this);
+        final Point p2 = DisplaySizeUtils.getRealSize(this);
         adjustControlPanel(p2.x - p1.x);
     }
 

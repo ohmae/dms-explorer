@@ -83,7 +83,6 @@ public class FullscreenHelper {
                 showNavigation();
             }
         });
-        showNavigation();
     }
 
     private final Runnable mHideNavigationTask = this::hideNavigation;
