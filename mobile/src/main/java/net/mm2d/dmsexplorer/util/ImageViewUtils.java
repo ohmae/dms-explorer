@@ -50,7 +50,7 @@ public class ImageViewUtils {
             @Override
             protected byte[] doInBackground(final Void... params) {
                 try {
-                    final HttpResponse response = new HttpClient().download(new URL(url));
+                    final HttpResponse response = new HttpClient(false).download(new URL(url));
                     if (response.getStatus() == Http.Status.HTTP_OK) {
                         return response.getBodyBinary();
                     }
@@ -65,21 +65,22 @@ public class ImageViewUtils {
                     callback.onError();
                     return;
                 }
-                decodeAndSetImage(imageView, data, callback);
+                decodeAndSetImageAfterAllocateSize(imageView, data, callback);
             }
         }.execute();
+    }
+
+    private static void decodeAndSetImageAfterAllocateSize(
+            final @NonNull ImageView imageView,
+            final @NonNull byte[] data, final @NonNull Callback callback) {
+        ViewUtils.execAfterAllocateSize(imageView, () -> {
+            decodeAndSetImage(imageView, data, callback);
+        });
     }
 
     private static void decodeAndSetImage(
             final @NonNull ImageView imageView,
             final @NonNull byte[] data, final @NonNull Callback callback) {
-        ViewUtils.execAfterAllocateSize(imageView, () -> {
-            callback.onSuccess();
-            decodeAndSetImage(imageView, data);
-        });
-    }
-
-    private static void decodeAndSetImage(final ImageView imageView, byte[] data) {
         final int width = imageView.getWidth();
         final int height = imageView.getHeight();
         new AsyncTask<Void, Void, Bitmap>() {
@@ -90,6 +91,7 @@ public class ImageViewUtils {
 
             @Override
             protected void onPostExecute(final Bitmap bitmap) {
+                callback.onSuccess();
                 imageView.setImageBitmap(bitmap);
             }
         }.execute();
