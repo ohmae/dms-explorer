@@ -34,13 +34,18 @@ public class ServerListAdapter
     public interface OnItemClickListener {
         void onItemClick(@NonNull View v, int position, @NonNull MediaServer server);
     }
+
     private static final OnItemClickListener ON_ITEM_CLICK_LISTENER
-            = (v, position, server) -> {};
+            = (v, position, server) -> {
+    };
+
     public interface OnItemLongClickListener {
         void onItemLongClick(@NonNull View v, int position, @NonNull MediaServer server);
     }
+
     private static final OnItemLongClickListener ON_ITEM_LONG_CLICK_LISTENER
-            = (v, position, server) -> {};
+            = (v, position, server) -> {
+    };
 
     private static final int NOT_SELECTED = -1;
     private final LayoutInflater mInflater;
@@ -132,6 +137,7 @@ public class ServerListAdapter
         final int position = holder.getListPosition();
         mClickListener.onItemClick(v, position, server);
     };
+
     private final View.OnLongClickListener mItemLongClickListener = v -> {
         final ViewHolder holder = (ViewHolder) v.getTag();
         final MediaServer server = holder.getItem();

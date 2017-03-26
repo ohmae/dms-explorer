@@ -1144,6 +1144,26 @@ public class CdsObject implements Parcelable {
     }
 
     /**
+     * 著作権保護されたリソースを持っているか否かを返す。
+     *
+     * @return 著作権保護されたリソースを持っている場合true
+     */
+    public boolean hasProtectedResource() {
+        final List<Tag> tagList = getTagList(CdsObject.RES);
+        if (tagList == null) {
+            return false;
+        }
+        for (final Tag tag : tagList) {
+            final String protocolInfo = tag.getAttribute(CdsObject.PROTOCOL_INFO);
+            final String mimeType = extractMimeTypeFromProtocolInfo(protocolInfo);
+            if (!TextUtils.isEmpty(mimeType) && mimeType.equals("application/x-dtcp1")) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
      * protocolInfoの文字列からMimeTypeの文字列を抽出する。
      *
      * @param protocolInfo protocolInfo

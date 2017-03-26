@@ -16,6 +16,7 @@ import android.os.Handler;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -33,6 +34,7 @@ import net.mm2d.android.upnp.cds.CdsObject;
 import net.mm2d.android.upnp.cds.MediaServer;
 import net.mm2d.android.view.DividerItemDecoration;
 import net.mm2d.dmsexplorer.adapter.CdsListAdapter;
+import net.mm2d.dmsexplorer.util.ItemSelectUtils;
 import net.mm2d.dmsexplorer.util.ToolbarThemeUtils;
 
 import java.util.Collections;
@@ -134,7 +136,7 @@ public class CdsListActivity extends AppCompatActivity
         };
     }
 
-    private void onCdsItemClick(final View v, int position, CdsObject object) {
+    private void onItemClick(final View v, int position, CdsObject object) {
         if (object.isContainer()) {
             browse(position, object.getObjectId(), object.getTitle(), true);
             return;
@@ -155,6 +157,21 @@ public class CdsListActivity extends AppCompatActivity
             final Intent intent = CdsDetailActivity.makeIntent(v.getContext(), mServer.getUdn(), object);
             startActivity(intent, ActivityOptions.makeScaleUpAnimation(v, 0, 0, v.getWidth(), v.getHeight()).toBundle());
         }
+        mSelectedObject = object;
+        mCdsListAdapter.setSelection(position);
+    }
+
+    private void onItemLongClick(final View v, int position, CdsObject object) {
+        if (object.isContainer() || object.getTagList(CdsObject.RES) == null) {
+            onItemClick(v, position, object);
+            return;
+        }
+        if (object.hasProtectedResource()) {
+            Snackbar.make(v, R.string.toast_not_support_drm, Snackbar.LENGTH_LONG).show();
+            onItemClick(v, position, object);
+            return;
+        }
+        ItemSelectUtils.play(this, object, 0);
         mSelectedObject = object;
         mCdsListAdapter.setSelection(position);
     }
@@ -187,7 +204,8 @@ public class CdsListActivity extends AppCompatActivity
             reload();
         });
         mCdsListAdapter = new CdsListAdapter(this);
-        mCdsListAdapter.setOnItemClickListener(this::onCdsItemClick);
+        mCdsListAdapter.setOnItemClickListener(this::onItemClick);
+        mCdsListAdapter.setOnItemLongClickListener(this::onItemLongClick);
         mRecyclerView = (RecyclerView) findViewById(R.id.cdsList);
         mRecyclerView.setAdapter(mCdsListAdapter);
         mRecyclerView.addItemDecoration(new DividerItemDecoration(this));

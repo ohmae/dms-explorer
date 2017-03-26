@@ -44,7 +44,6 @@ import net.mm2d.android.upnp.cds.MsControlPoint.MsDiscoveryListener;
 import net.mm2d.android.view.DividerItemDecoration;
 import net.mm2d.android.view.TransitionListenerAdapter;
 import net.mm2d.dmsexplorer.adapter.ServerListAdapter;
-import net.mm2d.dmsexplorer.adapter.ServerListAdapter.OnItemClickListener;
 
 import java.util.List;
 import java.util.Map;
@@ -95,51 +94,56 @@ public class ServerListActivity extends AppCompatActivity {
             }
         }
     };
-    private final OnItemClickListener mOnItemClickListener = new OnItemClickListener() {
-        @Override
-        public void onItemClick(final @NonNull View v,
-                                final int position, final @NonNull MediaServer server) {
-            if (mTwoPane) {
-                if (mSelectedServer != null && mSelectedServer.equals(server)) {
-                    return;
-                }
-                mServerDetailFragment = ServerDetailFragment.newInstance(server.getUdn());
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    mServerDetailFragment.setEnterTransition(new Slide(Gravity.START));
-                }
-                getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.serverDetailContainer, mServerDetailFragment)
-                        .commit();
+
+    private void onItemClick(final @NonNull View v, final int position, final @NonNull MediaServer server) {
+        if (mTwoPane) {
+            if (mSelectedServer != null && mSelectedServer.equals(server)) {
+                return;
+            }
+            mServerDetailFragment = ServerDetailFragment.newInstance(server.getUdn());
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                mServerDetailFragment.setEnterTransition(new Slide(Gravity.START));
+            }
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.serverDetailContainer, mServerDetailFragment)
+                    .commit();
+        } else {
+            final Context context = v.getContext();
+            final Intent intent = ServerDetailActivity.makeIntent(context, server.getUdn());
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                final View accent = v.findViewById(R.id.accent);
+                setExitSharedElementCallback(new SharedElementCallback() {
+                    @Override
+                    public void onMapSharedElements(List<String> names, Map<String, View> sharedElements) {
+                        sharedElements.clear();
+                        sharedElements.put(Const.SHARE_ELEMENT_NAME_DEVICE_ICON, accent);
+                    }
+                });
+                startActivity(intent, ActivityOptions
+                        .makeSceneTransitionAnimation(ServerListActivity.this,
+                                new Pair<>(accent, Const.SHARE_ELEMENT_NAME_DEVICE_ICON))
+                        .toBundle());
+                mHasReenterTransition = true;
             } else {
-                final Context context = v.getContext();
-                final Intent intent = ServerDetailActivity.makeIntent(context, server.getUdn());
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    final View accent = v.findViewById(R.id.accent);
-                    setExitSharedElementCallback(new SharedElementCallback() {
-                        @Override
-                        public void onMapSharedElements(List<String> names, Map<String, View> sharedElements) {
-                            sharedElements.clear();
-                            sharedElements.put(Const.SHARE_ELEMENT_NAME_DEVICE_ICON, accent);
-                        }
-                    });
-                    startActivity(intent, ActivityOptions
-                            .makeSceneTransitionAnimation(ServerListActivity.this,
-                                    new Pair<>(accent, Const.SHARE_ELEMENT_NAME_DEVICE_ICON))
-                            .toBundle());
-                    mHasReenterTransition = true;
-                } else {
-                    startActivity(intent,
-                            ActivityOptionsCompat.makeScaleUpAnimation(v, 0, 0, v.getWidth(), v.getHeight()).toBundle());
-                }
+                startActivity(intent,
+                        ActivityOptionsCompat.makeScaleUpAnimation(v, 0, 0, v.getWidth(), v.getHeight()).toBundle());
             }
-            mServerListAdapter.setSelection(position);
-            if (mSelectedServer != null) {
-                mSelectedServer.unsubscribe();
-            }
-            mSelectedServer = server;
-            mSelectedServer.subscribe();
         }
-    };
+        mServerListAdapter.setSelection(position);
+        if (mSelectedServer != null) {
+            mSelectedServer.unsubscribe();
+        }
+        mSelectedServer = server;
+        mSelectedServer.subscribe();
+    }
+
+    private void onItemLongClick(final @NonNull View v, final int position, final @NonNull MediaServer server) {
+        onItemClick(v, position, server);
+        final Intent intent = CdsListActivity.makeIntent(this, server.getUdn());
+        startActivity(intent, ActivityOptions.makeScaleUpAnimation(
+                v, 0, 0, v.getWidth(), v.getHeight())
+                .toBundle());
+    }
 
     private final MsDiscoveryListener mDiscoveryListener = new MsDiscoveryListener() {
         @Override
@@ -211,7 +215,8 @@ public class ServerListActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         toolbar.setTitle(getTitle());
         mServerListAdapter = new ServerListAdapter(this, mMsControlPoint.getDeviceList());
-        mServerListAdapter.setOnItemClickListener(mOnItemClickListener);
+        mServerListAdapter.setOnItemClickListener(this::onItemClick);
+        mServerListAdapter.setOnItemLongClickListener(this::onItemLongClick);
         mNetworkAvailable = mLan.hasAvailableInterface();
         synchronized (mAvCpManager) {
             if (mNetworkAvailable) {
