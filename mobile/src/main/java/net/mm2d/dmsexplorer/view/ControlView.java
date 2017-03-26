@@ -13,6 +13,7 @@ import android.media.MediaPlayer.OnCompletionListener;
 import android.media.MediaPlayer.OnErrorListener;
 import android.media.MediaPlayer.OnInfoListener;
 import android.media.MediaPlayer.OnPreparedListener;
+import android.support.annotation.NonNull;
 import android.util.AttributeSet;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -38,6 +39,11 @@ public class ControlView extends LinearLayout implements OnPreparedListener {
 
     private static final OnUserActionListener ON_USER_ACTION_LISTENER = () -> {
     };
+    private static final OnErrorListener ON_ERROR_LISTENER = (mp, what, extra) -> false;
+    private static final OnInfoListener ON_INFO_LISTENER = (mp, what, extra) -> false;
+    private static final OnCompletionListener ON_COMPLETION_LISTENER = mp -> {
+    };
+
     private static final int MEDIA_ERROR_SYSTEM = -2147483648;
     private MediaPlayer mMediaPlayer;
     private TextView mProgress;
@@ -45,19 +51,45 @@ public class ControlView extends LinearLayout implements OnPreparedListener {
     private ImageView mPlay;
     private final SeekBar mSeekBar;
     private boolean mTracking;
+
+    @NonNull
     private OnUserActionListener mOnUserActionListener = ON_USER_ACTION_LISTENER;
-    private OnErrorListener mOnErrorListener;
-    private OnInfoListener mOnInfoListener;
-    private OnCompletionListener mOnCompletionListener;
+    @NonNull
+    private OnErrorListener mOnErrorListener = ON_ERROR_LISTENER;
+    @NonNull
+    private OnInfoListener mOnInfoListener = ON_INFO_LISTENER;
+    @NonNull
+    private OnCompletionListener mOnCompletionListener = ON_COMPLETION_LISTENER;
+
+    private final Runnable mGetPositionTask = new Runnable() {
+        @Override
+        public void run() {
+            try {
+                int sleep = 1000;
+                if (!mTracking && mMediaPlayer.isPlaying()) {
+                    final int duration = mMediaPlayer.getDuration();
+                    final int position = mMediaPlayer.getCurrentPosition();
+                    if (mSeekBar.isEnabled() && duration >= position) {
+                        mSeekBar.setProgress(position);
+                        mProgress.setText(makeTimeText(position));
+                    }
+                    sleep = 1001 - position % 1000;
+                }
+                sleep = Math.min(Math.max(sleep, 100), 1000);
+                removeCallbacks(this);
+                postDelayed(this, sleep);
+            } catch (final IllegalStateException ignored) {
+            }
+        }
+    };
+
     private final OnErrorListener mMyOnErrorListener = new OnErrorListener() {
         private boolean mNoError = true;
 
         @Override
         public boolean onError(MediaPlayer mp, int what, int extra) {
             logError(what, extra);
-            if (mOnErrorListener != null) {
-                mOnErrorListener.onError(mp, what, extra);
-            }
+            mOnErrorListener.onError(mp, what, extra);
             if (mNoError) {
                 mNoError = false;
                 return false;
@@ -66,36 +98,26 @@ public class ControlView extends LinearLayout implements OnPreparedListener {
         }
     };
 
-    private final OnInfoListener mMyOnInfoListener = new OnInfoListener() {
-        @Override
-        public boolean onInfo(MediaPlayer mp, int what, int extra) {
-            logInfo(what, extra);
-            if (mOnInfoListener != null) {
-                mOnInfoListener.onInfo(mp, what, extra);
-            }
-            return false;
-        }
+    private final OnInfoListener mMyOnInfoListener = (mp, what, extra) -> {
+        logInfo(what, extra);
+        mOnInfoListener.onInfo(mp, what, extra);
+        return false;
     };
-    private final OnCompletionListener mMyOnCompletionListener = new OnCompletionListener() {
-        @Override
-        public void onCompletion(MediaPlayer mp) {
-            removeCallbacks(mGetPositionTask);
-            if (mOnCompletionListener != null) {
-                mOnCompletionListener.onCompletion(mp);
-            }
-        }
+    private final OnCompletionListener mMyOnCompletionListener = (mp) -> {
+        removeCallbacks(mGetPositionTask);
+        mOnCompletionListener.onCompletion(mp);
     };
 
-    public void setOnErrorListener(OnErrorListener l) {
-        mOnErrorListener = l;
+    public void setOnErrorListener(OnErrorListener listener) {
+        mOnErrorListener = listener != null ? listener : ON_ERROR_LISTENER;
     }
 
-    public void setOnInfoListener(OnInfoListener l) {
-        mOnInfoListener = l;
+    public void setOnInfoListener(OnInfoListener listener) {
+        mOnInfoListener = listener != null ? listener : ON_INFO_LISTENER;
     }
 
-    public void setOnCompletionListener(OnCompletionListener l) {
-        mOnCompletionListener = l;
+    public void setOnCompletionListener(OnCompletionListener listener) {
+        mOnCompletionListener = listener != null ? listener : ON_COMPLETION_LISTENER;
     }
 
     public ControlView(Context context) {
@@ -159,28 +181,6 @@ public class ControlView extends LinearLayout implements OnPreparedListener {
             mOnUserActionListener.onUserAction();
         });
     }
-
-    private final Runnable mGetPositionTask = new Runnable() {
-        @Override
-        public void run() {
-            try {
-                int sleep = 1000;
-                if (!mTracking && mMediaPlayer.isPlaying()) {
-                    final int duration = mMediaPlayer.getDuration();
-                    final int position = mMediaPlayer.getCurrentPosition();
-                    if (mSeekBar.isEnabled() && duration >= position) {
-                        mSeekBar.setProgress(position);
-                        mProgress.setText(makeTimeText(position));
-                    }
-                    sleep = 1001 - position % 1000;
-                }
-                sleep = Math.min(Math.max(sleep, 100), 1000);
-                removeCallbacks(this);
-                postDelayed(this, sleep);
-            } catch (final IllegalStateException ignored) {
-            }
-        }
-    };
 
     private static String makeTimeText(long millisecond) {
         final long second = millisecond / 1000;

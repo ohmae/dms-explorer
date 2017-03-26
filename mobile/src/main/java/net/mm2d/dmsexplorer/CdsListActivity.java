@@ -143,6 +143,10 @@ public class CdsListActivity extends AppCompatActivity
         }
         if (mTwoPane) {
             if (mSelectedObject != null && mSelectedObject.equals(object)) {
+                if (object.hasProtectedResource()) {
+                    Snackbar.make(v, R.string.toast_not_support_drm, Snackbar.LENGTH_LONG).show();
+                    return;
+                }
                 ItemSelectUtils.play(this, object, 0);
                 return;
             }

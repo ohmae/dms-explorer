@@ -73,9 +73,8 @@ public class ImageViewUtils {
     private static void decodeAndSetImageAfterAllocateSize(
             final @NonNull ImageView imageView,
             final @NonNull byte[] data, final @NonNull Callback callback) {
-        ViewUtils.execAfterAllocateSize(imageView, () -> {
-            decodeAndSetImage(imageView, data, callback);
-        });
+        ViewUtils.execAfterAllocateSize(imageView,
+                () -> decodeAndSetImage(imageView, data, callback));
     }
 
     private static void decodeAndSetImage(
