@@ -48,12 +48,21 @@ public class ServerDetailFragment extends Fragment {
         return instance;
     }
 
+    private String getUdn() {
+        final Bundle arguments = getArguments();
+        if (arguments != null) {
+            return arguments.getString(Const.EXTRA_SERVER_UDN);
+        }
+        final Intent intent = getActivity().getIntent();
+        return intent.getStringExtra(Const.EXTRA_SERVER_UDN);
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         final Activity activity = getActivity();
         final View rootView = inflater.inflate(R.layout.server_detail_fragment, container, false);
-        final String udn = getArguments().getString(Const.EXTRA_SERVER_UDN);
+        final String udn = getUdn();
         final DataHolder dataHolder = DataHolder.getInstance();
         final MediaServer server = dataHolder.getMsControlPoint().getDevice(udn);
         if (server == null) {
@@ -73,8 +82,8 @@ public class ServerDetailFragment extends Fragment {
         return rootView;
     }
 
-    static void setUpGoButton(final @NonNull Context context,
-                              final @NonNull View button, final @NonNull String udn) {
+    public static void setUpGoButton(final @NonNull Context context,
+                                     final @NonNull View button, final @NonNull String udn) {
         button.setOnClickListener(view -> {
             final Intent intent = CdsListActivity.makeIntent(context, udn);
             context.startActivity(intent, ActivityOptions.makeScaleUpAnimation(

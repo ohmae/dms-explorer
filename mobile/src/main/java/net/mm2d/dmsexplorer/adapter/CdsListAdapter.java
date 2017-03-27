@@ -133,7 +133,7 @@ public class CdsListAdapter
         final ViewHolder holder = (ViewHolder) v.getTag();
         final CdsObject obj = holder.getItem();
         final int position = holder.getListPosition();
-            mClickListener.onItemClick(v, position, obj);
+        mClickListener.onItemClick(v, position, obj);
     };
 
     private final View.OnLongClickListener mItemLongClickListener = v -> {

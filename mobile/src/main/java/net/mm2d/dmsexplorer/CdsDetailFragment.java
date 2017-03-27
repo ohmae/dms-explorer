@@ -8,6 +8,7 @@
 package net.mm2d.dmsexplorer;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -54,14 +55,32 @@ public class CdsDetailFragment extends Fragment {
         return instance;
     }
 
+    private String getUdn() {
+        final Bundle arguments = getArguments();
+        if (arguments != null) {
+            return arguments.getString(Const.EXTRA_SERVER_UDN);
+        }
+        final Intent intent = getActivity().getIntent();
+        return intent.getStringExtra(Const.EXTRA_SERVER_UDN);
+    }
+
+    private CdsObject getCdsObject() {
+        final Bundle arguments = getArguments();
+        if (arguments != null) {
+            return arguments.getParcelable(Const.EXTRA_OBJECT);
+        }
+        final Intent intent = getActivity().getIntent();
+        return intent.getParcelableExtra(Const.EXTRA_OBJECT);
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         final View rootView = inflater.inflate(R.layout.cds_detail_fragment, container, false);
 
-        final String udn = getArguments().getString(Const.EXTRA_SERVER_UDN);
+        final String udn = getUdn();
         final MediaServer server = DataHolder.getInstance().getMsControlPoint().getDevice(udn);
-        final CdsObject object = getArguments().getParcelable(Const.EXTRA_OBJECT);
+        final CdsObject object = getCdsObject();
         final Toolbar toolbar = (Toolbar) rootView.findViewById(R.id.cdsDetailToolbar);
         if (object == null || server == null || toolbar == null) {
             getActivity().finish();

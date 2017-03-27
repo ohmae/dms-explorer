@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merge>
-    <include layout="@layout/cds_detail_fragment"/>
-</merge>
+<fragment
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:name="net.mm2d.dmsexplorer.CdsDetailFragment"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    />

@@ -107,13 +107,13 @@ public class DmcActivity extends AppCompatActivity {
     private void onGetPositionInfo(Map<String, String> result) {
         if (result == null) {
             mHandler.postDelayed(mGetPositionTask, 1000);
-            return ;
+            return;
         }
         final int duration = MediaRenderer.getDuration(result);
         final int progress = MediaRenderer.getProgress(result);
         if (duration < 0 || progress < 0) {
             mHandler.postDelayed(mGetPositionTask, 1000);
-            return ;
+            return;
         }
         mDuration = duration;
         mProgress = progress;

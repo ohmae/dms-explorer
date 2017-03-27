@@ -17,6 +17,7 @@ import android.text.TextUtils;
  */
 public class ThemeUtils {
     private static final float DARKER_RATIO = 0.7f;
+
     /**
      * リストアイテムのアクセントカラーをタイトルの文字から決定する。
      *
@@ -34,9 +35,9 @@ public class ThemeUtils {
 
     public static int getDarkerColor(int color) {
         final int a = Color.alpha(color);
-        final int r = (int)(Color.red(color) * DARKER_RATIO + 0.5f);
-        final int g = (int)(Color.green(color) * DARKER_RATIO + 0.5f);
-        final int b = (int)(Color.blue(color) * DARKER_RATIO + 0.5f);
+        final int r = (int) (Color.red(color) * DARKER_RATIO + 0.5f);
+        final int g = (int) (Color.green(color) * DARKER_RATIO + 0.5f);
+        final int b = (int) (Color.blue(color) * DARKER_RATIO + 0.5f);
         return Color.argb(a, r, g, b);
     }
 

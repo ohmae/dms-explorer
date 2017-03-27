@@ -17,7 +17,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.transition.Transition;
 import android.view.Menu;
@@ -25,13 +24,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewAnimationUtils;
 
-import net.mm2d.android.upnp.cds.MediaServer;
 import net.mm2d.android.view.TransitionListenerAdapter;
-import net.mm2d.dmsexplorer.adapter.ServerPropertyAdapter;
-import net.mm2d.dmsexplorer.util.ToolbarThemeUtils;
-import net.opacapp.multilinecollapsingtoolbar.CollapsingToolbarLayout;
-
-import static net.mm2d.dmsexplorer.ServerDetailFragment.*;
 
 
 /**
@@ -58,31 +51,14 @@ public class ServerDetailActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        final String udn = getIntent().getStringExtra(Const.EXTRA_SERVER_UDN);
-        final DataHolder dataHolder = DataHolder.getInstance();
-        final MediaServer server = dataHolder.getMsControlPoint().getDevice(udn);
-        if (server == null) {
-            finish();
-            return;
-        }
         setContentView(R.layout.server_detail_activity);
-        final Toolbar toolbar = (Toolbar) findViewById(R.id.serverDetailToolbar);
-        if (toolbar == null) {
+        setSupportActionBar((Toolbar) findViewById(R.id.serverDetailToolbar));
+        final ActionBar actionBar = getSupportActionBar();
+        if (actionBar == null) {
             finish();
             return;
         }
-        setSupportActionBar(toolbar);
-        final ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setTitle(server.getFriendlyName());
-
-        ToolbarThemeUtils.setServerDetailTheme(this, server,
-                (CollapsingToolbarLayout) findViewById(R.id.toolbarLayout));
-
-        final RecyclerView recyclerView = (RecyclerView) findViewById(R.id.serverDetail);
-        recyclerView.setAdapter(new ServerPropertyAdapter(this, server));
-
-        setUpGoButton(this, findViewById(R.id.fab), udn);
 
         final boolean hasTransition = getIntent().getBooleanExtra(Const.EXTRA_HAS_TRANSITION, false);
         prepareTransition(hasTransition && savedInstanceState != null);

@@ -28,6 +28,7 @@ public class FullscreenHelper {
         private final View mRootView;
         private View mTopView;
         private View mBottomView;
+
         public Builder(final @NonNull View view) {
             mRootView = view;
         }
