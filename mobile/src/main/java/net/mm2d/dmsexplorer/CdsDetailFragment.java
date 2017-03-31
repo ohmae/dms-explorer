@@ -12,6 +12,7 @@ import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
@@ -46,7 +47,8 @@ public class CdsDetailFragment extends Fragment {
      * @param object 表示するObject
      * @return インスタンス。
      */
-    public static CdsDetailFragment newInstance(String udn, CdsObject object) {
+    @NonNull
+    public static CdsDetailFragment newInstance(@NonNull String udn, @NonNull CdsObject object) {
         final CdsDetailFragment instance = new CdsDetailFragment();
         final Bundle arguments = new Bundle();
         arguments.putString(Const.EXTRA_SERVER_UDN, udn);
@@ -55,6 +57,7 @@ public class CdsDetailFragment extends Fragment {
         return instance;
     }
 
+    @Nullable
     private String getUdn() {
         final Bundle arguments = getArguments();
         if (arguments != null) {
@@ -64,6 +67,7 @@ public class CdsDetailFragment extends Fragment {
         return intent.getStringExtra(Const.EXTRA_SERVER_UDN);
     }
 
+    @Nullable
     private CdsObject getCdsObject() {
         final Bundle arguments = getArguments();
         if (arguments != null) {
@@ -74,15 +78,15 @@ public class CdsDetailFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
+                             final Bundle savedInstanceState) {
         final View rootView = inflater.inflate(R.layout.cds_detail_fragment, container, false);
 
         final String udn = getUdn();
-        final MediaServer server = DataHolder.getInstance().getMsControlPoint().getDevice(udn);
+        final MediaServer server = DataHolder.getInstance().getControlPointModel().getMsControlPoint().getDevice(udn);
         final CdsObject object = getCdsObject();
         final Toolbar toolbar = (Toolbar) rootView.findViewById(R.id.cdsDetailToolbar);
-        if (object == null || server == null || toolbar == null) {
+        if (udn == null || object == null || server == null || toolbar == null) {
             getActivity().finish();
             return rootView;
         }
@@ -99,7 +103,10 @@ public class CdsDetailFragment extends Fragment {
         return rootView;
     }
 
-    public static void setUpPlayButton(final Activity activity, FloatingActionButton fab, final CdsObject object) {
+    private static void setUpPlayButton(
+            @NonNull final Activity activity,
+            @NonNull final FloatingActionButton fab,
+            @NonNull final CdsObject object) {
         fab.setVisibility(hasResource(object) ? View.VISIBLE : View.GONE);
         final boolean protectedResource = object.hasProtectedResource();
         final int color = protectedResource ?
@@ -125,8 +132,12 @@ public class CdsDetailFragment extends Fragment {
         Snackbar.make(view, R.string.toast_not_support_drm, Snackbar.LENGTH_LONG).show();
     }
 
-    public static void setUpSendButton(final Activity activity, FloatingActionButton fab, final String udn, final CdsObject object) {
-        final MrControlPoint cp = DataHolder.getInstance().getMrControlPoint();
+    private static void setUpSendButton(
+            @NonNull final Activity activity,
+            @NonNull final FloatingActionButton fab,
+            @NonNull final String udn,
+            @NonNull final CdsObject object) {
+        final MrControlPoint cp = DataHolder.getInstance().getControlPointModel().getMrControlPoint();
         if (cp.getDeviceListSize() == 0) {
             fab.setVisibility(View.GONE);
             return;
@@ -135,7 +146,7 @@ public class CdsDetailFragment extends Fragment {
         fab.setOnClickListener(v -> ItemSelectUtils.send(activity, udn, object));
     }
 
-    private static boolean hasResource(CdsObject object) {
+    private static boolean hasResource(@NonNull final CdsObject object) {
         return object.getTagList(CdsObject.RES) != null;
     }
 }

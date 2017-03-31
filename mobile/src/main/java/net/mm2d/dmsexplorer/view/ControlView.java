@@ -14,6 +14,7 @@ import android.media.MediaPlayer.OnErrorListener;
 import android.media.MediaPlayer.OnInfoListener;
 import android.media.MediaPlayer.OnPreparedListener;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -108,15 +109,15 @@ public class ControlView extends LinearLayout implements OnPreparedListener {
         mOnCompletionListener.onCompletion(mp);
     };
 
-    public void setOnErrorListener(OnErrorListener listener) {
+    public void setOnErrorListener(@Nullable OnErrorListener listener) {
         mOnErrorListener = listener != null ? listener : ON_ERROR_LISTENER;
     }
 
-    public void setOnInfoListener(OnInfoListener listener) {
+    public void setOnInfoListener(@Nullable OnInfoListener listener) {
         mOnInfoListener = listener != null ? listener : ON_INFO_LISTENER;
     }
 
-    public void setOnCompletionListener(OnCompletionListener listener) {
+    public void setOnCompletionListener(@Nullable OnCompletionListener listener) {
         mOnCompletionListener = listener != null ? listener : ON_COMPLETION_LISTENER;
     }
 
@@ -189,7 +190,7 @@ public class ControlView extends LinearLayout implements OnPreparedListener {
         return String.format(Locale.US, "%01d:%02d:%02d", hour, minute % 60, second % 60);
     }
 
-    public void setOnUserActionListener(OnUserActionListener listener) {
+    public void setOnUserActionListener(@Nullable OnUserActionListener listener) {
         mOnUserActionListener = listener != null ? listener : ON_USER_ACTION_LISTENER;
     }
 

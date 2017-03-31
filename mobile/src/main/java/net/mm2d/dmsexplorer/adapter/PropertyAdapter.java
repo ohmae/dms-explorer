@@ -10,6 +10,7 @@ package net.mm2d.dmsexplorer.adapter;
 import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
@@ -36,18 +37,20 @@ public class PropertyAdapter
         extends RecyclerView.Adapter<PropertyAdapter.ViewHolder> {
 
     public static final String TITLE_PREFIX = "##";
+
     enum Type {
         TEXT(new TextFormatter()),
         LINK(new LinkFormatter()),
         DESCRIPTION(new DescriptionFormatter());
 
         private final PropertyFormatter mPropertyFormatter;
+
         Type(PropertyFormatter formatter) {
             mPropertyFormatter = formatter;
         }
 
         @NonNull
-        CharSequence format(@NonNull Context context, @NonNull String string) {
+        private CharSequence format(@NonNull Context context, @NonNull String string) {
             return mPropertyFormatter.format(context, string);
         }
     }
@@ -57,21 +60,21 @@ public class PropertyAdapter
         private final String mValue;
         private final Type mType;
 
-        Entry(String name, String value, Type type) {
+        private Entry(String name, String value, Type type) {
             mName = name;
             mValue = value;
             mType = type;
         }
 
-        String getName() {
+        private String getName() {
             return mName;
         }
 
-        String getValue() {
+        private String getValue() {
             return mValue;
         }
 
-        CharSequence getFormatValue(Context context) {
+        private CharSequence getFormatValue(Context context) {
             return mType.format(context, mValue);
         }
     }
@@ -90,11 +93,11 @@ public class PropertyAdapter
         return mContext;
     }
 
-    public void addEntry(String name, String value) {
+    public void addEntry(@NonNull String name, @Nullable String value) {
         addEntry(name, value, Type.TEXT);
     }
 
-    public void addEntry(String name, String value, Type type) {
+    public void addEntry(@NonNull String name, @Nullable String value, @NonNull Type type) {
         if (value == null || value.isEmpty()) {
             return;
         }
@@ -123,13 +126,13 @@ public class PropertyAdapter
     static class ViewHolder extends RecyclerView.ViewHolder {
         private final PropertyListItemBinding mBinding;
 
-        ViewHolder(PropertyListItemBinding binding) {
+        ViewHolder(@NonNull PropertyListItemBinding binding) {
             super(binding.getRoot());
             mBinding = binding;
             mBinding.description.setMovementMethod(LinkMovementMethod.getInstance());
         }
 
-        void applyItem(Context context, Entry entry) {
+        void applyItem(@NonNull Context context, @NonNull Entry entry) {
             mBinding.setModel(new PropertyItemModel(entry.getName(), entry.getFormatValue(context)));
             mBinding.executePendingBindings();
         }

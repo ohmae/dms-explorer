@@ -15,8 +15,8 @@ import android.support.annotation.NonNull;
 
 import net.mm2d.android.upnp.cds.CdsObject;
 import net.mm2d.android.upnp.cds.Tag;
-import net.mm2d.dmsexplorer.util.ItemSelectUtils;
 import net.mm2d.dmsexplorer.R;
+import net.mm2d.dmsexplorer.util.ItemSelectUtils;
 
 import java.util.ArrayList;
 import java.util.List;

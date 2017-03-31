@@ -206,7 +206,7 @@ public class CdsListActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         mHandler = new Handler();
         final String udn = getIntent().getStringExtra(Const.EXTRA_SERVER_UDN);
-        mServer = mDataHolder.getMsControlPoint().getDevice(udn);
+        mServer = mDataHolder.getControlPointModel().getMsControlPoint().getDevice(udn);
         if (mServer == null) {
             finish();
             return;

@@ -7,12 +7,11 @@
 
 package net.mm2d.dmsexplorer;
 
+import android.content.Context;
 import android.support.annotation.NonNull;
 
-import net.mm2d.android.upnp.AvControlPointManager;
-import net.mm2d.android.upnp.avt.MrControlPoint;
 import net.mm2d.android.upnp.cds.CdsObject;
-import net.mm2d.android.upnp.cds.MsControlPoint;
+import net.mm2d.dmsexplorer.domain.model.ControlPointModel;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -27,24 +26,17 @@ public class DataHolder {
         return INSTANCE;
     }
 
-    private final AvControlPointManager mAvControlPointManager = new AvControlPointManager();
+    private ControlPointModel mControlPointModel;
 
     private DataHolder() {
     }
 
-    @NonNull
-    public AvControlPointManager getAvControlPointManager() {
-        return mAvControlPointManager;
+    public void initialize(@NonNull Context context) {
+        mControlPointModel = new ControlPointModel(context);
     }
 
-    @NonNull
-    public MsControlPoint getMsControlPoint() {
-        return mAvControlPointManager.getMsControlPoint();
-    }
-
-    @NonNull
-    public MrControlPoint getMrControlPoint() {
-        return mAvControlPointManager.getMrControlPoint();
+    public ControlPointModel getControlPointModel() {
+        return mControlPointModel;
     }
 
     private static class Cache {

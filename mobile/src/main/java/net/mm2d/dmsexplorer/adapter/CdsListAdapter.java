@@ -131,21 +131,6 @@ public class CdsListAdapter
         return mSelection;
     }
 
-    private final View.OnClickListener mItemClickListener = v -> {
-        final ViewHolder holder = (ViewHolder) v.getTag();
-        final CdsObject obj = holder.getItem();
-        final int position = holder.getListPosition();
-        mClickListener.onItemClick(v, position, obj);
-    };
-
-    private final View.OnLongClickListener mItemLongClickListener = v -> {
-        final ViewHolder holder = (ViewHolder) v.getTag();
-        final CdsObject obj = holder.getItem();
-        final int position = holder.getListPosition();
-        mLongClickListener.onItemLongClick(v, position, obj);
-        return true;
-    };
-
     class ViewHolder extends RecyclerView.ViewHolder {
         private final CdsListItemBinding mBinding;
         private int mPosition;
@@ -153,9 +138,8 @@ public class CdsListAdapter
 
         ViewHolder(@NonNull final CdsListItemBinding binding) {
             super(binding.getRoot());
-            itemView.setOnClickListener(mItemClickListener);
-            itemView.setOnLongClickListener(mItemLongClickListener);
-            itemView.setTag(this);
+            itemView.setOnClickListener(this::onClick);
+            itemView.setOnLongClickListener(this::onLongClick);
             mBinding = binding;
         }
 
@@ -168,12 +152,13 @@ public class CdsListAdapter
             mBinding.executePendingBindings();
         }
 
-        CdsObject getItem() {
-            return mObject;
+        private void onClick(@NonNull View v) {
+            mClickListener.onItemClick(v, mPosition, mObject);
         }
 
-        int getListPosition() {
-            return mPosition;
+        public boolean onLongClick(@NonNull View v) {
+            mLongClickListener.onItemLongClick(v, mPosition, mObject);
+            return true;
         }
     }
 }

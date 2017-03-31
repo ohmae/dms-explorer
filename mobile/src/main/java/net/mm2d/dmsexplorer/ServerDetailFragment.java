@@ -13,6 +13,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -22,6 +23,7 @@ import android.view.ViewGroup;
 
 import net.mm2d.android.upnp.cds.MediaServer;
 import net.mm2d.dmsexplorer.adapter.ServerPropertyAdapter;
+import net.mm2d.dmsexplorer.domain.model.ControlPointModel;
 import net.mm2d.dmsexplorer.util.ToolbarThemeUtils;
 import net.opacapp.multilinecollapsingtoolbar.CollapsingToolbarLayout;
 
@@ -40,7 +42,7 @@ public class ServerDetailFragment extends Fragment {
      * @param udn メディアサーバーのUDN
      * @return インスタンス
      */
-    public static ServerDetailFragment newInstance(@NonNull String udn) {
+    public static ServerDetailFragment newInstance(@NonNull final String udn) {
         final ServerDetailFragment instance = new ServerDetailFragment();
         final Bundle arguments = new Bundle();
         arguments.putString(Const.EXTRA_SERVER_UDN, udn);
@@ -48,6 +50,7 @@ public class ServerDetailFragment extends Fragment {
         return instance;
     }
 
+    @Nullable
     private String getUdn() {
         final Bundle arguments = getArguments();
         if (arguments != null) {
@@ -58,14 +61,14 @@ public class ServerDetailFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
+                             final Bundle savedInstanceState) {
         final Activity activity = getActivity();
         final View rootView = inflater.inflate(R.layout.server_detail_fragment, container, false);
         final String udn = getUdn();
-        final DataHolder dataHolder = DataHolder.getInstance();
-        final MediaServer server = dataHolder.getMsControlPoint().getDevice(udn);
-        if (server == null) {
+        final ControlPointModel model = DataHolder.getInstance().getControlPointModel();
+        final MediaServer server = model.getMsControlPoint().getDevice(udn);
+        if (udn == null || server == null) {
             activity.finish();
             return rootView;
         }

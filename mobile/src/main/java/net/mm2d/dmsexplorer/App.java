@@ -48,6 +48,7 @@ public class App extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        DataHolder.getInstance().initialize(this);
         if (BuildConfig.DEBUG) {
             Log.setLogLevel(Log.VERBOSE);
             Log.setPrint(new AndroidPrint());

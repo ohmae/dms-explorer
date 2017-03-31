@@ -34,6 +34,7 @@ import net.mm2d.android.upnp.cds.MediaServer;
 import net.mm2d.android.util.AribUtils;
 import net.mm2d.dmsexplorer.adapter.CdsPropertyAdapter;
 import net.mm2d.dmsexplorer.adapter.PropertyAdapter;
+import net.mm2d.dmsexplorer.domain.model.ControlPointModel;
 import net.mm2d.dmsexplorer.view.ChapterMark;
 
 import java.util.List;
@@ -150,7 +151,7 @@ public class DmcActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.dmc_activity);
         mHandler = new Handler();
@@ -165,8 +166,9 @@ public class DmcActivity extends AppCompatActivity {
         final CdsObject object = intent.getParcelableExtra(Const.EXTRA_OBJECT);
         final String uri = intent.getStringExtra(Const.EXTRA_URI);
         final String rendererUdn = intent.getStringExtra(Const.EXTRA_RENDERER_UDN);
-        final MediaServer server = DataHolder.getInstance().getMsControlPoint().getDevice(serverUdn);
-        mMediaRenderer = DataHolder.getInstance().getMrControlPoint().getDevice(rendererUdn);
+        final ControlPointModel model = DataHolder.getInstance().getControlPointModel();
+        final MediaServer server = model.getMsControlPoint().getDevice(serverUdn);
+        mMediaRenderer = model.getMrControlPoint().getDevice(rendererUdn);
         if (mMediaRenderer == null || server == null) {
             finish();
             return;
@@ -211,7 +213,7 @@ public class DmcActivity extends AppCompatActivity {
         getChapterInfo(object);
     }
 
-    private int getImageResource(CdsObject object) {
+    private int getImageResource(@NonNull final CdsObject object) {
         switch (object.getType()) {
             case CdsObject.TYPE_VIDEO:
                 return R.drawable.ic_movie;
@@ -223,7 +225,7 @@ public class DmcActivity extends AppCompatActivity {
         return 0;
     }
 
-    private void setUpPlay(ImageView play) {
+    private void setUpPlay(@NonNull final ImageView play) {
         if (!mMediaRenderer.isSupportPause()) {
             return;
         }
@@ -237,7 +239,7 @@ public class DmcActivity extends AppCompatActivity {
         });
     }
 
-    private void start(CdsObject object, String uri) {
+    private void start(@NonNull final CdsObject object, @NonNull final String uri) {
         mMediaRenderer.setAVTransportURI(object, uri, (success, result) -> {
             if (success) {
                 mMediaRenderer.play(mShowToastOnError);
@@ -257,7 +259,7 @@ public class DmcActivity extends AppCompatActivity {
         }
     };
 
-    private void setUpSeekBar(SeekBar seekBar) {
+    private void setUpSeekBar(@NonNull final SeekBar seekBar) {
         seekBar.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -298,6 +300,7 @@ public class DmcActivity extends AppCompatActivity {
         mPropertyAdapter.notifyItemInserted(count);
     }
 
+    @NonNull
     private String makeChapterString(List<Integer> chapterInfo) {
         final StringBuilder sb = new StringBuilder();
         for (int i = 0; i < chapterInfo.size(); i++) {

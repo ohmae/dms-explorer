@@ -97,7 +97,7 @@ public class ItemSelectUtils {
 
     public static void send(final @NonNull Activity activity,
                             final @NonNull String udn, final @NonNull CdsObject object) {
-        if (DataHolder.getInstance().getMrControlPoint().getDeviceListSize() == 0) {
+        if (DataHolder.getInstance().getControlPointModel().getMrControlPoint().getDeviceListSize() == 0) {
             return;
         }
         final SelectDeviceDialog dialog = SelectDeviceDialog.newInstance(udn, object);

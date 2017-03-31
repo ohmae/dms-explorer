@@ -16,7 +16,7 @@ import android.widget.ImageView;
  */
 public final class ImageViewBindingAdapter {
     @BindingAdapter("srcBitmap")
-    public static void setImageBitmap(ImageView imageView, Bitmap bitmap) {
-        imageView.setImageBitmap(bitmap);
+    public static void setImageBitmap(ImageView view, Bitmap bitmap) {
+        view.setImageBitmap(bitmap);
     }
 }

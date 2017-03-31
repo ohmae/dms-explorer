@@ -12,6 +12,7 @@
             type="net.mm2d.dmsexplorer.model.ServerListActivityModel"/>
     </data>
 
+
     <android.support.design.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -34,27 +35,45 @@
 
         </android.support.design.widget.AppBarLayout>
 
-        <android.support.v4.widget.SwipeRefreshLayout
-            android:id="@+id/swipeRefresh"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:colorSchemeRes="@{model.refreshColors}"
+            android:baselineAligned="false"
+            android:divider="?android:attr/dividerHorizontal"
+            android:orientation="horizontal"
+            android:showDividers="middle"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
-            app:onRefreshListener="@{model.onRefreshListener}"
-            app:refreshing="@{model.refreshing}"
             >
 
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/serverList"
-                android:layout_width="match_parent"
+            <android.support.v4.widget.SwipeRefreshLayout
+                android:id="@+id/swipeRefresh"
+                android:layout_width="@dimen/item_width"
                 android:layout_height="match_parent"
-                app:adapter="@{model.serverListAdapter}"
-                app:itemDecoration="@{model.itemDecoration}"
-                app:layoutManager="@{model.serverListLayoutManager}"
-                tools:listitem="@layout/server_list_item"
+                app:colorSchemeRes="@{model.refreshColors}"
+                app:onRefreshListener="@{model.onRefreshListener}"
+                app:refreshing="@{model.refreshing}"
+                >
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/serverList"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:adapter="@{model.serverListAdapter}"
+                    app:itemDecoration="@{model.itemDecoration}"
+                    app:layoutManager="@{model.serverListLayoutManager}"
+                    tools:listitem="@layout/server_list_item"
+                    />
+
+            </android.support.v4.widget.SwipeRefreshLayout>
+
+            <FrameLayout
+                android:id="@+id/serverDetailContainer"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
                 />
 
-        </android.support.v4.widget.SwipeRefreshLayout>
+        </LinearLayout>
 
     </android.support.design.widget.CoordinatorLayout>
 </layout>
