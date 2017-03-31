@@ -16,10 +16,10 @@ import android.text.format.DateFormat;
 import net.mm2d.android.upnp.cds.CdsObject;
 import net.mm2d.android.upnp.cds.Tag;
 import net.mm2d.android.util.AribUtils;
-import net.mm2d.android.util.LaunchUtils;
 import net.mm2d.dmsexplorer.R;
 
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -46,7 +46,6 @@ public class CdsPropertyAdapter extends PropertyAdapter {
         super(context);
         setupString(context);
         setCdsObjectInfo(context, this, object);
-        setOnItemLinkClickListener(link -> LaunchUtils.openUri(context, link));
     }
 
     private static void setCdsObjectInfo(
@@ -76,7 +75,7 @@ public class CdsPropertyAdapter extends PropertyAdapter {
         adapter.addEntry(context.getString(R.string.prop_description),
                 jointTagValue(object, CdsObject.DC_DESCRIPTION));
         adapter.addEntry(context.getString(R.string.prop_long_description),
-                jointLongDescription(object), Type.COMPLEX);
+                jointLongDescription(object), Type.DESCRIPTION);
         adapter.addEntry(CdsObject.UPNP_CLASS + ":",
                 object.getUpnpClass());
     }
@@ -99,35 +98,56 @@ public class CdsPropertyAdapter extends PropertyAdapter {
 
     @Nullable
     private static String jointLongDescription(@NonNull CdsObject object) {
-        final List<Tag> tagList = object.getTagList(CdsObject.ARIB_LONG_DESCRIPTION);
+        final List<Tag> tagList = getLongDescription(object);
         if (tagList == null) {
             return null;
         }
         try {
             final StringBuilder sb = new StringBuilder();
+            String lastName = null;
             for (final Tag tag : tagList) {
-                if (sb.length() != 0) {
-                    sb.append('\n');
-                    sb.append('\n');
-                }
                 final String value = tag.getValue();
                 if (TextUtils.isEmpty(value)) {
                     continue;
                 }
                 final byte[] bytes = value.getBytes("UTF-8");
                 final int length = Math.min(24, bytes.length);
-                final String title = new String(bytes, 0, length, "UTF-8");
-                sb.append(TITLE_PREFIX);
-                sb.append(title.trim());
-                if (value.length() > title.length()) {
+                final String nameSection = new String(bytes, 0, length, "UTF-8");
+                final String name = nameSection.trim();
+
+                if (!TextUtils.equals(lastName, name)) {
+                    if (sb.length() != 0) {
+                        sb.append('\n');
+                    }
+                    sb.append(TITLE_PREFIX);
+                    sb.append(name);
                     sb.append('\n');
-                    sb.append(value.substring(title.length()));
+                }
+                lastName = name;
+                if (value.length() > nameSection.length()) {
+                    sb.append(value.substring(nameSection.length()).trim());
+                    sb.append('\n');
                 }
             }
             return AribUtils.toDisplayableString(sb.toString());
         } catch (final UnsupportedEncodingException ignored) {
         }
         return null;
+    }
+
+    private static List<Tag> getLongDescription(@NonNull CdsObject object) {
+        final List<Tag> tagList = object.getTagList(CdsObject.ARIB_LONG_DESCRIPTION);
+        if (tagList == null) {
+            return null;
+        }
+        final int size = tagList.size();
+        if (size <= 2) {
+            return tagList;
+        }
+        final List<Tag> list = new ArrayList<>(size);
+        list.addAll(tagList.subList(size - 2, size));
+        list.addAll(tagList.subList(0, size - 2));
+        return list;
     }
 
     @Nullable
