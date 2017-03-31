@@ -66,14 +66,17 @@ public class ControlPointModel {
     private static final long SEARCH_INTERVAL = TimeUnit.SECONDS.toMillis(5);
 
     private class SearchThread extends Thread {
+        private volatile boolean mShutdownRequest;
+
         public void shutdownRequest() {
             interrupt();
+            mShutdownRequest = true;
         }
 
         @Override
         public void run() {
             try {
-                while (!interrupted()) {
+                while (!mShutdownRequest) {
                     synchronized (mAvControlPointManager) {
                         if (mAvControlPointManager.isInitialized()) {
                             mAvControlPointManager.search();
@@ -151,6 +154,9 @@ public class ControlPointModel {
     }
 
     public void searchStart() {
+        if (mSearchThread != null) {
+            searchStop();
+        }
         getMsControlPoint().setMsDiscoveryListener(mMsDiscoveryListener);
         mSearchThread = new SearchThread();
         mSearchThread.start();
