@@ -24,21 +24,40 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <android.support.v4.widget.SwipeRefreshLayout
-        android:id="@+id/swipeRefresh"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:baselineAligned="false"
+        android:divider="?android:attr/dividerHorizontal"
+        android:orientation="horizontal"
+        android:showDividers="middle"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         >
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/cdsList"
-            android:layout_width="match_parent"
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/swipeRefresh"
+            android:layout_width="@dimen/item_width"
             android:layout_height="match_parent"
-            app:layoutManager="android.support.v7.widget.LinearLayoutManager"
-            tools:listitem="@layout/cds_list_item"
+            >
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/cdsList"
+                android:name="net.mm2d.CdsListFragment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layoutManager="android.support.v7.widget.LinearLayoutManager"
+                tools:listitem="@layout/cds_list_item"
+                />
+
+        </android.support.v4.widget.SwipeRefreshLayout>
+
+        <FrameLayout
+            android:id="@+id/cdsDetailContainer"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
             />
 
-    </android.support.v4.widget.SwipeRefreshLayout>
+    </LinearLayout>
 
 </android.support.design.widget.CoordinatorLayout>
