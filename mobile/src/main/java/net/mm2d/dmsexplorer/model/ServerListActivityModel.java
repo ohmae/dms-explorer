@@ -13,6 +13,7 @@ import android.databinding.Bindable;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView.Adapter;
@@ -60,10 +61,10 @@ public class ServerListActivityModel extends BaseObservable {
             });
         }
     };
-    public final ItemDecoration itemDecoration;
-    private boolean mRefreshing;
+    private final ItemDecoration mItemDecoration;
     private final ServerListAdapter mServerListAdapter;
     private final LayoutManager mServerListLayoutManager;
+    private boolean mRefreshing;
 
     private final ControlPointModel mControlPointModel = DataHolder.getInstance().getControlPointModel();
     private final MsControlPoint mMsControlPoint = mControlPointModel.getMsControlPoint();
@@ -71,11 +72,11 @@ public class ServerListActivityModel extends BaseObservable {
     private final ServerSelectListener mServerSelectListener;
 
     public ServerListActivityModel(@NonNull Context context, ServerSelectListener listener) {
-        itemDecoration = new DividerItemDecoration(context);
+        mItemDecoration = new DividerItemDecoration(context);
+        mServerListLayoutManager = new LinearLayoutManager(context);
         mServerListAdapter = new ServerListAdapter(context, mMsControlPoint.getDeviceList());
         mServerListAdapter.setOnItemClickListener(this::onItemClick);
         mServerListAdapter.setOnItemLongClickListener(this::onItemLongClick);
-        mServerListLayoutManager = new LinearLayoutManager(context);
         mRefreshing = mServerListAdapter.getItemCount() == 0;
         mServerSelectListener = listener;
         mControlPointModel.setMsDiscoveryListener(new MsDiscoveryListener() {
@@ -91,6 +92,10 @@ public class ServerListActivityModel extends BaseObservable {
         });
     }
 
+    public ItemDecoration getItemDecoration() {
+        return mItemDecoration;
+    }
+
     @Bindable
     public boolean isRefreshing() {
         return mRefreshing;
@@ -101,50 +106,51 @@ public class ServerListActivityModel extends BaseObservable {
         notifyPropertyChanged(BR.refreshing);
     }
 
+    @NonNull
     public Adapter getServerListAdapter() {
         return mServerListAdapter;
     }
 
+    @NonNull
     public LayoutManager getServerListLayoutManager() {
         return mServerListLayoutManager;
     }
 
     public void updateListAdapter() {
         final List<MediaServer> list = mMsControlPoint.getDeviceList();
-        final int position = list.indexOf(mControlPointModel.getSelectedMediaServer());
         mServerListAdapter.clear();
         mServerListAdapter.addAll(list);
         mServerListAdapter.notifyDataSetChanged();
-        mServerListAdapter.setSelection(position);
+        mServerListAdapter.setSelectedServer(mControlPointModel.getSelectedMediaServer());
     }
 
+    @Nullable
     public View findSharedView() {
         final MediaServer server = mControlPointModel.getSelectedMediaServer();
-        final int p = mServerListAdapter.indexOf(server);
-        final View shared = mServerListLayoutManager.findViewByPosition(p);
+        final int position = mServerListAdapter.indexOf(server);
+        final View shared = mServerListLayoutManager.findViewByPosition(position);
         if (shared != null) {
             return shared.findViewById(R.id.accent);
         }
         return null;
     }
 
-    private void onItemClick(final @NonNull View v, final int position, final @NonNull MediaServer server) {
+    private void onItemClick(@NonNull final View v, @NonNull final MediaServer server) {
         final boolean alreadySelected = mControlPointModel.isSelectedMediaServer(server);
-        mServerListAdapter.setSelection(position);
-        mControlPointModel.selectMediaServer(server);
+        mServerListAdapter.setSelectedServer(server);
+        mControlPointModel.setSelectedServer(server);
         mServerSelectListener.onSelect(v, server, alreadySelected);
     }
 
-    private void onItemLongClick(final @NonNull View v, final int position, final @NonNull MediaServer server) {
-        mServerListAdapter.setSelection(position);
-        mControlPointModel.selectMediaServer(server);
+    private void onItemLongClick(@NonNull final View v, @NonNull final MediaServer server) {
+        mServerListAdapter.setSelectedServer(server);
+        mControlPointModel.setSelectedServer(server);
         mServerSelectListener.onDetermine(v, server);
     }
 
-    private void onDiscoverServer(MediaServer server) {
+    private void onDiscoverServer(@NonNull MediaServer server) {
         setRefreshing(false);
-        if (mMsControlPoint.getDeviceListSize()
-                != mServerListAdapter.getItemCount() + 1) {
+        if (mMsControlPoint.getDeviceListSize() != mServerListAdapter.getItemCount() + 1) {
             mServerListAdapter.clear();
             mServerListAdapter.addAll(mMsControlPoint.getDeviceList());
             mServerListAdapter.notifyDataSetChanged();
@@ -154,7 +160,7 @@ public class ServerListActivityModel extends BaseObservable {
         }
     }
 
-    private void onLostServer(MediaServer server) {
+    private void onLostServer(@NonNull MediaServer server) {
         final int position = mServerListAdapter.remove(server);
         if (position >= 0) {
             if (mMsControlPoint.getDeviceListSize()
@@ -168,8 +174,8 @@ public class ServerListActivityModel extends BaseObservable {
         }
         if (server.equals(mControlPointModel.getSelectedMediaServer())) {
             mServerSelectListener.onUnselect();
-            mServerListAdapter.clearSelection();
-            mControlPointModel.unselectMediaServer();
+            mServerListAdapter.clearSelectedServer();
+            mControlPointModel.clearSelectedServer();
         }
     }
 }

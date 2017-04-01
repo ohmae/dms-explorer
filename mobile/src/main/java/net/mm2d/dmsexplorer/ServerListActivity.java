@@ -17,7 +17,6 @@ import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.SharedElementCallback;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -31,6 +30,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 import net.mm2d.android.upnp.cds.MediaServer;
+import net.mm2d.android.util.ActivityUtils;
 import net.mm2d.android.util.ViewUtils;
 import net.mm2d.android.view.TransitionListenerAdapter;
 import net.mm2d.dmsexplorer.databinding.ServerListActivityBinding;
@@ -55,12 +55,15 @@ public class ServerListActivity extends AppCompatActivity
     private static final String KEY_HAS_REENTER_TRANSITION = "KEY_HAS_REENTER_TRANSITION";
     private boolean mHasReenterTransition;
     private boolean mTwoPane;
-    private final ControlPointModel mControlPointModel = DataHolder.getInstance().getControlPointModel();
+    private final ControlPointModel mControlPointModel
+            = DataHolder.getInstance().getControlPointModel();
     private ServerDetailFragment mServerDetailFragment;
     private ServerListActivityBinding mBinding;
 
     @Override
-    public void onSelect(@NonNull final View v, @NonNull final MediaServer server, boolean alreadySelected) {
+    public void onSelect(@NonNull final View v,
+                         @NonNull final MediaServer server,
+                         boolean alreadySelected) {
         if (mTwoPane) {
             if (alreadySelected) {
                 startCdsListActivity(v, server);
@@ -78,11 +81,13 @@ public class ServerListActivity extends AppCompatActivity
     }
 
     @Override
-    public void onDetermine(@NonNull final View v, @NonNull final MediaServer server) {
+    public void onDetermine(@NonNull final View v,
+                            @NonNull final MediaServer server) {
         startCdsListActivity(v, server);
     }
 
-    private void startServerDetailActivity(final @NonNull View v, final @NonNull MediaServer server) {
+    private void startServerDetailActivity(
+            @NonNull final View v, @NonNull final MediaServer server) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             startServerDetailActivityLollipop(v, server);
         } else {
@@ -91,13 +96,15 @@ public class ServerListActivity extends AppCompatActivity
     }
 
     @TargetApi(VERSION_CODES.LOLLIPOP)
-    private void startServerDetailActivityLollipop(final @NonNull View v, final @NonNull MediaServer server) {
+    private void startServerDetailActivityLollipop(
+            @NonNull final View v, @NonNull final MediaServer server) {
         final Intent intent = ServerDetailActivity.makeIntent(this, server.getUdn());
         intent.putExtra(Const.EXTRA_HAS_TRANSITION, true);
         final View accent = v.findViewById(R.id.accent);
         setExitSharedElementCallback(new SharedElementCallback() {
             @Override
-            public void onMapSharedElements(List<String> names, Map<String, View> sharedElements) {
+            public void onMapSharedElements(
+                    final List<String> names, final Map<String, View> sharedElements) {
                 sharedElements.clear();
                 sharedElements.put(Const.SHARE_ELEMENT_NAME_DEVICE_ICON, accent);
             }
@@ -109,20 +116,20 @@ public class ServerListActivity extends AppCompatActivity
         mHasReenterTransition = true;
     }
 
-    private void startServerDetailActivityJellyBean(final @NonNull View v, final @NonNull MediaServer server) {
+    private void startServerDetailActivityJellyBean(
+            @NonNull final View v, @NonNull final MediaServer server) {
         final Intent intent = ServerDetailActivity.makeIntent(this, server.getUdn());
-        startActivity(intent,
-                ActivityOptionsCompat.makeScaleUpAnimation(v, 0, 0, v.getWidth(), v.getHeight()).toBundle());
+        startActivity(intent, ActivityUtils.makeScaleUpAnimationBundle(v));
     }
 
-    private void startCdsListActivity(final @NonNull View v, final @NonNull MediaServer server) {
+    private void startCdsListActivity(@NonNull final View v, @NonNull final MediaServer server) {
         final Intent intent = CdsListActivity.makeIntent(this, server.getUdn());
         startActivity(intent, ActivityOptions.makeScaleUpAnimation(
                 v, 0, 0, v.getWidth(), v.getHeight())
                 .toBundle());
     }
 
-    private void setDetailFragment(final @NonNull MediaServer server, boolean animate) {
+    private void setDetailFragment(@NonNull final MediaServer server, boolean animate) {
         mServerDetailFragment = ServerDetailFragment.newInstance(server.getUdn());
         if (animate && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             mServerDetailFragment.setEnterTransition(new Slide(Gravity.START));
@@ -159,14 +166,21 @@ public class ServerListActivity extends AppCompatActivity
             mControlPointModel.initialize();
         } else {
             mHasReenterTransition = savedInstanceState.getBoolean(KEY_HAS_REENTER_TRANSITION);
-            final int position = savedInstanceState.getInt(KEY_SCROLL_POSITION);
-            final int offset = savedInstanceState.getInt(KEY_SCROLL_OFFSET);
-            final RecyclerView recyclerView = mBinding.serverList;
-            ViewUtils.execOnLayout(recyclerView, () -> {
-                recyclerView.scrollToPosition(position);
-                recyclerView.post(() -> recyclerView.scrollBy(0, offset));
-            });
+            restoreScroll(savedInstanceState);
         }
+    }
+
+    private void restoreScroll(@NonNull final Bundle savedInstanceState) {
+        final int position = savedInstanceState.getInt(KEY_SCROLL_POSITION, 0);
+        final int offset = savedInstanceState.getInt(KEY_SCROLL_OFFSET, 0);
+        if (position == 0 && offset == 0) {
+            return;
+        }
+        final RecyclerView recyclerView = mBinding.recyclerView;
+        ViewUtils.execOnLayout(recyclerView, () -> {
+            recyclerView.scrollToPosition(position);
+            recyclerView.post(() -> recyclerView.scrollBy(0, offset));
+        });
     }
 
     @Override
@@ -178,11 +192,15 @@ public class ServerListActivity extends AppCompatActivity
     }
 
     @Override
-    protected void onSaveInstanceState(final Bundle outState) {
+    protected void onSaveInstanceState(@NonNull final Bundle outState) {
         removeDetailFragment();
         super.onSaveInstanceState(outState);
         outState.putBoolean(KEY_HAS_REENTER_TRANSITION, mHasReenterTransition);
-        final RecyclerView recyclerView = mBinding.serverList;
+        saveScroll(outState);
+    }
+
+    private void saveScroll(@NonNull final Bundle outState) {
+        final RecyclerView recyclerView = mBinding.recyclerView;
         if (recyclerView.getChildCount() == 0) {
             return;
         }

@@ -99,19 +99,19 @@ public class ControlPointModel {
         mMsDiscoveryListener = listener != null ? listener : MS_DISCOVERY_LISTENER;
     }
 
-    public void selectMediaServer(@Nullable MediaServer server) {
+    public void setSelectedServer(@Nullable MediaServer server) {
         if (mSelectedMediaServer != null) {
             mSelectedMediaServer.unsubscribe();
         }
         mSelectedMediaServer = server;
-        DataHolder.getInstance().selectMediaServer(server);
+        DataHolder.getInstance().updateMediaServer(server);
         if (mSelectedMediaServer != null) {
             mSelectedMediaServer.subscribe();
         }
     }
 
-    public void unselectMediaServer() {
-        selectMediaServer(null);
+    public void clearSelectedServer() {
+        setSelectedServer(null);
     }
 
     @Nullable
@@ -138,7 +138,7 @@ public class ControlPointModel {
     }
 
     public void terminate() {
-        selectMediaServer(null);
+        setSelectedServer(null);
         initializeOrTerminate(false);
         mContext.unregisterReceiver(mConnectivityReceiver);
     }

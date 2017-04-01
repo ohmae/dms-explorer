@@ -109,15 +109,14 @@ public class CdsListActivity extends AppCompatActivity implements CdsSelectListe
         setSupportActionBar(mBinding.toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        final String udn = getIntent().getStringExtra(Const.EXTRA_SERVER_UDN);
-        final MediaServer server = mDataHolder.getControlPointModel().getMsControlPoint().getDevice(udn);
+        final MediaServer server = mDataHolder.getControlPointModel().getSelectedMediaServer();
         ToolbarThemeUtils.setCdsListTheme(this, server, mBinding.toolbar);
 
         mTwoPane = mBinding.cdsDetailContainer != null;
         if (savedInstanceState != null) {
             final int position = savedInstanceState.getInt(KEY_SCROLL_POSITION);
             final int offset = savedInstanceState.getInt(KEY_SCROLL_OFFSET);
-            final RecyclerView recyclerView = mBinding.cdsList;
+            final RecyclerView recyclerView = mBinding.recyclerView;
             ViewUtils.execOnLayout(recyclerView, () -> {
                 recyclerView.scrollToPosition(position);
                 recyclerView.post(() -> recyclerView.scrollBy(0, offset));
@@ -129,7 +128,7 @@ public class CdsListActivity extends AppCompatActivity implements CdsSelectListe
     protected void onSaveInstanceState(Bundle outState) {
         removeDetailFragment();
         super.onSaveInstanceState(outState);
-        final RecyclerView recyclerView = mBinding.cdsList;
+        final RecyclerView recyclerView = mBinding.recyclerView;
         if (recyclerView.getChildCount() == 0) {
             return;
         }

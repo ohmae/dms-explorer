@@ -39,7 +39,7 @@ public class DataHolder {
         return mControlPointModel;
     }
 
-    public void selectMediaServer(@Nullable MediaServer server) {
+    public void updateMediaServer(@Nullable MediaServer server) {
         if (mCdsTreeModel != null) {
             mCdsTreeModel.terminate();
             mCdsTreeModel = null;

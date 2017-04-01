@@ -37,7 +37,7 @@
         </android.support.design.widget.AppBarLayout>
 
         <android.support.v4.widget.SwipeRefreshLayout
-            android:id="@+id/swipeRefresh"
+            android:id="@+id/swipeRefreshLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:colorSchemeResources="@{model.refreshColors}"
@@ -47,7 +47,7 @@
             >
 
             <android.support.v7.widget.RecyclerView
-                android:id="@+id/cdsList"
+                android:id="@+id/recyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 app:adapter="@{model.cdsListAdapter}"

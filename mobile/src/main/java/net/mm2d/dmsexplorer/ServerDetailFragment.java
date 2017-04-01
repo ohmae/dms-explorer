@@ -8,7 +8,6 @@
 package net.mm2d.dmsexplorer;
 
 import android.app.Activity;
-import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -22,6 +21,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import net.mm2d.android.upnp.cds.MediaServer;
+import net.mm2d.android.util.ActivityUtils;
 import net.mm2d.dmsexplorer.adapter.ServerPropertyAdapter;
 import net.mm2d.dmsexplorer.domain.model.ControlPointModel;
 import net.mm2d.dmsexplorer.util.ToolbarThemeUtils;
@@ -85,13 +85,12 @@ public class ServerDetailFragment extends Fragment {
         return rootView;
     }
 
-    public static void setUpGoButton(final @NonNull Context context,
-                                     final @NonNull View button, final @NonNull String udn) {
+    public void setUpGoButton(@NonNull final Context context,
+                              @NonNull final View button,
+                              @NonNull final String udn) {
         button.setOnClickListener(view -> {
             final Intent intent = CdsListActivity.makeIntent(context, udn);
-            context.startActivity(intent, ActivityOptions.makeScaleUpAnimation(
-                    view, 0, 0, view.getWidth(), view.getHeight())
-                    .toBundle());
+            context.startActivity(intent, ActivityUtils.makeScaleUpAnimationBundle(view));
         });
     }
 }
