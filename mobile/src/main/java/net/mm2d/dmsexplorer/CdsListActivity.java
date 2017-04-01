@@ -7,13 +7,13 @@
 
 package net.mm2d.dmsexplorer;
 
-import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
@@ -25,6 +25,7 @@ import android.view.View;
 
 import net.mm2d.android.upnp.cds.CdsObject;
 import net.mm2d.android.upnp.cds.MediaServer;
+import net.mm2d.android.util.ActivityUtils;
 import net.mm2d.android.util.ViewUtils;
 import net.mm2d.dmsexplorer.databinding.CdsListActivityBinding;
 import net.mm2d.dmsexplorer.domain.model.CdsTreeModel;
@@ -64,8 +65,9 @@ public class CdsListActivity extends AppCompatActivity implements CdsSelectListe
     }
 
     @Override
-    public void onSelect(@NonNull final View v, final boolean alreadySelected) {
-        final CdsObject object = mCdsTreeModel.getSelectedObject();
+    public void onSelect(@NonNull final View v,
+                         @NonNull final CdsObject object,
+                         final boolean alreadySelected) {
         if (mTwoPane) {
             if (alreadySelected) {
                 if (object.hasProtectedResource()) {
@@ -87,8 +89,9 @@ public class CdsListActivity extends AppCompatActivity implements CdsSelectListe
     }
 
     @Override
-    public void onDetermine(@NonNull final View v, final boolean alreadySelected) {
-        final CdsObject object = mCdsTreeModel.getSelectedObject();
+    public void onDetermine(@NonNull final View v,
+                            @NonNull final CdsObject object,
+                            final boolean alreadySelected) {
         if (object.hasProtectedResource()) {
             if (!alreadySelected) {
                 setDetailFragment(object, true);
@@ -100,7 +103,7 @@ public class CdsListActivity extends AppCompatActivity implements CdsSelectListe
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(@Nullable final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mCdsTreeModel = mDataHolder.getCdsTreeModel();
         mBinding = DataBindingUtil.setContentView(this, R.layout.cds_list_activity);
@@ -114,20 +117,31 @@ public class CdsListActivity extends AppCompatActivity implements CdsSelectListe
 
         mTwoPane = mBinding.cdsDetailContainer != null;
         if (savedInstanceState != null) {
-            final int position = savedInstanceState.getInt(KEY_SCROLL_POSITION);
-            final int offset = savedInstanceState.getInt(KEY_SCROLL_OFFSET);
-            final RecyclerView recyclerView = mBinding.recyclerView;
-            ViewUtils.execOnLayout(recyclerView, () -> {
-                recyclerView.scrollToPosition(position);
-                recyclerView.post(() -> recyclerView.scrollBy(0, offset));
-            });
+            restoreScroll(savedInstanceState);
         }
     }
 
+    private void restoreScroll(@NonNull final Bundle savedInstanceState) {
+        final int position = savedInstanceState.getInt(KEY_SCROLL_POSITION, 0);
+        final int offset = savedInstanceState.getInt(KEY_SCROLL_OFFSET, 0);
+        if (position == 0 && offset == 0) {
+            return;
+        }
+        final RecyclerView recyclerView = mBinding.recyclerView;
+        ViewUtils.execOnLayout(recyclerView, () -> {
+            recyclerView.scrollToPosition(position);
+            recyclerView.post(() -> recyclerView.scrollBy(0, offset));
+        });
+    }
+
     @Override
-    protected void onSaveInstanceState(Bundle outState) {
+    protected void onSaveInstanceState(@NonNull final Bundle outState) {
         removeDetailFragment();
         super.onSaveInstanceState(outState);
+        saveScroll(outState);
+    }
+
+    private void saveScroll(@NonNull final Bundle outState) {
         final RecyclerView recyclerView = mBinding.recyclerView;
         if (recyclerView.getChildCount() == 0) {
             return;
@@ -177,12 +191,12 @@ public class CdsListActivity extends AppCompatActivity implements CdsSelectListe
         return super.onOptionsItemSelected(item);
     }
 
-    private void startDetailActivity(@NonNull View v, @NonNull CdsObject object) {
+    private void startDetailActivity(@NonNull final View v, @NonNull final CdsObject object) {
         final Intent intent = CdsDetailActivity.makeIntent(v.getContext(), mCdsTreeModel.getUdn(), object);
-        startActivity(intent, ActivityOptions.makeScaleUpAnimation(v, 0, 0, v.getWidth(), v.getHeight()).toBundle());
+        startActivity(intent, ActivityUtils.makeScaleUpAnimationBundle(v));
     }
 
-    private void setDetailFragment(@NonNull CdsObject object, boolean animate) {
+    private void setDetailFragment(@NonNull final CdsObject object, final boolean animate) {
         if (!mTwoPane) {
             return;
         }
@@ -195,6 +209,7 @@ public class CdsListActivity extends AppCompatActivity implements CdsSelectListe
                 .replace(R.id.cdsDetailContainer, mCdsDetailFragment)
                 .commit();
     }
+
     private void removeDetailFragment() {
         if (!mTwoPane || mCdsDetailFragment == null) {
             return;

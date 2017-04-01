@@ -23,10 +23,9 @@ import java.util.List;
 public class CdsTreeDirectory implements StatusListener {
     private static final String ROOT_OBJECT_ID = "0";
     private static final String ROOT_TITLE = "";
-    private static final int NOT_SELECTED = -1;
     private final String mParentId;
     private final String mParentTitle;
-    private int mSelectedPosition;
+    private CdsObject mSelectedObject;
     private List<CdsObject> mList = Collections.emptyList();
     private BrowseResult mBrowseResult;
     private static final EntryListener ENTRY_LISTENER = (result, inProgress) -> {
@@ -44,7 +43,6 @@ public class CdsTreeDirectory implements StatusListener {
     public CdsTreeDirectory(@NonNull String parentId, @NonNull String parentTitle) {
         mParentId = parentId;
         mParentTitle = parentTitle;
-        mSelectedPosition = NOT_SELECTED;
     }
 
     public void terminate() {
@@ -71,35 +69,26 @@ public class CdsTreeDirectory implements StatusListener {
         return mList;
     }
 
-    public CdsTreeDirectory enterChild(int position) {
-        if (position < 0 || position >= mList.size()) {
+    public CdsTreeDirectory enterChild(@NonNull final CdsObject object) {
+        if (!mList.contains(object)) {
             return null;
         }
-        final CdsObject object = mList.get(position);
         if (!object.isContainer()) {
             return null;
         }
-        mSelectedPosition = position;
+        mSelectedObject = object;
         return new CdsTreeDirectory(object.getObjectId(), object.getTitle());
     }
 
-    public void select(int position) {
-        if (position < 0 || position >= mList.size()) {
-            mSelectedPosition = NOT_SELECTED;
-            return;
+    public void setSelectedObject(final CdsObject object) {
+        if (!mList.contains(object)) {
+            mSelectedObject = null;
         }
-        mSelectedPosition = position;
-    }
-
-    public int getSelectedPosition() {
-        return mSelectedPosition;
+        mSelectedObject = object;
     }
 
     public CdsObject getSelectedObject() {
-        if (mSelectedPosition < 0) {
-            return null;
-        }
-        return mList.get(mSelectedPosition);
+        return mSelectedObject;
     }
 
     public void setEntryListener(@Nullable EntryListener listener) {
@@ -107,7 +96,7 @@ public class CdsTreeDirectory implements StatusListener {
     }
 
     public void clearState() {
-        mSelectedPosition = NOT_SELECTED;
+        mSelectedObject = null;
         mList = Collections.emptyList();
         if (mBrowseResult != null) {
             mBrowseResult.setStatusListener(null);

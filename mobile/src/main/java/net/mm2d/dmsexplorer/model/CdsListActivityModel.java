@@ -36,11 +36,11 @@ import java.util.List;
  */
 public class CdsListActivityModel extends BaseObservable implements CdsListListener {
     public interface CdsSelectListener {
-        void onSelect(@NonNull View v, boolean alreadySelected);
+        void onSelect(@NonNull View v, @NonNull CdsObject object, boolean alreadySelected);
 
         void onUnselect();
 
-        void onDetermine(@NonNull View v, boolean alreadySelected);
+        void onDetermine(@NonNull View v, @NonNull CdsObject object, boolean alreadySelected);
     }
 
     public final int[] refreshColors = new int[]{
@@ -55,7 +55,7 @@ public class CdsListActivityModel extends BaseObservable implements CdsListListe
             mCdsTreeModel.reload();
         }
     };
-    public final ItemDecoration itemDecoration;
+    private final ItemDecoration mItemDecoration;
     private boolean mRefreshing;
     private final CdsListAdapter mCdsListAdapter;
     private final LayoutManager mCdsListLayoutManager;
@@ -67,7 +67,7 @@ public class CdsListActivityModel extends BaseObservable implements CdsListListe
     private final CdsSelectListener mCdsSelectListener;
 
     public CdsListActivityModel(@NonNull Context context, @NonNull CdsSelectListener listener) {
-        itemDecoration = new DividerItemDecoration(context);
+        mItemDecoration = new DividerItemDecoration(context);
         mCdsListAdapter = new CdsListAdapter(context);
         mCdsListAdapter.setOnItemClickListener(this::onItemClick);
         mCdsListAdapter.setOnItemLongClickListener(this::onItemLongClick);
@@ -77,6 +77,10 @@ public class CdsListActivityModel extends BaseObservable implements CdsListListe
         mCdsTreeModel = DataHolder.getInstance().getCdsTreeModel();
         mCdsTreeModel.setCdsListListener(this);
         mTitle = mCdsTreeModel.getTitle();
+    }
+
+    public ItemDecoration getItemDecoration() {
+        return mItemDecoration;
     }
 
     public String getTitle() {
@@ -111,24 +115,24 @@ public class CdsListActivityModel extends BaseObservable implements CdsListListe
         return mCdsListLayoutManager;
     }
 
-    private void onItemClick(final View v, int position, CdsObject object) {
-        if (mCdsTreeModel.enterChild(position)) {
+    private void onItemClick(@NonNull final View v, @NonNull final CdsObject object) {
+        if (mCdsTreeModel.enterChild(object)) {
             return;
         }
         final boolean alreadySelected = object.equals(mCdsTreeModel.getSelectedObject());
-        mCdsTreeModel.select(position);
-        mCdsListAdapter.setSelection(position);
-        mCdsSelectListener.onSelect(v, alreadySelected);
+        mCdsTreeModel.setSelectedObject(object);
+        mCdsListAdapter.setSelectedObject(object);
+        mCdsSelectListener.onSelect(v, object, alreadySelected);
     }
 
-    private void onItemLongClick(final View v, int position, CdsObject object) {
-        if (mCdsTreeModel.enterChild(position)) {
+    private void onItemLongClick(@NonNull final View v, @NonNull final CdsObject object) {
+        if (mCdsTreeModel.enterChild(object)) {
             return;
         }
         final boolean alreadySelected = object.equals(mCdsTreeModel.getSelectedObject());
-        mCdsTreeModel.select(position);
-        mCdsListAdapter.setSelection(position);
-        mCdsSelectListener.onDetermine(v, alreadySelected);
+        mCdsTreeModel.setSelectedObject(object);
+        mCdsListAdapter.setSelectedObject(object);
+        mCdsSelectListener.onDetermine(v, object, alreadySelected);
     }
 
     public boolean onBackPressed() {
@@ -148,7 +152,7 @@ public class CdsListActivityModel extends BaseObservable implements CdsListListe
         final int afterSize = list.size();
         mCdsListAdapter.clear();
         mCdsListAdapter.addAll(list);
-        mCdsListAdapter.setSelection(mCdsTreeModel.getSelectedPosition());
+        mCdsListAdapter.setSelectedObject(mCdsTreeModel.getSelectedObject());
         if (beforeSize < afterSize) {
             mCdsListAdapter.notifyItemRangeInserted(beforeSize, afterSize - beforeSize);
         } else {

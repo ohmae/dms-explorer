@@ -44,9 +44,9 @@ public class CdsTreeModel implements EntryListener {
         prepareEntry(new CdsTreeDirectory());
     }
 
-    public boolean enterChild(int position) {
+    public boolean enterChild(@NonNull final CdsObject object) {
         final CdsTreeDirectory directory = mHistoryStack.peekFirst();
-        final CdsTreeDirectory child = directory.enterChild(position);
+        final CdsTreeDirectory child = directory.enterChild(object);
         if (child == null) {
             return false;
         }
@@ -109,12 +109,8 @@ public class CdsTreeModel implements EntryListener {
         return mPath;
     }
 
-    public void select(int position) {
-        mHistoryStack.peekFirst().select(position);
-    }
-
-    public int getSelectedPosition() {
-        return mHistoryStack.peekFirst().getSelectedPosition();
+    public void setSelectedObject(@NonNull final CdsObject object) {
+        mHistoryStack.peekFirst().setSelectedObject(object);
     }
 
     public CdsObject getSelectedObject() {
