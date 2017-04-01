@@ -15,6 +15,7 @@ import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView.Adapter;
 import android.support.v7.widget.RecyclerView.ItemDecoration;
 import android.support.v7.widget.RecyclerView.LayoutManager;
 import android.view.View;
@@ -24,10 +25,10 @@ import net.mm2d.android.upnp.cds.MsControlPoint;
 import net.mm2d.android.upnp.cds.MsControlPoint.MsDiscoveryListener;
 import net.mm2d.android.view.DividerItemDecoration;
 import net.mm2d.dmsexplorer.BR;
-import net.mm2d.dmsexplorer.domain.model.ControlPointModel;
 import net.mm2d.dmsexplorer.DataHolder;
 import net.mm2d.dmsexplorer.R;
 import net.mm2d.dmsexplorer.adapter.ServerListAdapter;
+import net.mm2d.dmsexplorer.domain.model.ControlPointModel;
 
 import java.util.List;
 
@@ -37,7 +38,7 @@ import java.util.List;
  */
 public class ServerListActivityModel extends BaseObservable {
     public interface ServerSelectListener {
-        boolean onSelect(@NonNull View v, @NonNull MediaServer server);
+        void onSelect(@NonNull View v, @NonNull MediaServer server, boolean alreadySelected);
 
         void onUnselect();
 
@@ -90,7 +91,7 @@ public class ServerListActivityModel extends BaseObservable {
         notifyPropertyChanged(BR.refreshing);
     }
 
-    public ServerListAdapter getServerListAdapter() {
+    public Adapter getServerListAdapter() {
         return mServerListAdapter;
     }
 
@@ -118,16 +119,16 @@ public class ServerListActivityModel extends BaseObservable {
     }
 
     private void onItemClick(final @NonNull View v, final int position, final @NonNull MediaServer server) {
-        if (!mServerSelectListener.onSelect(v, server)) {
-            mServerListAdapter.setSelection(position);
-            mControlPointModel.selectMediaServer(server);
-        }
+        final boolean alreadySelected = mControlPointModel.isSelectedMediaServer(server);
+        mServerListAdapter.setSelection(position);
+        mControlPointModel.selectMediaServer(server);
+        mServerSelectListener.onSelect(v, server, alreadySelected);
     }
 
     private void onItemLongClick(final @NonNull View v, final int position, final @NonNull MediaServer server) {
-        mServerSelectListener.onDetermine(v, server);
         mServerListAdapter.setSelection(position);
         mControlPointModel.selectMediaServer(server);
+        mServerSelectListener.onDetermine(v, server);
     }
 
     private final MsDiscoveryListener mDiscoveryListener = new MsDiscoveryListener() {

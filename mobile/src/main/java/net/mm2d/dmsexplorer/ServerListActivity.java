@@ -56,17 +56,16 @@ public class ServerListActivity extends AppCompatActivity
     private ServerListActivityBinding mBinding;
 
     @Override
-    public boolean onSelect(@NonNull final View v, @NonNull final MediaServer server) {
+    public void onSelect(@NonNull final View v, @NonNull final MediaServer server, boolean alreadySelected) {
         if (mTwoPane) {
-            if (mControlPointModel.isSelectedMediaServer(server)) {
+            if (alreadySelected) {
                 startCdsListActivity(v, server);
-                return true;
+                return;
             }
             setDetailFragment(server, true);
         } else {
             startServerDetailActivity(v, server);
         }
-        return false;
     }
 
     @Override
@@ -151,7 +150,6 @@ public class ServerListActivity extends AppCompatActivity
         mTwoPane = mBinding.serverDetailContainer != null;
 
         setSupportActionBar(mBinding.toolbar);
-        getSupportActionBar().setTitle(getTitle());
 
         if (savedInstanceState == null) {
             mControlPointModel.initialize();

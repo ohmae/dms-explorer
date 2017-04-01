@@ -156,7 +156,7 @@ public class MediaServer extends DeviceWrapper {
         final BrowseRequest request = new BrowseRequest(objectId, filter, sortCriteria,
                 startingIndex, requestedCount);
         final BrowseResult result = new BrowseResult();
-        execute(new BrowseTask(mBrowse, request, result));
+        execute(new BrowseTask(getUdn(), mBrowse, request, result));
         return result;
     }
 
@@ -182,7 +182,7 @@ public class MediaServer extends DeviceWrapper {
     public BrowseMetadataResult browseMetadata(@NonNull String objectId, @Nullable String filter) {
         final BrowseMetadataRequest request = new BrowseMetadataRequest(objectId, filter);
         final BrowseMetadataResult result = new BrowseMetadataResult();
-        execute(new BrowseMetadataTask(mBrowse, request, result));
+        execute(new BrowseMetadataTask(getUdn(), mBrowse, request, result));
         return result;
     }
 
@@ -213,15 +213,19 @@ public class MediaServer extends DeviceWrapper {
     private static class BrowseTask implements Runnable {
         private static final int REQUEST_MAX = 10;
         @NonNull
+        private final String mUdn;
+        @NonNull
         private final Action mBrowse;
         @NonNull
         private final BrowseRequest mRequest;
         @NonNull
         private final BrowseResult mResult;
 
-        BrowseTask(final @NonNull Action browse,
-                   final @NonNull BrowseRequest request,
-                   final @NonNull BrowseResult result) {
+        BrowseTask(@NonNull final String udn,
+                   @NonNull final Action browse,
+                   @NonNull final BrowseRequest request,
+                   @NonNull final BrowseResult result) {
+            mUdn = udn;
             mBrowse = browse;
             mRequest = request;
             mResult = result;
@@ -244,7 +248,7 @@ public class MediaServer extends DeviceWrapper {
                     final int count = request > REQUEST_MAX ? REQUEST_MAX : request;
                     final Map<String, String> res = mBrowse.invoke(setCount(argument, start, count));
                     final List<CdsObject> result = CdsObjectFactory
-                            .parseDirectChildren(res.get(RESULT));
+                            .parseDirectChildren(mUdn, res.get(RESULT));
                     final int number = TextParseUtils.parseIntSafely(res.get(NUMBER_RETURNED), -1);
                     final int total = TextParseUtils.parseIntSafely(res.get(TOTAL_MATCHES), -1);
                     if (number == 0 || total == 0) {
@@ -305,13 +309,20 @@ public class MediaServer extends DeviceWrapper {
      * BrowseMetadataを実行するクラス。
      */
     private static class BrowseMetadataTask implements Runnable {
+        @NonNull
+        private final String mUdn;
+        @NonNull
         private final Action mBrowse;
+        @NonNull
         private final BrowseMetadataRequest mRequest;
+        @NonNull
         private final BrowseMetadataResult mResult;
 
-        BrowseMetadataTask(final @NonNull Action browse,
-                           final @NonNull BrowseMetadataRequest request,
-                           final @NonNull BrowseMetadataResult result) {
+        BrowseMetadataTask(@NonNull final String udn,
+                           @NonNull final Action browse,
+                           @NonNull final BrowseMetadataRequest request,
+                           @NonNull final BrowseMetadataResult result) {
+            mUdn = udn;
             mBrowse = browse;
             mRequest = request;
             mResult = result;
@@ -326,7 +337,7 @@ public class MediaServer extends DeviceWrapper {
             }
             try {
                 final Map<String, String> res = mBrowse.invoke(makeArgument());
-                final CdsObject result = CdsObjectFactory.parseMetadata(res.get(RESULT));
+                final CdsObject result = CdsObjectFactory.parseMetadata(mUdn, res.get(RESULT));
                 final int number = TextParseUtils.parseIntSafely(res.get(NUMBER_RETURNED), -1);
                 final int total = TextParseUtils.parseIntSafely(res.get(TOTAL_MATCHES), -1);
                 if (result == null || number < 0 || total < 0) {

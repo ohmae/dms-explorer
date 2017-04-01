@@ -86,6 +86,9 @@ public class ServerDetailActivity extends AppCompatActivity {
 
     @TargetApi(VERSION_CODES.LOLLIPOP)
     private void startAnimation(final @NonNull View background) {
+        if (!background.isAttachedToWindow()) {
+            return;
+        }
         background.setVisibility(View.VISIBLE);
 
         final Resources res = getResources();

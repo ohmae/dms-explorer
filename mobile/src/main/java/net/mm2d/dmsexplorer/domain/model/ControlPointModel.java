@@ -22,6 +22,7 @@ import net.mm2d.android.upnp.avt.MrControlPoint;
 import net.mm2d.android.upnp.cds.MediaServer;
 import net.mm2d.android.upnp.cds.MsControlPoint;
 import net.mm2d.android.upnp.cds.MsControlPoint.MsDiscoveryListener;
+import net.mm2d.dmsexplorer.DataHolder;
 import net.mm2d.dmsexplorer.R;
 
 import java.util.concurrent.TimeUnit;
@@ -103,6 +104,7 @@ public class ControlPointModel {
             mSelectedMediaServer.unsubscribe();
         }
         mSelectedMediaServer = server;
+        DataHolder.getInstance().selectMediaServer(server);
         if (mSelectedMediaServer != null) {
             mSelectedMediaServer.subscribe();
         }

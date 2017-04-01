@@ -115,11 +115,12 @@ public class ServerListAdapter
     }
 
     public void setSelection(int position) {
+        if (mSelection == position) {
+            return;
+        }
         final int previous = mSelection;
         mSelection = position;
-        if (previous != position) {
-            notifyItemChangedIfPossible(previous);
-        }
+        notifyItemChangedIfPossible(previous);
         notifyItemChangedIfPossible(position);
     }
 
