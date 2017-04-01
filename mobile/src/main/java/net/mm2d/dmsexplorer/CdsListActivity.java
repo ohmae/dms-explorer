@@ -19,6 +19,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.transition.Slide;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -169,6 +170,17 @@ public class CdsListActivity extends AppCompatActivity implements CdsSelectListe
             return;
         }
         super.onBackPressed();
+    }
+
+    @Override
+    public boolean onKeyLongPress(final int keyCode, final KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            mCdsTreeModel.terminate();
+            mCdsTreeModel.initialize();
+            super.onBackPressed();
+            return true;
+        }
+        return super.onKeyLongPress(keyCode, event);
     }
 
     @Override

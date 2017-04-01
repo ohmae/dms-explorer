@@ -87,7 +87,9 @@ public class CdsTreeModel implements EntryListener {
 
     public void terminate() {
         setCdsListListener(null);
-        mHistoryStack.forEach(CdsTreeDirectory::terminate);
+        for (CdsTreeDirectory directory : mHistoryStack) {
+            directory.terminate();
+        }
         mHistoryStack.clear();
     }
 
