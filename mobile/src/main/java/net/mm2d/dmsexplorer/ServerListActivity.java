@@ -21,6 +21,7 @@ import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.SharedElementCallback;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.RecyclerView;
 import android.transition.Slide;
 import android.transition.Transition;
 import android.util.Pair;
@@ -30,6 +31,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 import net.mm2d.android.upnp.cds.MediaServer;
+import net.mm2d.android.util.ViewUtils;
 import net.mm2d.android.view.TransitionListenerAdapter;
 import net.mm2d.dmsexplorer.databinding.ServerListActivityBinding;
 import net.mm2d.dmsexplorer.domain.model.ControlPointModel;
@@ -48,6 +50,8 @@ import java.util.Map;
  */
 public class ServerListActivity extends AppCompatActivity
         implements ServerSelectListener {
+    private static final String KEY_SCROLL_POSITION = "KEY_SCROLL_POSITION";
+    private static final String KEY_SCROLL_OFFSET = "KEY_SCROLL_OFFSET";
     private static final String KEY_HAS_REENTER_TRANSITION = "KEY_HAS_REENTER_TRANSITION";
     private boolean mHasReenterTransition;
     private boolean mTwoPane;
@@ -155,6 +159,13 @@ public class ServerListActivity extends AppCompatActivity
             mControlPointModel.initialize();
         } else {
             mHasReenterTransition = savedInstanceState.getBoolean(KEY_HAS_REENTER_TRANSITION);
+            final int position = savedInstanceState.getInt(KEY_SCROLL_POSITION);
+            final int offset = savedInstanceState.getInt(KEY_SCROLL_OFFSET);
+            final RecyclerView recyclerView = mBinding.serverList;
+            ViewUtils.execOnLayout(recyclerView, () -> {
+                recyclerView.scrollToPosition(position);
+                recyclerView.post(() -> recyclerView.scrollBy(0, offset));
+            });
         }
     }
 
@@ -171,6 +182,13 @@ public class ServerListActivity extends AppCompatActivity
         removeDetailFragment();
         super.onSaveInstanceState(outState);
         outState.putBoolean(KEY_HAS_REENTER_TRANSITION, mHasReenterTransition);
+        final RecyclerView recyclerView = mBinding.serverList;
+        if (recyclerView.getChildCount() == 0) {
+            return;
+        }
+        final View view = recyclerView.getChildAt(0);
+        outState.putInt(KEY_SCROLL_POSITION, recyclerView.getChildAdapterPosition(view));
+        outState.putInt(KEY_SCROLL_OFFSET, -view.getTop());
     }
 
     @Override

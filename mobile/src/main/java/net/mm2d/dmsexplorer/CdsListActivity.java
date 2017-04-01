@@ -16,6 +16,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.RecyclerView;
 import android.transition.Slide;
 import android.view.Gravity;
 import android.view.Menu;
@@ -24,6 +25,7 @@ import android.view.View;
 
 import net.mm2d.android.upnp.cds.CdsObject;
 import net.mm2d.android.upnp.cds.MediaServer;
+import net.mm2d.android.util.ViewUtils;
 import net.mm2d.dmsexplorer.databinding.CdsListActivityBinding;
 import net.mm2d.dmsexplorer.domain.model.CdsTreeModel;
 import net.mm2d.dmsexplorer.model.CdsListActivityModel;
@@ -37,6 +39,8 @@ import net.mm2d.dmsexplorer.util.ToolbarThemeUtils;
  * @author <a href="mailto:ryo@mm2d.net">大前良介(OHMAE Ryosuke)</a>
  */
 public class CdsListActivity extends AppCompatActivity implements CdsSelectListener {
+    private static final String KEY_SCROLL_POSITION = "KEY_SCROLL_POSITION";
+    private static final String KEY_SCROLL_OFFSET = "KEY_SCROLL_OFFSET";
     private boolean mTwoPane;
     private final DataHolder mDataHolder = DataHolder.getInstance();
     private CdsTreeModel mCdsTreeModel;
@@ -110,19 +114,38 @@ public class CdsListActivity extends AppCompatActivity implements CdsSelectListe
         ToolbarThemeUtils.setCdsListTheme(this, server, mBinding.toolbar);
 
         mTwoPane = mBinding.cdsDetailContainer != null;
+        if (savedInstanceState != null) {
+            final int position = savedInstanceState.getInt(KEY_SCROLL_POSITION);
+            final int offset = savedInstanceState.getInt(KEY_SCROLL_OFFSET);
+            final RecyclerView recyclerView = mBinding.cdsList;
+            ViewUtils.execOnLayout(recyclerView, () -> {
+                recyclerView.scrollToPosition(position);
+                recyclerView.post(() -> recyclerView.scrollBy(0, offset));
+            });
+        }
     }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         removeDetailFragment();
         super.onSaveInstanceState(outState);
+        final RecyclerView recyclerView = mBinding.cdsList;
+        if (recyclerView.getChildCount() == 0) {
+            return;
+        }
+        final View view = recyclerView.getChildAt(0);
+        outState.putInt(KEY_SCROLL_POSITION, recyclerView.getChildAdapterPosition(view));
+        outState.putInt(KEY_SCROLL_OFFSET, -view.getTop());
     }
 
     @Override
     protected void onStart() {
         super.onStart();
         final CdsObject object = mCdsTreeModel.getSelectedObject();
-        if (mTwoPane && object != null && object.isItem()) {
+        if (object == null) {
+            return;
+        }
+        if (mTwoPane && object.isItem()) {
             setDetailFragment(object, false);
         }
     }
