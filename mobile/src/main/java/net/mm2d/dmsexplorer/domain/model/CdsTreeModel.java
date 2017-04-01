@@ -95,7 +95,6 @@ public class CdsTreeModel implements EntryListener {
         mCdsListListener = listener != null ? listener : CDS_LIST_LISTENER;
         final CdsTreeDirectory directory = mHistoryStack.peekFirst();
         mCdsListListener.onUpdateList(directory.getList(), directory.isInProgress());
-        reload();
     }
 
     public String getUdn() {
@@ -124,7 +123,7 @@ public class CdsTreeModel implements EntryListener {
 
     private String makePath() {
         final StringBuilder sb = new StringBuilder();
-        for (CdsTreeDirectory directory : mHistoryStack) {
+        for (final CdsTreeDirectory directory : mHistoryStack) {
             if (sb.length() != 0 && directory.getParentTitle().length() != 0) {
                 sb.append(DELIMITER);
             }

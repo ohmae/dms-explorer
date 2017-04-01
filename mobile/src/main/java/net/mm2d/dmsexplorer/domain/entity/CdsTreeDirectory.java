@@ -64,10 +64,7 @@ public class CdsTreeDirectory implements StatusListener {
     }
 
     public boolean isInProgress() {
-        if (mBrowseResult == null) {
-            return true;
-        }
-        return !mBrowseResult.isDone();
+        return mBrowseResult == null || !mBrowseResult.isDone();
     }
 
     public List<CdsObject> getList() {

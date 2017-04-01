@@ -50,7 +50,7 @@
                 android:id="@+id/swipeRefresh"
                 android:layout_width="@dimen/item_width"
                 android:layout_height="match_parent"
-                app:colorSchemeRes="@{model.refreshColors}"
+                app:colorSchemeResources="@{model.refreshColors}"
                 app:onRefreshListener="@{model.onRefreshListener}"
                 app:refreshing="@{model.refreshing}"
                 >

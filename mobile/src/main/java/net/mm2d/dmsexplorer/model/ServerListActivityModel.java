@@ -78,7 +78,17 @@ public class ServerListActivityModel extends BaseObservable {
         mServerListLayoutManager = new LinearLayoutManager(context);
         mRefreshing = mServerListAdapter.getItemCount() == 0;
         mServerSelectListener = listener;
-        mControlPointModel.setMsDiscoveryListener(mDiscoveryListener);
+        mControlPointModel.setMsDiscoveryListener(new MsDiscoveryListener() {
+            @Override
+            public void onDiscover(@NonNull final MediaServer server) {
+                mHandler.post(() -> onDiscoverServer(server));
+            }
+
+            @Override
+            public void onLost(@NonNull final MediaServer server) {
+                mHandler.post(() -> onLostServer(server));
+            }
+        });
     }
 
     @Bindable
@@ -130,18 +140,6 @@ public class ServerListActivityModel extends BaseObservable {
         mControlPointModel.selectMediaServer(server);
         mServerSelectListener.onDetermine(v, server);
     }
-
-    private final MsDiscoveryListener mDiscoveryListener = new MsDiscoveryListener() {
-        @Override
-        public void onDiscover(@NonNull final MediaServer server) {
-            mHandler.post(() -> onDiscoverServer(server));
-        }
-
-        @Override
-        public void onLost(@NonNull final MediaServer server) {
-            mHandler.post(() -> onLostServer(server));
-        }
-    };
 
     private void onDiscoverServer(MediaServer server) {
         setRefreshing(false);

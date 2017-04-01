@@ -53,7 +53,7 @@
                 android:layout_height="@dimen/accent_size"
                 android:scaleType="fitCenter"
                 android:visibility="@{model.accentImageVisibility}"
-                app:srcBitmap="@{model.accentIcon}"
+                android:imageBitmap="@{model.accentIcon}"
                 />
 
         </FrameLayout>

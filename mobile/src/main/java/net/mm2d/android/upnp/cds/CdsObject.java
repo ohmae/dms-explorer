@@ -846,6 +846,7 @@ public class CdsObject implements Parcelable {
      *
      * @return MediaServerのUDN
      */
+    @NonNull
     public String getUdn() {
         return mUdn;
     }
