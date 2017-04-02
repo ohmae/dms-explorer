@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout
-    xmlns:tools="http://schemas.android.com/tools"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -41,19 +41,19 @@
                 android:layout_gravity="center_vertical"
                 android:background="@{model.accentBackground}"
                 android:gravity="center"
-                android:visibility="@{model.accentTextVisibility}"
                 android:text="@{model.accentText}"
                 android:textColor="@color/textPrimary"
                 android:textSize="@dimen/text_size_accent"
+                android:visibility="@{model.accentTextVisibility}"
                 tools:ignore="SpUsage"/>
 
             <ImageView
                 android:id="@+id/imageAccent"
                 android:layout_width="@dimen/accent_size"
                 android:layout_height="@dimen/accent_size"
-                android:visibility="@{model.accentImageVisibility}"
-                app:srcBitmap="@{model.accentIcon}"
                 android:scaleType="fitCenter"
+                android:visibility="@{model.accentImageVisibility}"
+                android:imageBitmap="@{model.accentIcon}"
                 />
 
         </FrameLayout>

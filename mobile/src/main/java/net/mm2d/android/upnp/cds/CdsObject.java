@@ -720,6 +720,12 @@ public class CdsObject implements Parcelable {
      * 同一のタグが複数ある場合はListに出現順に格納する。
      */
     private final TagMap mTagMap;
+
+    /**
+     * MediaServerのUDN
+     */
+    @NonNull
+    private final String mUdn;
     /**
      * \@idの値。
      */
@@ -781,7 +787,8 @@ public class CdsObject implements Parcelable {
      *
      * @param element objectを示すelement
      */
-    CdsObject(@NonNull Element element) {
+    CdsObject(@NonNull String udn, @NonNull Element element) {
+        mUdn = udn;
         mItem = isItem(element.getTagName());
         mTagMap = parseElement(element);
         final Param param = new Param(mTagMap);
@@ -832,6 +839,16 @@ public class CdsObject implements Parcelable {
             return TYPE_VIDEO;
         }
         return TYPE_UNKNOWN;
+    }
+
+    /**
+     * MediaServerのUDNを返す。
+     *
+     * @return MediaServerのUDN
+     */
+    @NonNull
+    public String getUdn() {
+        return mUdn;
     }
 
     /**
@@ -1237,7 +1254,7 @@ public class CdsObject implements Parcelable {
             return false;
         }
         final CdsObject obj = (CdsObject) o;
-        return mTagMap.equals(obj.mTagMap);
+        return mObjectId.equals(obj.mObjectId) && mUdn.equals(obj.mUdn);
     }
 
     /**
@@ -1246,6 +1263,7 @@ public class CdsObject implements Parcelable {
      * @param in Parcel
      */
     private CdsObject(@NonNull Parcel in) {
+        mUdn = in.readString();
         mItem = in.readByte() != 0;
         mTagMap = in.readParcelable(TagMap.class.getClassLoader());
         final Param param = new Param(mTagMap);
@@ -1258,6 +1276,7 @@ public class CdsObject implements Parcelable {
 
     @Override
     public void writeToParcel(@NonNull Parcel dest, int flags) {
+        dest.writeString(mUdn);
         dest.writeByte((byte) (mItem ? 1 : 0));
         dest.writeParcelable(mTagMap, flags);
     }

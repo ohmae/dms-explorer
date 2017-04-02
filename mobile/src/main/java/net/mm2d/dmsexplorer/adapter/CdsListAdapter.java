@@ -10,6 +10,7 @@ package net.mm2d.dmsexplorer.adapter;
 import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,44 +32,41 @@ import java.util.List;
  */
 public class CdsListAdapter
         extends RecyclerView.Adapter<CdsListAdapter.ViewHolder> {
-
     public interface OnItemClickListener {
-        void onItemClick(View v, int position, CdsObject object);
+        void onItemClick(@NonNull View v, @NonNull CdsObject object);
     }
-
-    private static final OnItemClickListener ON_ITEM_CLICK_LISTENER = (v, position, object) -> {
-    };
 
     public interface OnItemLongClickListener {
-        void onItemLongClick(View v, int position, CdsObject object);
+        void onItemLongClick(@NonNull View v, @NonNull CdsObject object);
     }
 
-    private static final OnItemLongClickListener ON_ITEM_LONG_CLICK_LISTENER = (v, position, object) -> {
+    private static final OnItemClickListener ON_ITEM_CLICK_LISTENER = (v, object) -> {
     };
-
-    private static final int NOT_SELECTED = -1;
+    private static final OnItemLongClickListener ON_ITEM_LONG_CLICK_LISTENER = (v, object) -> {
+    };
+    @NonNull
     private final LayoutInflater mInflater;
-    private final List<CdsObject> mList;
+    @NonNull
+    private final List<CdsObject> mList = new ArrayList<>();
     @NonNull
     private OnItemClickListener mClickListener = ON_ITEM_CLICK_LISTENER;
     @NonNull
     private OnItemLongClickListener mLongClickListener = ON_ITEM_LONG_CLICK_LISTENER;
-    private int mSelection = NOT_SELECTED;
+    private CdsObject mSelectedObject;
 
-    public CdsListAdapter(Context context) {
+    public CdsListAdapter(@NonNull final Context context) {
         mInflater = LayoutInflater.from(context);
-        mList = new ArrayList<>();
     }
 
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(final ViewGroup parent, final int viewType) {
         return new ViewHolder(DataBindingUtil
                 .inflate(mInflater, R.layout.cds_list_item, parent, false));
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.applyItem(position, mList.get(position));
+    public void onBindViewHolder(final ViewHolder holder, final int position) {
+        holder.applyItem(mList.get(position));
     }
 
     @Override
@@ -76,11 +74,11 @@ public class CdsListAdapter
         return mList.size();
     }
 
-    public void setOnItemClickListener(OnItemClickListener listener) {
+    public void setOnItemClickListener(@Nullable final OnItemClickListener listener) {
         mClickListener = listener != null ? listener : ON_ITEM_CLICK_LISTENER;
     }
 
-    public void setOnItemLongClickListener(OnItemLongClickListener listener) {
+    public void setOnItemLongClickListener(@Nullable final OnItemLongClickListener listener) {
         mLongClickListener = listener != null ? listener : ON_ITEM_LONG_CLICK_LISTENER;
     }
 
@@ -88,16 +86,16 @@ public class CdsListAdapter
         mList.clear();
     }
 
-    public void addAll(Collection<? extends CdsObject> objects) {
+    public void addAll(@NonNull final Collection<? extends CdsObject> objects) {
         mList.addAll(objects);
     }
 
-    public int add(CdsObject obj) {
+    public int add(@NonNull final CdsObject obj) {
         mList.add(obj);
         return mList.size() - 1;
     }
 
-    public int remove(CdsObject obj) {
+    public int remove(@NonNull final CdsObject obj) {
         final int position = mList.indexOf(obj);
         if (position >= 0) {
             mList.remove(position);
@@ -105,73 +103,57 @@ public class CdsListAdapter
         return position;
     }
 
-    public void setSelection(int position) {
-        final int previous = mSelection;
-        mSelection = position;
-        if (previous != position) {
-            notifyItemChangedIfPossible(previous);
+    public void setSelectedObject(@Nullable final CdsObject object) {
+        if (mSelectedObject != null && mSelectedObject.equals(object)) {
+            return;
         }
-        notifyItemChangedIfPossible(position);
+        final CdsObject previous = mSelectedObject;
+        mSelectedObject = object;
+        notifyItemChangedIfPossible(previous);
+        notifyItemChangedIfPossible(object);
     }
 
-    private void notifyItemChangedIfPossible(int position) {
-        if (position == NOT_SELECTED || position >= getItemCount()) {
+    private void notifyItemChangedIfPossible(@Nullable final CdsObject object) {
+        if (object == null) {
+            return;
+        }
+        final int position = mList.indexOf(object);
+        if (position < 0) {
             return;
         }
         notifyItemChanged(position);
     }
 
-    public void clearSelection() {
-        setSelection(NOT_SELECTED);
+    public void clearSelectedObject() {
+        setSelectedObject(null);
     }
-
-    public int getSelection() {
-        return mSelection;
-    }
-
-    private final View.OnClickListener mItemClickListener = v -> {
-        final ViewHolder holder = (ViewHolder) v.getTag();
-        final CdsObject obj = holder.getItem();
-        final int position = holder.getListPosition();
-            mClickListener.onItemClick(v, position, obj);
-    };
-
-    private final View.OnLongClickListener mItemLongClickListener = v -> {
-        final ViewHolder holder = (ViewHolder) v.getTag();
-        final CdsObject obj = holder.getItem();
-        final int position = holder.getListPosition();
-        mLongClickListener.onItemLongClick(v, position, obj);
-        return true;
-    };
 
     class ViewHolder extends RecyclerView.ViewHolder {
         private final CdsListItemBinding mBinding;
-        private int mPosition;
         private CdsObject mObject;
 
-        ViewHolder(CdsListItemBinding binding) {
+        ViewHolder(@NonNull final CdsListItemBinding binding) {
             super(binding.getRoot());
-            itemView.setOnClickListener(mItemClickListener);
-            itemView.setOnLongClickListener(mItemLongClickListener);
-            itemView.setTag(this);
+            itemView.setOnClickListener(this::onClick);
+            itemView.setOnLongClickListener(this::onLongClick);
             mBinding = binding;
         }
 
-        void applyItem(int position, CdsObject object) {
-            mPosition = position;
+        void applyItem(@NonNull final CdsObject object) {
             mObject = object;
-            final boolean selected = mSelection == position;
+            final boolean selected = object.equals(mSelectedObject);
             itemView.setSelected(selected);
             mBinding.setModel(new CdsItemModel(itemView.getContext(), object, selected));
             mBinding.executePendingBindings();
         }
 
-        CdsObject getItem() {
-            return mObject;
+        private void onClick(@NonNull View v) {
+            mClickListener.onItemClick(v, mObject);
         }
 
-        int getListPosition() {
-            return mPosition;
+        public boolean onLongClick(@NonNull View v) {
+            mLongClickListener.onItemLongClick(v, mObject);
+            return true;
         }
     }
 }

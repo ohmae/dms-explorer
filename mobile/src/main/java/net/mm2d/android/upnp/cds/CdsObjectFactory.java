@@ -38,11 +38,12 @@ final class CdsObjectFactory {
     /**
      * BrowseDirectChildrenの結果をパースしてCdsObjectのリストとして返す。
      *
+     * @param udn MediaServerのUDN
      * @param xml パースするXML
      * @return パース結果
      */
     @NonNull
-    static List<CdsObject> parseDirectChildren(final @Nullable String xml) {
+    static List<CdsObject> parseDirectChildren(final @NonNull String udn, final @Nullable String xml) {
         final List<CdsObject> list = new ArrayList<>();
         if (TextUtils.isEmpty(xml)) {
             return list;
@@ -54,7 +55,7 @@ final class CdsObjectFactory {
                 if (node.getNodeType() != Node.ELEMENT_NODE) {
                     continue;
                 }
-                final CdsObject object = createCdsObject((Element) node);
+                final CdsObject object = createCdsObject(udn, (Element) node);
                 if (object != null) {
                     list.add(object);
                 }
@@ -68,11 +69,12 @@ final class CdsObjectFactory {
     /**
      * BrowseMetadataの結果をパースしてCdsObjectのインスタンスを返す。
      *
+     * @param udn MediaServerのUDN
      * @param xml パースするXML
      * @return パース結果、パースに失敗した場合null
      */
     @Nullable
-    static CdsObject parseMetadata(final @Nullable String xml) {
+    static CdsObject parseMetadata(final @NonNull String udn, final @Nullable String xml) {
         if (TextUtils.isEmpty(xml)) {
             return null;
         }
@@ -83,7 +85,7 @@ final class CdsObjectFactory {
                 if (node.getNodeType() != Node.ELEMENT_NODE) {
                     continue;
                 }
-                return createCdsObject((Element) node);
+                return createCdsObject(udn, (Element) node);
             }
         } catch (ParserConfigurationException | SAXException | IOException e) {
             Log.w(TAG, e);
@@ -94,18 +96,14 @@ final class CdsObjectFactory {
     /**
      * CdsObjectのインスタンスを作成する。
      *
+     * @param udn MediaServerのUDN
      * @param element CdsObjectを指すElement
      * @return CdsObjectのインスタンス、パースに失敗した場合null
      */
     @Nullable
-    private static CdsObject createCdsObject(final @NonNull Element element) {
-        final String name = element.getNodeName();
+    private static CdsObject createCdsObject(final @NonNull String udn, final @NonNull Element element) {
         try {
-            if (name.equals(CdsObject.ITEM)) {
-                return new CdsObject(element);
-            } else if (name.equals(CdsObject.CONTAINER)) {
-                return new CdsObject(element);
-            }
+            return new CdsObject(udn, element);
         } catch (final IllegalArgumentException e) {
             Log.w(TAG, e);
         }

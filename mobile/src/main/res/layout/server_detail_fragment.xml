@@ -1,82 +1,96 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout
+<layout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    >
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <android.support.design.widget.AppBarLayout
-        android:id="@+id/appBar"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/app_bar_height"
-        android:theme="@style/AppTheme.AppBarOverlay"
-        android:translationZ="@dimen/app_bar_elevation"
-        >
+    <data>
 
-        <net.opacapp.multilinecollapsingtoolbar.CollapsingToolbarLayout
-            android:id="@+id/toolbarLayout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:collapsedTitleTextAppearance="@style/CollapsedToolbarText"
-            app:contentScrim="@color/primary"
-            app:expandedTitleTextAppearance="@style/ExpandedToolbarText"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed"
-            >
+        <variable
+            name="model"
+            type="net.mm2d.dmsexplorer.model.ServerDetailFragmentModel"/>
+    </data>
 
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/toolbarBackgroundDefault"
-                app:layout_collapseMode="parallax"
-                >
-
-                <View
-                    android:id="@+id/toolbarBackground"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    />
-
-                <ImageView
-                    android:id="@+id/toolbarIcon"
-                    android:layout_width="@dimen/expanded_toolbar_icon_size"
-                    android:layout_height="@dimen/expanded_toolbar_icon_size"
-                    android:layout_gravity="bottom|end"
-                    android:layout_margin="@dimen/expanded_toolbar_icon_margin"
-                    />
-            </FrameLayout>
-
-            <android.support.v7.widget.Toolbar
-                android:id="@+id/serverDetailToolbar"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                app:layout_collapseMode="pin"
-                app:popupTheme="@style/AppTheme.PopupOverlay"
-                />
-
-        </net.opacapp.multilinecollapsingtoolbar.CollapsingToolbarLayout>
-    </android.support.design.widget.AppBarLayout>
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/serverDetail"
+    <android.support.design.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:clipToPadding="false"
-        android:paddingBottom="@dimen/server_property_margin"
-        app:layoutManager="android.support.v7.widget.LinearLayoutManager"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        tools:listitem="@layout/property_list_item"
-        />
+        >
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="@dimen/fab_margin"
-        app:rippleColor="@color/fabRipple"
-        app:srcCompat="@drawable/ic_arrow_forward"
-        />
+        <android.support.design.widget.AppBarLayout
+            android:id="@+id/appBar"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/app_bar_height"
+            android:theme="@style/AppTheme.AppBarOverlay"
+            android:translationZ="@dimen/app_bar_elevation"
+            >
 
-</android.support.design.widget.CoordinatorLayout>
+            <net.opacapp.multilinecollapsingtoolbar.CollapsingToolbarLayout
+                android:id="@+id/toolbarLayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:contentScrimColor="@{model.collapsedColor}"
+                app:collapsedTitleTextAppearance="@style/CollapsedToolbarText"
+                app:expandedTitleTextAppearance="@style/ExpandedToolbarText"
+                app:layout_scrollFlags="scroll|exitUntilCollapsed"
+                >
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/toolbarBackgroundDefault"
+                    app:layout_collapseMode="parallax"
+                    >
+
+                    <View
+                        android:id="@+id/toolbarBackground"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@{model.expandedColor}"
+                        />
+
+                    <ImageView
+                        android:id="@+id/toolbarIcon"
+                        android:layout_width="@dimen/expanded_toolbar_icon_size"
+                        android:layout_height="@dimen/expanded_toolbar_icon_size"
+                        android:layout_gravity="bottom|end"
+                        android:layout_margin="@dimen/expanded_toolbar_icon_margin"
+                        android:src="@{model.icon}"
+                        />
+                </FrameLayout>
+
+                <android.support.v7.widget.Toolbar
+                    android:id="@+id/serverDetailToolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    android:title="@{model.title}"
+                    app:layout_collapseMode="pin"
+                    app:popupTheme="@style/AppTheme.PopupOverlay"
+                    />
+
+            </net.opacapp.multilinecollapsingtoolbar.CollapsingToolbarLayout>
+        </android.support.design.widget.AppBarLayout>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/serverDetail"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:paddingBottom="@dimen/server_property_margin"
+            app:adapter="@{model.propertyAdapter}"
+            app:layoutManager="android.support.v7.widget.LinearLayoutManager"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            tools:listitem="@layout/property_list_item"
+            />
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="@dimen/fab_margin"
+            app:rippleColor="@color/fabRipple"
+            app:srcCompat="@drawable/ic_arrow_forward"
+            />
+
+    </android.support.design.widget.CoordinatorLayout>
+</layout>

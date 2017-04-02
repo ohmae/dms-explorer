@@ -1,51 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merge
+<layout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
     >
 
-    <ImageView
-        android:id="@+id/play"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:background="@drawable/bg_tool_button"
-        android:padding="@dimen/tool_button_padding"
-        app:srcCompat="@drawable/ic_play"
-        />
+    <data>
 
-    <TextView
-        android:id="@+id/textProgress"
-        android:layout_width="60dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:gravity="end"
-        android:text="0:00:00"
-        android:textColor="@color/textPrimary"
-        android:textSize="@dimen/text_size_main"
-        />
+        <variable
+            name="model"
+            type="net.mm2d.dmsexplorer.model.ControlViewModel"/>
+    </data>
 
-    <SeekBar
-        android:id="@+id/seekBar"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:layout_weight="1"
-        android:paddingBottom="@dimen/seek_padding"
-        android:paddingTop="@dimen/seek_padding"
-        />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        >
 
-    <TextView
-        android:id="@+id/textDuration"
-        android:layout_width="60dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:gravity="start"
-        android:text="0:00:00"
-        android:textColor="@color/textPrimary"
-        android:textSize="@dimen/text_size_main"
-        />
+        <ImageView
+            android:id="@+id/play"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:background="@drawable/bg_tool_button"
+            android:padding="@dimen/tool_button_padding"
+            android:src="@{model.playing ? @drawable/ic_pause : @drawable/ic_play}"
+            android:enabled="@{model.playButtonEnabled}"
+            />
 
-</merge>
+        <TextView
+            android:id="@+id/textProgress"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:gravity="end"
+            android:text="@{model.progressText}"
+            android:textColor="@color/textPrimary"
+            android:textSize="@dimen/text_size_main"
+            />
+
+        <SeekBar
+            android:id="@+id/seekBar"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:paddingBottom="@dimen/seek_padding"
+            android:paddingTop="@dimen/seek_padding"
+            android:enabled="@{model.seekBarEnabled}"
+            android:max="@{model.seekBarMax}"
+            android:progress="@{model.seekBarProgress}"
+            />
+
+        <TextView
+            android:id="@+id/textDuration"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:gravity="start"
+            android:text="@{model.durationText}"
+            android:textColor="@color/textPrimary"
+            android:textSize="@dimen/text_size_main"
+            />
+    </LinearLayout>
+</layout>

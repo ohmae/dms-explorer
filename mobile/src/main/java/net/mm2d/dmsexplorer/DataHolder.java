@@ -7,15 +7,13 @@
 
 package net.mm2d.dmsexplorer;
 
+import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
-import net.mm2d.android.upnp.AvControlPointManager;
-import net.mm2d.android.upnp.avt.MrControlPoint;
-import net.mm2d.android.upnp.cds.CdsObject;
-import net.mm2d.android.upnp.cds.MsControlPoint;
-
-import java.util.LinkedList;
-import java.util.List;
+import net.mm2d.android.upnp.cds.MediaServer;
+import net.mm2d.dmsexplorer.domain.model.CdsTreeModel;
+import net.mm2d.dmsexplorer.domain.model.ControlPointModel;
 
 /**
  * @author <a href="mailto:ryo@mm2d.net">大前良介(OHMAE Ryosuke)</a>
@@ -27,63 +25,32 @@ public class DataHolder {
         return INSTANCE;
     }
 
-    private final AvControlPointManager mAvControlPointManager = new AvControlPointManager();
+    private ControlPointModel mControlPointModel;
+    private CdsTreeModel mCdsTreeModel;
 
     private DataHolder() {
     }
 
-    @NonNull
-    public AvControlPointManager getAvControlPointManager() {
-        return mAvControlPointManager;
+    public void initialize(@NonNull Context context) {
+        mControlPointModel = new ControlPointModel(context);
     }
 
-    @NonNull
-    public MsControlPoint getMsControlPoint() {
-        return mAvControlPointManager.getMsControlPoint();
+    public ControlPointModel getControlPointModel() {
+        return mControlPointModel;
     }
 
-    @NonNull
-    public MrControlPoint getMrControlPoint() {
-        return mAvControlPointManager.getMrControlPoint();
-    }
-
-    private static class Cache {
-        private final String mId;
-        private final List<CdsObject> mList;
-
-        public Cache(String id, List<CdsObject> list) {
-            mId = id;
-            mList = list;
+    public void updateMediaServer(@Nullable MediaServer server) {
+        if (mCdsTreeModel != null) {
+            mCdsTreeModel.terminate();
+            mCdsTreeModel = null;
         }
-
-        public String getId() {
-            return mId;
-        }
-
-        public List<CdsObject> getList() {
-            return mList;
+        if (server != null) {
+            mCdsTreeModel = new CdsTreeModel(server);
+            mCdsTreeModel.initialize();
         }
     }
 
-    private final LinkedList<Cache> mCacheQueue = new LinkedList<>();
-
-    public void clearCache() {
-        mCacheQueue.clear();
-    }
-
-    public void popCache() {
-        mCacheQueue.pop();
-    }
-
-    public void pushCache(String id, List<CdsObject> list) {
-        mCacheQueue.push(new Cache(id, list));
-    }
-
-    public String getCurrentContainer() {
-        return mCacheQueue.peek().getId();
-    }
-
-    public List<CdsObject> getCurrentList() {
-        return mCacheQueue.peek().getList();
+    public CdsTreeModel getCdsTreeModel() {
+        return mCdsTreeModel;
     }
 }

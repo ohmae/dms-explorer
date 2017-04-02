@@ -36,7 +36,7 @@ import java.util.List;
  */
 public class ItemSelectUtils {
     public static void play(final @NonNull Activity activity,
-                     final @NonNull CdsObject object) {
+                            final @NonNull CdsObject object) {
         final List<Tag> list = object.getTagList(CdsObject.RES);
         if (list == null || list.isEmpty()) {
             return;
@@ -50,7 +50,7 @@ public class ItemSelectUtils {
     }
 
     public static void play(final @NonNull Context context,
-                     final @NonNull CdsObject object, final int index) {
+                            final @NonNull CdsObject object, final int index) {
         final SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
         final Tag res = object.getTag(CdsObject.RES, index);
         if (res == null) {
@@ -96,8 +96,8 @@ public class ItemSelectUtils {
     }
 
     public static void send(final @NonNull Activity activity,
-                     final @NonNull String udn, final @NonNull CdsObject object) {
-        if (DataHolder.getInstance().getMrControlPoint().getDeviceListSize() == 0) {
+                            final @NonNull String udn, final @NonNull CdsObject object) {
+        if (DataHolder.getInstance().getControlPointModel().getMrControlPoint().getDeviceListSize() == 0) {
             return;
         }
         final SelectDeviceDialog dialog = SelectDeviceDialog.newInstance(udn, object);
@@ -105,8 +105,8 @@ public class ItemSelectUtils {
     }
 
     public static void send(final @NonNull Context context,
-                     final @NonNull String serverUdn, final @NonNull CdsObject object,
-                     final @NonNull String rendererUdn) {
+                            final @NonNull String serverUdn, final @NonNull CdsObject object,
+                            final @NonNull String rendererUdn) {
         final Tag res = object.getTag(CdsObject.RES);
         if (res == null) {
             return;

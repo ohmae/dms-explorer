@@ -8,29 +8,31 @@
 package net.mm2d.dmsexplorer.view;
 
 import android.content.Context;
+import android.databinding.DataBindingUtil;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnCompletionListener;
 import android.media.MediaPlayer.OnErrorListener;
 import android.media.MediaPlayer.OnInfoListener;
 import android.media.MediaPlayer.OnPreparedListener;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.util.AttributeSet;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.SeekBar;
-import android.widget.TextView;
 
 import net.mm2d.dmsexplorer.R;
+import net.mm2d.dmsexplorer.databinding.ControlViewBinding;
+import net.mm2d.dmsexplorer.model.ControlViewModel;
 import net.mm2d.util.Log;
-
-import java.util.Locale;
 
 /**
  * 動画、音楽再生においてプレーヤーのコントロールUIを提供するView。
  *
  * @author <a href="mailto:ryo@mm2d.net">大前良介(OHMAE Ryosuke)</a>
  */
-public class ControlView extends LinearLayout implements OnPreparedListener {
+public class ControlView extends FrameLayout implements OnPreparedListener {
     private static final String TAG = ControlView.class.getSimpleName();
 
     public interface OnUserActionListener {
@@ -46,11 +48,10 @@ public class ControlView extends LinearLayout implements OnPreparedListener {
 
     private static final int MEDIA_ERROR_SYSTEM = -2147483648;
     private MediaPlayer mMediaPlayer;
-    private TextView mProgress;
-    private TextView mDuration;
-    private ImageView mPlay;
-    private final SeekBar mSeekBar;
     private boolean mTracking;
+
+    private ControlViewModel mModel;
+    private ControlViewBinding mBinding;
 
     @NonNull
     private OnUserActionListener mOnUserActionListener = ON_USER_ACTION_LISTENER;
@@ -69,9 +70,8 @@ public class ControlView extends LinearLayout implements OnPreparedListener {
                 if (!mTracking && mMediaPlayer.isPlaying()) {
                     final int duration = mMediaPlayer.getDuration();
                     final int position = mMediaPlayer.getCurrentPosition();
-                    if (mSeekBar.isEnabled() && duration >= position) {
-                        mSeekBar.setProgress(position);
-                        mProgress.setText(makeTimeText(position));
+                    if (duration >= position) {
+                        mModel.setProgress(position);
                     }
                     sleep = 1001 - position % 1000;
                 }
@@ -108,15 +108,15 @@ public class ControlView extends LinearLayout implements OnPreparedListener {
         mOnCompletionListener.onCompletion(mp);
     };
 
-    public void setOnErrorListener(OnErrorListener listener) {
+    public void setOnErrorListener(@Nullable OnErrorListener listener) {
         mOnErrorListener = listener != null ? listener : ON_ERROR_LISTENER;
     }
 
-    public void setOnInfoListener(OnInfoListener listener) {
+    public void setOnInfoListener(@Nullable OnInfoListener listener) {
         mOnInfoListener = listener != null ? listener : ON_INFO_LISTENER;
     }
 
-    public void setOnCompletionListener(OnCompletionListener listener) {
+    public void setOnCompletionListener(@Nullable OnCompletionListener listener) {
         mOnCompletionListener = listener != null ? listener : ON_COMPLETION_LISTENER;
     }
 
@@ -130,16 +130,19 @@ public class ControlView extends LinearLayout implements OnPreparedListener {
 
     public ControlView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        setOrientation(HORIZONTAL);
-        inflate(context, R.layout.control_view, this);
-        mSeekBar = (SeekBar) findViewById(R.id.seekBar);
-        assert mSeekBar != null;
-        mSeekBar.setEnabled(false);
-        mSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+        mBinding = DataBindingUtil.inflate(LayoutInflater.from(context), R.layout.control_view, this, true);
+        mModel = new ControlViewModel();
+        mBinding.setModel(mModel);
+        setUpSeekBar(mBinding.seekBar);
+        setUpPlayButton(mBinding.play);
+    }
+
+    private void setUpSeekBar(@NonNull final SeekBar seekBar) {
+        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 if (fromUser) {
-                    mProgress.setText(makeTimeText(progress));
+                    mModel.setProgressText(progress);
                     mOnUserActionListener.onUserAction();
                 }
             }
@@ -158,38 +161,29 @@ public class ControlView extends LinearLayout implements OnPreparedListener {
                 mMediaPlayer.seekTo(seekBar.getProgress());
                 if (!mMediaPlayer.isPlaying()) {
                     mMediaPlayer.start();
-                    mPlay.setImageResource(R.drawable.ic_pause);
+                    mModel.setPlaying(true);
                 }
             }
         });
-        mProgress = (TextView) findViewById(R.id.textProgress);
-        mDuration = (TextView) findViewById(R.id.textDuration);
-        mPlay = (ImageView) findViewById(R.id.play);
-        assert mPlay != null;
-        mPlay.setImageResource(R.drawable.ic_play);
-        mPlay.setOnClickListener(v -> {
+    }
+
+    private void setUpPlayButton(@NonNull final View button) {
+        button.setOnClickListener(v -> {
             if (mMediaPlayer == null) {
                 return;
             }
             if (mMediaPlayer.isPlaying()) {
                 mMediaPlayer.pause();
-                mPlay.setImageResource(R.drawable.ic_play);
+                mModel.setPlaying(false);
             } else {
                 mMediaPlayer.start();
-                mPlay.setImageResource(R.drawable.ic_pause);
+                mModel.setPlaying(true);
             }
             mOnUserActionListener.onUserAction();
         });
     }
 
-    private static String makeTimeText(long millisecond) {
-        final long second = millisecond / 1000;
-        final long minute = second / 60;
-        final long hour = minute / 60;
-        return String.format(Locale.US, "%01d:%02d:%02d", hour, minute % 60, second % 60);
-    }
-
-    public void setOnUserActionListener(OnUserActionListener listener) {
+    public void setOnUserActionListener(@Nullable OnUserActionListener listener) {
         mOnUserActionListener = listener != null ? listener : ON_USER_ACTION_LISTENER;
     }
 
@@ -205,15 +199,10 @@ public class ControlView extends LinearLayout implements OnPreparedListener {
         mMediaPlayer.setOnErrorListener(mMyOnErrorListener);
         mMediaPlayer.setOnInfoListener(mMyOnInfoListener);
         mMediaPlayer.setOnCompletionListener(mMyOnCompletionListener);
-        final int duration = mMediaPlayer.getDuration();
-        if (duration != 0) {
-            mSeekBar.setEnabled(true);
-            mSeekBar.setMax(duration);
-            mDuration.setText(makeTimeText(duration));
-        }
         mMediaPlayer.setOnInfoListener(mMyOnInfoListener);
+        mModel.setDuration(mMediaPlayer.getDuration());
+        mModel.setPlaying(true);
         post(mGetPositionTask);
-        mPlay.setImageResource(R.drawable.ic_pause);
         mp.start();
     }
 

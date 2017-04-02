@@ -29,34 +29,53 @@
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                android:title="@{model.title}"
                 android:subtitle="@{model.subtitle}"
+                android:title="@{model.title}"
                 app:popupTheme="@style/AppTheme.PopupOverlay"
                 />
 
         </android.support.design.widget.AppBarLayout>
 
-        <android.support.v4.widget.SwipeRefreshLayout
-            android:id="@+id/swipeRefreshLayout"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:colorSchemeResources="@{model.refreshColors}"
+            android:baselineAligned="false"
+            android:divider="?android:attr/dividerHorizontal"
+            android:orientation="horizontal"
+            android:showDividers="middle"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
-            app:onRefreshListener="@{model.onRefreshListener}"
-            app:refreshing="@{model.refreshing}"
             >
 
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/recyclerView"
-                android:layout_width="match_parent"
+            <android.support.v4.widget.SwipeRefreshLayout
+                android:id="@+id/swipeRefreshLayout"
+                android:layout_width="@dimen/item_width"
                 android:layout_height="match_parent"
-                app:adapter="@{model.cdsListAdapter}"
-                app:itemDecoration="@{model.itemDecoration}"
-                app:layoutManager="@{model.cdsListLayoutManager}"
-                tools:listitem="@layout/cds_list_item"
+                app:colorSchemeResources="@{model.refreshColors}"
+                app:onRefreshListener="@{model.onRefreshListener}"
+                app:refreshing="@{model.refreshing}"
+                >
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/recyclerView"
+                    android:name="net.mm2d.CdsListFragment"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:adapter="@{model.cdsListAdapter}"
+                    app:itemDecoration="@{model.itemDecoration}"
+                    app:layoutManager="@{model.cdsListLayoutManager}"
+                    tools:listitem="@layout/cds_list_item"
+                    />
+
+            </android.support.v4.widget.SwipeRefreshLayout>
+
+            <FrameLayout
+                android:id="@+id/cdsDetailContainer"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
                 />
 
-        </android.support.v4.widget.SwipeRefreshLayout>
+        </LinearLayout>
 
     </android.support.design.widget.CoordinatorLayout>
 </layout>

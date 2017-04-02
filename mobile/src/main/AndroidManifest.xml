@@ -74,6 +74,10 @@
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:theme="@style/AppTheme.NoActionBar.Dark">
         </activity>
+
+        <meta-data
+            android:name="android.max_aspect"
+            android:value="3"/>
     </application>
 
 </manifest>

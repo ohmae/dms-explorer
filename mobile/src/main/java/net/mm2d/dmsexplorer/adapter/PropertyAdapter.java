@@ -9,26 +9,23 @@ package net.mm2d.dmsexplorer.adapter;
 
 import android.content.Context;
 import android.databinding.DataBindingUtil;
-import android.graphics.Typeface;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
-import android.text.SpannableString;
-import android.text.SpannableStringBuilder;
-import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
-import android.text.style.ClickableSpan;
-import android.text.style.StyleSpan;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 
 import net.mm2d.dmsexplorer.R;
+import net.mm2d.dmsexplorer.adapter.property.DescriptionFormatter;
+import net.mm2d.dmsexplorer.adapter.property.LinkFormatter;
+import net.mm2d.dmsexplorer.adapter.property.PropertyFormatter;
+import net.mm2d.dmsexplorer.adapter.property.TextFormatter;
 import net.mm2d.dmsexplorer.databinding.PropertyListItemBinding;
 import net.mm2d.dmsexplorer.model.PropertyItemModel;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
@@ -38,60 +35,24 @@ import java.util.regex.Pattern;
  */
 public class PropertyAdapter
         extends RecyclerView.Adapter<PropertyAdapter.ViewHolder> {
-    protected static final String TITLE_PREFIX = "##";
 
-    public interface OnItemLinkClickListener {
-        void onItemLinkClick(String link);
-    }
+    public static final String TITLE_PREFIX = "##";
 
-    protected enum Type {
-        NORMAL {
-            @NonNull
-            @Override
-            CharSequence format(@NonNull PropertyAdapter adapter, @NonNull String string) {
-                return string;
-            }
-        },
-        LINK {
-            @NonNull
-            @Override
-            CharSequence format(@NonNull PropertyAdapter adapter, @NonNull String string) {
-                final SpannableString ss = new SpannableString(string);
-                ss.setSpan(new LinkSpan(adapter, string), 0, string.length(), Spanned.SPAN_MARK_POINT);
-                return ss;
-            }
-        },
-        COMPLEX {
-            @NonNull
-            @Override
-            CharSequence format(@NonNull PropertyAdapter adapter, @NonNull String string) {
-                final SpannableStringBuilder builder = new SpannableStringBuilder();
-                final String[] lines = string.split("\n");
-                for (final String line : lines) {
-                    if (line.startsWith(TITLE_PREFIX)) {
-                        final int start = builder.length();
-                        builder.append(line.substring(2));
-                        builder.setSpan(new StyleSpan(Typeface.BOLD), start, builder.length(), Spanned.SPAN_POINT_MARK);
-                        builder.append('\n');
-                        continue;
-                    }
-                    final int base = builder.length();
-                    builder.append(line);
-                    builder.append('\n');
-                    final Matcher matcher = URL_PATTERN.matcher(line);
-                    while (matcher.find()) {
-                        final int start = matcher.start();
-                        final int end = matcher.end();
-                        builder.setSpan(new LinkSpan(adapter, string.substring(start, end)),
-                                start + base, end + base, Spanned.SPAN_POINT_MARK);
-                    }
-                }
-                return builder;
-            }
-        };
+    enum Type {
+        TEXT(new TextFormatter()),
+        LINK(new LinkFormatter()),
+        DESCRIPTION(new DescriptionFormatter());
+
+        private final PropertyFormatter mPropertyFormatter;
+
+        Type(PropertyFormatter formatter) {
+            mPropertyFormatter = formatter;
+        }
 
         @NonNull
-        abstract CharSequence format(@NonNull PropertyAdapter adapter, @NonNull String string);
+        private CharSequence format(@NonNull Context context, @NonNull String string) {
+            return mPropertyFormatter.format(context, string);
+        }
     }
 
     private static class Entry {
@@ -99,31 +60,30 @@ public class PropertyAdapter
         private final String mValue;
         private final Type mType;
 
-        Entry(String name, String value, Type type) {
+        private Entry(String name, String value, Type type) {
             mName = name;
             mValue = value;
             mType = type;
         }
 
-        String getName() {
+        private String getName() {
             return mName;
         }
 
-        String getValue() {
+        private String getValue() {
             return mValue;
         }
 
-        CharSequence getFormatValue(PropertyAdapter adapter) {
-            return mType.format(adapter, mValue);
+        private CharSequence getFormatValue(Context context) {
+            return mType.format(context, mValue);
         }
     }
 
     private final Context mContext;
     private final List<Entry> mList;
     private final LayoutInflater mInflater;
-    private OnItemLinkClickListener mListener;
 
-    public PropertyAdapter(Context context) {
+    public PropertyAdapter(@NonNull Context context) {
         mContext = context;
         mInflater = LayoutInflater.from(context);
         mList = new ArrayList<>();
@@ -133,19 +93,15 @@ public class PropertyAdapter
         return mContext;
     }
 
-    public void addEntry(String name, String value) {
-        addEntry(name, value, Type.NORMAL);
+    public void addEntry(@NonNull String name, @Nullable String value) {
+        addEntry(name, value, Type.TEXT);
     }
 
-    public void addEntry(String name, String value, Type type) {
+    public void addEntry(@NonNull String name, @Nullable String value, @NonNull Type type) {
         if (value == null || value.isEmpty()) {
             return;
         }
         mList.add(new Entry(name, value, type));
-    }
-
-    public void setOnItemLinkClickListener(OnItemLinkClickListener l) {
-        mListener = l;
     }
 
     @Override
@@ -156,29 +112,12 @@ public class PropertyAdapter
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.applyItem(this, mList.get(position));
+        holder.applyItem(getContext(), mList.get(position));
     }
 
     @Override
     public int getItemCount() {
         return mList.size();
-    }
-
-    private static class LinkSpan extends ClickableSpan {
-        private final PropertyAdapter mAdapter;
-        private final String mLink;
-
-        LinkSpan(PropertyAdapter adapter, String link) {
-            mAdapter = adapter;
-            mLink = link;
-        }
-
-        @Override
-        public void onClick(View widget) {
-            if (mAdapter.mListener != null) {
-                mAdapter.mListener.onItemLinkClick(mLink);
-            }
-        }
     }
 
     private static final Pattern URL_PATTERN =
@@ -187,14 +126,14 @@ public class PropertyAdapter
     static class ViewHolder extends RecyclerView.ViewHolder {
         private final PropertyListItemBinding mBinding;
 
-        ViewHolder(PropertyListItemBinding binding) {
+        ViewHolder(@NonNull PropertyListItemBinding binding) {
             super(binding.getRoot());
             mBinding = binding;
             mBinding.description.setMovementMethod(LinkMovementMethod.getInstance());
         }
 
-        void applyItem(PropertyAdapter adapter, Entry entry) {
-            mBinding.setModel(new PropertyItemModel(entry.getName(), entry.getFormatValue(adapter)));
+        void applyItem(@NonNull Context context, @NonNull Entry entry) {
+            mBinding.setModel(new PropertyItemModel(entry.getName(), entry.getFormatValue(context)));
             mBinding.executePendingBindings();
         }
     }

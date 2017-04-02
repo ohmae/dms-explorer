@@ -11,7 +11,6 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 
 import net.mm2d.android.upnp.cds.MediaServer;
-import net.mm2d.android.util.LaunchUtils;
 
 /**
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
@@ -19,7 +18,6 @@ import net.mm2d.android.util.LaunchUtils;
 public class ServerPropertyAdapter extends PropertyAdapter {
     public ServerPropertyAdapter(@NonNull Context context, @NonNull MediaServer server) {
         super(context);
-        setOnItemLinkClickListener(link -> LaunchUtils.openUri(context, link));
         setServerInfo(this, server);
     }
 

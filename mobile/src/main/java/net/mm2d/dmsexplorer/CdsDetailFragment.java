@@ -36,32 +36,39 @@ import net.opacapp.multilinecollapsingtoolbar.CollapsingToolbarLayout;
  * @author <a href="mailto:ryo@mm2d.net">大前良介(OHMAE Ryosuke)</a>
  */
 public class CdsDetailFragment extends Fragment {
+    private static final String KEY_TWO_PANE = "KEY_TWO_PANE";
     /**
      * インスタンスを作成する。
      *
      * <p>Bundleの設定と読み出しをこのクラス内で完結させる。
      *
-     * @param udn    表示するサーバのUDN
-     * @param object 表示するObject
      * @return インスタンス。
      */
-    public static CdsDetailFragment newInstance(String udn, CdsObject object) {
+    @NonNull
+    public static CdsDetailFragment newInstance() {
         final CdsDetailFragment instance = new CdsDetailFragment();
         final Bundle arguments = new Bundle();
-        arguments.putString(Const.EXTRA_SERVER_UDN, udn);
-        arguments.putParcelable(Const.EXTRA_OBJECT, object);
+        arguments.putBoolean(KEY_TWO_PANE, true);
         instance.setArguments(arguments);
         return instance;
     }
 
+    private boolean isTwoPane() {
+        final Bundle arguments = getArguments();
+        if (arguments == null) {
+            return false;
+        }
+        return arguments.getBoolean(KEY_TWO_PANE);
+    }
+
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
+                             final Bundle savedInstanceState) {
         final View rootView = inflater.inflate(R.layout.cds_detail_fragment, container, false);
 
-        final String udn = getArguments().getString(Const.EXTRA_SERVER_UDN);
-        final MediaServer server = DataHolder.getInstance().getMsControlPoint().getDevice(udn);
-        final CdsObject object = getArguments().getParcelable(Const.EXTRA_OBJECT);
+        final DataHolder dataHolder = DataHolder.getInstance();
+        final MediaServer server = dataHolder.getControlPointModel().getSelectedMediaServer();
+        final CdsObject object = dataHolder.getCdsTreeModel().getSelectedObject();
         final Toolbar toolbar = (Toolbar) rootView.findViewById(R.id.cdsDetailToolbar);
         if (object == null || server == null || toolbar == null) {
             getActivity().finish();
@@ -69,18 +76,21 @@ public class CdsDetailFragment extends Fragment {
         }
         toolbar.setTitle(AribUtils.toDisplayableString(object.getTitle()));
 
-        ToolbarThemeUtils.setCdsDetailTheme(this, object,
-                (CollapsingToolbarLayout) rootView.findViewById(R.id.toolbarLayout));
+        ToolbarThemeUtils.setCdsDetailTheme(getActivity(), object,
+                (CollapsingToolbarLayout) rootView.findViewById(R.id.toolbarLayout), !isTwoPane());
 
         final RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.cdsDetail);
         recyclerView.setAdapter(new CdsPropertyAdapter(getActivity(), object));
 
         setUpPlayButton(getActivity(), (FloatingActionButton) rootView.findViewById(R.id.fabPlay), object);
-        setUpSendButton(getActivity(), (FloatingActionButton) rootView.findViewById(R.id.fabSend), udn, object);
+        setUpSendButton(getActivity(), (FloatingActionButton) rootView.findViewById(R.id.fabSend), server.getUdn(), object);
         return rootView;
     }
 
-    public static void setUpPlayButton(final Activity activity, FloatingActionButton fab, final CdsObject object) {
+    private static void setUpPlayButton(
+            @NonNull final Activity activity,
+            @NonNull final FloatingActionButton fab,
+            @NonNull final CdsObject object) {
         fab.setVisibility(hasResource(object) ? View.VISIBLE : View.GONE);
         final boolean protectedResource = object.hasProtectedResource();
         final int color = protectedResource ?
@@ -106,8 +116,12 @@ public class CdsDetailFragment extends Fragment {
         Snackbar.make(view, R.string.toast_not_support_drm, Snackbar.LENGTH_LONG).show();
     }
 
-    public static void setUpSendButton(final Activity activity, FloatingActionButton fab, final String udn, final CdsObject object) {
-        final MrControlPoint cp = DataHolder.getInstance().getMrControlPoint();
+    private static void setUpSendButton(
+            @NonNull final Activity activity,
+            @NonNull final FloatingActionButton fab,
+            @NonNull final String udn,
+            @NonNull final CdsObject object) {
+        final MrControlPoint cp = DataHolder.getInstance().getControlPointModel().getMrControlPoint();
         if (cp.getDeviceListSize() == 0) {
             fab.setVisibility(View.GONE);
             return;
@@ -116,7 +130,7 @@ public class CdsDetailFragment extends Fragment {
         fab.setOnClickListener(v -> ItemSelectUtils.send(activity, udn, object));
     }
 
-    private static boolean hasResource(CdsObject object) {
+    private static boolean hasResource(@NonNull final CdsObject object) {
         return object.getTagList(CdsObject.RES) != null;
     }
 }

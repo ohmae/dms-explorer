@@ -7,64 +7,47 @@
 
 package net.mm2d.dmsexplorer;
 
-import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
+import android.databinding.DataBindingUtil;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Parcel;
-import android.os.Parcelable;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.transition.Slide;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
-import net.mm2d.android.upnp.cds.BrowseResult;
 import net.mm2d.android.upnp.cds.CdsObject;
 import net.mm2d.android.upnp.cds.MediaServer;
-import net.mm2d.android.view.DividerItemDecoration;
-import net.mm2d.dmsexplorer.adapter.CdsListAdapter;
+import net.mm2d.android.util.ActivityUtils;
+import net.mm2d.android.util.ViewUtils;
+import net.mm2d.dmsexplorer.databinding.CdsListActivityBinding;
+import net.mm2d.dmsexplorer.domain.model.CdsTreeModel;
+import net.mm2d.dmsexplorer.model.CdsListActivityModel;
+import net.mm2d.dmsexplorer.model.CdsListActivityModel.CdsSelectListener;
 import net.mm2d.dmsexplorer.util.ItemSelectUtils;
 import net.mm2d.dmsexplorer.util.ToolbarThemeUtils;
-
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.ListIterator;
-import java.util.concurrent.ExecutionException;
 
 /**
  * MediaServerのContentDirectoryを表示、操作するActivity。
  *
  * @author <a href="mailto:ryo@mm2d.net">大前良介(OHMAE Ryosuke)</a>
  */
-public class CdsListActivity extends AppCompatActivity
-        implements BrowseResult.StatusListener {
-    private static final String KEY_HISTORY = "KEY_HISTORY";
-    private static final String KEY_SELECTED = "KEY_SELECTED";
-    private static final String KEY_POSITION = "KEY_POSITION";
+public class CdsListActivity extends AppCompatActivity implements CdsSelectListener {
+    private static final String KEY_SCROLL_POSITION = "KEY_SCROLL_POSITION";
+    private static final String KEY_SCROLL_OFFSET = "KEY_SCROLL_OFFSET";
     private boolean mTwoPane;
     private final DataHolder mDataHolder = DataHolder.getInstance();
-    private Handler mHandler;
-    private MediaServer mServer;
-    private BrowseResult mBrowseResult;
-    private final LinkedList<History> mHistories = new LinkedList<>();
-    private String mSubtitle;
-    private CdsObject mSelectedObject;
+    private CdsTreeModel mCdsTreeModel;
     private CdsDetailFragment mCdsDetailFragment;
-    private SwipeRefreshLayout mSwipeRefreshLayout;
-    private RecyclerView mRecyclerView;
-    private CdsListAdapter mCdsListAdapter;
+    private CdsListActivityBinding mBinding;
 
     /**
      * インスタンスを作成する。
@@ -72,77 +55,19 @@ public class CdsListActivity extends AppCompatActivity
      * <p>Bundleへの値の設定と読み出しをこのクラス内で完結させる。
      *
      * @param context コンテキスト
-     * @param udn     MediaServerのUDN
      * @return インスタンス
      */
     @NonNull
-    public static Intent makeIntent(@NonNull Context context, @NonNull String udn) {
-        final Intent intent = new Intent(context, CdsListActivity.class);
-        intent.putExtra(Const.EXTRA_SERVER_UDN, udn);
-        return intent;
+    public static Intent makeIntent(@NonNull Context context) {
+        return new Intent(context, CdsListActivity.class);
     }
 
-    private static class History implements Parcelable {
-        private final int mPosition;
-        private final String mId;
-        private final String mTitle;
-
-        public History(int position, @NonNull String id, @NonNull String title) {
-            mPosition = position;
-            mId = id;
-            mTitle = title;
-        }
-
-        public int getPosition() {
-            return mPosition;
-        }
-
-        public String getId() {
-            return mId;
-        }
-
-        public String getTitle() {
-            return mTitle;
-        }
-
-        private History(Parcel in) {
-            mPosition = in.readInt();
-            mId = in.readString();
-            mTitle = in.readString();
-        }
-
-        @Override
-        public int describeContents() {
-            return 0;
-        }
-
-        @Override
-        public void writeToParcel(Parcel dest, int flags) {
-            dest.writeInt(mPosition);
-            dest.writeString(mId);
-            dest.writeString(mTitle);
-        }
-
-        public static final Creator<History> CREATOR = new Creator<History>() {
-            @Override
-            public History createFromParcel(Parcel in) {
-                return new History(in);
-            }
-
-            @Override
-            public History[] newArray(int size) {
-                return new History[size];
-            }
-        };
-    }
-
-    private void onItemClick(final View v, int position, CdsObject object) {
-        if (object.isContainer()) {
-            browse(position, object.getObjectId(), object.getTitle(), true);
-            return;
-        }
+    @Override
+    public void onSelect(@NonNull final View v,
+                         @NonNull final CdsObject object,
+                         final boolean alreadySelected) {
         if (mTwoPane) {
-            if (mSelectedObject != null && mSelectedObject.equals(object)) {
+            if (alreadySelected) {
                 if (object.hasProtectedResource()) {
                     Snackbar.make(v, R.string.toast_not_support_drm, Snackbar.LENGTH_LONG).show();
                     return;
@@ -150,177 +75,109 @@ public class CdsListActivity extends AppCompatActivity
                 ItemSelectUtils.play(this, object, 0);
                 return;
             }
-            mCdsDetailFragment = CdsDetailFragment.newInstance(mServer.getUdn(), object);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                mCdsDetailFragment.setEnterTransition(new Slide(Gravity.START));
-            }
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.cdsDetailContainer, mCdsDetailFragment)
-                    .commit();
+            setDetailFragment(true);
         } else {
-            final Intent intent = CdsDetailActivity.makeIntent(v.getContext(), mServer.getUdn(), object);
-            startActivity(intent, ActivityOptions.makeScaleUpAnimation(v, 0, 0, v.getWidth(), v.getHeight()).toBundle());
+            startDetailActivity(v);
         }
-        mSelectedObject = object;
-        mCdsListAdapter.setSelection(position);
     }
 
-    private void onItemLongClick(final View v, int position, CdsObject object) {
-        if (object.isContainer()) {
-            browse(position, object.getObjectId(), object.getTitle(), true);
-            return;
-        }
-        if (object.getTagList(CdsObject.RES) == null) {
-            selectItem(v, position, object);
-            return;
-        }
+    @Override
+    public void onUnselect() {
+        removeDetailFragment();
+    }
+
+    @Override
+    public void onDetermine(@NonNull final View v,
+                            @NonNull final CdsObject object,
+                            final boolean alreadySelected) {
         if (object.hasProtectedResource()) {
+            if (!alreadySelected) {
+                setDetailFragment(true);
+            }
             Snackbar.make(v, R.string.toast_not_support_drm, Snackbar.LENGTH_LONG).show();
-            selectItem(v, position, object);
             return;
         }
         ItemSelectUtils.play(this, object, 0);
-        mSelectedObject = object;
-        mCdsListAdapter.setSelection(position);
-    }
-
-    private void selectItem(final View v, int position, CdsObject object) {
-        if (mTwoPane) {
-            if (mSelectedObject != null && mSelectedObject.equals(object)) {
-                ItemSelectUtils.play(this, object, 0);
-                return;
-            }
-            mCdsDetailFragment = CdsDetailFragment.newInstance(mServer.getUdn(), object);
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.cdsDetailContainer, mCdsDetailFragment)
-                    .commit();
-        }
-        mSelectedObject = object;
-        mCdsListAdapter.setSelection(position);
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(@Nullable final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mHandler = new Handler();
-        final String udn = getIntent().getStringExtra(Const.EXTRA_SERVER_UDN);
-        mServer = mDataHolder.getMsControlPoint().getDevice(udn);
-        if (mServer == null) {
-            finish();
+        mCdsTreeModel = mDataHolder.getCdsTreeModel();
+        mBinding = DataBindingUtil.setContentView(this, R.layout.cds_list_activity);
+        mBinding.setModel(new CdsListActivityModel(this, this));
+
+        setSupportActionBar(mBinding.toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        final MediaServer server = mDataHolder.getControlPointModel().getSelectedMediaServer();
+        ToolbarThemeUtils.setCdsListTheme(this, server, mBinding.toolbar);
+
+        mTwoPane = mBinding.cdsDetailContainer != null;
+        if (savedInstanceState != null) {
+            restoreScroll(savedInstanceState);
+        }
+    }
+
+    private void restoreScroll(@NonNull final Bundle savedInstanceState) {
+        final int position = savedInstanceState.getInt(KEY_SCROLL_POSITION, 0);
+        final int offset = savedInstanceState.getInt(KEY_SCROLL_OFFSET, 0);
+        if (position == 0 && offset == 0) {
             return;
         }
-        final String name = mServer.getFriendlyName();
-        setContentView(R.layout.cds_list_activity);
-        final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        final ActionBar actionBar = getSupportActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setTitle(name);
-
-        ToolbarThemeUtils.setCdsListTheme(this, mServer, toolbar);
-
-        mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeRefresh);
-        mSwipeRefreshLayout.setColorSchemeResources(
-                R.color.progress1, R.color.progress2, R.color.progress3, R.color.progress4);
-        mSwipeRefreshLayout.setOnRefreshListener(() -> {
-            mDataHolder.popCache();
-            reload();
+        final RecyclerView recyclerView = mBinding.recyclerView;
+        ViewUtils.execOnLayout(recyclerView, () -> {
+            recyclerView.scrollToPosition(position);
+            recyclerView.post(() -> recyclerView.scrollBy(0, offset));
         });
-        mCdsListAdapter = new CdsListAdapter(this);
-        mCdsListAdapter.setOnItemClickListener(this::onItemClick);
-        mCdsListAdapter.setOnItemLongClickListener(this::onItemLongClick);
-        mRecyclerView = (RecyclerView) findViewById(R.id.cdsList);
-        mRecyclerView.setAdapter(mCdsListAdapter);
-        mRecyclerView.addItemDecoration(new DividerItemDecoration(this));
-
-        if (findViewById(R.id.cdsDetailContainer) != null) {
-            mTwoPane = true;
-        }
-        if (savedInstanceState == null) {
-            browse(0, "0", "", true);
-        }
     }
 
     @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
-        final History[] histories = (History[]) savedInstanceState.getParcelableArray(KEY_HISTORY);
-        Collections.addAll(mHistories, histories);
-        final History history = mHistories.peekLast();
-        if (history.getId().equals(mDataHolder.getCurrentContainer())) {
-            prepareViewState();
-            updateListView(mDataHolder.getCurrentList(), true);
-        } else {
-            browse(history.getPosition(), history.getId(), history.getTitle(), false);
-        }
-        mSelectedObject = savedInstanceState.getParcelable(KEY_SELECTED);
-        final int position = savedInstanceState.getInt(KEY_POSITION, -1);
-        mCdsListAdapter.setSelection(position);
-        if (position >= 0) {
-            mRecyclerView.scrollToPosition(position);
-        }
-        restoreDetailFragment();
-    }
-
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
+    protected void onSaveInstanceState(@NonNull final Bundle outState) {
         removeDetailFragment();
         super.onSaveInstanceState(outState);
-        outState.putParcelableArray(KEY_HISTORY, mHistories.toArray(new History[mHistories.size()]));
-        outState.putInt(KEY_POSITION, mCdsListAdapter.getSelection());
-        if (mSelectedObject != null) {
-            outState.putParcelable(KEY_SELECTED, mSelectedObject);
-        }
+        saveScroll(outState);
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if (mBrowseResult != null) {
-            mBrowseResult.cancel(true);
+    private void saveScroll(@NonNull final Bundle outState) {
+        final RecyclerView recyclerView = mBinding.recyclerView;
+        if (recyclerView.getChildCount() == 0) {
+            return;
         }
-        if (isFinishing()) {
-            mDataHolder.clearCache();
-        }
+        final View view = recyclerView.getChildAt(0);
+        outState.putInt(KEY_SCROLL_POSITION, recyclerView.getChildAdapterPosition(view));
+        outState.putInt(KEY_SCROLL_OFFSET, -view.getTop());
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        restoreDetailFragment();
-    }
-
-    private void restoreDetailFragment() {
-        if (mTwoPane && mSelectedObject != null && mCdsDetailFragment == null) {
-            mCdsDetailFragment = CdsDetailFragment.newInstance(mServer.getUdn(), mSelectedObject);
-            getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.cdsDetailContainer, mCdsDetailFragment)
-                    .commit();
+        final CdsObject object = mCdsTreeModel.getSelectedObject();
+        if (object == null) {
+            return;
+        }
+        if (mTwoPane && object.isItem()) {
+            setDetailFragment(false);
         }
     }
 
     @Override
     public void onBackPressed() {
-        if (mHistories.size() <= 1) {
-            super.onBackPressed();
-        } else {
-            if (mBrowseResult != null) {
-                mBrowseResult.cancel(true);
-            }
-            mHandler.removeCallbacks(mUpdateListView);
-            final History history = mHistories.removeLast();
-            final int position = history.getPosition();
-            if (!mDataHolder.getCurrentContainer().equals(mHistories.peekLast().getId())) {
-                mDataHolder.popCache();
-            }
-            prepareViewState();
-            updateListView(mDataHolder.getCurrentList(), true);
-            mCdsListAdapter.setSelection(position);
-            final LinearLayoutManager llm = (LinearLayoutManager) mRecyclerView.getLayoutManager();
-            llm.scrollToPositionWithOffset(position, mRecyclerView.getHeight() / 3);
+        if (mBinding.getModel().onBackPressed()) {
+            return;
         }
+        super.onBackPressed();
+    }
+
+    @Override
+    public boolean onKeyLongPress(final int keyCode, final KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            mCdsTreeModel.terminate();
+            mCdsTreeModel.initialize();
+            super.onBackPressed();
+            return true;
+        }
+        return super.onKeyLongPress(keyCode, event);
     }
 
     @Override
@@ -343,15 +200,23 @@ public class CdsListActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
-    private void browse(int position, String objectId, String title, boolean push) {
-        if (mBrowseResult != null) {
-            mBrowseResult.cancel(true);
+    private void startDetailActivity(@NonNull final View v) {
+        final Intent intent = CdsDetailActivity.makeIntent(v.getContext());
+        startActivity(intent, ActivityUtils.makeScaleUpAnimationBundle(v));
+    }
+
+    private void setDetailFragment(final boolean animate) {
+        if (!mTwoPane) {
+            return;
         }
-        if (push) {
-            mHistories.addLast(new History(position, objectId, title));
+        mCdsDetailFragment = CdsDetailFragment.newInstance();
+        if (animate && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            mCdsDetailFragment.setEnterTransition(new Slide(Gravity.START));
         }
-        prepareViewState();
-        reload();
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.cdsDetailContainer, mCdsDetailFragment)
+                .commit();
     }
 
     private void removeDetailFragment() {
@@ -363,93 +228,5 @@ public class CdsListActivity extends AppCompatActivity
                 .remove(mCdsDetailFragment)
                 .commit();
         mCdsDetailFragment = null;
-    }
-
-    private void prepareViewState() {
-        removeDetailFragment();
-        mCdsListAdapter.clear();
-        mCdsListAdapter.clearSelection();
-        mCdsListAdapter.notifyDataSetChanged();
-        mSelectedObject = null;
-        final StringBuilder sb = new StringBuilder();
-        for (final ListIterator<History> i = mHistories.listIterator(mHistories.size());
-             i.hasPrevious(); ) {
-            final History history = i.previous();
-            if (sb.length() != 0 && !history.getId().equals("0")) {
-                sb.append(" < ");
-            }
-            sb.append(history.getTitle());
-        }
-        mSubtitle = sb.toString();
-        final ActionBar actionBar = getSupportActionBar();
-        actionBar.setSubtitle(mSubtitle);
-    }
-
-    private void reload() {
-        mSwipeRefreshLayout.setRefreshing(true);
-        mCdsListAdapter.clear();
-        mCdsListAdapter.notifyDataSetChanged();
-        final History history = mHistories.peekLast();
-        mBrowseResult = mServer.browse(history.getId());
-        mBrowseResult.setStatusListener(this);
-    }
-
-    @Override
-    public void onCompletion(@NonNull BrowseResult result) {
-        if (mBrowseResult.isCancelled()) {
-            return;
-        }
-        final History history = mHistories.peekLast();
-        try {
-            final List<CdsObject> list = result.get();
-            mDataHolder.pushCache(history.getId(), list);
-            updateListViewAsync(list, true);
-        } catch (InterruptedException | ExecutionException ignored) {
-            // 完了状態のためこれらExceptionが発生することはない
-        }
-    }
-
-    @Override
-    public void onProgressUpdate(@NonNull BrowseResult result) {
-        updateListViewAsync(result.getProgress(), false);
-    }
-
-    private void updateListViewAsync(final List<CdsObject> result, final boolean completion) {
-        mHandler.removeCallbacks(mUpdateListView);
-        mUpdateListView.set(result, completion);
-        mHandler.post(mUpdateListView);
-    }
-
-    private final UpdateListView mUpdateListView = new UpdateListView();
-
-    private class UpdateListView implements Runnable {
-        private List<CdsObject> mResult;
-        private boolean mCompletion;
-
-        public void set(List<CdsObject> result, boolean completion) {
-            mResult = result;
-            mCompletion = completion;
-        }
-
-        @Override
-        public void run() {
-            updateListView(mResult, mCompletion);
-        }
-    }
-
-    private void updateListView(List<CdsObject> result, boolean completion) {
-        final int beforeCount = mCdsListAdapter.getItemCount();
-        mCdsListAdapter.clear();
-        if (result != null) {
-            mCdsListAdapter.addAll(result);
-        }
-        if (completion) {
-            mSwipeRefreshLayout.setRefreshing(false);
-        }
-        final int count = mCdsListAdapter.getItemCount();
-        final ActionBar actionBar = getSupportActionBar();
-        assert actionBar != null;
-        actionBar.setSubtitle("[" + count + "] " + mSubtitle);
-        mCdsListAdapter.notifyItemRangeInserted(beforeCount, count - beforeCount);
     }
 }
