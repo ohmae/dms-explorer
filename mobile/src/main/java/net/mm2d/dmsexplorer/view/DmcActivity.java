@@ -38,7 +38,7 @@ import net.mm2d.dmsexplorer.Repository;
 import net.mm2d.dmsexplorer.view.adapter.CdsPropertyAdapter;
 import net.mm2d.dmsexplorer.view.adapter.PropertyAdapter;
 import net.mm2d.dmsexplorer.domain.model.ControlPointModel;
-import net.mm2d.dmsexplorer.view.view.ChapterMark;
+import net.mm2d.dmsexplorer.view.view.ChapterMarkView;
 
 import java.util.List;
 import java.util.Locale;
@@ -98,7 +98,7 @@ public class DmcActivity extends AppCompatActivity {
     private View mNext;
     private View mPrevious;
     private SeekBar mSeekBar;
-    private ChapterMark mChapterMark;
+    private ChapterMarkView mChapterMarkView;
     private TextView mProgressText;
     private TextView mDurationText;
     private int mProgress;
@@ -143,7 +143,7 @@ public class DmcActivity extends AppCompatActivity {
         mProgressText.setText(makeTimeText(mProgress));
         mSeekBar.setMax(mDuration);
         mSeekBar.setProgress(mProgress);
-        mChapterMark.setDuration(mDuration);
+        mChapterMarkView.setDuration(mDuration);
     }
 
     private static String makeTimeText(int millisecond) {
@@ -191,7 +191,7 @@ public class DmcActivity extends AppCompatActivity {
         mPlay = (ImageView) findViewById(R.id.play);
         mNext = findViewById(R.id.next);
         mPrevious = findViewById(R.id.previous);
-        mChapterMark = (ChapterMark) findViewById(R.id.chapterMark);
+        mChapterMarkView = (ChapterMarkView) findViewById(R.id.chapterMark);
         mSeekBar = (SeekBar) findViewById(R.id.seekBar);
         mProgressText = (TextView) findViewById(R.id.textProgress);
         mDurationText = (TextView) findViewById(R.id.textDuration);
@@ -296,7 +296,7 @@ public class DmcActivity extends AppCompatActivity {
         mChapterInfo = chapterInfo;
         mNext.setVisibility(View.VISIBLE);
         mPrevious.setVisibility(View.VISIBLE);
-        mChapterMark.setChapterInfo(mChapterInfo);
+        mChapterMarkView.setChapterInfo(mChapterInfo);
         final int count = mPropertyAdapter.getItemCount();
         mPropertyAdapter.addEntry(getString(R.string.prop_chapter_info),
                 makeChapterString(chapterInfo));

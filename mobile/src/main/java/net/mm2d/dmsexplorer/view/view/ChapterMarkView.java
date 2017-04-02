@@ -24,7 +24,7 @@ import java.util.List;
 /**
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
  */
-public class ChapterMark extends View {
+public class ChapterMarkView extends View {
     @NonNull
     private final Paint mPaint;
     private final float mHalfHeight;
@@ -32,15 +32,15 @@ public class ChapterMark extends View {
     private List<Integer> mChapterInfo;
     private int mDuration;
 
-    public ChapterMark(@NonNull Context context) {
+    public ChapterMarkView(@NonNull Context context) {
         this(context, null);
     }
 
-    public ChapterMark(@NonNull Context context, @Nullable AttributeSet attrs) {
+    public ChapterMarkView(@NonNull Context context, @Nullable AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public ChapterMark(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+    public ChapterMarkView(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         mPaint = new Paint();
         mPaint.setColor(ContextCompat.getColor(context, R.color.chapterMark));
