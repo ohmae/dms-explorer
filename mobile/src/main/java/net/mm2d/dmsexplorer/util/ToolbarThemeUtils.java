@@ -18,7 +18,6 @@ import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v7.graphics.Palette;
 import android.support.v7.graphics.Palette.Swatch;
 import android.support.v7.widget.Toolbar;
@@ -36,24 +35,10 @@ import net.opacapp.multilinecollapsingtoolbar.CollapsingToolbarLayout;
  */
 public class ToolbarThemeUtils {
     public static void setServerDetailTheme(
-            final @NonNull Activity activity,
-            final @NonNull MediaServer server,
-            final @NonNull CollapsingToolbarLayout toolbarLayout) {
-        setServerDetailTheme(activity, server, toolbarLayout, true);
-    }
-
-    public static void setServerDetailTheme(
-            final @NonNull Fragment fragment,
-            final @NonNull MediaServer server,
-            final @NonNull CollapsingToolbarLayout toolbarLayout) {
-        setServerDetailTheme(fragment.getActivity(), server, toolbarLayout, false);
-    }
-
-    private static void setServerDetailTheme(
             final @NonNull Context context,
             final @NonNull MediaServer server,
             final @NonNull CollapsingToolbarLayout toolbarLayout,
-            boolean activityTheme) {
+            final boolean activityTheme) {
         final ImageView image = (ImageView) toolbarLayout.findViewById(R.id.toolbarIcon);
         final Bitmap icon = createIconBitmap(server.getIcon());
         if (icon != null) {
@@ -164,9 +149,9 @@ public class ToolbarThemeUtils {
     }
 
     public static void setCdsListTheme(
-            final @NonNull Activity activity,
-            final @NonNull MediaServer server,
-            final @NonNull Toolbar toolbar) {
+            @NonNull final Activity activity,
+            @NonNull final MediaServer server,
+            @NonNull final Toolbar toolbar) {
         final int collapsedColor = server.getIntTag(Const.KEY_TOOLBAR_COLLAPSED_COLOR, Color.BLACK);
         toolbar.setBackgroundColor(collapsedColor);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -175,23 +160,9 @@ public class ToolbarThemeUtils {
     }
 
     public static void setCdsDetailTheme(
-            final @NonNull Activity activity,
-            final @NonNull CdsObject object,
-            final @NonNull CollapsingToolbarLayout toolbarLayout) {
-        setCdsDetailTheme(activity, object, toolbarLayout, true);
-    }
-
-    public static void setCdsDetailTheme(
-            final @NonNull Fragment fragment,
-            final @NonNull CdsObject object,
-            final @NonNull CollapsingToolbarLayout toolbarLayout) {
-        setCdsDetailTheme(fragment.getActivity(), object, toolbarLayout, false);
-    }
-
-    private static void setCdsDetailTheme(
-            final @NonNull Context context,
-            final @NonNull CdsObject object,
-            final @NonNull CollapsingToolbarLayout toolbarLayout,
+            @NonNull final Context context,
+            @NonNull final CdsObject object,
+            @NonNull final CollapsingToolbarLayout toolbarLayout,
             boolean activityTheme) {
         final String title = object.getTitle();
         final int toolbarColor = ThemeUtils.getAccentColor(title);

@@ -130,7 +130,7 @@ public class ServerListActivity extends AppCompatActivity
     }
 
     private void setDetailFragment(@NonNull final MediaServer server, boolean animate) {
-        mServerDetailFragment = ServerDetailFragment.newInstance(server.getUdn());
+        mServerDetailFragment = ServerDetailFragment.newInstance();
         if (animate && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             mServerDetailFragment.setEnterTransition(new Slide(Gravity.START));
         }

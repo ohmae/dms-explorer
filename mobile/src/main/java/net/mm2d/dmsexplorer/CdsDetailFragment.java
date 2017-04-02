@@ -38,6 +38,7 @@ import net.opacapp.multilinecollapsingtoolbar.CollapsingToolbarLayout;
  * @author <a href="mailto:ryo@mm2d.net">大前良介(OHMAE Ryosuke)</a>
  */
 public class CdsDetailFragment extends Fragment {
+    private static final String KEY_TWO_PANE = "KEY_TWO_PANE";
     /**
      * インスタンスを作成する。
      *
@@ -53,6 +54,7 @@ public class CdsDetailFragment extends Fragment {
         final Bundle arguments = new Bundle();
         arguments.putString(Const.EXTRA_SERVER_UDN, udn);
         arguments.putParcelable(Const.EXTRA_OBJECT, object);
+        arguments.putBoolean(KEY_TWO_PANE, true);
         instance.setArguments(arguments);
         return instance;
     }
@@ -77,6 +79,14 @@ public class CdsDetailFragment extends Fragment {
         return intent.getParcelableExtra(Const.EXTRA_OBJECT);
     }
 
+    private boolean isTwoPane() {
+        final Bundle arguments = getArguments();
+        if (arguments == null) {
+            return false;
+        }
+        return arguments.getBoolean(KEY_TWO_PANE);
+    }
+
     @Override
     public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
                              final Bundle savedInstanceState) {
@@ -92,8 +102,8 @@ public class CdsDetailFragment extends Fragment {
         }
         toolbar.setTitle(AribUtils.toDisplayableString(object.getTitle()));
 
-        ToolbarThemeUtils.setCdsDetailTheme(this, object,
-                (CollapsingToolbarLayout) rootView.findViewById(R.id.toolbarLayout));
+        ToolbarThemeUtils.setCdsDetailTheme(getActivity(), object,
+                (CollapsingToolbarLayout) rootView.findViewById(R.id.toolbarLayout), !isTwoPane());
 
         final RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.cdsDetail);
         recyclerView.setAdapter(new CdsPropertyAdapter(getActivity(), object));
