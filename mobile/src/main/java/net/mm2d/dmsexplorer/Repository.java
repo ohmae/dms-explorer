@@ -18,17 +18,17 @@ import net.mm2d.dmsexplorer.domain.model.ControlPointModel;
 /**
  * @author <a href="mailto:ryo@mm2d.net">大前良介(OHMAE Ryosuke)</a>
  */
-public class DataHolder {
-    private static final DataHolder INSTANCE = new DataHolder();
+public class Repository {
+    private static final Repository INSTANCE = new Repository();
 
-    public static DataHolder getInstance() {
+    public static Repository getInstance() {
         return INSTANCE;
     }
 
     private ControlPointModel mControlPointModel;
     private CdsTreeModel mCdsTreeModel;
 
-    private DataHolder() {
+    private Repository() {
     }
 
     public void initialize(@NonNull Context context) {
@@ -50,6 +50,7 @@ public class DataHolder {
         }
     }
 
+    @Nullable
     public CdsTreeModel getCdsTreeModel() {
         return mCdsTreeModel;
     }

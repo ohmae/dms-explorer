@@ -19,7 +19,7 @@ import android.support.annotation.NonNull;
 import net.mm2d.android.upnp.cds.CdsObject;
 import net.mm2d.android.upnp.cds.Tag;
 import net.mm2d.dmsexplorer.Const;
-import net.mm2d.dmsexplorer.DataHolder;
+import net.mm2d.dmsexplorer.Repository;
 import net.mm2d.dmsexplorer.DmcActivity;
 import net.mm2d.dmsexplorer.MovieActivity;
 import net.mm2d.dmsexplorer.MusicActivity;
@@ -97,7 +97,7 @@ public class ItemSelectUtils {
 
     public static void send(final @NonNull Activity activity,
                             final @NonNull String udn, final @NonNull CdsObject object) {
-        if (DataHolder.getInstance().getControlPointModel().getMrControlPoint().getDeviceListSize() == 0) {
+        if (Repository.getInstance().getControlPointModel().getMrControlPoint().getDeviceListSize() == 0) {
             return;
         }
         final SelectDeviceDialog dialog = SelectDeviceDialog.newInstance(udn, object);

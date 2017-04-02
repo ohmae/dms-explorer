@@ -44,7 +44,7 @@ public class CdsListActivity extends AppCompatActivity implements CdsSelectListe
     private static final String KEY_SCROLL_POSITION = "KEY_SCROLL_POSITION";
     private static final String KEY_SCROLL_OFFSET = "KEY_SCROLL_OFFSET";
     private boolean mTwoPane;
-    private final DataHolder mDataHolder = DataHolder.getInstance();
+    private final Repository mRepository = Repository.getInstance();
     private CdsTreeModel mCdsTreeModel;
     private CdsDetailFragment mCdsDetailFragment;
     private CdsListActivityBinding mBinding;
@@ -103,14 +103,14 @@ public class CdsListActivity extends AppCompatActivity implements CdsSelectListe
     @Override
     protected void onCreate(@Nullable final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mCdsTreeModel = mDataHolder.getCdsTreeModel();
+        mCdsTreeModel = mRepository.getCdsTreeModel();
         mBinding = DataBindingUtil.setContentView(this, R.layout.cds_list_activity);
         mBinding.setModel(new CdsListActivityModel(this, this));
 
         setSupportActionBar(mBinding.toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        final MediaServer server = mDataHolder.getControlPointModel().getSelectedMediaServer();
+        final MediaServer server = mRepository.getControlPointModel().getSelectedMediaServer();
         ToolbarThemeUtils.setCdsListTheme(this, server, mBinding.toolbar);
 
         mTwoPane = mBinding.cdsDetailContainer != null;

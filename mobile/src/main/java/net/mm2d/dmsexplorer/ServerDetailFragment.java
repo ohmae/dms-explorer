@@ -51,7 +51,7 @@ public class ServerDetailFragment extends Fragment {
                              final Bundle savedInstanceState) {
         final Activity activity = getActivity();
         mBinding = DataBindingUtil.inflate(inflater, R.layout.server_detail_fragment, container, false);
-        final MediaServer server = DataHolder.getInstance()
+        final MediaServer server = Repository.getInstance()
                 .getControlPointModel().getSelectedMediaServer();
         if (server == null) {
             activity.finish();

@@ -66,9 +66,9 @@ public class CdsDetailFragment extends Fragment {
                              final Bundle savedInstanceState) {
         final View rootView = inflater.inflate(R.layout.cds_detail_fragment, container, false);
 
-        final DataHolder dataHolder = DataHolder.getInstance();
-        final MediaServer server = dataHolder.getControlPointModel().getSelectedMediaServer();
-        final CdsObject object = dataHolder.getCdsTreeModel().getSelectedObject();
+        final Repository repository = Repository.getInstance();
+        final MediaServer server = repository.getControlPointModel().getSelectedMediaServer();
+        final CdsObject object = repository.getCdsTreeModel().getSelectedObject();
         final Toolbar toolbar = (Toolbar) rootView.findViewById(R.id.cdsDetailToolbar);
         if (object == null || server == null || toolbar == null) {
             getActivity().finish();
@@ -121,7 +121,7 @@ public class CdsDetailFragment extends Fragment {
             @NonNull final FloatingActionButton fab,
             @NonNull final String udn,
             @NonNull final CdsObject object) {
-        final MrControlPoint cp = DataHolder.getInstance().getControlPointModel().getMrControlPoint();
+        final MrControlPoint cp = Repository.getInstance().getControlPointModel().getMrControlPoint();
         if (cp.getDeviceListSize() == 0) {
             fab.setVisibility(View.GONE);
             return;

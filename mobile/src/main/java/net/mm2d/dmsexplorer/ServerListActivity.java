@@ -55,7 +55,7 @@ public class ServerListActivity extends AppCompatActivity
     private boolean mHasReenterTransition;
     private boolean mTwoPane;
     private final ControlPointModel mControlPointModel
-            = DataHolder.getInstance().getControlPointModel();
+            = Repository.getInstance().getControlPointModel();
     private ServerDetailFragment mServerDetailFragment;
     private ServerListActivityBinding mBinding;
 

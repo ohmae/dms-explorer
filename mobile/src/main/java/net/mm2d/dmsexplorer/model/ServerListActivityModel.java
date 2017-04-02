@@ -26,7 +26,7 @@ import net.mm2d.android.upnp.cds.MsControlPoint;
 import net.mm2d.android.upnp.cds.MsControlPoint.MsDiscoveryListener;
 import net.mm2d.android.view.DividerItemDecoration;
 import net.mm2d.dmsexplorer.BR;
-import net.mm2d.dmsexplorer.DataHolder;
+import net.mm2d.dmsexplorer.Repository;
 import net.mm2d.dmsexplorer.R;
 import net.mm2d.dmsexplorer.adapter.ServerListAdapter;
 import net.mm2d.dmsexplorer.domain.model.ControlPointModel;
@@ -66,7 +66,7 @@ public class ServerListActivityModel extends BaseObservable {
     private final LayoutManager mServerListLayoutManager;
     private boolean mRefreshing;
 
-    private final ControlPointModel mControlPointModel = DataHolder.getInstance().getControlPointModel();
+    private final ControlPointModel mControlPointModel = Repository.getInstance().getControlPointModel();
     private final MsControlPoint mMsControlPoint = mControlPointModel.getMsControlPoint();
     private final Handler mHandler = new Handler(Looper.getMainLooper());
     private final ServerSelectListener mServerSelectListener;

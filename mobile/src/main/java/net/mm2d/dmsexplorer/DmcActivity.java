@@ -166,7 +166,7 @@ public class DmcActivity extends AppCompatActivity {
         final CdsObject object = intent.getParcelableExtra(Const.EXTRA_OBJECT);
         final String uri = intent.getStringExtra(Const.EXTRA_URI);
         final String rendererUdn = intent.getStringExtra(Const.EXTRA_RENDERER_UDN);
-        final ControlPointModel model = DataHolder.getInstance().getControlPointModel();
+        final ControlPointModel model = Repository.getInstance().getControlPointModel();
         final MediaServer server = model.getMsControlPoint().getDevice(serverUdn);
         mMediaRenderer = model.getMrControlPoint().getDevice(rendererUdn);
         if (mMediaRenderer == null || server == null) {

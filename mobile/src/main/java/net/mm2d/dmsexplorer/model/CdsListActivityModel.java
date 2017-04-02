@@ -23,7 +23,7 @@ import android.view.View;
 import net.mm2d.android.upnp.cds.CdsObject;
 import net.mm2d.android.view.DividerItemDecoration;
 import net.mm2d.dmsexplorer.BR;
-import net.mm2d.dmsexplorer.DataHolder;
+import net.mm2d.dmsexplorer.Repository;
 import net.mm2d.dmsexplorer.R;
 import net.mm2d.dmsexplorer.adapter.CdsListAdapter;
 import net.mm2d.dmsexplorer.domain.model.CdsTreeModel;
@@ -74,7 +74,7 @@ public class CdsListActivityModel extends BaseObservable implements CdsListListe
         mCdsListLayoutManager = new LinearLayoutManager(context);
 
         mCdsSelectListener = listener;
-        mCdsTreeModel = DataHolder.getInstance().getCdsTreeModel();
+        mCdsTreeModel = Repository.getInstance().getCdsTreeModel();
         mCdsTreeModel.setCdsListListener(this);
         mTitle = mCdsTreeModel.getTitle();
     }
