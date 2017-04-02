@@ -30,8 +30,8 @@ import net.mm2d.android.util.ActivityUtils;
 import net.mm2d.android.util.ViewUtils;
 import net.mm2d.dmsexplorer.databinding.CdsListActivityBinding;
 import net.mm2d.dmsexplorer.domain.model.CdsTreeModel;
-import net.mm2d.dmsexplorer.model.CdsListActivityModel;
-import net.mm2d.dmsexplorer.model.CdsListActivityModel.CdsSelectListener;
+import net.mm2d.dmsexplorer.viewmodel.CdsListActivityModel;
+import net.mm2d.dmsexplorer.viewmodel.CdsListActivityModel.CdsSelectListener;
 import net.mm2d.dmsexplorer.util.ItemSelectUtils;
 import net.mm2d.dmsexplorer.util.ToolbarThemeUtils;
 

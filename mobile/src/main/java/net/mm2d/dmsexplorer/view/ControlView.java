@@ -24,7 +24,7 @@ import android.widget.SeekBar;
 
 import net.mm2d.dmsexplorer.R;
 import net.mm2d.dmsexplorer.databinding.ControlViewBinding;
-import net.mm2d.dmsexplorer.model.ControlViewModel;
+import net.mm2d.dmsexplorer.viewmodel.ControlViewModel;
 import net.mm2d.util.Log;
 
 /**

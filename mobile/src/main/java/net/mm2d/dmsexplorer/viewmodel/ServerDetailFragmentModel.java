@@ -5,7 +5,7 @@
  * http://opensource.org/licenses/MIT
  */
 
-package net.mm2d.dmsexplorer.model;
+package net.mm2d.dmsexplorer.viewmodel;
 
 import android.content.Context;
 import android.graphics.Bitmap;

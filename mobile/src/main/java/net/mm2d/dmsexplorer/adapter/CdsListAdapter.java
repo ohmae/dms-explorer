@@ -19,7 +19,7 @@ import android.view.ViewGroup;
 import net.mm2d.android.upnp.cds.CdsObject;
 import net.mm2d.dmsexplorer.R;
 import net.mm2d.dmsexplorer.databinding.CdsListItemBinding;
-import net.mm2d.dmsexplorer.model.CdsItemModel;
+import net.mm2d.dmsexplorer.viewmodel.CdsItemModel;
 
 import java.util.ArrayList;
 import java.util.Collection;

@@ -7,7 +7,7 @@
 
         <variable
             name="model"
-            type="net.mm2d.dmsexplorer.model.CdsItemModel"/>
+            type="net.mm2d.dmsexplorer.viewmodel.CdsItemModel"/>
     </data>
 
     <LinearLayout

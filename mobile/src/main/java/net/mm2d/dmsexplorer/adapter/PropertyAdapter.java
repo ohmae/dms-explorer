@@ -22,7 +22,7 @@ import net.mm2d.dmsexplorer.adapter.property.LinkFormatter;
 import net.mm2d.dmsexplorer.adapter.property.PropertyFormatter;
 import net.mm2d.dmsexplorer.adapter.property.TextFormatter;
 import net.mm2d.dmsexplorer.databinding.PropertyListItemBinding;
-import net.mm2d.dmsexplorer.model.PropertyItemModel;
+import net.mm2d.dmsexplorer.viewmodel.PropertyItemModel;
 
 import java.util.ArrayList;
 import java.util.List;

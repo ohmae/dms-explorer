@@ -21,7 +21,7 @@ import android.view.ViewGroup;
 import net.mm2d.android.upnp.cds.MediaServer;
 import net.mm2d.android.util.ActivityUtils;
 import net.mm2d.dmsexplorer.databinding.ServerDetailFragmentBinding;
-import net.mm2d.dmsexplorer.model.ServerDetailFragmentModel;
+import net.mm2d.dmsexplorer.viewmodel.ServerDetailFragmentModel;
 
 /**
  * メディアサーバの詳細情報を表示するFragment。

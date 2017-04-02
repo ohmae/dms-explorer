@@ -8,7 +8,7 @@
 
         <variable
             name="model"
-            type="net.mm2d.dmsexplorer.model.ServerItemModel"/>
+            type="net.mm2d.dmsexplorer.viewmodel.ServerItemModel"/>
     </data>
 
     <LinearLayout

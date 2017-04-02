@@ -19,7 +19,7 @@ import android.view.ViewGroup;
 import net.mm2d.android.upnp.cds.MediaServer;
 import net.mm2d.dmsexplorer.R;
 import net.mm2d.dmsexplorer.databinding.ServerListItemBinding;
-import net.mm2d.dmsexplorer.model.ServerItemModel;
+import net.mm2d.dmsexplorer.viewmodel.ServerItemModel;
 
 import java.util.ArrayList;
 import java.util.Collection;

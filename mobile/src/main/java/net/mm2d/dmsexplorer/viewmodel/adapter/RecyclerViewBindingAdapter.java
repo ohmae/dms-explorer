@@ -5,7 +5,7 @@
  * http://opensource.org/licenses/MIT
  */
 
-package net.mm2d.dmsexplorer.model.adapter;
+package net.mm2d.dmsexplorer.viewmodel.adapter;
 
 import android.databinding.BindingAdapter;
 import android.support.v7.widget.RecyclerView;

@@ -8,7 +8,7 @@
 
         <variable
             name="model"
-            type="net.mm2d.dmsexplorer.model.ServerDetailFragmentModel"/>
+            type="net.mm2d.dmsexplorer.viewmodel.ServerDetailFragmentModel"/>
     </data>
 
     <android.support.design.widget.CoordinatorLayout

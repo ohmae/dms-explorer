@@ -34,8 +34,8 @@ import net.mm2d.android.util.ViewUtils;
 import net.mm2d.android.view.TransitionListenerAdapter;
 import net.mm2d.dmsexplorer.databinding.ServerListActivityBinding;
 import net.mm2d.dmsexplorer.domain.model.ControlPointModel;
-import net.mm2d.dmsexplorer.model.ServerListActivityModel;
-import net.mm2d.dmsexplorer.model.ServerListActivityModel.ServerSelectListener;
+import net.mm2d.dmsexplorer.viewmodel.ServerListActivityModel;
+import net.mm2d.dmsexplorer.viewmodel.ServerListActivityModel.ServerSelectListener;
 
 import java.util.List;
 import java.util.Map;
