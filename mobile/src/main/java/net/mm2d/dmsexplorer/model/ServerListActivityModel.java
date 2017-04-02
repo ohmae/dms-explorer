@@ -39,11 +39,11 @@ import java.util.List;
  */
 public class ServerListActivityModel extends BaseObservable {
     public interface ServerSelectListener {
-        void onSelect(@NonNull View v, @NonNull MediaServer server, boolean alreadySelected);
+        void onSelect(@NonNull View v, boolean alreadySelected);
 
         void onUnselect();
 
-        void onDetermine(@NonNull View v, @NonNull MediaServer server);
+        void onDetermine(@NonNull View v);
     }
 
     public final int[] refreshColors = new int[]{
@@ -139,13 +139,13 @@ public class ServerListActivityModel extends BaseObservable {
         final boolean alreadySelected = mControlPointModel.isSelectedMediaServer(server);
         mServerListAdapter.setSelectedServer(server);
         mControlPointModel.setSelectedServer(server);
-        mServerSelectListener.onSelect(v, server, alreadySelected);
+        mServerSelectListener.onSelect(v, alreadySelected);
     }
 
     private void onItemLongClick(@NonNull final View v, @NonNull final MediaServer server) {
         mServerListAdapter.setSelectedServer(server);
         mControlPointModel.setSelectedServer(server);
-        mServerSelectListener.onDetermine(v, server);
+        mServerSelectListener.onDetermine(v);
     }
 
     private void onDiscoverServer(@NonNull MediaServer server) {

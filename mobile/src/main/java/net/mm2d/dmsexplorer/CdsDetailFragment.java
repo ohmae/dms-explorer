@@ -8,11 +8,9 @@
 package net.mm2d.dmsexplorer;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
@@ -44,39 +42,15 @@ public class CdsDetailFragment extends Fragment {
      *
      * <p>Bundleの設定と読み出しをこのクラス内で完結させる。
      *
-     * @param udn    表示するサーバのUDN
-     * @param object 表示するObject
      * @return インスタンス。
      */
     @NonNull
-    public static CdsDetailFragment newInstance(@NonNull String udn, @NonNull CdsObject object) {
+    public static CdsDetailFragment newInstance() {
         final CdsDetailFragment instance = new CdsDetailFragment();
         final Bundle arguments = new Bundle();
-        arguments.putString(Const.EXTRA_SERVER_UDN, udn);
-        arguments.putParcelable(Const.EXTRA_OBJECT, object);
         arguments.putBoolean(KEY_TWO_PANE, true);
         instance.setArguments(arguments);
         return instance;
-    }
-
-    @Nullable
-    private String getUdn() {
-        final Bundle arguments = getArguments();
-        if (arguments != null) {
-            return arguments.getString(Const.EXTRA_SERVER_UDN);
-        }
-        final Intent intent = getActivity().getIntent();
-        return intent.getStringExtra(Const.EXTRA_SERVER_UDN);
-    }
-
-    @Nullable
-    private CdsObject getCdsObject() {
-        final Bundle arguments = getArguments();
-        if (arguments != null) {
-            return arguments.getParcelable(Const.EXTRA_OBJECT);
-        }
-        final Intent intent = getActivity().getIntent();
-        return intent.getParcelableExtra(Const.EXTRA_OBJECT);
     }
 
     private boolean isTwoPane() {
@@ -92,11 +66,11 @@ public class CdsDetailFragment extends Fragment {
                              final Bundle savedInstanceState) {
         final View rootView = inflater.inflate(R.layout.cds_detail_fragment, container, false);
 
-        final String udn = getUdn();
-        final MediaServer server = DataHolder.getInstance().getControlPointModel().getMsControlPoint().getDevice(udn);
-        final CdsObject object = getCdsObject();
+        final DataHolder dataHolder = DataHolder.getInstance();
+        final MediaServer server = dataHolder.getControlPointModel().getSelectedMediaServer();
+        final CdsObject object = dataHolder.getCdsTreeModel().getSelectedObject();
         final Toolbar toolbar = (Toolbar) rootView.findViewById(R.id.cdsDetailToolbar);
-        if (udn == null || object == null || server == null || toolbar == null) {
+        if (object == null || server == null || toolbar == null) {
             getActivity().finish();
             return rootView;
         }
@@ -109,7 +83,7 @@ public class CdsDetailFragment extends Fragment {
         recyclerView.setAdapter(new CdsPropertyAdapter(getActivity(), object));
 
         setUpPlayButton(getActivity(), (FloatingActionButton) rootView.findViewById(R.id.fabPlay), object);
-        setUpSendButton(getActivity(), (FloatingActionButton) rootView.findViewById(R.id.fabSend), udn, object);
+        setUpSendButton(getActivity(), (FloatingActionButton) rootView.findViewById(R.id.fabSend), server.getUdn(), object);
         return rootView;
     }
 

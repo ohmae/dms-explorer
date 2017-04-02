@@ -59,15 +59,14 @@ public class ServerDetailFragment extends Fragment {
         }
         mBinding.setModel(new ServerDetailFragmentModel(getActivity(), server));
 
-        setUpGoButton(activity, mBinding.fab, server.getUdn());
+        setUpGoButton(activity, mBinding.fab);
         return mBinding.getRoot();
     }
 
     public void setUpGoButton(@NonNull final Context context,
-                              @NonNull final View button,
-                              @NonNull final String udn) {
+                              @NonNull final View button) {
         button.setOnClickListener(view -> {
-            final Intent intent = CdsListActivity.makeIntent(context, udn);
+            final Intent intent = CdsListActivity.makeIntent(context);
             context.startActivity(intent, ActivityUtils.makeScaleUpAnimationBundle(view));
         });
     }

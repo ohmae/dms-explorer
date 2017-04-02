@@ -55,14 +55,11 @@ public class CdsListActivity extends AppCompatActivity implements CdsSelectListe
      * <p>Bundleへの値の設定と読み出しをこのクラス内で完結させる。
      *
      * @param context コンテキスト
-     * @param udn     MediaServerのUDN
      * @return インスタンス
      */
     @NonNull
-    public static Intent makeIntent(@NonNull Context context, @NonNull String udn) {
-        final Intent intent = new Intent(context, CdsListActivity.class);
-        intent.putExtra(Const.EXTRA_SERVER_UDN, udn);
-        return intent;
+    public static Intent makeIntent(@NonNull Context context) {
+        return new Intent(context, CdsListActivity.class);
     }
 
     @Override
@@ -78,9 +75,9 @@ public class CdsListActivity extends AppCompatActivity implements CdsSelectListe
                 ItemSelectUtils.play(this, object, 0);
                 return;
             }
-            setDetailFragment(object, true);
+            setDetailFragment(true);
         } else {
-            startDetailActivity(v, object);
+            startDetailActivity(v);
         }
     }
 
@@ -95,7 +92,7 @@ public class CdsListActivity extends AppCompatActivity implements CdsSelectListe
                             final boolean alreadySelected) {
         if (object.hasProtectedResource()) {
             if (!alreadySelected) {
-                setDetailFragment(object, true);
+                setDetailFragment(true);
             }
             Snackbar.make(v, R.string.toast_not_support_drm, Snackbar.LENGTH_LONG).show();
             return;
@@ -160,7 +157,7 @@ public class CdsListActivity extends AppCompatActivity implements CdsSelectListe
             return;
         }
         if (mTwoPane && object.isItem()) {
-            setDetailFragment(object, false);
+            setDetailFragment(false);
         }
     }
 
@@ -203,16 +200,16 @@ public class CdsListActivity extends AppCompatActivity implements CdsSelectListe
         return super.onOptionsItemSelected(item);
     }
 
-    private void startDetailActivity(@NonNull final View v, @NonNull final CdsObject object) {
-        final Intent intent = CdsDetailActivity.makeIntent(v.getContext(), mCdsTreeModel.getUdn(), object);
+    private void startDetailActivity(@NonNull final View v) {
+        final Intent intent = CdsDetailActivity.makeIntent(v.getContext());
         startActivity(intent, ActivityUtils.makeScaleUpAnimationBundle(v));
     }
 
-    private void setDetailFragment(@NonNull final CdsObject object, final boolean animate) {
+    private void setDetailFragment(final boolean animate) {
         if (!mTwoPane) {
             return;
         }
-        mCdsDetailFragment = CdsDetailFragment.newInstance(mCdsTreeModel.getUdn(), object);
+        mCdsDetailFragment = CdsDetailFragment.newInstance();
         if (animate && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             mCdsDetailFragment.setEnterTransition(new Slide(Gravity.START));
         }

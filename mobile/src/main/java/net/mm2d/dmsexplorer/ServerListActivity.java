@@ -29,7 +29,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
-import net.mm2d.android.upnp.cds.MediaServer;
 import net.mm2d.android.util.ActivityUtils;
 import net.mm2d.android.util.ViewUtils;
 import net.mm2d.android.view.TransitionListenerAdapter;
@@ -61,17 +60,15 @@ public class ServerListActivity extends AppCompatActivity
     private ServerListActivityBinding mBinding;
 
     @Override
-    public void onSelect(@NonNull final View v,
-                         @NonNull final MediaServer server,
-                         boolean alreadySelected) {
+    public void onSelect(@NonNull final View v, boolean alreadySelected) {
         if (mTwoPane) {
             if (alreadySelected) {
-                startCdsListActivity(v, server);
+                startCdsListActivity(v);
                 return;
             }
-            setDetailFragment(server, true);
+            setDetailFragment(true);
         } else {
-            startServerDetailActivity(v, server);
+            startServerDetailActivity(v);
         }
     }
 
@@ -81,23 +78,20 @@ public class ServerListActivity extends AppCompatActivity
     }
 
     @Override
-    public void onDetermine(@NonNull final View v,
-                            @NonNull final MediaServer server) {
-        startCdsListActivity(v, server);
+    public void onDetermine(@NonNull final View v) {
+        startCdsListActivity(v);
     }
 
-    private void startServerDetailActivity(
-            @NonNull final View v, @NonNull final MediaServer server) {
+    private void startServerDetailActivity(@NonNull final View v) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            startServerDetailActivityLollipop(v, server);
+            startServerDetailActivityLollipop(v);
         } else {
-            startServerDetailActivityJellyBean(v, server);
+            startServerDetailActivityJellyBean(v);
         }
     }
 
     @TargetApi(VERSION_CODES.LOLLIPOP)
-    private void startServerDetailActivityLollipop(
-            @NonNull final View v, @NonNull final MediaServer server) {
+    private void startServerDetailActivityLollipop(@NonNull final View v) {
         final Intent intent = ServerDetailActivity.makeIntent(this);
         intent.putExtra(Const.EXTRA_HAS_TRANSITION, true);
         final View accent = v.findViewById(R.id.accent);
@@ -116,20 +110,19 @@ public class ServerListActivity extends AppCompatActivity
         mHasReenterTransition = true;
     }
 
-    private void startServerDetailActivityJellyBean(
-            @NonNull final View v, @NonNull final MediaServer server) {
+    private void startServerDetailActivityJellyBean(@NonNull final View v) {
         final Intent intent = ServerDetailActivity.makeIntent(this);
         startActivity(intent, ActivityUtils.makeScaleUpAnimationBundle(v));
     }
 
-    private void startCdsListActivity(@NonNull final View v, @NonNull final MediaServer server) {
-        final Intent intent = CdsListActivity.makeIntent(this, server.getUdn());
+    private void startCdsListActivity(@NonNull final View v) {
+        final Intent intent = CdsListActivity.makeIntent(this);
         startActivity(intent, ActivityOptions.makeScaleUpAnimation(
                 v, 0, 0, v.getWidth(), v.getHeight())
                 .toBundle());
     }
 
-    private void setDetailFragment(@NonNull final MediaServer server, boolean animate) {
+    private void setDetailFragment(boolean animate) {
         mServerDetailFragment = ServerDetailFragment.newInstance();
         if (animate && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             mServerDetailFragment.setEnterTransition(new Slide(Gravity.START));
@@ -225,7 +218,7 @@ public class ServerListActivity extends AppCompatActivity
                 removeDetailFragment();
                 return;
             }
-            setDetailFragment(mControlPointModel.getSelectedMediaServer(), false);
+            setDetailFragment(false);
             return;
         }
         if (position < 0) {

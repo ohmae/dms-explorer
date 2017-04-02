@@ -17,8 +17,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import net.mm2d.android.upnp.cds.CdsObject;
-
 /**
  * CDSアイテムの詳細情報を表示するActivity。
  *
@@ -31,15 +29,10 @@ public class CdsDetailActivity extends AppCompatActivity {
      * <p>Extraの設定と読み出しをこのクラス内で完結させる。
      *
      * @param context コンテキスト
-     * @param udn     メディアサーバのUDN
-     * @param object  表示するコンテンツのObject情報
      * @return このActivityを起動するためのIntent
      */
-    public static Intent makeIntent(@NonNull Context context, @NonNull String udn, @NonNull CdsObject object) {
-        final Intent intent = new Intent(context, CdsDetailActivity.class);
-        intent.putExtra(Const.EXTRA_SERVER_UDN, udn);
-        intent.putExtra(Const.EXTRA_OBJECT, object);
-        return intent;
+    public static Intent makeIntent(@NonNull Context context) {
+        return new Intent(context, CdsDetailActivity.class);
     }
 
     @Override
