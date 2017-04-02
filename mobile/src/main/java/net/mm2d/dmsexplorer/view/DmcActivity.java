@@ -5,7 +5,7 @@
  * http://opensource.org/licenses/MIT
  */
 
-package net.mm2d.dmsexplorer;
+package net.mm2d.dmsexplorer.view;
 
 import android.content.Context;
 import android.content.Intent;
@@ -32,10 +32,13 @@ import net.mm2d.android.upnp.cds.CdsObject;
 import net.mm2d.android.upnp.cds.ChapterInfo;
 import net.mm2d.android.upnp.cds.MediaServer;
 import net.mm2d.android.util.AribUtils;
-import net.mm2d.dmsexplorer.adapter.CdsPropertyAdapter;
-import net.mm2d.dmsexplorer.adapter.PropertyAdapter;
+import net.mm2d.dmsexplorer.Const;
+import net.mm2d.dmsexplorer.R;
+import net.mm2d.dmsexplorer.Repository;
+import net.mm2d.dmsexplorer.view.adapter.CdsPropertyAdapter;
+import net.mm2d.dmsexplorer.view.adapter.PropertyAdapter;
 import net.mm2d.dmsexplorer.domain.model.ControlPointModel;
-import net.mm2d.dmsexplorer.view.ChapterMark;
+import net.mm2d.dmsexplorer.view.view.ChapterMark;
 
 import java.util.List;
 import java.util.Locale;

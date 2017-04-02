@@ -1,11 +1,11 @@
 /*
- * Copyright (c) 2016 大前良介 (OHMAE Ryosuke)
+ * Copyright (c) 2017 大前良介 (OHMAE Ryosuke)
  *
  * This software is released under the MIT License.
  * http://opensource.org/licenses/MIT
  */
 
-package net.mm2d.dmsexplorer;
+package net.mm2d.dmsexplorer.view;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -26,10 +26,12 @@ import android.widget.ImageView;
 
 import net.mm2d.android.upnp.cds.CdsObject;
 import net.mm2d.android.util.AribUtils;
-import net.mm2d.dmsexplorer.adapter.CdsPropertyAdapter;
+import net.mm2d.dmsexplorer.Const;
+import net.mm2d.dmsexplorer.R;
+import net.mm2d.dmsexplorer.view.adapter.CdsPropertyAdapter;
 import net.mm2d.dmsexplorer.util.ImageViewUtils;
 import net.mm2d.dmsexplorer.util.ThemeUtils;
-import net.mm2d.dmsexplorer.view.ControlView;
+import net.mm2d.dmsexplorer.view.view.ControlView;
 
 import java.io.IOException;
 

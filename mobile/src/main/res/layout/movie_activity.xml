@@ -50,7 +50,7 @@
     </LinearLayout>
 
     <!-- コード上でpaddingを調整する -->
-    <net.mm2d.dmsexplorer.view.ControlView
+    <net.mm2d.dmsexplorer.view.view.ControlView
         android:id="@+id/controlPanel"
         android:layout_width="match_parent"
         android:layout_height="@dimen/control_height"

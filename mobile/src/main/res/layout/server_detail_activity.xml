@@ -2,7 +2,7 @@
 <fragment
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/serverDetailFragment"
-    android:name="net.mm2d.dmsexplorer.ServerDetailFragment"
+    android:name="net.mm2d.dmsexplorer.view.ServerDetailFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     />

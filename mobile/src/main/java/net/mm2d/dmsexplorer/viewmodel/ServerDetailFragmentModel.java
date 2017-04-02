@@ -20,7 +20,7 @@ import android.support.annotation.Nullable;
 import net.mm2d.android.upnp.cds.MediaServer;
 import net.mm2d.dmsexplorer.Const;
 import net.mm2d.dmsexplorer.R;
-import net.mm2d.dmsexplorer.adapter.ServerPropertyAdapter;
+import net.mm2d.dmsexplorer.view.adapter.ServerPropertyAdapter;
 import net.mm2d.dmsexplorer.util.ThemeUtils;
 import net.mm2d.dmsexplorer.util.ToolbarThemeUtils;
 import net.mm2d.upnp.Icon;

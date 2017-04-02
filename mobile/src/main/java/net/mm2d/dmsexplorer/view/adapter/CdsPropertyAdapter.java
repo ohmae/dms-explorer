@@ -5,7 +5,7 @@
  * http://opensource.org/licenses/MIT
  */
 
-package net.mm2d.dmsexplorer.adapter;
+package net.mm2d.dmsexplorer.view.adapter;
 
 import android.content.Context;
 import android.support.annotation.NonNull;

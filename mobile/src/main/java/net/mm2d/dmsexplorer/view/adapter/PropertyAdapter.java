@@ -5,7 +5,7 @@
  * http://opensource.org/licenses/MIT
  */
 
-package net.mm2d.dmsexplorer.adapter;
+package net.mm2d.dmsexplorer.view.adapter;
 
 import android.content.Context;
 import android.databinding.DataBindingUtil;
@@ -17,10 +17,10 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import net.mm2d.dmsexplorer.R;
-import net.mm2d.dmsexplorer.adapter.property.DescriptionFormatter;
-import net.mm2d.dmsexplorer.adapter.property.LinkFormatter;
-import net.mm2d.dmsexplorer.adapter.property.PropertyFormatter;
-import net.mm2d.dmsexplorer.adapter.property.TextFormatter;
+import net.mm2d.dmsexplorer.view.adapter.property.DescriptionFormatter;
+import net.mm2d.dmsexplorer.view.adapter.property.LinkFormatter;
+import net.mm2d.dmsexplorer.view.adapter.property.PropertyFormatter;
+import net.mm2d.dmsexplorer.view.adapter.property.TextFormatter;
 import net.mm2d.dmsexplorer.databinding.PropertyListItemBinding;
 import net.mm2d.dmsexplorer.viewmodel.PropertyItemModel;
 

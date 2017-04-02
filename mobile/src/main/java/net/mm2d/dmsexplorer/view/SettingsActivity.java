@@ -1,11 +1,11 @@
 /*
- * Copyright (c) 2016 大前良介 (OHMAE Ryosuke)
+ * Copyright (c) 2017 大前良介 (OHMAE Ryosuke)
  *
  * This software is released under the MIT License.
  * http://opensource.org/licenses/MIT
  */
 
-package net.mm2d.dmsexplorer;
+package net.mm2d.dmsexplorer.view;
 
 import android.content.Context;
 import android.content.Intent;
@@ -20,7 +20,9 @@ import android.view.MenuItem;
 
 import net.mm2d.android.activity.AppCompatPreferenceActivity;
 import net.mm2d.android.util.LaunchUtils;
-import net.mm2d.dmsexplorer.dialog.WebViewDialog;
+import net.mm2d.dmsexplorer.BuildConfig;
+import net.mm2d.dmsexplorer.R;
+import net.mm2d.dmsexplorer.view.dialog.WebViewDialog;
 
 import java.util.List;
 

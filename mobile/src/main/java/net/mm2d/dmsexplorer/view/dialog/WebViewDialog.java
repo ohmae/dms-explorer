@@ -5,7 +5,7 @@
  * http://opensource.org/licenses/MIT
  */
 
-package net.mm2d.dmsexplorer.dialog;
+package net.mm2d.dmsexplorer.view.dialog;
 
 import android.app.AlertDialog;
 import android.app.Dialog;

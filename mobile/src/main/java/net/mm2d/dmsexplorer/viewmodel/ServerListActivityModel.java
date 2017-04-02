@@ -28,7 +28,7 @@ import net.mm2d.android.view.DividerItemDecoration;
 import net.mm2d.dmsexplorer.BR;
 import net.mm2d.dmsexplorer.Repository;
 import net.mm2d.dmsexplorer.R;
-import net.mm2d.dmsexplorer.adapter.ServerListAdapter;
+import net.mm2d.dmsexplorer.view.adapter.ServerListAdapter;
 import net.mm2d.dmsexplorer.domain.model.ControlPointModel;
 
 import java.util.List;

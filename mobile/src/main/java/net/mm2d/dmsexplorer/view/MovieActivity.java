@@ -1,11 +1,11 @@
 /*
- * Copyright (c) 2016 大前良介 (OHMAE Ryosuke)
+ * Copyright (c) 2017 大前良介 (OHMAE Ryosuke)
  *
  * This software is released under the MIT License.
  * http://opensource.org/licenses/MIT
  */
 
-package net.mm2d.dmsexplorer;
+package net.mm2d.dmsexplorer.view;
 
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -14,53 +14,55 @@ import android.net.Uri;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
+import android.widget.VideoView;
 
 import net.mm2d.android.upnp.cds.CdsObject;
 import net.mm2d.android.util.DisplaySizeUtils;
+import net.mm2d.dmsexplorer.Const;
+import net.mm2d.dmsexplorer.R;
 import net.mm2d.dmsexplorer.util.FullscreenHelper;
-import net.mm2d.dmsexplorer.util.ImageViewUtils;
 import net.mm2d.dmsexplorer.util.ViewLayoutUtils;
+import net.mm2d.dmsexplorer.view.view.ControlView;
 
 /**
- * 静止画表示のActivity。
+ * 動画再生のActivity。
  *
  * @author <a href="mailto:ryo@mm2d.net">大前良介(OHMAE Ryosuke)</a>
  */
-public class PhotoActivity extends AppCompatActivity {
-    private View mProgress;
-    private ImageView mImageView;
+public class MovieActivity extends AppCompatActivity {
+    private VideoView mVideoView;
     private View mToolbar;
+    private ControlView mControlPanel;
     private FullscreenHelper mFullscreenHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.photo_activity);
+        setContentView(R.layout.movie_activity);
         final Intent intent = getIntent();
         final CdsObject object = intent.getParcelableExtra(Const.EXTRA_OBJECT);
         final Uri uri = intent.getData();
-
         findViewById(R.id.toolbarBack).setOnClickListener(view -> onBackPressed());
+
         final TextView title = (TextView) findViewById(R.id.toolbarTitle);
         title.setText(object.getTitle());
         mToolbar = findViewById(R.id.toolbar);
+        mControlPanel = (ControlView) findViewById(R.id.controlPanel);
         mFullscreenHelper = new FullscreenHelper.Builder(findViewById(R.id.root))
                 .setTopView(mToolbar)
+                .setBottomView(mControlPanel)
                 .build();
         mFullscreenHelper.showNavigation();
 
-        mImageView = (ImageView) findViewById(R.id.imageView);
-        mProgress = findViewById(R.id.progressBar);
-        mProgress.setVisibility(View.VISIBLE);
-
-        downloadAndSetImage(uri.toString());
+        mControlPanel.setOnCompletionListener(mp -> onBackPressed());
+        mControlPanel.setOnUserActionListener(mFullscreenHelper::postHideNavigation);
+        mVideoView = (VideoView) findViewById(R.id.videoView);
+        mVideoView.setOnPreparedListener(mControlPanel);
+        mVideoView.setVideoURI(uri);
         adjustControlPanel();
     }
 
@@ -72,15 +74,19 @@ public class PhotoActivity extends AppCompatActivity {
 
     private void adjustControlPanel() {
         if (VERSION.SDK_INT >= VERSION_CODES.N && isInMultiWindowMode()) {
-            adjustControlPanel(0);
+            adjustControlPanel(0, 0);
             return;
         }
         final Point p1 = DisplaySizeUtils.getSize(this);
         final Point p2 = DisplaySizeUtils.getRealSize(this);
-        adjustControlPanel(p2.x - p1.x);
+        adjustControlPanel(p2.x - p1.x, p2.y - p1.y);
     }
 
-    private void adjustControlPanel(int right) {
+    private void adjustControlPanel(int right, int bottom) {
+        mControlPanel.setPadding(0, 0, 0, bottom);
+        final int height = getResources().getDimensionPixelOffset(R.dimen.control_height);
+        ViewLayoutUtils.setLayoutHeight(mControlPanel, height + bottom);
+        ViewLayoutUtils.setLayoutMarginRight(mControlPanel, right);
         final int topPadding = getResources().getDimensionPixelSize(R.dimen.status_bar_size);
         mToolbar.setPadding(0, topPadding, 0, 0);
         ViewLayoutUtils.setLayoutMarginRight(mToolbar, right);
@@ -99,25 +105,8 @@ public class PhotoActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
+        mVideoView.stopPlayback();
         super.onDestroy();
         mFullscreenHelper.onDestroy();
-    }
-
-    private void downloadAndSetImage(final @NonNull String url) {
-        ImageViewUtils.downloadAndSetImage(mImageView, url, new ImageViewUtils.Callback() {
-            @Override
-            public void onSuccess() {
-                mProgress.setVisibility(View.INVISIBLE);
-            }
-
-            @Override
-            public void onError() {
-                showToast(R.string.toast_download_error_occurred);
-            }
-        });
-    }
-
-    private void showToast(int resId) {
-        Toast.makeText(this, resId, Toast.LENGTH_LONG).show();
     }
 }

@@ -20,12 +20,12 @@ import net.mm2d.android.upnp.cds.CdsObject;
 import net.mm2d.android.upnp.cds.Tag;
 import net.mm2d.dmsexplorer.Const;
 import net.mm2d.dmsexplorer.Repository;
-import net.mm2d.dmsexplorer.DmcActivity;
-import net.mm2d.dmsexplorer.MovieActivity;
-import net.mm2d.dmsexplorer.MusicActivity;
-import net.mm2d.dmsexplorer.PhotoActivity;
-import net.mm2d.dmsexplorer.dialog.SelectDeviceDialog;
-import net.mm2d.dmsexplorer.dialog.SelectResourceDialog;
+import net.mm2d.dmsexplorer.view.DmcActivity;
+import net.mm2d.dmsexplorer.view.MovieActivity;
+import net.mm2d.dmsexplorer.view.MusicActivity;
+import net.mm2d.dmsexplorer.view.PhotoActivity;
+import net.mm2d.dmsexplorer.view.dialog.SelectDeviceDialog;
+import net.mm2d.dmsexplorer.view.dialog.SelectResourceDialog;
 
 import java.util.List;
 

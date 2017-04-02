@@ -25,7 +25,7 @@ import net.mm2d.android.view.DividerItemDecoration;
 import net.mm2d.dmsexplorer.BR;
 import net.mm2d.dmsexplorer.Repository;
 import net.mm2d.dmsexplorer.R;
-import net.mm2d.dmsexplorer.adapter.CdsListAdapter;
+import net.mm2d.dmsexplorer.view.adapter.CdsListAdapter;
 import net.mm2d.dmsexplorer.domain.model.CdsTreeModel;
 import net.mm2d.dmsexplorer.domain.model.CdsTreeModel.CdsListListener;
 

@@ -5,7 +5,7 @@
  * http://opensource.org/licenses/MIT
  */
 
-package net.mm2d.dmsexplorer;
+package net.mm2d.dmsexplorer.view;
 
 import android.content.Context;
 import android.content.Intent;
@@ -28,6 +28,8 @@ import net.mm2d.android.upnp.cds.CdsObject;
 import net.mm2d.android.upnp.cds.MediaServer;
 import net.mm2d.android.util.ActivityUtils;
 import net.mm2d.android.util.ViewUtils;
+import net.mm2d.dmsexplorer.R;
+import net.mm2d.dmsexplorer.Repository;
 import net.mm2d.dmsexplorer.databinding.CdsListActivityBinding;
 import net.mm2d.dmsexplorer.domain.model.CdsTreeModel;
 import net.mm2d.dmsexplorer.viewmodel.CdsListActivityModel;
