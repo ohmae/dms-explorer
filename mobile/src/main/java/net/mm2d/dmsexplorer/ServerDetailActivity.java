@@ -15,9 +15,8 @@ import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v7.app.ActionBar;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.transition.Transition;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -25,6 +24,8 @@ import android.view.View;
 import android.view.ViewAnimationUtils;
 
 import net.mm2d.android.view.TransitionListenerAdapter;
+import net.mm2d.dmsexplorer.databinding.ServerDetailFragmentBinding;
+import net.mm2d.dmsexplorer.util.ThemeUtils;
 
 
 /**
@@ -39,47 +40,59 @@ public class ServerDetailActivity extends AppCompatActivity {
      * <p>Extraの設定と読み出しをこのクラス内で完結させる。
      *
      * @param context コンテキスト
-     * @param udn     メディアサーバのUDN
      * @return このActivityを起動するためのIntent
      */
-    public static Intent makeIntent(Context context, String udn) {
-        final Intent intent = new Intent(context, ServerDetailActivity.class);
-        intent.putExtra(Const.EXTRA_SERVER_UDN, udn);
-        return intent;
+    public static Intent makeIntent(Context context) {
+        return new Intent(context, ServerDetailActivity.class);
+    }
+
+    private ServerDetailFragmentBinding mBinding;
+
+    @Nullable
+    private ServerDetailFragmentBinding getBinding() {
+        final ServerDetailFragment fragment = (ServerDetailFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.serverDetailFragment);
+        if (fragment == null) {
+            return null;
+        }
+        return fragment.getBinding();
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.server_detail_activity);
-        setSupportActionBar((Toolbar) findViewById(R.id.serverDetailToolbar));
-        final ActionBar actionBar = getSupportActionBar();
-        if (actionBar == null) {
+        mBinding = getBinding();
+        if (mBinding == null) {
             finish();
             return;
         }
-        actionBar.setDisplayHomeAsUpEnabled(true);
+        setSupportActionBar(mBinding.serverDetailToolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
+            getWindow().setStatusBarColor(
+                    ThemeUtils.getDarkerColor(mBinding.getModel().collapsedColor));
+        }
 
         final boolean hasTransition = getIntent().getBooleanExtra(Const.EXTRA_HAS_TRANSITION, false);
-        prepareTransition(hasTransition && savedInstanceState != null);
+        prepareTransition(hasTransition && savedInstanceState == null);
     }
 
     private void prepareTransition(boolean hasTransition) {
         if (VERSION.SDK_INT < VERSION_CODES.LOLLIPOP) {
             return;
         }
-        findViewById(R.id.toolbarIcon).setTransitionName(Const.SHARE_ELEMENT_NAME_DEVICE_ICON);
-        if (hasTransition) {
+        mBinding.toolbarIcon.setTransitionName(Const.SHARE_ELEMENT_NAME_DEVICE_ICON);
+        if (!hasTransition) {
             return;
         }
-        final View background = findViewById(R.id.toolbarBackground);
-        background.setVisibility(View.INVISIBLE);
+        mBinding.toolbarBackground.setVisibility(View.INVISIBLE);
         getWindow().getSharedElementEnterTransition().addListener(new TransitionListenerAdapter() {
             @TargetApi(VERSION_CODES.KITKAT)
             @Override
             public void onTransitionEnd(final Transition transition) {
                 transition.removeListener(this);
-                startAnimation(background);
+                startAnimation(mBinding.toolbarBackground);
             }
         });
     }

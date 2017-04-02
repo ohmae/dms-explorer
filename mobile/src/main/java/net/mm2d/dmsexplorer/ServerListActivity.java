@@ -98,7 +98,7 @@ public class ServerListActivity extends AppCompatActivity
     @TargetApi(VERSION_CODES.LOLLIPOP)
     private void startServerDetailActivityLollipop(
             @NonNull final View v, @NonNull final MediaServer server) {
-        final Intent intent = ServerDetailActivity.makeIntent(this, server.getUdn());
+        final Intent intent = ServerDetailActivity.makeIntent(this);
         intent.putExtra(Const.EXTRA_HAS_TRANSITION, true);
         final View accent = v.findViewById(R.id.accent);
         setExitSharedElementCallback(new SharedElementCallback() {
@@ -118,7 +118,7 @@ public class ServerListActivity extends AppCompatActivity
 
     private void startServerDetailActivityJellyBean(
             @NonNull final View v, @NonNull final MediaServer server) {
-        final Intent intent = ServerDetailActivity.makeIntent(this, server.getUdn());
+        final Intent intent = ServerDetailActivity.makeIntent(this);
         startActivity(intent, ActivityUtils.makeScaleUpAnimationBundle(v));
     }
 
