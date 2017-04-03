@@ -11,7 +11,6 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.drawable.GradientDrawable;
 import android.text.TextUtils;
-import android.view.View;
 
 import net.mm2d.android.upnp.cds.CdsObject;
 import net.mm2d.android.util.AribUtils;
@@ -22,8 +21,7 @@ import net.mm2d.dmsexplorer.util.ThemeUtils;
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
  */
 public class CdsItemModel {
-    public final int markVisibility;
-    public final float translationZ;
+    public final boolean selected;
     public final GradientDrawable accentBackground;
     public final String accentText;
     public final String title;
@@ -31,9 +29,8 @@ public class CdsItemModel {
     public final int imageResource;
 
     public CdsItemModel(Context context, CdsObject object, boolean selected) {
-        markVisibility = selected ? View.VISIBLE : View.INVISIBLE;
         final Resources res = context.getResources();
-        translationZ = selected ? res.getDimension(R.dimen.list_item_focus_elevation) : 0;
+        this.selected = selected;
         final String name = object.getTitle();
         accentText = TextUtils.isEmpty(name) ? ""
                 : AribUtils.toDisplayableString(name.substring(0, 1));

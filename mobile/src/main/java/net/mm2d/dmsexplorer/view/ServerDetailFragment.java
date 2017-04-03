@@ -42,27 +42,22 @@ public class ServerDetailFragment extends Fragment {
         return new ServerDetailFragment();
     }
 
-    private ServerDetailFragmentBinding mBinding;
-
-    public ServerDetailFragmentBinding getBinding() {
-        return mBinding;
-    }
-
     @Override
     public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
                              final Bundle savedInstanceState) {
         final Activity activity = getActivity();
-        mBinding = DataBindingUtil.inflate(inflater, R.layout.server_detail_fragment, container, false);
+        final ServerDetailFragmentBinding binding =
+                DataBindingUtil.inflate(inflater, R.layout.server_detail_fragment, container, false);
         final MediaServer server = Repository.getInstance()
                 .getControlPointModel().getSelectedMediaServer();
         if (server == null) {
             activity.finish();
-            return mBinding.getRoot();
+            return binding.getRoot();
         }
-        mBinding.setModel(new ServerDetailFragmentModel(getActivity(), server));
+        binding.setModel(new ServerDetailFragmentModel(getActivity(), server));
 
-        setUpGoButton(activity, mBinding.fab);
-        return mBinding.getRoot();
+        setUpGoButton(activity, binding.fab);
+        return binding.getRoot();
     }
 
     public void setUpGoButton(@NonNull final Context context,

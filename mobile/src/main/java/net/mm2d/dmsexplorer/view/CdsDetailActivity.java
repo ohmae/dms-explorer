@@ -9,15 +9,18 @@ package net.mm2d.dmsexplorer.view;
 
 import android.content.Context;
 import android.content.Intent;
+import android.databinding.DataBindingUtil;
+import android.os.Build.VERSION;
+import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import net.mm2d.dmsexplorer.R;
+import net.mm2d.dmsexplorer.databinding.CdsDetailFragmentBinding;
+import net.mm2d.dmsexplorer.util.ThemeUtils;
 
 /**
  * CDSアイテムの詳細情報を表示するActivity。
@@ -37,17 +40,22 @@ public class CdsDetailActivity extends AppCompatActivity {
         return new Intent(context, CdsDetailActivity.class);
     }
 
+    private CdsDetailFragmentBinding mBinding;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.cds_detail_activity);
-        setSupportActionBar((Toolbar) findViewById(R.id.cdsDetailToolbar));
-        final ActionBar actionBar = getSupportActionBar();
-        if (actionBar == null) {
+        mBinding = DataBindingUtil.findBinding(findViewById(R.id.cdsDetailFragment));
+        if (mBinding == null) {
             finish();
             return;
         }
-        actionBar.setDisplayHomeAsUpEnabled(true);
+        setSupportActionBar(mBinding.cdsDetailToolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
+            getWindow().setStatusBarColor(
+                    ThemeUtils.getDarkerColor(mBinding.getModel().collapsedColor));
+        }
     }
 
     @Override

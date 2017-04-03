@@ -23,11 +23,11 @@ import android.view.View;
 import net.mm2d.android.upnp.cds.CdsObject;
 import net.mm2d.android.view.DividerItemDecoration;
 import net.mm2d.dmsexplorer.BR;
-import net.mm2d.dmsexplorer.Repository;
 import net.mm2d.dmsexplorer.R;
-import net.mm2d.dmsexplorer.view.adapter.CdsListAdapter;
+import net.mm2d.dmsexplorer.Repository;
 import net.mm2d.dmsexplorer.domain.model.CdsTreeModel;
 import net.mm2d.dmsexplorer.domain.model.CdsTreeModel.CdsListListener;
+import net.mm2d.dmsexplorer.view.adapter.CdsListAdapter;
 
 import java.util.List;
 
@@ -55,36 +55,29 @@ public class CdsListActivityModel extends BaseObservable implements CdsListListe
             mCdsTreeModel.reload();
         }
     };
-    private final ItemDecoration mItemDecoration;
-    private boolean mRefreshing;
+    public final ItemDecoration itemDecoration;
+    public final LayoutManager cdsListLayoutManager;
+    public final String title;
+
     private final CdsListAdapter mCdsListAdapter;
-    private final LayoutManager mCdsListLayoutManager;
-    private final String mTitle;
     private String mSubtitle;
+    private boolean mRefreshing;
 
     private final Handler mHandler = new Handler(Looper.getMainLooper());
     private final CdsTreeModel mCdsTreeModel;
     private final CdsSelectListener mCdsSelectListener;
 
     public CdsListActivityModel(@NonNull Context context, @NonNull CdsSelectListener listener) {
-        mItemDecoration = new DividerItemDecoration(context);
+        itemDecoration = new DividerItemDecoration(context);
         mCdsListAdapter = new CdsListAdapter(context);
         mCdsListAdapter.setOnItemClickListener(this::onItemClick);
         mCdsListAdapter.setOnItemLongClickListener(this::onItemLongClick);
-        mCdsListLayoutManager = new LinearLayoutManager(context);
+        cdsListLayoutManager = new LinearLayoutManager(context);
 
         mCdsSelectListener = listener;
         mCdsTreeModel = Repository.getInstance().getCdsTreeModel();
         mCdsTreeModel.setCdsListListener(this);
-        mTitle = mCdsTreeModel.getTitle();
-    }
-
-    public ItemDecoration getItemDecoration() {
-        return mItemDecoration;
-    }
-
-    public String getTitle() {
-        return mTitle;
+        title = mCdsTreeModel.getTitle();
     }
 
     @Bindable
@@ -109,10 +102,6 @@ public class CdsListActivityModel extends BaseObservable implements CdsListListe
 
     public Adapter getCdsListAdapter() {
         return mCdsListAdapter;
-    }
-
-    public LayoutManager getCdsListLayoutManager() {
-        return mCdsListLayoutManager;
     }
 
     private void onItemClick(@NonNull final View v, @NonNull final CdsObject object) {

@@ -17,6 +17,7 @@ import net.mm2d.upnp.ControlPoint.NotifyEventListener;
 import net.mm2d.upnp.Device;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -68,8 +69,8 @@ public class MrControlPoint implements ControlPointWrapper {
     private final AtomicBoolean mInitialized = new AtomicBoolean();
     @NonNull
     private final Map<String, MediaRenderer> mMediaRendererMap;
-    @Nullable
-    private MrDiscoveryListener mMrDiscoveryListener;
+    @NonNull
+    private Collection<MrDiscoveryListener> mMrDiscoveryListeners = new ArrayList<>();
     @Nullable
     private ExecutorService mExecutorService;
 
@@ -95,8 +96,8 @@ public class MrControlPoint implements ControlPointWrapper {
         }
         final MediaRenderer renderer = createMediaRenderer(device);
         mMediaRendererMap.put(renderer.getUdn(), renderer);
-        if (mMrDiscoveryListener != null) {
-            mMrDiscoveryListener.onDiscover(renderer);
+        for (MrDiscoveryListener listener : mMrDiscoveryListeners) {
+            listener.onDiscover(renderer);
         }
     }
 
@@ -105,8 +106,8 @@ public class MrControlPoint implements ControlPointWrapper {
         if (renderer == null) {
             return;
         }
-        if (mMrDiscoveryListener != null) {
-            mMrDiscoveryListener.onLost(renderer);
+        for (MrDiscoveryListener listener : mMrDiscoveryListeners) {
+            listener.onLost(renderer);
         }
     }
 
@@ -115,8 +116,19 @@ public class MrControlPoint implements ControlPointWrapper {
      *
      * @param listener リスナー
      */
-    public void setMrDiscoveryListener(final @Nullable MrDiscoveryListener listener) {
-        mMrDiscoveryListener = listener;
+    public void addMrDiscoveryListener(final @Nullable MrDiscoveryListener listener) {
+        if (!mMrDiscoveryListeners.contains(listener)) {
+            mMrDiscoveryListeners.add(listener);
+        }
+    }
+
+    /**
+     * 機器発見の通知リスナーを登録する。
+     *
+     * @param listener リスナー
+     */
+    public void removeMrDiscoveryListener(final @Nullable MrDiscoveryListener listener) {
+        mMrDiscoveryListeners.remove(listener);
     }
 
     /**

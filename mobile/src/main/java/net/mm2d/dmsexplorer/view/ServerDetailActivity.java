@@ -11,11 +11,11 @@ import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.databinding.DataBindingUtil;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.transition.Transition;
 import android.view.Menu;
@@ -50,21 +50,11 @@ public class ServerDetailActivity extends AppCompatActivity {
 
     private ServerDetailFragmentBinding mBinding;
 
-    @Nullable
-    private ServerDetailFragmentBinding getBinding() {
-        final ServerDetailFragment fragment = (ServerDetailFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.serverDetailFragment);
-        if (fragment == null) {
-            return null;
-        }
-        return fragment.getBinding();
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.server_detail_activity);
-        mBinding = getBinding();
+        mBinding = DataBindingUtil.findBinding(findViewById(R.id.serverDetailFragment));
         if (mBinding == null) {
             finish();
             return;

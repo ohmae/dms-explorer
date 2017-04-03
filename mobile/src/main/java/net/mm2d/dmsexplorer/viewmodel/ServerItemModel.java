@@ -26,8 +26,7 @@ import net.mm2d.upnp.Icon;
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
  */
 public class ServerItemModel {
-    public final int markVisibility;
-    public final float translationZ;
+    public final boolean selected;
     public final GradientDrawable accentBackground;
     public final String accentText;
     public final int accentTextVisibility;
@@ -37,9 +36,8 @@ public class ServerItemModel {
     public final String description;
 
     public ServerItemModel(Context context, MediaServer server, boolean selected) {
-        markVisibility = selected ? View.VISIBLE : View.INVISIBLE;
         final Resources res = context.getResources();
-        translationZ = selected ? res.getDimension(R.dimen.list_item_focus_elevation) : 0;
+        this.selected = selected;
         final String name = server.getFriendlyName();
         final Icon icon = server.getIcon();
         title = name;

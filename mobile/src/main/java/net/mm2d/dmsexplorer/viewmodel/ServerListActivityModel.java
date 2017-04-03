@@ -61,7 +61,8 @@ public class ServerListActivityModel extends BaseObservable {
             });
         }
     };
-    private final ItemDecoration mItemDecoration;
+    public final ItemDecoration itemDecoration;
+
     private final ServerListAdapter mServerListAdapter;
     private final LayoutManager mServerListLayoutManager;
     private boolean mRefreshing;
@@ -72,7 +73,7 @@ public class ServerListActivityModel extends BaseObservable {
     private final ServerSelectListener mServerSelectListener;
 
     public ServerListActivityModel(@NonNull Context context, ServerSelectListener listener) {
-        mItemDecoration = new DividerItemDecoration(context);
+        itemDecoration = new DividerItemDecoration(context);
         mServerListLayoutManager = new LinearLayoutManager(context);
         mServerListAdapter = new ServerListAdapter(context, mMsControlPoint.getDeviceList());
         mServerListAdapter.setOnItemClickListener(this::onItemClick);
@@ -90,10 +91,6 @@ public class ServerListActivityModel extends BaseObservable {
                 mHandler.post(() -> onLostServer(server));
             }
         });
-    }
-
-    public ItemDecoration getItemDecoration() {
-        return mItemDecoration;
     }
 
     @Bindable

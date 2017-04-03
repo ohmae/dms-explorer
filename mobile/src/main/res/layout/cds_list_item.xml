@@ -8,6 +8,8 @@
         <variable
             name="model"
             type="net.mm2d.dmsexplorer.viewmodel.CdsItemModel"/>
+
+        <import type="android.view.View"/>
     </data>
 
     <LinearLayout
@@ -15,7 +17,7 @@
         android:layout_height="wrap_content"
         android:background="@drawable/bg_list_item"
         android:orientation="horizontal"
-        android:translationZ="@{model.translationZ}"
+        android:translationZ="@{model.selected ? @dimen/list_item_focus_elevation : 0}"
         >
 
         <View
@@ -23,7 +25,7 @@
             android:layout_width="5dp"
             android:layout_height="match_parent"
             android:background="@color/markListItemSelected"
-            android:visibility="@{model.markVisibility}"
+            android:visibility="@{model.selected ? View.VISIBLE : View.INVISIBLE}"
             />
 
         <TextView

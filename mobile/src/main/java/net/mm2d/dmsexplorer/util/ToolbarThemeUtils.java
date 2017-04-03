@@ -8,7 +8,6 @@
 package net.mm2d.dmsexplorer.util;
 
 import android.app.Activity;
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Build;
@@ -18,11 +17,8 @@ import android.support.v7.graphics.Palette;
 import android.support.v7.graphics.Palette.Swatch;
 import android.support.v7.widget.Toolbar;
 
-import net.mm2d.android.upnp.cds.CdsObject;
 import net.mm2d.android.upnp.cds.MediaServer;
 import net.mm2d.dmsexplorer.Const;
-import net.mm2d.dmsexplorer.R;
-import net.opacapp.multilinecollapsingtoolbar.CollapsingToolbarLayout;
 
 /**
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
@@ -122,23 +118,6 @@ public class ToolbarThemeUtils {
         toolbar.setBackgroundColor(collapsedColor);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             activity.getWindow().setStatusBarColor(ThemeUtils.getDarkerColor(collapsedColor));
-        }
-    }
-
-    public static void setCdsDetailTheme(
-            @NonNull final Context context,
-            @NonNull final CdsObject object,
-            @NonNull final CollapsingToolbarLayout toolbarLayout,
-            boolean activityTheme) {
-        final String title = object.getTitle();
-        final int toolbarColor = ThemeUtils.getAccentColor(title);
-        toolbarLayout.findViewById(R.id.toolbarBackground)
-                .setBackgroundColor(ThemeUtils.getPastelColor(title));
-        toolbarLayout.setContentScrimColor(toolbarColor);
-        if (activityTheme
-                && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP
-                && context instanceof Activity) {
-            ((Activity) context).getWindow().setStatusBarColor(ThemeUtils.getDarkerColor(toolbarColor));
         }
     }
 }
