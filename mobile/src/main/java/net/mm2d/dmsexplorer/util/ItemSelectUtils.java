@@ -49,9 +49,9 @@ public class ItemSelectUtils {
         dialog.show(activity.getFragmentManager(), "");
     }
 
-    public static void play(final @NonNull Context context,
+    public static void play(final @NonNull Activity activity,
                             final @NonNull CdsObject object, final int index) {
-        final SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
+        final SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(activity);
         final Tag res = object.getTag(CdsObject.RES, index);
         if (res == null) {
             return;
@@ -64,7 +64,7 @@ public class ItemSelectUtils {
         switch (object.getType()) {
             case CdsObject.TYPE_VIDEO:
                 if (pref.getBoolean(Const.LAUNCH_APP_MOVIE, true)) {
-                    intent.setClass(context, MovieActivity.class);
+                    intent.setClass(activity, MovieActivity.class);
                     intent.putExtra(Const.EXTRA_OBJECT, object);
                 } else {
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -72,7 +72,7 @@ public class ItemSelectUtils {
                 break;
             case CdsObject.TYPE_AUDIO:
                 if (pref.getBoolean(Const.LAUNCH_APP_MUSIC, true)) {
-                    intent.setClass(context, MusicActivity.class);
+                    intent.setClass(activity, MusicActivity.class);
                     intent.putExtra(Const.EXTRA_OBJECT, object);
                 } else {
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -80,7 +80,7 @@ public class ItemSelectUtils {
                 break;
             case CdsObject.TYPE_IMAGE:
                 if (pref.getBoolean(Const.LAUNCH_APP_PHOTO, true)) {
-                    intent.setClass(context, PhotoActivity.class);
+                    intent.setClass(activity, PhotoActivity.class);
                     intent.putExtra(Const.EXTRA_OBJECT, object);
                 } else {
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -90,7 +90,8 @@ public class ItemSelectUtils {
                 return;
         }
         try {
-            context.startActivity(intent);
+            activity.startActivity(intent);
+            activity.overridePendingTransition(0, 0);
         } catch (final ActivityNotFoundException ignored) {
         }
     }
