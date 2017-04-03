@@ -31,6 +31,7 @@
                 android:layout_height="?attr/actionBarSize"
                 android:title="@{model.title}"
                 android:subtitle="@{model.subtitle}"
+                android:background="@{model.toolbarBackground}"
                 app:popupTheme="@style/AppTheme.PopupOverlay"
                 />
 

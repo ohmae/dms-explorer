@@ -10,6 +10,7 @@ package net.mm2d.dmsexplorer.viewmodel;
 import android.content.Context;
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
+import android.graphics.Color;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.annotation.NonNull;
@@ -21,12 +22,15 @@ import android.support.v7.widget.RecyclerView.LayoutManager;
 import android.view.View;
 
 import net.mm2d.android.upnp.cds.CdsObject;
+import net.mm2d.android.upnp.cds.MediaServer;
 import net.mm2d.android.view.DividerItemDecoration;
 import net.mm2d.dmsexplorer.BR;
+import net.mm2d.dmsexplorer.Const;
 import net.mm2d.dmsexplorer.R;
 import net.mm2d.dmsexplorer.Repository;
 import net.mm2d.dmsexplorer.domain.model.CdsTreeModel;
 import net.mm2d.dmsexplorer.domain.model.CdsTreeModel.CdsListListener;
+import net.mm2d.dmsexplorer.util.ToolbarThemeUtils;
 import net.mm2d.dmsexplorer.view.adapter.CdsListAdapter;
 
 import java.util.List;
@@ -58,6 +62,7 @@ public class CdsListActivityModel extends BaseObservable implements CdsListListe
     public final ItemDecoration itemDecoration;
     public final LayoutManager cdsListLayoutManager;
     public final String title;
+    public final int toolbarBackground;
 
     private final CdsListAdapter mCdsListAdapter;
     private String mSubtitle;
@@ -78,6 +83,11 @@ public class CdsListActivityModel extends BaseObservable implements CdsListListe
         mCdsTreeModel = Repository.getInstance().getCdsTreeModel();
         mCdsTreeModel.setCdsListListener(this);
         title = mCdsTreeModel.getTitle();
+
+        final MediaServer server = Repository.getInstance()
+                .getControlPointModel().getSelectedMediaServer();
+        ToolbarThemeUtils.setServerThemeColor(server, null);
+        toolbarBackground = server.getIntTag(Const.KEY_TOOLBAR_COLLAPSED_COLOR, Color.BLACK);
     }
 
     @Bindable

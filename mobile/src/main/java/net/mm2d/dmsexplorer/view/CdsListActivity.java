@@ -25,17 +25,16 @@ import android.view.MenuItem;
 import android.view.View;
 
 import net.mm2d.android.upnp.cds.CdsObject;
-import net.mm2d.android.upnp.cds.MediaServer;
 import net.mm2d.android.util.ActivityUtils;
 import net.mm2d.android.util.ViewUtils;
 import net.mm2d.dmsexplorer.R;
 import net.mm2d.dmsexplorer.Repository;
 import net.mm2d.dmsexplorer.databinding.CdsListActivityBinding;
 import net.mm2d.dmsexplorer.domain.model.CdsTreeModel;
+import net.mm2d.dmsexplorer.util.ItemSelectUtils;
+import net.mm2d.dmsexplorer.util.ThemeUtils;
 import net.mm2d.dmsexplorer.viewmodel.CdsListActivityModel;
 import net.mm2d.dmsexplorer.viewmodel.CdsListActivityModel.CdsSelectListener;
-import net.mm2d.dmsexplorer.util.ItemSelectUtils;
-import net.mm2d.dmsexplorer.util.ToolbarThemeUtils;
 
 /**
  * MediaServerのContentDirectoryを表示、操作するActivity。
@@ -112,12 +111,12 @@ public class CdsListActivity extends AppCompatActivity implements CdsSelectListe
         setSupportActionBar(mBinding.toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        final MediaServer server = mRepository.getControlPointModel().getSelectedMediaServer();
-        ToolbarThemeUtils.setCdsListTheme(this, server, mBinding.toolbar);
-
         mTwoPane = mBinding.cdsDetailContainer != null;
         if (savedInstanceState != null) {
             restoreScroll(savedInstanceState);
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().setStatusBarColor(ThemeUtils.getDarkerColor(mBinding.getModel().toolbarBackground));
         }
     }
 
