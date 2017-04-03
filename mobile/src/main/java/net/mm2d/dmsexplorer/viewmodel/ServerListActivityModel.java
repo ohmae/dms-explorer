@@ -10,6 +10,7 @@ package net.mm2d.dmsexplorer.viewmodel;
 import android.content.Context;
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
+import android.databinding.DataBindingUtil;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.annotation.NonNull;
@@ -26,10 +27,11 @@ import net.mm2d.android.upnp.cds.MsControlPoint;
 import net.mm2d.android.upnp.cds.MsControlPoint.MsDiscoveryListener;
 import net.mm2d.android.view.DividerItemDecoration;
 import net.mm2d.dmsexplorer.BR;
-import net.mm2d.dmsexplorer.Repository;
 import net.mm2d.dmsexplorer.R;
-import net.mm2d.dmsexplorer.view.adapter.ServerListAdapter;
+import net.mm2d.dmsexplorer.Repository;
+import net.mm2d.dmsexplorer.databinding.ServerListItemBinding;
 import net.mm2d.dmsexplorer.domain.model.ControlPointModel;
+import net.mm2d.dmsexplorer.view.adapter.ServerListAdapter;
 
 import java.util.List;
 
@@ -125,9 +127,13 @@ public class ServerListActivityModel extends BaseObservable {
     public View findSharedView() {
         final MediaServer server = mControlPointModel.getSelectedMediaServer();
         final int position = mServerListAdapter.indexOf(server);
-        final View shared = mServerListLayoutManager.findViewByPosition(position);
-        if (shared != null) {
-            return shared.findViewById(R.id.accent);
+        if (position < 0) {
+            return null;
+        }
+        final View listItem = mServerListLayoutManager.findViewByPosition(position);
+        final ServerListItemBinding binding = DataBindingUtil.findBinding(listItem);
+        if (binding != null) {
+            return binding.accent;
         }
         return null;
     }

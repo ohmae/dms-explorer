@@ -123,13 +123,6 @@ public class ControlPointModel {
         return mSelectedMediaServer != null && mSelectedMediaServer.equals(server);
     }
 
-    public int findSelectedMediaServerPosition() {
-        if (mSelectedMediaServer == null) {
-            return -1;
-        }
-        return getMsControlPoint().getDeviceList().indexOf(mSelectedMediaServer);
-    }
-
     public void initialize() {
         mNetworkAvailable = mLan.hasAvailableInterface();
         initializeOrTerminate(mNetworkAvailable);

@@ -214,17 +214,17 @@ public class ServerListActivity extends AppCompatActivity
     }
 
     private void updateState() {
-        final int position = mControlPointModel.findSelectedMediaServerPosition();
+        final View shared = mBinding.getModel().findSharedView();
         if (mTwoPane) {
             mBinding.getModel().updateListAdapter();
-            if (position < 0) {
+            if (shared == null) {
                 removeDetailFragment();
                 return;
             }
             setDetailFragment(false);
             return;
         }
-        if (position < 0) {
+        if (shared == null) {
             mBinding.getModel().updateListAdapter();
             clearExitSharedElement();
             return;

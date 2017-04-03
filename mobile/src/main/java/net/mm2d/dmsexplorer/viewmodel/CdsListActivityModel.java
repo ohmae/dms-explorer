@@ -158,4 +158,14 @@ public class CdsListActivityModel extends BaseObservable implements CdsListListe
             mCdsListAdapter.notifyDataSetChanged();
         }
     }
+
+    public boolean isItemSelected() {
+        final CdsObject object = mCdsTreeModel.getSelectedObject();
+        return object != null && object.isItem();
+    }
+
+    public void terminate() {
+        mCdsTreeModel.terminate();
+        mCdsTreeModel.initialize();
+    }
 }

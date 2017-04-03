@@ -8,20 +8,14 @@
 package net.mm2d.dmsexplorer.view;
 
 import android.app.Activity;
-import android.content.Context;
-import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import net.mm2d.android.upnp.cds.MediaServer;
-import net.mm2d.android.util.ActivityUtils;
 import net.mm2d.dmsexplorer.R;
-import net.mm2d.dmsexplorer.Repository;
 import net.mm2d.dmsexplorer.databinding.ServerDetailFragmentBinding;
 import net.mm2d.dmsexplorer.viewmodel.ServerDetailFragmentModel;
 
@@ -48,23 +42,12 @@ public class ServerDetailFragment extends Fragment {
         final Activity activity = getActivity();
         final ServerDetailFragmentBinding binding =
                 DataBindingUtil.inflate(inflater, R.layout.server_detail_fragment, container, false);
-        final MediaServer server = Repository.getInstance()
-                .getControlPointModel().getSelectedMediaServer();
-        if (server == null) {
+        final ServerDetailFragmentModel model = ServerDetailFragmentModel.create(activity);
+        if (model == null) {
             activity.finish();
             return binding.getRoot();
         }
-        binding.setModel(new ServerDetailFragmentModel(getActivity(), server));
-
-        setUpGoButton(activity, binding.fab);
+        binding.setModel(model);
         return binding.getRoot();
-    }
-
-    public void setUpGoButton(@NonNull final Context context,
-                              @NonNull final View button) {
-        button.setOnClickListener(view -> {
-            final Intent intent = CdsListActivity.makeIntent(context);
-            context.startActivity(intent, ActivityUtils.makeScaleUpAnimationBundle(view));
-        });
     }
 }

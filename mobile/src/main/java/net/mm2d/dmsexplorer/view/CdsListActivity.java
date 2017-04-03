@@ -30,7 +30,6 @@ import net.mm2d.android.util.ViewUtils;
 import net.mm2d.dmsexplorer.R;
 import net.mm2d.dmsexplorer.Repository;
 import net.mm2d.dmsexplorer.databinding.CdsListActivityBinding;
-import net.mm2d.dmsexplorer.domain.model.CdsTreeModel;
 import net.mm2d.dmsexplorer.util.ItemSelectUtils;
 import net.mm2d.dmsexplorer.util.ThemeUtils;
 import net.mm2d.dmsexplorer.viewmodel.CdsListActivityModel;
@@ -46,7 +45,6 @@ public class CdsListActivity extends AppCompatActivity implements CdsSelectListe
     private static final String KEY_SCROLL_OFFSET = "KEY_SCROLL_OFFSET";
     private boolean mTwoPane;
     private final Repository mRepository = Repository.getInstance();
-    private CdsTreeModel mCdsTreeModel;
     private CdsDetailFragment mCdsDetailFragment;
     private CdsListActivityBinding mBinding;
 
@@ -104,7 +102,6 @@ public class CdsListActivity extends AppCompatActivity implements CdsSelectListe
     @Override
     protected void onCreate(@Nullable final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mCdsTreeModel = mRepository.getCdsTreeModel();
         mBinding = DataBindingUtil.setContentView(this, R.layout.cds_list_activity);
         mBinding.setModel(new CdsListActivityModel(this, this));
 
@@ -153,11 +150,7 @@ public class CdsListActivity extends AppCompatActivity implements CdsSelectListe
     @Override
     protected void onStart() {
         super.onStart();
-        final CdsObject object = mCdsTreeModel.getSelectedObject();
-        if (object == null) {
-            return;
-        }
-        if (mTwoPane && object.isItem()) {
+        if (mTwoPane && mBinding.getModel().isItemSelected()) {
             setDetailFragment(false);
         }
     }
@@ -173,8 +166,7 @@ public class CdsListActivity extends AppCompatActivity implements CdsSelectListe
     @Override
     public boolean onKeyLongPress(final int keyCode, final KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-            mCdsTreeModel.terminate();
-            mCdsTreeModel.initialize();
+            mBinding.getModel().terminate();
             super.onBackPressed();
             return true;
         }
