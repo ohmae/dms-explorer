@@ -31,7 +31,7 @@ import net.mm2d.dmsexplorer.Repository;
 import net.mm2d.dmsexplorer.domain.model.MediaServerModel;
 import net.mm2d.dmsexplorer.domain.model.MediaServerModel.ExploreListener;
 import net.mm2d.dmsexplorer.util.ToolbarThemeUtils;
-import net.mm2d.dmsexplorer.view.adapter.CdsListAdapter;
+import net.mm2d.dmsexplorer.view.adapter.ContentListAdapter;
 
 import java.util.List;
 
@@ -64,7 +64,7 @@ public class CdsListActivityModel extends BaseObservable implements ExploreListe
     public final String title;
     public final int toolbarBackground;
 
-    private final CdsListAdapter mCdsListAdapter;
+    private final ContentListAdapter mContentListAdapter;
     private String mSubtitle;
     private boolean mRefreshing;
 
@@ -74,9 +74,9 @@ public class CdsListActivityModel extends BaseObservable implements ExploreListe
 
     public CdsListActivityModel(@NonNull Context context, @NonNull CdsSelectListener listener) {
         itemDecoration = new DividerItemDecoration(context);
-        mCdsListAdapter = new CdsListAdapter(context);
-        mCdsListAdapter.setOnItemClickListener(this::onItemClick);
-        mCdsListAdapter.setOnItemLongClickListener(this::onItemLongClick);
+        mContentListAdapter = new ContentListAdapter(context);
+        mContentListAdapter.setOnItemClickListener(this::onItemClick);
+        mContentListAdapter.setOnItemLongClickListener(this::onItemLongClick);
         cdsListLayoutManager = new LinearLayoutManager(context);
 
         mCdsSelectListener = listener;
@@ -110,8 +110,8 @@ public class CdsListActivityModel extends BaseObservable implements ExploreListe
         notifyPropertyChanged(BR.refreshing);
     }
 
-    public Adapter getCdsListAdapter() {
-        return mCdsListAdapter;
+    public Adapter getContentListAdapter() {
+        return mContentListAdapter;
     }
 
     private void onItemClick(@NonNull final View v, @NonNull final CdsObject object) {
@@ -120,7 +120,7 @@ public class CdsListActivityModel extends BaseObservable implements ExploreListe
         }
         final boolean alreadySelected = object.equals(mMediaServerModel.getSelectedObject());
         mMediaServerModel.setSelectedObject(object);
-        mCdsListAdapter.setSelectedObject(object);
+        mContentListAdapter.setSelectedObject(object);
         mCdsSelectListener.onSelect(v, object, alreadySelected);
     }
 
@@ -130,7 +130,7 @@ public class CdsListActivityModel extends BaseObservable implements ExploreListe
         }
         final boolean alreadySelected = object.equals(mMediaServerModel.getSelectedObject());
         mMediaServerModel.setSelectedObject(object);
-        mCdsListAdapter.setSelectedObject(object);
+        mContentListAdapter.setSelectedObject(object);
         mCdsSelectListener.onDetermine(v, object, alreadySelected);
     }
 
@@ -147,15 +147,15 @@ public class CdsListActivityModel extends BaseObservable implements ExploreListe
     }
 
     private void updateList(@NonNull final List<CdsObject> list) {
-        final int beforeSize = mCdsListAdapter.getItemCount();
+        final int beforeSize = mContentListAdapter.getItemCount();
         final int afterSize = list.size();
-        mCdsListAdapter.clear();
-        mCdsListAdapter.addAll(list);
-        mCdsListAdapter.setSelectedObject(mMediaServerModel.getSelectedObject());
+        mContentListAdapter.clear();
+        mContentListAdapter.addAll(list);
+        mContentListAdapter.setSelectedObject(mMediaServerModel.getSelectedObject());
         if (beforeSize < afterSize) {
-            mCdsListAdapter.notifyItemRangeInserted(beforeSize, afterSize - beforeSize);
+            mContentListAdapter.notifyItemRangeInserted(beforeSize, afterSize - beforeSize);
         } else {
-            mCdsListAdapter.notifyDataSetChanged();
+            mContentListAdapter.notifyDataSetChanged();
         }
     }
 

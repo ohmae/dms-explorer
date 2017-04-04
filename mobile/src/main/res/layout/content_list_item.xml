@@ -7,7 +7,7 @@
 
         <variable
             name="model"
-            type="net.mm2d.dmsexplorer.viewmodel.CdsItemModel"/>
+            type="net.mm2d.dmsexplorer.viewmodel.ContentItemModel"/>
 
         <import type="android.view.View"/>
     </data>

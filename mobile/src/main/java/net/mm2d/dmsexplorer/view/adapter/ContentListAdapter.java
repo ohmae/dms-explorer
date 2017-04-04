@@ -18,8 +18,8 @@ import android.view.ViewGroup;
 
 import net.mm2d.android.upnp.cds.CdsObject;
 import net.mm2d.dmsexplorer.R;
-import net.mm2d.dmsexplorer.databinding.CdsListItemBinding;
-import net.mm2d.dmsexplorer.viewmodel.CdsItemModel;
+import net.mm2d.dmsexplorer.databinding.ContentListItemBinding;
+import net.mm2d.dmsexplorer.viewmodel.ContentItemModel;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -30,8 +30,8 @@ import java.util.List;
  *
  * @author <a href="mailto:ryo@mm2d.net">大前良介(OHMAE Ryosuke)</a>
  */
-public class CdsListAdapter
-        extends RecyclerView.Adapter<CdsListAdapter.ViewHolder> {
+public class ContentListAdapter
+        extends RecyclerView.Adapter<ContentListAdapter.ViewHolder> {
     public interface OnItemClickListener {
         void onItemClick(@NonNull View v, @NonNull CdsObject object);
     }
@@ -54,14 +54,14 @@ public class CdsListAdapter
     private OnItemLongClickListener mLongClickListener = ON_ITEM_LONG_CLICK_LISTENER;
     private CdsObject mSelectedObject;
 
-    public CdsListAdapter(@NonNull final Context context) {
+    public ContentListAdapter(@NonNull final Context context) {
         mInflater = LayoutInflater.from(context);
     }
 
     @Override
     public ViewHolder onCreateViewHolder(final ViewGroup parent, final int viewType) {
         return new ViewHolder(DataBindingUtil
-                .inflate(mInflater, R.layout.cds_list_item, parent, false));
+                .inflate(mInflater, R.layout.content_list_item, parent, false));
     }
 
     @Override
@@ -129,10 +129,10 @@ public class CdsListAdapter
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
-        private final CdsListItemBinding mBinding;
+        private final ContentListItemBinding mBinding;
         private CdsObject mObject;
 
-        ViewHolder(@NonNull final CdsListItemBinding binding) {
+        ViewHolder(@NonNull final ContentListItemBinding binding) {
             super(binding.getRoot());
             itemView.setOnClickListener(this::onClick);
             itemView.setOnLongClickListener(this::onLongClick);
@@ -143,7 +143,7 @@ public class CdsListAdapter
             mObject = object;
             final boolean selected = object.equals(mSelectedObject);
             itemView.setSelected(selected);
-            mBinding.setModel(new CdsItemModel(itemView.getContext(), object, selected));
+            mBinding.setModel(new ContentItemModel(itemView.getContext(), object, selected));
             mBinding.executePendingBindings();
         }
 

@@ -20,7 +20,7 @@ import net.mm2d.dmsexplorer.util.ThemeUtils;
 /**
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
  */
-public class CdsItemModel {
+public class ContentItemModel {
     public final boolean selected;
     public final GradientDrawable accentBackground;
     public final String accentText;
@@ -28,7 +28,7 @@ public class CdsItemModel {
     public final String description;
     public final int imageResource;
 
-    public CdsItemModel(Context context, CdsObject object, boolean selected) {
+    public ContentItemModel(Context context, CdsObject object, boolean selected) {
         final Resources res = context.getResources();
         this.selected = selected;
         final String name = object.getTitle();

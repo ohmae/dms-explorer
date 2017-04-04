@@ -60,10 +60,10 @@
                     android:name="net.mm2d.CdsListFragment"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    app:adapter="@{model.cdsListAdapter}"
+                    app:adapter="@{model.contentListAdapter}"
                     app:itemDecoration="@{model.itemDecoration}"
                     app:layoutManager="@{model.cdsListLayoutManager}"
-                    tools:listitem="@layout/cds_list_item"
+                    tools:listitem="@layout/content_list_item"
                     />
 
             </android.support.v4.widget.SwipeRefreshLayout>
