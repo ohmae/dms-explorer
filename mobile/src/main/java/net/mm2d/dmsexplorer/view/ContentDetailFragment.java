@@ -79,7 +79,7 @@ public class ContentDetailFragment extends Fragment {
         if (protectedResource) {
             fab.setOnClickListener(ContentDetailFragment::showNotSupportDrmSnackbar);
             fab.setOnLongClickListener(view -> {
-                Snackbar.make(view, R.string.toast_not_support_drm, Snackbar.LENGTH_LONG).show();
+                showNotSupportDrmSnackbar(view);
                 return true;
             });
             return;

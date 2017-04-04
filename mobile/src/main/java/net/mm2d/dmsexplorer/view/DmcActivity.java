@@ -170,7 +170,7 @@ public class DmcActivity extends AppCompatActivity {
         final String uri = intent.getStringExtra(Const.EXTRA_URI);
         final String rendererUdn = intent.getStringExtra(Const.EXTRA_RENDERER_UDN);
         final ControlPointModel model = Repository.getInstance().getControlPointModel();
-        final MediaServer server = model.getMsControlPoint().getDevice(serverUdn);
+        final MediaServer server = model.getSelectedMediaServer();
         mMediaRenderer = model.getMrControlPoint().getDevice(rendererUdn);
         if (mMediaRenderer == null || server == null) {
             finish();

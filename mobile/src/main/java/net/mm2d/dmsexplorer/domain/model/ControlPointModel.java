@@ -22,9 +22,10 @@ import net.mm2d.android.upnp.avt.MrControlPoint;
 import net.mm2d.android.upnp.cds.MediaServer;
 import net.mm2d.android.upnp.cds.MsControlPoint;
 import net.mm2d.android.upnp.cds.MsControlPoint.MsDiscoveryListener;
-import net.mm2d.dmsexplorer.Repository;
 import net.mm2d.dmsexplorer.R;
+import net.mm2d.dmsexplorer.Repository;
 
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -99,7 +100,7 @@ public class ControlPointModel {
         mMsDiscoveryListener = listener != null ? listener : MS_DISCOVERY_LISTENER;
     }
 
-    public void setSelectedServer(@Nullable MediaServer server) {
+    public void setSelectedMediaServer(@Nullable MediaServer server) {
         if (mSelectedMediaServer != null) {
             mSelectedMediaServer.unsubscribe();
         }
@@ -111,7 +112,7 @@ public class ControlPointModel {
     }
 
     public void clearSelectedServer() {
-        setSelectedServer(null);
+        setSelectedMediaServer(null);
     }
 
     @Nullable
@@ -131,7 +132,7 @@ public class ControlPointModel {
     }
 
     public void terminate() {
-        setSelectedServer(null);
+        setSelectedMediaServer(null);
         initializeOrTerminate(false);
         mContext.unregisterReceiver(mConnectivityReceiver);
     }
@@ -167,13 +168,21 @@ public class ControlPointModel {
     }
 
     @NonNull
-    public MsControlPoint getMsControlPoint() {
+    private MsControlPoint getMsControlPoint() {
         return mAvControlPointManager.getMsControlPoint();
     }
 
     @NonNull
     public MrControlPoint getMrControlPoint() {
         return mAvControlPointManager.getMrControlPoint();
+    }
+
+    public int getNumberOfMediaServer() {
+        return getMsControlPoint().getDeviceListSize();
+    }
+
+    public List<MediaServer> getMediaServerList() {
+        return getMsControlPoint().getDeviceList();
     }
 
     public interface TerminateCallback {

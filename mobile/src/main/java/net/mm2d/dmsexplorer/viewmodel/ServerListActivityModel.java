@@ -23,7 +23,6 @@ import android.support.v7.widget.RecyclerView.LayoutManager;
 import android.view.View;
 
 import net.mm2d.android.upnp.cds.MediaServer;
-import net.mm2d.android.upnp.cds.MsControlPoint;
 import net.mm2d.android.upnp.cds.MsControlPoint.MsDiscoveryListener;
 import net.mm2d.android.view.DividerItemDecoration;
 import net.mm2d.dmsexplorer.BR;
@@ -32,8 +31,6 @@ import net.mm2d.dmsexplorer.Repository;
 import net.mm2d.dmsexplorer.databinding.ServerListItemBinding;
 import net.mm2d.dmsexplorer.domain.model.ControlPointModel;
 import net.mm2d.dmsexplorer.view.adapter.ServerListAdapter;
-
-import java.util.List;
 
 
 /**
@@ -70,14 +67,13 @@ public class ServerListActivityModel extends BaseObservable {
     private boolean mRefreshing;
 
     private final ControlPointModel mControlPointModel = Repository.getInstance().getControlPointModel();
-    private final MsControlPoint mMsControlPoint = mControlPointModel.getMsControlPoint();
     private final Handler mHandler = new Handler(Looper.getMainLooper());
     private final ServerSelectListener mServerSelectListener;
 
     public ServerListActivityModel(@NonNull Context context, ServerSelectListener listener) {
         itemDecoration = new DividerItemDecoration(context);
         mServerListLayoutManager = new LinearLayoutManager(context);
-        mServerListAdapter = new ServerListAdapter(context, mMsControlPoint.getDeviceList());
+        mServerListAdapter = new ServerListAdapter(context, mControlPointModel.getMediaServerList());
         mServerListAdapter.setOnItemClickListener(this::onItemClick);
         mServerListAdapter.setOnItemLongClickListener(this::onItemLongClick);
         mRefreshing = mServerListAdapter.getItemCount() == 0;
@@ -116,9 +112,8 @@ public class ServerListActivityModel extends BaseObservable {
     }
 
     public void updateListAdapter() {
-        final List<MediaServer> list = mMsControlPoint.getDeviceList();
         mServerListAdapter.clear();
-        mServerListAdapter.addAll(list);
+        mServerListAdapter.addAll(mControlPointModel.getMediaServerList());
         mServerListAdapter.notifyDataSetChanged();
         mServerListAdapter.setSelectedServer(mControlPointModel.getSelectedMediaServer());
     }
@@ -141,39 +136,39 @@ public class ServerListActivityModel extends BaseObservable {
     private void onItemClick(@NonNull final View v, @NonNull final MediaServer server) {
         final boolean alreadySelected = mControlPointModel.isSelectedMediaServer(server);
         mServerListAdapter.setSelectedServer(server);
-        mControlPointModel.setSelectedServer(server);
+        mControlPointModel.setSelectedMediaServer(server);
         mServerSelectListener.onSelect(v, alreadySelected);
     }
 
     private void onItemLongClick(@NonNull final View v, @NonNull final MediaServer server) {
         mServerListAdapter.setSelectedServer(server);
-        mControlPointModel.setSelectedServer(server);
+        mControlPointModel.setSelectedMediaServer(server);
         mServerSelectListener.onDetermine(v);
     }
 
     private void onDiscoverServer(@NonNull MediaServer server) {
         setRefreshing(false);
-        if (mMsControlPoint.getDeviceListSize() != mServerListAdapter.getItemCount() + 1) {
-            mServerListAdapter.clear();
-            mServerListAdapter.addAll(mMsControlPoint.getDeviceList());
-            mServerListAdapter.notifyDataSetChanged();
-        } else {
+        if (mControlPointModel.getNumberOfMediaServer() == mServerListAdapter.getItemCount() + 1) {
             final int position = mServerListAdapter.add(server);
             mServerListAdapter.notifyItemInserted(position);
+        } else {
+            mServerListAdapter.clear();
+            mServerListAdapter.addAll(mControlPointModel.getMediaServerList());
+            mServerListAdapter.notifyDataSetChanged();
         }
     }
 
     private void onLostServer(@NonNull MediaServer server) {
         final int position = mServerListAdapter.remove(server);
-        if (position >= 0) {
-            if (mMsControlPoint.getDeviceListSize()
-                    == mServerListAdapter.getItemCount()) {
-                mServerListAdapter.notifyItemRemoved(position);
-            } else {
-                mServerListAdapter.clear();
-                mServerListAdapter.addAll(mMsControlPoint.getDeviceList());
-                mServerListAdapter.notifyDataSetChanged();
-            }
+        if (position < 0) {
+            return;
+        }
+        if (mControlPointModel.getNumberOfMediaServer() == mServerListAdapter.getItemCount()) {
+            mServerListAdapter.notifyItemRemoved(position);
+        } else {
+            mServerListAdapter.clear();
+            mServerListAdapter.addAll(mControlPointModel.getMediaServerList());
+            mServerListAdapter.notifyDataSetChanged();
         }
         if (server.equals(mControlPointModel.getSelectedMediaServer())) {
             mServerSelectListener.onUnselect();
