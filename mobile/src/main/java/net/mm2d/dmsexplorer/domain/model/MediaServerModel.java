@@ -87,7 +87,7 @@ public class MediaServerModel implements EntryListener {
 
     public void terminate() {
         setExploreListener(null);
-        for (ContentDirectoryEntry directory : mHistoryStack) {
+        for (final ContentDirectoryEntry directory : mHistoryStack) {
             directory.terminate();
         }
         mHistoryStack.clear();

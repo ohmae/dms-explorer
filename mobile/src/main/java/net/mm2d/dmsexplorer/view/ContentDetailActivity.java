@@ -40,21 +40,21 @@ public class ContentDetailActivity extends AppCompatActivity {
         return new Intent(context, ContentDetailActivity.class);
     }
 
-    private ContentDetailFragmentBinding mBinding;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.content_detail_activity);
-        mBinding = DataBindingUtil.findBinding(findViewById(R.id.cdsDetailFragment));
-        if (mBinding == null) {
+        final ContentDetailFragmentBinding binding =
+                DataBindingUtil.findBinding(findViewById(R.id.cdsDetailFragment));
+        if (binding == null) {
             finish();
             return;
         }
-        setSupportActionBar(mBinding.cdsDetailToolbar);
+        setSupportActionBar(binding.cdsDetailToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
             getWindow().setStatusBarColor(
-                    ThemeUtils.getDarkerColor(mBinding.getModel().collapsedColor));
+                    ThemeUtils.getDarkerColor(binding.getModel().collapsedColor));
         }
     }
 

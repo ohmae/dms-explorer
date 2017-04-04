@@ -96,7 +96,7 @@ public class MrControlPoint implements ControlPointWrapper {
         }
         final MediaRenderer renderer = createMediaRenderer(device);
         mMediaRendererMap.put(renderer.getUdn(), renderer);
-        for (MrDiscoveryListener listener : mMrDiscoveryListeners) {
+        for (final MrDiscoveryListener listener : mMrDiscoveryListeners) {
             listener.onDiscover(renderer);
         }
     }
@@ -106,7 +106,7 @@ public class MrControlPoint implements ControlPointWrapper {
         if (renderer == null) {
             return;
         }
-        for (MrDiscoveryListener listener : mMrDiscoveryListeners) {
+        for (final MrDiscoveryListener listener : mMrDiscoveryListeners) {
             listener.onLost(renderer);
         }
     }

@@ -51,7 +51,6 @@ public class ControlView extends FrameLayout implements OnPreparedListener {
     private boolean mTracking;
 
     private ControlViewModel mModel;
-    private ControlViewBinding mBinding;
 
     @NonNull
     private OnUserActionListener mOnUserActionListener = ON_USER_ACTION_LISTENER;
@@ -130,11 +129,12 @@ public class ControlView extends FrameLayout implements OnPreparedListener {
 
     public ControlView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        mBinding = DataBindingUtil.inflate(LayoutInflater.from(context), R.layout.control_view, this, true);
+        final ControlViewBinding binding = DataBindingUtil.inflate(
+                LayoutInflater.from(context), R.layout.control_view, this, true);
         mModel = new ControlViewModel();
-        mBinding.setModel(mModel);
-        setUpSeekBar(mBinding.seekBar);
-        setUpPlayButton(mBinding.play);
+        binding.setModel(mModel);
+        setUpSeekBar(binding.seekBar);
+        setUpPlayButton(binding.play);
     }
 
     private void setUpSeekBar(@NonNull final SeekBar seekBar) {
