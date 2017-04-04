@@ -19,7 +19,7 @@ import net.mm2d.android.upnp.cds.CdsObject;
 import net.mm2d.dmsexplorer.BR;
 import net.mm2d.dmsexplorer.Repository;
 import net.mm2d.dmsexplorer.util.ThemeUtils;
-import net.mm2d.dmsexplorer.view.adapter.CdsPropertyAdapter;
+import net.mm2d.dmsexplorer.view.adapter.ContentPropertyAdapter;
 
 /**
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
@@ -28,7 +28,7 @@ public class CdsDetailFragmentModel extends BaseObservable {
     public final int collapsedColor;
     public final int expandedColor;
     public final String title;
-    public final CdsPropertyAdapter propertyAdapter;
+    public final ContentPropertyAdapter propertyAdapter;
     public final boolean hasResource;
     public final boolean hasProtectedResource;
     private boolean mCanSend;
@@ -49,7 +49,7 @@ public class CdsDetailFragmentModel extends BaseObservable {
     public CdsDetailFragmentModel(@NonNull final Context context,
                                   @NonNull final CdsObject object) {
         title = object.getTitle();
-        propertyAdapter = new CdsPropertyAdapter(context, object);
+        propertyAdapter = new ContentPropertyAdapter(context, object);
         collapsedColor = ThemeUtils.getAccentColor(title);
         expandedColor = ThemeUtils.getPastelColor(title);
         hasResource = object.getTagList(CdsObject.RES) != null;

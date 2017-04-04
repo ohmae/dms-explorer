@@ -27,7 +27,7 @@ import java.util.Locale;
 /**
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
  */
-public class CdsPropertyAdapter extends PropertyAdapter {
+public class ContentPropertyAdapter extends PropertyAdapter {
     private static String sTb;
     private static String sBs;
     private static String sCs;
@@ -42,7 +42,7 @@ public class CdsPropertyAdapter extends PropertyAdapter {
         sCs = context.getString(R.string.network_cs);
     }
 
-    public CdsPropertyAdapter(@NonNull Context context, @NonNull CdsObject object) {
+    public ContentPropertyAdapter(@NonNull Context context, @NonNull CdsObject object) {
         super(context);
         setupString(context);
         setCdsObjectInfo(context, this, object);

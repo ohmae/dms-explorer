@@ -28,7 +28,7 @@ import net.mm2d.android.upnp.cds.CdsObject;
 import net.mm2d.android.util.AribUtils;
 import net.mm2d.dmsexplorer.Const;
 import net.mm2d.dmsexplorer.R;
-import net.mm2d.dmsexplorer.view.adapter.CdsPropertyAdapter;
+import net.mm2d.dmsexplorer.view.adapter.ContentPropertyAdapter;
 import net.mm2d.dmsexplorer.util.ImageViewUtils;
 import net.mm2d.dmsexplorer.util.ThemeUtils;
 import net.mm2d.dmsexplorer.view.view.ControlView;
@@ -94,7 +94,7 @@ public class MusicActivity extends AppCompatActivity {
 
         controlPanel.setBackgroundColor(bgColor);
         final RecyclerView recyclerView = (RecyclerView) findViewById(R.id.detail);
-        recyclerView.setAdapter(new CdsPropertyAdapter(this, object));
+        recyclerView.setAdapter(new ContentPropertyAdapter(this, object));
         final String albumArtUri = object.getValue(CdsObject.UPNP_ALBUM_ART_URI);
         if (albumArtUri != null) {
             downloadAndSetImage(albumArtUri);

@@ -35,7 +35,7 @@ import net.mm2d.android.util.AribUtils;
 import net.mm2d.dmsexplorer.Const;
 import net.mm2d.dmsexplorer.R;
 import net.mm2d.dmsexplorer.Repository;
-import net.mm2d.dmsexplorer.view.adapter.CdsPropertyAdapter;
+import net.mm2d.dmsexplorer.view.adapter.ContentPropertyAdapter;
 import net.mm2d.dmsexplorer.view.adapter.PropertyAdapter;
 import net.mm2d.dmsexplorer.domain.model.ControlPointModel;
 import net.mm2d.dmsexplorer.view.view.ChapterMarkView;
@@ -184,7 +184,7 @@ public class DmcActivity extends AppCompatActivity {
         final ImageView image = (ImageView) findViewById(R.id.image);
         image.setImageResource(getImageResource(object));
 
-        mPropertyAdapter = new CdsPropertyAdapter(this, object);
+        mPropertyAdapter = new ContentPropertyAdapter(this, object);
         final RecyclerView recyclerView = (RecyclerView) findViewById(R.id.detail);
         recyclerView.setAdapter(mPropertyAdapter);
 
