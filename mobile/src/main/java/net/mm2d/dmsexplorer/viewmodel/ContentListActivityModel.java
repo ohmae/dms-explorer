@@ -38,7 +38,7 @@ import java.util.List;
 /**
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
  */
-public class CdsListActivityModel extends BaseObservable implements ExploreListener {
+public class ContentListActivityModel extends BaseObservable implements ExploreListener {
     public interface CdsSelectListener {
         void onSelect(@NonNull View v, @NonNull CdsObject object, boolean alreadySelected);
 
@@ -72,7 +72,7 @@ public class CdsListActivityModel extends BaseObservable implements ExploreListe
     private final MediaServerModel mMediaServerModel;
     private final CdsSelectListener mCdsSelectListener;
 
-    public CdsListActivityModel(@NonNull Context context, @NonNull CdsSelectListener listener) {
+    public ContentListActivityModel(@NonNull Context context, @NonNull CdsSelectListener listener) {
         itemDecoration = new DividerItemDecoration(context);
         mContentListAdapter = new ContentListAdapter(context);
         mContentListAdapter.setOnItemClickListener(this::onItemClick);

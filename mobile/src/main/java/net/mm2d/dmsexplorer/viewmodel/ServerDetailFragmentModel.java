@@ -26,7 +26,7 @@ import net.mm2d.dmsexplorer.R;
 import net.mm2d.dmsexplorer.Repository;
 import net.mm2d.dmsexplorer.util.ThemeUtils;
 import net.mm2d.dmsexplorer.util.ToolbarThemeUtils;
-import net.mm2d.dmsexplorer.view.CdsListActivity;
+import net.mm2d.dmsexplorer.view.ContentListActivity;
 import net.mm2d.dmsexplorer.view.adapter.ServerPropertyAdapter;
 import net.mm2d.upnp.Icon;
 
@@ -87,7 +87,7 @@ public class ServerDetailFragmentModel {
     }
 
     public void onClickFab(View view) {
-        final Intent intent = CdsListActivity.makeIntent(mContext);
+        final Intent intent = ContentListActivity.makeIntent(mContext);
         mContext.startActivity(intent, ActivityUtils.makeScaleUpAnimationBundle(view));
     }
 }

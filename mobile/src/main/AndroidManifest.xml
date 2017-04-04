@@ -34,7 +34,7 @@
                 android:value=".view.ServerListActivity"/>
         </activity>
         <activity
-            android:name=".view.CdsListActivity"
+            android:name=".view.ContentListActivity"
             android:parentActivityName=".view.ServerListActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
@@ -43,11 +43,11 @@
         </activity>
         <activity
             android:name=".view.CdsDetailActivity"
-            android:parentActivityName=".view.CdsListActivity"
+            android:parentActivityName=".view.ContentListActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".view.CdsListActivity"/>
+                android:value=".view.ContentListActivity"/>
         </activity>
         <activity
             android:name=".view.SettingsActivity"

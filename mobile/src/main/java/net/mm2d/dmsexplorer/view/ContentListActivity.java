@@ -29,24 +29,24 @@ import net.mm2d.android.util.ActivityUtils;
 import net.mm2d.android.util.ViewUtils;
 import net.mm2d.dmsexplorer.R;
 import net.mm2d.dmsexplorer.Repository;
-import net.mm2d.dmsexplorer.databinding.CdsListActivityBinding;
+import net.mm2d.dmsexplorer.databinding.ContentListActivityBinding;
 import net.mm2d.dmsexplorer.util.ItemSelectUtils;
 import net.mm2d.dmsexplorer.util.ThemeUtils;
-import net.mm2d.dmsexplorer.viewmodel.CdsListActivityModel;
-import net.mm2d.dmsexplorer.viewmodel.CdsListActivityModel.CdsSelectListener;
+import net.mm2d.dmsexplorer.viewmodel.ContentListActivityModel;
+import net.mm2d.dmsexplorer.viewmodel.ContentListActivityModel.CdsSelectListener;
 
 /**
  * MediaServerのContentDirectoryを表示、操作するActivity。
  *
  * @author <a href="mailto:ryo@mm2d.net">大前良介(OHMAE Ryosuke)</a>
  */
-public class CdsListActivity extends AppCompatActivity implements CdsSelectListener {
+public class ContentListActivity extends AppCompatActivity implements CdsSelectListener {
     private static final String KEY_SCROLL_POSITION = "KEY_SCROLL_POSITION";
     private static final String KEY_SCROLL_OFFSET = "KEY_SCROLL_OFFSET";
     private boolean mTwoPane;
     private final Repository mRepository = Repository.getInstance();
     private CdsDetailFragment mCdsDetailFragment;
-    private CdsListActivityBinding mBinding;
+    private ContentListActivityBinding mBinding;
 
     /**
      * インスタンスを作成する。
@@ -58,7 +58,7 @@ public class CdsListActivity extends AppCompatActivity implements CdsSelectListe
      */
     @NonNull
     public static Intent makeIntent(@NonNull Context context) {
-        return new Intent(context, CdsListActivity.class);
+        return new Intent(context, ContentListActivity.class);
     }
 
     @Override
@@ -102,8 +102,8 @@ public class CdsListActivity extends AppCompatActivity implements CdsSelectListe
     @Override
     protected void onCreate(@Nullable final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mBinding = DataBindingUtil.setContentView(this, R.layout.cds_list_activity);
-        mBinding.setModel(new CdsListActivityModel(this, this));
+        mBinding = DataBindingUtil.setContentView(this, R.layout.content_list_activity);
+        mBinding.setModel(new ContentListActivityModel(this, this));
 
         setSupportActionBar(mBinding.toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);

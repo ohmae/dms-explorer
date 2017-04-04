@@ -119,7 +119,7 @@ public class ServerListActivity extends AppCompatActivity
     }
 
     private void startCdsListActivity(@NonNull final View v) {
-        final Intent intent = CdsListActivity.makeIntent(this);
+        final Intent intent = ContentListActivity.makeIntent(this);
         startActivity(intent, ActivityOptions.makeScaleUpAnimation(
                 v, 0, 0, v.getWidth(), v.getHeight())
                 .toBundle());
