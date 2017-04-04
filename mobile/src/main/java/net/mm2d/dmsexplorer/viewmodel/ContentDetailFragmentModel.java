@@ -24,7 +24,7 @@ import net.mm2d.dmsexplorer.view.adapter.ContentPropertyAdapter;
 /**
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
  */
-public class CdsDetailFragmentModel extends BaseObservable {
+public class ContentDetailFragmentModel extends BaseObservable {
     public final int collapsedColor;
     public final int expandedColor;
     public final String title;
@@ -46,8 +46,8 @@ public class CdsDetailFragmentModel extends BaseObservable {
         }
     };
 
-    public CdsDetailFragmentModel(@NonNull final Context context,
-                                  @NonNull final CdsObject object) {
+    public ContentDetailFragmentModel(@NonNull final Context context,
+                                      @NonNull final CdsObject object) {
         title = object.getTitle();
         propertyAdapter = new ContentPropertyAdapter(context, object);
         collapsedColor = ThemeUtils.getAccentColor(title);

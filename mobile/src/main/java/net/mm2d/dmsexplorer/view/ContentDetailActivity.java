@@ -19,7 +19,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import net.mm2d.dmsexplorer.R;
-import net.mm2d.dmsexplorer.databinding.CdsDetailFragmentBinding;
+import net.mm2d.dmsexplorer.databinding.ContentDetailFragmentBinding;
 import net.mm2d.dmsexplorer.util.ThemeUtils;
 
 /**
@@ -27,7 +27,7 @@ import net.mm2d.dmsexplorer.util.ThemeUtils;
  *
  * @author <a href="mailto:ryo@mm2d.net">大前良介(OHMAE Ryosuke)</a>
  */
-public class CdsDetailActivity extends AppCompatActivity {
+public class ContentDetailActivity extends AppCompatActivity {
     /**
      * このActivityを起動するためのIntentを作成する。
      *
@@ -37,14 +37,14 @@ public class CdsDetailActivity extends AppCompatActivity {
      * @return このActivityを起動するためのIntent
      */
     public static Intent makeIntent(@NonNull Context context) {
-        return new Intent(context, CdsDetailActivity.class);
+        return new Intent(context, ContentDetailActivity.class);
     }
 
-    private CdsDetailFragmentBinding mBinding;
+    private ContentDetailFragmentBinding mBinding;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.cds_detail_activity);
+        setContentView(R.layout.content_detail_activity);
         mBinding = DataBindingUtil.findBinding(findViewById(R.id.cdsDetailFragment));
         if (mBinding == null) {
             finish();

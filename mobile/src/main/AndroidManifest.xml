@@ -42,7 +42,7 @@
                 android:value=".view.ServerListActivity"/>
         </activity>
         <activity
-            android:name=".view.CdsDetailActivity"
+            android:name=".view.ContentDetailActivity"
             android:parentActivityName=".view.ContentListActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data

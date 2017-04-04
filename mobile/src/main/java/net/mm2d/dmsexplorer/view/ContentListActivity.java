@@ -45,7 +45,7 @@ public class ContentListActivity extends AppCompatActivity implements CdsSelectL
     private static final String KEY_SCROLL_OFFSET = "KEY_SCROLL_OFFSET";
     private boolean mTwoPane;
     private final Repository mRepository = Repository.getInstance();
-    private CdsDetailFragment mCdsDetailFragment;
+    private ContentDetailFragment mContentDetailFragment;
     private ContentListActivityBinding mBinding;
 
     /**
@@ -194,7 +194,7 @@ public class ContentListActivity extends AppCompatActivity implements CdsSelectL
     }
 
     private void startDetailActivity(@NonNull final View v) {
-        final Intent intent = CdsDetailActivity.makeIntent(v.getContext());
+        final Intent intent = ContentDetailActivity.makeIntent(v.getContext());
         startActivity(intent, ActivityUtils.makeScaleUpAnimationBundle(v));
     }
 
@@ -202,24 +202,24 @@ public class ContentListActivity extends AppCompatActivity implements CdsSelectL
         if (!mTwoPane) {
             return;
         }
-        mCdsDetailFragment = CdsDetailFragment.newInstance();
+        mContentDetailFragment = ContentDetailFragment.newInstance();
         if (animate && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            mCdsDetailFragment.setEnterTransition(new Slide(Gravity.START));
+            mContentDetailFragment.setEnterTransition(new Slide(Gravity.START));
         }
         getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.cdsDetailContainer, mCdsDetailFragment)
+                .replace(R.id.cdsDetailContainer, mContentDetailFragment)
                 .commit();
     }
 
     private void removeDetailFragment() {
-        if (!mTwoPane || mCdsDetailFragment == null) {
+        if (!mTwoPane || mContentDetailFragment == null) {
             return;
         }
         getSupportFragmentManager()
                 .beginTransaction()
-                .remove(mCdsDetailFragment)
+                .remove(mContentDetailFragment)
                 .commit();
-        mCdsDetailFragment = null;
+        mContentDetailFragment = null;
     }
 }

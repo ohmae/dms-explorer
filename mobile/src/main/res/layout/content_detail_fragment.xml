@@ -8,7 +8,7 @@
 
         <variable
             name="model"
-            type="net.mm2d.dmsexplorer.viewmodel.CdsDetailFragmentModel"/>
+            type="net.mm2d.dmsexplorer.viewmodel.ContentDetailFragmentModel"/>
 
         <import type="android.view.View"/>
     </data>

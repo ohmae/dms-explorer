@@ -23,16 +23,16 @@ import net.mm2d.android.upnp.cds.CdsObject;
 import net.mm2d.android.upnp.cds.MediaServer;
 import net.mm2d.dmsexplorer.R;
 import net.mm2d.dmsexplorer.Repository;
-import net.mm2d.dmsexplorer.databinding.CdsDetailFragmentBinding;
+import net.mm2d.dmsexplorer.databinding.ContentDetailFragmentBinding;
 import net.mm2d.dmsexplorer.util.ItemSelectUtils;
-import net.mm2d.dmsexplorer.viewmodel.CdsDetailFragmentModel;
+import net.mm2d.dmsexplorer.viewmodel.ContentDetailFragmentModel;
 
 /**
  * CDSアイテムの詳細情報を表示するFragment。
  *
  * @author <a href="mailto:ryo@mm2d.net">大前良介(OHMAE Ryosuke)</a>
  */
-public class CdsDetailFragment extends Fragment {
+public class ContentDetailFragment extends Fragment {
     /**
      * インスタンスを作成する。
      *
@@ -41,11 +41,11 @@ public class CdsDetailFragment extends Fragment {
      * @return インスタンス。
      */
     @NonNull
-    public static CdsDetailFragment newInstance() {
-        return new CdsDetailFragment();
+    public static ContentDetailFragment newInstance() {
+        return new ContentDetailFragment();
     }
 
-    private CdsDetailFragmentBinding mBinding;
+    private ContentDetailFragmentBinding mBinding;
 
     @Override
     public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
@@ -53,12 +53,12 @@ public class CdsDetailFragment extends Fragment {
         final Repository repository = Repository.getInstance();
         final MediaServer server = repository.getControlPointModel().getSelectedMediaServer();
         final CdsObject object = repository.getMediaServerModel().getSelectedObject();
-        mBinding = DataBindingUtil.inflate(inflater, R.layout.cds_detail_fragment, container, false);
+        mBinding = DataBindingUtil.inflate(inflater, R.layout.content_detail_fragment, container, false);
         if (server == null || object == null) {
             getActivity().finish();
             return mBinding.getRoot();
         }
-        mBinding.setModel(new CdsDetailFragmentModel(getActivity(), object));
+        mBinding.setModel(new ContentDetailFragmentModel(getActivity(), object));
 
         setUpPlayButton(getActivity(), mBinding.fabPlay, object);
         setUpSendButton(getActivity(), mBinding.fabSend, server.getUdn(), object);
@@ -77,7 +77,7 @@ public class CdsDetailFragment extends Fragment {
             @NonNull final CdsObject object) {
         final boolean protectedResource = object.hasProtectedResource();
         if (protectedResource) {
-            fab.setOnClickListener(CdsDetailFragment::showNotSupportDrmSnackbar);
+            fab.setOnClickListener(ContentDetailFragment::showNotSupportDrmSnackbar);
             fab.setOnLongClickListener(view -> {
                 Snackbar.make(view, R.string.toast_not_support_drm, Snackbar.LENGTH_LONG).show();
                 return true;
