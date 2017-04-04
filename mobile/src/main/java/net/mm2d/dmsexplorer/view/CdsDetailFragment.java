@@ -52,7 +52,7 @@ public class CdsDetailFragment extends Fragment {
                              final Bundle savedInstanceState) {
         final Repository repository = Repository.getInstance();
         final MediaServer server = repository.getControlPointModel().getSelectedMediaServer();
-        final CdsObject object = repository.getCdsTreeModel().getSelectedObject();
+        final CdsObject object = repository.getMediaServerModel().getSelectedObject();
         mBinding = DataBindingUtil.inflate(inflater, R.layout.cds_detail_fragment, container, false);
         if (server == null || object == null) {
             getActivity().finish();

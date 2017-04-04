@@ -12,8 +12,8 @@ import android.support.annotation.Nullable;
 
 import net.mm2d.android.upnp.cds.CdsObject;
 import net.mm2d.android.upnp.cds.MediaServer;
-import net.mm2d.dmsexplorer.domain.entity.CdsTreeDirectory;
-import net.mm2d.dmsexplorer.domain.entity.CdsTreeDirectory.EntryListener;
+import net.mm2d.dmsexplorer.domain.entity.ContentDirectoryEntry;
+import net.mm2d.dmsexplorer.domain.entity.ContentDirectoryEntry.EntryListener;
 
 import java.util.Collections;
 import java.util.Deque;
@@ -23,30 +23,30 @@ import java.util.List;
 /**
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
  */
-public class CdsTreeModel implements EntryListener {
+public class MediaServerModel implements EntryListener {
     private static final String DELIMITER = " < ";
     private final MediaServer mMediaServer;
-    private final Deque<CdsTreeDirectory> mHistoryStack = new LinkedList<>();
+    private final Deque<ContentDirectoryEntry> mHistoryStack = new LinkedList<>();
     private String mPath;
-    private CdsListListener CDS_LIST_LISTENER = (list, inProgress) -> {
+    private ExploreListener EXPLORE_LISTENER = (list, inProgress) -> {
     };
-    private volatile CdsListListener mCdsListListener = CDS_LIST_LISTENER;
+    private volatile ExploreListener mExploreListener = EXPLORE_LISTENER;
 
-    public interface CdsListListener {
-        void onUpdateList(@NonNull List<CdsObject> list, boolean inProgress);
+    public interface ExploreListener {
+        void onUpdate(@NonNull List<CdsObject> list, boolean inProgress);
     }
 
-    public CdsTreeModel(MediaServer server) {
+    public MediaServerModel(MediaServer server) {
         mMediaServer = server;
     }
 
     public void initialize() {
-        prepareEntry(new CdsTreeDirectory());
+        prepareEntry(new ContentDirectoryEntry());
     }
 
     public boolean enterChild(@NonNull final CdsObject object) {
-        final CdsTreeDirectory directory = mHistoryStack.peekFirst();
-        final CdsTreeDirectory child = directory.enterChild(object);
+        final ContentDirectoryEntry directory = mHistoryStack.peekFirst();
+        final ContentDirectoryEntry child = directory.enterChild(object);
         if (child == null) {
             return false;
         }
@@ -55,11 +55,11 @@ public class CdsTreeModel implements EntryListener {
         return true;
     }
 
-    private void prepareEntry(CdsTreeDirectory directory) {
+    private void prepareEntry(ContentDirectoryEntry directory) {
         mHistoryStack.offerFirst(directory);
         mPath = makePath();
         directory.setEntryListener(this);
-        mCdsListListener.onUpdateList(Collections.emptyList(), true);
+        mExploreListener.onUpdate(Collections.emptyList(), true);
         directory.clearState();
         directory.setBrowseResult(mMediaServer.browse(directory.getParentId()));
     }
@@ -68,35 +68,35 @@ public class CdsTreeModel implements EntryListener {
         if (mHistoryStack.size() <= 1) {
             return false;
         }
-        mCdsListListener.onUpdateList(Collections.emptyList(), true);
-        final CdsTreeDirectory directory = mHistoryStack.pollFirst();
+        mExploreListener.onUpdate(Collections.emptyList(), true);
+        final ContentDirectoryEntry directory = mHistoryStack.pollFirst();
         directory.terminate();
         mPath = makePath();
-        final CdsTreeDirectory parent = mHistoryStack.peekFirst();
+        final ContentDirectoryEntry parent = mHistoryStack.peekFirst();
         parent.setEntryListener(this);
-        mCdsListListener.onUpdateList(parent.getList(), parent.isInProgress());
+        mExploreListener.onUpdate(parent.getList(), parent.isInProgress());
         return true;
     }
 
     public void reload() {
-        mCdsListListener.onUpdateList(Collections.emptyList(), true);
-        final CdsTreeDirectory directory = mHistoryStack.peekFirst();
+        mExploreListener.onUpdate(Collections.emptyList(), true);
+        final ContentDirectoryEntry directory = mHistoryStack.peekFirst();
         directory.clearState();
         directory.setBrowseResult(mMediaServer.browse(directory.getParentId()));
     }
 
     public void terminate() {
-        setCdsListListener(null);
-        for (CdsTreeDirectory directory : mHistoryStack) {
+        setExploreListener(null);
+        for (ContentDirectoryEntry directory : mHistoryStack) {
             directory.terminate();
         }
         mHistoryStack.clear();
     }
 
-    public void setCdsListListener(@Nullable CdsListListener listener) {
-        mCdsListListener = listener != null ? listener : CDS_LIST_LISTENER;
-        final CdsTreeDirectory directory = mHistoryStack.peekFirst();
-        mCdsListListener.onUpdateList(directory.getList(), directory.isInProgress());
+    public void setExploreListener(@Nullable ExploreListener listener) {
+        mExploreListener = listener != null ? listener : EXPLORE_LISTENER;
+        final ContentDirectoryEntry directory = mHistoryStack.peekFirst();
+        mExploreListener.onUpdate(directory.getList(), directory.isInProgress());
     }
 
     public String getUdn() {
@@ -121,7 +121,7 @@ public class CdsTreeModel implements EntryListener {
 
     private String makePath() {
         final StringBuilder sb = new StringBuilder();
-        for (final CdsTreeDirectory directory : mHistoryStack) {
+        for (final ContentDirectoryEntry directory : mHistoryStack) {
             if (sb.length() != 0 && directory.getParentTitle().length() != 0) {
                 sb.append(DELIMITER);
             }
@@ -132,6 +132,6 @@ public class CdsTreeModel implements EntryListener {
 
     @Override
     public void onUpdate(@NonNull final List<CdsObject> list, final boolean inProgress) {
-        mCdsListListener.onUpdateList(list, inProgress);
+        mExploreListener.onUpdate(list, inProgress);
     }
 }

@@ -12,7 +12,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import net.mm2d.android.upnp.cds.MediaServer;
-import net.mm2d.dmsexplorer.domain.model.CdsTreeModel;
+import net.mm2d.dmsexplorer.domain.model.MediaServerModel;
 import net.mm2d.dmsexplorer.domain.model.ControlPointModel;
 
 /**
@@ -26,7 +26,7 @@ public class Repository {
     }
 
     private ControlPointModel mControlPointModel;
-    private CdsTreeModel mCdsTreeModel;
+    private MediaServerModel mMediaServerModel;
 
     private Repository() {
     }
@@ -40,18 +40,18 @@ public class Repository {
     }
 
     public void updateMediaServer(@Nullable MediaServer server) {
-        if (mCdsTreeModel != null) {
-            mCdsTreeModel.terminate();
-            mCdsTreeModel = null;
+        if (mMediaServerModel != null) {
+            mMediaServerModel.terminate();
+            mMediaServerModel = null;
         }
         if (server != null) {
-            mCdsTreeModel = new CdsTreeModel(server);
-            mCdsTreeModel.initialize();
+            mMediaServerModel = new MediaServerModel(server);
+            mMediaServerModel.initialize();
         }
     }
 
     @Nullable
-    public CdsTreeModel getCdsTreeModel() {
-        return mCdsTreeModel;
+    public MediaServerModel getMediaServerModel() {
+        return mMediaServerModel;
     }
 }
