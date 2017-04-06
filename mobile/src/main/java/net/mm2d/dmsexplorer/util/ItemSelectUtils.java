@@ -16,6 +16,7 @@ import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 
+import net.mm2d.android.upnp.avt.MediaRenderer;
 import net.mm2d.android.upnp.cds.CdsObject;
 import net.mm2d.android.upnp.cds.Tag;
 import net.mm2d.dmsexplorer.Const;
@@ -107,13 +108,14 @@ public class ItemSelectUtils {
 
     public static void send(final @NonNull Context context,
                             final @NonNull String serverUdn, final @NonNull CdsObject object,
-                            final @NonNull String rendererUdn) {
+                            final @NonNull MediaRenderer renderer) {
         final Tag res = object.getTag(CdsObject.RES);
         if (res == null) {
             return;
         }
+        Repository.getInstance().getControlPointModel().setSelectedMediaRenderer(renderer);
         final Intent intent = DmcActivity.makeIntent(
-                context, serverUdn, object, res.getValue(), rendererUdn);
+                context, serverUdn, object, res.getValue(), renderer.getUdn());
         context.startActivity(intent);
     }
 }

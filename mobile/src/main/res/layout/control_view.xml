@@ -24,7 +24,7 @@
             android:background="@drawable/bg_tool_button"
             android:padding="@dimen/tool_button_padding"
             android:src="@{model.playing ? @drawable/ic_pause : @drawable/ic_play}"
-            android:enabled="@{model.playButtonEnabled}"
+            android:enabled="@{model.prepared}"
             />
 
         <TextView
@@ -46,9 +46,9 @@
             android:layout_weight="1"
             android:paddingBottom="@dimen/seek_padding"
             android:paddingTop="@dimen/seek_padding"
-            android:enabled="@{model.seekBarEnabled}"
-            android:max="@{model.seekBarMax}"
-            android:progress="@{model.seekBarProgress}"
+            android:enabled="@{model.seekable}"
+            android:max="@{model.duration}"
+            android:progress="@{model.progress}"
             />
 
         <TextView

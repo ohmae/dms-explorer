@@ -55,7 +55,7 @@ public class SelectDeviceDialog extends DialogFragment {
         final String udn = getArguments().getString(KEY_UDN);
         final CdsObject object = getArguments().getParcelable(KEY_OBJECT);
         builder.setItems(choices, (dialog, which) ->
-                ItemSelectUtils.send(getActivity(), udn, object, rendererList.get(which).getUdn()));
+                ItemSelectUtils.send(getActivity(), udn, object, rendererList.get(which)));
         return builder.create();
     }
 }

@@ -21,23 +21,35 @@ public class ControlViewModel extends BaseObservable {
     private String mProgressText = makeTimeText(0);
     private String mDurationText = makeTimeText(0);
     private boolean mPlaying;
-    private boolean mPlayButtonEnabled;
-    private int mSeekBarMax;
-    private int mSeekBarProgress;
-    private boolean mSeekBarEnabled;
+    private boolean mPrepared;
+    private int mDuration;
+    private int mProgress;
+    private boolean mSeekable;
+
+    @Bindable
+    public int getProgress() {
+        return mProgress;
+    }
 
     public void setProgress(final int progress) {
         setProgressText(progress);
-        setSeekBarProgress(progress);
+        mProgress = progress;
+        notifyPropertyChanged(BR.progress);
+    }
+
+    @Bindable
+    public int getDuration() {
+        return mDuration;
     }
 
     public void setDuration(final int duration) {
+        mDuration = duration;
+        notifyPropertyChanged(BR.duration);
         if (duration > 0) {
-            setSeekBarEnabled(true);
+            setSeekable(true);
         }
         setDurationText(duration);
-        setSeekBarMax(duration);
-        setPlayButtonEnabled(true);
+        setPrepared(true);
     }
 
     @Bindable
@@ -45,7 +57,7 @@ public class ControlViewModel extends BaseObservable {
         return mProgressText;
     }
 
-    public void setProgressText(final long progress) {
+    public void setProgressText(final int progress) {
         mProgressText = makeTimeText(progress);
         notifyPropertyChanged(BR.progressText);
     }
@@ -55,7 +67,7 @@ public class ControlViewModel extends BaseObservable {
         return mDurationText;
     }
 
-    private void setDurationText(final long duration) {
+    private void setDurationText(final int duration) {
         mDurationText = makeTimeText(duration);
         notifyPropertyChanged(BR.durationText);
     }
@@ -71,49 +83,30 @@ public class ControlViewModel extends BaseObservable {
     }
 
     @Bindable
-    public boolean isPlayButtonEnabled() {
-        return mPlayButtonEnabled;
+    public boolean isPrepared() {
+        return mPrepared;
     }
 
-    private void setPlayButtonEnabled(final boolean playButtonEnabled) {
-        mPlayButtonEnabled = playButtonEnabled;
-        notifyPropertyChanged(BR.playButtonEnabled);
+    private void setPrepared(final boolean prepared) {
+        mPrepared = prepared;
+        notifyPropertyChanged(BR.prepared);
     }
 
-    @Bindable
-    public int getSeekBarMax() {
-        return mSeekBarMax;
-    }
-
-    private void setSeekBarMax(final int seekBarMax) {
-        mSeekBarMax = seekBarMax;
-        notifyPropertyChanged(BR.seekBarMax);
-    }
 
     @Bindable
-    public int getSeekBarProgress() {
-        return mSeekBarProgress;
+    public boolean isSeekable() {
+        return mSeekable;
     }
 
-    private void setSeekBarProgress(final int seekBarProgress) {
-        mSeekBarProgress = seekBarProgress;
-        notifyPropertyChanged(BR.seekBarProgress);
+    private void setSeekable(final boolean seekable) {
+        mSeekable = seekable;
+        notifyPropertyChanged(BR.seekable);
     }
 
-    @Bindable
-    public boolean isSeekBarEnabled() {
-        return mSeekBarEnabled;
-    }
-
-    private void setSeekBarEnabled(final boolean seekBarEnabled) {
-        mSeekBarEnabled = seekBarEnabled;
-        notifyPropertyChanged(BR.seekBarEnabled);
-    }
-
-    private static String makeTimeText(long millisecond) {
-        final long second = millisecond / 1000;
-        final long minute = second / 60;
-        final long hour = minute / 60;
-        return String.format(Locale.US, "%01d:%02d:%02d", hour, minute % 60, second % 60);
+    private static String makeTimeText(int millisecond) {
+        final long second = (millisecond / 1000) % 60;
+        final long minute = (millisecond / 60000) % 60;
+        final long hour = millisecond / 3600000;
+        return String.format(Locale.US, "%01d:%02d:%02d", hour, minute, second);
     }
 }

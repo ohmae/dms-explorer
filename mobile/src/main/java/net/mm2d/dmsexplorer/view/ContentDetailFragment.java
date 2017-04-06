@@ -54,11 +54,12 @@ public class ContentDetailFragment extends Fragment {
         final MediaServer server = repository.getControlPointModel().getSelectedMediaServer();
         final CdsObject object = repository.getMediaServerModel().getSelectedObject();
         mBinding = DataBindingUtil.inflate(inflater, R.layout.content_detail_fragment, container, false);
-        if (server == null || object == null) {
+        final ContentDetailFragmentModel model = ContentDetailFragmentModel.create(getActivity());
+        if (model == null) {
             getActivity().finish();
             return mBinding.getRoot();
         }
-        mBinding.setModel(new ContentDetailFragmentModel(getActivity(), object));
+        mBinding.setModel(model);
 
         setUpPlayButton(getActivity(), mBinding.fabPlay, object);
         setUpSendButton(getActivity(), mBinding.fabSend, server.getUdn(), object);

@@ -11,8 +11,10 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import net.mm2d.android.upnp.avt.MediaRenderer;
 import net.mm2d.android.upnp.cds.MediaServer;
 import net.mm2d.dmsexplorer.domain.model.ControlPointModel;
+import net.mm2d.dmsexplorer.domain.model.MediaRendererModel;
 import net.mm2d.dmsexplorer.domain.model.MediaServerModel;
 
 /**
@@ -27,6 +29,7 @@ public class Repository {
 
     private ControlPointModel mControlPointModel;
     private MediaServerModel mMediaServerModel;
+    private MediaRendererModel mMediaRendererModel;
 
     private Repository() {
     }
@@ -50,8 +53,24 @@ public class Repository {
         }
     }
 
+    public void updateMediaRenderer(@Nullable MediaRenderer renderer) {
+        if (mMediaRendererModel != null) {
+            mMediaRendererModel.terminate();
+            mMediaRendererModel = null;
+        }
+        if (renderer != null) {
+            mMediaRendererModel = new MediaRendererModel(renderer);
+            mMediaRendererModel.initialize();
+        }
+    }
+
     @Nullable
     public MediaServerModel getMediaServerModel() {
         return mMediaServerModel;
+    }
+
+    @Nullable
+    public MediaRendererModel getMediaRendererModel() {
+        return mMediaRendererModel;
     }
 }

@@ -40,8 +40,20 @@ public class MediaServerModel implements EntryListener {
         mMediaServer = server;
     }
 
+    public MediaServer getMediaServer() {
+        return mMediaServer;
+    }
+
     public void initialize() {
         prepareEntry(new ContentDirectoryEntry());
+    }
+
+    public void terminate() {
+        setExploreListener(null);
+        for (final ContentDirectoryEntry directory : mHistoryStack) {
+            directory.terminate();
+        }
+        mHistoryStack.clear();
     }
 
     public boolean enterChild(@NonNull final CdsObject object) {
@@ -85,13 +97,6 @@ public class MediaServerModel implements EntryListener {
         directory.setBrowseResult(mMediaServer.browse(directory.getParentId()));
     }
 
-    public void terminate() {
-        setExploreListener(null);
-        for (final ContentDirectoryEntry directory : mHistoryStack) {
-            directory.terminate();
-        }
-        mHistoryStack.clear();
-    }
 
     public void setExploreListener(@Nullable ExploreListener listener) {
         mExploreListener = listener != null ? listener : EXPLORE_LISTENER;

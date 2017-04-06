@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import net.mm2d.android.net.Lan;
 import net.mm2d.android.upnp.AvControlPointManager;
+import net.mm2d.android.upnp.avt.MediaRenderer;
 import net.mm2d.android.upnp.avt.MrControlPoint;
 import net.mm2d.android.upnp.cds.MediaServer;
 import net.mm2d.android.upnp.cds.MsControlPoint;
@@ -40,6 +41,7 @@ public class ControlPointModel {
     private boolean mNetworkAvailable;
     private SearchThread mSearchThread;
     private MediaServer mSelectedMediaServer;
+    private MediaRenderer mSelectedMediaRenderer;
     private static final MsDiscoveryListener MS_DISCOVERY_LISTENER = new MsDiscoveryListener() {
         @Override
         public void onDiscover(@NonNull final MediaServer server) {
@@ -123,6 +125,31 @@ public class ControlPointModel {
     public boolean isSelectedMediaServer(@NonNull MediaServer server) {
         return mSelectedMediaServer != null && mSelectedMediaServer.equals(server);
     }
+
+    public void setSelectedMediaRenderer(@Nullable MediaRenderer server) {
+        if (mSelectedMediaRenderer != null) {
+            mSelectedMediaRenderer.unsubscribe();
+        }
+        mSelectedMediaRenderer = server;
+        Repository.getInstance().updateMediaRenderer(server);
+        if (mSelectedMediaRenderer != null) {
+            mSelectedMediaRenderer.subscribe();
+        }
+    }
+
+    public void clearSelectedRenderer() {
+        setSelectedMediaRenderer(null);
+    }
+
+    @Nullable
+    public MediaRenderer getSelectedMediaRenderer() {
+        return mSelectedMediaRenderer;
+    }
+
+    public boolean isSelectedMediaRenderer(@NonNull MediaRenderer renderer) {
+        return mSelectedMediaRenderer != null && mSelectedMediaRenderer.equals(renderer);
+    }
+
 
     public void initialize() {
         mNetworkAvailable = mLan.hasAvailableInterface();

@@ -16,8 +16,10 @@ import net.mm2d.android.upnp.avt.MediaRenderer;
 import net.mm2d.android.upnp.avt.MrControlPoint;
 import net.mm2d.android.upnp.avt.MrControlPoint.MrDiscoveryListener;
 import net.mm2d.android.upnp.cds.CdsObject;
+import net.mm2d.android.util.AribUtils;
 import net.mm2d.dmsexplorer.BR;
 import net.mm2d.dmsexplorer.Repository;
+import net.mm2d.dmsexplorer.domain.model.MediaServerModel;
 import net.mm2d.dmsexplorer.util.ThemeUtils;
 import net.mm2d.dmsexplorer.view.adapter.ContentPropertyAdapter;
 
@@ -46,9 +48,20 @@ public class ContentDetailFragmentModel extends BaseObservable {
         }
     };
 
-    public ContentDetailFragmentModel(@NonNull final Context context,
+    public static ContentDetailFragmentModel create(@NonNull final Context context) {
+        final MediaServerModel model = Repository.getInstance().getMediaServerModel();
+        if (model == null) {
+            return null;
+        }
+        final CdsObject object = model.getSelectedObject();
+        if (object == null) {
+            return null;
+        }
+        return new ContentDetailFragmentModel(context, object);
+    }
+    private ContentDetailFragmentModel(@NonNull final Context context,
                                       @NonNull final CdsObject object) {
-        title = object.getTitle();
+        title = AribUtils.toDisplayableString(object.getTitle());
         propertyAdapter = new ContentPropertyAdapter(context, object);
         collapsedColor = ThemeUtils.getAccentColor(title);
         expandedColor = ThemeUtils.getPastelColor(title);
