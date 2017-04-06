@@ -16,6 +16,7 @@ import net.mm2d.android.upnp.avt.MediaRenderer;
  */
 public class MediaRendererModel {
     private final MediaRenderer mMediaRenderer;
+
     public MediaRendererModel(@NonNull final MediaRenderer renderer) {
         mMediaRenderer = renderer;
     }

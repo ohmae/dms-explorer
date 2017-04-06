@@ -28,9 +28,9 @@ import net.mm2d.android.upnp.cds.CdsObject;
 import net.mm2d.android.util.AribUtils;
 import net.mm2d.dmsexplorer.Const;
 import net.mm2d.dmsexplorer.R;
-import net.mm2d.dmsexplorer.view.adapter.ContentPropertyAdapter;
 import net.mm2d.dmsexplorer.util.ImageViewUtils;
 import net.mm2d.dmsexplorer.util.ThemeUtils;
+import net.mm2d.dmsexplorer.view.adapter.ContentPropertyAdapter;
 import net.mm2d.dmsexplorer.view.view.ControlView;
 
 import java.io.IOException;

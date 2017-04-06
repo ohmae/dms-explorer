@@ -30,7 +30,7 @@ public class DmcActivity extends AppCompatActivity {
      *
      * <p>Extraの設定と読み出しをこのクラス内で完結させる。
      *
-     * @param context     コンテキスト
+     * @param context コンテキスト
      * @return このActivityを起動するためのIntent
      */
     public static Intent makeIntent(final @NonNull Context context) {

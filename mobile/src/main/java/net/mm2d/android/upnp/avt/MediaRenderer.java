@@ -11,8 +11,8 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
-import net.mm2d.android.upnp.cds.CdsObject;
 import net.mm2d.android.upnp.DeviceWrapper;
+import net.mm2d.android.upnp.cds.CdsObject;
 import net.mm2d.upnp.Action;
 import net.mm2d.upnp.Argument;
 import net.mm2d.upnp.Device;

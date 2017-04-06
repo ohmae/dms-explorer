@@ -96,7 +96,7 @@ final class CdsObjectFactory {
     /**
      * CdsObjectのインスタンスを作成する。
      *
-     * @param udn MediaServerのUDN
+     * @param udn     MediaServerのUDN
      * @param element CdsObjectを指すElement
      * @return CdsObjectのインスタンス、パースに失敗した場合null
      */

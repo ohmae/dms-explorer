@@ -87,7 +87,7 @@ public abstract class DeviceWrapper {
     /**
      * 任意の値を登録する。
      *
-     * @param name データの名前
+     * @param name  データの名前
      * @param value 格納する値
      */
     public void putBooleanTag(@NonNull String name, boolean value) {
@@ -97,7 +97,7 @@ public abstract class DeviceWrapper {
     /**
      * 格納された任意の値を取り出す。
      *
-     * @param name データの名前
+     * @param name         データの名前
      * @param defaultValue 格納されていなかった場合のデフォルト値
      * @return データの値
      */
@@ -108,7 +108,7 @@ public abstract class DeviceWrapper {
     /**
      * 任意の値を登録する。
      *
-     * @param name データの名前
+     * @param name  データの名前
      * @param value 格納する値
      */
     public void putIntTag(@NonNull String name, int value) {
@@ -118,7 +118,7 @@ public abstract class DeviceWrapper {
     /**
      * 格納された任意の値を取り出す。
      *
-     * @param name データの名前
+     * @param name         データの名前
      * @param defaultValue 格納されていなかった場合のデフォルト値
      * @return データの値
      */
@@ -129,7 +129,7 @@ public abstract class DeviceWrapper {
     /**
      * 任意の値を登録する。
      *
-     * @param name データの名前
+     * @param name  データの名前
      * @param value 格納する値
      */
     public void putLongTag(@NonNull String name, long value) {
@@ -139,7 +139,7 @@ public abstract class DeviceWrapper {
     /**
      * 格納された任意の値を取り出す。
      *
-     * @param name データの名前
+     * @param name         データの名前
      * @param defaultValue 格納されていなかった場合のデフォルト値
      * @return データの値
      */
@@ -150,7 +150,7 @@ public abstract class DeviceWrapper {
     /**
      * 任意の値を登録する。
      *
-     * @param name データの名前
+     * @param name  データの名前
      * @param value 格納する値
      */
     public void putStringTag(@NonNull String name, @Nullable String value) {

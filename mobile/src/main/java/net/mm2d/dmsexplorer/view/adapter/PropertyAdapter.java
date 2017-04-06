@@ -17,11 +17,11 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import net.mm2d.dmsexplorer.R;
+import net.mm2d.dmsexplorer.databinding.PropertyListItemBinding;
 import net.mm2d.dmsexplorer.view.adapter.property.DescriptionFormatter;
 import net.mm2d.dmsexplorer.view.adapter.property.LinkFormatter;
 import net.mm2d.dmsexplorer.view.adapter.property.PropertyFormatter;
 import net.mm2d.dmsexplorer.view.adapter.property.TextFormatter;
-import net.mm2d.dmsexplorer.databinding.PropertyListItemBinding;
 import net.mm2d.dmsexplorer.viewmodel.PropertyItemModel;
 
 import java.util.ArrayList;

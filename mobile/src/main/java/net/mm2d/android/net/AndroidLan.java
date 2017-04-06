@@ -25,9 +25,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-import static android.content.Context.CONNECTIVITY_SERVICE;
-import static android.content.Context.WIFI_SERVICE;
-
 /**
  * 実機環境でのLAN接続情報を扱うクラス。
  *
@@ -46,8 +43,8 @@ class AndroidLan extends Lan {
      */
     AndroidLan(final @NonNull Context context) {
         final Context appContext = context.getApplicationContext();
-        mWifiManager = (WifiManager) appContext.getSystemService(WIFI_SERVICE);
-        mConnectivityManager = (ConnectivityManager) appContext.getSystemService(CONNECTIVITY_SERVICE);
+        mWifiManager = (WifiManager) appContext.getSystemService(Context.WIFI_SERVICE);
+        mConnectivityManager = (ConnectivityManager) appContext.getSystemService(Context.CONNECTIVITY_SERVICE);
     }
 
     @Override

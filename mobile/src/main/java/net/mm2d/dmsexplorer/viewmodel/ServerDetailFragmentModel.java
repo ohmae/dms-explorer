@@ -52,7 +52,7 @@ public class ServerDetailFragmentModel {
     }
 
     private ServerDetailFragmentModel(@NonNull final Context context,
-                                     @NonNull final MediaServer server) {
+                                      @NonNull final MediaServer server) {
         mContext = context;
         title = server.getFriendlyName();
         propertyAdapter = new ServerPropertyAdapter(context, server);
