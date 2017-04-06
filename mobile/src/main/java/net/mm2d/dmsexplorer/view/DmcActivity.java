@@ -16,8 +16,6 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
-import net.mm2d.android.upnp.cds.CdsObject;
-import net.mm2d.dmsexplorer.Const;
 import net.mm2d.dmsexplorer.R;
 import net.mm2d.dmsexplorer.databinding.DmcActivityBinding;
 import net.mm2d.dmsexplorer.viewmodel.DmcActivityModel;
@@ -33,23 +31,10 @@ public class DmcActivity extends AppCompatActivity {
      * <p>Extraの設定と読み出しをこのクラス内で完結させる。
      *
      * @param context     コンテキスト
-     * @param serverUdn   MediaServerのUDN
-     * @param object      再生するCdsObject
-     * @param uri         再生するURI
-     * @param rendererUdn MediaRendererのUDN
      * @return このActivityを起動するためのIntent
      */
-    public static Intent makeIntent(final @NonNull Context context,
-                                    final @NonNull String serverUdn,
-                                    final @NonNull CdsObject object,
-                                    final @NonNull String uri,
-                                    final @NonNull String rendererUdn) {
-        final Intent intent = new Intent(context, DmcActivity.class);
-        intent.putExtra(Const.EXTRA_SERVER_UDN, serverUdn);
-        intent.putExtra(Const.EXTRA_OBJECT, object);
-        intent.putExtra(Const.EXTRA_URI, uri);
-        intent.putExtra(Const.EXTRA_RENDERER_UDN, rendererUdn);
-        return intent;
+    public static Intent makeIntent(final @NonNull Context context) {
+        return new Intent(context, DmcActivity.class);
     }
 
     private DmcActivityBinding mBinding;
@@ -58,9 +43,7 @@ public class DmcActivity extends AppCompatActivity {
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mBinding = DataBindingUtil.setContentView(this, R.layout.dmc_activity);
-        final Intent intent = getIntent();
-        final String uri = intent.getStringExtra(Const.EXTRA_URI);
-        final DmcActivityModel model = DmcActivityModel.create(this, uri);
+        final DmcActivityModel model = DmcActivityModel.create(this);
         if (model == null) {
             finish();
             return;

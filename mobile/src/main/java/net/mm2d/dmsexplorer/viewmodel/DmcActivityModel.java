@@ -33,6 +33,7 @@ import net.mm2d.dmsexplorer.R;
 import net.mm2d.dmsexplorer.Repository;
 import net.mm2d.dmsexplorer.domain.model.MediaRendererModel;
 import net.mm2d.dmsexplorer.domain.model.MediaServerModel;
+import net.mm2d.dmsexplorer.domain.model.PlaybackTargetModel;
 import net.mm2d.dmsexplorer.view.adapter.ContentPropertyAdapter;
 
 import java.util.List;
@@ -87,11 +88,11 @@ public class DmcActivityModel extends BaseObservable {
     private static final int CHAPTER_MARGIN = (int) TimeUnit.SECONDS.toMillis(5);
     private final Handler mHandler = new Handler(Looper.getMainLooper());
     private final Context mContext;
-    private final String mUri;
     private final CdsObject mCdsObject;
     private final MediaRenderer mMediaRenderer;
     private boolean mTracking;
-
+    private final PlaybackTargetModel mPlaybackTargetModel;
+    private final MediaRendererModel mMediaRendererModel;
 
     @NonNull
     private final Runnable mTrackingCancel = new Runnable() {
@@ -140,36 +141,35 @@ public class DmcActivityModel extends BaseObservable {
         setPlaying("PLAYING".equals(MediaRenderer.getCurrentTransportState(result)));
     }
 
-    public static DmcActivityModel create(@NonNull final Context context, @NonNull final String uri) {
-        final MediaServerModel serverModel = Repository.getInstance().getMediaServerModel();
-        final MediaRendererModel rendererModel = Repository.getInstance().getMediaRendererModel();
-        if (serverModel == null || rendererModel == null) {
+    public static DmcActivityModel create(@NonNull final Context context) {
+        final Repository repository = Repository.getInstance();
+        final MediaServerModel serverModel = repository.getMediaServerModel();
+        final MediaRendererModel rendererModel = repository.getMediaRendererModel();
+        final PlaybackTargetModel targetModel = repository.getPlaybackTargetModel();
+        if (serverModel == null || rendererModel == null
+                || targetModel == null || targetModel.getUri() == null) {
             return null;
         }
-        final CdsObject object = serverModel.getSelectedObject();
-        if (object == null) {
-            return null;
-        }
-        return new DmcActivityModel(context, uri, object, serverModel, rendererModel);
+        return new DmcActivityModel(context, targetModel, serverModel, rendererModel);
     }
 
     private DmcActivityModel(@NonNull final Context context,
-                             @NonNull final String uri,
-                             @NonNull final CdsObject object,
+                             @NonNull final PlaybackTargetModel targetModel,
                              @NonNull final MediaServerModel serverModel,
                              @NonNull final MediaRendererModel rendererModel) {
         mContext = context;
-        mUri = uri;
-        mCdsObject = object;
-        title = AribUtils.toDisplayableString(object.getTitle());
+        mPlaybackTargetModel = targetModel;
+        mMediaRendererModel = rendererModel;
+        mCdsObject = targetModel.getCdsObject();
+        title = AribUtils.toDisplayableString(mCdsObject.getTitle());
         mMediaRenderer = rendererModel.getMediaRenderer();
         isSupportPause = mMediaRenderer.isSupportPause();
         isStillContents = mCdsObject.getType() == CdsObject.TYPE_IMAGE;
         subtitle = mMediaRenderer.getFriendlyName()
                 + "  ←  "
                 + serverModel.getMediaServer().getFriendlyName();
-        propertyAdapter = new ContentPropertyAdapter(context, object);
-        imageResource = getImageResource(object);
+        propertyAdapter = new ContentPropertyAdapter(context, mCdsObject);
+        imageResource = getImageResource(mCdsObject);
         if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
             progressDrawable = context.getDrawable(R.drawable.seekbar_track);
         } else {
@@ -178,7 +178,7 @@ public class DmcActivityModel extends BaseObservable {
     }
 
     public void initialize() {
-        start(mUri, mCdsObject);
+        start(mPlaybackTargetModel.getUri().toString(), mCdsObject);
         if (mCdsObject.getType() == CdsObject.TYPE_IMAGE) {
             return;
         }

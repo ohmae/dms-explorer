@@ -12,10 +12,12 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import net.mm2d.android.upnp.avt.MediaRenderer;
+import net.mm2d.android.upnp.cds.CdsObject;
 import net.mm2d.android.upnp.cds.MediaServer;
 import net.mm2d.dmsexplorer.domain.model.ControlPointModel;
 import net.mm2d.dmsexplorer.domain.model.MediaRendererModel;
 import net.mm2d.dmsexplorer.domain.model.MediaServerModel;
+import net.mm2d.dmsexplorer.domain.model.PlaybackTargetModel;
 
 /**
  * @author <a href="mailto:ryo@mm2d.net">大前良介(OHMAE Ryosuke)</a>
@@ -30,6 +32,7 @@ public class Repository {
     private ControlPointModel mControlPointModel;
     private MediaServerModel mMediaServerModel;
     private MediaRendererModel mMediaRendererModel;
+    private PlaybackTargetModel mPlaybackTargetModel;
 
     private Repository() {
     }
@@ -64,6 +67,10 @@ public class Repository {
         }
     }
 
+    public void updatePlaybackTarget(@Nullable CdsObject object) {
+        mPlaybackTargetModel = object != null ? new PlaybackTargetModel(object) : null;
+    }
+
     @Nullable
     public MediaServerModel getMediaServerModel() {
         return mMediaServerModel;
@@ -72,5 +79,10 @@ public class Repository {
     @Nullable
     public MediaRendererModel getMediaRendererModel() {
         return mMediaRendererModel;
+    }
+
+    @Nullable
+    public PlaybackTargetModel getPlaybackTargetModel() {
+        return mPlaybackTargetModel;
     }
 }

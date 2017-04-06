@@ -12,6 +12,7 @@ import android.support.annotation.Nullable;
 
 import net.mm2d.android.upnp.cds.CdsObject;
 import net.mm2d.android.upnp.cds.MediaServer;
+import net.mm2d.dmsexplorer.Repository;
 import net.mm2d.dmsexplorer.domain.entity.ContentDirectoryEntry;
 import net.mm2d.dmsexplorer.domain.entity.ContentDirectoryEntry.EntryListener;
 
@@ -64,6 +65,7 @@ public class MediaServerModel implements EntryListener {
         }
         directory.setEntryListener(null);
         prepareEntry(child);
+        updatePlaybackTarget();
         return true;
     }
 
@@ -77,7 +79,7 @@ public class MediaServerModel implements EntryListener {
     }
 
     public boolean exitToParent() {
-        if (mHistoryStack.size() <= 1) {
+        if (mHistoryStack.size() < 2) {
             return false;
         }
         mExploreListener.onUpdate(Collections.emptyList(), true);
@@ -87,16 +89,19 @@ public class MediaServerModel implements EntryListener {
         final ContentDirectoryEntry parent = mHistoryStack.peekFirst();
         parent.setEntryListener(this);
         mExploreListener.onUpdate(parent.getList(), parent.isInProgress());
+        updatePlaybackTarget();
         return true;
     }
 
     public void reload() {
         mExploreListener.onUpdate(Collections.emptyList(), true);
         final ContentDirectoryEntry directory = mHistoryStack.peekFirst();
+        if (directory == null) {
+            return;
+        }
         directory.clearState();
         directory.setBrowseResult(mMediaServer.browse(directory.getParentId()));
     }
-
 
     public void setExploreListener(@Nullable ExploreListener listener) {
         mExploreListener = listener != null ? listener : EXPLORE_LISTENER;
@@ -118,10 +123,20 @@ public class MediaServerModel implements EntryListener {
 
     public void setSelectedObject(@NonNull final CdsObject object) {
         mHistoryStack.peekFirst().setSelectedObject(object);
+        updatePlaybackTarget();
+    }
+
+    private void updatePlaybackTarget() {
+        final CdsObject object = getSelectedObject();
+        Repository.getInstance().updatePlaybackTarget(object);
     }
 
     public CdsObject getSelectedObject() {
-        return mHistoryStack.peekFirst().getSelectedObject();
+        final ContentDirectoryEntry entry = mHistoryStack.peekFirst();
+        if (entry == null) {
+            return null;
+        }
+        return entry.getSelectedObject();
     }
 
     private String makePath() {

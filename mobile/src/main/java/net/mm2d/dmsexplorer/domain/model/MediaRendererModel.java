@@ -31,6 +31,4 @@ public class MediaRendererModel {
     public void terminate() {
 
     }
-
-
 }

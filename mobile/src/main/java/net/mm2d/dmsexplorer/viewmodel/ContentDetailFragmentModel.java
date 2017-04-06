@@ -59,8 +59,9 @@ public class ContentDetailFragmentModel extends BaseObservable {
         }
         return new ContentDetailFragmentModel(context, object);
     }
+
     private ContentDetailFragmentModel(@NonNull final Context context,
-                                      @NonNull final CdsObject object) {
+                                       @NonNull final CdsObject object) {
         title = AribUtils.toDisplayableString(object.getTitle());
         propertyAdapter = new ContentPropertyAdapter(context, object);
         collapsedColor = ThemeUtils.getAccentColor(title);

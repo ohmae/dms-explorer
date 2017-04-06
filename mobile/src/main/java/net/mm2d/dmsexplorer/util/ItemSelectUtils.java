@@ -12,7 +12,6 @@ import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 
@@ -21,6 +20,7 @@ import net.mm2d.android.upnp.cds.CdsObject;
 import net.mm2d.android.upnp.cds.Tag;
 import net.mm2d.dmsexplorer.Const;
 import net.mm2d.dmsexplorer.Repository;
+import net.mm2d.dmsexplorer.domain.model.PlaybackTargetModel;
 import net.mm2d.dmsexplorer.view.DmcActivity;
 import net.mm2d.dmsexplorer.view.MovieActivity;
 import net.mm2d.dmsexplorer.view.MusicActivity;
@@ -52,16 +52,14 @@ public class ItemSelectUtils {
 
     public static void play(final @NonNull Activity activity,
                             final @NonNull CdsObject object, final int index) {
-        final SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(activity);
-        final Tag res = object.getTag(CdsObject.RES, index);
-        if (res == null) {
+        final PlaybackTargetModel targetModel = Repository.getInstance().getPlaybackTargetModel();
+        targetModel.setResIndex(index);
+        if (targetModel.getUri() == null) {
             return;
         }
-        final String protocolInfo = res.getAttribute(CdsObject.PROTOCOL_INFO);
-        final String mimeType = CdsObject.extractMimeTypeFromProtocolInfo(protocolInfo);
-        final Uri uri = Uri.parse(res.getValue());
         final Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.setDataAndType(uri, mimeType);
+        intent.setDataAndType(targetModel.getUri(), targetModel.getMimeType());
+        final SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(activity);
         switch (object.getType()) {
             case CdsObject.TYPE_VIDEO:
                 if (pref.getBoolean(Const.LAUNCH_APP_MOVIE, true)) {
@@ -97,25 +95,16 @@ public class ItemSelectUtils {
         }
     }
 
-    public static void send(final @NonNull Activity activity,
-                            final @NonNull String udn, final @NonNull CdsObject object) {
+    public static void send(final @NonNull Activity activity) {
         if (Repository.getInstance().getControlPointModel().getMrControlPoint().getDeviceListSize() == 0) {
             return;
         }
-        final SelectDeviceDialog dialog = SelectDeviceDialog.newInstance(udn, object);
+        final SelectDeviceDialog dialog = SelectDeviceDialog.newInstance();
         dialog.show(activity.getFragmentManager(), "");
     }
 
-    public static void send(final @NonNull Context context,
-                            final @NonNull String serverUdn, final @NonNull CdsObject object,
-                            final @NonNull MediaRenderer renderer) {
-        final Tag res = object.getTag(CdsObject.RES);
-        if (res == null) {
-            return;
-        }
+    public static void send(final @NonNull Context context, final @NonNull MediaRenderer renderer) {
         Repository.getInstance().getControlPointModel().setSelectedMediaRenderer(renderer);
-        final Intent intent = DmcActivity.makeIntent(
-                context, serverUdn, object, res.getValue(), renderer.getUdn());
-        context.startActivity(intent);
+        context.startActivity(DmcActivity.makeIntent(context));
     }
 }

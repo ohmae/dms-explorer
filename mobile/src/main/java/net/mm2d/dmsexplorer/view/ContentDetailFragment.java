@@ -7,7 +7,6 @@
 
 package net.mm2d.dmsexplorer.view;
 
-import android.app.Activity;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -18,9 +17,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import net.mm2d.android.upnp.avt.MrControlPoint;
 import net.mm2d.android.upnp.cds.CdsObject;
-import net.mm2d.android.upnp.cds.MediaServer;
 import net.mm2d.dmsexplorer.R;
 import net.mm2d.dmsexplorer.Repository;
 import net.mm2d.dmsexplorer.databinding.ContentDetailFragmentBinding;
@@ -51,7 +48,6 @@ public class ContentDetailFragment extends Fragment {
     public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
                              final Bundle savedInstanceState) {
         final Repository repository = Repository.getInstance();
-        final MediaServer server = repository.getControlPointModel().getSelectedMediaServer();
         final CdsObject object = repository.getMediaServerModel().getSelectedObject();
         mBinding = DataBindingUtil.inflate(inflater, R.layout.content_detail_fragment, container, false);
         final ContentDetailFragmentModel model = ContentDetailFragmentModel.create(getActivity());
@@ -61,8 +57,8 @@ public class ContentDetailFragment extends Fragment {
         }
         mBinding.setModel(model);
 
-        setUpPlayButton(getActivity(), mBinding.fabPlay, object);
-        setUpSendButton(getActivity(), mBinding.fabSend, server.getUdn(), object);
+        setUpPlayButton(mBinding.fabPlay, object);
+        setUpSendButton(mBinding.fabSend);
         return mBinding.getRoot();
     }
 
@@ -72,8 +68,7 @@ public class ContentDetailFragment extends Fragment {
         mBinding.getModel().terminate();
     }
 
-    private static void setUpPlayButton(
-            @NonNull final Activity activity,
+    private void setUpPlayButton(
             @NonNull final FloatingActionButton fab,
             @NonNull final CdsObject object) {
         final boolean protectedResource = object.hasProtectedResource();
@@ -85,9 +80,9 @@ public class ContentDetailFragment extends Fragment {
             });
             return;
         }
-        fab.setOnClickListener(view -> ItemSelectUtils.play(activity, object, 0));
+        fab.setOnClickListener(view -> ItemSelectUtils.play(getActivity(), object, 0));
         fab.setOnLongClickListener(view -> {
-            ItemSelectUtils.play(activity, object);
+            ItemSelectUtils.play(getActivity(), object);
             return true;
         });
     }
@@ -96,16 +91,8 @@ public class ContentDetailFragment extends Fragment {
         Snackbar.make(view, R.string.toast_not_support_drm, Snackbar.LENGTH_LONG).show();
     }
 
-    private static void setUpSendButton(
-            @NonNull final Activity activity,
-            @NonNull final FloatingActionButton fab,
-            @NonNull final String udn,
-            @NonNull final CdsObject object) {
-        final MrControlPoint cp = Repository.getInstance().getControlPointModel().getMrControlPoint();
-        if (cp.getDeviceListSize() == 0 || !hasResource(object)) {
-            return;
-        }
-        fab.setOnClickListener(v -> ItemSelectUtils.send(activity, udn, object));
+    private void setUpSendButton(@NonNull final View fab) {
+        fab.setOnClickListener(v -> ItemSelectUtils.send(getActivity()));
     }
 
     private static boolean hasResource(@NonNull final CdsObject object) {
