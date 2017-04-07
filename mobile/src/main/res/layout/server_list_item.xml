@@ -45,7 +45,7 @@
                 android:text="@{model.accentText}"
                 android:textColor="@color/textPrimary"
                 android:textSize="@dimen/text_size_accent"
-                android:visibility="@{model.accentTextVisibility}"
+                android:visibility="@{model.accentIcon == null ? View.VISIBLE : View.INVISIBLE}"
                 tools:ignore="SpUsage"/>
 
             <ImageView
@@ -53,7 +53,7 @@
                 android:layout_width="@dimen/accent_size"
                 android:layout_height="@dimen/accent_size"
                 android:scaleType="fitCenter"
-                android:visibility="@{model.accentImageVisibility}"
+                android:visibility="@{model.accentIcon != null ? View.VISIBLE : View.INVISIBLE}"
                 android:imageBitmap="@{model.accentIcon}"
                 />
 

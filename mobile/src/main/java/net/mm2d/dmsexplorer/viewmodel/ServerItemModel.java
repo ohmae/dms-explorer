@@ -8,15 +8,15 @@
 package net.mm2d.dmsexplorer.viewmodel;
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.GradientDrawable;
+import android.graphics.drawable.Drawable;
+import android.support.v4.graphics.drawable.DrawableCompat;
 import android.text.TextUtils;
-import android.view.View;
 
 import net.mm2d.android.upnp.cds.MediaServer;
 import net.mm2d.android.util.AribUtils;
+import net.mm2d.android.util.DrawableUtils;
 import net.mm2d.dmsexplorer.R;
 import net.mm2d.dmsexplorer.util.ThemeUtils;
 import net.mm2d.dmsexplorer.util.ToolbarThemeUtils;
@@ -27,16 +27,13 @@ import net.mm2d.upnp.Icon;
  */
 public class ServerItemModel {
     public final boolean selected;
-    public final GradientDrawable accentBackground;
+    public final Drawable accentBackground;
     public final String accentText;
-    public final int accentTextVisibility;
     public final Bitmap accentIcon;
-    public final int accentImageVisibility;
     public final String title;
     public final String description;
 
     public ServerItemModel(Context context, MediaServer server, boolean selected) {
-        final Resources res = context.getResources();
         this.selected = selected;
         final String name = server.getFriendlyName();
         final Icon icon = server.getIcon();
@@ -46,11 +43,8 @@ public class ServerItemModel {
             accentIcon = null;
             accentText = TextUtils.isEmpty(name) ? ""
                     : AribUtils.toDisplayableString(name.substring(0, 1));
-            accentBackground = new GradientDrawable();
-            accentBackground.setCornerRadius(res.getDimension(R.dimen.accent_radius));
-            accentBackground.setColor(ThemeUtils.getAccentColor(name));
-            accentTextVisibility = View.VISIBLE;
-            accentImageVisibility = View.GONE;
+            accentBackground = DrawableUtils.get(context, R.drawable.ic_circle);
+            DrawableCompat.setTint(accentBackground, ThemeUtils.getAccentColor(name));
             ToolbarThemeUtils.setServerThemeColorAsync(server, null);
             return;
         }
@@ -58,8 +52,6 @@ public class ServerItemModel {
         accentIcon = BitmapFactory.decodeByteArray(binary, 0, binary.length);
         accentText = null;
         accentBackground = null;
-        accentTextVisibility = View.GONE;
-        accentImageVisibility = View.VISIBLE;
         ToolbarThemeUtils.setServerThemeColorAsync(server, accentIcon);
     }
 

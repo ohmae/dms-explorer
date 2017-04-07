@@ -7,7 +7,6 @@
 
     <dimen name="item_width">400dp</dimen>
     <dimen name="accent_size">48dp</dimen>
-    <dimen name="accent_radius">24dp</dimen>
     <dimen name="horizontal_padding">12dp</dimen>
 
     <dimen name="text_size_accent">22dp</dimen>

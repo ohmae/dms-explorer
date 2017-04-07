@@ -14,13 +14,14 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.graphics.drawable.GradientDrawable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.graphics.drawable.DrawableCompat;
 import android.view.View;
 
 import net.mm2d.android.upnp.cds.MediaServer;
 import net.mm2d.android.util.ActivityUtils;
+import net.mm2d.android.util.DrawableUtils;
 import net.mm2d.dmsexplorer.Const;
 import net.mm2d.dmsexplorer.R;
 import net.mm2d.dmsexplorer.Repository;
@@ -80,10 +81,9 @@ public class ServerDetailFragmentModel {
         if (icon != null) {
             return new BitmapDrawable(context.getResources(), icon);
         }
-        final GradientDrawable iconDrawable = new GradientDrawable();
-        iconDrawable.setCornerRadius(context.getResources().getDimension(R.dimen.expanded_toolbar_icon_radius));
-        iconDrawable.setColor(ThemeUtils.getAccentColor(server.getFriendlyName()));
-        return iconDrawable;
+        final Drawable drawable = DrawableUtils.get(context, R.drawable.ic_circle);
+        DrawableCompat.setTint(drawable, ThemeUtils.getAccentColor(server.getFriendlyName()));
+        return drawable;
     }
 
     public void onClickFab(View view) {

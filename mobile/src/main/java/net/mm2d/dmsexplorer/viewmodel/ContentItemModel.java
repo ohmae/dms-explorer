@@ -8,12 +8,13 @@
 package net.mm2d.dmsexplorer.viewmodel;
 
 import android.content.Context;
-import android.content.res.Resources;
-import android.graphics.drawable.GradientDrawable;
+import android.graphics.drawable.Drawable;
+import android.support.v4.graphics.drawable.DrawableCompat;
 import android.text.TextUtils;
 
 import net.mm2d.android.upnp.cds.CdsObject;
 import net.mm2d.android.util.AribUtils;
+import net.mm2d.android.util.DrawableUtils;
 import net.mm2d.dmsexplorer.R;
 import net.mm2d.dmsexplorer.util.ThemeUtils;
 
@@ -22,21 +23,19 @@ import net.mm2d.dmsexplorer.util.ThemeUtils;
  */
 public class ContentItemModel {
     public final boolean selected;
-    public final GradientDrawable accentBackground;
+    public final Drawable accentBackground;
     public final String accentText;
     public final String title;
     public final String description;
     public final int imageResource;
 
     public ContentItemModel(Context context, CdsObject object, boolean selected) {
-        final Resources res = context.getResources();
         this.selected = selected;
         final String name = object.getTitle();
         accentText = TextUtils.isEmpty(name) ? ""
                 : AribUtils.toDisplayableString(name.substring(0, 1));
-        accentBackground = new GradientDrawable();
-        accentBackground.setCornerRadius(res.getDimension(R.dimen.accent_radius));
-        accentBackground.setColor(ThemeUtils.getAccentColor(name));
+        accentBackground = DrawableUtils.get(context, R.drawable.ic_circle);
+        DrawableCompat.setTint(accentBackground, ThemeUtils.getAccentColor(name));
         title = AribUtils.toDisplayableString(name);
         description = object.getUpnpClass();
         imageResource = getImageResource(object.getType());
