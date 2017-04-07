@@ -7,7 +7,9 @@
 
 package net.mm2d.dmsexplorer.viewmodel.adapter;
 
+import android.content.res.ColorStateList;
 import android.databinding.BindingAdapter;
+import android.support.annotation.ColorInt;
 import android.support.design.widget.FloatingActionButton;
 
 /**
@@ -21,5 +23,10 @@ public class FloatingActionButtonBindingAdapter {
         } else {
             view.hide();
         }
+    }
+
+    @BindingAdapter("backgroundTint")
+    public static void setBackgroundTint(FloatingActionButton view, @ColorInt int color) {
+        view.setBackgroundTintList(ColorStateList.valueOf(color));
     }
 }

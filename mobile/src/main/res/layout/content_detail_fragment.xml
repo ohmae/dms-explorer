@@ -77,8 +77,8 @@
             android:layout_marginBottom="@dimen/fab2_margin"
             android:layout_marginEnd="@dimen/fab_margin"
             android:layout_marginRight="@dimen/fab_margin"
-            app:show="@{model.canSend}"
             app:rippleColor="@color/fabRipple"
+            app:show="@{model.canSend}"
             app:srcCompat="@drawable/ic_send_device"
             />
 
@@ -88,8 +88,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|end"
             android:layout_margin="@dimen/fab_margin"
-            android:backgroundTintList="@{model.hasProtectedResource ? @color/fabDisable : @color/accent}"
             android:visibility="@{model.hasResource ? View.VISIBLE : View.INVISIBLE}"
+            app:backgroundTint="@{model.hasProtectedResource ? @color/fabDisable : @color/accent}"
             app:rippleColor="@color/fabRipple"
             app:srcCompat="@drawable/ic_fab_play"
             />
