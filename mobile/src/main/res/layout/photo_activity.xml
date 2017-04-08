@@ -34,7 +34,6 @@
             android:visibility="@{model.loading ? View.VISIBLE : View.GONE}"
             />
 
-        <!-- コード上でpaddingを調整する -->
         <LinearLayout
             android:id="@+id/toolbar"
             android:layout_width="match_parent"

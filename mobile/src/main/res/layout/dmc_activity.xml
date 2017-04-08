@@ -95,7 +95,7 @@
                     android:layout_marginRight="@dimen/control_margin"
                     android:background="@drawable/bg_tool_button"
                     android:padding="@dimen/toolbar_button_padding"
-                    android:visibility="@{model.isSupportPause ? View.VISIBLE : View.GONE}"
+                    android:visibility="@{model.isPlayControlEnabled ? View.VISIBLE : View.GONE}"
                     android:src="@{model.playing ? @drawable/ic_pause : @drawable/ic_play}"
                     android:enabled="@{model.prepared}"
                     android:onClick="@{model::onClickPlay}"

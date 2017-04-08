@@ -16,6 +16,7 @@ import android.os.Build.VERSION_CODES;
 
 import com.android.databinding.library.baseAdapters.BR;
 
+import net.mm2d.android.util.AribUtils;
 import net.mm2d.android.util.DisplaySizeUtils;
 import net.mm2d.dmsexplorer.Repository;
 import net.mm2d.dmsexplorer.domain.model.PlaybackTargetModel;
@@ -39,7 +40,7 @@ public class PhotoActivityModel extends BaseObservable {
     }
 
     private PhotoActivityModel(Activity activity, PlaybackTargetModel targetModel) {
-        title = targetModel.getCdsObject().getTitle();
+        title = AribUtils.toDisplayableString(targetModel.getCdsObject().getTitle());
         adjustPanel(activity);
     }
 

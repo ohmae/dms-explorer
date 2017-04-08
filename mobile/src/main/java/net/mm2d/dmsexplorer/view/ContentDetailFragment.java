@@ -94,8 +94,4 @@ public class ContentDetailFragment extends Fragment {
     private void setUpSendButton(@NonNull final View fab) {
         fab.setOnClickListener(v -> ItemSelectUtils.send(getActivity()));
     }
-
-    private static boolean hasResource(@NonNull final CdsObject object) {
-        return object.getTagList(CdsObject.RES) != null;
-    }
 }

@@ -51,7 +51,7 @@ public class DmcActivityModel extends BaseObservable {
     public final ContentPropertyAdapter propertyAdapter;
     public final int imageResource;
     public final Drawable progressDrawable;
-    public final boolean isSupportPause;
+    public final boolean isPlayControlEnabled;
     public final boolean isStillContents;
     public final OnSeekBarChangeListener onSeekBarChangeListener = new OnSeekBarChangeListener() {
         @Override
@@ -163,8 +163,8 @@ public class DmcActivityModel extends BaseObservable {
         mCdsObject = targetModel.getCdsObject();
         title = AribUtils.toDisplayableString(mCdsObject.getTitle());
         mMediaRenderer = rendererModel.getMediaRenderer();
-        isSupportPause = mMediaRenderer.isSupportPause();
         isStillContents = mCdsObject.getType() == CdsObject.TYPE_IMAGE;
+        isPlayControlEnabled = !isStillContents && mMediaRenderer.isSupportPause();
         subtitle = mMediaRenderer.getFriendlyName()
                 + "  ←  "
                 + serverModel.getMediaServer().getFriendlyName();
