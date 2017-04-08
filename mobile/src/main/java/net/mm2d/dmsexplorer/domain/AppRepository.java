@@ -56,11 +56,7 @@ public class AppRepository extends Repository {
 
     public AppRepository(@NonNull final Context context) {
         mContext = context;
-        mControlPointModel = new ControlPointModel(context, server -> {
-            updateMediaServer(server);
-        }, renderer -> {
-            updateMediaRenderer(renderer);
-        });
+        mControlPointModel = new ControlPointModel(context, this::updateMediaServer, this::updateMediaRenderer);
     }
 
     private void updateMediaServer(@Nullable final MediaServer server) {
@@ -74,7 +70,7 @@ public class AppRepository extends Repository {
         }
     }
 
-    public void updateMediaRenderer(@Nullable final MediaRenderer renderer) {
+    private void updateMediaRenderer(@Nullable final MediaRenderer renderer) {
         if (mMediaRendererModel != null) {
             mMediaRendererModel.terminate();
             mMediaRendererModel = null;
@@ -86,15 +82,14 @@ public class AppRepository extends Repository {
     }
 
     private MediaServerModel createMediaServerModel(@NonNull final MediaServer server) {
-        return new MediaServerModel(server, object -> updatePlaybackTarget(object));
+        return new MediaServerModel(server, this::updatePlaybackTarget);
     }
 
     private MediaRendererModel createMediaRendererModel(@NonNull final MediaRenderer renderer) {
         return new MediaRendererModel(mContext, renderer);
     }
 
-    public void updatePlaybackTarget(@Nullable final CdsObject object) {
+    private void updatePlaybackTarget(@Nullable final CdsObject object) {
         mPlaybackTargetModel = object != null ? new PlaybackTargetModel(object) : null;
     }
-
 }

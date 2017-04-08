@@ -54,7 +54,6 @@ public class MediaRendererModel {
     private final Context mContext;
     private final MediaRenderer mMediaRenderer;
     private final Handler mHandler = new Handler(Looper.getMainLooper());
-    private PlaybackTargetModel mPlaybackTargetModel;
     private ControlListener mControlListener = CONTROL_LISTENER;
     @Nullable
     private List<Integer> mChapterInfo;
@@ -99,7 +98,6 @@ public class MediaRendererModel {
     }
 
     public void start(PlaybackTargetModel targetModel) {
-        mPlaybackTargetModel = targetModel;
         mMediaRenderer.clearAVTransportURI(null);
         final CdsObject object = targetModel.getCdsObject();
         final String uri = targetModel.getUri().toString();
@@ -107,9 +105,7 @@ public class MediaRendererModel {
             if (success) {
                 mMediaRenderer.play(mShowToastOnError);
             } else {
-                mHandler.post(() -> {
-                    showToast(R.string.toast_command_error_occurred);
-                });
+                mHandler.post(() -> showToast(R.string.toast_command_error_occurred));
             }
         });
         mHandler.postDelayed(mGetPositionTask, 1000);

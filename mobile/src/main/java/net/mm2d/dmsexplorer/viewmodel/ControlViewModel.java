@@ -75,6 +75,9 @@ public class ControlViewModel extends BaseObservable {
     }
 
     public void setPlaying(final boolean playing) {
+        if (mPlaying == playing) {
+            return;
+        }
         mPlaying = playing;
         setPlayButtonResId(playing ? R.drawable.ic_pause : R.drawable.ic_play);
     }

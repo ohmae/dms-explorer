@@ -11,6 +11,7 @@ import android.app.Activity;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -40,8 +41,8 @@ public class ServerDetailFragment extends Fragment {
 
     @Override
     public View onCreateView(@NonNull final LayoutInflater inflater,
-                             @NonNull final ViewGroup container,
-                             @NonNull final Bundle savedInstanceState) {
+                             @Nullable final ViewGroup container,
+                             @Nullable final Bundle savedInstanceState) {
         final Activity activity = getActivity();
         final ServerDetailFragmentBinding binding =
                 DataBindingUtil.inflate(inflater, R.layout.server_detail_fragment, container, false);
