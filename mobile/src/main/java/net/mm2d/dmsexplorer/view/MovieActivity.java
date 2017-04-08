@@ -26,6 +26,7 @@ import net.mm2d.dmsexplorer.viewmodel.MovieActivityModel;
  * @author <a href="mailto:ryo@mm2d.net">大前良介(OHMAE Ryosuke)</a>
  */
 public class MovieActivity extends AppCompatActivity {
+    private static final String KEY_POSITION = "KEY_POSITION";
     private FullscreenHelper mFullscreenHelper;
     private MovieActivityBinding mBinding;
 
@@ -50,8 +51,17 @@ public class MovieActivity extends AppCompatActivity {
         mBinding.controlPanel.setOnCompletionListener(mp -> onBackPressed());
         mBinding.controlPanel.setOnUserActionListener(mFullscreenHelper::postHideNavigation);
         mBinding.videoView.setOnPreparedListener(mBinding.controlPanel);
+        if (savedInstanceState != null) {
+            mBinding.controlPanel.restoreSavePosition(savedInstanceState.getInt(KEY_POSITION, -1));
+        }
         final PlaybackTargetModel targetModel = repository.getPlaybackTargetModel();
         mBinding.videoView.setVideoURI(targetModel.getUri());
+    }
+
+    @Override
+    protected void onSaveInstanceState(final Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt(KEY_POSITION, mBinding.controlPanel.getCurrentPosition());
     }
 
     @Override

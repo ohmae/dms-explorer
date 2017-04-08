@@ -49,6 +49,7 @@ public class ControlView extends FrameLayout implements OnPreparedListener {
     private static final int MEDIA_ERROR_SYSTEM = -2147483648;
     private MediaPlayer mMediaPlayer;
     private boolean mTracking;
+    private int mCurrentPosition;
 
     private ControlViewModel mModel;
 
@@ -71,6 +72,7 @@ public class ControlView extends FrameLayout implements OnPreparedListener {
                     final int position = mMediaPlayer.getCurrentPosition();
                     if (duration >= position) {
                         mModel.setProgress(position);
+                        mCurrentPosition = position;
                     }
                     sleep = 1001 - position % 1000;
                 }
@@ -204,6 +206,17 @@ public class ControlView extends FrameLayout implements OnPreparedListener {
         mModel.setPlaying(true);
         post(mGetPositionTask);
         mp.start();
+        if (mCurrentPosition > 0) {
+            mp.seekTo(mCurrentPosition);
+        }
+    }
+
+    public void restoreSavePosition(int position) {
+        mCurrentPosition = position;
+    }
+
+    public int getCurrentPosition() {
+        return mCurrentPosition;
     }
 
     private void logError(int what, int extra) {
