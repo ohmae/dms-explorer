@@ -7,7 +7,6 @@
 
 package net.mm2d.dmsexplorer.viewmodel;
 
-import android.app.Activity;
 import android.content.Context;
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
@@ -21,12 +20,9 @@ import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
-import android.widget.Toast;
 
 import net.mm2d.android.upnp.avt.MediaRenderer;
-import net.mm2d.android.upnp.avt.MediaRenderer.ActionCallback;
 import net.mm2d.android.upnp.cds.CdsObject;
-import net.mm2d.android.upnp.cds.ChapterInfo;
 import net.mm2d.android.util.AribUtils;
 import net.mm2d.dmsexplorer.BR;
 import net.mm2d.dmsexplorer.R;
@@ -38,13 +34,12 @@ import net.mm2d.dmsexplorer.view.adapter.ContentPropertyAdapter;
 
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
-import java.util.concurrent.TimeUnit;
 
 /**
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
  */
-public class DmcActivityModel extends BaseObservable {
+public class DmcActivityModel extends BaseObservable
+        implements MediaRendererModel.ControlListener {
     private static final char EN_SPACE = 0x2002; // &ensp;
     public final String title;
     public final String subtitle;
@@ -69,7 +64,7 @@ public class DmcActivityModel extends BaseObservable {
 
         @Override
         public void onStopTrackingTouch(SeekBar seekBar) {
-            mMediaRenderer.seek(seekBar.getProgress(), mShowToastOnError);
+            mMediaRendererModel.seek(seekBar.getProgress());
             mHandler.postDelayed(mTrackingCancel, 1000);
         }
     };
@@ -85,11 +80,8 @@ public class DmcActivityModel extends BaseObservable {
     private List<Integer> mChapterInfo;
     private boolean mChapterInfoEnabled;
 
-    private static final int CHAPTER_MARGIN = (int) TimeUnit.SECONDS.toMillis(5);
     private final Handler mHandler = new Handler(Looper.getMainLooper());
     private final Context mContext;
-    private final CdsObject mCdsObject;
-    private final MediaRenderer mMediaRenderer;
     private boolean mTracking;
     private final PlaybackTargetModel mPlaybackTargetModel;
     private final MediaRendererModel mMediaRendererModel;
@@ -101,45 +93,6 @@ public class DmcActivityModel extends BaseObservable {
             mTracking = false;
         }
     };
-    @NonNull
-    private final Runnable mGetPositionTask = new Runnable() {
-        @Override
-        public void run() {
-            mMediaRenderer.getPositionInfo((success, result) -> onGetPositionInfo(result));
-            mMediaRenderer.getTransportInfo((success, result) -> onGetTransportInfo(result));
-        }
-    };
-    @NonNull
-    private final ActionCallback mShowToastOnError = (success, result) -> {
-        if (!success) {
-            mHandler.post(() -> showToast(R.string.toast_command_error_occurred));
-        }
-    };
-
-
-    private void onGetPositionInfo(Map<String, String> result) {
-        if (result == null) {
-            mHandler.postDelayed(mGetPositionTask, 1000);
-            return;
-        }
-        final int duration = MediaRenderer.getDuration(result);
-        final int progress = MediaRenderer.getProgress(result);
-        if (duration < 0 || progress < 0) {
-            mHandler.postDelayed(mGetPositionTask, 1000);
-            return;
-        }
-        final long interval = 1000 - progress % 1000;
-        mHandler.postDelayed(mGetPositionTask, interval);
-        setDuration(duration);
-        if (mTracking) {
-            return;
-        }
-        setProgress(progress);
-    }
-
-    private void onGetTransportInfo(Map<String, String> result) {
-        setPlaying("PLAYING".equals(MediaRenderer.getCurrentTransportState(result)));
-    }
 
     public static DmcActivityModel create(@NonNull final Context context) {
         final Repository repository = Repository.getInstance();
@@ -160,16 +113,17 @@ public class DmcActivityModel extends BaseObservable {
         mContext = context;
         mPlaybackTargetModel = targetModel;
         mMediaRendererModel = rendererModel;
-        mCdsObject = targetModel.getCdsObject();
-        title = AribUtils.toDisplayableString(mCdsObject.getTitle());
-        mMediaRenderer = rendererModel.getMediaRenderer();
-        isStillContents = mCdsObject.getType() == CdsObject.TYPE_IMAGE;
-        isPlayControlEnabled = !isStillContents && mMediaRenderer.isSupportPause();
-        subtitle = mMediaRenderer.getFriendlyName()
+        mMediaRendererModel.setControlListener(this);
+        final CdsObject cdsObject = targetModel.getCdsObject();
+        title = AribUtils.toDisplayableString(cdsObject.getTitle());
+        final MediaRenderer mediaRenderer = rendererModel.getMediaRenderer();
+        isStillContents = cdsObject.getType() == CdsObject.TYPE_IMAGE;
+        isPlayControlEnabled = !isStillContents && mediaRenderer.isSupportPause();
+        subtitle = mediaRenderer.getFriendlyName()
                 + "  ←  "
                 + serverModel.getMediaServer().getFriendlyName();
-        propertyAdapter = new ContentPropertyAdapter(context, mCdsObject);
-        imageResource = getImageResource(mCdsObject);
+        propertyAdapter = new ContentPropertyAdapter(context, cdsObject);
+        imageResource = getImageResource(cdsObject);
         if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
             progressDrawable = context.getDrawable(R.drawable.seekbar_track);
         } else {
@@ -178,35 +132,11 @@ public class DmcActivityModel extends BaseObservable {
     }
 
     public void initialize() {
-        start(mPlaybackTargetModel.getUri().toString(), mCdsObject);
-        if (mCdsObject.getType() == CdsObject.TYPE_IMAGE) {
-            return;
-        }
-        mHandler.postDelayed(mGetPositionTask, 1000);
-        ChapterInfo.get(mCdsObject, this::setChapterInfo);
+        mMediaRendererModel.start(mPlaybackTargetModel);
     }
-
-    private void start(@NonNull final String uri, @NonNull final CdsObject object) {
-        mMediaRenderer.setAVTransportURI(object, uri, (success, result) -> {
-            if (success) {
-                mMediaRenderer.play(mShowToastOnError);
-            } else {
-                mHandler.post(() -> {
-                    showToast(R.string.toast_command_error_occurred);
-                    ((Activity) mContext).finish();
-                });
-            }
-        });
-    }
-
 
     public void terminate() {
-        mHandler.removeCallbacks(mGetPositionTask);
-        if (mMediaRenderer != null) {
-            mMediaRenderer.stop(null);
-            mMediaRenderer.clearAVTransportURI(null);
-            mMediaRenderer.unsubscribe();
-        }
+        mMediaRendererModel.stop();
     }
 
     @Bindable
@@ -241,7 +171,7 @@ public class DmcActivityModel extends BaseObservable {
         return mProgressText;
     }
 
-    public void setProgressText(final int progress) {
+    private void setProgressText(final int progress) {
         mProgressText = makeTimeText(progress);
         notifyPropertyChanged(BR.progressText);
     }
@@ -295,7 +225,7 @@ public class DmcActivityModel extends BaseObservable {
         return mChapterInfo;
     }
 
-    public void setChapterInfo(@Nullable final List<Integer> chapterInfo) {
+    private void setChapterInfo(@Nullable final List<Integer> chapterInfo) {
         mChapterInfo = chapterInfo;
         notifyPropertyChanged(BR.chapterInfo);
         setChapterInfoEnabled();
@@ -312,7 +242,7 @@ public class DmcActivityModel extends BaseObservable {
         return mChapterInfoEnabled;
     }
 
-    public void setChapterInfoEnabled() {
+    private void setChapterInfoEnabled() {
         mChapterInfoEnabled = (mDuration != 0 && mChapterInfo != null);
         notifyPropertyChanged(BR.chapterInfoEnabled);
     }
@@ -354,42 +284,38 @@ public class DmcActivityModel extends BaseObservable {
         return sb.toString();
     }
 
-    private void showToast(int resId) {
-        Toast.makeText(mContext, resId, Toast.LENGTH_LONG).show();
-    }
-
     public void onClickPlay(View view) {
         if (mPlaying) {
-            mMediaRenderer.pause(mShowToastOnError);
+            mMediaRendererModel.pause();
         } else {
-            mMediaRenderer.play(mShowToastOnError);
+            mMediaRendererModel.play();
         }
     }
 
     public void onClickNext(View view) {
-        final int chapter = getCurrentChapter() + 1;
-        if (chapter < mChapterInfo.size()) {
-            mMediaRenderer.seek(mChapterInfo.get(chapter), mShowToastOnError);
-        }
+        mMediaRendererModel.nextChapter();
     }
 
     public void onClickPrevious(View view) {
-        int chapter = getCurrentChapter();
-        if (chapter > 0 && mProgress - mChapterInfo.get(chapter) < CHAPTER_MARGIN) {
-            chapter--;
-        }
-        if (chapter >= 0) {
-            mMediaRenderer.seek(mChapterInfo.get(chapter), mShowToastOnError);
-        }
+        mMediaRendererModel.previousChapter();
     }
 
-    private int getCurrentChapter() {
-        final int progress = mProgress;
-        for (int i = 0; i < mChapterInfo.size(); i++) {
-            if (progress < mChapterInfo.get(i)) {
-                return i - 1;
-            }
+    @Override
+    public void notifyPosition(final int progress, final int duration) {
+        setDuration(duration);
+        if (mTracking) {
+            return;
         }
-        return mChapterInfo.size() - 1;
+        setProgress(progress);
+    }
+
+    @Override
+    public void notifyPlayingState(final boolean playing) {
+        setPlaying(playing);
+    }
+
+    @Override
+    public void notifyChapterInfo(final List<Integer> chapterInfo) {
+        setChapterInfo(chapterInfo);
     }
 }

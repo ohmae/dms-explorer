@@ -52,7 +52,7 @@ public class MovieActivityModel extends BaseObservable {
         }
         final Point p1 = DisplaySizeUtils.getSize(activity);
         final Point p2 = DisplaySizeUtils.getRealSize(activity);
-        setRightNavigationSize( p2.x - p1.x);
+        setRightNavigationSize(p2.x - p1.x);
         setBottomNavigationSize(p2.y - p1.y);
     }
 

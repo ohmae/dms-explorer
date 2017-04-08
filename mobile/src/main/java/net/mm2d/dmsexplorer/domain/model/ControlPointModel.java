@@ -24,7 +24,6 @@ import net.mm2d.android.upnp.cds.MediaServer;
 import net.mm2d.android.upnp.cds.MsControlPoint;
 import net.mm2d.android.upnp.cds.MsControlPoint.MsDiscoveryListener;
 import net.mm2d.dmsexplorer.R;
-import net.mm2d.dmsexplorer.Repository;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -33,6 +32,19 @@ import java.util.concurrent.TimeUnit;
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
  */
 public class ControlPointModel {
+    public interface SelectMediaServerObserver {
+        void update(@Nullable MediaServer server);
+    }
+
+    public interface SelectMediaRendererObserver {
+        void update(@Nullable MediaRenderer renderer);
+    }
+
+    @NonNull
+    private final SelectMediaServerObserver mSelectMediaServerObserver;
+    @NonNull
+    private final SelectMediaRendererObserver mSelectMediaRendererObserver;
+    @NonNull
     private final AvControlPointManager mAvControlPointManager = new AvControlPointManager();
     @NonNull
     private final Context mContext;
@@ -93,9 +105,14 @@ public class ControlPointModel {
         }
     }
 
-    public ControlPointModel(@NonNull final Context context) {
+
+    public ControlPointModel(@NonNull final Context context,
+                             @NonNull final SelectMediaServerObserver serverObserver,
+                             @NonNull final SelectMediaRendererObserver rendererObserver) {
         mContext = context.getApplicationContext();
         mLan = Lan.createInstance(mContext);
+        mSelectMediaServerObserver = serverObserver;
+        mSelectMediaRendererObserver = rendererObserver;
     }
 
     public void setMsDiscoveryListener(@Nullable MsDiscoveryListener listener) {
@@ -107,7 +124,7 @@ public class ControlPointModel {
             mSelectedMediaServer.unsubscribe();
         }
         mSelectedMediaServer = server;
-        Repository.getInstance().updateMediaServer(server);
+        mSelectMediaServerObserver.update(server);
         if (mSelectedMediaServer != null) {
             mSelectedMediaServer.subscribe();
         }
@@ -131,7 +148,7 @@ public class ControlPointModel {
             mSelectedMediaRenderer.unsubscribe();
         }
         mSelectedMediaRenderer = server;
-        Repository.getInstance().updateMediaRenderer(server);
+        mSelectMediaRendererObserver.update(server);
         if (mSelectedMediaRenderer != null) {
             mSelectedMediaRenderer.subscribe();
         }

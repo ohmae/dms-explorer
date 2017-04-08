@@ -54,7 +54,7 @@ public class ChapterInfo {
 
     private static void getSonyInner(final @NonNull String url, final @NonNull Callback callback) {
         try {
-            final String xml = new HttpClient().downloadString(new URL(url));
+            final String xml = new HttpClient(false).downloadString(new URL(url));
             callback.onResult(parseSonyChapterInfo(xml));
         } catch (IOException | ParserConfigurationException | SAXException ignored) {
             callback.onResult(null);

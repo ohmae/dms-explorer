@@ -12,7 +12,6 @@ import android.support.annotation.Nullable;
 
 import net.mm2d.android.upnp.cds.CdsObject;
 import net.mm2d.android.upnp.cds.MediaServer;
-import net.mm2d.dmsexplorer.Repository;
 import net.mm2d.dmsexplorer.domain.entity.ContentDirectoryEntry;
 import net.mm2d.dmsexplorer.domain.entity.ContentDirectoryEntry.EntryListener;
 
@@ -25,6 +24,11 @@ import java.util.List;
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
  */
 public class MediaServerModel implements EntryListener {
+    public interface PlaybackTargetObserver {
+        void update(CdsObject object);
+    }
+
+    private PlaybackTargetObserver mPlaybackTargetObserver;
     private static final String DELIMITER = " < ";
     private final MediaServer mMediaServer;
     private final Deque<ContentDirectoryEntry> mHistoryStack = new LinkedList<>();
@@ -37,8 +41,9 @@ public class MediaServerModel implements EntryListener {
         void onUpdate(@NonNull List<CdsObject> list, boolean inProgress);
     }
 
-    public MediaServerModel(MediaServer server) {
+    public MediaServerModel(MediaServer server, PlaybackTargetObserver observer) {
         mMediaServer = server;
+        mPlaybackTargetObserver = observer;
     }
 
     public MediaServer getMediaServer() {
@@ -127,8 +132,7 @@ public class MediaServerModel implements EntryListener {
     }
 
     private void updatePlaybackTarget() {
-        final CdsObject object = getSelectedObject();
-        Repository.getInstance().updatePlaybackTarget(object);
+        mPlaybackTargetObserver.update(getSelectedObject());
     }
 
     public CdsObject getSelectedObject() {

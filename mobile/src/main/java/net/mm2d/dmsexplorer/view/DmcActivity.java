@@ -17,6 +17,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
 import net.mm2d.dmsexplorer.R;
+import net.mm2d.dmsexplorer.Repository;
 import net.mm2d.dmsexplorer.databinding.DmcActivityBinding;
 import net.mm2d.dmsexplorer.viewmodel.DmcActivityModel;
 
@@ -62,6 +63,7 @@ public class DmcActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         mBinding.getModel().terminate();
+        Repository.getInstance().getControlPointModel().clearSelectedRenderer();
     }
 
     @Override
