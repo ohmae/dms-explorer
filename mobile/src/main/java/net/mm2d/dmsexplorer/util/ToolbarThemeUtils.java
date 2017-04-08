@@ -7,30 +7,22 @@
 
 package net.mm2d.dmsexplorer.util;
 
-import android.app.Activity;
-import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.Color;
-import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.graphics.Palette;
 import android.support.v7.graphics.Palette.Swatch;
-import android.support.v7.widget.Toolbar;
 
-import net.mm2d.android.upnp.cds.CdsObject;
 import net.mm2d.android.upnp.cds.MediaServer;
 import net.mm2d.dmsexplorer.Const;
-import net.mm2d.dmsexplorer.R;
-import net.opacapp.multilinecollapsingtoolbar.CollapsingToolbarLayout;
 
 /**
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
  */
 public class ToolbarThemeUtils {
     public static void setServerThemeColor(
-            final @NonNull MediaServer server,
-            final @Nullable Bitmap icon) {
+            @NonNull final MediaServer server,
+            @Nullable final Bitmap icon) {
         if (server.getBooleanTag(Const.KEY_HAS_TOOLBAR_COLOR, false)) {
             return;
         }
@@ -38,8 +30,8 @@ public class ToolbarThemeUtils {
     }
 
     public static void setServerThemeColorAsync(
-            final @NonNull MediaServer server,
-            final @Nullable Bitmap icon) {
+            @NonNull final MediaServer server,
+            @Nullable final Bitmap icon) {
         if (server.getBooleanTag(Const.KEY_HAS_TOOLBAR_COLOR, false)) {
             return;
         }
@@ -51,15 +43,15 @@ public class ToolbarThemeUtils {
     }
 
     private static void setServerThemeColorInner(
-            final @NonNull MediaServer server,
-            final @Nullable Bitmap icon) {
+            @NonNull final MediaServer server,
+            @Nullable final Bitmap icon) {
         final Palette palette = icon == null ? null : new Palette.Builder(icon).generate();
         setServerThemeColorFromPalette(server, palette);
     }
 
     private static void setServerThemeColorFromPalette(
-            final @NonNull MediaServer server,
-            final @Nullable Palette palette) {
+            @NonNull final MediaServer server,
+            @Nullable final Palette palette) {
         final String friendlyName = server.getFriendlyName();
         int expandedColor = ThemeUtils.getPastelColor(friendlyName);
         int collapsedColor = ThemeUtils.getDeepColor(friendlyName);
@@ -79,7 +71,7 @@ public class ToolbarThemeUtils {
     }
 
     @Nullable
-    private static Swatch selectLightSwatch(Palette palette) {
+    private static Swatch selectLightSwatch(@NonNull final Palette palette) {
         Swatch swatch;
         swatch = palette.getVibrantSwatch();
         if (swatch != null) {
@@ -93,7 +85,7 @@ public class ToolbarThemeUtils {
     }
 
     @Nullable
-    private static Swatch selectDarkSwatch(Palette palette) {
+    private static Swatch selectDarkSwatch(@NonNull final Palette palette) {
         Swatch swatch;
         swatch = palette.getDarkVibrantSwatch();
         if (swatch != null) {
@@ -112,33 +104,5 @@ public class ToolbarThemeUtils {
             return swatch;
         }
         return palette.getDominantSwatch();
-    }
-
-    public static void setCdsListTheme(
-            @NonNull final Activity activity,
-            @NonNull final MediaServer server,
-            @NonNull final Toolbar toolbar) {
-        final int collapsedColor = server.getIntTag(Const.KEY_TOOLBAR_COLLAPSED_COLOR, Color.BLACK);
-        toolbar.setBackgroundColor(collapsedColor);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            activity.getWindow().setStatusBarColor(ThemeUtils.getDarkerColor(collapsedColor));
-        }
-    }
-
-    public static void setCdsDetailTheme(
-            @NonNull final Context context,
-            @NonNull final CdsObject object,
-            @NonNull final CollapsingToolbarLayout toolbarLayout,
-            boolean activityTheme) {
-        final String title = object.getTitle();
-        final int toolbarColor = ThemeUtils.getAccentColor(title);
-        toolbarLayout.findViewById(R.id.toolbarBackground)
-                .setBackgroundColor(ThemeUtils.getPastelColor(title));
-        toolbarLayout.setContentScrimColor(toolbarColor);
-        if (activityTheme
-                && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP
-                && context instanceof Activity) {
-            ((Activity) context).getWindow().setStatusBarColor(ThemeUtils.getDarkerColor(toolbarColor));
-        }
     }
 }

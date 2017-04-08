@@ -12,22 +12,19 @@ import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 
 import net.mm2d.android.upnp.cds.CdsObject;
-import net.mm2d.android.upnp.cds.Tag;
 import net.mm2d.dmsexplorer.Const;
-import net.mm2d.dmsexplorer.DataHolder;
-import net.mm2d.dmsexplorer.DmcActivity;
-import net.mm2d.dmsexplorer.MovieActivity;
-import net.mm2d.dmsexplorer.MusicActivity;
-import net.mm2d.dmsexplorer.PhotoActivity;
-import net.mm2d.dmsexplorer.dialog.SelectDeviceDialog;
-import net.mm2d.dmsexplorer.dialog.SelectResourceDialog;
-
-import java.util.List;
+import net.mm2d.dmsexplorer.Repository;
+import net.mm2d.dmsexplorer.domain.model.PlaybackTargetModel;
+import net.mm2d.dmsexplorer.view.DmcActivity;
+import net.mm2d.dmsexplorer.view.MovieActivity;
+import net.mm2d.dmsexplorer.view.MusicActivity;
+import net.mm2d.dmsexplorer.view.PhotoActivity;
+import net.mm2d.dmsexplorer.view.dialog.SelectRendererDialog;
+import net.mm2d.dmsexplorer.view.dialog.SelectResourceDialog;
 
 /**
  * Item選択後の処理をまとめるクラス。
@@ -35,53 +32,47 @@ import java.util.List;
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
  */
 public class ItemSelectUtils {
-    public static void play(final @NonNull Activity activity,
-                            final @NonNull CdsObject object) {
-        final List<Tag> list = object.getTagList(CdsObject.RES);
-        if (list == null || list.isEmpty()) {
+    public static void play(@NonNull final Activity activity) {
+        final PlaybackTargetModel targetModel = Repository.get().getPlaybackTargetModel();
+        final int resCount = targetModel.getResCount();
+        if (resCount == 0) {
             return;
         }
-        if (list.size() == 1) {
-            play(activity, object, 0);
+        if (resCount == 1) {
+            play(activity, 0);
             return;
         }
-        final SelectResourceDialog dialog = SelectResourceDialog.newInstance(object);
+        final SelectResourceDialog dialog = SelectResourceDialog.newInstance();
         dialog.show(activity.getFragmentManager(), "");
     }
 
-    public static void play(final @NonNull Context context,
-                            final @NonNull CdsObject object, final int index) {
-        final SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
-        final Tag res = object.getTag(CdsObject.RES, index);
-        if (res == null) {
+    public static void play(@NonNull final Activity activity, final int index) {
+        final PlaybackTargetModel targetModel = Repository.get().getPlaybackTargetModel();
+        targetModel.setResIndex(index);
+        if (targetModel.getUri() == null) {
             return;
         }
-        final String protocolInfo = res.getAttribute(CdsObject.PROTOCOL_INFO);
-        final String mimeType = CdsObject.extractMimeTypeFromProtocolInfo(protocolInfo);
-        final Uri uri = Uri.parse(res.getValue());
         final Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.setDataAndType(uri, mimeType);
-        switch (object.getType()) {
+        intent.setDataAndType(targetModel.getUri(), targetModel.getMimeType());
+        final SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(activity);
+        switch (targetModel.getCdsObject().getType()) {
             case CdsObject.TYPE_VIDEO:
                 if (pref.getBoolean(Const.LAUNCH_APP_MOVIE, true)) {
-                    intent.setClass(context, MovieActivity.class);
-                    intent.putExtra(Const.EXTRA_OBJECT, object);
+                    intent.setClass(activity, MovieActivity.class);
                 } else {
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 }
                 break;
             case CdsObject.TYPE_AUDIO:
                 if (pref.getBoolean(Const.LAUNCH_APP_MUSIC, true)) {
-                    intent.setClass(context, MusicActivity.class);
-                    intent.putExtra(Const.EXTRA_OBJECT, object);
+                    intent.setClass(activity, MusicActivity.class);
                 } else {
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 }
                 break;
             case CdsObject.TYPE_IMAGE:
                 if (pref.getBoolean(Const.LAUNCH_APP_PHOTO, true)) {
-                    intent.setClass(context, PhotoActivity.class);
-                    intent.putExtra(Const.EXTRA_OBJECT, object);
+                    intent.setClass(activity, PhotoActivity.class);
                 } else {
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 }
@@ -90,29 +81,18 @@ public class ItemSelectUtils {
                 return;
         }
         try {
-            context.startActivity(intent);
+            activity.startActivity(intent);
+            activity.overridePendingTransition(0, 0);
         } catch (final ActivityNotFoundException ignored) {
         }
     }
 
-    public static void send(final @NonNull Activity activity,
-                            final @NonNull String udn, final @NonNull CdsObject object) {
-        if (DataHolder.getInstance().getControlPointModel().getMrControlPoint().getDeviceListSize() == 0) {
-            return;
-        }
-        final SelectDeviceDialog dialog = SelectDeviceDialog.newInstance(udn, object);
+    public static void send(@NonNull final Activity activity) {
+        final SelectRendererDialog dialog = SelectRendererDialog.newInstance();
         dialog.show(activity.getFragmentManager(), "");
     }
 
-    public static void send(final @NonNull Context context,
-                            final @NonNull String serverUdn, final @NonNull CdsObject object,
-                            final @NonNull String rendererUdn) {
-        final Tag res = object.getTag(CdsObject.RES);
-        if (res == null) {
-            return;
-        }
-        final Intent intent = DmcActivity.makeIntent(
-                context, serverUdn, object, res.getValue(), rendererUdn);
-        context.startActivity(intent);
+    public static void sendSelectedRenderer(@NonNull final Context context) {
+        context.startActivity(DmcActivity.makeIntent(context));
     }
 }

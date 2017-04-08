@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
         <variable
             name="model"
-            type="net.mm2d.dmsexplorer.model.ServerItemModel"/>
+            type="net.mm2d.dmsexplorer.viewmodel.ServerItemModel"/>
+
+        <import type="android.view.View"/>
     </data>
 
     <LinearLayout
@@ -16,7 +17,7 @@
         android:layout_height="wrap_content"
         android:background="@drawable/bg_list_item"
         android:orientation="horizontal"
-        android:translationZ="@{model.translationZ}"
+        android:translationZ="@{model.selected ? @dimen/list_item_focus_elevation : 0}"
         >
 
         <View
@@ -24,7 +25,7 @@
             android:layout_width="5dp"
             android:layout_height="match_parent"
             android:background="@color/markListItemSelected"
-            android:visibility="@{model.markVisibility}"
+            android:visibility="@{model.selected ? View.VISIBLE : View.INVISIBLE}"
             />
 
         <FrameLayout
@@ -44,16 +45,16 @@
                 android:text="@{model.accentText}"
                 android:textColor="@color/textPrimary"
                 android:textSize="@dimen/text_size_accent"
-                android:visibility="@{model.accentTextVisibility}"
+                android:visibility="@{model.accentIcon == null ? View.VISIBLE : View.INVISIBLE}"
                 tools:ignore="SpUsage"/>
 
             <ImageView
                 android:id="@+id/imageAccent"
                 android:layout_width="@dimen/accent_size"
                 android:layout_height="@dimen/accent_size"
-                android:scaleType="fitCenter"
-                android:visibility="@{model.accentImageVisibility}"
                 android:imageBitmap="@{model.accentIcon}"
+                android:scaleType="fitCenter"
+                android:visibility="@{model.accentIcon != null ? View.VISIBLE : View.INVISIBLE}"
                 />
 
         </FrameLayout>

@@ -31,7 +31,7 @@ public class DisplaySizeUtils {
      * @see Display#getSize(Point)
      */
     @TargetApi(VERSION_CODES.HONEYCOMB_MR2)
-    public static Point getSize(final @NonNull Activity activity) {
+    public static Point getSize(@NonNull final Activity activity) {
         final Display display = activity.getWindowManager().getDefaultDisplay();
         final Point point = new Point();
         display.getSize(point);
@@ -46,7 +46,7 @@ public class DisplaySizeUtils {
      * @see Display#getRealSize(Point)
      */
     @TargetApi(VERSION_CODES.HONEYCOMB_MR2)
-    public static Point getRealSize(final @NonNull Activity activity) {
+    public static Point getRealSize(@NonNull final Activity activity) {
         final Display display = activity.getWindowManager().getDefaultDisplay();
         final Point point = new Point();
         if (VERSION.SDK_INT >= VERSION_CODES.JELLY_BEAN_MR1) {

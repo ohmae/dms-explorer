@@ -299,7 +299,7 @@ public class MediaServer extends DeviceWrapper {
         @Nullable
         private final String filter;
 
-        BrowseMetadataRequest(final @NonNull String objectId, final @Nullable String filter) {
+        BrowseMetadataRequest(@NonNull final String objectId, @Nullable final String filter) {
             this.objectId = objectId;
             this.filter = filter;
         }

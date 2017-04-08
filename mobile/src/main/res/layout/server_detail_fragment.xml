@@ -8,7 +8,7 @@
 
         <variable
             name="model"
-            type="net.mm2d.dmsexplorer.model.ServerDetailFragmentModel"/>
+            type="net.mm2d.dmsexplorer.viewmodel.ServerDetailFragmentModel"/>
     </data>
 
     <android.support.design.widget.CoordinatorLayout
@@ -88,6 +88,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|end"
             android:layout_margin="@dimen/fab_margin"
+            android:onClick="@{model::onClickFab}"
             app:rippleColor="@color/fabRipple"
             app:srcCompat="@drawable/ic_arrow_forward"
             />

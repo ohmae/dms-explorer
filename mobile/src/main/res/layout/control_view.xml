@@ -7,7 +7,7 @@
 
         <variable
             name="model"
-            type="net.mm2d.dmsexplorer.model.ControlViewModel"/>
+            type="net.mm2d.dmsexplorer.viewmodel.ControlViewModel"/>
     </data>
 
     <LinearLayout
@@ -22,9 +22,9 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:background="@drawable/bg_tool_button"
+            android:enabled="@{model.prepared}"
             android:padding="@dimen/tool_button_padding"
-            android:src="@{model.playing ? @drawable/ic_pause : @drawable/ic_play}"
-            android:enabled="@{model.playButtonEnabled}"
+            android:imageResource="@{model.playButtonResId}"
             />
 
         <TextView
@@ -44,11 +44,11 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_weight="1"
+            android:enabled="@{model.seekable}"
+            android:max="@{model.duration}"
             android:paddingBottom="@dimen/seek_padding"
             android:paddingTop="@dimen/seek_padding"
-            android:enabled="@{model.seekBarEnabled}"
-            android:max="@{model.seekBarMax}"
-            android:progress="@{model.seekBarProgress}"
+            android:progress="@{model.progress}"
             />
 
         <TextView

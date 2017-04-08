@@ -29,16 +29,16 @@ public class FullscreenHelper {
         private View mTopView;
         private View mBottomView;
 
-        public Builder(final @NonNull View view) {
+        public Builder(@NonNull final View view) {
             mRootView = view;
         }
 
-        public Builder setTopView(final @NonNull View view) {
+        public Builder setTopView(@NonNull final View view) {
             mTopView = view;
             return this;
         }
 
-        public Builder setBottomView(final @NonNull View view) {
+        public Builder setBottomView(@NonNull final View view) {
             mBottomView = view;
             return this;
         }
@@ -66,7 +66,7 @@ public class FullscreenHelper {
     @NonNull
     private final Animation mExitToBottom;
 
-    private FullscreenHelper(final @NonNull Builder builder) {
+    private FullscreenHelper(@NonNull final Builder builder) {
         mHandler = new Handler();
         mRootView = builder.mRootView;
         mTopView = builder.mTopView;

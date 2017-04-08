@@ -1,61 +1,75 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
+<layout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/root"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
     >
 
-    <VideoView
-        android:id="@+id/videoView"
+    <data>
+
+        <variable
+            name="model"
+            type="net.mm2d.dmsexplorer.viewmodel.MovieActivityModel"/>
+    </data>
+
+    <FrameLayout
+        android:id="@+id/root"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_gravity="center"
-        />
-
-    <!-- コード上でpaddingを調整する -->
-    <LinearLayout
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/translucent_control"
-        android:orientation="horizontal"
-        android:paddingTop="@dimen/status_bar_size"
         >
 
-        <ImageView
-            android:id="@+id/toolbarBack"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginEnd="@dimen/toolbar_button_margin"
-            android:layout_marginRight="@dimen/toolbar_button_margin"
-            android:background="@drawable/bg_tool_button"
-            android:padding="@dimen/toolbar_button_padding"
-            app:srcCompat="@drawable/ic_arrow_back"
+        <VideoView
+            android:id="@+id/videoView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
             />
 
-        <TextView
-            android:id="@+id/toolbarTitle"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:ellipsize="end"
-            android:maxLines="1"
-            android:textColor="#FFFFFF"
-            android:textSize="@dimen/text_size_toolbar"
+            android:background="@color/translucent_control"
+            android:orientation="horizontal"
+            android:paddingTop="@dimen/status_bar_size"
+            app:layout_marginRight="@{model.rightNavigationSize}"
+            >
+
+            <ImageView
+                android:id="@+id/toolbarBack"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginEnd="@dimen/toolbar_button_margin"
+                android:layout_marginRight="@dimen/toolbar_button_margin"
+                android:background="@drawable/bg_tool_button"
+                android:padding="@dimen/toolbar_button_padding"
+                app:srcCompat="@drawable/ic_arrow_back"
+                />
+
+            <TextView
+                android:id="@+id/toolbarTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text="@{model.title}"
+                android:textColor="#FFFFFF"
+                android:textSize="@dimen/text_size_toolbar"
+                />
+
+        </LinearLayout>
+
+        <net.mm2d.dmsexplorer.view.view.ControlView
+            android:id="@+id/controlPanel"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/control_height"
+            android:layout_gravity="bottom"
+            android:background="@color/translucent_control"
+            android:paddingBottom="@{model.bottomNavigationSize}"
+            app:layout_height="@{model.bottomNavigationSize + (int)@dimen/control_height}"
+            app:layout_marginRight="@{model.rightNavigationSize}"
             />
 
-    </LinearLayout>
-
-    <!-- コード上でpaddingを調整する -->
-    <net.mm2d.dmsexplorer.view.ControlView
-        android:id="@+id/controlPanel"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/control_height"
-        android:layout_gravity="bottom"
-        android:background="@color/translucent_control"
-        />
-
-</FrameLayout>
+    </FrameLayout>
+</layout>

@@ -11,8 +11,8 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
-import net.mm2d.android.upnp.cds.CdsObject;
 import net.mm2d.android.upnp.DeviceWrapper;
+import net.mm2d.android.upnp.cds.CdsObject;
 import net.mm2d.upnp.Action;
 import net.mm2d.upnp.Argument;
 import net.mm2d.upnp.Device;
@@ -50,8 +50,8 @@ public class MediaRenderer extends DeviceWrapper {
         @NonNull
         private final ActionCallback mCallback;
 
-        ActionInvoker(final @NonNull Action action, final @NonNull Map<String, String> argument,
-                      final @Nullable ActionCallback callback) {
+        ActionInvoker(@NonNull final Action action, @NonNull final Map<String, String> argument,
+                      @Nullable final ActionCallback callback) {
             mAction = action;
             mArgument = argument;
             mCallback = callback != null ? callback : NULL_CALLBACK;
@@ -138,7 +138,7 @@ public class MediaRenderer extends DeviceWrapper {
     @Nullable
     private final Action mPause;
 
-    MediaRenderer(final @NonNull MrControlPoint cp, final @NonNull Device device) {
+    MediaRenderer(@NonNull final MrControlPoint cp, @NonNull final Device device) {
         super(device);
         mMrControlPoint = cp;
         if (!device.getDeviceType().startsWith(Avt.MR_DEVICE_TYPE)) {
@@ -156,7 +156,7 @@ public class MediaRenderer extends DeviceWrapper {
     }
 
     @NonNull
-    private static Service findService(final @NonNull Device device, final @NonNull String id) {
+    private static Service findService(@NonNull final Device device, @NonNull final String id) {
         final Service service = device.findServiceById(id);
         if (service == null) {
             throw new IllegalArgumentException("Device doesn't have " + id);
@@ -165,7 +165,7 @@ public class MediaRenderer extends DeviceWrapper {
     }
 
     @NonNull
-    private static Action findAction(final @NonNull Service service, final @NonNull String name) {
+    private static Action findAction(@NonNull final Service service, @NonNull final String name) {
         final Action action = service.findAction(name);
         if (action == null) {
             throw new IllegalArgumentException("Service doesn't have " + name);
@@ -204,8 +204,8 @@ public class MediaRenderer extends DeviceWrapper {
         });
     }
 
-    public void setAVTransportURI(final @NonNull CdsObject object, final @NonNull String uri,
-                                  final @Nullable ActionCallback callback) {
+    public void setAVTransportURI(@NonNull final CdsObject object, @NonNull final String uri,
+                                  @Nullable final ActionCallback callback) {
         final Map<String, String> argument = new HashMap<>();
         argument.put(INSTANCE_ID, "0");
         argument.put(CURRENT_URI, uri);
@@ -213,7 +213,7 @@ public class MediaRenderer extends DeviceWrapper {
         invoke(mSetAvTransportUri, argument, callback);
     }
 
-    public void clearAVTransportURI(final @Nullable ActionCallback callback) {
+    public void clearAVTransportURI(@Nullable final ActionCallback callback) {
         final Map<String, String> argument = new HashMap<>();
         argument.put(INSTANCE_ID, "0");
         argument.put(CURRENT_URI, null);
@@ -221,18 +221,18 @@ public class MediaRenderer extends DeviceWrapper {
         invoke(mSetAvTransportUri, argument, callback);
     }
 
-    public void play(final @Nullable ActionCallback callback) {
+    public void play(@Nullable final ActionCallback callback) {
         final Map<String, String> argument = new HashMap<>();
         argument.put(INSTANCE_ID, "0");
         argument.put(SPEED, "1");
         invoke(mPlay, argument, callback);
     }
 
-    public void stop(final @Nullable ActionCallback callback) {
+    public void stop(@Nullable final ActionCallback callback) {
         invoke(mStop, Collections.singletonMap(INSTANCE_ID, "0"), callback);
     }
 
-    public void pause(final @Nullable ActionCallback callback) {
+    public void pause(@Nullable final ActionCallback callback) {
         if (mPause == null) {
             if (callback != null) {
                 callback.onResult(false, null);
@@ -242,7 +242,7 @@ public class MediaRenderer extends DeviceWrapper {
         invoke(mPause, Collections.singletonMap(INSTANCE_ID, "0"), callback);
     }
 
-    public void seek(long time, final @Nullable ActionCallback callback) {
+    public void seek(long time, @Nullable final ActionCallback callback) {
         final Map<String, String> argument = new HashMap<>();
         argument.put(INSTANCE_ID, "0");
         final String timeText = makeTimeText(time);
@@ -265,28 +265,28 @@ public class MediaRenderer extends DeviceWrapper {
         invoke(mSeek, argument, callback);
     }
 
-    public void getPositionInfo(final @Nullable ActionCallback callback) {
+    public void getPositionInfo(@Nullable final ActionCallback callback) {
         invoke(mGetPositionInfo, Collections.singletonMap(INSTANCE_ID, "0"), callback);
     }
 
-    public void getTransportInfo(final @Nullable ActionCallback callback) {
+    public void getTransportInfo(@Nullable final ActionCallback callback) {
         invoke(mGetTransportInfo, Collections.singletonMap(INSTANCE_ID, "0"), callback);
     }
 
-    private void invoke(final @NonNull Action action, final @NonNull Map<String, String> argument,
-                        final @Nullable ActionCallback callback) {
+    private void invoke(@NonNull final Action action, @NonNull final Map<String, String> argument,
+                        @Nullable final ActionCallback callback) {
         mMrControlPoint.invoke(new ActionInvoker(action, argument, callback));
     }
 
-    public static String getCurrentTransportState(Map<String, String> result) {
+    public static String getCurrentTransportState(@NonNull final Map<String, String> result) {
         return result.get(CURRENT_TRANSPORT_STATE);
     }
 
-    public static int getDuration(Map<String, String> result) {
+    public static int getDuration(@NonNull final Map<String, String> result) {
         return parseCount(result.get(TRACK_DURATION));
     }
 
-    public static int getProgress(Map<String, String> result) {
+    public static int getProgress(@NonNull final Map<String, String> result) {
         final int progress = parseCount(result.get(REL_TIME));
         if (progress >= 0) {
             return progress;
@@ -300,7 +300,7 @@ public class MediaRenderer extends DeviceWrapper {
      * @param count 変換する文字列
      * @return 変換したミリ秒時間
      */
-    public static int parseCount(String count) {
+    public static int parseCount(@Nullable final String count) {
         if (TextUtils.isEmpty(count) || count.equals(NOT_IMPLEMENTED)) {
             return -1;
         }
@@ -321,10 +321,10 @@ public class MediaRenderer extends DeviceWrapper {
         return -1;
     }
 
-    private static String makeTimeText(long millisecond) {
-        final long second = millisecond / 1000;
-        final long minute = second / 60;
-        final long hour = minute / 60;
-        return String.format(Locale.US, "%01d:%02d:%02d", hour, minute % 60, second % 60);
+    private static String makeTimeText(final long millisecond) {
+        final long second = (millisecond / 1000) % 60;
+        final long minute = (millisecond / 60000) % 60;
+        final long hour = millisecond / 3600000;
+        return String.format(Locale.US, "%01d:%02d:%02d", hour, minute, second);
     }
 }

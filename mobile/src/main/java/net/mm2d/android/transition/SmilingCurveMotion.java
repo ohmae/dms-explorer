@@ -25,7 +25,7 @@ public class SmilingCurveMotion extends PathMotion {
     public SmilingCurveMotion() {
     }
 
-    public SmilingCurveMotion(final @NonNull Context context, final @NonNull AttributeSet attrs) {
+    public SmilingCurveMotion(@NonNull final Context context, @NonNull final AttributeSet attrs) {
         super(context, attrs);
     }
 

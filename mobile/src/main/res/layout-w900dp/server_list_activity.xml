@@ -9,7 +9,7 @@
 
         <variable
             name="model"
-            type="net.mm2d.dmsexplorer.model.ServerListActivityModel"/>
+            type="net.mm2d.dmsexplorer.viewmodel.ServerListActivityModel"/>
     </data>
 
     <android.support.design.widget.CoordinatorLayout

@@ -43,7 +43,7 @@ final class CdsObjectFactory {
      * @return パース結果
      */
     @NonNull
-    static List<CdsObject> parseDirectChildren(final @NonNull String udn, final @Nullable String xml) {
+    static List<CdsObject> parseDirectChildren(@NonNull final String udn, @Nullable final String xml) {
         final List<CdsObject> list = new ArrayList<>();
         if (TextUtils.isEmpty(xml)) {
             return list;
@@ -74,7 +74,7 @@ final class CdsObjectFactory {
      * @return パース結果、パースに失敗した場合null
      */
     @Nullable
-    static CdsObject parseMetadata(final @NonNull String udn, final @Nullable String xml) {
+    static CdsObject parseMetadata(@NonNull final String udn, @Nullable final String xml) {
         if (TextUtils.isEmpty(xml)) {
             return null;
         }
@@ -96,12 +96,12 @@ final class CdsObjectFactory {
     /**
      * CdsObjectのインスタンスを作成する。
      *
-     * @param udn MediaServerのUDN
+     * @param udn     MediaServerのUDN
      * @param element CdsObjectを指すElement
      * @return CdsObjectのインスタンス、パースに失敗した場合null
      */
     @Nullable
-    private static CdsObject createCdsObject(final @NonNull String udn, final @NonNull Element element) {
+    private static CdsObject createCdsObject(@NonNull final String udn, @NonNull final Element element) {
         try {
             return new CdsObject(udn, element);
         } catch (final IllegalArgumentException e) {
