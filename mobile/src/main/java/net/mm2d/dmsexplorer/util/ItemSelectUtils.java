@@ -25,7 +25,7 @@ import net.mm2d.dmsexplorer.view.DmcActivity;
 import net.mm2d.dmsexplorer.view.MovieActivity;
 import net.mm2d.dmsexplorer.view.MusicActivity;
 import net.mm2d.dmsexplorer.view.PhotoActivity;
-import net.mm2d.dmsexplorer.view.dialog.SelectDeviceDialog;
+import net.mm2d.dmsexplorer.view.dialog.SelectRendererDialog;
 import net.mm2d.dmsexplorer.view.dialog.SelectResourceDialog;
 
 import java.util.List;
@@ -95,7 +95,7 @@ public class ItemSelectUtils {
         if (Repository.getInstance().getControlPointModel().getMrControlPoint().getDeviceListSize() == 0) {
             return;
         }
-        final SelectDeviceDialog dialog = SelectDeviceDialog.newInstance();
+        final SelectRendererDialog dialog = SelectRendererDialog.newInstance();
         dialog.show(activity.getFragmentManager(), "");
     }
 

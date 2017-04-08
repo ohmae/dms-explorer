@@ -16,6 +16,7 @@ import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView.Adapter;
 import android.support.v7.widget.RecyclerView.ItemDecoration;
@@ -24,14 +25,12 @@ import android.view.View;
 
 import net.mm2d.android.upnp.cds.MediaServer;
 import net.mm2d.android.upnp.cds.MsControlPoint.MsDiscoveryListener;
-import net.mm2d.android.view.DividerItemDecoration;
 import net.mm2d.dmsexplorer.BR;
 import net.mm2d.dmsexplorer.R;
 import net.mm2d.dmsexplorer.Repository;
 import net.mm2d.dmsexplorer.databinding.ServerListItemBinding;
 import net.mm2d.dmsexplorer.domain.model.ControlPointModel;
 import net.mm2d.dmsexplorer.view.adapter.ServerListAdapter;
-
 
 /**
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
@@ -71,7 +70,7 @@ public class ServerListActivityModel extends BaseObservable {
     private final ServerSelectListener mServerSelectListener;
 
     public ServerListActivityModel(@NonNull Context context, ServerSelectListener listener) {
-        itemDecoration = new DividerItemDecoration(context);
+        itemDecoration = new DividerItemDecoration(context, DividerItemDecoration.VERTICAL);
         mServerListLayoutManager = new LinearLayoutManager(context);
         mServerListAdapter = new ServerListAdapter(context, mControlPointModel.getMediaServerList());
         mServerListAdapter.setOnItemClickListener(this::onItemClick);

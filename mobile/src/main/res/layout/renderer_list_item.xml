@@ -7,7 +7,7 @@
 
         <variable
             name="model"
-            type="net.mm2d.dmsexplorer.viewmodel.ServerItemModel"/>
+            type="net.mm2d.dmsexplorer.viewmodel.RendererItemModel"/>
 
         <import type="android.view.View"/>
     </data>
@@ -17,16 +17,7 @@
         android:layout_height="wrap_content"
         android:background="@drawable/bg_list_item"
         android:orientation="horizontal"
-        android:translationZ="@{model.selected ? @dimen/list_item_focus_elevation : 0}"
         >
-
-        <View
-            android:id="@+id/mark"
-            android:layout_width="5dp"
-            android:layout_height="match_parent"
-            android:background="@color/markListItemSelected"
-            android:visibility="@{model.selected ? View.VISIBLE : View.INVISIBLE}"
-            />
 
         <FrameLayout
             android:id="@+id/accent"
