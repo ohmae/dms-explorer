@@ -22,6 +22,7 @@ import net.mm2d.android.upnp.avt.MrControlPoint;
 import net.mm2d.dmsexplorer.R;
 import net.mm2d.dmsexplorer.Repository;
 import net.mm2d.dmsexplorer.databinding.RendererSelectDialogBinding;
+import net.mm2d.dmsexplorer.domain.model.ControlPointModel;
 import net.mm2d.dmsexplorer.util.ItemSelectUtils;
 import net.mm2d.dmsexplorer.view.adapter.RendererListAdapter;
 
@@ -41,12 +42,17 @@ public class SelectRendererDialog extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle(R.string.title_dialog_select_device);
-        final MrControlPoint cp = Repository.getInstance().getControlPointModel().getMrControlPoint();
+        final ControlPointModel model = Repository.getInstance().getControlPointModel();
+        final MrControlPoint cp = model.getMrControlPoint();
         final List<MediaRenderer> rendererList = cp.getDeviceList();
+        if (rendererList.isEmpty()) {
+            dismiss();
+            return builder.create();
+        }
         final RendererListAdapter adapter = new RendererListAdapter(getActivity(), rendererList);
         adapter.setOnItemClickListener((v, renderer) -> {
-            ItemSelectUtils.send(getActivity(), renderer);
+            model.setSelectedMediaRenderer(renderer);
+            ItemSelectUtils.sendSelectedRenderer(getActivity());
             dismiss();
         });
         final LayoutInflater inflater = LayoutInflater.from(getActivity());
@@ -55,6 +61,7 @@ public class SelectRendererDialog extends DialogFragment {
         binding.rendererList.setLayoutManager(new LinearLayoutManager(getActivity()));
         binding.rendererList.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
         binding.rendererList.setAdapter(adapter);
+        builder.setTitle(R.string.title_dialog_select_device);
         builder.setView(binding.getRoot());
         return builder.create();
     }

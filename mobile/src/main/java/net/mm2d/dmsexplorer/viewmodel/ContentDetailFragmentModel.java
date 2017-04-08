@@ -19,6 +19,7 @@ import net.mm2d.android.upnp.cds.CdsObject;
 import net.mm2d.android.util.AribUtils;
 import net.mm2d.dmsexplorer.BR;
 import net.mm2d.dmsexplorer.Repository;
+import net.mm2d.dmsexplorer.domain.model.ControlPointModel;
 import net.mm2d.dmsexplorer.domain.model.MediaServerModel;
 import net.mm2d.dmsexplorer.util.ThemeUtils;
 import net.mm2d.dmsexplorer.view.adapter.ContentPropertyAdapter;
@@ -58,11 +59,12 @@ public class ContentDetailFragmentModel extends BaseObservable {
         if (object == null) {
             return null;
         }
-        return new ContentDetailFragmentModel(context, object);
+        return new ContentDetailFragmentModel(context, object, repository.getControlPointModel());
     }
 
     private ContentDetailFragmentModel(@NonNull final Context context,
-                                       @NonNull final CdsObject object) {
+                                       @NonNull final CdsObject object,
+                                       @NonNull final ControlPointModel model) {
         title = AribUtils.toDisplayableString(object.getTitle());
         propertyAdapter = new ContentPropertyAdapter(context, object);
         collapsedColor = ThemeUtils.getAccentColor(title);
@@ -70,7 +72,7 @@ public class ContentDetailFragmentModel extends BaseObservable {
         hasResource = object.getTagList(CdsObject.RES) != null;
         hasProtectedResource = object.hasProtectedResource();
 
-        mMrControlPoint = Repository.getInstance().getControlPointModel().getMrControlPoint();
+        mMrControlPoint = model.getMrControlPoint();
         updateCanSend();
         mMrControlPoint.addMrDiscoveryListener(mMrDiscoveryListener);
     }

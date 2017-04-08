@@ -15,9 +15,7 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 
-import net.mm2d.android.upnp.avt.MediaRenderer;
 import net.mm2d.android.upnp.cds.CdsObject;
-import net.mm2d.android.upnp.cds.Tag;
 import net.mm2d.dmsexplorer.Const;
 import net.mm2d.dmsexplorer.Repository;
 import net.mm2d.dmsexplorer.domain.model.PlaybackTargetModel;
@@ -28,8 +26,6 @@ import net.mm2d.dmsexplorer.view.PhotoActivity;
 import net.mm2d.dmsexplorer.view.dialog.SelectRendererDialog;
 import net.mm2d.dmsexplorer.view.dialog.SelectResourceDialog;
 
-import java.util.List;
-
 /**
  * Item選択後の処理をまとめるクラス。
  *
@@ -38,15 +34,15 @@ import java.util.List;
 public class ItemSelectUtils {
     public static void play(final @NonNull Activity activity) {
         final PlaybackTargetModel targetModel = Repository.getInstance().getPlaybackTargetModel();
-        final List<Tag> list = targetModel.getCdsObject().getTagList(CdsObject.RES);
-        if (list == null || list.isEmpty()) {
+        final int resCount = targetModel.getResCount();
+        if (resCount == 0) {
             return;
         }
-        if (list.size() == 1) {
+        if (resCount == 1) {
             play(activity, 0);
             return;
         }
-        final SelectResourceDialog dialog = SelectResourceDialog.newInstance(targetModel.getCdsObject());
+        final SelectResourceDialog dialog = SelectResourceDialog.newInstance();
         dialog.show(activity.getFragmentManager(), "");
     }
 
@@ -92,15 +88,11 @@ public class ItemSelectUtils {
     }
 
     public static void send(final @NonNull Activity activity) {
-        if (Repository.getInstance().getControlPointModel().getMrControlPoint().getDeviceListSize() == 0) {
-            return;
-        }
         final SelectRendererDialog dialog = SelectRendererDialog.newInstance();
         dialog.show(activity.getFragmentManager(), "");
     }
 
-    public static void send(final @NonNull Context context, final @NonNull MediaRenderer renderer) {
-        Repository.getInstance().getControlPointModel().setSelectedMediaRenderer(renderer);
+    public static void sendSelectedRenderer(final @NonNull Context context) {
         context.startActivity(DmcActivity.makeIntent(context));
     }
 }

@@ -73,8 +73,8 @@ public class ContentListActivityModel extends BaseObservable implements ExploreL
     private final CdsSelectListener mCdsSelectListener;
 
     public static ContentListActivityModel create(@NonNull Context context,
-                                           @NonNull Repository repository,
-                                           @NonNull CdsSelectListener listener) {
+                                                  @NonNull Repository repository,
+                                                  @NonNull CdsSelectListener listener) {
         final MediaServerModel model = repository.getMediaServerModel();
         if (model == null) {
             return null;
@@ -82,7 +82,9 @@ public class ContentListActivityModel extends BaseObservable implements ExploreL
         return new ContentListActivityModel(context, model, listener);
     }
 
-    public ContentListActivityModel(@NonNull Context context, @NonNull MediaServerModel model, @NonNull CdsSelectListener listener) {
+    public ContentListActivityModel(@NonNull Context context,
+                                    @NonNull MediaServerModel model,
+                                    @NonNull CdsSelectListener listener) {
         itemDecoration = new DividerItemDecoration(context, DividerItemDecoration.VERTICAL);
         mContentListAdapter = new ContentListAdapter(context);
         mContentListAdapter.setOnItemClickListener(this::onItemClick);
@@ -94,8 +96,7 @@ public class ContentListActivityModel extends BaseObservable implements ExploreL
         mMediaServerModel.setExploreListener(this);
         title = mMediaServerModel.getTitle();
 
-        final MediaServer server = Repository.getInstance()
-                .getControlPointModel().getSelectedMediaServer();
+        final MediaServer server = model.getMediaServer();
         ToolbarThemeUtils.setServerThemeColor(server, null);
         toolbarBackground = server.getIntTag(Const.KEY_TOOLBAR_COLLAPSED_COLOR, Color.BLACK);
     }

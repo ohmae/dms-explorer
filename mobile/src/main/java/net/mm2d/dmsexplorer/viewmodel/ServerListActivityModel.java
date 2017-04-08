@@ -70,8 +70,8 @@ public class ServerListActivityModel extends BaseObservable {
     private final ServerSelectListener mServerSelectListener;
 
     public static ServerListActivityModel create(@NonNull Context context,
-                                          @NonNull Repository repository,
-                                          @NonNull ServerSelectListener listener) {
+                                                 @NonNull Repository repository,
+                                                 @NonNull ServerSelectListener listener) {
         return new ServerListActivityModel(context, repository.getControlPointModel(), listener);
     }
 

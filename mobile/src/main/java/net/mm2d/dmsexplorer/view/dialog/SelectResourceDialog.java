@@ -16,12 +16,12 @@ import android.support.v7.app.AlertDialog;
 import net.mm2d.android.upnp.cds.CdsObject;
 import net.mm2d.android.upnp.cds.Tag;
 import net.mm2d.dmsexplorer.R;
+import net.mm2d.dmsexplorer.Repository;
+import net.mm2d.dmsexplorer.domain.model.PlaybackTargetModel;
 import net.mm2d.dmsexplorer.util.ItemSelectUtils;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.annotation.Nonnull;
 
 /**
  * マルチリソースのコンテンツの再生時にリソースの選択を促すダイアログ。
@@ -29,29 +29,23 @@ import javax.annotation.Nonnull;
  * @author <a href="mailto:ryo@mm2d.net">大前良介(OHMAE Ryosuke)</a>
  */
 public class SelectResourceDialog extends DialogFragment {
-    private static final String KEY_OBJECT = "KEY_OBJECT";
-
     /**
      * インスタンスを作成する。
      *
      * <p>Bundleの設定と読み出しをこのクラス内で完結させる。
      *
-     * @param object 対象コンテンツのObject情報
      * @return インスタンス。
      */
-    public static SelectResourceDialog newInstance(@Nonnull CdsObject object) {
-        final Bundle arguments = new Bundle();
-        arguments.putParcelable(KEY_OBJECT, object);
-        final SelectResourceDialog instance = new SelectResourceDialog();
-        instance.setArguments(arguments);
-        return instance;
+    public static SelectResourceDialog newInstance() {
+        return new SelectResourceDialog();
     }
 
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        final CdsObject object = getArguments().getParcelable(KEY_OBJECT);
         final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        final PlaybackTargetModel targetModel = Repository.getInstance().getPlaybackTargetModel();
+        final CdsObject object = targetModel.getCdsObject();
         builder.setTitle(R.string.title_dialog_select_resource);
         final String[] choices = makeChoices(object);
         builder.setItems(choices,
