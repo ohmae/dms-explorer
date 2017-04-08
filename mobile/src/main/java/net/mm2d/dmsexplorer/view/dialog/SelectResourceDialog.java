@@ -55,7 +55,7 @@ public class SelectResourceDialog extends DialogFragment {
         builder.setTitle(R.string.title_dialog_select_resource);
         final String[] choices = makeChoices(object);
         builder.setItems(choices,
-                (dialog, which) -> ItemSelectUtils.play(getActivity(), object, which));
+                (dialog, which) -> ItemSelectUtils.play(getActivity(), which));
         return builder.create();
     }
 

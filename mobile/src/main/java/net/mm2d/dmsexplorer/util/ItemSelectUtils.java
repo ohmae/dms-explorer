@@ -36,22 +36,21 @@ import java.util.List;
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
  */
 public class ItemSelectUtils {
-    public static void play(final @NonNull Activity activity,
-                            final @NonNull CdsObject object) {
-        final List<Tag> list = object.getTagList(CdsObject.RES);
+    public static void play(final @NonNull Activity activity) {
+        final PlaybackTargetModel targetModel = Repository.getInstance().getPlaybackTargetModel();
+        final List<Tag> list = targetModel.getCdsObject().getTagList(CdsObject.RES);
         if (list == null || list.isEmpty()) {
             return;
         }
         if (list.size() == 1) {
-            play(activity, object, 0);
+            play(activity, 0);
             return;
         }
-        final SelectResourceDialog dialog = SelectResourceDialog.newInstance(object);
+        final SelectResourceDialog dialog = SelectResourceDialog.newInstance(targetModel.getCdsObject());
         dialog.show(activity.getFragmentManager(), "");
     }
 
-    public static void play(final @NonNull Activity activity,
-                            final @NonNull CdsObject object, final int index) {
+    public static void play(final @NonNull Activity activity, final int index) {
         final PlaybackTargetModel targetModel = Repository.getInstance().getPlaybackTargetModel();
         targetModel.setResIndex(index);
         if (targetModel.getUri() == null) {
@@ -60,11 +59,10 @@ public class ItemSelectUtils {
         final Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.setDataAndType(targetModel.getUri(), targetModel.getMimeType());
         final SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(activity);
-        switch (object.getType()) {
+        switch (targetModel.getCdsObject().getType()) {
             case CdsObject.TYPE_VIDEO:
                 if (pref.getBoolean(Const.LAUNCH_APP_MOVIE, true)) {
                     intent.setClass(activity, MovieActivity.class);
-                    intent.putExtra(Const.EXTRA_OBJECT, object);
                 } else {
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 }
@@ -72,7 +70,6 @@ public class ItemSelectUtils {
             case CdsObject.TYPE_AUDIO:
                 if (pref.getBoolean(Const.LAUNCH_APP_MUSIC, true)) {
                     intent.setClass(activity, MusicActivity.class);
-                    intent.putExtra(Const.EXTRA_OBJECT, object);
                 } else {
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 }
@@ -80,7 +77,6 @@ public class ItemSelectUtils {
             case CdsObject.TYPE_IMAGE:
                 if (pref.getBoolean(Const.LAUNCH_APP_PHOTO, true)) {
                     intent.setClass(activity, PhotoActivity.class);
-                    intent.putExtra(Const.EXTRA_OBJECT, object);
                 } else {
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 }

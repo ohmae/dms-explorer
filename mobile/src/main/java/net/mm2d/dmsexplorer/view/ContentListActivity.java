@@ -69,7 +69,7 @@ public class ContentListActivity extends AppCompatActivity implements CdsSelectL
                     Snackbar.make(v, R.string.toast_not_support_drm, Snackbar.LENGTH_LONG).show();
                     return;
                 }
-                ItemSelectUtils.play(this, object, 0);
+                ItemSelectUtils.play(this, 0);
                 return;
             }
             setDetailFragment(true);
@@ -94,7 +94,7 @@ public class ContentListActivity extends AppCompatActivity implements CdsSelectL
             Snackbar.make(v, R.string.toast_not_support_drm, Snackbar.LENGTH_LONG).show();
             return;
         }
-        ItemSelectUtils.play(this, object, 0);
+        ItemSelectUtils.play(this, 0);
     }
 
     @Override

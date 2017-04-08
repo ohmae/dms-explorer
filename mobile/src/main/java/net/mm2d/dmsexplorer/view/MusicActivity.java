@@ -10,7 +10,6 @@ package net.mm2d.dmsexplorer.view;
 import android.databinding.DataBindingUtil;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
-import android.media.MediaPlayer.OnErrorListener;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
@@ -21,7 +20,6 @@ import net.mm2d.dmsexplorer.Repository;
 import net.mm2d.dmsexplorer.databinding.MusicActivityBinding;
 import net.mm2d.dmsexplorer.domain.model.PlaybackTargetModel;
 import net.mm2d.dmsexplorer.util.ImageViewUtils;
-import net.mm2d.dmsexplorer.view.view.ControlView;
 import net.mm2d.dmsexplorer.viewmodel.MusicActivityModel;
 
 import java.io.IOException;
@@ -33,19 +31,6 @@ import java.io.IOException;
  */
 public class MusicActivity extends AppCompatActivity {
     private MediaPlayer mMediaPlayer;
-    private final OnErrorListener mOnErrorListener = new OnErrorListener() {
-        private boolean mNoError = true;
-
-        @Override
-        public boolean onError(MediaPlayer mp, int what, int extra) {
-            if (mNoError) {
-                mNoError = false;
-                return false;
-            }
-            return true;
-        }
-    };
-
     private MusicActivityBinding mBinding;
 
     @Override
@@ -62,15 +47,11 @@ public class MusicActivity extends AppCompatActivity {
         setSupportActionBar(mBinding.toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        final ControlView controlPanel = (ControlView) findViewById(R.id.controlPanel);
-        controlPanel.setOnErrorListener(mOnErrorListener);
-        controlPanel.setOnCompletionListener(mp -> onBackPressed());
-
+        mBinding.controlPanel.setOnCompletionListener(mp -> onBackPressed());
         final Repository repository = Repository.getInstance();
         final PlaybackTargetModel targetModel = repository.getPlaybackTargetModel();
-
         mMediaPlayer = new MediaPlayer();
-        mMediaPlayer.setOnPreparedListener(controlPanel);
+        mMediaPlayer.setOnPreparedListener(mBinding.controlPanel);
         mMediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
         try {
             mMediaPlayer.setDataSource(this, targetModel.getUri());

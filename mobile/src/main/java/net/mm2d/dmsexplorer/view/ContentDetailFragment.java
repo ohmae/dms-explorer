@@ -47,8 +47,6 @@ public class ContentDetailFragment extends Fragment {
     @Override
     public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
                              final Bundle savedInstanceState) {
-        final Repository repository = Repository.getInstance();
-        final CdsObject object = repository.getMediaServerModel().getSelectedObject();
         mBinding = DataBindingUtil.inflate(inflater, R.layout.content_detail_fragment, container, false);
         final ContentDetailFragmentModel model = ContentDetailFragmentModel.create(getActivity());
         if (model == null) {
@@ -57,6 +55,8 @@ public class ContentDetailFragment extends Fragment {
         }
         mBinding.setModel(model);
 
+        final Repository repository = Repository.getInstance();
+        final CdsObject object = repository.getMediaServerModel().getSelectedObject();
         setUpPlayButton(mBinding.fabPlay, object);
         setUpSendButton(mBinding.fabSend);
         return mBinding.getRoot();
@@ -80,9 +80,9 @@ public class ContentDetailFragment extends Fragment {
             });
             return;
         }
-        fab.setOnClickListener(view -> ItemSelectUtils.play(getActivity(), object, 0));
+        fab.setOnClickListener(view -> ItemSelectUtils.play(getActivity(), 0));
         fab.setOnLongClickListener(view -> {
-            ItemSelectUtils.play(getActivity(), object);
+            ItemSelectUtils.play(getActivity());
             return true;
         });
     }
