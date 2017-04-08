@@ -11,6 +11,7 @@ import android.databinding.BaseObservable;
 import android.databinding.Bindable;
 
 import net.mm2d.dmsexplorer.BR;
+import net.mm2d.dmsexplorer.R;
 
 import java.util.Locale;
 
@@ -25,6 +26,7 @@ public class ControlViewModel extends BaseObservable {
     private int mDuration;
     private int mProgress;
     private boolean mSeekable;
+    private int mPlayButtonResId = R.drawable.ic_play;
 
     @Bindable
     public int getProgress() {
@@ -72,14 +74,19 @@ public class ControlViewModel extends BaseObservable {
         notifyPropertyChanged(BR.durationText);
     }
 
-    @Bindable
-    public boolean isPlaying() {
-        return mPlaying;
-    }
-
     public void setPlaying(final boolean playing) {
         mPlaying = playing;
-        notifyPropertyChanged(BR.playing);
+        setPlayButtonResId(playing ? R.drawable.ic_pause : R.drawable.ic_play);
+    }
+
+    @Bindable
+    public int getPlayButtonResId() {
+        return mPlayButtonResId;
+    }
+
+    public void setPlayButtonResId(final int playButtonResId) {
+        mPlayButtonResId = playButtonResId;
+        notifyPropertyChanged(BR.playButtonResId);
     }
 
     @Bindable

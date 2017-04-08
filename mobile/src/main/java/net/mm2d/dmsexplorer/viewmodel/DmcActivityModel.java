@@ -76,6 +76,7 @@ public class DmcActivityModel extends BaseObservable
     private int mDuration;
     private int mProgress;
     private boolean mSeekable;
+    private int mPlayButtonResId;
     @Nullable
     private List<Integer> mChapterInfo;
     private boolean mChapterInfoEnabled;
@@ -129,6 +130,7 @@ public class DmcActivityModel extends BaseObservable
         } else {
             progressDrawable = null;
         }
+        mPlayButtonResId = R.drawable.ic_play;
     }
 
     public void initialize() {
@@ -186,17 +188,22 @@ public class DmcActivityModel extends BaseObservable
         notifyPropertyChanged(BR.durationText);
     }
 
-    @Bindable
-    public boolean isPlaying() {
-        return mPlaying;
-    }
-
     public void setPlaying(final boolean playing) {
         if (mPlaying == playing) {
             return;
         }
         mPlaying = playing;
-        notifyPropertyChanged(BR.playing);
+        setPlayButtonResId(playing ? R.drawable.ic_pause : R.drawable.ic_play);
+    }
+
+    @Bindable
+    public int getPlayButtonResId() {
+        return mPlayButtonResId;
+    }
+
+    public void setPlayButtonResId(final int playButtonResId) {
+        mPlayButtonResId = playButtonResId;
+        notifyPropertyChanged(BR.playButtonResId);
     }
 
     @Bindable

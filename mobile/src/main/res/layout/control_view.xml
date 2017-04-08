@@ -24,7 +24,7 @@
             android:background="@drawable/bg_tool_button"
             android:enabled="@{model.prepared}"
             android:padding="@dimen/tool_button_padding"
-            android:src="@{model.playing ? @drawable/ic_pause : @drawable/ic_play}"
+            android:imageResource="@{model.playButtonResId}"
             />
 
         <TextView
