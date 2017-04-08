@@ -23,22 +23,22 @@ import net.mm2d.dmsexplorer.domain.model.PlaybackTargetModel;
 /**
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
  */
-public class MovieActivityModel extends BaseObservable {
+public class PhotoActivityModel extends BaseObservable {
     public final String title;
 
+    private boolean mLoading = true;
     private int mRightNavigationSize;
-    private int mBottomNavigationSize;
 
-    public static MovieActivityModel create(Activity activity) {
+    public static PhotoActivityModel create(Activity activity) {
         final Repository repository = Repository.getInstance();
         final PlaybackTargetModel targetModel = repository.getPlaybackTargetModel();
         if (targetModel == null) {
             return null;
         }
-        return new MovieActivityModel(activity, targetModel);
+        return new PhotoActivityModel(activity, targetModel);
     }
 
-    private MovieActivityModel(Activity activity, PlaybackTargetModel targetModel) {
+    private PhotoActivityModel(Activity activity, PlaybackTargetModel targetModel) {
         title = targetModel.getCdsObject().getTitle();
         adjustPanel(activity);
     }
@@ -46,13 +46,11 @@ public class MovieActivityModel extends BaseObservable {
     public void adjustPanel(Activity activity) {
         if (VERSION.SDK_INT >= VERSION_CODES.N && activity.isInMultiWindowMode()) {
             setRightNavigationSize(0);
-            setBottomNavigationSize(0);
             return;
         }
         final Point p1 = DisplaySizeUtils.getSize(activity);
         final Point p2 = DisplaySizeUtils.getRealSize(activity);
         setRightNavigationSize( p2.x - p1.x);
-        setBottomNavigationSize(p2.y - p1.y);
     }
 
     @Bindable
@@ -66,12 +64,12 @@ public class MovieActivityModel extends BaseObservable {
     }
 
     @Bindable
-    public int getBottomNavigationSize() {
-        return mBottomNavigationSize;
+    public boolean isLoading() {
+        return mLoading;
     }
 
-    public void setBottomNavigationSize(final int bottomNavigationSize) {
-        mBottomNavigationSize = bottomNavigationSize;
-        notifyPropertyChanged(BR.bottomNavigationSize);
+    public void setLoading(final boolean loading) {
+        mLoading = loading;
+        notifyPropertyChanged(BR.loading);
     }
 }

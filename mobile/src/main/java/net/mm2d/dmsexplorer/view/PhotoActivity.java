@@ -7,28 +7,21 @@
 
 package net.mm2d.dmsexplorer.view;
 
-import android.content.Intent;
 import android.content.res.Configuration;
-import android.graphics.Point;
-import android.net.Uri;
-import android.os.Build.VERSION;
-import android.os.Build.VERSION_CODES;
+import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import net.mm2d.android.upnp.cds.CdsObject;
-import net.mm2d.android.util.DisplaySizeUtils;
-import net.mm2d.dmsexplorer.Const;
 import net.mm2d.dmsexplorer.R;
+import net.mm2d.dmsexplorer.Repository;
+import net.mm2d.dmsexplorer.databinding.PhotoActivityBinding;
+import net.mm2d.dmsexplorer.domain.model.PlaybackTargetModel;
 import net.mm2d.dmsexplorer.util.FullscreenHelper;
 import net.mm2d.dmsexplorer.util.ImageViewUtils;
-import net.mm2d.dmsexplorer.util.ViewLayoutUtils;
+import net.mm2d.dmsexplorer.viewmodel.PhotoActivityModel;
 
 /**
  * 静止画表示のActivity。
@@ -36,56 +29,35 @@ import net.mm2d.dmsexplorer.util.ViewLayoutUtils;
  * @author <a href="mailto:ryo@mm2d.net">大前良介(OHMAE Ryosuke)</a>
  */
 public class PhotoActivity extends AppCompatActivity {
-    private View mProgress;
-    private ImageView mImageView;
-    private View mToolbar;
     private FullscreenHelper mFullscreenHelper;
+    private PhotoActivityBinding mBinding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.photo_activity);
-        final Intent intent = getIntent();
-        final CdsObject object = intent.getParcelableExtra(Const.EXTRA_OBJECT);
-        final Uri uri = intent.getData();
+        mBinding = DataBindingUtil.setContentView(this, R.layout.photo_activity);
+        final PhotoActivityModel model = PhotoActivityModel.create(this);
+        if (model == null) {
+            finish();
+            return;
+        }
+        mBinding.setModel(model);
 
-        findViewById(R.id.toolbarBack).setOnClickListener(view -> onBackPressed());
-        final TextView title = (TextView) findViewById(R.id.toolbarTitle);
-        title.setText(object.getTitle());
-        mToolbar = findViewById(R.id.toolbar);
-        mFullscreenHelper = new FullscreenHelper.Builder(findViewById(R.id.root))
-                .setTopView(mToolbar)
+        mBinding.toolbarBack.setOnClickListener(view -> onBackPressed());
+        mFullscreenHelper = new FullscreenHelper.Builder(mBinding.getRoot())
+                .setTopView(mBinding.toolbar)
                 .build();
         mFullscreenHelper.showNavigation();
 
-        mImageView = (ImageView) findViewById(R.id.imageView);
-        mProgress = findViewById(R.id.progressBar);
-        mProgress.setVisibility(View.VISIBLE);
-
-        downloadAndSetImage(uri.toString());
-        adjustControlPanel();
+        final Repository repository = Repository.getInstance();
+        final PlaybackTargetModel targetModel = repository.getPlaybackTargetModel();
+        downloadAndSetImage(targetModel.getUri().toString());
     }
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-        adjustControlPanel();
-    }
-
-    private void adjustControlPanel() {
-        if (VERSION.SDK_INT >= VERSION_CODES.N && isInMultiWindowMode()) {
-            adjustControlPanel(0);
-            return;
-        }
-        final Point p1 = DisplaySizeUtils.getSize(this);
-        final Point p2 = DisplaySizeUtils.getRealSize(this);
-        adjustControlPanel(p2.x - p1.x);
-    }
-
-    private void adjustControlPanel(int right) {
-        final int topPadding = getResources().getDimensionPixelSize(R.dimen.status_bar_size);
-        mToolbar.setPadding(0, topPadding, 0, 0);
-        ViewLayoutUtils.setLayoutMarginRight(mToolbar, right);
+        mBinding.getModel().adjustPanel(this);
     }
 
     @Override
@@ -106,10 +78,10 @@ public class PhotoActivity extends AppCompatActivity {
     }
 
     private void downloadAndSetImage(final @NonNull String url) {
-        ImageViewUtils.downloadAndSetImage(mImageView, url, new ImageViewUtils.Callback() {
+        ImageViewUtils.downloadAndSetImage(mBinding.imageView, url, new ImageViewUtils.Callback() {
             @Override
             public void onSuccess() {
-                mProgress.setVisibility(View.INVISIBLE);
+                mBinding.getModel().setLoading(false);
             }
 
             @Override

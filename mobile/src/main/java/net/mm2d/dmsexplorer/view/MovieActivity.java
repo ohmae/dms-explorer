@@ -7,16 +7,16 @@
 
 package net.mm2d.dmsexplorer.view;
 
-import android.content.Intent;
 import android.content.res.Configuration;
 import android.databinding.DataBindingUtil;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
 import net.mm2d.dmsexplorer.R;
+import net.mm2d.dmsexplorer.Repository;
 import net.mm2d.dmsexplorer.databinding.MovieActivityBinding;
+import net.mm2d.dmsexplorer.domain.model.PlaybackTargetModel;
 import net.mm2d.dmsexplorer.util.FullscreenHelper;
 import net.mm2d.dmsexplorer.viewmodel.MovieActivityModel;
 
@@ -33,10 +33,13 @@ public class MovieActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mBinding = DataBindingUtil.setContentView(this, R.layout.movie_activity);
-        mBinding.setModel(MovieActivityModel.create(this));
+        final MovieActivityModel model = MovieActivityModel.create(this);
+        if (model == null) {
+            finish();
+            return;
+        }
+        mBinding.setModel(model);
 
-        final Intent intent = getIntent();
-        final Uri uri = intent.getData();
         mBinding.toolbarBack.setOnClickListener(view -> onBackPressed());
 
         mFullscreenHelper = new FullscreenHelper.Builder(mBinding.getRoot())
@@ -48,7 +51,9 @@ public class MovieActivity extends AppCompatActivity {
         mBinding.controlPanel.setOnCompletionListener(mp -> onBackPressed());
         mBinding.controlPanel.setOnUserActionListener(mFullscreenHelper::postHideNavigation);
         mBinding.videoView.setOnPreparedListener(mBinding.controlPanel);
-        mBinding.videoView.setVideoURI(uri);
+        final Repository repository = Repository.getInstance();
+        final PlaybackTargetModel targetModel = repository.getPlaybackTargetModel();
+        mBinding.videoView.setVideoURI(targetModel.getUri());
     }
 
     @Override

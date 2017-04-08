@@ -1,59 +1,75 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
+<layout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/root"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
     >
 
-    <ImageView
-        android:id="@+id/imageView"
+    <data>
+
+        <variable
+            name="model"
+            type="net.mm2d.dmsexplorer.viewmodel.PhotoActivityModel"/>
+
+        <import type="android.view.View"/>
+    </data>
+
+    <FrameLayout
+        android:id="@+id/root"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_gravity="center"
-        />
-
-    <ProgressBar
-        android:id="@+id/progressBar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        />
-
-    <!-- コード上でpaddingを調整する -->
-    <LinearLayout
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/translucent_control"
-        android:orientation="horizontal"
-        android:paddingTop="@dimen/status_bar_size"
         >
 
         <ImageView
-            android:id="@+id/toolbarBack"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginEnd="@dimen/toolbar_button_margin"
-            android:layout_marginRight="@dimen/toolbar_button_margin"
-            android:background="@drawable/bg_tool_button"
-            android:padding="@dimen/toolbar_button_padding"
-            app:srcCompat="@drawable/ic_arrow_back"
+            android:id="@+id/imageView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
             />
 
-        <TextView
-            android:id="@+id/toolbarTitle"
+        <ProgressBar
+            android:id="@+id/progressBar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:ellipsize="end"
-            android:maxLines="1"
-            android:textColor="#FFFFFF"
-            android:textSize="@dimen/text_size_toolbar"
+            android:layout_gravity="center"
+            android:visibility="@{model.loading ? View.VISIBLE : View.GONE}"
             />
 
-    </LinearLayout>
+        <!-- コード上でpaddingを調整する -->
+        <LinearLayout
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/translucent_control"
+            android:orientation="horizontal"
+            android:paddingTop="@dimen/status_bar_size"
+            app:layout_marginRight="@{model.rightNavigationSize}"
+            >
 
-</FrameLayout>
+            <ImageView
+                android:id="@+id/toolbarBack"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginEnd="@dimen/toolbar_button_margin"
+                android:layout_marginRight="@dimen/toolbar_button_margin"
+                android:background="@drawable/bg_tool_button"
+                android:padding="@dimen/toolbar_button_padding"
+                app:srcCompat="@drawable/ic_arrow_back"
+                />
+
+            <TextView
+                android:id="@+id/toolbarTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text="@{model.title}"
+                android:textColor="#FFFFFF"
+                android:textSize="@dimen/text_size_toolbar"
+                />
+
+        </LinearLayout>
+
+    </FrameLayout>
+</layout>
