@@ -40,18 +40,18 @@ public class MovieActivity extends AppCompatActivity {
             return;
         }
         mBinding.setModel(model);
+        mFullscreenHelper = new FullscreenHelper.Builder(mBinding.getRoot())
+                .setTopView(mBinding.toolbar)
+                .setBottomView(mBinding.controlPanel)
+                .build();
+        mFullscreenHelper.showNavigation();
+
         mBinding.toolbarBack.setOnClickListener(view -> onBackPressed());
         mBinding.controlPanel.setOnCompletionListener(mp -> onBackPressed());
         mBinding.controlPanel.setOnUserActionListener(mFullscreenHelper::postHideNavigation);
         mBinding.videoView.setOnPreparedListener(mBinding.controlPanel);
         final PlaybackTargetModel targetModel = repository.getPlaybackTargetModel();
         mBinding.videoView.setVideoURI(targetModel.getUri());
-
-        mFullscreenHelper = new FullscreenHelper.Builder(mBinding.getRoot())
-                .setTopView(mBinding.toolbar)
-                .setBottomView(mBinding.controlPanel)
-                .build();
-        mFullscreenHelper.showNavigation();
     }
 
     @Override
