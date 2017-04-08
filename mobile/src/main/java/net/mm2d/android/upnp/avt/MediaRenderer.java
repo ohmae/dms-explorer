@@ -278,15 +278,15 @@ public class MediaRenderer extends DeviceWrapper {
         mMrControlPoint.invoke(new ActionInvoker(action, argument, callback));
     }
 
-    public static String getCurrentTransportState(Map<String, String> result) {
+    public static String getCurrentTransportState(@NonNull final Map<String, String> result) {
         return result.get(CURRENT_TRANSPORT_STATE);
     }
 
-    public static int getDuration(Map<String, String> result) {
+    public static int getDuration(@NonNull final Map<String, String> result) {
         return parseCount(result.get(TRACK_DURATION));
     }
 
-    public static int getProgress(Map<String, String> result) {
+    public static int getProgress(@NonNull final Map<String, String> result) {
         final int progress = parseCount(result.get(REL_TIME));
         if (progress >= 0) {
             return progress;
@@ -300,7 +300,7 @@ public class MediaRenderer extends DeviceWrapper {
      * @param count 変換する文字列
      * @return 変換したミリ秒時間
      */
-    public static int parseCount(String count) {
+    public static int parseCount(@Nullable final String count) {
         if (TextUtils.isEmpty(count) || count.equals(NOT_IMPLEMENTED)) {
             return -1;
         }
@@ -321,10 +321,10 @@ public class MediaRenderer extends DeviceWrapper {
         return -1;
     }
 
-    private static String makeTimeText(long millisecond) {
-        final long second = millisecond / 1000;
-        final long minute = second / 60;
-        final long hour = minute / 60;
-        return String.format(Locale.US, "%01d:%02d:%02d", hour, minute % 60, second % 60);
+    private static String makeTimeText(final long millisecond) {
+        final long second = (millisecond / 1000) % 60;
+        final long minute = (millisecond / 60000) % 60;
+        final long hour = millisecond / 3600000;
+        return String.format(Locale.US, "%01d:%02d:%02d", hour, minute, second);
     }
 }
