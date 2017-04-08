@@ -11,6 +11,8 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.text.TextUtils;
 
@@ -27,13 +29,18 @@ import net.mm2d.upnp.Icon;
  */
 public class ServerItemModel {
     public final boolean selected;
+    @Nullable
     public final Drawable accentBackground;
+    @Nullable
     public final String accentText;
+    @Nullable
     public final Bitmap accentIcon;
+    @NonNull
     public final String title;
+    @NonNull
     public final String description;
 
-    public ServerItemModel(Context context, MediaServer server, boolean selected) {
+    public ServerItemModel(@NonNull final Context context, @NonNull final MediaServer server, boolean selected) {
         this.selected = selected;
         final String name = server.getFriendlyName();
         final Icon icon = server.getIcon();
@@ -55,8 +62,13 @@ public class ServerItemModel {
         ToolbarThemeUtils.setServerThemeColorAsync(server, accentIcon);
     }
 
-    private String makeDescription(MediaServer server) {
+    private String makeDescription(@NonNull final MediaServer server) {
         final StringBuilder sb = new StringBuilder();
+        final String manufacture = server.getManufacture();
+        if (manufacture != null && !manufacture.isEmpty()) {
+            sb.append(manufacture);
+            sb.append('\n');
+        }
         sb.append("IP: ");
         sb.append(server.getIpAddress());
         final String serial = server.getSerialNumber();

@@ -43,8 +43,8 @@ public class ImageViewUtils {
     };
 
     public static void downloadAndSetImage(
-            final @NonNull ImageView imageView,
-            final @NonNull String url, final @Nullable Callback cb) {
+            @NonNull final ImageView imageView,
+            @NonNull final String url, @Nullable final Callback cb) {
         final Callback callback = cb != null ? cb : CALLBACK;
         new AsyncTask<Void, Void, byte[]>() {
             @Override
@@ -60,7 +60,7 @@ public class ImageViewUtils {
             }
 
             @Override
-            protected void onPostExecute(final @Nullable byte[] data) {
+            protected void onPostExecute(@Nullable final byte[] data) {
                 if (data == null) {
                     callback.onError();
                     return;
@@ -71,15 +71,15 @@ public class ImageViewUtils {
     }
 
     private static void decodeAndSetImageAfterAllocateSize(
-            final @NonNull ImageView imageView,
-            final @NonNull byte[] data, final @NonNull Callback callback) {
+            @NonNull final ImageView imageView,
+            @NonNull final byte[] data, @NonNull final Callback callback) {
         ViewUtils.execAfterAllocateSize(imageView,
                 () -> decodeAndSetImage(imageView, data, callback));
     }
 
     private static void decodeAndSetImage(
-            final @NonNull ImageView imageView,
-            final @NonNull byte[] data, final @NonNull Callback callback) {
+            @NonNull final ImageView imageView,
+            @NonNull final byte[] data, @NonNull final Callback callback) {
         final int width = imageView.getWidth();
         final int height = imageView.getHeight();
         new AsyncTask<Void, Void, Bitmap>() {

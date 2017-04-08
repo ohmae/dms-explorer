@@ -37,7 +37,7 @@ class DownloadIconFilter implements IconFilter {
      * @param icon Icon
      * @return Iconの優先度
      */
-    private static int calcScore(final @NonNull Icon icon) {
+    private static int calcScore(@NonNull final Icon icon) {
         final String mime = icon.getMimeType();
         final boolean png = MIME_PNG.equals(mime);
         final boolean jpg = MIME_JPG.equals(mime);

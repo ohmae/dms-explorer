@@ -16,7 +16,8 @@ public class PropertyItemModel {
     public final CharSequence title;
     public final CharSequence description;
 
-    public PropertyItemModel(@NonNull CharSequence title, @NonNull CharSequence description) {
+    public PropertyItemModel(@NonNull final CharSequence title,
+                             @NonNull final CharSequence description) {
         this.title = title;
         this.description = description;
     }

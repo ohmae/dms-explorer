@@ -39,11 +39,11 @@ public class ChapterInfo {
         void onResult(List<Integer> result);
     }
 
-    public static void get(final @NonNull CdsObject object, final @NonNull Callback callback) {
+    public static void get(@NonNull final CdsObject object, @NonNull final Callback callback) {
         getSony(object, callback);
     }
 
-    private static boolean getSony(final @NonNull CdsObject object, final @NonNull Callback callback) {
+    private static boolean getSony(@NonNull final CdsObject object, @NonNull final Callback callback) {
         final String url = object.getValue(SONY_CHAPTER_INFO);
         if (TextUtils.isEmpty(url)) {
             return false;
@@ -52,7 +52,7 @@ public class ChapterInfo {
         return true;
     }
 
-    private static void getSonyInner(final @NonNull String url, final @NonNull Callback callback) {
+    private static void getSonyInner(@NonNull final String url, @NonNull final Callback callback) {
         try {
             final String xml = new HttpClient(false).downloadString(new URL(url));
             callback.onResult(parseSonyChapterInfo(xml));
@@ -62,7 +62,7 @@ public class ChapterInfo {
     }
 
     @Nullable
-    private static List<Integer> parseSonyChapterInfo(final @NonNull String xml)
+    private static List<Integer> parseSonyChapterInfo(@NonNull final String xml)
             throws ParserConfigurationException, SAXException, IOException {
         if (TextUtils.isEmpty(xml)) {
             return null;
@@ -96,7 +96,7 @@ public class ChapterInfo {
 
     @Nullable
     public static Element findChildElementByNodeName(
-            final @NonNull Node parent, final @NonNull String nodeName) {
+            @NonNull final Node parent, @NonNull final String nodeName) {
         Node child = parent.getFirstChild();
         for (; child != null; child = child.getNextSibling()) {
             if (child.getNodeType() != Node.ELEMENT_NODE) {

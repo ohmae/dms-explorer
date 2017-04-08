@@ -51,7 +51,8 @@ public class ServerListAdapter
     private OnItemLongClickListener mLongClickListener = ON_ITEM_LONG_CLICK_LISTENER;
     private MediaServer mSelectedServer;
 
-    public ServerListAdapter(@NonNull Context context, @Nullable Collection<? extends MediaServer> servers) {
+    public ServerListAdapter(@NonNull final Context context,
+                             @Nullable final Collection<? extends MediaServer> servers) {
         mContext = context;
         mInflater = LayoutInflater.from(context);
         if (servers == null) {
@@ -62,12 +63,12 @@ public class ServerListAdapter
     }
 
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(@NonNull final ViewGroup parent, int viewType) {
         return new ViewHolder(DataBindingUtil.inflate(mInflater, R.layout.server_list_item, parent, false));
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
         holder.applyItem(mList.get(position));
     }
 
@@ -76,15 +77,15 @@ public class ServerListAdapter
         return mList.size();
     }
 
-    public int indexOf(@NonNull MediaServer server) {
+    public int indexOf(@NonNull final MediaServer server) {
         return mList.indexOf(server);
     }
 
-    public void setOnItemClickListener(OnItemClickListener listener) {
+    public void setOnItemClickListener(@Nullable final OnItemClickListener listener) {
         mClickListener = listener != null ? listener : ON_ITEM_CLICK_LISTENER;
     }
 
-    public void setOnItemLongClickListener(OnItemLongClickListener listener) {
+    public void setOnItemLongClickListener(@Nullable final OnItemLongClickListener listener) {
         mLongClickListener = listener != null ? listener : ON_ITEM_LONG_CLICK_LISTENER;
     }
 
@@ -92,16 +93,16 @@ public class ServerListAdapter
         mList.clear();
     }
 
-    public void addAll(Collection<? extends MediaServer> servers) {
+    public void addAll(@NonNull final Collection<? extends MediaServer> servers) {
         mList.addAll(servers);
     }
 
-    public int add(MediaServer server) {
+    public int add(@NonNull final MediaServer server) {
         mList.add(server);
         return mList.size() - 1;
     }
 
-    public int remove(MediaServer server) {
+    public int remove(@NonNull final MediaServer server) {
         final int position = mList.indexOf(server);
         if (position >= 0) {
             mList.remove(position);
@@ -109,7 +110,7 @@ public class ServerListAdapter
         return position;
     }
 
-    public void setSelectedServer(@Nullable MediaServer server) {
+    public void setSelectedServer(@Nullable final MediaServer server) {
         if (mSelectedServer != null && mSelectedServer.equals(server)) {
             return;
         }
@@ -119,7 +120,7 @@ public class ServerListAdapter
         notifyItemChangedIfPossible(server);
     }
 
-    private void notifyItemChangedIfPossible(@Nullable MediaServer server) {
+    private void notifyItemChangedIfPossible(@Nullable final MediaServer server) {
         if (server == null) {
             return;
         }
@@ -138,14 +139,14 @@ public class ServerListAdapter
         private final ServerListItemBinding mBinding;
         private MediaServer mServer;
 
-        ViewHolder(ServerListItemBinding binding) {
+        ViewHolder(@NonNull final ServerListItemBinding binding) {
             super(binding.getRoot());
             itemView.setOnClickListener(this::onClick);
             itemView.setOnLongClickListener(this::onLongClick);
             mBinding = binding;
         }
 
-        void applyItem(final @NonNull MediaServer server) {
+        void applyItem(@NonNull final MediaServer server) {
             mServer = server;
             final boolean selected = server.equals(mSelectedServer);
             itemView.setSelected(selected);

@@ -45,7 +45,7 @@ public class UriMetaDataFormatter {
      * @return XML
      */
     public static String createUriMetaData(
-            final @NonNull CdsObject object, final @NonNull String uri) {
+            @NonNull final CdsObject object, @NonNull final String uri) {
         if (!object.isItem()) {
             return null;
         }
@@ -69,7 +69,7 @@ public class UriMetaDataFormatter {
     }
 
     @NonNull
-    private static Element makeRootElement(final @NonNull Document document) {
+    private static Element makeRootElement(@NonNull final Document document) {
         final Element element = document.createElement("DIDL-Lite");
         element.setAttribute("xmlns", "urn:schemas-upnp-org:metadata-1-0/DIDL-Lite/");
         element.setAttribute("xmlns:dc", "http://purl.org/dc/elements/1.1/");
@@ -79,7 +79,7 @@ public class UriMetaDataFormatter {
 
     @NonNull
     private static Element makeItemElement(
-            final @NonNull Document document, final @NonNull CdsObject object) {
+            @NonNull final Document document, @NonNull final CdsObject object) {
         final Element element = document.createElement("item");
         element.setAttribute("id", object.getObjectId());
         element.setAttribute("parentID", object.getParentId());
@@ -89,7 +89,7 @@ public class UriMetaDataFormatter {
 
     @NonNull
     private static Element makeTitleElement(
-            final @NonNull Document document, final @NonNull CdsObject object) {
+            @NonNull final Document document, @NonNull final CdsObject object) {
         final Element element = document.createElement("dc:title");
         element.setTextContent(object.getTitle());
         return element;
@@ -97,7 +97,7 @@ public class UriMetaDataFormatter {
 
     @NonNull
     private static Element makeUpnpClassElement(
-            final @NonNull Document document, final @NonNull CdsObject object) {
+            @NonNull final Document document, @NonNull final CdsObject object) {
         final Element element = document.createElement("upnp:class");
         element.setTextContent(object.getUpnpClass());
         return element;
@@ -105,7 +105,7 @@ public class UriMetaDataFormatter {
 
     @NonNull
     private static Element makeResElement(
-            final @NonNull Document document, final @NonNull CdsObject object, final int index) {
+            @NonNull final Document document, @NonNull final CdsObject object, final int index) {
         final Element element = document.createElement("res");
         element.setAttribute(CdsObject.PROTOCOL_INFO, object.getValue(CdsObject.RES_PROTOCOL_INFO, index));
         setElement(element, object, index, CdsObject.RES_DURATION, CdsObject.DURATION);
@@ -117,15 +117,15 @@ public class UriMetaDataFormatter {
     }
 
     private static void setElement(
-            final @NonNull Element element, final @NonNull CdsObject object, final int index,
-            final @NonNull String xpath, final @NonNull String name) {
+            @NonNull final Element element, @NonNull final CdsObject object, final int index,
+            @NonNull final String xpath, @NonNull final String name) {
         final String value = object.getValue(xpath, index);
         if (value != null) {
             element.setAttribute(name, value);
         }
     }
 
-    private static int findResIndex(final @NonNull CdsObject object, final @NonNull String uri) {
+    private static int findResIndex(@NonNull final CdsObject object, @NonNull final String uri) {
         final List<Tag> list = object.getTagList(CdsObject.RES);
         if (list == null) {
             return -1;

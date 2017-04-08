@@ -21,8 +21,8 @@ import net.mm2d.dmsexplorer.Const;
  */
 public class ToolbarThemeUtils {
     public static void setServerThemeColor(
-            final @NonNull MediaServer server,
-            final @Nullable Bitmap icon) {
+            @NonNull final MediaServer server,
+            @Nullable final Bitmap icon) {
         if (server.getBooleanTag(Const.KEY_HAS_TOOLBAR_COLOR, false)) {
             return;
         }
@@ -30,8 +30,8 @@ public class ToolbarThemeUtils {
     }
 
     public static void setServerThemeColorAsync(
-            final @NonNull MediaServer server,
-            final @Nullable Bitmap icon) {
+            @NonNull final MediaServer server,
+            @Nullable final Bitmap icon) {
         if (server.getBooleanTag(Const.KEY_HAS_TOOLBAR_COLOR, false)) {
             return;
         }
@@ -43,15 +43,15 @@ public class ToolbarThemeUtils {
     }
 
     private static void setServerThemeColorInner(
-            final @NonNull MediaServer server,
-            final @Nullable Bitmap icon) {
+            @NonNull final MediaServer server,
+            @Nullable final Bitmap icon) {
         final Palette palette = icon == null ? null : new Palette.Builder(icon).generate();
         setServerThemeColorFromPalette(server, palette);
     }
 
     private static void setServerThemeColorFromPalette(
-            final @NonNull MediaServer server,
-            final @Nullable Palette palette) {
+            @NonNull final MediaServer server,
+            @Nullable final Palette palette) {
         final String friendlyName = server.getFriendlyName();
         int expandedColor = ThemeUtils.getPastelColor(friendlyName);
         int collapsedColor = ThemeUtils.getDeepColor(friendlyName);
@@ -71,7 +71,7 @@ public class ToolbarThemeUtils {
     }
 
     @Nullable
-    private static Swatch selectLightSwatch(Palette palette) {
+    private static Swatch selectLightSwatch(@NonNull final Palette palette) {
         Swatch swatch;
         swatch = palette.getVibrantSwatch();
         if (swatch != null) {
@@ -85,7 +85,7 @@ public class ToolbarThemeUtils {
     }
 
     @Nullable
-    private static Swatch selectDarkSwatch(Palette palette) {
+    private static Swatch selectDarkSwatch(@NonNull final Palette palette) {
         Swatch swatch;
         swatch = palette.getDarkVibrantSwatch();
         if (swatch != null) {

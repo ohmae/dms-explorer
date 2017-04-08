@@ -8,6 +8,8 @@
 package net.mm2d.dmsexplorer.viewmodel.adapter;
 
 import android.databinding.BindingAdapter;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView.ItemDecoration;
 
@@ -16,7 +18,10 @@ import android.support.v7.widget.RecyclerView.ItemDecoration;
  */
 public class RecyclerViewBindingAdapter {
     @BindingAdapter("itemDecoration")
-    public static void addItemDecoration(RecyclerView view, ItemDecoration decor) {
-        view.addItemDecoration(decor);
+    public static void addItemDecoration(@NonNull final RecyclerView view,
+                                         @Nullable final ItemDecoration decor) {
+        if (decor != null) {
+            view.addItemDecoration(decor);
+        }
     }
 }

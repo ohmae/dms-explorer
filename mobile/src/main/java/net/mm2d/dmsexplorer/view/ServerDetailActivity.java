@@ -16,6 +16,7 @@ import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.transition.Transition;
 import android.view.Menu;
@@ -44,14 +45,14 @@ public class ServerDetailActivity extends AppCompatActivity {
      * @param context コンテキスト
      * @return このActivityを起動するためのIntent
      */
-    public static Intent makeIntent(Context context) {
+    public static Intent makeIntent(@NonNull final Context context) {
         return new Intent(context, ServerDetailActivity.class);
     }
 
     private ServerDetailFragmentBinding mBinding;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(@Nullable final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.server_detail_activity);
         mBinding = DataBindingUtil.findBinding(findViewById(R.id.serverDetailFragment));
@@ -70,7 +71,7 @@ public class ServerDetailActivity extends AppCompatActivity {
         prepareTransition(hasTransition && savedInstanceState == null);
     }
 
-    private void prepareTransition(boolean hasTransition) {
+    private void prepareTransition(final boolean hasTransition) {
         if (VERSION.SDK_INT < VERSION_CODES.LOLLIPOP) {
             return;
         }
@@ -90,7 +91,7 @@ public class ServerDetailActivity extends AppCompatActivity {
     }
 
     @TargetApi(VERSION_CODES.LOLLIPOP)
-    private void startAnimation(final @NonNull View background) {
+    private void startAnimation(@NonNull final View background) {
         if (!background.isAttachedToWindow()) {
             return;
         }
@@ -108,13 +109,13 @@ public class ServerDetailActivity extends AppCompatActivity {
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+    public boolean onCreateOptionsMenu(@NonNull final Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(@NonNull final MenuItem item) {
         final int id = item.getItemId();
         switch (id) {
             case R.id.action_settings:

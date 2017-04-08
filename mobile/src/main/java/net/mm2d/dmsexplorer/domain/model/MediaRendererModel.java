@@ -33,7 +33,7 @@ public class MediaRendererModel {
 
         void notifyPlayingState(boolean playing);
 
-        void notifyChapterInfo(List<Integer> chapterInfo);
+        void notifyChapterInfo(@Nullable List<Integer> chapterInfo);
     }
 
     private static final ControlListener CONTROL_LISTENER = new ControlListener() {
@@ -46,7 +46,7 @@ public class MediaRendererModel {
         }
 
         @Override
-        public void notifyChapterInfo(List<Integer> chapterInfo) {
+        public void notifyChapterInfo(@Nullable final List<Integer> chapterInfo) {
         }
     };
 

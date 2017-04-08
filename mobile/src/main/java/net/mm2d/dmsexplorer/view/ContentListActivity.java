@@ -56,7 +56,7 @@ public class ContentListActivity extends AppCompatActivity implements CdsSelectL
      * @return インスタンス
      */
     @NonNull
-    public static Intent makeIntent(@NonNull Context context) {
+    public static Intent makeIntent(@NonNull final Context context) {
         return new Intent(context, ContentListActivity.class);
     }
 
@@ -173,13 +173,13 @@ public class ContentListActivity extends AppCompatActivity implements CdsSelectL
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+    public boolean onCreateOptionsMenu(@NonNull final Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(@NonNull final MenuItem item) {
         final int id = item.getItemId();
         switch (id) {
             case R.id.action_settings:

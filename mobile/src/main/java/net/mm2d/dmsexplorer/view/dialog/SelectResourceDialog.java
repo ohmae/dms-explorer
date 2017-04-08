@@ -42,7 +42,7 @@ public class SelectResourceDialog extends DialogFragment {
 
     @NonNull
     @Override
-    public Dialog onCreateDialog(Bundle savedInstanceState) {
+    public Dialog onCreateDialog(final Bundle savedInstanceState) {
         final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         final PlaybackTargetModel targetModel = Repository.get().getPlaybackTargetModel();
         final CdsObject object = targetModel.getCdsObject();
@@ -53,7 +53,7 @@ public class SelectResourceDialog extends DialogFragment {
         return builder.create();
     }
 
-    private String[] makeChoices(CdsObject object) {
+    private String[] makeChoices(@NonNull final CdsObject object) {
         final List<String> itemList = new ArrayList<>();
         final List<Tag> tagList = object.getTagList(CdsObject.RES);
         if (tagList == null) {

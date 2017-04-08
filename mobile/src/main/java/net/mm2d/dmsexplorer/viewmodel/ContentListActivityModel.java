@@ -64,17 +64,21 @@ public class ContentListActivityModel extends BaseObservable implements ExploreL
     public final String title;
     public final int toolbarBackground;
 
+    @NonNull
     private final ContentListAdapter mContentListAdapter;
-    private String mSubtitle;
+    @NonNull
+    private String mSubtitle = "";
     private boolean mRefreshing;
 
     private final Handler mHandler = new Handler(Looper.getMainLooper());
+    @NonNull
     private final MediaServerModel mMediaServerModel;
+    @NonNull
     private final CdsSelectListener mCdsSelectListener;
 
-    public static ContentListActivityModel create(@NonNull Context context,
-                                                  @NonNull Repository repository,
-                                                  @NonNull CdsSelectListener listener) {
+    public static ContentListActivityModel create(@NonNull final Context context,
+                                                  @NonNull final Repository repository,
+                                                  @NonNull final CdsSelectListener listener) {
         final MediaServerModel model = repository.getMediaServerModel();
         if (model == null) {
             return null;
@@ -82,9 +86,9 @@ public class ContentListActivityModel extends BaseObservable implements ExploreL
         return new ContentListActivityModel(context, model, listener);
     }
 
-    public ContentListActivityModel(@NonNull Context context,
-                                    @NonNull MediaServerModel model,
-                                    @NonNull CdsSelectListener listener) {
+    private ContentListActivityModel(@NonNull final Context context,
+                                    @NonNull final MediaServerModel model,
+                                    @NonNull final CdsSelectListener listener) {
         itemDecoration = new DividerItemDecoration(context, DividerItemDecoration.VERTICAL);
         mContentListAdapter = new ContentListAdapter(context);
         mContentListAdapter.setOnItemClickListener(this::onItemClick);
@@ -101,12 +105,13 @@ public class ContentListActivityModel extends BaseObservable implements ExploreL
         toolbarBackground = server.getIntTag(Const.KEY_TOOLBAR_COLLAPSED_COLOR, Color.BLACK);
     }
 
+    @NonNull
     @Bindable
     public String getSubtitle() {
         return mSubtitle;
     }
 
-    public void setSubtitle(final String subtitle) {
+    public void setSubtitle(@NonNull final String subtitle) {
         mSubtitle = subtitle;
         notifyPropertyChanged(BR.subtitle);
     }

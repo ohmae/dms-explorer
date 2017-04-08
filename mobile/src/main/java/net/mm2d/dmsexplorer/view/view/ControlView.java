@@ -119,15 +119,15 @@ public class ControlView extends FrameLayout implements OnPreparedListener {
         mOnCompletionListener = listener != null ? listener : ON_COMPLETION_LISTENER;
     }
 
-    public ControlView(Context context) {
+    public ControlView(@NonNull final Context context) {
         this(context, null);
     }
 
-    public ControlView(Context context, AttributeSet attrs) {
+    public ControlView(@NonNull final Context context, @Nullable final AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public ControlView(Context context, AttributeSet attrs, int defStyleAttr) {
+    public ControlView(@NonNull final Context context, @Nullable final AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         final ControlViewBinding binding = DataBindingUtil.inflate(
                 LayoutInflater.from(context), R.layout.control_view, this, true);
@@ -194,7 +194,7 @@ public class ControlView extends FrameLayout implements OnPreparedListener {
     }
 
     @Override
-    public void onPrepared(MediaPlayer mp) {
+    public void onPrepared(@NonNull final MediaPlayer mp) {
         mMediaPlayer = mp;
         mMediaPlayer.setOnErrorListener(mMyOnErrorListener);
         mMediaPlayer.setOnInfoListener(mMyOnInfoListener);

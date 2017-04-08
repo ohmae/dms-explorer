@@ -43,14 +43,15 @@ public class PropertyAdapter
         LINK(new LinkFormatter()),
         DESCRIPTION(new DescriptionFormatter());
 
+        @NonNull
         private final PropertyFormatter mPropertyFormatter;
 
-        Type(PropertyFormatter formatter) {
+        Type(@NonNull final PropertyFormatter formatter) {
             mPropertyFormatter = formatter;
         }
 
         @NonNull
-        private CharSequence format(@NonNull Context context, @NonNull String string) {
+        private CharSequence format(@NonNull final Context context, @NonNull final String string) {
             return mPropertyFormatter.format(context, string);
         }
     }
@@ -60,7 +61,7 @@ public class PropertyAdapter
         private final String mValue;
         private final Type mType;
 
-        private Entry(String name, String value, Type type) {
+        private Entry(@NonNull final String name, @NonNull final String value, @NonNull final Type type) {
             mName = name;
             mValue = value;
             mType = type;
@@ -83,7 +84,7 @@ public class PropertyAdapter
     private final List<Entry> mList;
     private final LayoutInflater mInflater;
 
-    public PropertyAdapter(@NonNull Context context) {
+    public PropertyAdapter(@NonNull final Context context) {
         mContext = context;
         mInflater = LayoutInflater.from(context);
         mList = new ArrayList<>();
@@ -93,11 +94,11 @@ public class PropertyAdapter
         return mContext;
     }
 
-    public void addEntry(@NonNull String name, @Nullable String value) {
+    public void addEntry(@NonNull final String name, @Nullable final String value) {
         addEntry(name, value, Type.TEXT);
     }
 
-    public void addEntry(@NonNull String name, @Nullable String value, @NonNull Type type) {
+    public void addEntry(@NonNull final String name, @Nullable final String value, @NonNull final Type type) {
         if (value == null || value.isEmpty()) {
             return;
         }
@@ -105,13 +106,13 @@ public class PropertyAdapter
     }
 
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(@NonNull final ViewGroup parent, int viewType) {
         return new ViewHolder(DataBindingUtil
                 .inflate(mInflater, R.layout.property_list_item, parent, false));
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
         holder.applyItem(getContext(), mList.get(position));
     }
 
@@ -126,13 +127,13 @@ public class PropertyAdapter
     static class ViewHolder extends RecyclerView.ViewHolder {
         private final PropertyListItemBinding mBinding;
 
-        ViewHolder(@NonNull PropertyListItemBinding binding) {
+        ViewHolder(@NonNull final PropertyListItemBinding binding) {
             super(binding.getRoot());
             mBinding = binding;
             mBinding.description.setMovementMethod(LinkMovementMethod.getInstance());
         }
 
-        void applyItem(@NonNull Context context, @NonNull Entry entry) {
+        void applyItem(@NonNull final Context context, @NonNull final Entry entry) {
             mBinding.setModel(new PropertyItemModel(entry.getName(), entry.getFormatValue(context)));
             mBinding.executePendingBindings();
         }

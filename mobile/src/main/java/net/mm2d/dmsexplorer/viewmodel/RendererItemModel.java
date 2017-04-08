@@ -52,6 +52,11 @@ public class RendererItemModel {
 
     private String makeDescription(MediaRenderer renderer) {
         final StringBuilder sb = new StringBuilder();
+        final String manufacture = renderer.getManufacture();
+        if (manufacture != null && !manufacture.isEmpty()) {
+            sb.append(manufacture);
+            sb.append('\n');
+        }
         sb.append("IP: ");
         sb.append(renderer.getIpAddress());
         final String serial = renderer.getSerialNumber();

@@ -53,12 +53,12 @@ public class MrControlPoint implements ControlPointWrapper {
 
     private final DiscoveryListener mDiscoveryListener = new DiscoveryListener() {
         @Override
-        public void onDiscover(final @NonNull Device device) {
+        public void onDiscover(@NonNull final Device device) {
             discoverDevice(device);
         }
 
         @Override
-        public void onLost(final @NonNull Device device) {
+        public void onLost(@NonNull final Device device) {
             lostDevice(device);
         }
     };
@@ -85,11 +85,11 @@ public class MrControlPoint implements ControlPointWrapper {
      * @return MediaRenderer
      */
     @NonNull
-    protected MediaRenderer createMediaRenderer(final @NonNull Device device) {
+    protected MediaRenderer createMediaRenderer(@NonNull final Device device) {
         return new MediaRenderer(this, device);
     }
 
-    private void discoverDevice(final @NonNull Device device) {
+    private void discoverDevice(@NonNull final Device device) {
         if (!device.getDeviceType().startsWith(Avt.MR_DEVICE_TYPE)
                 || device.findServiceById(Avt.AVT_SERVICE_ID) == null) {
             return;
@@ -101,7 +101,7 @@ public class MrControlPoint implements ControlPointWrapper {
         }
     }
 
-    private void lostDevice(final @NonNull Device device) {
+    private void lostDevice(@NonNull final Device device) {
         final MediaRenderer renderer = mMediaRendererMap.remove(device.getUdn());
         if (renderer == null) {
             return;
@@ -116,7 +116,7 @@ public class MrControlPoint implements ControlPointWrapper {
      *
      * @param listener リスナー
      */
-    public void addMrDiscoveryListener(final @Nullable MrDiscoveryListener listener) {
+    public void addMrDiscoveryListener(@Nullable final MrDiscoveryListener listener) {
         if (!mMrDiscoveryListeners.contains(listener)) {
             mMrDiscoveryListeners.add(listener);
         }
@@ -127,7 +127,7 @@ public class MrControlPoint implements ControlPointWrapper {
      *
      * @param listener リスナー
      */
-    public void removeMrDiscoveryListener(final @Nullable MrDiscoveryListener listener) {
+    public void removeMrDiscoveryListener(@Nullable final MrDiscoveryListener listener) {
         mMrDiscoveryListeners.remove(listener);
     }
 
@@ -164,7 +164,7 @@ public class MrControlPoint implements ControlPointWrapper {
      */
     @Nullable
     @Override
-    public MediaRenderer getDevice(final @Nullable String udn) {
+    public MediaRenderer getDevice(@Nullable final String udn) {
         return mMediaRendererMap.get(udn);
     }
 
@@ -174,7 +174,7 @@ public class MrControlPoint implements ControlPointWrapper {
      * @param controlPoint ControlPoint
      */
     @Override
-    public void initialize(final @NonNull ControlPoint controlPoint) {
+    public void initialize(@NonNull final ControlPoint controlPoint) {
         if (mInitialized.get()) {
             terminate(controlPoint);
         }
@@ -191,7 +191,7 @@ public class MrControlPoint implements ControlPointWrapper {
      * @param controlPoint ControlPoint
      */
     @Override
-    public void terminate(final @NonNull ControlPoint controlPoint) {
+    public void terminate(@NonNull final ControlPoint controlPoint) {
         if (!mInitialized.getAndSet(false)) {
             return;
         }
@@ -202,7 +202,7 @@ public class MrControlPoint implements ControlPointWrapper {
         mExecutorService = null;
     }
 
-    void invoke(final @NonNull Runnable runnable) {
+    void invoke(@NonNull final Runnable runnable) {
         if (!mInitialized.get()) {
             return;
         }

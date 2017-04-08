@@ -41,7 +41,7 @@ class AndroidLan extends Lan {
      *
      * @param context コンストラクタ
      */
-    AndroidLan(final @NonNull Context context) {
+    AndroidLan(@NonNull final Context context) {
         final Context appContext = context.getApplicationContext();
         mWifiManager = (WifiManager) appContext.getSystemService(Context.WIFI_SERVICE);
         mConnectivityManager = (ConnectivityManager) appContext.getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -74,8 +74,8 @@ class AndroidLan extends Lan {
         return null;
     }
 
-    private static boolean hasAddress(final @NonNull NetworkInterface netIf,
-                                      final @NonNull InetAddress targetAddress) {
+    private static boolean hasAddress(@NonNull final NetworkInterface netIf,
+                                      @NonNull final InetAddress targetAddress) {
         final List<InterfaceAddress> addressList = netIf.getInterfaceAddresses();
         for (final InterfaceAddress address : addressList) {
             if (address.getAddress().equals(targetAddress)) {

@@ -59,13 +59,13 @@ public class ContentListAdapter
     }
 
     @Override
-    public ViewHolder onCreateViewHolder(final ViewGroup parent, final int viewType) {
+    public ViewHolder onCreateViewHolder(@NonNull final ViewGroup parent, final int viewType) {
         return new ViewHolder(DataBindingUtil
                 .inflate(mInflater, R.layout.content_list_item, parent, false));
     }
 
     @Override
-    public void onBindViewHolder(final ViewHolder holder, final int position) {
+    public void onBindViewHolder(@NonNull final ViewHolder holder, final int position) {
         holder.applyItem(mList.get(position));
     }
 

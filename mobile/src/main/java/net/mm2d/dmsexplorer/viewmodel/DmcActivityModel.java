@@ -94,7 +94,8 @@ public class DmcActivityModel extends BaseObservable
         }
     };
 
-    public static DmcActivityModel create(@NonNull final Context context, @NonNull Repository repository) {
+    public static DmcActivityModel create(@NonNull final Context context,
+                                          @NonNull final Repository repository) {
         final MediaServerModel serverModel = repository.getMediaServerModel();
         final MediaRendererModel rendererModel = repository.getMediaRendererModel();
         final PlaybackTargetModel targetModel = repository.getPlaybackTargetModel();
@@ -228,6 +229,9 @@ public class DmcActivityModel extends BaseObservable
         mChapterInfo = chapterInfo;
         notifyPropertyChanged(BR.chapterInfo);
         setChapterInfoEnabled();
+        if (chapterInfo == null) {
+            return;
+        }
         mHandler.post(() -> {
             final int count = propertyAdapter.getItemCount();
             propertyAdapter.addEntry(mContext.getString(R.string.prop_chapter_info),
@@ -258,7 +262,7 @@ public class DmcActivityModel extends BaseObservable
         return 0;
     }
 
-    private static String makeTimeText(int millisecond) {
+    private static String makeTimeText(final int millisecond) {
         final long second = (millisecond / 1000) % 60;
         final long minute = (millisecond / 60000) % 60;
         final long hour = millisecond / 3600000;
@@ -266,7 +270,7 @@ public class DmcActivityModel extends BaseObservable
     }
 
     @NonNull
-    private static String makeChapterString(List<Integer> chapterInfo) {
+    private static String makeChapterString(@NonNull final List<Integer> chapterInfo) {
         final StringBuilder sb = new StringBuilder();
         for (int i = 0; i < chapterInfo.size(); i++) {
             if (sb.length() != 0) {
@@ -283,7 +287,7 @@ public class DmcActivityModel extends BaseObservable
         return sb.toString();
     }
 
-    public void onClickPlay(View view) {
+    public void onClickPlay(final View view) {
         if (mPlaying) {
             mMediaRendererModel.pause();
         } else {
@@ -291,11 +295,11 @@ public class DmcActivityModel extends BaseObservable
         }
     }
 
-    public void onClickNext(View view) {
+    public void onClickNext(final View view) {
         mMediaRendererModel.nextChapter();
     }
 
-    public void onClickPrevious(View view) {
+    public void onClickPrevious(final View view) {
         mMediaRendererModel.previousChapter();
     }
 
@@ -314,7 +318,7 @@ public class DmcActivityModel extends BaseObservable
     }
 
     @Override
-    public void notifyChapterInfo(final List<Integer> chapterInfo) {
+    public void notifyChapterInfo(@Nullable final List<Integer> chapterInfo) {
         setChapterInfo(chapterInfo);
     }
 }

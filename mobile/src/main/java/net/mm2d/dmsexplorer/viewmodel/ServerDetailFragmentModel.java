@@ -43,8 +43,8 @@ public class ServerDetailFragmentModel {
 
     private final Context mContext;
 
-    public static ServerDetailFragmentModel create(
-            @NonNull final Context context, @NonNull Repository repository) {
+    public static ServerDetailFragmentModel create(@NonNull final Context context,
+                                                   @NonNull final Repository repository) {
         final MediaServer server = repository.getControlPointModel().getSelectedMediaServer();
         if (server == null) {
             return null;
@@ -66,7 +66,7 @@ public class ServerDetailFragmentModel {
     }
 
     @Nullable
-    private static Bitmap createIconBitmap(@Nullable Icon icon) {
+    private static Bitmap createIconBitmap(@Nullable final Icon icon) {
         if (icon == null) {
             return null;
         }
@@ -86,7 +86,7 @@ public class ServerDetailFragmentModel {
         return drawable;
     }
 
-    public void onClickFab(View view) {
+    public void onClickFab(@NonNull final View view) {
         final Intent intent = ContentListActivity.makeIntent(mContext);
         mContext.startActivity(intent, ActivityUtils.makeScaleUpAnimationBundle(view));
     }

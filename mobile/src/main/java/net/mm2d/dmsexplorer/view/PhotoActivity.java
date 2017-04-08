@@ -42,15 +42,14 @@ public class PhotoActivity extends AppCompatActivity {
             return;
         }
         mBinding.setModel(model);
-
         mBinding.toolbarBack.setOnClickListener(view -> onBackPressed());
+
         mFullscreenHelper = new FullscreenHelper.Builder(mBinding.getRoot())
                 .setTopView(mBinding.toolbar)
                 .build();
         mFullscreenHelper.showNavigation();
 
-        final Repository repository = Repository.get();
-        final PlaybackTargetModel targetModel = repository.getPlaybackTargetModel();
+        final PlaybackTargetModel targetModel = Repository.get().getPlaybackTargetModel();
         downloadAndSetImage(targetModel.getUri().toString());
     }
 
@@ -77,7 +76,7 @@ public class PhotoActivity extends AppCompatActivity {
         mFullscreenHelper.onDestroy();
     }
 
-    private void downloadAndSetImage(final @NonNull String url) {
+    private void downloadAndSetImage(@NonNull final String url) {
         ImageViewUtils.downloadAndSetImage(mBinding.imageView, url, new ImageViewUtils.Callback() {
             @Override
             public void onSuccess() {

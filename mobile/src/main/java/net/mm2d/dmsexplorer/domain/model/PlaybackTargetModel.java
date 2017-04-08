@@ -8,6 +8,7 @@
 package net.mm2d.dmsexplorer.domain.model;
 
 import android.net.Uri;
+import android.support.annotation.NonNull;
 
 import net.mm2d.android.upnp.cds.CdsObject;
 import net.mm2d.android.upnp.cds.Tag;
@@ -24,7 +25,7 @@ public class PlaybackTargetModel {
     private Uri mUri;
     private String mMimeType;
 
-    public PlaybackTargetModel(CdsObject object) {
+    public PlaybackTargetModel(@NonNull final CdsObject object) {
         mCdsObject = object;
         mTargetRes = object.getTag(CdsObject.RES);
         updateUri();
@@ -34,7 +35,7 @@ public class PlaybackTargetModel {
         return mCdsObject;
     }
 
-    public void setResIndex(int index) {
+    public void setResIndex(final int index) {
         mTargetRes = mCdsObject.getTag(CdsObject.RES, index);
         updateUri();
     }

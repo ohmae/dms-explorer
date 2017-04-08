@@ -8,6 +8,7 @@
 package net.mm2d.dmsexplorer.viewmodel.adapter;
 
 import android.databinding.BindingAdapter;
+import android.support.annotation.NonNull;
 import android.view.View;
 
 import net.mm2d.dmsexplorer.util.ViewLayoutUtils;
@@ -17,12 +18,12 @@ import net.mm2d.dmsexplorer.util.ViewLayoutUtils;
  */
 public class ViewBindingAdapter {
     @BindingAdapter("layout_marginRight")
-    public static void setLayoutMarginRight(View view, int rightMargin) {
+    public static void setLayoutMarginRight(@NonNull final View view, final int rightMargin) {
         ViewLayoutUtils.setLayoutMarginRight(view, rightMargin);
     }
 
     @BindingAdapter("layout_height")
-    public static void setLayoutHeight(View view, int height) {
+    public static void setLayoutHeight(@NonNull final View view, final int height) {
         ViewLayoutUtils.setLayoutHeight(view, height);
     }
 }

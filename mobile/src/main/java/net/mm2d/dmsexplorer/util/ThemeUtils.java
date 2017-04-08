@@ -8,6 +8,8 @@
 package net.mm2d.dmsexplorer.util;
 
 import android.graphics.Color;
+import android.support.annotation.ColorInt;
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
 /**
@@ -24,7 +26,8 @@ public class ThemeUtils {
      * @param title アイテムのタイトル
      * @return 先頭の文字から決定したアクセントカラー
      */
-    public static int getAccentColor(String title) {
+    @ColorInt
+    public static int getAccentColor(@NonNull final String title) {
         final char c = TextUtils.isEmpty(title) ? ' ' : title.charAt(0);
         final float[] hsv = new float[3];
         hsv[0] = (59 * c) % 360;
@@ -33,7 +36,8 @@ public class ThemeUtils {
         return Color.HSVToColor(hsv);
     }
 
-    public static int getDarkerColor(int color) {
+    @ColorInt
+    public static int getDarkerColor(@ColorInt final int color) {
         final int a = Color.alpha(color);
         final int r = (int) (Color.red(color) * DARKER_RATIO + 0.5f);
         final int g = (int) (Color.green(color) * DARKER_RATIO + 0.5f);
@@ -41,7 +45,8 @@ public class ThemeUtils {
         return Color.argb(a, r, g, b);
     }
 
-    public static int getPastelColor(String title) {
+    @ColorInt
+    public static int getPastelColor(@NonNull final String title) {
         final char c = TextUtils.isEmpty(title) ? ' ' : title.charAt(0);
         final float[] hsv = new float[3];
         hsv[0] = (59 * c) % 360;
@@ -50,7 +55,8 @@ public class ThemeUtils {
         return Color.HSVToColor(hsv);
     }
 
-    public static int getDeepColor(String title) {
+    @ColorInt
+    public static int getDeepColor(@NonNull final String title) {
         final char c = TextUtils.isEmpty(title) ? ' ' : title.charAt(0);
         final float[] hsv = new float[3];
         hsv[0] = (59 * c) % 360;

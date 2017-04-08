@@ -50,8 +50,8 @@ public class MediaRenderer extends DeviceWrapper {
         @NonNull
         private final ActionCallback mCallback;
 
-        ActionInvoker(final @NonNull Action action, final @NonNull Map<String, String> argument,
-                      final @Nullable ActionCallback callback) {
+        ActionInvoker(@NonNull final Action action, @NonNull final Map<String, String> argument,
+                      @Nullable final ActionCallback callback) {
             mAction = action;
             mArgument = argument;
             mCallback = callback != null ? callback : NULL_CALLBACK;
@@ -138,7 +138,7 @@ public class MediaRenderer extends DeviceWrapper {
     @Nullable
     private final Action mPause;
 
-    MediaRenderer(final @NonNull MrControlPoint cp, final @NonNull Device device) {
+    MediaRenderer(@NonNull final MrControlPoint cp, @NonNull final Device device) {
         super(device);
         mMrControlPoint = cp;
         if (!device.getDeviceType().startsWith(Avt.MR_DEVICE_TYPE)) {
@@ -156,7 +156,7 @@ public class MediaRenderer extends DeviceWrapper {
     }
 
     @NonNull
-    private static Service findService(final @NonNull Device device, final @NonNull String id) {
+    private static Service findService(@NonNull final Device device, @NonNull final String id) {
         final Service service = device.findServiceById(id);
         if (service == null) {
             throw new IllegalArgumentException("Device doesn't have " + id);
@@ -165,7 +165,7 @@ public class MediaRenderer extends DeviceWrapper {
     }
 
     @NonNull
-    private static Action findAction(final @NonNull Service service, final @NonNull String name) {
+    private static Action findAction(@NonNull final Service service, @NonNull final String name) {
         final Action action = service.findAction(name);
         if (action == null) {
             throw new IllegalArgumentException("Service doesn't have " + name);
@@ -204,8 +204,8 @@ public class MediaRenderer extends DeviceWrapper {
         });
     }
 
-    public void setAVTransportURI(final @NonNull CdsObject object, final @NonNull String uri,
-                                  final @Nullable ActionCallback callback) {
+    public void setAVTransportURI(@NonNull final CdsObject object, @NonNull final String uri,
+                                  @Nullable final ActionCallback callback) {
         final Map<String, String> argument = new HashMap<>();
         argument.put(INSTANCE_ID, "0");
         argument.put(CURRENT_URI, uri);
@@ -213,7 +213,7 @@ public class MediaRenderer extends DeviceWrapper {
         invoke(mSetAvTransportUri, argument, callback);
     }
 
-    public void clearAVTransportURI(final @Nullable ActionCallback callback) {
+    public void clearAVTransportURI(@Nullable final ActionCallback callback) {
         final Map<String, String> argument = new HashMap<>();
         argument.put(INSTANCE_ID, "0");
         argument.put(CURRENT_URI, null);
@@ -221,18 +221,18 @@ public class MediaRenderer extends DeviceWrapper {
         invoke(mSetAvTransportUri, argument, callback);
     }
 
-    public void play(final @Nullable ActionCallback callback) {
+    public void play(@Nullable final ActionCallback callback) {
         final Map<String, String> argument = new HashMap<>();
         argument.put(INSTANCE_ID, "0");
         argument.put(SPEED, "1");
         invoke(mPlay, argument, callback);
     }
 
-    public void stop(final @Nullable ActionCallback callback) {
+    public void stop(@Nullable final ActionCallback callback) {
         invoke(mStop, Collections.singletonMap(INSTANCE_ID, "0"), callback);
     }
 
-    public void pause(final @Nullable ActionCallback callback) {
+    public void pause(@Nullable final ActionCallback callback) {
         if (mPause == null) {
             if (callback != null) {
                 callback.onResult(false, null);
@@ -242,7 +242,7 @@ public class MediaRenderer extends DeviceWrapper {
         invoke(mPause, Collections.singletonMap(INSTANCE_ID, "0"), callback);
     }
 
-    public void seek(long time, final @Nullable ActionCallback callback) {
+    public void seek(long time, @Nullable final ActionCallback callback) {
         final Map<String, String> argument = new HashMap<>();
         argument.put(INSTANCE_ID, "0");
         final String timeText = makeTimeText(time);
@@ -265,16 +265,16 @@ public class MediaRenderer extends DeviceWrapper {
         invoke(mSeek, argument, callback);
     }
 
-    public void getPositionInfo(final @Nullable ActionCallback callback) {
+    public void getPositionInfo(@Nullable final ActionCallback callback) {
         invoke(mGetPositionInfo, Collections.singletonMap(INSTANCE_ID, "0"), callback);
     }
 
-    public void getTransportInfo(final @Nullable ActionCallback callback) {
+    public void getTransportInfo(@Nullable final ActionCallback callback) {
         invoke(mGetTransportInfo, Collections.singletonMap(INSTANCE_ID, "0"), callback);
     }
 
-    private void invoke(final @NonNull Action action, final @NonNull Map<String, String> argument,
-                        final @Nullable ActionCallback callback) {
+    private void invoke(@NonNull final Action action, @NonNull final Map<String, String> argument,
+                        @Nullable final ActionCallback callback) {
         mMrControlPoint.invoke(new ActionInvoker(action, argument, callback));
     }
 

@@ -31,7 +31,8 @@ public class PhotoActivityModel extends BaseObservable {
     private boolean mLoading = true;
     private int mRightNavigationSize;
 
-    public static PhotoActivityModel create(@NonNull Activity activity, @NonNull Repository repository) {
+    public static PhotoActivityModel create(@NonNull final Activity activity,
+                                            @NonNull final Repository repository) {
         final PlaybackTargetModel targetModel = repository.getPlaybackTargetModel();
         if (targetModel == null) {
             return null;
@@ -39,12 +40,13 @@ public class PhotoActivityModel extends BaseObservable {
         return new PhotoActivityModel(activity, targetModel);
     }
 
-    private PhotoActivityModel(@NonNull Activity activity, @NonNull PlaybackTargetModel targetModel) {
+    private PhotoActivityModel(@NonNull final Activity activity,
+                               @NonNull final PlaybackTargetModel targetModel) {
         title = AribUtils.toDisplayableString(targetModel.getCdsObject().getTitle());
         adjustPanel(activity);
     }
 
-    public void adjustPanel(@NonNull Activity activity) {
+    public void adjustPanel(@NonNull final Activity activity) {
         if (VERSION.SDK_INT >= VERSION_CODES.N && activity.isInMultiWindowMode()) {
             setRightNavigationSize(0);
             return;

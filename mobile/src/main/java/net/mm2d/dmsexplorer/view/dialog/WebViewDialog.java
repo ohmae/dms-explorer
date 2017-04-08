@@ -32,7 +32,7 @@ public class WebViewDialog extends DialogFragment {
      * @param url   ダイアログに表示するコンテンツを指すURL
      * @return インスタンス
      */
-    public static WebViewDialog newInstance(String title, String url) {
+    public static WebViewDialog newInstance(@NonNull final String title, @NonNull final String url) {
         final Bundle args = new Bundle();
         args.putString(KEY_TITLE, title);
         args.putString(KEY_URL, url);

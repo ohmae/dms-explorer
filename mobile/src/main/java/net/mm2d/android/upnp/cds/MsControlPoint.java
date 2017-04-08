@@ -102,7 +102,7 @@ public class MsControlPoint implements ControlPointWrapper {
     };
 
     private void onNotifyContainerUpdateIds(
-            final @NonNull MediaServer server, final @NonNull String value) {
+            @NonNull final MediaServer server, @NonNull final String value) {
         if (mContainerUpdateIdsListener == null) {
             return;
         }
@@ -118,7 +118,7 @@ public class MsControlPoint implements ControlPointWrapper {
     }
 
     private void onNotifySystemUpdateId(
-            final @NonNull MediaServer server, final @NonNull String value) {
+            @NonNull final MediaServer server, @NonNull final String value) {
         if (mSystemUpdateIdListener == null) {
             return;
         }

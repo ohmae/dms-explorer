@@ -32,15 +32,15 @@ public class ChapterMarkView extends View {
     private List<Integer> mChapterInfo;
     private int mDuration;
 
-    public ChapterMarkView(@NonNull Context context) {
+    public ChapterMarkView(@NonNull final Context context) {
         this(context, null);
     }
 
-    public ChapterMarkView(@NonNull Context context, @Nullable AttributeSet attrs) {
+    public ChapterMarkView(@NonNull final Context context, @Nullable final AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public ChapterMarkView(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+    public ChapterMarkView(@NonNull final Context context, @Nullable final AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         mPaint = new Paint();
         mPaint.setColor(ContextCompat.getColor(context, R.color.chapterMark));
@@ -61,7 +61,7 @@ public class ChapterMarkView extends View {
     }
 
     @Override
-    protected void onDraw(Canvas canvas) {
+    protected void onDraw(@NonNull final Canvas canvas) {
         super.onDraw(canvas);
         if (mDuration == 0 || mChapterInfo == null) {
             return;

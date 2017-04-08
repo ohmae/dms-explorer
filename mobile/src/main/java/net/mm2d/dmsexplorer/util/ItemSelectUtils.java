@@ -32,7 +32,7 @@ import net.mm2d.dmsexplorer.view.dialog.SelectResourceDialog;
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
  */
 public class ItemSelectUtils {
-    public static void play(final @NonNull Activity activity) {
+    public static void play(@NonNull final Activity activity) {
         final PlaybackTargetModel targetModel = Repository.get().getPlaybackTargetModel();
         final int resCount = targetModel.getResCount();
         if (resCount == 0) {
@@ -46,7 +46,7 @@ public class ItemSelectUtils {
         dialog.show(activity.getFragmentManager(), "");
     }
 
-    public static void play(final @NonNull Activity activity, final int index) {
+    public static void play(@NonNull final Activity activity, final int index) {
         final PlaybackTargetModel targetModel = Repository.get().getPlaybackTargetModel();
         targetModel.setResIndex(index);
         if (targetModel.getUri() == null) {
@@ -87,12 +87,12 @@ public class ItemSelectUtils {
         }
     }
 
-    public static void send(final @NonNull Activity activity) {
+    public static void send(@NonNull final Activity activity) {
         final SelectRendererDialog dialog = SelectRendererDialog.newInstance();
         dialog.show(activity.getFragmentManager(), "");
     }
 
-    public static void sendSelectedRenderer(final @NonNull Context context) {
+    public static void sendSelectedRenderer(@NonNull final Context context) {
         context.startActivity(DmcActivity.makeIntent(context));
     }
 }

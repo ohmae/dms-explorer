@@ -41,11 +41,12 @@ public class MediaServerModel implements EntryListener {
         void onUpdate(@NonNull List<CdsObject> list, boolean inProgress);
     }
 
-    public MediaServerModel(MediaServer server, PlaybackTargetObserver observer) {
+    public MediaServerModel(@NonNull final MediaServer server, @NonNull final PlaybackTargetObserver observer) {
         mMediaServer = server;
         mPlaybackTargetObserver = observer;
     }
 
+    @NonNull
     public MediaServer getMediaServer() {
         return mMediaServer;
     }
@@ -74,7 +75,7 @@ public class MediaServerModel implements EntryListener {
         return true;
     }
 
-    private void prepareEntry(ContentDirectoryEntry directory) {
+    private void prepareEntry(@NonNull final ContentDirectoryEntry directory) {
         mHistoryStack.offerFirst(directory);
         mPath = makePath();
         directory.setEntryListener(this);
@@ -108,7 +109,7 @@ public class MediaServerModel implements EntryListener {
         directory.setBrowseResult(mMediaServer.browse(directory.getParentId()));
     }
 
-    public void setExploreListener(@Nullable ExploreListener listener) {
+    public void setExploreListener(@Nullable final ExploreListener listener) {
         mExploreListener = listener != null ? listener : EXPLORE_LISTENER;
         final ContentDirectoryEntry directory = mHistoryStack.peekFirst();
         mExploreListener.onUpdate(directory.getList(), directory.isInProgress());

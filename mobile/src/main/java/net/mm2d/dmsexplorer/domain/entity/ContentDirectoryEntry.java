@@ -40,7 +40,7 @@ public class ContentDirectoryEntry implements StatusListener {
         this(ROOT_OBJECT_ID, ROOT_TITLE);
     }
 
-    public ContentDirectoryEntry(@NonNull String parentId, @NonNull String parentTitle) {
+    public ContentDirectoryEntry(@NonNull final String parentId, @NonNull final String parentTitle) {
         mParentId = parentId;
         mParentTitle = parentTitle;
     }
@@ -80,9 +80,10 @@ public class ContentDirectoryEntry implements StatusListener {
         return new ContentDirectoryEntry(object.getObjectId(), object.getTitle());
     }
 
-    public void setSelectedObject(final CdsObject object) {
+    public void setSelectedObject(@Nullable final CdsObject object) {
         if (!mList.contains(object)) {
             mSelectedObject = null;
+            return;
         }
         mSelectedObject = object;
     }
@@ -91,7 +92,7 @@ public class ContentDirectoryEntry implements StatusListener {
         return mSelectedObject;
     }
 
-    public void setEntryListener(@Nullable EntryListener listener) {
+    public void setEntryListener(@Nullable final EntryListener listener) {
         mEntryListener = listener != null ? listener : ENTRY_LISTENER;
     }
 
@@ -105,7 +106,7 @@ public class ContentDirectoryEntry implements StatusListener {
         }
     }
 
-    public void setBrowseResult(BrowseResult result) {
+    public void setBrowseResult(@NonNull final BrowseResult result) {
         mBrowseResult = result;
         mBrowseResult.setStatusListener(this);
     }

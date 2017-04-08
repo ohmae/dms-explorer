@@ -115,11 +115,11 @@ public class ControlPointModel {
         mSelectMediaRendererObserver = rendererObserver;
     }
 
-    public void setMsDiscoveryListener(@Nullable MsDiscoveryListener listener) {
+    public void setMsDiscoveryListener(@Nullable final MsDiscoveryListener listener) {
         mMsDiscoveryListener = listener != null ? listener : MS_DISCOVERY_LISTENER;
     }
 
-    public void setSelectedMediaServer(@Nullable MediaServer server) {
+    public void setSelectedMediaServer(@Nullable final MediaServer server) {
         if (mSelectedMediaServer != null) {
             mSelectedMediaServer.unsubscribe();
         }
@@ -139,11 +139,11 @@ public class ControlPointModel {
         return mSelectedMediaServer;
     }
 
-    public boolean isSelectedMediaServer(@NonNull MediaServer server) {
+    public boolean isSelectedMediaServer(@NonNull final MediaServer server) {
         return mSelectedMediaServer != null && mSelectedMediaServer.equals(server);
     }
 
-    public void setSelectedMediaRenderer(@Nullable MediaRenderer server) {
+    public void setSelectedMediaRenderer(@Nullable final MediaRenderer server) {
         if (mSelectedMediaRenderer != null) {
             mSelectedMediaRenderer.unsubscribe();
         }
@@ -163,7 +163,7 @@ public class ControlPointModel {
         return mSelectedMediaRenderer;
     }
 
-    public boolean isSelectedMediaRenderer(@NonNull MediaRenderer renderer) {
+    public boolean isSelectedMediaRenderer(@NonNull final MediaRenderer renderer) {
         return mSelectedMediaRenderer != null && mSelectedMediaRenderer.equals(renderer);
     }
 

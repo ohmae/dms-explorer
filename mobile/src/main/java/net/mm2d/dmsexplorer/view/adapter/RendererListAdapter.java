@@ -47,7 +47,8 @@ public class RendererListAdapter extends RecyclerView.Adapter<RendererListAdapte
     private OnItemClickListener mClickListener = ON_ITEM_CLICK_LISTENER;
     private OnItemLongClickListener mLongClickListener = ON_ITEM_LONG_CLICK_LISTENER;
 
-    public RendererListAdapter(@NonNull Context context, @Nullable Collection<? extends MediaRenderer> renderers) {
+    public RendererListAdapter(@NonNull final Context context,
+                               @Nullable final Collection<? extends MediaRenderer> renderers) {
         mContext = context;
         mInflater = LayoutInflater.from(context);
         if (renderers == null) {
@@ -58,12 +59,12 @@ public class RendererListAdapter extends RecyclerView.Adapter<RendererListAdapte
     }
 
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(@NonNull final ViewGroup parent, final int viewType) {
         return new ViewHolder(DataBindingUtil.inflate(mInflater, R.layout.renderer_list_item, parent, false));
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final ViewHolder holder, final int position) {
         holder.applyItem(mList.get(position));
     }
 
@@ -72,15 +73,15 @@ public class RendererListAdapter extends RecyclerView.Adapter<RendererListAdapte
         return mList.size();
     }
 
-    public int indexOf(@NonNull MediaRenderer renderer) {
+    public int indexOf(@NonNull final MediaRenderer renderer) {
         return mList.indexOf(renderer);
     }
 
-    public void setOnItemClickListener(OnItemClickListener listener) {
+    public void setOnItemClickListener(@Nullable final OnItemClickListener listener) {
         mClickListener = listener != null ? listener : ON_ITEM_CLICK_LISTENER;
     }
 
-    public void setOnItemLongClickListener(OnItemLongClickListener listener) {
+    public void setOnItemLongClickListener(@Nullable final OnItemLongClickListener listener) {
         mLongClickListener = listener != null ? listener : ON_ITEM_LONG_CLICK_LISTENER;
     }
 
@@ -88,16 +89,16 @@ public class RendererListAdapter extends RecyclerView.Adapter<RendererListAdapte
         mList.clear();
     }
 
-    public void addAll(Collection<? extends MediaRenderer> renderers) {
+    public void addAll(@NonNull final Collection<? extends MediaRenderer> renderers) {
         mList.addAll(renderers);
     }
 
-    public int add(MediaRenderer renderer) {
+    public int add(@NonNull final MediaRenderer renderer) {
         mList.add(renderer);
         return mList.size() - 1;
     }
 
-    public int remove(MediaRenderer renderer) {
+    public int remove(@NonNull final MediaRenderer renderer) {
         final int position = mList.indexOf(renderer);
         if (position >= 0) {
             mList.remove(position);
@@ -109,24 +110,24 @@ public class RendererListAdapter extends RecyclerView.Adapter<RendererListAdapte
         private final RendererListItemBinding mBinding;
         private MediaRenderer mRenderer;
 
-        ViewHolder(RendererListItemBinding binding) {
+        ViewHolder(@NonNull final RendererListItemBinding binding) {
             super(binding.getRoot());
             itemView.setOnClickListener(this::onClick);
             itemView.setOnLongClickListener(this::onLongClick);
             mBinding = binding;
         }
 
-        void applyItem(final @NonNull MediaRenderer renderer) {
+        void applyItem(@NonNull final MediaRenderer renderer) {
             mRenderer = renderer;
             mBinding.setModel(new RendererItemModel(mContext, renderer));
             mBinding.executePendingBindings();
         }
 
-        private void onClick(View v) {
+        private void onClick(@NonNull final View v) {
             mClickListener.onItemClick(v, mRenderer);
         }
 
-        private boolean onLongClick(View v) {
+        private boolean onLongClick(@NonNull final View v) {
             mLongClickListener.onItemLongClick(v, mRenderer);
             return true;
         }

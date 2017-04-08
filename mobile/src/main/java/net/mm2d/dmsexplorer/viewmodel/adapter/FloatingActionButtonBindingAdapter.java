@@ -10,6 +10,7 @@ package net.mm2d.dmsexplorer.viewmodel.adapter;
 import android.content.res.ColorStateList;
 import android.databinding.BindingAdapter;
 import android.support.annotation.ColorInt;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 
 /**
@@ -17,7 +18,7 @@ import android.support.design.widget.FloatingActionButton;
  */
 public class FloatingActionButtonBindingAdapter {
     @BindingAdapter("show")
-    public static void setShow(FloatingActionButton view, boolean show) {
+    public static void setShow(@NonNull final FloatingActionButton view, final boolean show) {
         if (show) {
             view.show();
         } else {
@@ -26,7 +27,7 @@ public class FloatingActionButtonBindingAdapter {
     }
 
     @BindingAdapter("backgroundTint")
-    public static void setBackgroundTint(FloatingActionButton view, @ColorInt int color) {
+    public static void setBackgroundTint(@NonNull final FloatingActionButton view, @ColorInt final int color) {
         view.setBackgroundTintList(ColorStateList.valueOf(color));
     }
 }

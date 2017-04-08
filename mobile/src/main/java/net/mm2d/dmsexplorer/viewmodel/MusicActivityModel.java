@@ -26,7 +26,8 @@ public class MusicActivityModel {
     public final ContentPropertyAdapter propertyAdapter;
     public final int accentColor;
 
-    public static MusicActivityModel create(@NonNull Activity activity, @NonNull Repository repository) {
+    public static MusicActivityModel create(@NonNull final Activity activity,
+                                            @NonNull final Repository repository) {
         final PlaybackTargetModel targetModel = repository.getPlaybackTargetModel();
         if (targetModel == null) {
             return null;
@@ -34,7 +35,8 @@ public class MusicActivityModel {
         return new MusicActivityModel(activity, targetModel);
     }
 
-    private MusicActivityModel(@NonNull Activity activity, @NonNull PlaybackTargetModel targetModel) {
+    private MusicActivityModel(@NonNull final Activity activity,
+                               @NonNull final PlaybackTargetModel targetModel) {
         title = AribUtils.toDisplayableString(targetModel.getCdsObject().getTitle());
         accentColor = ThemeUtils.getDeepColor(title);
         propertyAdapter = new ContentPropertyAdapter(activity, targetModel.getCdsObject());

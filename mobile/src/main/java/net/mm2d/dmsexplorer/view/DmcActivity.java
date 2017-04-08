@@ -34,14 +34,14 @@ public class DmcActivity extends AppCompatActivity {
      * @param context コンテキスト
      * @return このActivityを起動するためのIntent
      */
-    public static Intent makeIntent(final @NonNull Context context) {
+    public static Intent makeIntent(@NonNull final Context context) {
         return new Intent(context, DmcActivity.class);
     }
 
     private DmcActivityBinding mBinding;
 
     @Override
-    protected void onCreate(final Bundle savedInstanceState) {
+    protected void onCreate(@NonNull final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mBinding = DataBindingUtil.setContentView(this, R.layout.dmc_activity);
         final DmcActivityModel model = DmcActivityModel.create(this, Repository.get());

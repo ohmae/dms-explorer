@@ -14,6 +14,7 @@ import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -36,12 +37,12 @@ public class ContentDetailActivity extends AppCompatActivity {
      * @param context コンテキスト
      * @return このActivityを起動するためのIntent
      */
-    public static Intent makeIntent(@NonNull Context context) {
+    public static Intent makeIntent(@NonNull final Context context) {
         return new Intent(context, ContentDetailActivity.class);
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(@Nullable final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.content_detail_activity);
         final ContentDetailFragmentBinding binding =
@@ -59,13 +60,13 @@ public class ContentDetailActivity extends AppCompatActivity {
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+    public boolean onCreateOptionsMenu(@NonNull final Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(@NonNull final MenuItem item) {
         final int id = item.getItemId();
         switch (id) {
             case R.id.action_settings:

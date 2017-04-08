@@ -33,7 +33,7 @@ public class ContentPropertyAdapter extends PropertyAdapter {
     private static String sCs;
 
     // 初回に変換して保持しておく
-    private static void setupString(@NonNull Context context) {
+    private static void setupString(@NonNull final Context context) {
         if (sTb != null) {
             return;
         }
@@ -42,14 +42,15 @@ public class ContentPropertyAdapter extends PropertyAdapter {
         sCs = context.getString(R.string.network_cs);
     }
 
-    public ContentPropertyAdapter(@NonNull Context context, @NonNull CdsObject object) {
+    public ContentPropertyAdapter(@NonNull final Context context, @NonNull final CdsObject object) {
         super(context);
         setupString(context);
         setCdsObjectInfo(context, this, object);
     }
 
-    private static void setCdsObjectInfo(
-            @NonNull Context context, @NonNull PropertyAdapter adapter, @NonNull CdsObject object) {
+    private static void setCdsObjectInfo(@NonNull final Context context,
+                                         @NonNull final PropertyAdapter adapter,
+                                         @NonNull final CdsObject object) {
         adapter.addEntry(context.getString(R.string.prop_title),
                 AribUtils.toDisplayableString(object.getTitle()));
         adapter.addEntry(context.getString(R.string.prop_channel),
@@ -81,7 +82,7 @@ public class ContentPropertyAdapter extends PropertyAdapter {
     }
 
     @Nullable
-    private static String jointTagValue(@NonNull CdsObject object, String tagName) {
+    private static String jointTagValue(@NonNull final CdsObject object, @NonNull final String tagName) {
         final List<Tag> tagList = object.getTagList(tagName);
         if (tagList == null) {
             return null;
@@ -97,7 +98,7 @@ public class ContentPropertyAdapter extends PropertyAdapter {
     }
 
     @Nullable
-    private static String jointLongDescription(@NonNull CdsObject object) {
+    private static String jointLongDescription(@NonNull final CdsObject object) {
         final List<Tag> tagList = getLongDescription(object);
         if (tagList == null) {
             return null;
@@ -135,7 +136,7 @@ public class ContentPropertyAdapter extends PropertyAdapter {
         return null;
     }
 
-    private static List<Tag> getLongDescription(@NonNull CdsObject object) {
+    private static List<Tag> getLongDescription(@NonNull final CdsObject object) {
         final List<Tag> tagList = object.getTagList(CdsObject.ARIB_LONG_DESCRIPTION);
         if (tagList == null) {
             return null;
@@ -151,7 +152,7 @@ public class ContentPropertyAdapter extends PropertyAdapter {
     }
 
     @Nullable
-    private static String jointMembers(@NonNull CdsObject object, String tagName) {
+    private static String jointMembers(@NonNull final CdsObject object, @NonNull final String tagName) {
         final List<Tag> tagList = object.getTagList(tagName);
         if (tagList == null) {
             return null;
@@ -172,7 +173,7 @@ public class ContentPropertyAdapter extends PropertyAdapter {
     }
 
     @Nullable
-    private static String getChannel(@NonNull CdsObject object) {
+    private static String getChannel(@NonNull final CdsObject object) {
         final StringBuilder sb = new StringBuilder();
         final String network = getNetworkString(object);
         if (network != null) {
@@ -202,7 +203,7 @@ public class ContentPropertyAdapter extends PropertyAdapter {
     }
 
     @Nullable
-    private static String getNetworkString(@NonNull CdsObject object) {
+    private static String getNetworkString(@NonNull final CdsObject object) {
         final String net = object.getValue(CdsObject.ARIB_OBJECT_TYPE);
         if (net == null) {
             return null;
@@ -220,7 +221,7 @@ public class ContentPropertyAdapter extends PropertyAdapter {
     }
 
     @Nullable
-    private static String getDate(@NonNull CdsObject object) {
+    private static String getDate(@NonNull final CdsObject object) {
         final String str = object.getValue(CdsObject.DC_DATE);
         final Date date = CdsObject.parseDate(str);
         if (date == null) {
@@ -233,7 +234,7 @@ public class ContentPropertyAdapter extends PropertyAdapter {
     }
 
     @Nullable
-    private static String getSchedule(@NonNull CdsObject object) {
+    private static String getSchedule(@NonNull final CdsObject object) {
         final Date start = object.getDateValue(CdsObject.UPNP_SCHEDULED_START_TIME);
         final Date end = object.getDateValue(CdsObject.UPNP_SCHEDULED_END_TIME);
         if (start == null || end == null) {

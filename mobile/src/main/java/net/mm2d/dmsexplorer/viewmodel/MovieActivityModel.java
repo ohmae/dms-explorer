@@ -31,7 +31,8 @@ public class MovieActivityModel extends BaseObservable {
     private int mRightNavigationSize;
     private int mBottomNavigationSize;
 
-    public static MovieActivityModel create(@NonNull Activity activity, @NonNull Repository repository) {
+    public static MovieActivityModel create(@NonNull final Activity activity,
+                                            @NonNull final Repository repository) {
         final PlaybackTargetModel targetModel = repository.getPlaybackTargetModel();
         if (targetModel == null) {
             return null;
@@ -39,12 +40,13 @@ public class MovieActivityModel extends BaseObservable {
         return new MovieActivityModel(activity, targetModel);
     }
 
-    private MovieActivityModel(@NonNull Activity activity, @NonNull PlaybackTargetModel targetModel) {
+    private MovieActivityModel(@NonNull final Activity activity,
+                               @NonNull final PlaybackTargetModel targetModel) {
         title = AribUtils.toDisplayableString(targetModel.getCdsObject().getTitle());
         adjustPanel(activity);
     }
 
-    public void adjustPanel(@NonNull Activity activity) {
+    public void adjustPanel(@NonNull final Activity activity) {
         if (VERSION.SDK_INT >= VERSION_CODES.N && activity.isInMultiWindowMode()) {
             setRightNavigationSize(0);
             setBottomNavigationSize(0);

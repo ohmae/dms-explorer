@@ -9,6 +9,7 @@ package net.mm2d.dmsexplorer.viewmodel;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.support.annotation.NonNull;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.text.TextUtils;
 
@@ -23,13 +24,19 @@ import net.mm2d.dmsexplorer.util.ThemeUtils;
  */
 public class ContentItemModel {
     public final boolean selected;
+    @NonNull
     public final Drawable accentBackground;
+    @NonNull
     public final String accentText;
+    @NonNull
     public final String title;
+    @NonNull
     public final String description;
     public final int imageResource;
 
-    public ContentItemModel(Context context, CdsObject object, boolean selected) {
+    public ContentItemModel(@NonNull final Context context,
+                            @NonNull final CdsObject object,
+                            final boolean selected) {
         this.selected = selected;
         final String name = object.getTitle();
         accentText = TextUtils.isEmpty(name) ? ""

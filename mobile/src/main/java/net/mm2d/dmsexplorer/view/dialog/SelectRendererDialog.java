@@ -40,7 +40,7 @@ public class SelectRendererDialog extends DialogFragment {
 
     @NonNull
     @Override
-    public Dialog onCreateDialog(Bundle savedInstanceState) {
+    public Dialog onCreateDialog(final Bundle savedInstanceState) {
         final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         final ControlPointModel model = Repository.get().getControlPointModel();
         final MrControlPoint cp = model.getMrControlPoint();
