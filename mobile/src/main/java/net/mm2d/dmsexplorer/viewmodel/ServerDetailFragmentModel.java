@@ -43,9 +43,9 @@ public class ServerDetailFragmentModel {
 
     private final Context mContext;
 
-    public static ServerDetailFragmentModel create(@NonNull final Context context) {
-        final MediaServer server = Repository.getInstance()
-                .getControlPointModel().getSelectedMediaServer();
+    public static ServerDetailFragmentModel create(
+            @NonNull final Context context, @NonNull Repository repository) {
+        final MediaServer server = repository.getControlPointModel().getSelectedMediaServer();
         if (server == null) {
             return null;
         }

@@ -72,7 +72,17 @@ public class ContentListActivityModel extends BaseObservable implements ExploreL
     private final MediaServerModel mMediaServerModel;
     private final CdsSelectListener mCdsSelectListener;
 
-    public ContentListActivityModel(@NonNull Context context, @NonNull CdsSelectListener listener) {
+    public static ContentListActivityModel create(@NonNull Context context,
+                                           @NonNull Repository repository,
+                                           @NonNull CdsSelectListener listener) {
+        final MediaServerModel model = repository.getMediaServerModel();
+        if (model == null) {
+            return null;
+        }
+        return new ContentListActivityModel(context, model, listener);
+    }
+
+    public ContentListActivityModel(@NonNull Context context, @NonNull MediaServerModel model, @NonNull CdsSelectListener listener) {
         itemDecoration = new DividerItemDecoration(context, DividerItemDecoration.VERTICAL);
         mContentListAdapter = new ContentListAdapter(context);
         mContentListAdapter.setOnItemClickListener(this::onItemClick);
@@ -80,7 +90,7 @@ public class ContentListActivityModel extends BaseObservable implements ExploreL
         cdsListLayoutManager = new LinearLayoutManager(context);
 
         mCdsSelectListener = listener;
-        mMediaServerModel = Repository.getInstance().getMediaServerModel();
+        mMediaServerModel = model;
         mMediaServerModel.setExploreListener(this);
         title = mMediaServerModel.getTitle();
 

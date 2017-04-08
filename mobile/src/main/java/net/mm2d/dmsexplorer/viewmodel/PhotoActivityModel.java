@@ -13,6 +13,7 @@ import android.databinding.Bindable;
 import android.graphics.Point;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
+import android.support.annotation.NonNull;
 
 import com.android.databinding.library.baseAdapters.BR;
 
@@ -30,8 +31,7 @@ public class PhotoActivityModel extends BaseObservable {
     private boolean mLoading = true;
     private int mRightNavigationSize;
 
-    public static PhotoActivityModel create(Activity activity) {
-        final Repository repository = Repository.getInstance();
+    public static PhotoActivityModel create(@NonNull Activity activity, @NonNull Repository repository) {
         final PlaybackTargetModel targetModel = repository.getPlaybackTargetModel();
         if (targetModel == null) {
             return null;
@@ -39,12 +39,12 @@ public class PhotoActivityModel extends BaseObservable {
         return new PhotoActivityModel(activity, targetModel);
     }
 
-    private PhotoActivityModel(Activity activity, PlaybackTargetModel targetModel) {
+    private PhotoActivityModel(@NonNull Activity activity, @NonNull PlaybackTargetModel targetModel) {
         title = AribUtils.toDisplayableString(targetModel.getCdsObject().getTitle());
         adjustPanel(activity);
     }
 
-    public void adjustPanel(Activity activity) {
+    public void adjustPanel(@NonNull Activity activity) {
         if (VERSION.SDK_INT >= VERSION_CODES.N && activity.isInMultiWindowMode()) {
             setRightNavigationSize(0);
             return;

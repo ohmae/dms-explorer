@@ -13,6 +13,7 @@ import android.databinding.Bindable;
 import android.graphics.Point;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
+import android.support.annotation.NonNull;
 
 import com.android.databinding.library.baseAdapters.BR;
 
@@ -30,8 +31,7 @@ public class MovieActivityModel extends BaseObservable {
     private int mRightNavigationSize;
     private int mBottomNavigationSize;
 
-    public static MovieActivityModel create(Activity activity) {
-        final Repository repository = Repository.getInstance();
+    public static MovieActivityModel create(@NonNull Activity activity, @NonNull Repository repository) {
         final PlaybackTargetModel targetModel = repository.getPlaybackTargetModel();
         if (targetModel == null) {
             return null;
@@ -39,12 +39,12 @@ public class MovieActivityModel extends BaseObservable {
         return new MovieActivityModel(activity, targetModel);
     }
 
-    private MovieActivityModel(Activity activity, PlaybackTargetModel targetModel) {
+    private MovieActivityModel(@NonNull Activity activity, @NonNull PlaybackTargetModel targetModel) {
         title = AribUtils.toDisplayableString(targetModel.getCdsObject().getTitle());
         adjustPanel(activity);
     }
 
-    public void adjustPanel(Activity activity) {
+    public void adjustPanel(@NonNull Activity activity) {
         if (VERSION.SDK_INT >= VERSION_CODES.N && activity.isInMultiWindowMode()) {
             setRightNavigationSize(0);
             setBottomNavigationSize(0);

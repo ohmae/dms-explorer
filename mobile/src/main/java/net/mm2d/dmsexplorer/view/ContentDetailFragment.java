@@ -48,7 +48,8 @@ public class ContentDetailFragment extends Fragment {
     public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
                              final Bundle savedInstanceState) {
         mBinding = DataBindingUtil.inflate(inflater, R.layout.content_detail_fragment, container, false);
-        final ContentDetailFragmentModel model = ContentDetailFragmentModel.create(getActivity());
+        final ContentDetailFragmentModel model
+                = ContentDetailFragmentModel.create(getActivity(), Repository.getInstance());
         if (model == null) {
             getActivity().finish();
             return mBinding.getRoot();

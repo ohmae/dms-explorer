@@ -44,7 +44,7 @@ public class DmcActivity extends AppCompatActivity {
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mBinding = DataBindingUtil.setContentView(this, R.layout.dmc_activity);
-        final DmcActivityModel model = DmcActivityModel.create(this);
+        final DmcActivityModel model = DmcActivityModel.create(this, Repository.getInstance());
         if (model == null) {
             finish();
             return;

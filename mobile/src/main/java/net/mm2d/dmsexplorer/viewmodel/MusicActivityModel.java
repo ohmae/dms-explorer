@@ -10,6 +10,7 @@ package net.mm2d.dmsexplorer.viewmodel;
 import android.app.Activity;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
+import android.support.annotation.NonNull;
 
 import net.mm2d.android.util.AribUtils;
 import net.mm2d.dmsexplorer.Repository;
@@ -25,8 +26,7 @@ public class MusicActivityModel {
     public final ContentPropertyAdapter propertyAdapter;
     public final int accentColor;
 
-    public static MusicActivityModel create(Activity activity) {
-        final Repository repository = Repository.getInstance();
+    public static MusicActivityModel create(@NonNull Activity activity, @NonNull Repository repository) {
         final PlaybackTargetModel targetModel = repository.getPlaybackTargetModel();
         if (targetModel == null) {
             return null;
@@ -34,7 +34,7 @@ public class MusicActivityModel {
         return new MusicActivityModel(activity, targetModel);
     }
 
-    private MusicActivityModel(Activity activity, PlaybackTargetModel targetModel) {
+    private MusicActivityModel(@NonNull Activity activity, @NonNull PlaybackTargetModel targetModel) {
         title = AribUtils.toDisplayableString(targetModel.getCdsObject().getTitle());
         accentColor = ThemeUtils.getDeepColor(title);
         propertyAdapter = new ContentPropertyAdapter(activity, targetModel.getCdsObject());

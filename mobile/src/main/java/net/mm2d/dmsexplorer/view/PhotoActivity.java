@@ -36,7 +36,7 @@ public class PhotoActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mBinding = DataBindingUtil.setContentView(this, R.layout.photo_activity);
-        final PhotoActivityModel model = PhotoActivityModel.create(this);
+        final PhotoActivityModel model = PhotoActivityModel.create(this, Repository.getInstance());
         if (model == null) {
             finish();
             return;

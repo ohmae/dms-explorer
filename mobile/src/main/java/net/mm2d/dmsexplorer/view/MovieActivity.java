@@ -33,7 +33,8 @@ public class MovieActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mBinding = DataBindingUtil.setContentView(this, R.layout.movie_activity);
-        final MovieActivityModel model = MovieActivityModel.create(this);
+        final Repository repository = Repository.getInstance();
+        final MovieActivityModel model = MovieActivityModel.create(this, repository);
         if (model == null) {
             finish();
             return;
@@ -51,7 +52,6 @@ public class MovieActivity extends AppCompatActivity {
         mBinding.controlPanel.setOnCompletionListener(mp -> onBackPressed());
         mBinding.controlPanel.setOnUserActionListener(mFullscreenHelper::postHideNavigation);
         mBinding.videoView.setOnPreparedListener(mBinding.controlPanel);
-        final Repository repository = Repository.getInstance();
         final PlaybackTargetModel targetModel = repository.getPlaybackTargetModel();
         mBinding.videoView.setVideoURI(targetModel.getUri());
     }

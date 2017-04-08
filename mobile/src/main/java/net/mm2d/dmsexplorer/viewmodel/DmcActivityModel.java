@@ -94,8 +94,7 @@ public class DmcActivityModel extends BaseObservable
         }
     };
 
-    public static DmcActivityModel create(@NonNull final Context context) {
-        final Repository repository = Repository.getInstance();
+    public static DmcActivityModel create(@NonNull final Context context, @NonNull Repository repository) {
         final MediaServerModel serverModel = repository.getMediaServerModel();
         final MediaRendererModel rendererModel = repository.getMediaRendererModel();
         final PlaybackTargetModel targetModel = repository.getPlaybackTargetModel();

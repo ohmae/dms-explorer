@@ -65,11 +65,20 @@ public class ServerListActivityModel extends BaseObservable {
     private final LayoutManager mServerListLayoutManager;
     private boolean mRefreshing;
 
-    private final ControlPointModel mControlPointModel = Repository.getInstance().getControlPointModel();
+    private final ControlPointModel mControlPointModel;
     private final Handler mHandler = new Handler(Looper.getMainLooper());
     private final ServerSelectListener mServerSelectListener;
 
-    public ServerListActivityModel(@NonNull Context context, ServerSelectListener listener) {
+    public static ServerListActivityModel create(@NonNull Context context,
+                                          @NonNull Repository repository,
+                                          @NonNull ServerSelectListener listener) {
+        return new ServerListActivityModel(context, repository.getControlPointModel(), listener);
+    }
+
+    public ServerListActivityModel(@NonNull Context context,
+                                   @NonNull ControlPointModel model,
+                                   @NonNull ServerSelectListener listener) {
+        mControlPointModel = model;
         itemDecoration = new DividerItemDecoration(context, DividerItemDecoration.VERTICAL);
         mServerListLayoutManager = new LinearLayoutManager(context);
         mServerListAdapter = new ServerListAdapter(context, mControlPointModel.getMediaServerList());

@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import net.mm2d.dmsexplorer.R;
+import net.mm2d.dmsexplorer.Repository;
 import net.mm2d.dmsexplorer.databinding.ServerDetailFragmentBinding;
 import net.mm2d.dmsexplorer.viewmodel.ServerDetailFragmentModel;
 
@@ -42,7 +43,7 @@ public class ServerDetailFragment extends Fragment {
         final Activity activity = getActivity();
         final ServerDetailFragmentBinding binding =
                 DataBindingUtil.inflate(inflater, R.layout.server_detail_fragment, container, false);
-        final ServerDetailFragmentModel model = ServerDetailFragmentModel.create(activity);
+        final ServerDetailFragmentModel model = ServerDetailFragmentModel.create(activity, Repository.getInstance());
         if (model == null) {
             activity.finish();
             return binding.getRoot();

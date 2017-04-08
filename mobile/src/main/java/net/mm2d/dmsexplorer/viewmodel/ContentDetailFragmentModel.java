@@ -48,8 +48,9 @@ public class ContentDetailFragmentModel extends BaseObservable {
         }
     };
 
-    public static ContentDetailFragmentModel create(@NonNull final Context context) {
-        final MediaServerModel model = Repository.getInstance().getMediaServerModel();
+    public static ContentDetailFragmentModel create(@NonNull final Context context,
+                                                    @NonNull Repository repository) {
+        final MediaServerModel model = repository.getMediaServerModel();
         if (model == null) {
             return null;
         }

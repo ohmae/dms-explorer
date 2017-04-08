@@ -37,7 +37,7 @@ public class MusicActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mBinding = DataBindingUtil.setContentView(this, R.layout.music_activity);
-        final MusicActivityModel model = MusicActivityModel.create(this);
+        final MusicActivityModel model = MusicActivityModel.create(this, Repository.getInstance());
         if (model == null) {
             finish();
             return;

@@ -28,6 +28,7 @@ import net.mm2d.android.upnp.cds.CdsObject;
 import net.mm2d.android.util.ActivityUtils;
 import net.mm2d.android.util.ViewUtils;
 import net.mm2d.dmsexplorer.R;
+import net.mm2d.dmsexplorer.Repository;
 import net.mm2d.dmsexplorer.databinding.ContentListActivityBinding;
 import net.mm2d.dmsexplorer.util.ItemSelectUtils;
 import net.mm2d.dmsexplorer.util.ThemeUtils;
@@ -101,7 +102,7 @@ public class ContentListActivity extends AppCompatActivity implements CdsSelectL
     protected void onCreate(@Nullable final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mBinding = DataBindingUtil.setContentView(this, R.layout.content_list_activity);
-        mBinding.setModel(new ContentListActivityModel(this, this));
+        mBinding.setModel(ContentListActivityModel.create(this, Repository.getInstance(), this));
         mTwoPane = mBinding.cdsDetailContainer != null;
 
         setSupportActionBar(mBinding.toolbar);
