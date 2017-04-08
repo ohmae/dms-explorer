@@ -33,7 +33,7 @@ import net.mm2d.dmsexplorer.view.dialog.SelectResourceDialog;
  */
 public class ItemSelectUtils {
     public static void play(final @NonNull Activity activity) {
-        final PlaybackTargetModel targetModel = Repository.getInstance().getPlaybackTargetModel();
+        final PlaybackTargetModel targetModel = Repository.get().getPlaybackTargetModel();
         final int resCount = targetModel.getResCount();
         if (resCount == 0) {
             return;
@@ -47,7 +47,7 @@ public class ItemSelectUtils {
     }
 
     public static void play(final @NonNull Activity activity, final int index) {
-        final PlaybackTargetModel targetModel = Repository.getInstance().getPlaybackTargetModel();
+        final PlaybackTargetModel targetModel = Repository.get().getPlaybackTargetModel();
         targetModel.setResIndex(index);
         if (targetModel.getUri() == null) {
             return;

@@ -37,7 +37,7 @@ public class MusicActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mBinding = DataBindingUtil.setContentView(this, R.layout.music_activity);
-        final MusicActivityModel model = MusicActivityModel.create(this, Repository.getInstance());
+        final MusicActivityModel model = MusicActivityModel.create(this, Repository.get());
         if (model == null) {
             finish();
             return;
@@ -48,7 +48,7 @@ public class MusicActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         mBinding.controlPanel.setOnCompletionListener(mp -> onBackPressed());
-        final Repository repository = Repository.getInstance();
+        final Repository repository = Repository.get();
         final PlaybackTargetModel targetModel = repository.getPlaybackTargetModel();
         mMediaPlayer = new MediaPlayer();
         mMediaPlayer.setOnPreparedListener(mBinding.controlPanel);

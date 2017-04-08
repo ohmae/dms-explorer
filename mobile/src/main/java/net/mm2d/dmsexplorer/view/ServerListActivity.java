@@ -58,7 +58,7 @@ public class ServerListActivity extends AppCompatActivity
     private boolean mHasReenterTransition;
     private boolean mTwoPane;
     private final ControlPointModel mControlPointModel
-            = Repository.getInstance().getControlPointModel();
+            = Repository.get().getControlPointModel();
     private ServerDetailFragment mServerDetailFragment;
     private ServerListActivityBinding mBinding;
 
@@ -153,7 +153,7 @@ public class ServerListActivity extends AppCompatActivity
             getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.defaultStatusBar));
         }
         mBinding = DataBindingUtil.setContentView(this, R.layout.server_list_activity);
-        mBinding.setModel(ServerListActivityModel.create(this, Repository.getInstance(), this));
+        mBinding.setModel(ServerListActivityModel.create(this, Repository.get(), this));
         mTwoPane = mBinding.serverDetailContainer != null;
 
         setSupportActionBar(mBinding.toolbar);

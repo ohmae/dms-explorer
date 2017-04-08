@@ -20,7 +20,7 @@ import net.mm2d.dmsexplorer.domain.model.PlaybackTargetModel;
 public abstract class Repository {
     private static Repository sInstance;
 
-    public static Repository getInstance() {
+    public static Repository get() {
         return sInstance;
     }
 

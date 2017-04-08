@@ -36,7 +36,7 @@ public class PhotoActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mBinding = DataBindingUtil.setContentView(this, R.layout.photo_activity);
-        final PhotoActivityModel model = PhotoActivityModel.create(this, Repository.getInstance());
+        final PhotoActivityModel model = PhotoActivityModel.create(this, Repository.get());
         if (model == null) {
             finish();
             return;
@@ -49,7 +49,7 @@ public class PhotoActivity extends AppCompatActivity {
                 .build();
         mFullscreenHelper.showNavigation();
 
-        final Repository repository = Repository.getInstance();
+        final Repository repository = Repository.get();
         final PlaybackTargetModel targetModel = repository.getPlaybackTargetModel();
         downloadAndSetImage(targetModel.getUri().toString());
     }

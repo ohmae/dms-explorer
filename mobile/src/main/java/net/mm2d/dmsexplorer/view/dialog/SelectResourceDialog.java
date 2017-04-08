@@ -44,7 +44,7 @@ public class SelectResourceDialog extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        final PlaybackTargetModel targetModel = Repository.getInstance().getPlaybackTargetModel();
+        final PlaybackTargetModel targetModel = Repository.get().getPlaybackTargetModel();
         final CdsObject object = targetModel.getCdsObject();
         builder.setTitle(R.string.title_dialog_select_resource);
         final String[] choices = makeChoices(object);

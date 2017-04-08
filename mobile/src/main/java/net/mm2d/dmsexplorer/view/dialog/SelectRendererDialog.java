@@ -42,7 +42,7 @@ public class SelectRendererDialog extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        final ControlPointModel model = Repository.getInstance().getControlPointModel();
+        final ControlPointModel model = Repository.get().getControlPointModel();
         final MrControlPoint cp = model.getMrControlPoint();
         final List<MediaRenderer> rendererList = cp.getDeviceList();
         if (rendererList.isEmpty()) {

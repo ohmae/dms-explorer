@@ -33,7 +33,7 @@ public class MovieActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mBinding = DataBindingUtil.setContentView(this, R.layout.movie_activity);
-        final Repository repository = Repository.getInstance();
+        final Repository repository = Repository.get();
         final MovieActivityModel model = MovieActivityModel.create(this, repository);
         if (model == null) {
             finish();

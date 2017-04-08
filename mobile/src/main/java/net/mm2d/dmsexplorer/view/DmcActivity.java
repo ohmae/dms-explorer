@@ -44,7 +44,7 @@ public class DmcActivity extends AppCompatActivity {
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mBinding = DataBindingUtil.setContentView(this, R.layout.dmc_activity);
-        final DmcActivityModel model = DmcActivityModel.create(this, Repository.getInstance());
+        final DmcActivityModel model = DmcActivityModel.create(this, Repository.get());
         if (model == null) {
             finish();
             return;
@@ -63,7 +63,7 @@ public class DmcActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         mBinding.getModel().terminate();
-        Repository.getInstance().getControlPointModel().clearSelectedRenderer();
+        Repository.get().getControlPointModel().clearSelectedRenderer();
     }
 
     @Override
