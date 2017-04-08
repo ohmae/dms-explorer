@@ -24,7 +24,7 @@ public abstract class Repository {
         return sInstance;
     }
 
-    public static void setInstance(@NonNull Repository instance) {
+    static void set(@NonNull Repository instance) {
         sInstance = instance;
     }
 

@@ -49,7 +49,7 @@ public class App extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        Repository.setInstance(new AppRepository(this));
+        Repository.set(new AppRepository(this));
         if (BuildConfig.DEBUG) {
             Log.setLogLevel(Log.VERBOSE);
             Log.setPrint(new AndroidPrint());
