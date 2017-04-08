@@ -82,6 +82,7 @@ public class ServerDetailFragmentModel {
             return new BitmapDrawable(context.getResources(), icon);
         }
         final Drawable drawable = DrawableUtils.get(context, R.drawable.ic_circle);
+        drawable.mutate();
         DrawableCompat.setTint(drawable, ThemeUtils.getAccentColor(server.getFriendlyName()));
         return drawable;
     }

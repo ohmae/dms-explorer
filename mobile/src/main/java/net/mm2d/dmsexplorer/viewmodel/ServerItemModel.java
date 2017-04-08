@@ -51,6 +51,7 @@ public class ServerItemModel {
             accentText = TextUtils.isEmpty(name) ? ""
                     : AribUtils.toDisplayableString(name.substring(0, 1));
             accentBackground = DrawableUtils.get(context, R.drawable.ic_circle);
+            accentBackground.mutate();
             DrawableCompat.setTint(accentBackground, ThemeUtils.getAccentColor(name));
             ToolbarThemeUtils.setServerThemeColorAsync(server, null);
             return;
