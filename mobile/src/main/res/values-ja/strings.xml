@@ -31,9 +31,9 @@
     <string name="pref_category_movie">動画</string>
     <string name="pref_category_music">音楽</string>
     <string name="pref_category_photo">静止画</string>
-    <string name="pref_title_launch_app_movie">動画再生方法</string>
-    <string name="pref_title_launch_app_music">音楽再生方法</string>
-    <string name="pref_title_launch_app_photo">静止画表示方法</string>
+    <string name="pref_title_launch_app_movie">動画再生機能</string>
+    <string name="pref_title_launch_app_music">音楽再生機能</string>
+    <string name="pref_title_launch_app_photo">静止画表示機能</string>
     <string name="pref_title_music_auto_play">自動再生</string>
     <string name="pref_message_music_auto_play_on">次の曲があれば自動的に再生します</string>
     <string name="pref_message_music_auto_play_off">再生が完了すると停止します</string>
