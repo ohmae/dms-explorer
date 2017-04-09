@@ -25,6 +25,7 @@
             />
         <SwitchPreference
             android:defaultValue="false"
+            android:dependency="LAUNCH_APP_MUSIC"
             android:key="MUSIC_AUTO_PLAY"
             android:summaryOff="@string/pref_message_music_auto_play_off"
             android:summaryOn="@string/pref_message_music_auto_play_on"
