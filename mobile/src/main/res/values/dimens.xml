@@ -27,6 +27,7 @@
     <dimen name="toolbar_button_padding">16dp</dimen>
     <dimen name="tool_button_padding">16dp</dimen>
 
+    <dimen name="control_button_padding">12dp</dimen>
     <dimen name="control_height">56dp</dimen>
     <dimen name="control_margin">24dp</dimen>
     <dimen name="seek_padding">12dp</dimen>

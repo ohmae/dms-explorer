@@ -21,9 +21,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:background="@drawable/bg_tool_button"
+            android:background="@drawable/bg_control_button"
             android:enabled="@{model.prepared}"
-            android:padding="@dimen/tool_button_padding"
+            android:padding="@dimen/control_button_padding"
             android:imageResource="@{model.playButtonResId}"
             />
 
