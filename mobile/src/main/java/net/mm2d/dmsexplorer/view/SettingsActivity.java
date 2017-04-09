@@ -87,11 +87,11 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
     @Override
     protected boolean isValidFragment(String fragmentName) {
         return PreferenceFragment.class.getName().equals(fragmentName)
-                || GeneralPreferenceFragment.class.getName().equals(fragmentName)
+                || PlaybackPreferenceFragment.class.getName().equals(fragmentName)
                 || InformationPreferenceFragment.class.getName().equals(fragmentName);
     }
 
-    public static class GeneralPreferenceFragment extends PreferenceFragment {
+    public static class PlaybackPreferenceFragment extends PreferenceFragment {
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
