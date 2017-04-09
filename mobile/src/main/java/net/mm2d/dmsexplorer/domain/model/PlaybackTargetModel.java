@@ -14,8 +14,6 @@ import net.mm2d.android.upnp.cds.CdsObject;
 import net.mm2d.android.upnp.cds.Tag;
 import net.mm2d.util.TextUtils;
 
-import java.util.List;
-
 /**
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
  */
@@ -60,7 +58,6 @@ public class PlaybackTargetModel {
     }
 
     public int getResCount() {
-        final List<Tag> list = mCdsObject.getTagList(CdsObject.RES);
-        return list == null ? 0 : list.size();
+        return mCdsObject.getResourceCount();
     }
 }

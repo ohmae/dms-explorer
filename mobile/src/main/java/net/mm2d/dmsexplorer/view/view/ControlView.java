@@ -52,6 +52,7 @@ public class ControlView extends FrameLayout implements OnPreparedListener {
     private int mCurrentPosition;
 
     private ControlViewModel mModel;
+    private ControlViewBinding mBinding;
 
     @NonNull
     private OnUserActionListener mOnUserActionListener = ON_USER_ACTION_LISTENER;
@@ -131,12 +132,12 @@ public class ControlView extends FrameLayout implements OnPreparedListener {
 
     public ControlView(@NonNull final Context context, @Nullable final AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        final ControlViewBinding binding = DataBindingUtil.inflate(
+        mBinding = DataBindingUtil.inflate(
                 LayoutInflater.from(context), R.layout.control_view, this, true);
         mModel = new ControlViewModel();
-        binding.setModel(mModel);
-        setUpSeekBar(binding.seekBar);
-        setUpPlayButton(binding.play);
+        mBinding.setModel(mModel);
+        setUpSeekBar(mBinding.seekBar);
+        setUpPlayButton(mBinding.play);
     }
 
     private void setUpSeekBar(@NonNull final SeekBar seekBar) {
@@ -183,6 +184,19 @@ public class ControlView extends FrameLayout implements OnPreparedListener {
             }
             mOnUserActionListener.onUserAction();
         });
+    }
+
+    public void reset() {
+        if (mMediaPlayer != null) {
+            mMediaPlayer.setOnErrorListener(null);
+            mMediaPlayer.setOnInfoListener(null);
+            mMediaPlayer.setOnCompletionListener(null);
+            mMediaPlayer.setOnInfoListener(null);
+        }
+        mMediaPlayer = null;
+        mCurrentPosition = 0;
+        mModel = new ControlViewModel();
+        mBinding.setModel(mModel);
     }
 
     public void setOnUserActionListener(@Nullable OnUserActionListener listener) {

@@ -19,7 +19,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import net.mm2d.android.upnp.cds.CdsObject;
 import net.mm2d.dmsexplorer.R;
+import net.mm2d.dmsexplorer.Repository;
 import net.mm2d.dmsexplorer.databinding.ContentDetailFragmentBinding;
 import net.mm2d.dmsexplorer.util.ThemeUtils;
 
@@ -41,9 +43,12 @@ public class ContentDetailActivity extends AppCompatActivity {
         return new Intent(context, ContentDetailActivity.class);
     }
 
+    private Repository mRepository;
+    private CdsObject mCdsObject;
     @Override
     protected void onCreate(@Nullable final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mRepository = Repository.get();
         setContentView(R.layout.content_detail_activity);
         final ContentDetailFragmentBinding binding =
                 DataBindingUtil.findBinding(findViewById(R.id.cdsDetailFragment));
@@ -51,11 +56,21 @@ public class ContentDetailActivity extends AppCompatActivity {
             finish();
             return;
         }
+        mCdsObject = mRepository.getMediaServerModel().getSelectedObject();
         setSupportActionBar(binding.cdsDetailToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
             getWindow().setStatusBarColor(
                     ThemeUtils.getDarkerColor(binding.getModel().collapsedColor));
+        }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if (mCdsObject != null
+                && !mCdsObject.equals(mRepository.getMediaServerModel().getSelectedObject())) {
+            finish();
         }
     }
 

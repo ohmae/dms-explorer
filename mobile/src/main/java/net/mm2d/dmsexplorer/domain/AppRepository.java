@@ -82,7 +82,7 @@ public class AppRepository extends Repository {
     }
 
     private MediaServerModel createMediaServerModel(@NonNull final MediaServer server) {
-        return new MediaServerModel(server, this::updatePlaybackTarget);
+        return new MediaServerModel(mContext, server, this::updatePlaybackTarget);
     }
 
     private MediaRendererModel createMediaRendererModel(@NonNull final MediaRenderer renderer) {

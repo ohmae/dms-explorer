@@ -149,6 +149,7 @@ public class ContentListActivity extends AppCompatActivity implements CdsSelectL
     @Override
     protected void onStart() {
         super.onStart();
+        mBinding.getModel().syncSelectedObject();
         if (mBinding.getModel().isItemSelected()) {
             setDetailFragment(false);
         }

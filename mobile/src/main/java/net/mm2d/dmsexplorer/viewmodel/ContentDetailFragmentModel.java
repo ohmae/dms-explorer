@@ -65,11 +65,12 @@ public class ContentDetailFragmentModel extends BaseObservable {
     private ContentDetailFragmentModel(@NonNull final Context context,
                                        @NonNull final CdsObject object,
                                        @NonNull final ControlPointModel model) {
-        title = AribUtils.toDisplayableString(object.getTitle());
+        final String rawTitle = object.getTitle();
+        title = AribUtils.toDisplayableString(rawTitle);
         propertyAdapter = new ContentPropertyAdapter(context, object);
-        collapsedColor = ThemeUtils.getAccentColor(title);
-        expandedColor = ThemeUtils.getPastelColor(title);
-        hasResource = object.getTagList(CdsObject.RES) != null;
+        collapsedColor = ThemeUtils.getAccentColor(rawTitle);
+        expandedColor = ThemeUtils.getPastelColor(rawTitle);
+        hasResource = object.hasResource();
         hasProtectedResource = object.hasProtectedResource();
 
         mMrControlPoint = model.getMrControlPoint();

@@ -7,6 +7,9 @@
 
 package net.mm2d.dmsexplorer.domain.model;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
@@ -28,8 +31,9 @@ public class MediaServerModel implements EntryListener {
         void update(CdsObject object);
     }
 
-    private PlaybackTargetObserver mPlaybackTargetObserver;
     private static final String DELIMITER = " < ";
+    private final Context mContext;
+    private final PlaybackTargetObserver mPlaybackTargetObserver;
     private final MediaServer mMediaServer;
     private final Deque<ContentDirectoryEntry> mHistoryStack = new LinkedList<>();
     private String mPath;
@@ -41,7 +45,10 @@ public class MediaServerModel implements EntryListener {
         void onUpdate(@NonNull List<CdsObject> list, boolean inProgress);
     }
 
-    public MediaServerModel(@NonNull final MediaServer server, @NonNull final PlaybackTargetObserver observer) {
+    public MediaServerModel(@NonNull final Context context,
+                            @NonNull final MediaServer server,
+                            @NonNull final PlaybackTargetObserver observer) {
+        mContext = context;
         mMediaServer = server;
         mPlaybackTargetObserver = observer;
     }
@@ -142,6 +149,53 @@ public class MediaServerModel implements EntryListener {
             return null;
         }
         return entry.getSelectedObject();
+    }
+
+    public boolean selectNextObject() {
+        final CdsObject nextObject = getNextTarget(getSelectedObject());
+        if (nextObject == null) {
+            return false;
+        }
+        setSelectedObject(nextObject);
+        return true;
+    }
+
+    private CdsObject getNextTarget(@Nullable final CdsObject currentObject) {
+        if (currentObject == null) {
+            return null;
+        }
+        switch (currentObject.getType()) {
+            case CdsObject.TYPE_VIDEO:
+                return null;
+            case CdsObject.TYPE_AUDIO:
+                return getNextMusicTarget(currentObject);
+            case CdsObject.TYPE_IMAGE:
+                return null;
+            default:
+                return null;
+        }
+    }
+
+    private CdsObject getNextMusicTarget(CdsObject currentObject) {
+        final SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(mContext);
+        if (!pref.getBoolean("MUSIC_AUTO_PLAY", false)) {
+            return null;
+        }
+        final List<CdsObject> list = mHistoryStack.peekFirst().getList();
+        if (list == null) {
+            return null;
+        }
+        final int index = list.indexOf(currentObject);
+        if (index < 0 || index + 1 >= list.size()) {
+            return null;
+        }
+        final CdsObject object = list.get(index + 1);
+        if (object.getType() != CdsObject.TYPE_AUDIO
+                || !object.hasResource()
+                || object.hasProtectedResource()) {
+            return null;
+        }
+        return object;
     }
 
     private String makePath() {

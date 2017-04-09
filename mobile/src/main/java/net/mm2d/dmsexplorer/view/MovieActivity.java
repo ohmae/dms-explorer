@@ -52,7 +52,7 @@ public class MovieActivity extends AppCompatActivity {
         mBinding.controlPanel.setOnUserActionListener(mFullscreenHelper::postHideNavigation);
         mBinding.videoView.setOnPreparedListener(mBinding.controlPanel);
         if (savedInstanceState != null) {
-            mBinding.controlPanel.restoreSavePosition(savedInstanceState.getInt(KEY_POSITION, -1));
+            mBinding.controlPanel.restoreSavePosition(savedInstanceState.getInt(KEY_POSITION, 0));
         }
         final PlaybackTargetModel targetModel = repository.getPlaybackTargetModel();
         mBinding.videoView.setVideoURI(targetModel.getUri());

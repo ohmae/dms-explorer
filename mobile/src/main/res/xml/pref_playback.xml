@@ -1,0 +1,47 @@
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory
+        android:title="@string/pref_category_movie"
+        >
+        <SwitchPreference
+            android:defaultValue="true"
+            android:key="LAUNCH_APP_MOVIE"
+            android:summaryOff="@string/pref_message_launch_app_off"
+            android:summaryOn="@string/pref_message_launch_app_on"
+            android:title="@string/pref_title_launch_app_movie"
+            />
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/pref_category_music"
+        >
+        <SwitchPreference
+            android:defaultValue="true"
+            android:key="LAUNCH_APP_MUSIC"
+            android:summaryOff="@string/pref_message_launch_app_off"
+            android:summaryOn="@string/pref_message_launch_app_on"
+            android:title="@string/pref_title_launch_app_music"
+            />
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="MUSIC_AUTO_PLAY"
+            android:summaryOff="@string/pref_message_music_auto_play_off"
+            android:summaryOn="@string/pref_message_music_auto_play_on"
+            android:title="@string/pref_title_music_auto_play"
+            />
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/pref_category_photo"
+        >
+        <SwitchPreference
+            android:defaultValue="true"
+            android:key="LAUNCH_APP_PHOTO"
+            android:summaryOff="@string/pref_message_launch_app_off"
+            android:summaryOn="@string/pref_message_launch_app_on"
+            android:title="@string/pref_title_launch_app_photo"
+            />
+    </PreferenceCategory>
+
+</PreferenceScreen>

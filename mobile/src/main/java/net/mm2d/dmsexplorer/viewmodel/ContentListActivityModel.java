@@ -150,6 +150,10 @@ public class ContentListActivityModel extends BaseObservable implements ExploreL
         mCdsSelectListener.onDetermine(v, object, alreadySelected);
     }
 
+    public void syncSelectedObject() {
+        mContentListAdapter.setSelectedObject(mMediaServerModel.getSelectedObject());
+    }
+
     public boolean onBackPressed() {
         mCdsSelectListener.onUnselect();
         return mMediaServerModel.exitToParent();
