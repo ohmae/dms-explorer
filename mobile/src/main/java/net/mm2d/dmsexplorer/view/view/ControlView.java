@@ -191,7 +191,9 @@ public class ControlView extends FrameLayout implements OnPreparedListener {
             mMediaPlayer.setOnErrorListener(null);
             mMediaPlayer.setOnInfoListener(null);
             mMediaPlayer.setOnCompletionListener(null);
-            mMediaPlayer.setOnInfoListener(null);
+            mMediaPlayer.stop();
+            mMediaPlayer.reset();
+            mMediaPlayer.release();
         }
         mMediaPlayer = null;
         mCurrentPosition = 0;
@@ -215,13 +217,12 @@ public class ControlView extends FrameLayout implements OnPreparedListener {
         mMediaPlayer.setOnErrorListener(mMyOnErrorListener);
         mMediaPlayer.setOnInfoListener(mMyOnInfoListener);
         mMediaPlayer.setOnCompletionListener(mMyOnCompletionListener);
-        mMediaPlayer.setOnInfoListener(mMyOnInfoListener);
         mModel.setDuration(mMediaPlayer.getDuration());
         mModel.setPlaying(true);
         post(mGetPositionTask);
-        mp.start();
+        mMediaPlayer.start();
         if (mCurrentPosition > 0) {
-            mp.seekTo(mCurrentPosition);
+            mMediaPlayer.seekTo(mCurrentPosition);
         }
     }
 
