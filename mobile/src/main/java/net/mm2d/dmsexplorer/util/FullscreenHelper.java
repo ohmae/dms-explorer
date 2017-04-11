@@ -48,6 +48,22 @@ public class FullscreenHelper {
         }
     }
 
+    private static final int SYSTEM_UI_VISIBLE = View.SYSTEM_UI_FLAG_LOW_PROFILE;
+    private static final int SYSTEM_UI_INVISIBLE;
+    static {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            SYSTEM_UI_INVISIBLE = View.SYSTEM_UI_FLAG_FULLSCREEN
+                    | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                    | View.SYSTEM_UI_FLAG_IMMERSIVE
+                    | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                    | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION;
+        } else {
+            SYSTEM_UI_INVISIBLE = View.SYSTEM_UI_FLAG_FULLSCREEN
+                    | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                    | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                    | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION;
+        }
+    }
     private static final long NAVIGATION_INTERVAL = TimeUnit.SECONDS.toMillis(3);
     @NonNull
     private final Handler mHandler;
@@ -78,7 +94,6 @@ public class FullscreenHelper {
         mExitToTop = AnimationUtils.loadAnimation(context, R.anim.exit_to_top);
         mExitToBottom = AnimationUtils.loadAnimation(context, R.anim.exit_to_bottom);
 
-        mRootView.setOnClickListener(v -> showNavigation());
         mRootView.setOnSystemUiVisibilityChangeListener(visibility -> {
             if ((visibility & View.SYSTEM_UI_FLAG_HIDE_NAVIGATION) == 0) {
                 showNavigation();
@@ -88,48 +103,40 @@ public class FullscreenHelper {
 
     private final Runnable mHideNavigationTask = this::hideNavigation;
 
-    public void postHideNavigation() {
+    private void postHideNavigation() {
         mHandler.removeCallbacks(mHideNavigationTask);
         mHandler.postDelayed(mHideNavigationTask, NAVIGATION_INTERVAL);
     }
 
     public void showNavigation() {
         if (mTopView != null && mTopView.getVisibility() != View.VISIBLE) {
+            mTopView.clearAnimation();
             mTopView.startAnimation(mEnterFromTop);
             mTopView.setVisibility(View.VISIBLE);
         }
         if (mBottomView != null && mBottomView.getVisibility() != View.VISIBLE) {
+            mBottomView.clearAnimation();
             mBottomView.startAnimation(mEnterFromBottom);
             mBottomView.setVisibility(View.VISIBLE);
         }
-        mRootView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE);
+        mRootView.setSystemUiVisibility(SYSTEM_UI_VISIBLE);
         postHideNavigation();
     }
 
     private void hideNavigation() {
         if (mTopView != null) {
+            mTopView.clearAnimation();
             mTopView.startAnimation(mExitToTop);
             mTopView.setVisibility(View.GONE);
         }
         if (mBottomView != null) {
+            mBottomView.clearAnimation();
             mBottomView.startAnimation(mExitToBottom);
             mBottomView.setVisibility(View.GONE);
         }
-        final int visibility;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            visibility = View.SYSTEM_UI_FLAG_FULLSCREEN
-                    | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                    | View.SYSTEM_UI_FLAG_IMMERSIVE
-                    | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                    | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION;
-        } else {
-            visibility = View.SYSTEM_UI_FLAG_FULLSCREEN
-                    | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                    | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                    | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION;
-        }
-        mRootView.setSystemUiVisibility(visibility);
+        mRootView.setSystemUiVisibility(SYSTEM_UI_INVISIBLE);
     }
+
 
     public void onDestroy() {
         mHandler.removeCallbacks(mHideNavigationTask);

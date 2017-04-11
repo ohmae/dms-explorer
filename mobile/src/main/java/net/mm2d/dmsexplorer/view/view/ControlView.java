@@ -35,12 +35,6 @@ import net.mm2d.util.Log;
 public class ControlView extends FrameLayout implements OnPreparedListener {
     private static final String TAG = ControlView.class.getSimpleName();
 
-    public interface OnUserActionListener {
-        void onUserAction();
-    }
-
-    private static final OnUserActionListener ON_USER_ACTION_LISTENER = () -> {
-    };
     private static final OnErrorListener ON_ERROR_LISTENER = (mp, what, extra) -> false;
     private static final OnInfoListener ON_INFO_LISTENER = (mp, what, extra) -> false;
     private static final OnCompletionListener ON_COMPLETION_LISTENER = mp -> {
@@ -54,8 +48,6 @@ public class ControlView extends FrameLayout implements OnPreparedListener {
     private ControlViewModel mModel;
     private ControlViewBinding mBinding;
 
-    @NonNull
-    private OnUserActionListener mOnUserActionListener = ON_USER_ACTION_LISTENER;
     @NonNull
     private OnErrorListener mOnErrorListener = ON_ERROR_LISTENER;
     @NonNull
@@ -146,7 +138,6 @@ public class ControlView extends FrameLayout implements OnPreparedListener {
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 if (fromUser) {
                     mModel.setProgressText(progress);
-                    mOnUserActionListener.onUserAction();
                 }
             }
 
@@ -182,7 +173,6 @@ public class ControlView extends FrameLayout implements OnPreparedListener {
                 mMediaPlayer.start();
                 mModel.setPlaying(true);
             }
-            mOnUserActionListener.onUserAction();
         });
     }
 
@@ -199,10 +189,6 @@ public class ControlView extends FrameLayout implements OnPreparedListener {
         mCurrentPosition = 0;
         mModel = new ControlViewModel();
         mBinding.setModel(mModel);
-    }
-
-    public void setOnUserActionListener(@Nullable OnUserActionListener listener) {
-        mOnUserActionListener = listener != null ? listener : ON_USER_ACTION_LISTENER;
     }
 
     @Override

@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.widget.Toast;
 
 import net.mm2d.dmsexplorer.R;
@@ -54,6 +55,18 @@ public class PhotoActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mFullscreenHelper.onDestroy();
+    }
+
+    @Override
+    public boolean dispatchTouchEvent(final MotionEvent ev) {
+        mFullscreenHelper.showNavigation();
+        return super.dispatchTouchEvent(ev);
+    }
+
+    @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         mBinding.getModel().adjustPanel(this);
@@ -68,12 +81,6 @@ public class PhotoActivity extends AppCompatActivity {
                 return true;
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        mFullscreenHelper.onDestroy();
     }
 
     private void downloadAndSetImage(@NonNull final String url) {

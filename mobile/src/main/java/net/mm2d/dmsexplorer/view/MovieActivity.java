@@ -12,6 +12,7 @@ import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 
 import net.mm2d.dmsexplorer.R;
 import net.mm2d.dmsexplorer.Repository;
@@ -49,13 +50,25 @@ public class MovieActivity extends AppCompatActivity {
 
         mBinding.toolbarBack.setOnClickListener(view -> onBackPressed());
         mBinding.controlPanel.setOnCompletionListener(mp -> onBackPressed());
-        mBinding.controlPanel.setOnUserActionListener(mFullscreenHelper::postHideNavigation);
         mBinding.videoView.setOnPreparedListener(mBinding.controlPanel);
         if (savedInstanceState != null) {
             mBinding.controlPanel.restoreSavePosition(savedInstanceState.getInt(KEY_POSITION, 0));
         }
         final PlaybackTargetModel targetModel = repository.getPlaybackTargetModel();
         mBinding.videoView.setVideoURI(targetModel.getUri());
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mBinding.videoView.stopPlayback();
+        mFullscreenHelper.onDestroy();
+    }
+
+    @Override
+    public boolean dispatchTouchEvent(final MotionEvent ev) {
+        mFullscreenHelper.showNavigation();
+        return super.dispatchTouchEvent(ev);
     }
 
     @Override
@@ -79,12 +92,5 @@ public class MovieActivity extends AppCompatActivity {
                 return true;
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        mBinding.videoView.stopPlayback();
-        mFullscreenHelper.onDestroy();
     }
 }
