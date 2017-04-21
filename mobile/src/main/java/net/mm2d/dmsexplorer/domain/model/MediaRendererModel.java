@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import net.mm2d.android.upnp.avt.MediaRenderer;
 import net.mm2d.android.upnp.avt.MediaRenderer.ActionCallback;
+import net.mm2d.android.upnp.avt.TransportState;
 import net.mm2d.android.upnp.cds.CdsObject;
 import net.mm2d.android.upnp.cds.ChapterInfo;
 import net.mm2d.dmsexplorer.R;
@@ -181,7 +182,8 @@ public class MediaRendererModel {
         if (result == null) {
             return;
         }
-        final boolean playing = "PLAYING".equals(MediaRenderer.getCurrentTransportState(result));
+        final TransportState state = MediaRenderer.getCurrentTransportState(result);
+        final boolean playing = state == TransportState.PLAYING;
         mControlListener.notifyPlayingState(playing);
     }
 
