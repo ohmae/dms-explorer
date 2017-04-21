@@ -48,12 +48,12 @@ public class ContentListActivity extends AppCompatActivity implements CdsSelectL
     private ContentListActivityBinding mBinding;
 
     /**
-     * インスタンスを作成する。
+     * このActivityを起動するためのIntentを作成する。
      *
-     * <p>Bundleへの値の設定と読み出しをこのクラス内で完結させる。
+     * <p>Extraの設定と読み出しをこのクラス内で完結させる。
      *
      * @param context コンテキスト
-     * @return インスタンス
+     * @return このActivityを起動するためのIntent
      */
     @NonNull
     public static Intent makeIntent(@NonNull final Context context) {
