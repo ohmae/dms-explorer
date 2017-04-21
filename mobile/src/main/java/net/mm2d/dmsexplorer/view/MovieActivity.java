@@ -65,8 +65,9 @@ public class MovieActivity extends AppCompatActivity {
 
     @Override
     public boolean dispatchTouchEvent(final MotionEvent ev) {
+        final boolean result = super.dispatchTouchEvent(ev);
         mFullscreenHelper.showNavigation();
-        return super.dispatchTouchEvent(ev);
+        return result;
     }
 
     @Override
