@@ -18,6 +18,7 @@ import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView.Adapter;
+import android.support.v7.widget.RecyclerView.ItemAnimator;
 import android.support.v7.widget.RecyclerView.ItemDecoration;
 import android.support.v7.widget.RecyclerView.LayoutManager;
 import android.view.View;
@@ -32,6 +33,7 @@ import net.mm2d.dmsexplorer.domain.model.MediaServerModel;
 import net.mm2d.dmsexplorer.domain.model.MediaServerModel.ExploreListener;
 import net.mm2d.dmsexplorer.util.ToolbarThemeUtils;
 import net.mm2d.dmsexplorer.view.adapter.ContentListAdapter;
+import net.mm2d.dmsexplorer.view.view.CustomItemAnimator;
 
 import java.util.List;
 
@@ -60,6 +62,7 @@ public class ContentListActivityModel extends BaseObservable implements ExploreL
         }
     };
     public final ItemDecoration itemDecoration;
+    public final ItemAnimator itemAnimator;
     public final LayoutManager cdsListLayoutManager;
     public final String title;
     public final int toolbarBackground;
@@ -90,6 +93,7 @@ public class ContentListActivityModel extends BaseObservable implements ExploreL
                                      @NonNull final MediaServerModel model,
                                      @NonNull final CdsSelectListener listener) {
         itemDecoration = new DividerItemDecoration(context, DividerItemDecoration.VERTICAL);
+        itemAnimator = new CustomItemAnimator(context);
         mContentListAdapter = new ContentListAdapter(context);
         mContentListAdapter.setOnItemClickListener(this::onItemClick);
         mContentListAdapter.setOnItemLongClickListener(this::onItemLongClick);

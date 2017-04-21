@@ -61,6 +61,7 @@
                     android:name="net.mm2d.CdsListFragment"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:itemAnimator="@{model.itemAnimator}"
                     app:adapter="@{model.contentListAdapter}"
                     app:itemDecoration="@{model.itemDecoration}"
                     app:layoutManager="@{model.cdsListLayoutManager}"

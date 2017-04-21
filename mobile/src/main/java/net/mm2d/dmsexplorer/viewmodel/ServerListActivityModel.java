@@ -19,6 +19,7 @@ import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView.Adapter;
+import android.support.v7.widget.RecyclerView.ItemAnimator;
 import android.support.v7.widget.RecyclerView.ItemDecoration;
 import android.support.v7.widget.RecyclerView.LayoutManager;
 import android.view.View;
@@ -31,6 +32,7 @@ import net.mm2d.dmsexplorer.Repository;
 import net.mm2d.dmsexplorer.databinding.ServerListItemBinding;
 import net.mm2d.dmsexplorer.domain.model.ControlPointModel;
 import net.mm2d.dmsexplorer.view.adapter.ServerListAdapter;
+import net.mm2d.dmsexplorer.view.view.CustomItemAnimator;
 
 /**
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
@@ -60,6 +62,7 @@ public class ServerListActivityModel extends BaseObservable {
         }
     };
     public final ItemDecoration itemDecoration;
+    public final ItemAnimator itemAnimator;
 
     private final ServerListAdapter mServerListAdapter;
     private final LayoutManager mServerListLayoutManager;
@@ -80,6 +83,7 @@ public class ServerListActivityModel extends BaseObservable {
                                    @NonNull ServerSelectListener listener) {
         mControlPointModel = model;
         itemDecoration = new DividerItemDecoration(context, DividerItemDecoration.VERTICAL);
+        itemAnimator = new CustomItemAnimator(context);
         mServerListLayoutManager = new LinearLayoutManager(context);
         mServerListAdapter = new ServerListAdapter(context, mControlPointModel.getMediaServerList());
         mServerListAdapter.setOnItemClickListener(this::onItemClick);
