@@ -48,17 +48,20 @@ public class FullscreenHelper {
         }
     }
 
-    private static final int SYSTEM_UI_VISIBLE = View.SYSTEM_UI_FLAG_LOW_PROFILE;
+    private static final int SYSTEM_UI_VISIBLE;
     private static final int SYSTEM_UI_INVISIBLE;
 
     static {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            SYSTEM_UI_VISIBLE = View.SYSTEM_UI_FLAG_LOW_PROFILE
+                    | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN;
             SYSTEM_UI_INVISIBLE = View.SYSTEM_UI_FLAG_FULLSCREEN
                     | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
                     | View.SYSTEM_UI_FLAG_IMMERSIVE
                     | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
                     | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION;
         } else {
+            SYSTEM_UI_VISIBLE = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN;
             SYSTEM_UI_INVISIBLE = View.SYSTEM_UI_FLAG_FULLSCREEN
                     | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
                     | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN

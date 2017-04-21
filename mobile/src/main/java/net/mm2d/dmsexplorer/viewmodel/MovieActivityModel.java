@@ -11,6 +11,7 @@ import android.app.Activity;
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
 import android.graphics.Point;
+import android.os.Build;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import android.support.annotation.NonNull;
@@ -63,7 +64,8 @@ public class MovieActivityModel extends BaseObservable implements OnCompletionLi
     }
 
     public void adjustPanel(@NonNull final Activity activity) {
-        if (VERSION.SDK_INT >= VERSION_CODES.N && activity.isInMultiWindowMode()) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT
+                || (VERSION.SDK_INT >= VERSION_CODES.N && activity.isInMultiWindowMode())) {
             setRightNavigationSize(0);
             setBottomNavigationSize(0);
             return;
