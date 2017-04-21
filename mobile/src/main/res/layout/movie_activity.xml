@@ -43,6 +43,7 @@
                 android:layout_marginRight="@dimen/toolbar_button_margin"
                 android:background="@drawable/bg_tool_button"
                 android:padding="@dimen/toolbar_button_padding"
+                android:onClick="@{() -> model.onClickBack()}"
                 app:srcCompat="@drawable/ic_arrow_back"
                 />
 
@@ -60,7 +61,7 @@
 
         </LinearLayout>
 
-        <net.mm2d.dmsexplorer.view.view.ControlView
+        <FrameLayout
             android:id="@+id/controlPanel"
             android:layout_width="match_parent"
             android:layout_height="@dimen/control_height"
@@ -69,7 +70,12 @@
             android:paddingBottom="@{model.bottomNavigationSize}"
             app:layout_height="@{model.bottomNavigationSize + (int)@dimen/control_height}"
             app:layout_marginRight="@{model.rightNavigationSize}"
-            />
+            >
 
+            <include
+                layout="@layout/control_view"
+                app:model="@{model.controlViewModel}"
+                />
+        </FrameLayout>
     </FrameLayout>
 </layout>

@@ -23,8 +23,9 @@
             android:layout_gravity="center_vertical"
             android:background="@drawable/bg_control_button"
             android:enabled="@{model.prepared}"
-            android:padding="@dimen/control_button_padding"
             android:imageResource="@{model.playButtonResId}"
+            android:padding="@dimen/control_button_padding"
+            android:onClick="@{() -> model.onClickPlay()}"
             />
 
         <TextView
@@ -46,6 +47,7 @@
             android:layout_weight="1"
             android:enabled="@{model.seekable}"
             android:max="@{model.duration}"
+            android:onSeekBarChangeListener="@{model.onSeekBarChangeListener}"
             android:paddingBottom="@dimen/seek_padding"
             android:paddingTop="@dimen/seek_padding"
             android:progress="@{model.progress}"

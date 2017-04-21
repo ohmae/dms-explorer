@@ -23,6 +23,7 @@ import net.mm2d.android.upnp.cds.CdsObject;
 import net.mm2d.dmsexplorer.R;
 import net.mm2d.dmsexplorer.Repository;
 import net.mm2d.dmsexplorer.databinding.ContentDetailFragmentBinding;
+import net.mm2d.dmsexplorer.domain.model.MediaServerModel;
 import net.mm2d.dmsexplorer.util.ThemeUtils;
 
 /**
@@ -43,20 +44,21 @@ public class ContentDetailActivity extends AppCompatActivity {
         return new Intent(context, ContentDetailActivity.class);
     }
 
-    private Repository mRepository;
+    private MediaServerModel mMediaServerModel;
     private CdsObject mCdsObject;
+
     @Override
     protected void onCreate(@Nullable final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mRepository = Repository.get();
         setContentView(R.layout.content_detail_activity);
+        mMediaServerModel = Repository.get().getMediaServerModel();
         final ContentDetailFragmentBinding binding =
                 DataBindingUtil.findBinding(findViewById(R.id.cdsDetailFragment));
         if (binding == null) {
             finish();
             return;
         }
-        mCdsObject = mRepository.getMediaServerModel().getSelectedObject();
+        mCdsObject = getSelectedObject();
         setSupportActionBar(binding.cdsDetailToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
@@ -65,11 +67,14 @@ public class ContentDetailActivity extends AppCompatActivity {
         }
     }
 
+    private CdsObject getSelectedObject() {
+        return mMediaServerModel == null ? null : mMediaServerModel.getSelectedObject();
+    }
+
     @Override
     protected void onStart() {
         super.onStart();
-        if (mCdsObject != null
-                && !mCdsObject.equals(mRepository.getMediaServerModel().getSelectedObject())) {
+        if (mCdsObject != null && !mCdsObject.equals(getSelectedObject())) {
             finish();
         }
     }

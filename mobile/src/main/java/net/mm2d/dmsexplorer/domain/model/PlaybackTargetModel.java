@@ -49,6 +49,10 @@ public class PlaybackTargetModel {
         mMimeType = CdsObject.extractMimeTypeFromProtocolInfo(protocolInfo);
     }
 
+    public String getTitle() {
+        return mCdsObject.getTitle();
+    }
+
     public Uri getUri() {
         return mUri;
     }

@@ -50,6 +50,7 @@ public class FullscreenHelper {
 
     private static final int SYSTEM_UI_VISIBLE = View.SYSTEM_UI_FLAG_LOW_PROFILE;
     private static final int SYSTEM_UI_INVISIBLE;
+
     static {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             SYSTEM_UI_INVISIBLE = View.SYSTEM_UI_FLAG_FULLSCREEN
@@ -64,6 +65,7 @@ public class FullscreenHelper {
                     | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION;
         }
     }
+
     private static final long NAVIGATION_INTERVAL = TimeUnit.SECONDS.toMillis(3);
     @NonNull
     private final Handler mHandler;
@@ -81,6 +83,8 @@ public class FullscreenHelper {
     private final Animation mExitToTop;
     @NonNull
     private final Animation mExitToBottom;
+    @NonNull
+    private final Runnable mHideNavigationTask = this::hideNavigation;
 
     private FullscreenHelper(@NonNull final Builder builder) {
         mHandler = new Handler();
@@ -100,8 +104,6 @@ public class FullscreenHelper {
             }
         });
     }
-
-    private final Runnable mHideNavigationTask = this::hideNavigation;
 
     private void postHideNavigation() {
         mHandler.removeCallbacks(mHideNavigationTask);
@@ -136,7 +138,6 @@ public class FullscreenHelper {
         }
         mRootView.setSystemUiVisibility(SYSTEM_UI_INVISIBLE);
     }
-
 
     public void onDestroy() {
         mHandler.removeCallbacks(mHideNavigationTask);

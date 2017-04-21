@@ -87,8 +87,8 @@ public class ContentListActivityModel extends BaseObservable implements ExploreL
     }
 
     private ContentListActivityModel(@NonNull final Context context,
-                                    @NonNull final MediaServerModel model,
-                                    @NonNull final CdsSelectListener listener) {
+                                     @NonNull final MediaServerModel model,
+                                     @NonNull final CdsSelectListener listener) {
         itemDecoration = new DividerItemDecoration(context, DividerItemDecoration.VERTICAL);
         mContentListAdapter = new ContentListAdapter(context);
         mContentListAdapter.setOnItemClickListener(this::onItemClick);

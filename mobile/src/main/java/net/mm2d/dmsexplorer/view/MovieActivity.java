@@ -17,7 +17,6 @@ import android.view.MotionEvent;
 import net.mm2d.dmsexplorer.R;
 import net.mm2d.dmsexplorer.Repository;
 import net.mm2d.dmsexplorer.databinding.MovieActivityBinding;
-import net.mm2d.dmsexplorer.domain.model.PlaybackTargetModel;
 import net.mm2d.dmsexplorer.util.FullscreenHelper;
 import net.mm2d.dmsexplorer.viewmodel.MovieActivityModel;
 
@@ -30,38 +29,37 @@ public class MovieActivity extends AppCompatActivity {
     private static final String KEY_POSITION = "KEY_POSITION";
     private FullscreenHelper mFullscreenHelper;
     private MovieActivityBinding mBinding;
+    private MovieActivityModel mModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mBinding = DataBindingUtil.setContentView(this, R.layout.movie_activity);
         final Repository repository = Repository.get();
-        final MovieActivityModel model = MovieActivityModel.create(this, repository);
-        if (model == null) {
+        mModel = MovieActivityModel.create(this, mBinding.videoView, repository);
+        if (mModel == null) {
             finish();
             return;
         }
-        mBinding.setModel(model);
+        mBinding.setModel(mModel);
+        mModel.adjustPanel(this);
+
         mFullscreenHelper = new FullscreenHelper.Builder(mBinding.getRoot())
                 .setTopView(mBinding.toolbar)
                 .setBottomView(mBinding.controlPanel)
                 .build();
         mFullscreenHelper.showNavigation();
 
-        mBinding.toolbarBack.setOnClickListener(view -> onBackPressed());
-        mBinding.controlPanel.setOnCompletionListener(mp -> onBackPressed());
-        mBinding.videoView.setOnPreparedListener(mBinding.controlPanel);
         if (savedInstanceState != null) {
-            mBinding.controlPanel.restoreSavePosition(savedInstanceState.getInt(KEY_POSITION, 0));
+            final int progress = savedInstanceState.getInt(KEY_POSITION, 0);
+            mModel.restoreSaveProgress(progress);
         }
-        final PlaybackTargetModel targetModel = repository.getPlaybackTargetModel();
-        mBinding.videoView.setVideoURI(targetModel.getUri());
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        mBinding.videoView.stopPlayback();
+        mModel.terminate();
         mFullscreenHelper.onDestroy();
     }
 
@@ -74,13 +72,13 @@ public class MovieActivity extends AppCompatActivity {
     @Override
     protected void onSaveInstanceState(final Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putInt(KEY_POSITION, mBinding.controlPanel.getCurrentPosition());
+        outState.putInt(KEY_POSITION, mModel.getCurrentProgress());
     }
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-        mBinding.getModel().adjustPanel(this);
+        mModel.adjustPanel(this);
     }
 
     @Override

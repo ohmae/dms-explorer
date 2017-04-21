@@ -72,14 +72,19 @@
 
             </FrameLayout>
 
-            <net.mm2d.dmsexplorer.view.view.ControlView
+            <FrameLayout
                 android:id="@+id/controlPanel"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/control_height"
                 android:layout_gravity="bottom"
                 android:background="@{model.accentColor}"
-                />
+                >
 
+                <include
+                    layout="@layout/control_view"
+                    app:model="@{model.controlViewModel}"
+                    />
+            </FrameLayout>
         </LinearLayout>
 
     </android.support.design.widget.CoordinatorLayout>

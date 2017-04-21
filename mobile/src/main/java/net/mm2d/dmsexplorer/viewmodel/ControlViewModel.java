@@ -9,16 +9,25 @@ package net.mm2d.dmsexplorer.viewmodel;
 
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
+import android.media.MediaPlayer;
+import android.widget.SeekBar;
+import android.widget.SeekBar.OnSeekBarChangeListener;
 
 import net.mm2d.dmsexplorer.BR;
 import net.mm2d.dmsexplorer.R;
+import net.mm2d.dmsexplorer.domain.model.MediaPlayerModel;
+import net.mm2d.dmsexplorer.domain.model.MediaPlayerModel.StatusListener;
 
 import java.util.Locale;
 
 /**
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
  */
-public class ControlViewModel extends BaseObservable {
+public class ControlViewModel extends BaseObservable implements StatusListener {
+    interface OnCompletionListener {
+        void onCompletion();
+    }
+
     private String mProgressText = makeTimeText(0);
     private String mDurationText = makeTimeText(0);
     private boolean mPlaying;
@@ -28,12 +37,66 @@ public class ControlViewModel extends BaseObservable {
     private boolean mSeekable;
     private int mPlayButtonResId = R.drawable.ic_play;
 
+    private boolean mTracking;
+    private final MediaPlayerModel mMediaPlayerModel;
+    private OnCompletionListener mOnCompletionListener;
+
+    public ControlViewModel(MediaPlayerModel playerModel) {
+        mMediaPlayerModel = playerModel;
+        mMediaPlayerModel.setStatusListener(this);
+    }
+
+    public void terminate() {
+        mMediaPlayerModel.terminate();
+    }
+
+    public void restoreSaveProgress(final int position) {
+        mMediaPlayerModel.restoreSaveProgress(position);
+    }
+
+    public void setOnCompletionListener(OnCompletionListener listener) {
+        mOnCompletionListener = listener;
+    }
+
+    public final OnSeekBarChangeListener onSeekBarChangeListener = new OnSeekBarChangeListener() {
+        @Override
+        public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+            if (fromUser) {
+                setProgressText(progress);
+            }
+        }
+
+        @Override
+        public void onStartTrackingTouch(SeekBar seekBar) {
+            mTracking = true;
+        }
+
+        @Override
+        public void onStopTrackingTouch(SeekBar seekBar) {
+            mTracking = false;
+            mMediaPlayerModel.seekTo(seekBar.getProgress());
+        }
+    };
+
+    public void onClickPlay() {
+        final boolean playing = mMediaPlayerModel.isPlaying();
+        if (playing) {
+            mMediaPlayerModel.pause();
+        } else {
+            mMediaPlayerModel.play();
+        }
+        setPlaying(!playing);
+    }
+
     @Bindable
     public int getProgress() {
         return mProgress;
     }
 
-    public void setProgress(final int progress) {
+    private void setProgress(final int progress) {
+        if (mTracking) {
+            return;
+        }
         setProgressText(progress);
         mProgress = progress;
         notifyPropertyChanged(BR.progress);
@@ -44,7 +107,7 @@ public class ControlViewModel extends BaseObservable {
         return mDuration;
     }
 
-    public void setDuration(final int duration) {
+    private void setDuration(final int duration) {
         mDuration = duration;
         notifyPropertyChanged(BR.duration);
         if (duration > 0) {
@@ -59,7 +122,7 @@ public class ControlViewModel extends BaseObservable {
         return mProgressText;
     }
 
-    public void setProgressText(final int progress) {
+    private void setProgressText(final int progress) {
         mProgressText = makeTimeText(progress);
         notifyPropertyChanged(BR.progressText);
     }
@@ -74,7 +137,7 @@ public class ControlViewModel extends BaseObservable {
         notifyPropertyChanged(BR.durationText);
     }
 
-    public void setPlaying(final boolean playing) {
+    private void setPlaying(final boolean playing) {
         if (mPlaying == playing) {
             return;
         }
@@ -87,7 +150,7 @@ public class ControlViewModel extends BaseObservable {
         return mPlayButtonResId;
     }
 
-    public void setPlayButtonResId(final int playButtonResId) {
+    private void setPlayButtonResId(final int playButtonResId) {
         mPlayButtonResId = playButtonResId;
         notifyPropertyChanged(BR.playButtonResId);
     }
@@ -101,7 +164,6 @@ public class ControlViewModel extends BaseObservable {
         mPrepared = prepared;
         notifyPropertyChanged(BR.prepared);
     }
-
 
     @Bindable
     public boolean isSeekable() {
@@ -118,5 +180,37 @@ public class ControlViewModel extends BaseObservable {
         final long minute = (millisecond / 60000) % 60;
         final long hour = millisecond / 3600000;
         return String.format(Locale.US, "%01d:%02d:%02d", hour, minute, second);
+    }
+
+    @Override
+    public void notifyDuration(final int duration) {
+        setDuration(duration);
+    }
+
+    @Override
+    public void notifyProgress(final int progress) {
+        setProgress(progress);
+    }
+
+    @Override
+    public void notifyPlayingState(final boolean playing) {
+        setPlaying(playing);
+    }
+
+    @Override
+    public boolean onError(final MediaPlayer mp, final int what, final int extra) {
+        return false;
+    }
+
+    @Override
+    public boolean onInfo(final MediaPlayer mp, final int what, final int extra) {
+        return false;
+    }
+
+    @Override
+    public void onCompletion(final MediaPlayer mp) {
+        if (mOnCompletionListener != null) {
+            mOnCompletionListener.onCompletion();
+        }
     }
 }
