@@ -15,8 +15,6 @@ public class Const {
     public static final String KEY_TOOLBAR_EXPANDED_COLOR = "KEY_TOOLBAR_EXPANDED_COLOR";
     public static final String KEY_TOOLBAR_COLLAPSED_COLOR = "KEY_TOOLBAR_COLLAPSED_COLOR";
 
-    public static final String EXTRA_HAS_TRANSITION = "EXTRA_HAS_TRANSITION";
-
     public static final String SHARE_ELEMENT_NAME_DEVICE_ICON = "SHARE_ELEMENT_NAME_DEVICE_ICON";
 
     public static final String LAUNCH_APP_MOVIE = "LAUNCH_APP_MOVIE";

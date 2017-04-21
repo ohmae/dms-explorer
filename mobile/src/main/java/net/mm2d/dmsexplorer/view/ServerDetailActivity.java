@@ -12,6 +12,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.databinding.DataBindingUtil;
+import android.os.Build;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
@@ -67,16 +68,15 @@ public class ServerDetailActivity extends AppCompatActivity {
                     ThemeUtils.getDarkerColor(mBinding.getModel().collapsedColor));
         }
 
-        final boolean hasTransition = getIntent().getBooleanExtra(Const.EXTRA_HAS_TRANSITION, false);
-        prepareTransition(hasTransition && savedInstanceState == null);
+        prepareTransition(savedInstanceState != null);
     }
 
-    private void prepareTransition(final boolean hasTransition) {
-        if (VERSION.SDK_INT < VERSION_CODES.LOLLIPOP) {
+    private void prepareTransition(final boolean hasState) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
             return;
         }
         mBinding.toolbarIcon.setTransitionName(Const.SHARE_ELEMENT_NAME_DEVICE_ICON);
-        if (!hasTransition) {
+        if (hasState) {
             return;
         }
         mBinding.toolbarBackground.setVisibility(View.INVISIBLE);

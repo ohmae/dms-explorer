@@ -96,7 +96,6 @@ public class ServerListActivity extends AppCompatActivity
     @TargetApi(VERSION_CODES.LOLLIPOP)
     private void startServerDetailActivityLollipop(@NonNull final View v) {
         final Intent intent = ServerDetailActivity.makeIntent(this);
-        intent.putExtra(Const.EXTRA_HAS_TRANSITION, true);
         final View accent = v.findViewById(R.id.accent);
         setExitSharedElementCallback(new SharedElementCallback() {
             @Override
