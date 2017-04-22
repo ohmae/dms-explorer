@@ -39,22 +39,22 @@ public class DmcActivity extends AppCompatActivity {
         return new Intent(context, DmcActivity.class);
     }
 
-    private DmcActivityBinding mBinding;
+    private DmcActivityModel mModel;
 
     @Override
     protected void onCreate(@Nullable final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mBinding = DataBindingUtil.setContentView(this, R.layout.dmc_activity);
+        final DmcActivityBinding binding = DataBindingUtil.setContentView(this, R.layout.dmc_activity);
         try {
-            final DmcActivityModel model = new DmcActivityModel(this, Repository.get());
-            mBinding.setModel(model);
-            model.initialize();
+            mModel = new DmcActivityModel(this, Repository.get());
+            binding.setModel(mModel);
+            mModel.initialize();
         } catch (final IllegalStateException ignored) {
             finish();
             return;
         }
 
-        setSupportActionBar(mBinding.toolbar);
+        setSupportActionBar(binding.toolbar);
         final ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
     }
@@ -63,7 +63,9 @@ public class DmcActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        mBinding.getModel().terminate();
+        if (mModel != null) {
+            mModel.terminate();
+        }
         Repository.get().getControlPointModel().clearSelectedRenderer();
     }
 

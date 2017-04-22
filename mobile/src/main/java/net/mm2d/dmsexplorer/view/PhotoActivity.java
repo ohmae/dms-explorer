@@ -27,15 +27,15 @@ import net.mm2d.dmsexplorer.viewmodel.PhotoActivityModel;
  */
 public class PhotoActivity extends AppCompatActivity {
     private FullscreenHelper mFullscreenHelper;
-    private PhotoActivityBinding mBinding;
     private PhotoActivityModel mModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mBinding = DataBindingUtil.setContentView(this, R.layout.photo_activity);
-        mFullscreenHelper = new FullscreenHelper.Builder(mBinding.getRoot())
-                .setTopView(mBinding.toolbar)
+        final PhotoActivityBinding binding
+                = DataBindingUtil.setContentView(this, R.layout.photo_activity);
+        mFullscreenHelper = new FullscreenHelper.Builder(binding.getRoot())
+                .setTopView(binding.toolbar)
                 .build();
         try {
             mModel = new PhotoActivityModel(this, Repository.get());
@@ -44,7 +44,7 @@ public class PhotoActivity extends AppCompatActivity {
             return;
         }
 
-        mBinding.setModel(mModel);
+        binding.setModel(mModel);
         mModel.adjustPanel(this);
         mFullscreenHelper.showNavigation();
     }
@@ -52,19 +52,22 @@ public class PhotoActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        mFullscreenHelper.onDestroy();
+        mFullscreenHelper.terminate();
     }
 
     @Override
     public boolean dispatchTouchEvent(final MotionEvent ev) {
+        final boolean result = super.dispatchTouchEvent(ev);
         mFullscreenHelper.showNavigation();
-        return super.dispatchTouchEvent(ev);
+        return result;
     }
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-        mModel.adjustPanel(this);
+        if (mModel != null) {
+            mModel.adjustPanel(this);
+        }
     }
 
     @Override

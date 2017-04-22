@@ -8,6 +8,7 @@
 package net.mm2d.dmsexplorer.view.animator;
 
 import android.content.Context;
+import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.v4.animation.AnimatorCompatHelper;
 import android.support.v4.view.ViewCompat;
@@ -28,6 +29,7 @@ public class CustomItemAnimator extends SimpleItemAnimator {
     private static final long ADDING_ANIMATION_DELAY = 16L;
     private static final long ADDING_ANIMATION_DELAY_MAX = 500L;
     private static final int ADDING_TRANSLATION_Y = 200;
+    private static final int ADDING_TRANSLATION_Y_KITKAT = 50;
     private final int mAddingTranslationY;
 
     private final ArrayList<ViewHolder> mPendingRemovals = new ArrayList<>();
@@ -73,7 +75,9 @@ public class CustomItemAnimator extends SimpleItemAnimator {
 
     public CustomItemAnimator(@NonNull final Context context) {
         final float density = context.getResources().getDisplayMetrics().density;
-        mAddingTranslationY = (int) (ADDING_TRANSLATION_Y * density + 0.5f);
+        final int translationY = Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP
+                ? ADDING_TRANSLATION_Y : ADDING_TRANSLATION_Y_KITKAT;
+        mAddingTranslationY = (int) (translationY * density + 0.5f);
     }
 
     @Override

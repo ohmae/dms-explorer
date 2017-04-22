@@ -25,23 +25,22 @@ import net.mm2d.dmsexplorer.viewmodel.MusicActivityModel;
 public class MusicActivity extends AppCompatActivity {
     private static final String TAG = MusicActivity.class.getSimpleName();
     private static final String KEY_POSITION = "KEY_POSITION";
-    private MusicActivityBinding mBinding;
-    private Repository mRepository;
     private MusicActivityModel mModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mRepository = Repository.get();
-        mBinding = DataBindingUtil.setContentView(this, R.layout.music_activity);
+        final Repository repository = Repository.get();
+        final MusicActivityBinding binding
+                = DataBindingUtil.setContentView(this, R.layout.music_activity);
         try {
-            mModel = new MusicActivityModel(this, mRepository);
-            mBinding.setModel(mModel);
+            mModel = new MusicActivityModel(this, repository);
+            binding.setModel(mModel);
         } catch (final IllegalStateException ignored) {
             return;
         }
 
-        setSupportActionBar(mBinding.toolbar);
+        setSupportActionBar(binding.toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         if (savedInstanceState != null) {
@@ -53,13 +52,17 @@ public class MusicActivity extends AppCompatActivity {
     @Override
     protected void onSaveInstanceState(final Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putInt(KEY_POSITION, mModel.getCurrentProgress());
+        if (mModel != null) {
+            outState.putInt(KEY_POSITION, mModel.getCurrentProgress());
+        }
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        mModel.terminate();
+        if (mModel != null) {
+            mModel.terminate();
+        }
     }
 
     @Override

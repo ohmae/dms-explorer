@@ -158,16 +158,6 @@ public class ControlPointModel {
         setSelectedMediaRenderer(null);
     }
 
-    @Nullable
-    public MediaRenderer getSelectedMediaRenderer() {
-        return mSelectedMediaRenderer;
-    }
-
-    public boolean isSelectedMediaRenderer(@NonNull final MediaRenderer renderer) {
-        return mSelectedMediaRenderer != null && mSelectedMediaRenderer.equals(renderer);
-    }
-
-
     public void initialize() {
         mNetworkAvailable = mLan.hasAvailableInterface();
         initializeOrTerminate(mNetworkAvailable);

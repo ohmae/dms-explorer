@@ -142,7 +142,7 @@ public class FullscreenHelper {
         mRootView.setSystemUiVisibility(SYSTEM_UI_INVISIBLE);
     }
 
-    public void onDestroy() {
+    public void terminate() {
         mHandler.removeCallbacks(mHideNavigationTask);
     }
 }

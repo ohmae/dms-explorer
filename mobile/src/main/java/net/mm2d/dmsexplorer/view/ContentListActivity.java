@@ -46,6 +46,7 @@ public class ContentListActivity extends AppCompatActivity implements CdsSelectL
     private boolean mTwoPane;
     private ContentDetailFragment mContentDetailFragment;
     private ContentListActivityBinding mBinding;
+    private ContentListActivityModel mModel;
 
     /**
      * このActivityを起動するためのIntentを作成する。
@@ -103,7 +104,8 @@ public class ContentListActivity extends AppCompatActivity implements CdsSelectL
         super.onCreate(savedInstanceState);
         mBinding = DataBindingUtil.setContentView(this, R.layout.content_list_activity);
         try {
-            mBinding.setModel(new ContentListActivityModel(this, Repository.get(), this));
+            mModel = new ContentListActivityModel(this, Repository.get(), this);
+            mBinding.setModel(mModel);
         } catch (final IllegalStateException ignored) {
             return;
         }
@@ -152,15 +154,18 @@ public class ContentListActivity extends AppCompatActivity implements CdsSelectL
     @Override
     protected void onStart() {
         super.onStart();
-        mBinding.getModel().syncSelectedObject();
-        if (mBinding.getModel().isItemSelected()) {
+        if (mModel == null) {
+            return;
+        }
+        mModel.syncSelectedObject();
+        if (mModel.isItemSelected()) {
             setDetailFragment(false);
         }
     }
 
     @Override
     public void onBackPressed() {
-        if (mBinding.getModel().onBackPressed()) {
+        if (mModel.onBackPressed()) {
             return;
         }
         super.onBackPressed();
@@ -169,7 +174,7 @@ public class ContentListActivity extends AppCompatActivity implements CdsSelectL
     @Override
     public boolean onKeyLongPress(final int keyCode, final KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-            mBinding.getModel().terminate();
+            mModel.terminate();
             super.onBackPressed();
             return true;
         }

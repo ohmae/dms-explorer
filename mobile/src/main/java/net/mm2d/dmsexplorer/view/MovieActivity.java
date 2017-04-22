@@ -28,29 +28,27 @@ import net.mm2d.dmsexplorer.viewmodel.MovieActivityModel;
 public class MovieActivity extends AppCompatActivity {
     private static final String KEY_POSITION = "KEY_POSITION";
     private FullscreenHelper mFullscreenHelper;
-    private MovieActivityBinding mBinding;
     private MovieActivityModel mModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mBinding = DataBindingUtil.setContentView(this, R.layout.movie_activity);
+        final MovieActivityBinding binding
+                = DataBindingUtil.setContentView(this, R.layout.movie_activity);
+        mFullscreenHelper = new FullscreenHelper.Builder(binding.getRoot())
+                .setTopView(binding.toolbar)
+                .setBottomView(binding.controlPanel)
+                .build();
         final Repository repository = Repository.get();
         try {
-            mModel = new MovieActivityModel(this, mBinding.videoView, repository);
+            mModel = new MovieActivityModel(this, binding.videoView, repository);
         } catch (final IllegalStateException ignored) {
             finish();
             return;
         }
-        mBinding.setModel(mModel);
+        binding.setModel(mModel);
         mModel.adjustPanel(this);
-
-        mFullscreenHelper = new FullscreenHelper.Builder(mBinding.getRoot())
-                .setTopView(mBinding.toolbar)
-                .setBottomView(mBinding.controlPanel)
-                .build();
         mFullscreenHelper.showNavigation();
-
         if (savedInstanceState != null) {
             final int progress = savedInstanceState.getInt(KEY_POSITION, 0);
             mModel.restoreSaveProgress(progress);
@@ -60,8 +58,10 @@ public class MovieActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        mModel.terminate();
-        mFullscreenHelper.onDestroy();
+        if (mModel != null) {
+            mModel.terminate();
+        }
+        mFullscreenHelper.terminate();
     }
 
     @Override
@@ -74,13 +74,17 @@ public class MovieActivity extends AppCompatActivity {
     @Override
     protected void onSaveInstanceState(final Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putInt(KEY_POSITION, mModel.getCurrentProgress());
+        if (mModel != null) {
+            outState.putInt(KEY_POSITION, mModel.getCurrentProgress());
+        }
     }
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-        mModel.adjustPanel(this);
+        if (mModel != null) {
+            mModel.adjustPanel(this);
+        }
     }
 
     @Override
