@@ -18,6 +18,9 @@ class Maintainer {
     private static final int SETTINGS_VERSION = 0;
 
     static void maintain(@NonNull final SharedPreferences pref) {
+        if (pref.getInt(Key.SETTINGS_VERSION.name(), -1) == SETTINGS_VERSION) {
+            return;
+        }
         final Editor editor = pref.edit();
         editor.putInt(Key.SETTINGS_VERSION.name(), SETTINGS_VERSION);
         editor.apply();
