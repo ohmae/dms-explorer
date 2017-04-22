@@ -32,7 +32,7 @@ import net.mm2d.dmsexplorer.Repository;
 import net.mm2d.dmsexplorer.databinding.ServerListItemBinding;
 import net.mm2d.dmsexplorer.domain.model.ControlPointModel;
 import net.mm2d.dmsexplorer.view.adapter.ServerListAdapter;
-import net.mm2d.dmsexplorer.view.view.CustomItemAnimator;
+import net.mm2d.dmsexplorer.view.animator.CustomItemAnimator;
 
 /**
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>

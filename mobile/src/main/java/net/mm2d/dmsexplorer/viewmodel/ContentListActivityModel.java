@@ -33,7 +33,7 @@ import net.mm2d.dmsexplorer.domain.model.MediaServerModel;
 import net.mm2d.dmsexplorer.domain.model.MediaServerModel.ExploreListener;
 import net.mm2d.dmsexplorer.util.ToolbarThemeUtils;
 import net.mm2d.dmsexplorer.view.adapter.ContentListAdapter;
-import net.mm2d.dmsexplorer.view.view.CustomItemAnimator;
+import net.mm2d.dmsexplorer.view.animator.CustomItemAnimator;
 
 import java.util.List;
 

@@ -5,7 +5,7 @@
  * http://opensource.org/licenses/MIT
  */
 
-package net.mm2d.dmsexplorer.view.view;
+package net.mm2d.dmsexplorer.view.animator;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -20,27 +20,6 @@ import android.view.View;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
-/*
- * This file based on android.support.v7.widget.DefaultItemAnimator
- * DefaultItemAnimator licensed under following.
- *
- * ==================================================
- * Copyright (C) 2014 The Android Open Source Project
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * ==================================================
- */
 
 /**
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
@@ -294,7 +273,7 @@ public class CustomItemAnimator extends SimpleItemAnimator {
     public boolean animateChange(final ViewHolder oldHolder, final ViewHolder newHolder,
                                  final int fromX, final int fromY, final int toX, final int toY) {
         if (oldHolder == newHolder) {
-            return animateMove(oldHolder, 0, fromY, 0, toY);
+            return animateMove(oldHolder, fromX, fromY, toX, toY);
         }
         final float prevTranslationY = ViewCompat.getTranslationY(oldHolder.itemView);
         final float prevAlpha = ViewCompat.getAlpha(oldHolder.itemView);
