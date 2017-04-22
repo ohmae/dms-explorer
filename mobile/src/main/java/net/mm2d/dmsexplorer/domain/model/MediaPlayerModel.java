@@ -22,13 +22,12 @@ import net.mm2d.util.Log;
  */
 public abstract class MediaPlayerModel implements PlayerModel, OnPreparedListener {
     private static final String TAG = MediaPlayerModel.class.getSimpleName();
-
+    private static final int MEDIA_ERROR_SYSTEM = -2147483648;
     private static final StatusListener STATUS_LISTENER = new StatusListenerAdapter();
 
-    private static final int MEDIA_ERROR_SYSTEM = -2147483648;
-    private final MediaControl mMediaControl;
-
+    @NonNull
     private StatusListener mStatusListener = STATUS_LISTENER;
+    private final MediaControl mMediaControl;
     private boolean mPlaying;
     private int mProgress;
     private int mDuration;
@@ -64,6 +63,11 @@ public abstract class MediaPlayerModel implements PlayerModel, OnPreparedListene
         mMediaControl.setOnPreparedListener(this);
     }
 
+    @Override
+    public boolean canPause() {
+        return true;
+    }
+
     @CallSuper
     @Override
     public void terminate() {
@@ -84,15 +88,15 @@ public abstract class MediaPlayerModel implements PlayerModel, OnPreparedListene
         mStatusListener = listener;
         mMediaControl.setOnErrorListener((mp, what, extra) -> {
             logError(what, extra);
-            return mStatusListener.onError(mp, what, extra);
+            return mStatusListener.onError(what, extra);
         });
         mMediaControl.setOnInfoListener((mp, what, extra) -> {
             logInfo(what, extra);
-            return mStatusListener.onInfo(mp, what, extra);
+            return mStatusListener.onInfo(what, extra);
         });
         mMediaControl.setOnCompletionListener((mp) -> {
             mHandler.removeCallbacks(mGetPositionTask);
-            mStatusListener.onCompletion(mp);
+            mStatusListener.onCompletion();
         });
     }
 

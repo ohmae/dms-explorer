@@ -19,6 +19,7 @@ import net.mm2d.dmsexplorer.domain.model.ControlPointModel;
 import net.mm2d.dmsexplorer.domain.model.MediaRendererModel;
 import net.mm2d.dmsexplorer.domain.model.MediaServerModel;
 import net.mm2d.dmsexplorer.domain.model.PlaybackTargetModel;
+import net.mm2d.dmsexplorer.domain.model.PlayerModel;
 
 /**
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
@@ -27,7 +28,7 @@ public class AppRepository extends Repository {
     private final Context mContext;
     private final ControlPointModel mControlPointModel;
     private MediaServerModel mMediaServerModel;
-    private MediaRendererModel mMediaRendererModel;
+    private PlayerModel mMediaRendererModel;
     private PlaybackTargetModel mPlaybackTargetModel;
 
     @Override
@@ -44,7 +45,7 @@ public class AppRepository extends Repository {
 
     @Override
     @Nullable
-    public MediaRendererModel getMediaRendererModel() {
+    public PlayerModel getMediaRendererModel() {
         return mMediaRendererModel;
     }
 
@@ -77,7 +78,6 @@ public class AppRepository extends Repository {
         }
         if (renderer != null) {
             mMediaRendererModel = createMediaRendererModel(renderer);
-            mMediaRendererModel.initialize();
         }
     }
 
@@ -85,7 +85,7 @@ public class AppRepository extends Repository {
         return new MediaServerModel(mContext, server, this::updatePlaybackTarget);
     }
 
-    private MediaRendererModel createMediaRendererModel(@NonNull final MediaRenderer renderer) {
+    private PlayerModel createMediaRendererModel(@NonNull final MediaRenderer renderer) {
         return new MediaRendererModel(mContext, renderer);
     }
 

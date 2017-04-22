@@ -77,12 +77,13 @@ public class PhotoActivityModel extends BaseObservable {
         mActivity.onBackPressed();
     }
 
+    @Nullable
     @Bindable
     public byte[] getImageBinary() {
         return mImageBinary;
     }
 
-    public void setImageBinary(final byte[] imageBinary) {
+    public void setImageBinary(@Nullable final byte[] imageBinary) {
         mImageBinary = imageBinary;
         notifyPropertyChanged(BR.imageBinary);
     }

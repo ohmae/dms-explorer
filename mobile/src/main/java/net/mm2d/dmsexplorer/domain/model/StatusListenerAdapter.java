@@ -7,9 +7,11 @@
 
 package net.mm2d.dmsexplorer.domain.model;
 
-import android.media.MediaPlayer;
+import android.support.annotation.Nullable;
 
 import net.mm2d.dmsexplorer.domain.model.PlayerModel.StatusListener;
+
+import java.util.List;
 
 /**
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
@@ -28,16 +30,20 @@ class StatusListenerAdapter implements StatusListener {
     }
 
     @Override
-    public boolean onError(final MediaPlayer mp, final int what, final int extra) {
+    public void notifyChapterInfo(@Nullable final List<Integer> chapterInfo) {
+    }
+
+    @Override
+    public boolean onError(final int what, final int extra) {
         return false;
     }
 
     @Override
-    public boolean onInfo(final MediaPlayer mp, final int what, final int extra) {
+    public boolean onInfo(final int what, final int extra) {
         return false;
     }
 
     @Override
-    public void onCompletion(final MediaPlayer mp) {
+    public void onCompletion() {
     }
 }

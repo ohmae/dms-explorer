@@ -7,10 +7,11 @@
 
 package net.mm2d.dmsexplorer.viewmodel;
 
-import android.content.Context;
+import android.app.Activity;
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import android.os.Handler;
@@ -19,16 +20,18 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
+import android.widget.Toast;
 
-import net.mm2d.android.upnp.avt.MediaRenderer;
 import net.mm2d.android.upnp.cds.CdsObject;
 import net.mm2d.android.util.AribUtils;
+import net.mm2d.android.util.DrawableUtils;
 import net.mm2d.dmsexplorer.BR;
 import net.mm2d.dmsexplorer.R;
 import net.mm2d.dmsexplorer.Repository;
-import net.mm2d.dmsexplorer.domain.model.MediaRendererModel;
 import net.mm2d.dmsexplorer.domain.model.MediaServerModel;
 import net.mm2d.dmsexplorer.domain.model.PlaybackTargetModel;
+import net.mm2d.dmsexplorer.domain.model.PlayerModel;
+import net.mm2d.dmsexplorer.domain.model.PlayerModel.StatusListener;
 import net.mm2d.dmsexplorer.view.adapter.ContentPropertyAdapter;
 
 import java.util.List;
@@ -37,8 +40,7 @@ import java.util.Locale;
 /**
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
  */
-public class DmcActivityModel extends BaseObservable
-        implements MediaRendererModel.ControlListener {
+public class DmcActivityModel extends BaseObservable implements StatusListener {
     private static final char EN_SPACE = 0x2002; // &ensp;
     @NonNull
     public final String title;
@@ -71,10 +73,10 @@ public class DmcActivityModel extends BaseObservable
     @NonNull
     private final Handler mHandler = new Handler(Looper.getMainLooper());
     @NonNull
-    private final Context mContext;
+    private final Activity mActivity;
     private boolean mTracking;
     private final PlaybackTargetModel mTargetModel;
-    private final MediaRendererModel mRendererModel;
+    private final PlayerModel mRendererModel;
 
     @NonNull
     private final Runnable mTrackingCancel = new Runnable() {
@@ -84,30 +86,29 @@ public class DmcActivityModel extends BaseObservable
         }
     };
 
-    public DmcActivityModel(@NonNull final Context context,
+    public DmcActivityModel(@NonNull final Activity activity,
                             @NonNull final Repository repository) {
-        mContext = context;
+        mActivity = activity;
         mTargetModel = repository.getPlaybackTargetModel();
         mRendererModel = repository.getMediaRendererModel();
         if (mRendererModel == null || mTargetModel == null || mTargetModel.getUri() == null) {
             throw new IllegalStateException();
         }
-        mRendererModel.setControlListener(this);
+        mRendererModel.setStatusListener(this);
         mPlayButtonResId = R.drawable.ic_play;
 
         final CdsObject cdsObject = mTargetModel.getCdsObject();
         title = AribUtils.toDisplayableString(cdsObject.getTitle());
-        final MediaRenderer mediaRenderer = mRendererModel.getMediaRenderer();
         isStillContents = cdsObject.getType() == CdsObject.TYPE_IMAGE;
-        isPlayControlEnabled = !isStillContents && mediaRenderer.isSupportPause();
+        isPlayControlEnabled = !isStillContents && mRendererModel.canPause();
         final MediaServerModel serverModel = repository.getMediaServerModel();
-        subtitle = mediaRenderer.getFriendlyName()
+        subtitle = mRendererModel.getName()
                 + "  ←  "
                 + serverModel.getMediaServer().getFriendlyName();
-        propertyAdapter = new ContentPropertyAdapter(context, cdsObject);
+        propertyAdapter = new ContentPropertyAdapter(mActivity, cdsObject);
         imageResource = getImageResource(cdsObject);
         if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
-            progressDrawable = context.getDrawable(R.drawable.seekbar_track);
+            progressDrawable = DrawableUtils.get(mActivity, R.drawable.seekbar_track);
         } else {
             progressDrawable = null;
         }
@@ -127,18 +128,20 @@ public class DmcActivityModel extends BaseObservable
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                mRendererModel.seek(seekBar.getProgress());
+                mRendererModel.seekTo(seekBar.getProgress());
                 mHandler.postDelayed(mTrackingCancel, 1000);
             }
         };
     }
 
     public void initialize() {
-        mRendererModel.start(mTargetModel);
+        final Uri uri = mTargetModel.getUri();
+        final CdsObject object = mTargetModel.getCdsObject();
+        mRendererModel.setUri(uri, object);
     }
 
     public void terminate() {
-        mRendererModel.stop();
+        mRendererModel.terminate();
     }
 
     @Bindable
@@ -168,6 +171,7 @@ public class DmcActivityModel extends BaseObservable
         setChapterInfoEnabled();
     }
 
+    @NonNull
     @Bindable
     public String getProgressText() {
         return mProgressText;
@@ -178,6 +182,7 @@ public class DmcActivityModel extends BaseObservable
         notifyPropertyChanged(BR.progressText);
     }
 
+    @NonNull
     @Bindable
     public String getDurationText() {
         return mDurationText;
@@ -188,7 +193,7 @@ public class DmcActivityModel extends BaseObservable
         notifyPropertyChanged(BR.durationText);
     }
 
-    public void setPlaying(final boolean playing) {
+    private void setPlaying(final boolean playing) {
         if (mPlaying == playing) {
             return;
         }
@@ -201,7 +206,7 @@ public class DmcActivityModel extends BaseObservable
         return mPlayButtonResId;
     }
 
-    public void setPlayButtonResId(final int playButtonResId) {
+    private void setPlayButtonResId(final int playButtonResId) {
         mPlayButtonResId = playButtonResId;
         notifyPropertyChanged(BR.playButtonResId);
     }
@@ -241,7 +246,7 @@ public class DmcActivityModel extends BaseObservable
         }
         mHandler.post(() -> {
             final int count = propertyAdapter.getItemCount();
-            propertyAdapter.addEntry(mContext.getString(R.string.prop_chapter_info),
+            propertyAdapter.addEntry(mActivity.getString(R.string.prop_chapter_info),
                     makeChapterString(chapterInfo));
             propertyAdapter.notifyItemInserted(count);
         });
@@ -303,20 +308,23 @@ public class DmcActivityModel extends BaseObservable
     }
 
     public void onClickNext() {
-        mRendererModel.nextChapter();
+        mRendererModel.next();
     }
 
     public void onClickPrevious() {
-        mRendererModel.previousChapter();
+        mRendererModel.previous();
     }
 
     @Override
-    public void notifyPosition(final int progress, final int duration) {
+    public void notifyDuration(final int duration) {
         setDuration(duration);
-        if (mTracking) {
-            return;
+    }
+
+    @Override
+    public void notifyProgress(final int progress) {
+        if (!mTracking) {
+            setProgress(progress);
         }
-        setProgress(progress);
     }
 
     @Override
@@ -327,5 +335,25 @@ public class DmcActivityModel extends BaseObservable
     @Override
     public void notifyChapterInfo(@Nullable final List<Integer> chapterInfo) {
         setChapterInfo(chapterInfo);
+    }
+
+    @Override
+    public boolean onError(final int what, final int extra) {
+        showToast(R.string.toast_command_error_occurred);
+        return false;
+    }
+
+    private void showToast(int resId) {
+        Toast.makeText(mActivity, resId, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public boolean onInfo(final int what, final int extra) {
+        return false;
+    }
+
+    @Override
+    public void onCompletion() {
+        mActivity.onBackPressed();
     }
 }

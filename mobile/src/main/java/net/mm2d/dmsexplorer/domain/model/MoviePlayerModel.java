@@ -9,6 +9,7 @@ package net.mm2d.dmsexplorer.domain.model;
 
 import android.net.Uri;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.widget.VideoView;
 
 import net.mm2d.dmsexplorer.domain.model.control.VideoViewControl;
@@ -26,7 +27,12 @@ public class MoviePlayerModel extends MediaPlayerModel {
     }
 
     @Override
-    public void setUri(@NonNull final Uri uri) {
+    public String getName() {
+        return "Movie Player";
+    }
+
+    @Override
+    public void setUri(@NonNull final Uri uri, @Nullable final Object metadata) {
         mVideoView.setVideoURI(uri);
     }
 }

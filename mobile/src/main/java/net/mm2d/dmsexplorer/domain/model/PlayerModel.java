@@ -7,9 +7,11 @@
 
 package net.mm2d.dmsexplorer.domain.model;
 
-import android.media.MediaPlayer;
 import android.net.Uri;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+
+import java.util.List;
 
 /**
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
@@ -22,18 +24,24 @@ public interface PlayerModel {
 
         void notifyPlayingState(boolean playing);
 
-        boolean onError(MediaPlayer mp, int what, int extra);
+        void notifyChapterInfo(@Nullable List<Integer> chapterInfo);
 
-        boolean onInfo(MediaPlayer mp, int what, int extra);
+        boolean onError(int what, int extra);
 
-        void onCompletion(MediaPlayer mp);
+        boolean onInfo(int what, int extra);
+
+        void onCompletion();
     }
+
+    String getName();
+
+    boolean canPause();
 
     void terminate();
 
     void setStatusListener(@NonNull StatusListener listener);
 
-    void setUri(@NonNull final Uri uri);
+    void setUri(@NonNull final Uri uri, @Nullable final Object metadata);
 
     void restoreSaveProgress(int progress);
 

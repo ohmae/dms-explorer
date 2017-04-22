@@ -31,7 +31,6 @@ import net.mm2d.dmsexplorer.viewmodel.ControlViewModel.OnCompletionListener;
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
  */
 public class MusicActivityModel extends BaseObservable implements OnCompletionListener {
-    @NonNull
     private String mTitle;
     private int mAccentColor;
     private ControlViewModel mControlViewModel;
@@ -68,7 +67,7 @@ public class MusicActivityModel extends BaseObservable implements OnCompletionLi
         final PlayerModel playerModel = new MusicPlayerModel(mActivity);
         mControlViewModel = new ControlViewModel(playerModel);
         mControlViewModel.setOnCompletionListener(this);
-        playerModel.setUri(targetModel.getUri());
+        playerModel.setUri(targetModel.getUri(), null);
 
         mTitle = AribUtils.toDisplayableString(targetModel.getTitle());
         mAccentColor = ThemeUtils.getDeepColor(mTitle);

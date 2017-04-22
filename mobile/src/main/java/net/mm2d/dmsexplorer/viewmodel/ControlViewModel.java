@@ -9,7 +9,6 @@ package net.mm2d.dmsexplorer.viewmodel;
 
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
-import android.media.MediaPlayer;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.widget.SeekBar;
@@ -20,6 +19,7 @@ import net.mm2d.dmsexplorer.R;
 import net.mm2d.dmsexplorer.domain.model.PlayerModel;
 import net.mm2d.dmsexplorer.domain.model.PlayerModel.StatusListener;
 
+import java.util.List;
 import java.util.Locale;
 
 /**
@@ -207,17 +207,21 @@ public class ControlViewModel extends BaseObservable implements StatusListener {
     }
 
     @Override
-    public boolean onError(final MediaPlayer mp, final int what, final int extra) {
+    public void notifyChapterInfo(@Nullable final List<Integer> chapterInfo) {
+    }
+
+    @Override
+    public boolean onError(final int what, final int extra) {
         return false;
     }
 
     @Override
-    public boolean onInfo(final MediaPlayer mp, final int what, final int extra) {
+    public boolean onInfo(final int what, final int extra) {
         return false;
     }
 
     @Override
-    public void onCompletion(final MediaPlayer mp) {
+    public void onCompletion() {
         mOnCompletionListener.onCompletion();
     }
 }

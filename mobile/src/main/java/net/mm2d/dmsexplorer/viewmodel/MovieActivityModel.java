@@ -52,7 +52,7 @@ public class MovieActivityModel extends BaseObservable implements OnCompletionLi
         final PlayerModel playerModel = new MoviePlayerModel(videoView);
         mControlViewModel = new ControlViewModel(playerModel);
         mControlViewModel.setOnCompletionListener(this);
-        playerModel.setUri(targetModel.getUri());
+        playerModel.setUri(targetModel.getUri(), null);
         mTitle = AribUtils.toDisplayableString(targetModel.getTitle());
     }
 
@@ -85,11 +85,13 @@ public class MovieActivityModel extends BaseObservable implements OnCompletionLi
         mActivity.onBackPressed();
     }
 
+    @NonNull
     @Bindable
     public String getTitle() {
         return mTitle;
     }
 
+    @NonNull
     @Bindable
     public ControlViewModel getControlViewModel() {
         return mControlViewModel;
