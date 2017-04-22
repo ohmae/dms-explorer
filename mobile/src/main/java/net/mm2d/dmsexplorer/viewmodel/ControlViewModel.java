@@ -10,6 +10,8 @@ package net.mm2d.dmsexplorer.viewmodel;
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
 import android.media.MediaPlayer;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 
@@ -28,7 +30,11 @@ public class ControlViewModel extends BaseObservable implements StatusListener {
         void onCompletion();
     }
 
+    private static final OnCompletionListener ON_COMPLETION_LISTENER = () -> {
+    };
+    @NonNull
     private String mProgressText = makeTimeText(0);
+    @NonNull
     private String mDurationText = makeTimeText(0);
     private boolean mPlaying;
     private boolean mPrepared;
@@ -39,7 +45,8 @@ public class ControlViewModel extends BaseObservable implements StatusListener {
 
     private boolean mTracking;
     private final MediaPlayerModel mMediaPlayerModel;
-    private OnCompletionListener mOnCompletionListener;
+    @NonNull
+    private OnCompletionListener mOnCompletionListener = ON_COMPLETION_LISTENER;
 
     public ControlViewModel(MediaPlayerModel playerModel) {
         mMediaPlayerModel = playerModel;
@@ -54,8 +61,8 @@ public class ControlViewModel extends BaseObservable implements StatusListener {
         mMediaPlayerModel.restoreSaveProgress(position);
     }
 
-    public void setOnCompletionListener(OnCompletionListener listener) {
-        mOnCompletionListener = listener;
+    public void setOnCompletionListener(@Nullable final OnCompletionListener listener) {
+        mOnCompletionListener = listener != null ? listener : ON_COMPLETION_LISTENER;
     }
 
     public final OnSeekBarChangeListener onSeekBarChangeListener = new OnSeekBarChangeListener() {
@@ -209,8 +216,6 @@ public class ControlViewModel extends BaseObservable implements StatusListener {
 
     @Override
     public void onCompletion(final MediaPlayer mp) {
-        if (mOnCompletionListener != null) {
-            mOnCompletionListener.onCompletion();
-        }
+        mOnCompletionListener.onCompletion();
     }
 }

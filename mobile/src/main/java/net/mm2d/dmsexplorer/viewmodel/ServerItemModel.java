@@ -40,7 +40,9 @@ public class ServerItemModel {
     @NonNull
     public final String description;
 
-    public ServerItemModel(@NonNull final Context context, @NonNull final MediaServer server, boolean selected) {
+    public ServerItemModel(@NonNull final Context context,
+                           @NonNull final MediaServer server,
+                           final boolean selected) {
         this.selected = selected;
         final String name = server.getFriendlyName();
         final Icon icon = server.getIcon();

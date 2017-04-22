@@ -49,21 +49,17 @@ public class ContentListActivityModel extends BaseObservable implements ExploreL
         void onDetermine(@NonNull View v, @NonNull CdsObject object, boolean alreadySelected);
     }
 
-    public final int[] refreshColors = new int[]{
-            R.color.progress1,
-            R.color.progress2,
-            R.color.progress3,
-            R.color.progress4,
-    };
-    public final OnRefreshListener onRefreshListener = new OnRefreshListener() {
-        @Override
-        public void onRefresh() {
-            mMediaServerModel.reload();
-        }
-    };
+    @NonNull
+    public final int[] refreshColors;
+    @NonNull
+    public final OnRefreshListener onRefreshListener;
+    @NonNull
     public final ItemDecoration itemDecoration;
+    @NonNull
     public final ItemAnimator itemAnimator;
+    @NonNull
     public final LayoutManager cdsListLayoutManager;
+    @NonNull
     public final String title;
     public final int toolbarBackground;
 
@@ -79,32 +75,31 @@ public class ContentListActivityModel extends BaseObservable implements ExploreL
     @NonNull
     private final CdsSelectListener mCdsSelectListener;
 
-    public static ContentListActivityModel create(@NonNull final Context context,
-                                                  @NonNull final Repository repository,
-                                                  @NonNull final CdsSelectListener listener) {
-        final MediaServerModel model = repository.getMediaServerModel();
-        if (model == null) {
-            return null;
+    public ContentListActivityModel(@NonNull final Context context,
+                                    @NonNull final Repository repository,
+                                    @NonNull final CdsSelectListener listener) {
+        mMediaServerModel = repository.getMediaServerModel();
+        if (mMediaServerModel == null) {
+            throw new IllegalStateException();
         }
-        return new ContentListActivityModel(context, model, listener);
-    }
-
-    private ContentListActivityModel(@NonNull final Context context,
-                                     @NonNull final MediaServerModel model,
-                                     @NonNull final CdsSelectListener listener) {
-        itemDecoration = new DividerItemDecoration(context, DividerItemDecoration.VERTICAL);
-        itemAnimator = new CustomItemAnimator(context);
+        mMediaServerModel.setExploreListener(this);
         mContentListAdapter = new ContentListAdapter(context);
         mContentListAdapter.setOnItemClickListener(this::onItemClick);
         mContentListAdapter.setOnItemLongClickListener(this::onItemLongClick);
-        cdsListLayoutManager = new LinearLayoutManager(context);
-
         mCdsSelectListener = listener;
-        mMediaServerModel = model;
-        mMediaServerModel.setExploreListener(this);
-        title = mMediaServerModel.getTitle();
 
-        final MediaServer server = model.getMediaServer();
+        itemDecoration = new DividerItemDecoration(context, DividerItemDecoration.VERTICAL);
+        itemAnimator = new CustomItemAnimator(context);
+        cdsListLayoutManager = new LinearLayoutManager(context);
+        title = mMediaServerModel.getTitle();
+        refreshColors = new int[]{
+                R.color.progress1,
+                R.color.progress2,
+                R.color.progress3,
+                R.color.progress4,
+        };
+        onRefreshListener = mMediaServerModel::reload;
+        final MediaServer server = mMediaServerModel.getMediaServer();
         ToolbarThemeUtils.setServerThemeColor(server, null);
         toolbarBackground = server.getIntTag(Const.KEY_TOOLBAR_COLLAPSED_COLOR, Color.BLACK);
     }

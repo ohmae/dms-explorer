@@ -102,7 +102,11 @@ public class ContentListActivity extends AppCompatActivity implements CdsSelectL
     protected void onCreate(@Nullable final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mBinding = DataBindingUtil.setContentView(this, R.layout.content_list_activity);
-        mBinding.setModel(ContentListActivityModel.create(this, Repository.get(), this));
+        try {
+            mBinding.setModel(new ContentListActivityModel(this, Repository.get(), this));
+        } catch (final IllegalStateException ignored) {
+            return;
+        }
         mTwoPane = mBinding.cdsDetailContainer != null;
 
         setSupportActionBar(mBinding.toolbar);

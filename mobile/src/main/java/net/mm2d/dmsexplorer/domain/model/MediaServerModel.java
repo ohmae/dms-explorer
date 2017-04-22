@@ -13,9 +13,9 @@ import android.support.annotation.Nullable;
 
 import net.mm2d.android.upnp.cds.CdsObject;
 import net.mm2d.android.upnp.cds.MediaServer;
-import net.mm2d.dmsexplorer.settings.Settings;
 import net.mm2d.dmsexplorer.domain.entity.ContentDirectoryEntry;
 import net.mm2d.dmsexplorer.domain.entity.ContentDirectoryEntry.EntryListener;
+import net.mm2d.dmsexplorer.settings.Settings;
 
 import java.util.Collections;
 import java.util.Deque;

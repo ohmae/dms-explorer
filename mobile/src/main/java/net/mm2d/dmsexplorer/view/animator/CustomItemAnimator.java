@@ -25,9 +25,9 @@ import java.util.List;
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
  */
 public class CustomItemAnimator extends SimpleItemAnimator {
-    private static final long ADDING_ANIMATION_DELAY = 33L;
+    private static final long ADDING_ANIMATION_DELAY = 16L;
     private static final long ADDING_ANIMATION_DELAY_MAX = 500L;
-    private static final int ADDING_TRANSLATION_Y = 50;
+    private static final int ADDING_TRANSLATION_Y = 200;
     private final int mAddingTranslationY;
 
     private final ArrayList<ViewHolder> mPendingRemovals = new ArrayList<>();

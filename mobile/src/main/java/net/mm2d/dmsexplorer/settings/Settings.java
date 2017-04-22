@@ -17,6 +17,7 @@ import android.support.annotation.NonNull;
  */
 public class Settings {
     private static SharedPreferences sPref;
+
     private static SharedPreferences getPref(@NonNull final Context context) {
         if (sPref != null) {
             return sPref;

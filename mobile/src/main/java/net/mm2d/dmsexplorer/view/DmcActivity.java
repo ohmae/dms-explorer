@@ -45,18 +45,18 @@ public class DmcActivity extends AppCompatActivity {
     protected void onCreate(@Nullable final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mBinding = DataBindingUtil.setContentView(this, R.layout.dmc_activity);
-        final DmcActivityModel model = DmcActivityModel.create(this, Repository.get());
-        if (model == null) {
+        try {
+            final DmcActivityModel model = new DmcActivityModel(this, Repository.get());
+            mBinding.setModel(model);
+            model.initialize();
+        } catch (final IllegalStateException ignored) {
             finish();
             return;
         }
-        mBinding.setModel(model);
 
         setSupportActionBar(mBinding.toolbar);
         final ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
-
-        model.initialize();
     }
 
 

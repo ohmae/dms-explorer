@@ -46,12 +46,12 @@ public class ServerDetailFragment extends Fragment {
         final Activity activity = getActivity();
         final ServerDetailFragmentBinding binding =
                 DataBindingUtil.inflate(inflater, R.layout.server_detail_fragment, container, false);
-        final ServerDetailFragmentModel model = ServerDetailFragmentModel.create(activity, Repository.get());
-        if (model == null) {
+        try {
+            binding.setModel(new ServerDetailFragmentModel(activity, Repository.get()));
+        } catch (final IllegalStateException ignored) {
             activity.finish();
             return binding.getRoot();
         }
-        binding.setModel(model);
         return binding.getRoot();
     }
 }

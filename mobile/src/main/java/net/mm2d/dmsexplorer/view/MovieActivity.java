@@ -36,8 +36,9 @@ public class MovieActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         mBinding = DataBindingUtil.setContentView(this, R.layout.movie_activity);
         final Repository repository = Repository.get();
-        mModel = MovieActivityModel.create(this, mBinding.videoView, repository);
-        if (mModel == null) {
+        try {
+            mModel = new MovieActivityModel(this, mBinding.videoView, repository);
+        } catch (final IllegalStateException ignored) {
             finish();
             return;
         }

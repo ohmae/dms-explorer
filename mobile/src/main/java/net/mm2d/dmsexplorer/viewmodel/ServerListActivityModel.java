@@ -46,45 +46,29 @@ public class ServerListActivityModel extends BaseObservable {
         void onDetermine(@NonNull View v);
     }
 
-    public final int[] refreshColors = new int[]{
-            R.color.progress1,
-            R.color.progress2,
-            R.color.progress3,
-            R.color.progress4,
-    };
-    public final OnRefreshListener onRefreshListener = new OnRefreshListener() {
-        @Override
-        public void onRefresh() {
-            mControlPointModel.restart(() -> {
-                mServerListAdapter.clear();
-                mServerListAdapter.notifyDataSetChanged();
-            });
-        }
-    };
+    @NonNull
+    public final int[] refreshColors;
+    @NonNull
+    public final OnRefreshListener onRefreshListener;
+    @NonNull
     public final ItemDecoration itemDecoration;
+    @NonNull
     public final ItemAnimator itemAnimator;
+    @NonNull
+    public final LayoutManager serverListLayoutManager;
 
+    @NonNull
     private final ServerListAdapter mServerListAdapter;
-    private final LayoutManager mServerListLayoutManager;
     private boolean mRefreshing;
 
-    private final ControlPointModel mControlPointModel;
     private final Handler mHandler = new Handler(Looper.getMainLooper());
+    private final ControlPointModel mControlPointModel;
     private final ServerSelectListener mServerSelectListener;
 
-    public static ServerListActivityModel create(@NonNull Context context,
-                                                 @NonNull Repository repository,
-                                                 @NonNull ServerSelectListener listener) {
-        return new ServerListActivityModel(context, repository.getControlPointModel(), listener);
-    }
-
     public ServerListActivityModel(@NonNull Context context,
-                                   @NonNull ControlPointModel model,
+                                   @NonNull Repository repository,
                                    @NonNull ServerSelectListener listener) {
-        mControlPointModel = model;
-        itemDecoration = new DividerItemDecoration(context, DividerItemDecoration.VERTICAL);
-        itemAnimator = new CustomItemAnimator(context);
-        mServerListLayoutManager = new LinearLayoutManager(context);
+        mControlPointModel = repository.getControlPointModel();
         mServerListAdapter = new ServerListAdapter(context, mControlPointModel.getMediaServerList());
         mServerListAdapter.setOnItemClickListener(this::onItemClick);
         mServerListAdapter.setOnItemLongClickListener(this::onItemLongClick);
@@ -100,6 +84,20 @@ public class ServerListActivityModel extends BaseObservable {
             public void onLost(@NonNull final MediaServer server) {
                 mHandler.post(() -> onLostServer(server));
             }
+        });
+
+        serverListLayoutManager = new LinearLayoutManager(context);
+        itemDecoration = new DividerItemDecoration(context, DividerItemDecoration.VERTICAL);
+        itemAnimator = new CustomItemAnimator(context);
+        refreshColors = new int[]{
+                R.color.progress1,
+                R.color.progress2,
+                R.color.progress3,
+                R.color.progress4,
+        };
+        onRefreshListener = () -> mControlPointModel.restart(() -> {
+            mServerListAdapter.clear();
+            mServerListAdapter.notifyDataSetChanged();
         });
     }
 
@@ -118,11 +116,6 @@ public class ServerListActivityModel extends BaseObservable {
         return mServerListAdapter;
     }
 
-    @NonNull
-    public LayoutManager getServerListLayoutManager() {
-        return mServerListLayoutManager;
-    }
-
     public void updateListAdapter() {
         mServerListAdapter.clear();
         mServerListAdapter.addAll(mControlPointModel.getMediaServerList());
@@ -137,7 +130,7 @@ public class ServerListActivityModel extends BaseObservable {
         if (position < 0) {
             return null;
         }
-        final View listItem = mServerListLayoutManager.findViewByPosition(position);
+        final View listItem = serverListLayoutManager.findViewByPosition(position);
         final ServerListItemBinding binding = DataBindingUtil.findBinding(listItem);
         if (binding != null) {
             return binding.accent;

@@ -24,9 +24,9 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
+            android:subtitle="@{model.subtitle}"
             android:theme="@style/AppTheme.AppBarOverlay"
             android:title="@{model.title}"
-            android:subtitle="@{model.subtitle}"
             />
 
         <FrameLayout
@@ -80,9 +80,9 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="bottom"
                     android:background="@drawable/bg_control_button"
+                    android:onClick="@{() -> model.onClickPrevious()}"
                     android:padding="@dimen/control_button_padding"
                     android:visibility="@{model.chapterInfoEnabled ? View.VISIBLE : View.GONE}"
-                    android:onClick="@{model::onClickPrevious}"
                     app:srcCompat="@drawable/ic_skip_previous"
                     />
 
@@ -94,11 +94,11 @@
                     android:layout_marginLeft="@dimen/control_margin"
                     android:layout_marginRight="@dimen/control_margin"
                     android:background="@drawable/bg_control_button"
+                    android:enabled="@{model.prepared}"
+                    android:imageResource="@{model.playButtonResId}"
+                    android:onClick="@{() -> model.onClickPlay()}"
                     android:padding="@dimen/control_button_padding"
                     android:visibility="@{model.isPlayControlEnabled ? View.VISIBLE : View.GONE}"
-                    android:imageResource="@{model.playButtonResId}"
-                    android:enabled="@{model.prepared}"
-                    android:onClick="@{model::onClickPlay}"
                     />
 
                 <ImageView
@@ -107,9 +107,9 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="bottom"
                     android:background="@drawable/bg_control_button"
+                    android:onClick="@{() -> model.onClickNext()}"
                     android:padding="@dimen/control_button_padding"
                     android:visibility="@{model.chapterInfoEnabled ? View.VISIBLE : View.GONE}"
-                    android:onClick="@{model::onClickNext}"
                     app:srcCompat="@drawable/ic_skip_next"
                     />
 
@@ -146,10 +146,10 @@
                     android:id="@+id/chapterMark"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:paddingLeft="@dimen/chapter_padding"
-                    android:paddingRight="@dimen/chapter_padding"
                     android:chapterInfo="@{model.chapterInfo}"
                     android:duration="@{model.duration}"
+                    android:paddingLeft="@dimen/chapter_padding"
+                    android:paddingRight="@dimen/chapter_padding"
                     />
 
                 <SeekBar
@@ -157,12 +157,12 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:paddingBottom="@dimen/seek_padding"
-                    android:paddingTop="@dimen/seek_padding"
                     android:enabled="@{model.seekable}"
                     android:max="@{model.duration}"
-                    android:progress="@{model.progress}"
                     android:onSeekBarChangeListener="@{model.onSeekBarChangeListener}"
+                    android:paddingBottom="@dimen/seek_padding"
+                    android:paddingTop="@dimen/seek_padding"
+                    android:progress="@{model.progress}"
                     app:progressDrawable="@{model.progressDrawable}"
                     />
 

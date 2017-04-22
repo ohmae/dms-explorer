@@ -50,13 +50,14 @@ public class ContentDetailFragment extends Fragment {
                              @Nullable final ViewGroup container,
                              @Nullable final Bundle savedInstanceState) {
         mBinding = DataBindingUtil.inflate(inflater, R.layout.content_detail_fragment, container, false);
-        final ContentDetailFragmentModel model
-                = ContentDetailFragmentModel.create(getActivity(), Repository.get());
-        if (model == null) {
+        try {
+            final ContentDetailFragmentModel model
+                    = new ContentDetailFragmentModel(getActivity(), Repository.get());
+            mBinding.setModel(model);
+        } catch (final IllegalStateException ignored) {
             getActivity().finish();
             return mBinding.getRoot();
         }
-        mBinding.setModel(model);
 
         final Repository repository = Repository.get();
         final CdsObject object = repository.getMediaServerModel().getSelectedObject();

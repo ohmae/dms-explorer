@@ -14,7 +14,6 @@ import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.widget.ImageView;
 
 import net.mm2d.android.upnp.cds.CdsObject;
 import net.mm2d.android.util.AribUtils;
@@ -23,7 +22,7 @@ import net.mm2d.dmsexplorer.Repository;
 import net.mm2d.dmsexplorer.domain.model.MediaPlayerModel;
 import net.mm2d.dmsexplorer.domain.model.MusicPlayerModel;
 import net.mm2d.dmsexplorer.domain.model.PlaybackTargetModel;
-import net.mm2d.dmsexplorer.util.ImageViewUtils;
+import net.mm2d.dmsexplorer.util.DownloadUtils;
 import net.mm2d.dmsexplorer.util.ThemeUtils;
 import net.mm2d.dmsexplorer.view.adapter.ContentPropertyAdapter;
 import net.mm2d.dmsexplorer.viewmodel.ControlViewModel.OnCompletionListener;
@@ -32,31 +31,21 @@ import net.mm2d.dmsexplorer.viewmodel.ControlViewModel.OnCompletionListener;
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
  */
 public class MusicActivityModel extends BaseObservable implements OnCompletionListener {
+    @NonNull
     private String mTitle;
     private int mAccentColor;
     private ControlViewModel mControlViewModel;
     private ContentPropertyAdapter mPropertyAdapter;
+    private byte[] mImageBinary;
 
+    @NonNull
     private final Activity mActivity;
-    private final ImageView mImageView;
+    @NonNull
     private final Repository mRepository;
 
-    @Nullable
-    public static MusicActivityModel create(@NonNull final Activity activity,
-                                            @NonNull final ImageView imageView,
-                                            @NonNull final Repository repository) {
-        final PlaybackTargetModel targetModel = repository.getPlaybackTargetModel();
-        if (targetModel == null) {
-            return null;
-        }
-        return new MusicActivityModel(activity, imageView, repository);
-    }
-
-    private MusicActivityModel(@NonNull final Activity activity,
-                               @NonNull final ImageView imageView,
-                               @NonNull final Repository repository) {
+    public MusicActivityModel(@NonNull final Activity activity,
+                              @NonNull final Repository repository) {
         mActivity = activity;
-        mImageView = imageView;
         mRepository = repository;
 
         updateTargetModel();
@@ -87,18 +76,29 @@ public class MusicActivityModel extends BaseObservable implements OnCompletionLi
         if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
             mActivity.getWindow().setStatusBarColor(ThemeUtils.getDarkerColor(mAccentColor));
         }
-        loadArt(targetModel.getCdsObject().getValue(CdsObject.UPNP_ALBUM_ART_URI));
-
         notifyPropertyChanged(BR.title);
         notifyPropertyChanged(BR.accentColor);
         notifyPropertyChanged(BR.propertyAdapter);
         notifyPropertyChanged(BR.controlViewModel);
+
+        loadArt(targetModel.getCdsObject().getValue(CdsObject.UPNP_ALBUM_ART_URI));
     }
 
-    private void loadArt(@Nullable final String albumArtUri) {
-        if (albumArtUri != null) {
-            ImageViewUtils.downloadAndSetImage(mImageView, albumArtUri, null);
+    private void loadArt(@Nullable final String url) {
+        setImageBinary(null);
+        if (url != null) {
+            DownloadUtils.async(url, this::setImageBinary);
         }
+    }
+
+    @Bindable
+    public byte[] getImageBinary() {
+        return mImageBinary;
+    }
+
+    public void setImageBinary(final byte[] imageBinary) {
+        mImageBinary = imageBinary;
+        notifyPropertyChanged(BR.imageBinary);
     }
 
     @Bindable

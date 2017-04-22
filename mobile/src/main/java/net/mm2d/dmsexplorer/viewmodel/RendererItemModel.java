@@ -11,6 +11,8 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.text.TextUtils;
 
@@ -25,13 +27,18 @@ import net.mm2d.upnp.Icon;
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
  */
 public class RendererItemModel {
+    @Nullable
     public final Drawable accentBackground;
+    @Nullable
     public final String accentText;
+    @Nullable
     public final Bitmap accentIcon;
+    @NonNull
     public final String title;
+    @NonNull
     public final String description;
 
-    public RendererItemModel(Context context, MediaRenderer renderer) {
+    public RendererItemModel(@NonNull final Context context, @NonNull final MediaRenderer renderer) {
         final String name = renderer.getFriendlyName();
         final Icon icon = renderer.getIcon();
         title = name;

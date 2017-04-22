@@ -13,7 +13,9 @@ import android.support.annotation.NonNull;
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
  */
 public class PropertyItemModel {
+    @NonNull
     public final CharSequence title;
+    @NonNull
     public final CharSequence description;
 
     public PropertyItemModel(@NonNull final CharSequence title,

@@ -15,7 +15,6 @@ import android.os.Build;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.widget.VideoView;
 
 import com.android.databinding.library.baseAdapters.BR;
@@ -32,30 +31,24 @@ import net.mm2d.dmsexplorer.viewmodel.ControlViewModel.OnCompletionListener;
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
  */
 public class MovieActivityModel extends BaseObservable implements OnCompletionListener {
+    @NonNull
     private String mTitle;
+    @NonNull
     private ControlViewModel mControlViewModel;
     private int mRightNavigationSize;
     private int mBottomNavigationSize;
-
+    @NonNull
     private final Activity mActivity;
 
-    @Nullable
-    public static MovieActivityModel create(@NonNull final Activity activity,
-                                            @NonNull final VideoView videoView,
-                                            @NonNull final Repository repository) {
-        final PlaybackTargetModel targetModel = repository.getPlaybackTargetModel();
-        if (targetModel == null) {
-            return null;
-        }
-        return new MovieActivityModel(activity, videoView, repository);
-    }
-
-    private MovieActivityModel(@NonNull final Activity activity,
-                               @NonNull final VideoView videoView,
-                               @NonNull final Repository repository) {
+    public MovieActivityModel(@NonNull final Activity activity,
+                              @NonNull final VideoView videoView,
+                              @NonNull final Repository repository) {
         mActivity = activity;
 
         final PlaybackTargetModel targetModel = repository.getPlaybackTargetModel();
+        if (targetModel == null) {
+            throw new IllegalStateException();
+        }
         final MediaPlayerModel playerModel = new MoviePlayerModel(videoView);
         mControlViewModel = new ControlViewModel(playerModel);
         mControlViewModel.setOnCompletionListener(this);

@@ -21,8 +21,8 @@ import android.view.MenuItem;
 import net.mm2d.android.activity.AppCompatPreferenceActivity;
 import net.mm2d.android.util.LaunchUtils;
 import net.mm2d.dmsexplorer.BuildConfig;
-import net.mm2d.dmsexplorer.settings.Key;
 import net.mm2d.dmsexplorer.R;
+import net.mm2d.dmsexplorer.settings.Key;
 import net.mm2d.dmsexplorer.view.dialog.WebViewDialog;
 
 import java.util.List;

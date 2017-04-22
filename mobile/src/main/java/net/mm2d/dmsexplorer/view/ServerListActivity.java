@@ -152,7 +152,7 @@ public class ServerListActivity extends AppCompatActivity
             getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.defaultStatusBar));
         }
         mBinding = DataBindingUtil.setContentView(this, R.layout.server_list_activity);
-        mBinding.setModel(ServerListActivityModel.create(this, Repository.get(), this));
+        mBinding.setModel(new ServerListActivityModel(this, Repository.get(), this));
         mTwoPane = mBinding.serverDetailContainer != null;
 
         setSupportActionBar(mBinding.toolbar);

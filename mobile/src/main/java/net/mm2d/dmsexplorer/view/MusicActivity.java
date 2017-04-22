@@ -34,12 +34,12 @@ public class MusicActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         mRepository = Repository.get();
         mBinding = DataBindingUtil.setContentView(this, R.layout.music_activity);
-        mModel = MusicActivityModel.create(this, mBinding.art, mRepository);
-        if (mModel == null) {
-            finish();
+        try {
+            mModel = new MusicActivityModel(this, mRepository);
+            mBinding.setModel(mModel);
+        } catch (final IllegalStateException ignored) {
             return;
         }
-        mBinding.setModel(mModel);
 
         setSupportActionBar(mBinding.toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
