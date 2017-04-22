@@ -9,7 +9,6 @@ package net.mm2d.dmsexplorer.domain.model;
 
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnPreparedListener;
-import android.net.Uri;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.annotation.CallSuper;
@@ -21,50 +20,10 @@ import net.mm2d.util.Log;
 /**
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
  */
-public abstract class MediaPlayerModel implements OnPreparedListener {
+public abstract class MediaPlayerModel implements PlayerModel, OnPreparedListener {
     private static final String TAG = MediaPlayerModel.class.getSimpleName();
 
-    public interface StatusListener {
-        void notifyDuration(int duration);
-
-        void notifyProgress(int progress);
-
-        void notifyPlayingState(boolean playing);
-
-        boolean onError(MediaPlayer mp, int what, int extra);
-
-        boolean onInfo(MediaPlayer mp, int what, int extra);
-
-        void onCompletion(MediaPlayer mp);
-    }
-
-    private static final StatusListener STATUS_LISTENER = new StatusListener() {
-        @Override
-        public void notifyDuration(final int duration) {
-        }
-
-        @Override
-        public void notifyProgress(final int progress) {
-        }
-
-        @Override
-        public void notifyPlayingState(final boolean playing) {
-        }
-
-        @Override
-        public boolean onError(final MediaPlayer mp, final int what, final int extra) {
-            return false;
-        }
-
-        @Override
-        public boolean onInfo(final MediaPlayer mp, final int what, final int extra) {
-            return false;
-        }
-
-        @Override
-        public void onCompletion(final MediaPlayer mp) {
-        }
-    };
+    private static final StatusListener STATUS_LISTENER = new StatusListenerAdapter();
 
     private static final int MEDIA_ERROR_SYSTEM = -2147483648;
     private final MediaControl mMediaControl;
@@ -106,6 +65,7 @@ public abstract class MediaPlayerModel implements OnPreparedListener {
     }
 
     @CallSuper
+    @Override
     public void terminate() {
         if (mTerminated) {
             return;
@@ -119,6 +79,7 @@ public abstract class MediaPlayerModel implements OnPreparedListener {
         mTerminated = true;
     }
 
+    @Override
     public void setStatusListener(@NonNull StatusListener listener) {
         mStatusListener = listener;
         mMediaControl.setOnErrorListener((mp, what, extra) -> {
@@ -135,8 +96,7 @@ public abstract class MediaPlayerModel implements OnPreparedListener {
         });
     }
 
-    public abstract void setUri(@NonNull final Uri uri);
-
+    @Override
     public void restoreSaveProgress(int progress) {
         mProgress = progress;
     }
@@ -149,6 +109,7 @@ public abstract class MediaPlayerModel implements OnPreparedListener {
         mStatusListener.notifyProgress(progress);
     }
 
+    @Override
     public int getProgress() {
         return mProgress;
     }
@@ -161,10 +122,12 @@ public abstract class MediaPlayerModel implements OnPreparedListener {
         mStatusListener.notifyDuration(duration);
     }
 
+    @Override
     public int getDuration() {
         return mDuration;
     }
 
+    @Override
     public boolean isPlaying() {
         return mPlaying;
     }
@@ -177,16 +140,27 @@ public abstract class MediaPlayerModel implements OnPreparedListener {
         mStatusListener.notifyPlayingState(playing);
     }
 
+    @Override
     public void play() {
         mMediaControl.play();
     }
 
+    @Override
     public void pause() {
         mMediaControl.pause();
     }
 
+    @Override
     public void seekTo(int position) {
         mMediaControl.seekTo(position);
+    }
+
+    @Override
+    public void next() {
+    }
+
+    @Override
+    public void previous() {
     }
 
     @Override

@@ -22,9 +22,9 @@ import com.android.databinding.library.baseAdapters.BR;
 import net.mm2d.android.util.AribUtils;
 import net.mm2d.android.util.DisplaySizeUtils;
 import net.mm2d.dmsexplorer.Repository;
-import net.mm2d.dmsexplorer.domain.model.MediaPlayerModel;
 import net.mm2d.dmsexplorer.domain.model.MoviePlayerModel;
 import net.mm2d.dmsexplorer.domain.model.PlaybackTargetModel;
+import net.mm2d.dmsexplorer.domain.model.PlayerModel;
 import net.mm2d.dmsexplorer.viewmodel.ControlViewModel.OnCompletionListener;
 
 /**
@@ -49,7 +49,7 @@ public class MovieActivityModel extends BaseObservable implements OnCompletionLi
         if (targetModel == null) {
             throw new IllegalStateException();
         }
-        final MediaPlayerModel playerModel = new MoviePlayerModel(videoView);
+        final PlayerModel playerModel = new MoviePlayerModel(videoView);
         mControlViewModel = new ControlViewModel(playerModel);
         mControlViewModel.setOnCompletionListener(this);
         playerModel.setUri(targetModel.getUri());

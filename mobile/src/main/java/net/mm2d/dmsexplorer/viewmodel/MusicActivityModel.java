@@ -19,9 +19,9 @@ import net.mm2d.android.upnp.cds.CdsObject;
 import net.mm2d.android.util.AribUtils;
 import net.mm2d.dmsexplorer.BR;
 import net.mm2d.dmsexplorer.Repository;
-import net.mm2d.dmsexplorer.domain.model.MediaPlayerModel;
 import net.mm2d.dmsexplorer.domain.model.MusicPlayerModel;
 import net.mm2d.dmsexplorer.domain.model.PlaybackTargetModel;
+import net.mm2d.dmsexplorer.domain.model.PlayerModel;
 import net.mm2d.dmsexplorer.util.DownloadUtils;
 import net.mm2d.dmsexplorer.util.ThemeUtils;
 import net.mm2d.dmsexplorer.view.adapter.ContentPropertyAdapter;
@@ -65,7 +65,7 @@ public class MusicActivityModel extends BaseObservable implements OnCompletionLi
 
     private void updateTargetModel() {
         final PlaybackTargetModel targetModel = mRepository.getPlaybackTargetModel();
-        final MediaPlayerModel playerModel = new MusicPlayerModel(mActivity);
+        final PlayerModel playerModel = new MusicPlayerModel(mActivity);
         mControlViewModel = new ControlViewModel(playerModel);
         mControlViewModel.setOnCompletionListener(this);
         playerModel.setUri(targetModel.getUri());
@@ -101,6 +101,7 @@ public class MusicActivityModel extends BaseObservable implements OnCompletionLi
         notifyPropertyChanged(BR.imageBinary);
     }
 
+    @NonNull
     @Bindable
     public String getTitle() {
         return mTitle;

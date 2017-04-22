@@ -17,8 +17,8 @@ import android.widget.SeekBar.OnSeekBarChangeListener;
 
 import net.mm2d.dmsexplorer.BR;
 import net.mm2d.dmsexplorer.R;
-import net.mm2d.dmsexplorer.domain.model.MediaPlayerModel;
-import net.mm2d.dmsexplorer.domain.model.MediaPlayerModel.StatusListener;
+import net.mm2d.dmsexplorer.domain.model.PlayerModel;
+import net.mm2d.dmsexplorer.domain.model.PlayerModel.StatusListener;
 
 import java.util.Locale;
 
@@ -44,24 +44,24 @@ public class ControlViewModel extends BaseObservable implements StatusListener {
     private int mPlayButtonResId = R.drawable.ic_play;
 
     private boolean mTracking;
-    private final MediaPlayerModel mMediaPlayerModel;
+    private final PlayerModel mPlayerModel;
     @NonNull
     private OnCompletionListener mOnCompletionListener = ON_COMPLETION_LISTENER;
 
-    public ControlViewModel(MediaPlayerModel playerModel) {
-        mMediaPlayerModel = playerModel;
-        mMediaPlayerModel.setStatusListener(this);
+    ControlViewModel(PlayerModel playerModel) {
+        mPlayerModel = playerModel;
+        mPlayerModel.setStatusListener(this);
     }
 
-    public void terminate() {
-        mMediaPlayerModel.terminate();
+    void terminate() {
+        mPlayerModel.terminate();
     }
 
-    public void restoreSaveProgress(final int position) {
-        mMediaPlayerModel.restoreSaveProgress(position);
+    void restoreSaveProgress(final int position) {
+        mPlayerModel.restoreSaveProgress(position);
     }
 
-    public void setOnCompletionListener(@Nullable final OnCompletionListener listener) {
+    void setOnCompletionListener(@Nullable final OnCompletionListener listener) {
         mOnCompletionListener = listener != null ? listener : ON_COMPLETION_LISTENER;
     }
 
@@ -81,16 +81,16 @@ public class ControlViewModel extends BaseObservable implements StatusListener {
         @Override
         public void onStopTrackingTouch(SeekBar seekBar) {
             mTracking = false;
-            mMediaPlayerModel.seekTo(seekBar.getProgress());
+            mPlayerModel.seekTo(seekBar.getProgress());
         }
     };
 
     public void onClickPlay() {
-        final boolean playing = mMediaPlayerModel.isPlaying();
+        final boolean playing = mPlayerModel.isPlaying();
         if (playing) {
-            mMediaPlayerModel.pause();
+            mPlayerModel.pause();
         } else {
-            mMediaPlayerModel.play();
+            mPlayerModel.play();
         }
         setPlaying(!playing);
     }
@@ -124,6 +124,7 @@ public class ControlViewModel extends BaseObservable implements StatusListener {
         setPrepared(true);
     }
 
+    @NonNull
     @Bindable
     public String getProgressText() {
         return mProgressText;
@@ -134,6 +135,7 @@ public class ControlViewModel extends BaseObservable implements StatusListener {
         notifyPropertyChanged(BR.progressText);
     }
 
+    @NonNull
     @Bindable
     public String getDurationText() {
         return mDurationText;
