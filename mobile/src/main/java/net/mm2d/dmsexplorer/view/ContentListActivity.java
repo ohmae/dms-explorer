@@ -131,7 +131,6 @@ public class ContentListActivity extends AppCompatActivity implements CdsSelectL
 
     @Override
     protected void onSaveInstanceState(@NonNull final Bundle outState) {
-        removeDetailFragment();
         super.onSaveInstanceState(outState);
         saveScroll(outState);
     }

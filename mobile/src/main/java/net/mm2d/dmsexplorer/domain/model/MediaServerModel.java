@@ -8,13 +8,12 @@
 package net.mm2d.dmsexplorer.domain.model;
 
 import android.content.Context;
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import net.mm2d.android.upnp.cds.CdsObject;
 import net.mm2d.android.upnp.cds.MediaServer;
+import net.mm2d.dmsexplorer.settings.Settings;
 import net.mm2d.dmsexplorer.domain.entity.ContentDirectoryEntry;
 import net.mm2d.dmsexplorer.domain.entity.ContentDirectoryEntry.EntryListener;
 
@@ -177,8 +176,8 @@ public class MediaServerModel implements EntryListener {
     }
 
     private CdsObject getNextMusicTarget(CdsObject currentObject) {
-        final SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(mContext);
-        if (!pref.getBoolean("MUSIC_AUTO_PLAY", false)) {
+        final Settings settings = new Settings(mContext);
+        if (!settings.isMusicAutoPlay()) {
             return null;
         }
         final List<CdsObject> list = mHistoryStack.peekFirst().getList();
