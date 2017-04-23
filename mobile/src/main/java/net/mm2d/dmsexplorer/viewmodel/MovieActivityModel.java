@@ -21,20 +21,24 @@ import com.android.databinding.library.baseAdapters.BR;
 
 import net.mm2d.android.util.AribUtils;
 import net.mm2d.android.util.DisplaySizeUtils;
+import net.mm2d.dmsexplorer.R;
 import net.mm2d.dmsexplorer.Repository;
 import net.mm2d.dmsexplorer.domain.model.MoviePlayerModel;
 import net.mm2d.dmsexplorer.domain.model.PlaybackTargetModel;
 import net.mm2d.dmsexplorer.domain.model.PlayerModel;
-import net.mm2d.dmsexplorer.viewmodel.ControlViewModel.OnCompletionListener;
+import net.mm2d.dmsexplorer.viewmodel.ControlPanelModel.OnCompletionListener;
 
 /**
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
  */
 public class MovieActivityModel extends BaseObservable implements OnCompletionListener {
     @NonNull
+    public final ControlPanelParam controlPanelParam;
+
+    @NonNull
     private String mTitle;
     @NonNull
-    private ControlViewModel mControlViewModel;
+    private ControlPanelModel mControlPanelModel;
     private int mRightNavigationSize;
     private int mBottomNavigationSize;
     @NonNull
@@ -50,35 +54,37 @@ public class MovieActivityModel extends BaseObservable implements OnCompletionLi
             throw new IllegalStateException();
         }
         final PlayerModel playerModel = new MoviePlayerModel(videoView);
-        mControlViewModel = new ControlViewModel(playerModel);
-        mControlViewModel.setOnCompletionListener(this);
+        mControlPanelModel = new ControlPanelModel(playerModel);
+        mControlPanelModel.setOnCompletionListener(this);
         playerModel.setUri(targetModel.getUri(), null);
         mTitle = AribUtils.toDisplayableString(targetModel.getTitle());
+        controlPanelParam = new ControlPanelParam();
+        controlPanelParam.setBackgroundColor(activity.getColor(R.color.translucent_control));
     }
 
     public void adjustPanel(@NonNull final Activity activity) {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT
                 || (VERSION.SDK_INT >= VERSION_CODES.N && activity.isInMultiWindowMode())) {
             setRightNavigationSize(0);
-            setBottomNavigationSize(0);
+            controlPanelParam.setBottomPadding(0);
             return;
         }
         final Point p1 = DisplaySizeUtils.getSize(activity);
         final Point p2 = DisplaySizeUtils.getRealSize(activity);
         setRightNavigationSize(p2.x - p1.x);
-        setBottomNavigationSize(p2.y - p1.y);
+        controlPanelParam.setBottomPadding(p2.y - p1.y);
     }
 
     public void terminate() {
-        mControlViewModel.terminate();
+        mControlPanelModel.terminate();
     }
 
     public void restoreSaveProgress(final int position) {
-        mControlViewModel.restoreSaveProgress(position);
+        mControlPanelModel.restoreSaveProgress(position);
     }
 
     public int getCurrentProgress() {
-        return mControlViewModel.getProgress();
+        return mControlPanelModel.getProgress();
     }
 
     public void onClickBack() {
@@ -93,8 +99,8 @@ public class MovieActivityModel extends BaseObservable implements OnCompletionLi
 
     @NonNull
     @Bindable
-    public ControlViewModel getControlViewModel() {
-        return mControlViewModel;
+    public ControlPanelModel getControlPanelModel() {
+        return mControlPanelModel;
     }
 
     @Bindable
@@ -103,18 +109,9 @@ public class MovieActivityModel extends BaseObservable implements OnCompletionLi
     }
 
     private void setRightNavigationSize(final int rightNavigationSize) {
+        controlPanelParam.setMarginRight(rightNavigationSize);
         mRightNavigationSize = rightNavigationSize;
         notifyPropertyChanged(BR.rightNavigationSize);
-    }
-
-    @Bindable
-    public int getBottomNavigationSize() {
-        return mBottomNavigationSize;
-    }
-
-    private void setBottomNavigationSize(final int bottomNavigationSize) {
-        mBottomNavigationSize = bottomNavigationSize;
-        notifyPropertyChanged(BR.bottomNavigationSize);
     }
 
     @Override

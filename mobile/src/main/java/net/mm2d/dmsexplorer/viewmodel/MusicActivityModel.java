@@ -25,15 +25,18 @@ import net.mm2d.dmsexplorer.domain.model.PlayerModel;
 import net.mm2d.dmsexplorer.util.DownloadUtils;
 import net.mm2d.dmsexplorer.util.ThemeUtils;
 import net.mm2d.dmsexplorer.view.adapter.ContentPropertyAdapter;
-import net.mm2d.dmsexplorer.viewmodel.ControlViewModel.OnCompletionListener;
+import net.mm2d.dmsexplorer.viewmodel.ControlPanelModel.OnCompletionListener;
 
 /**
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
  */
 public class MusicActivityModel extends BaseObservable implements OnCompletionListener {
+    @NonNull
+    public final ControlPanelParam controlPanelParam;
+
     private String mTitle;
     private int mAccentColor;
-    private ControlViewModel mControlViewModel;
+    private ControlPanelModel mControlPanelModel;
     private ContentPropertyAdapter mPropertyAdapter;
     private byte[] mImageBinary;
 
@@ -47,26 +50,27 @@ public class MusicActivityModel extends BaseObservable implements OnCompletionLi
         mActivity = activity;
         mRepository = repository;
 
+        controlPanelParam = new ControlPanelParam();
         updateTargetModel();
     }
 
     public void terminate() {
-        mControlViewModel.terminate();
+        mControlPanelModel.terminate();
     }
 
     public void restoreSaveProgress(final int position) {
-        mControlViewModel.restoreSaveProgress(position);
+        mControlPanelModel.restoreSaveProgress(position);
     }
 
     public int getCurrentProgress() {
-        return mControlViewModel.getProgress();
+        return mControlPanelModel.getProgress();
     }
 
     private void updateTargetModel() {
         final PlaybackTargetModel targetModel = mRepository.getPlaybackTargetModel();
         final PlayerModel playerModel = new MusicPlayerModel(mActivity);
-        mControlViewModel = new ControlViewModel(playerModel);
-        mControlViewModel.setOnCompletionListener(this);
+        mControlPanelModel = new ControlPanelModel(playerModel);
+        mControlPanelModel.setOnCompletionListener(this);
         playerModel.setUri(targetModel.getUri(), null);
 
         mTitle = AribUtils.toDisplayableString(targetModel.getTitle());
@@ -78,7 +82,9 @@ public class MusicActivityModel extends BaseObservable implements OnCompletionLi
         notifyPropertyChanged(BR.title);
         notifyPropertyChanged(BR.accentColor);
         notifyPropertyChanged(BR.propertyAdapter);
-        notifyPropertyChanged(BR.controlViewModel);
+        notifyPropertyChanged(BR.controlPanelModel);
+
+        controlPanelParam.setBackgroundColor(mAccentColor);
 
         loadArt(targetModel.getCdsObject().getValue(CdsObject.UPNP_ALBUM_ART_URI));
     }
@@ -117,13 +123,13 @@ public class MusicActivityModel extends BaseObservable implements OnCompletionLi
     }
 
     @Bindable
-    public ControlViewModel getControlViewModel() {
-        return mControlViewModel;
+    public ControlPanelModel getControlPanelModel() {
+        return mControlPanelModel;
     }
 
     @Override
     public void onCompletion() {
-        mControlViewModel.terminate();
+        mControlPanelModel.terminate();
         if (!mRepository.getMediaServerModel().selectNextObject()) {
             mActivity.onBackPressed();
             return;

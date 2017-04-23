@@ -25,7 +25,7 @@ import java.util.Locale;
 /**
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
  */
-public class ControlViewModel extends BaseObservable implements StatusListener {
+public class ControlPanelModel extends BaseObservable implements StatusListener {
     interface OnCompletionListener {
         void onCompletion();
     }
@@ -48,7 +48,7 @@ public class ControlViewModel extends BaseObservable implements StatusListener {
     @NonNull
     private OnCompletionListener mOnCompletionListener = ON_COMPLETION_LISTENER;
 
-    ControlViewModel(PlayerModel playerModel) {
+    ControlPanelModel(PlayerModel playerModel) {
         mPlayerModel = playerModel;
         mPlayerModel.setStatusListener(this);
     }

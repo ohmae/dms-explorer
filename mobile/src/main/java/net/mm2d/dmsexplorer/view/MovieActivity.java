@@ -37,7 +37,7 @@ public class MovieActivity extends AppCompatActivity {
                 = DataBindingUtil.setContentView(this, R.layout.movie_activity);
         mFullscreenHelper = new FullscreenHelper.Builder(binding.getRoot())
                 .setTopView(binding.toolbar)
-                .setBottomView(binding.controlPanel)
+                .setBottomView(binding.controlPanel.getRoot())
                 .build();
         final Repository repository = Repository.get();
         try {

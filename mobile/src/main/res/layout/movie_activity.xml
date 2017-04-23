@@ -61,21 +61,14 @@
 
         </LinearLayout>
 
-        <FrameLayout
+        <include
             android:id="@+id/control_panel"
+            layout="@layout/control_panel"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/control_height"
+            android:layout_height="wrap_content"
             android:layout_gravity="bottom"
-            android:background="@color/translucent_control"
-            android:paddingBottom="@{model.bottomNavigationSize}"
-            app:layout_height="@{model.bottomNavigationSize + (int)@dimen/control_height}"
-            app:layout_marginRight="@{model.rightNavigationSize}"
-            >
-
-            <include
-                layout="@layout/control_view"
-                app:model="@{model.controlViewModel}"
-                />
-        </FrameLayout>
+            app:model="@{model.controlPanelModel}"
+            app:param="@{model.controlPanelParam}"
+            />
     </FrameLayout>
 </layout>
