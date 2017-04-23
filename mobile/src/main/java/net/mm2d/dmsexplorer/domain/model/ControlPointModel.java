@@ -27,6 +27,7 @@ import net.mm2d.dmsexplorer.R;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
@@ -50,6 +51,8 @@ public class ControlPointModel {
     private final Context mContext;
     @NonNull
     private final Lan mLan;
+    @NonNull
+    private final AtomicBoolean mInitialized = new AtomicBoolean();
     private boolean mNetworkAvailable;
     private SearchThread mSearchThread;
     private MediaServer mSelectedMediaServer;
@@ -161,14 +164,18 @@ public class ControlPointModel {
     public void initialize() {
         mNetworkAvailable = mLan.hasAvailableInterface();
         initializeOrTerminate(mNetworkAvailable);
-        mContext.registerReceiver(mConnectivityReceiver,
-                new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+        if (!mInitialized.getAndSet(true)) {
+            mContext.registerReceiver(mConnectivityReceiver,
+                    new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+        }
     }
 
     public void terminate() {
         setSelectedMediaServer(null);
         initializeOrTerminate(false);
-        mContext.unregisterReceiver(mConnectivityReceiver);
+        if (mInitialized.getAndSet(false)) {
+            mContext.unregisterReceiver(mConnectivityReceiver);
+        }
     }
 
     private void initializeOrTerminate(boolean initialize) {
