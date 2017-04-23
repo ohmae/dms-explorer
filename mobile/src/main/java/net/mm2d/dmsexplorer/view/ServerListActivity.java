@@ -130,7 +130,7 @@ public class ServerListActivity extends AppCompatActivity
             mServerDetailFragment.setEnterTransition(new Slide(Gravity.START));
         }
         getSupportFragmentManager().beginTransaction()
-                .replace(R.id.serverDetailContainer, mServerDetailFragment)
+                .replace(R.id.server_detail_container, mServerDetailFragment)
                 .commit();
     }
 

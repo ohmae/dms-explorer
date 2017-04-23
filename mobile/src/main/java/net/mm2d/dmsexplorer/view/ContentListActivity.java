@@ -216,7 +216,7 @@ public class ContentListActivity extends AppCompatActivity implements CdsSelectL
         }
         getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.cdsDetailContainer, mContentDetailFragment)
+                .replace(R.id.cds_detail_container, mContentDetailFragment)
                 .commit();
     }
 

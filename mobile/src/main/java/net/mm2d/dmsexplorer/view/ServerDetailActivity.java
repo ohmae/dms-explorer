@@ -54,7 +54,7 @@ public class ServerDetailActivity extends AppCompatActivity {
     protected void onCreate(@Nullable final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.server_detail_activity);
-        mBinding = DataBindingUtil.findBinding(findViewById(R.id.serverDetailFragment));
+        mBinding = DataBindingUtil.findBinding(findViewById(R.id.server_detail_fragment));
         if (mBinding == null) {
             finish();
             return;

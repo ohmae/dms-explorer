@@ -28,7 +28,7 @@
             >
 
             <TextView
-                android:id="@+id/textAccent"
+                android:id="@+id/text_accent"
                 android:layout_width="@dimen/accent_size"
                 android:layout_height="@dimen/accent_size"
                 android:layout_gravity="center_vertical"
@@ -41,7 +41,7 @@
                 tools:ignore="SpUsage"/>
 
             <ImageView
-                android:id="@+id/imageAccent"
+                android:id="@+id/image_accent"
                 android:layout_width="@dimen/accent_size"
                 android:layout_height="@dimen/accent_size"
                 android:imageBitmap="@{model.accentIcon}"
@@ -60,7 +60,7 @@
             >
 
             <TextView
-                android:id="@+id/textTitle"
+                android:id="@+id/text_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="4dp"
@@ -71,7 +71,7 @@
                 />
 
             <TextView
-                android:id="@+id/textDescription"
+                android:id="@+id/text_description"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"

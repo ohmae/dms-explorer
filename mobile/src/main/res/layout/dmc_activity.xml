@@ -118,7 +118,6 @@
         </FrameLayout>
 
         <LinearLayout
-            android:id="@+id/seekPanel"
             android:layout_width="match_parent"
             android:layout_height="@dimen/control_height"
             android:orientation="horizontal"
@@ -126,7 +125,7 @@
             >
 
             <TextView
-                android:id="@+id/textProgress"
+                android:id="@+id/text_progress"
                 android:layout_width="60dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
@@ -143,7 +142,7 @@
                 >
 
                 <net.mm2d.dmsexplorer.view.view.ChapterMarkView
-                    android:id="@+id/chapterMark"
+                    android:id="@+id/chapter_mark"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:chapterInfo="@{model.chapterInfo}"
@@ -153,7 +152,7 @@
                     />
 
                 <SeekBar
-                    android:id="@+id/seekBar"
+                    android:id="@+id/seek_bar"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
@@ -169,7 +168,7 @@
             </FrameLayout>
 
             <TextView
-                android:id="@+id/textDuration"
+                android:id="@+id/text_duration"
                 android:layout_width="60dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
@@ -180,6 +179,5 @@
                 />
 
         </LinearLayout>
-
     </LinearLayout>
 </layout>

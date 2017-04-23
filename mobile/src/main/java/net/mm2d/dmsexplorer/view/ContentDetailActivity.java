@@ -53,7 +53,7 @@ public class ContentDetailActivity extends AppCompatActivity {
         setContentView(R.layout.content_detail_activity);
         mMediaServerModel = Repository.get().getMediaServerModel();
         final ContentDetailFragmentBinding binding =
-                DataBindingUtil.findBinding(findViewById(R.id.cdsDetailFragment));
+                DataBindingUtil.findBinding(findViewById(R.id.cds_detail_fragment));
         if (binding == null) {
             finish();
             return;

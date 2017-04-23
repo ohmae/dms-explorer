@@ -17,7 +17,7 @@
         >
 
         <android.support.design.widget.AppBarLayout
-            android:id="@+id/appBar"
+            android:id="@+id/app_bar"
             android:layout_width="match_parent"
             android:layout_height="@dimen/app_bar_height"
             android:theme="@style/AppTheme.AppBarOverlay"
@@ -25,7 +25,7 @@
             >
 
             <net.opacapp.multilinecollapsingtoolbar.CollapsingToolbarLayout
-                android:id="@+id/toolbarLayout"
+                android:id="@+id/toolbar_layout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:contentScrimColor="@{model.collapsedColor}"
@@ -49,7 +49,7 @@
                         />
 
                     <ImageView
-                        android:id="@+id/toolbarIcon"
+                        android:id="@+id/toolbar_icon"
                         android:layout_width="@dimen/expanded_toolbar_icon_size"
                         android:layout_height="@dimen/expanded_toolbar_icon_size"
                         android:layout_gravity="bottom|end"
@@ -59,7 +59,7 @@
                 </FrameLayout>
 
                 <android.support.v7.widget.Toolbar
-                    android:id="@+id/serverDetailToolbar"
+                    android:id="@+id/server_detail_toolbar"
                     android:layout_width="match_parent"
                     android:layout_height="?attr/actionBarSize"
                     android:title="@{model.title}"
@@ -71,7 +71,7 @@
         </android.support.design.widget.AppBarLayout>
 
         <android.support.v7.widget.RecyclerView
-            android:id="@+id/serverDetail"
+            android:id="@+id/server_detail"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:clipToPadding="false"
