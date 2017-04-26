@@ -30,7 +30,7 @@ import java.lang.annotation.RetentionPolicy;
 /**
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
  */
-public class ScrubSeekBar extends View {
+public class ScrubbingBar extends View {
     @Retention(RetentionPolicy.SOURCE)
     @IntDef({ACCURACY_NORMAL, ACCURACY_HALF, ACCURACY_QUARTER})
     public @interface IntAccuracy {
@@ -48,31 +48,31 @@ public class ScrubSeekBar extends View {
     };
     private static final int RANK_MAX = ACCURACY_RANKS.length - 1;
 
-    public interface OnScrubSeekBarListener {
-        void onProgressChanged(ScrubSeekBar seekBar, int progress, boolean fromUser);
+    public interface ScrubbingBarListener {
+        void onProgressChanged(ScrubbingBar seekBar, int progress, boolean fromUser);
 
-        void onStartTrackingTouch(ScrubSeekBar seekBar);
+        void onStartTrackingTouch(ScrubbingBar seekBar);
 
-        void onStopTrackingTouch(ScrubSeekBar seekBar);
+        void onStopTrackingTouch(ScrubbingBar seekBar);
 
-        void onAccuracyChanged(ScrubSeekBar seekBar, @IntAccuracy int accuracy);
+        void onAccuracyChanged(ScrubbingBar seekBar, @IntAccuracy int accuracy);
     }
 
-    private static final OnScrubSeekBarListener LISTENER = new OnScrubSeekBarListener() {
+    private static final ScrubbingBarListener LISTENER = new ScrubbingBarListener() {
         @Override
-        public void onProgressChanged(final ScrubSeekBar seekBar, final int progress, final boolean fromUser) {
+        public void onProgressChanged(final ScrubbingBar seekBar, final int progress, final boolean fromUser) {
         }
 
         @Override
-        public void onStartTrackingTouch(final ScrubSeekBar seekBar) {
+        public void onStartTrackingTouch(final ScrubbingBar seekBar) {
         }
 
         @Override
-        public void onStopTrackingTouch(final ScrubSeekBar seekBar) {
+        public void onStopTrackingTouch(final ScrubbingBar seekBar) {
         }
 
         @Override
-        public void onAccuracyChanged(final ScrubSeekBar seekBar, @IntAccuracy final int accuracy) {
+        public void onAccuracyChanged(final ScrubbingBar seekBar, @IntAccuracy final int accuracy) {
         }
     };
 
@@ -90,7 +90,7 @@ public class ScrubSeekBar extends View {
     @NonNull
     private final Paint mPaint;
     @NonNull
-    private OnScrubSeekBarListener mListener = LISTENER;
+    private ScrubbingBarListener mScrubbingBarListener = LISTENER;
     private final float mTrackWidth;
     private final float mTrackWidthHalf;
     private final float mSmallThumbRadius;
@@ -119,15 +119,15 @@ public class ScrubSeekBar extends View {
     private float mStartY;
     private int mBaseProgress;
 
-    public ScrubSeekBar(@NonNull final Context context) {
+    public ScrubbingBar(@NonNull final Context context) {
         this(context, null);
     }
 
-    public ScrubSeekBar(@NonNull final Context context, @Nullable final AttributeSet attrs) {
+    public ScrubbingBar(@NonNull final Context context, @Nullable final AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public ScrubSeekBar(@NonNull final Context context, @Nullable final AttributeSet attrs, final int defStyleAttr) {
+    public ScrubbingBar(@NonNull final Context context, @Nullable final AttributeSet attrs, final int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         mEnabledProgressColor = getColorAccent(context);
 
@@ -354,8 +354,8 @@ public class ScrubSeekBar extends View {
         mBaseProgress = progress;
         mAccuracyRank = 0;
         setProgressInternal(progress, true);
-        mListener.onStartTrackingTouch(this);
-        mListener.onAccuracyChanged(this, ACCURACY_RANKS[mAccuracyRank]);
+        mScrubbingBarListener.onStartTrackingTouch(this);
+        mScrubbingBarListener.onAccuracyChanged(this, ACCURACY_RANKS[mAccuracyRank]);
     }
 
     private void onTouchMove(@NonNull final MotionEvent event) {
@@ -369,13 +369,13 @@ public class ScrubSeekBar extends View {
             mAccuracyRank = rank;
             mBaseProgress = mProgress;
             mStartX = event.getX();
-            mListener.onAccuracyChanged(this, ACCURACY_RANKS[rank]);
+            mScrubbingBarListener.onAccuracyChanged(this, ACCURACY_RANKS[rank]);
         }
     }
 
     private void onTouchEnd(@NonNull final MotionEvent event) {
         onTouchMove(event);
-        mListener.onStopTrackingTouch(this);
+        mScrubbingBarListener.onStopTrackingTouch(this);
         invalidate();
     }
 
@@ -437,12 +437,12 @@ public class ScrubSeekBar extends View {
             return;
         }
         mProgress = progress;
-        mListener.onProgressChanged(this, progress, fromUser);
+        mScrubbingBarListener.onProgressChanged(this, progress, fromUser);
         invalidate();
     }
 
-    public void setOnScrubSeekBarListener(final OnScrubSeekBarListener listener) {
-        mListener = listener != null ? listener : LISTENER;
+    public void setScrubbingBarListener(final ScrubbingBarListener listener) {
+        mScrubbingBarListener = listener != null ? listener : LISTENER;
     }
 
     private static int clamp(int value, int min, int max) {

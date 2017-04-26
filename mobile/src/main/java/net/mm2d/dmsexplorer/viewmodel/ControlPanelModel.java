@@ -17,9 +17,9 @@ import net.mm2d.dmsexplorer.BR;
 import net.mm2d.dmsexplorer.R;
 import net.mm2d.dmsexplorer.domain.model.PlayerModel;
 import net.mm2d.dmsexplorer.domain.model.PlayerModel.StatusListener;
-import net.mm2d.dmsexplorer.view.view.ScrubSeekBar;
-import net.mm2d.dmsexplorer.view.view.ScrubSeekBar.IntAccuracy;
-import net.mm2d.dmsexplorer.view.view.ScrubSeekBar.OnScrubSeekBarListener;
+import net.mm2d.dmsexplorer.view.view.ScrubbingBar;
+import net.mm2d.dmsexplorer.view.view.ScrubbingBar.IntAccuracy;
+import net.mm2d.dmsexplorer.view.view.ScrubbingBar.ScrubbingBarListener;
 
 import java.util.Locale;
 
@@ -72,28 +72,28 @@ public class ControlPanelModel extends BaseObservable implements StatusListener 
         mOnCompletionListener = listener != null ? listener : ON_COMPLETION_LISTENER;
     }
 
-    public final OnScrubSeekBarListener seekBarListener = new OnScrubSeekBarListener() {
+    public final ScrubbingBarListener seekBarListener = new ScrubbingBarListener() {
         @Override
-        public void onProgressChanged(final ScrubSeekBar seekBar, final int progress, final boolean fromUser) {
+        public void onProgressChanged(final ScrubbingBar seekBar, final int progress, final boolean fromUser) {
             if (fromUser) {
                 setProgressText(progress);
             }
         }
 
         @Override
-        public void onStartTrackingTouch(final ScrubSeekBar seekBar) {
+        public void onStartTrackingTouch(final ScrubbingBar seekBar) {
             mTracking = true;
         }
 
         @Override
-        public void onStopTrackingTouch(final ScrubSeekBar seekBar) {
+        public void onStopTrackingTouch(final ScrubbingBar seekBar) {
             mTracking = false;
             mPlayerModel.seekTo(seekBar.getProgress());
             setScrubText("");
         }
 
         @Override
-        public void onAccuracyChanged(final ScrubSeekBar seekBar, @IntAccuracy final int accuracy) {
+        public void onAccuracyChanged(final ScrubbingBar seekBar, @IntAccuracy final int accuracy) {
             setScrubText(getScrubText(accuracy));
         }
     };
@@ -180,11 +180,11 @@ public class ControlPanelModel extends BaseObservable implements StatusListener 
 
     private String getScrubText(final int accuracy) {
         switch (accuracy) {
-            case ScrubSeekBar.ACCURACY_NORMAL:
+            case ScrubbingBar.ACCURACY_NORMAL:
                 return mContext.getString(R.string.seek_bar_scrub_normal);
-            case ScrubSeekBar.ACCURACY_HALF:
+            case ScrubbingBar.ACCURACY_HALF:
                 return mContext.getString(R.string.seek_bar_scrub_half);
-            case ScrubSeekBar.ACCURACY_QUARTER:
+            case ScrubbingBar.ACCURACY_QUARTER:
                 return mContext.getString(R.string.seek_bar_scrub_quarter);
             default:
                 return "";

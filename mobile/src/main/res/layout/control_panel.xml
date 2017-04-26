@@ -24,7 +24,7 @@
         app:layout_marginRight="@{param.marginRight}"
         >
 
-        <net.mm2d.dmsexplorer.view.view.ScrubSeekBar
+        <net.mm2d.dmsexplorer.view.view.ScrubbingBar
             android:id="@+id/seek_bar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
