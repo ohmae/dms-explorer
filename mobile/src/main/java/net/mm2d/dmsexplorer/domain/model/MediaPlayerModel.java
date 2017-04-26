@@ -26,12 +26,13 @@ public abstract class MediaPlayerModel implements PlayerModel, OnPreparedListene
     private static final StatusListener STATUS_LISTENER = new StatusListenerAdapter();
 
     @NonNull
+    private final Handler mHandler = new Handler(Looper.getMainLooper());
+    @NonNull
     private StatusListener mStatusListener = STATUS_LISTENER;
     private final MediaControl mMediaControl;
     private boolean mPlaying;
     private int mProgress;
     private int mDuration;
-    private Handler mHandler = new Handler(Looper.getMainLooper());
     private boolean mTerminated;
 
     private final Runnable mGetPositionTask = new Runnable() {

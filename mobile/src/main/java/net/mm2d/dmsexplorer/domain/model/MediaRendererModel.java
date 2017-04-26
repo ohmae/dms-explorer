@@ -20,7 +20,6 @@ import net.mm2d.android.upnp.avt.TransportState;
 import net.mm2d.android.upnp.cds.CdsObject;
 import net.mm2d.android.upnp.cds.ChapterInfo;
 
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
@@ -37,7 +36,7 @@ public class MediaRendererModel implements PlayerModel {
     private final MediaRenderer mMediaRenderer;
     private final Handler mHandler = new Handler(Looper.getMainLooper());
     @Nullable
-    private List<Integer> mChapterInfo;
+    private int[] mChapterInfo;
     private boolean mPlaying;
     private int mProgress;
     private int mDuration;
@@ -148,31 +147,40 @@ public class MediaRendererModel implements PlayerModel {
 
     @Override
     public void next() {
+        if (mChapterInfo == null) {
+            return;
+        }
         final int chapter = getCurrentChapter() + 1;
-        if (chapter < mChapterInfo.size()) {
-            mMediaRenderer.seek(mChapterInfo.get(chapter), mShowToastOnError);
+        if (chapter < mChapterInfo.length) {
+            mMediaRenderer.seek(mChapterInfo[chapter], mShowToastOnError);
         }
     }
 
     @Override
     public void previous() {
+        if (mChapterInfo == null) {
+            return;
+        }
         int chapter = getCurrentChapter();
-        if (chapter > 0 && mProgress - mChapterInfo.get(chapter) < CHAPTER_MARGIN) {
+        if (chapter > 0 && mProgress - mChapterInfo[chapter] < CHAPTER_MARGIN) {
             chapter--;
         }
         if (chapter >= 0) {
-            mMediaRenderer.seek(mChapterInfo.get(chapter), mShowToastOnError);
+            mMediaRenderer.seek(mChapterInfo[chapter], mShowToastOnError);
         }
     }
 
     private int getCurrentChapter() {
+        if (mChapterInfo == null) {
+            return 0;
+        }
         final int progress = mProgress;
-        for (int i = 0; i < mChapterInfo.size(); i++) {
-            if (progress < mChapterInfo.get(i)) {
+        for (int i = 0; i < mChapterInfo.length; i++) {
+            if (progress < mChapterInfo[i]) {
                 return i - 1;
             }
         }
-        return mChapterInfo.size() - 1;
+        return mChapterInfo.length - 1;
     }
 
     private void onGetPositionInfo(Map<String, String> result) {
@@ -214,7 +222,7 @@ public class MediaRendererModel implements PlayerModel {
         }
     }
 
-    private void setChapterInfo(@Nullable final List<Integer> chapterInfo) {
+    private void setChapterInfo(@Nullable final int[] chapterInfo) {
         mChapterInfo = chapterInfo;
         mStatusListener.notifyChapterInfo(mChapterInfo);
     }

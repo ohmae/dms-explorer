@@ -36,7 +36,7 @@ public class MediaServerModel implements EntryListener {
     private final MediaServer mMediaServer;
     private final Deque<ContentDirectoryEntry> mHistoryStack = new LinkedList<>();
     private String mPath;
-    private ExploreListener EXPLORE_LISTENER = (list, inProgress) -> {
+    private final static ExploreListener EXPLORE_LISTENER = (list, inProgress) -> {
     };
     private volatile ExploreListener mExploreListener = EXPLORE_LISTENER;
 

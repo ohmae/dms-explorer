@@ -7,19 +7,20 @@
 
 package net.mm2d.dmsexplorer.viewmodel;
 
+import android.content.Context;
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.widget.SeekBar;
-import android.widget.SeekBar.OnSeekBarChangeListener;
 
 import net.mm2d.dmsexplorer.BR;
 import net.mm2d.dmsexplorer.R;
 import net.mm2d.dmsexplorer.domain.model.PlayerModel;
 import net.mm2d.dmsexplorer.domain.model.PlayerModel.StatusListener;
+import net.mm2d.dmsexplorer.view.view.ScrubSeekBar;
+import net.mm2d.dmsexplorer.view.view.ScrubSeekBar.IntAccuracy;
+import net.mm2d.dmsexplorer.view.view.ScrubSeekBar.OnScrubSeekBarListener;
 
-import java.util.List;
 import java.util.Locale;
 
 /**
@@ -42,13 +43,19 @@ public class ControlPanelModel extends BaseObservable implements StatusListener 
     private int mProgress;
     private boolean mSeekable;
     private int mPlayButtonResId = R.drawable.ic_play;
+    private String mScrubText = "";
+    private boolean mSkippable;
 
     private boolean mTracking;
+    @NonNull
+    private final Context mContext;
+    @NonNull
     private final PlayerModel mPlayerModel;
     @NonNull
     private OnCompletionListener mOnCompletionListener = ON_COMPLETION_LISTENER;
 
-    ControlPanelModel(PlayerModel playerModel) {
+    ControlPanelModel(@NonNull Context context, @NonNull PlayerModel playerModel) {
+        mContext = context;
         mPlayerModel = playerModel;
         mPlayerModel.setStatusListener(this);
     }
@@ -65,23 +72,29 @@ public class ControlPanelModel extends BaseObservable implements StatusListener 
         mOnCompletionListener = listener != null ? listener : ON_COMPLETION_LISTENER;
     }
 
-    public final OnSeekBarChangeListener onSeekBarChangeListener = new OnSeekBarChangeListener() {
+    public final OnScrubSeekBarListener seekBarListener = new OnScrubSeekBarListener() {
         @Override
-        public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+        public void onProgressChanged(final ScrubSeekBar seekBar, final int progress, final boolean fromUser) {
             if (fromUser) {
                 setProgressText(progress);
             }
         }
 
         @Override
-        public void onStartTrackingTouch(SeekBar seekBar) {
+        public void onStartTrackingTouch(final ScrubSeekBar seekBar) {
             mTracking = true;
         }
 
         @Override
-        public void onStopTrackingTouch(SeekBar seekBar) {
+        public void onStopTrackingTouch(final ScrubSeekBar seekBar) {
             mTracking = false;
             mPlayerModel.seekTo(seekBar.getProgress());
+            setScrubText("");
+        }
+
+        @Override
+        public void onAccuracyChanged(final ScrubSeekBar seekBar, @IntAccuracy final int accuracy) {
+            setScrubText(getScrubText(accuracy));
         }
     };
 
@@ -93,6 +106,12 @@ public class ControlPanelModel extends BaseObservable implements StatusListener 
             mPlayerModel.play();
         }
         setPlaying(!playing);
+    }
+
+    public void onClickNext() {
+    }
+
+    public void onClickPrevious() {
     }
 
     @Bindable
@@ -155,6 +174,29 @@ public class ControlPanelModel extends BaseObservable implements StatusListener 
     }
 
     @Bindable
+    public String getScrubText() {
+        return mScrubText;
+    }
+
+    private String getScrubText(final int accuracy) {
+        switch (accuracy) {
+            case ScrubSeekBar.ACCURACY_NORMAL:
+                return mContext.getString(R.string.seek_bar_scrub_normal);
+            case ScrubSeekBar.ACCURACY_HALF:
+                return mContext.getString(R.string.seek_bar_scrub_half);
+            case ScrubSeekBar.ACCURACY_QUARTER:
+                return mContext.getString(R.string.seek_bar_scrub_quarter);
+            default:
+                return "";
+        }
+    }
+
+    private void setScrubText(final String scrubText) {
+        mScrubText = scrubText;
+        notifyPropertyChanged(BR.scrubText);
+    }
+
+    @Bindable
     public int getPlayButtonResId() {
         return mPlayButtonResId;
     }
@@ -191,6 +233,16 @@ public class ControlPanelModel extends BaseObservable implements StatusListener 
         return String.format(Locale.US, "%01d:%02d:%02d", hour, minute, second);
     }
 
+    @Bindable
+    public boolean isSkippable() {
+        return mSkippable;
+    }
+
+    public void setSkippable(final boolean skippable) {
+        mSkippable = skippable;
+        notifyPropertyChanged(BR.skippable);
+    }
+
     @Override
     public void notifyDuration(final int duration) {
         setDuration(duration);
@@ -207,7 +259,7 @@ public class ControlPanelModel extends BaseObservable implements StatusListener 
     }
 
     @Override
-    public void notifyChapterInfo(@Nullable final List<Integer> chapterInfo) {
+    public void notifyChapterInfo(@Nullable final int[] chapterInfo) {
     }
 
     @Override

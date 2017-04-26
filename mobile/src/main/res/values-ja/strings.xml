@@ -7,6 +7,9 @@
     <string name="toast_not_support_drm">著作権保護されたコンテンツの再生には対応していません</string>
     <string name="toast_command_error_occurred">エラーが発生しました</string>
     <string name="toast_download_error_occurred">エラーが発生しました</string>
+    <string name="seek_bar_scrub_normal">seek (x1/1)</string>
+    <string name="seek_bar_scrub_half">seek (x1/2)</string>
+    <string name="seek_bar_scrub_quarter">seek (x1/4)</string>
     <string name="network_tb">地上</string>
     <string name="network_bs">BS</string>
     <string name="network_cs">CS</string>

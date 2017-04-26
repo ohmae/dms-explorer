@@ -10,21 +10,15 @@ package net.mm2d.dmsexplorer.viewmodel;
 import android.app.Activity;
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.os.Build.VERSION;
-import android.os.Build.VERSION_CODES;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.widget.SeekBar;
-import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.Toast;
 
 import net.mm2d.android.upnp.cds.CdsObject;
 import net.mm2d.android.util.AribUtils;
-import net.mm2d.android.util.DrawableUtils;
 import net.mm2d.dmsexplorer.BR;
 import net.mm2d.dmsexplorer.R;
 import net.mm2d.dmsexplorer.Repository;
@@ -33,8 +27,10 @@ import net.mm2d.dmsexplorer.domain.model.PlaybackTargetModel;
 import net.mm2d.dmsexplorer.domain.model.PlayerModel;
 import net.mm2d.dmsexplorer.domain.model.PlayerModel.StatusListener;
 import net.mm2d.dmsexplorer.view.adapter.ContentPropertyAdapter;
+import net.mm2d.dmsexplorer.view.view.ScrubSeekBar;
+import net.mm2d.dmsexplorer.view.view.ScrubSeekBar.IntAccuracy;
+import net.mm2d.dmsexplorer.view.view.ScrubSeekBar.OnScrubSeekBarListener;
 
-import java.util.List;
 import java.util.Locale;
 
 /**
@@ -49,12 +45,10 @@ public class DmcActivityModel extends BaseObservable implements StatusListener {
     @NonNull
     public final ContentPropertyAdapter propertyAdapter;
     public final int imageResource;
-    @Nullable
-    public final Drawable progressDrawable;
     public final boolean isPlayControlEnabled;
     public final boolean isStillContents;
     @NonNull
-    public final OnSeekBarChangeListener onSeekBarChangeListener;
+    public final OnScrubSeekBarListener seekBarListener;
 
     @NonNull
     private String mProgressText = makeTimeText(0);
@@ -66,8 +60,9 @@ public class DmcActivityModel extends BaseObservable implements StatusListener {
     private int mProgress;
     private boolean mSeekable;
     private int mPlayButtonResId;
+    private String mScrubText = "";
     @Nullable
-    private List<Integer> mChapterInfo;
+    private int[] mChapterInfo;
     private boolean mChapterInfoEnabled;
 
     @NonNull
@@ -107,29 +102,30 @@ public class DmcActivityModel extends BaseObservable implements StatusListener {
                 + serverModel.getMediaServer().getFriendlyName();
         propertyAdapter = new ContentPropertyAdapter(mActivity, cdsObject);
         imageResource = getImageResource(cdsObject);
-        if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
-            progressDrawable = DrawableUtils.get(mActivity, R.drawable.seekbar_track);
-        } else {
-            progressDrawable = null;
-        }
-        onSeekBarChangeListener = new OnSeekBarChangeListener() {
+        seekBarListener = new OnScrubSeekBarListener() {
             @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+            public void onProgressChanged(ScrubSeekBar seekBar, int progress, boolean fromUser) {
                 if (fromUser) {
                     setProgressText(progress);
                 }
             }
 
             @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
+            public void onStartTrackingTouch(ScrubSeekBar seekBar) {
                 mHandler.removeCallbacks(mTrackingCancel);
                 mTracking = true;
             }
 
             @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
+            public void onStopTrackingTouch(ScrubSeekBar seekBar) {
                 mRendererModel.seekTo(seekBar.getProgress());
                 mHandler.postDelayed(mTrackingCancel, 1000);
+                setScrubText("");
+            }
+
+            @Override
+            public void onAccuracyChanged(final ScrubSeekBar seekBar, @IntAccuracy final int accuracy) {
+                setScrubText(getScrubText(accuracy));
             }
         };
     }
@@ -202,6 +198,29 @@ public class DmcActivityModel extends BaseObservable implements StatusListener {
     }
 
     @Bindable
+    public String getScrubText() {
+        return mScrubText;
+    }
+
+    private String getScrubText(final int accuracy) {
+        switch (accuracy) {
+            case ScrubSeekBar.ACCURACY_NORMAL:
+                return mActivity.getString(R.string.seek_bar_scrub_normal);
+            case ScrubSeekBar.ACCURACY_HALF:
+                return mActivity.getString(R.string.seek_bar_scrub_half);
+            case ScrubSeekBar.ACCURACY_QUARTER:
+                return mActivity.getString(R.string.seek_bar_scrub_quarter);
+            default:
+                return "";
+        }
+    }
+
+    private void setScrubText(final String scrubText) {
+        mScrubText = scrubText;
+        notifyPropertyChanged(BR.scrubText);
+    }
+
+    @Bindable
     public int getPlayButtonResId() {
         return mPlayButtonResId;
     }
@@ -233,11 +252,11 @@ public class DmcActivityModel extends BaseObservable implements StatusListener {
 
     @Bindable
     @Nullable
-    public List<Integer> getChapterInfo() {
+    public int[] getChapterInfo() {
         return mChapterInfo;
     }
 
-    private void setChapterInfo(@Nullable final List<Integer> chapterInfo) {
+    private void setChapterInfo(@Nullable final int[] chapterInfo) {
         mChapterInfo = chapterInfo;
         notifyPropertyChanged(BR.chapterInfo);
         setChapterInfoEnabled();
@@ -282,9 +301,9 @@ public class DmcActivityModel extends BaseObservable implements StatusListener {
     }
 
     @NonNull
-    private static String makeChapterString(@NonNull final List<Integer> chapterInfo) {
+    private static String makeChapterString(@NonNull final int[] chapterInfo) {
         final StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < chapterInfo.size(); i++) {
+        for (int i = 0; i < chapterInfo.length; i++) {
             if (sb.length() != 0) {
                 sb.append("\n");
             }
@@ -293,7 +312,7 @@ public class DmcActivityModel extends BaseObservable implements StatusListener {
             }
             sb.append(String.valueOf(i + 1));
             sb.append(" : ");
-            final int chapter = chapterInfo.get(i);
+            final int chapter = chapterInfo[i];
             sb.append(makeTimeText(chapter));
         }
         return sb.toString();
@@ -333,7 +352,7 @@ public class DmcActivityModel extends BaseObservable implements StatusListener {
     }
 
     @Override
-    public void notifyChapterInfo(@Nullable final List<Integer> chapterInfo) {
+    public void notifyChapterInfo(@Nullable final int[] chapterInfo) {
         setChapterInfo(chapterInfo);
     }
 

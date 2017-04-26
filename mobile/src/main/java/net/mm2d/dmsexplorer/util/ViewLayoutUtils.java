@@ -16,20 +16,13 @@ import android.view.ViewGroup.MarginLayoutParams;
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
  */
 public class ViewLayoutUtils {
-
-    public static void setLayoutHeight(@NonNull final View view, final int height) {
-        final LayoutParams params = view.getLayoutParams();
-        params.height = height;
-        view.setLayoutParams(params);
-    }
-
-    public static void setLayoutMarginRight(@NonNull final View view, final int rightMargin) {
+    public static void setLayoutMarginRight(@NonNull final View view, final int margin) {
         final LayoutParams params = view.getLayoutParams();
         if (!(params instanceof MarginLayoutParams)) {
             return;
         }
         final MarginLayoutParams marginParams = (MarginLayoutParams) params;
-        marginParams.rightMargin = rightMargin;
+        marginParams.rightMargin = margin;
         view.setLayoutParams(params);
     }
 }

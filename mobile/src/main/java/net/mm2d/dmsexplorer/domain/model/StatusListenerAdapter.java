@@ -11,8 +11,6 @@ import android.support.annotation.Nullable;
 
 import net.mm2d.dmsexplorer.domain.model.PlayerModel.StatusListener;
 
-import java.util.List;
-
 /**
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
  */
@@ -30,7 +28,7 @@ class StatusListenerAdapter implements StatusListener {
     }
 
     @Override
-    public void notifyChapterInfo(@Nullable final List<Integer> chapterInfo) {
+    public void notifyChapterInfo(@Nullable final int[] chapterInfo) {
     }
 
     @Override

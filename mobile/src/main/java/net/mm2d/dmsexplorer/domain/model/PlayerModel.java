@@ -11,8 +11,6 @@ import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import java.util.List;
-
 /**
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
  */
@@ -24,7 +22,7 @@ public interface PlayerModel {
 
         void notifyPlayingState(boolean playing);
 
-        void notifyChapterInfo(@Nullable List<Integer> chapterInfo);
+        void notifyChapterInfo(@Nullable int[] chapterInfo);
 
         boolean onError(int what, int extra);
 

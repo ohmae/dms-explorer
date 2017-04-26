@@ -24,18 +24,18 @@ public enum TransportState {
     RECORDING,
     NO_MEDIA_PRESENT,
     OTHER;
-    private static Map<String, TransportState> mMap;
+    private static final Map<String, TransportState> sMap;
 
     static {
-        mMap = new HashMap<>();
+        sMap = new HashMap<>();
         for (final TransportState state : TransportState.values()) {
-            mMap.put(state.name(), state);
+            sMap.put(state.name(), state);
         }
     }
 
     @NonNull
     public static TransportState of(final String value) {
-        final TransportState state = mMap.get(value);
+        final TransportState state = sMap.get(value);
         return state == null ? OTHER : state;
     }
 }

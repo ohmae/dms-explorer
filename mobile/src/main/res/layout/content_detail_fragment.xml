@@ -37,7 +37,7 @@
                 >
 
                 <View
-                    android:id="@+id/toolbarBackground"
+                    android:id="@+id/toolbar_background"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="@{model.expandedColor}"
@@ -45,7 +45,7 @@
                     />
 
                 <android.support.v7.widget.Toolbar
-                    android:id="@+id/cdsDetailToolbar"
+                    android:id="@+id/cds_detail_toolbar"
                     android:layout_width="match_parent"
                     android:layout_height="?attr/actionBarSize"
                     android:title="@{model.title}"

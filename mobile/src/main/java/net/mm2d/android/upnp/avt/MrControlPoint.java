@@ -70,7 +70,7 @@ public class MrControlPoint implements ControlPointWrapper {
     @NonNull
     private final Map<String, MediaRenderer> mMediaRendererMap;
     @NonNull
-    private Collection<MrDiscoveryListener> mMrDiscoveryListeners = new ArrayList<>();
+    private final Collection<MrDiscoveryListener> mMrDiscoveryListeners = new ArrayList<>();
     @Nullable
     private ExecutorService mExecutorService;
 

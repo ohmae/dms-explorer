@@ -15,6 +15,7 @@ import android.os.Build;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.widget.VideoView;
 
 import com.android.databinding.library.baseAdapters.BR;
@@ -40,7 +41,6 @@ public class MovieActivityModel extends BaseObservable implements OnCompletionLi
     @NonNull
     private ControlPanelModel mControlPanelModel;
     private int mRightNavigationSize;
-    private int mBottomNavigationSize;
     @NonNull
     private final Activity mActivity;
 
@@ -54,12 +54,13 @@ public class MovieActivityModel extends BaseObservable implements OnCompletionLi
             throw new IllegalStateException();
         }
         final PlayerModel playerModel = new MoviePlayerModel(videoView);
-        mControlPanelModel = new ControlPanelModel(playerModel);
+        mControlPanelModel = new ControlPanelModel(activity, playerModel);
         mControlPanelModel.setOnCompletionListener(this);
         playerModel.setUri(targetModel.getUri(), null);
         mTitle = AribUtils.toDisplayableString(targetModel.getTitle());
+        final int color = ContextCompat.getColor(activity, R.color.translucent_control);
         controlPanelParam = new ControlPanelParam();
-        controlPanelParam.setBackgroundColor(activity.getColor(R.color.translucent_control));
+        controlPanelParam.setBackgroundColor(color);
     }
 
     public void adjustPanel(@NonNull final Activity activity) {

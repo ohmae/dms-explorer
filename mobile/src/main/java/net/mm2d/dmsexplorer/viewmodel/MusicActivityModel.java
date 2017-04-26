@@ -69,7 +69,7 @@ public class MusicActivityModel extends BaseObservable implements OnCompletionLi
     private void updateTargetModel() {
         final PlaybackTargetModel targetModel = mRepository.getPlaybackTargetModel();
         final PlayerModel playerModel = new MusicPlayerModel(mActivity);
-        mControlPanelModel = new ControlPanelModel(playerModel);
+        mControlPanelModel = new ControlPanelModel(mActivity, playerModel);
         mControlPanelModel.setOnCompletionListener(this);
         playerModel.setUri(targetModel.getUri(), null);
 
