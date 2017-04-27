@@ -27,9 +27,9 @@ import net.mm2d.dmsexplorer.domain.model.PlaybackTargetModel;
 import net.mm2d.dmsexplorer.domain.model.PlayerModel;
 import net.mm2d.dmsexplorer.domain.model.PlayerModel.StatusListener;
 import net.mm2d.dmsexplorer.view.adapter.ContentPropertyAdapter;
-import net.mm2d.dmsexplorer.view.view.ScrubbingBar;
-import net.mm2d.dmsexplorer.view.view.ScrubbingBar.IntAccuracy;
-import net.mm2d.dmsexplorer.view.view.ScrubbingBar.ScrubbingBarListener;
+import net.mm2d.dmsexplorer.view.view.ScrubBar;
+import net.mm2d.dmsexplorer.view.view.ScrubBar.IntAccuracy;
+import net.mm2d.dmsexplorer.view.view.ScrubBar.ScrubBarListener;
 
 import java.util.Locale;
 
@@ -48,7 +48,7 @@ public class DmcActivityModel extends BaseObservable implements StatusListener {
     public final boolean isPlayControlEnabled;
     public final boolean isStillContents;
     @NonNull
-    public final ScrubbingBarListener seekBarListener;
+    public final ScrubBarListener seekBarListener;
 
     @NonNull
     private String mProgressText = makeTimeText(0);
@@ -102,29 +102,29 @@ public class DmcActivityModel extends BaseObservable implements StatusListener {
                 + serverModel.getMediaServer().getFriendlyName();
         propertyAdapter = new ContentPropertyAdapter(mActivity, cdsObject);
         imageResource = getImageResource(cdsObject);
-        seekBarListener = new ScrubbingBarListener() {
+        seekBarListener = new ScrubBarListener() {
             @Override
-            public void onProgressChanged(ScrubbingBar seekBar, int progress, boolean fromUser) {
+            public void onProgressChanged(ScrubBar seekBar, int progress, boolean fromUser) {
                 if (fromUser) {
                     setProgressText(progress);
                 }
             }
 
             @Override
-            public void onStartTrackingTouch(ScrubbingBar seekBar) {
+            public void onStartTrackingTouch(ScrubBar seekBar) {
                 mHandler.removeCallbacks(mTrackingCancel);
                 mTracking = true;
             }
 
             @Override
-            public void onStopTrackingTouch(ScrubbingBar seekBar) {
+            public void onStopTrackingTouch(ScrubBar seekBar) {
                 mRendererModel.seekTo(seekBar.getProgress());
                 mHandler.postDelayed(mTrackingCancel, 1000);
                 setScrubText("");
             }
 
             @Override
-            public void onAccuracyChanged(final ScrubbingBar seekBar, @IntAccuracy final int accuracy) {
+            public void onAccuracyChanged(final ScrubBar seekBar, @IntAccuracy final int accuracy) {
                 setScrubText(getScrubText(accuracy));
             }
         };
@@ -204,11 +204,11 @@ public class DmcActivityModel extends BaseObservable implements StatusListener {
 
     private String getScrubText(final int accuracy) {
         switch (accuracy) {
-            case ScrubbingBar.ACCURACY_NORMAL:
+            case ScrubBar.ACCURACY_NORMAL:
                 return mActivity.getString(R.string.seek_bar_scrub_normal);
-            case ScrubbingBar.ACCURACY_HALF:
+            case ScrubBar.ACCURACY_HALF:
                 return mActivity.getString(R.string.seek_bar_scrub_half);
-            case ScrubbingBar.ACCURACY_QUARTER:
+            case ScrubBar.ACCURACY_QUARTER:
                 return mActivity.getString(R.string.seek_bar_scrub_quarter);
             default:
                 return "";

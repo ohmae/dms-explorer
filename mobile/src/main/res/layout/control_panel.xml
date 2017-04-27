@@ -24,7 +24,7 @@
         app:layout_marginRight="@{param.marginRight}"
         >
 
-        <net.mm2d.dmsexplorer.view.view.ScrubbingBar
+        <net.mm2d.dmsexplorer.view.view.ScrubBar
             android:id="@+id/seek_bar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -32,7 +32,7 @@
             android:bottomBackgroundColor="@{param.backgroundColor}"
             android:enabled="@{model.seekable}"
             android:max="@{model.duration}"
-            android:onScrubSeekBarListener="@{model.seekBarListener}"
+            android:scrubBarListener="@{model.seekBarListener}"
             android:paddingBottom="@dimen/seek_padding"
             android:paddingTop="@dimen/seek_padding_top"
             android:progress="@{model.progress}"

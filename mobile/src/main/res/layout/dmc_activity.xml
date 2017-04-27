@@ -81,14 +81,14 @@
             android:visibility="@{model.isStillContents ? View.GONE : View.VISIBLE}"
             >
 
-            <net.mm2d.dmsexplorer.view.view.ScrubbingBar
+            <net.mm2d.dmsexplorer.view.view.ScrubBar
                 android:id="@+id/seek_bar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
                 android:enabled="@{model.seekable}"
                 android:max="@{model.duration}"
-                android:onScrubSeekBarListener="@{model.seekBarListener}"
+                android:scrubBarListener="@{model.seekBarListener}"
                 android:paddingBottom="@dimen/seek_padding"
                 android:paddingTop="@dimen/seek_padding_top"
                 android:progress="@{model.progress}"
