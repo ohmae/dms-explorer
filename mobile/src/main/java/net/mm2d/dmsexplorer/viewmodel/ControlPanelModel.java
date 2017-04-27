@@ -33,6 +33,14 @@ public class ControlPanelModel extends BaseObservable implements StatusListener 
 
     private static final OnCompletionListener ON_COMPLETION_LISTENER = () -> {
     };
+
+    private static String makeTimeText(int millisecond) {
+        final long second = (millisecond / 1000) % 60;
+        final long minute = (millisecond / 60000) % 60;
+        final long hour = millisecond / 3600000;
+        return String.format(Locale.US, "%01d:%02d:%02d", hour, minute, second);
+    }
+
     @NonNull
     private String mProgressText = makeTimeText(0);
     @NonNull
@@ -43,6 +51,7 @@ public class ControlPanelModel extends BaseObservable implements StatusListener 
     private int mProgress;
     private boolean mSeekable;
     private int mPlayButtonResId = R.drawable.ic_play;
+    @NonNull
     private String mScrubText = "";
     private boolean mSkippable;
 
@@ -224,13 +233,6 @@ public class ControlPanelModel extends BaseObservable implements StatusListener 
     private void setSeekable(final boolean seekable) {
         mSeekable = seekable;
         notifyPropertyChanged(BR.seekable);
-    }
-
-    private static String makeTimeText(int millisecond) {
-        final long second = (millisecond / 1000) % 60;
-        final long minute = (millisecond / 60000) % 60;
-        final long hour = millisecond / 3600000;
-        return String.format(Locale.US, "%01d:%02d:%02d", hour, minute, second);
     }
 
     @Bindable

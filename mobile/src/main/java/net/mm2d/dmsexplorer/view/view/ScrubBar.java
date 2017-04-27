@@ -287,8 +287,8 @@ public class ScrubBar extends View {
         final int bottom = getPaddingBottom();
         final int width = canvas.getWidth();
         final int height = canvas.getHeight();
-        final float areaWidth = canvas.getWidth() - left - right;
-        final float areaHeight = canvas.getHeight() - top - bottom;
+        final float areaWidth = width - left - right;
+        final float areaHeight = height - top - bottom;
         final float cy = areaHeight / 2 + top;
         final float l = mTrackWidthHalf;
 
@@ -307,11 +307,13 @@ public class ScrubBar extends View {
         if (mMax == 0) {
             return;
         }
-        final float cx = mProgress * areaWidth / mMax + left;
+
         mPaint.setColor(mProgressColor);
+        final float cx = mProgress * areaWidth / mMax + left;
         canvas.drawLine(left, cy, cx, cy, mPaint);
         final float radius = mDragging ? mLargeThumbRadius : mSmallThumbRadius;
         canvas.drawCircle(cx, cy, radius, mPaint);
+
         mPaint.setColor(mSectionColor);
         for (final int section : mSections) {
             final float sx = section * areaWidth / mMax + left;

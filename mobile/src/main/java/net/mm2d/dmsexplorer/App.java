@@ -52,6 +52,7 @@ public class App extends Application {
         super.onCreate();
         Settings.initialize(this);
         Repository.set(new AppRepository(this));
+
         if (BuildConfig.DEBUG) {
             Log.setLogLevel(Log.VERBOSE);
             Log.setPrint(new AndroidPrint());

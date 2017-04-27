@@ -34,10 +34,14 @@ public class MusicActivityModel extends BaseObservable implements OnCompletionLi
     @NonNull
     public final ControlPanelParam controlPanelParam;
 
+    @NonNull
     private String mTitle;
     private int mAccentColor;
+    @NonNull
     private ControlPanelModel mControlPanelModel;
+    @NonNull
     private ContentPropertyAdapter mPropertyAdapter;
+    @Nullable
     private byte[] mImageBinary;
 
     @NonNull

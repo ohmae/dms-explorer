@@ -37,6 +37,7 @@ import java.util.Locale;
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
  */
 public class DmcActivityModel extends BaseObservable implements StatusListener {
+    private static final long TRACKING_DELAY = 1000L;
     private static final char EN_SPACE = 0x2002; // &ensp;
     @NonNull
     public final String title;
@@ -60,6 +61,7 @@ public class DmcActivityModel extends BaseObservable implements StatusListener {
     private int mProgress;
     private boolean mSeekable;
     private int mPlayButtonResId;
+    @NonNull
     private String mScrubText = "";
     @Nullable
     private int[] mChapterInfo;
@@ -69,26 +71,25 @@ public class DmcActivityModel extends BaseObservable implements StatusListener {
     private final Handler mHandler = new Handler(Looper.getMainLooper());
     @NonNull
     private final Activity mActivity;
-    private boolean mTracking;
+    @NonNull
     private final PlaybackTargetModel mTargetModel;
+    @NonNull
     private final PlayerModel mRendererModel;
+    private boolean mTracking;
 
     @NonNull
-    private final Runnable mTrackingCancel = new Runnable() {
-        @Override
-        public void run() {
-            mTracking = false;
-        }
-    };
+    private final Runnable mTrackingCancel;
 
     public DmcActivityModel(@NonNull final Activity activity,
                             @NonNull final Repository repository) {
         mActivity = activity;
-        mTargetModel = repository.getPlaybackTargetModel();
-        mRendererModel = repository.getMediaRendererModel();
-        if (mRendererModel == null || mTargetModel == null || mTargetModel.getUri() == null) {
+        final PlaybackTargetModel targetModel = repository.getPlaybackTargetModel();
+        final PlayerModel playerModel = repository.getMediaRendererModel();
+        if (playerModel == null || targetModel == null || targetModel.getUri() == null) {
             throw new IllegalStateException();
         }
+        mTargetModel = targetModel;
+        mRendererModel = playerModel;
         mRendererModel.setStatusListener(this);
         mPlayButtonResId = R.drawable.ic_play;
 
@@ -102,6 +103,8 @@ public class DmcActivityModel extends BaseObservable implements StatusListener {
                 + serverModel.getMediaServer().getFriendlyName();
         propertyAdapter = new ContentPropertyAdapter(mActivity, cdsObject);
         imageResource = getImageResource(cdsObject);
+
+        mTrackingCancel = () -> mTracking = false;
         seekBarListener = new ScrubBarListener() {
             @Override
             public void onProgressChanged(ScrubBar seekBar, int progress, boolean fromUser) {
@@ -119,13 +122,13 @@ public class DmcActivityModel extends BaseObservable implements StatusListener {
             @Override
             public void onStopTrackingTouch(ScrubBar seekBar) {
                 mRendererModel.seekTo(seekBar.getProgress());
-                mHandler.postDelayed(mTrackingCancel, 1000);
+                mHandler.postDelayed(mTrackingCancel, TRACKING_DELAY);
                 setScrubText("");
             }
 
             @Override
             public void onAccuracyChanged(final ScrubBar seekBar, @IntAccuracy final int accuracy) {
-                setScrubText(getScrubText(accuracy));
+                setScrubText(getAccuracyText(accuracy));
             }
         };
     }
@@ -202,7 +205,7 @@ public class DmcActivityModel extends BaseObservable implements StatusListener {
         return mScrubText;
     }
 
-    private String getScrubText(final int accuracy) {
+    private String getAccuracyText(final int accuracy) {
         switch (accuracy) {
             case ScrubBar.ACCURACY_NORMAL:
                 return mActivity.getString(R.string.seek_bar_scrub_normal);

@@ -42,7 +42,9 @@ public class ContentDetailFragmentModel extends BaseObservable {
 
     private boolean mCanSend;
 
+    @NonNull
     private final Activity mActivity;
+    @NonNull
     private final MrControlPoint mMrControlPoint;
     private final MrDiscoveryListener mMrDiscoveryListener = new MrDiscoveryListener() {
         @Override
