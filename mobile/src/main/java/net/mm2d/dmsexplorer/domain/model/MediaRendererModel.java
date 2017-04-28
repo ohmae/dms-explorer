@@ -32,7 +32,6 @@ public class MediaRendererModel implements PlayerModel {
 
     @NonNull
     private StatusListener mStatusListener = STATUS_LISTENER;
-    private final Context mContext;
     private final MediaRenderer mMediaRenderer;
     private final Handler mHandler = new Handler(Looper.getMainLooper());
     @Nullable
@@ -60,7 +59,6 @@ public class MediaRendererModel implements PlayerModel {
     };
 
     public MediaRendererModel(@NonNull Context context, @NonNull final MediaRenderer renderer) {
-        mContext = context;
         mMediaRenderer = renderer;
     }
 

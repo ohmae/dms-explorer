@@ -100,12 +100,13 @@ public class MusicActivityModel extends BaseObservable implements OnCompletionLi
         }
     }
 
+    @Nullable
     @Bindable
     public byte[] getImageBinary() {
         return mImageBinary;
     }
 
-    public void setImageBinary(final byte[] imageBinary) {
+    public void setImageBinary(@Nullable final byte[] imageBinary) {
         mImageBinary = imageBinary;
         notifyPropertyChanged(BR.imageBinary);
     }
@@ -121,11 +122,13 @@ public class MusicActivityModel extends BaseObservable implements OnCompletionLi
         return mAccentColor;
     }
 
+    @NonNull
     @Bindable
     public ContentPropertyAdapter getPropertyAdapter() {
         return mPropertyAdapter;
     }
 
+    @NonNull
     @Bindable
     public ControlPanelModel getControlPanelModel() {
         return mControlPanelModel;

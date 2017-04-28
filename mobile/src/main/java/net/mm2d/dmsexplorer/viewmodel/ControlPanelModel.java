@@ -182,6 +182,7 @@ public class ControlPanelModel extends BaseObservable implements StatusListener 
         setPlayButtonResId(playing ? R.drawable.ic_pause : R.drawable.ic_play);
     }
 
+    @NonNull
     @Bindable
     public String getScrubText() {
         return mScrubText;
@@ -200,7 +201,7 @@ public class ControlPanelModel extends BaseObservable implements StatusListener 
         }
     }
 
-    private void setScrubText(final String scrubText) {
+    private void setScrubText(@NonNull final String scrubText) {
         mScrubText = scrubText;
         notifyPropertyChanged(BR.scrubText);
     }

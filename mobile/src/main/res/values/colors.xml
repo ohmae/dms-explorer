@@ -26,8 +26,6 @@
     <color name="progress4">#33BB55</color>
     <color name="translucent_ripple">#40ffffff</color>
     <color name="translucent_control">#66000000</color>
-    <color name="chapterMark">#808080</color>
-    <color name="progressBackground">#808080</color>
     <color name="fabDisable">#808080</color>
     <color name="fabRipple">#80ffffff</color>
     <color name="toolbarBackgroundDefault">#c0c0c0</color>

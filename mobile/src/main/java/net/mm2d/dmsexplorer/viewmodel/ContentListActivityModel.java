@@ -41,7 +41,7 @@ import java.util.List;
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
  */
 public class ContentListActivityModel extends BaseObservable implements ExploreListener {
-    private static final int INVALID_POSITON = -1;
+    private static final int INVALID_POSITION = -1;
 
     public interface CdsSelectListener {
         void onSelect(@NonNull View v, @NonNull CdsObject object, boolean alreadySelected);
@@ -70,7 +70,7 @@ public class ContentListActivityModel extends BaseObservable implements ExploreL
     @NonNull
     private String mSubtitle = "";
     private boolean mRefreshing;
-    private int mScrollPosition = INVALID_POSITON;
+    private int mScrollPosition = INVALID_POSITION;
 
     private final Handler mHandler = new Handler(Looper.getMainLooper());
     @NonNull
@@ -183,7 +183,7 @@ public class ContentListActivityModel extends BaseObservable implements ExploreL
         if (beforeSize == 0 && object != null) {
             setScrollPosition(list.indexOf(object));
         } else {
-            mScrollPosition = INVALID_POSITON;
+            mScrollPosition = INVALID_POSITION;
         }
     }
 
