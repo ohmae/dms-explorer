@@ -26,11 +26,13 @@ import net.mm2d.dmsexplorer.util.DownloadUtils;
 import net.mm2d.dmsexplorer.util.ThemeUtils;
 import net.mm2d.dmsexplorer.view.adapter.ContentPropertyAdapter;
 import net.mm2d.dmsexplorer.viewmodel.ControlPanelModel.OnCompletionListener;
+import net.mm2d.dmsexplorer.viewmodel.ControlPanelModel.SkipControlListener;
 
 /**
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
  */
-public class MusicActivityModel extends BaseObservable implements OnCompletionListener {
+public class MusicActivityModel extends BaseObservable
+        implements OnCompletionListener, SkipControlListener {
     @NonNull
     public final ControlPanelParam controlPanelParam;
 
@@ -75,6 +77,7 @@ public class MusicActivityModel extends BaseObservable implements OnCompletionLi
         final PlayerModel playerModel = new MusicPlayerModel(mActivity);
         mControlPanelModel = new ControlPanelModel(mActivity, playerModel);
         mControlPanelModel.setOnCompletionListener(this);
+        mControlPanelModel.setSkipControlListener(this);
         playerModel.setUri(targetModel.getUri(), null);
 
         mTitle = AribUtils.toDisplayableString(targetModel.getTitle());
@@ -142,5 +145,13 @@ public class MusicActivityModel extends BaseObservable implements OnCompletionLi
             return;
         }
         updateTargetModel();
+    }
+
+    @Override
+    public void next() {
+    }
+
+    @Override
+    public void previous() {
     }
 }

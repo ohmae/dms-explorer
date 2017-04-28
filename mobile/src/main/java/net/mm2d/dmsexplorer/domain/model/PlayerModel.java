@@ -55,7 +55,7 @@ public interface PlayerModel {
 
     void seekTo(int position);
 
-    void next();
+    boolean next();
 
-    void previous();
+    boolean previous();
 }

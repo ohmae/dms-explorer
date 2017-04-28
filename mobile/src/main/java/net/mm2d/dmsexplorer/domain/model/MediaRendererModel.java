@@ -144,20 +144,22 @@ public class MediaRendererModel implements PlayerModel {
     }
 
     @Override
-    public void next() {
+    public boolean next() {
         if (mChapterInfo == null) {
-            return;
+            return false;
         }
         final int chapter = getCurrentChapter() + 1;
         if (chapter < mChapterInfo.length) {
             mMediaRenderer.seek(mChapterInfo[chapter], mShowToastOnError);
+            return true;
         }
+        return false;
     }
 
     @Override
-    public void previous() {
+    public boolean previous() {
         if (mChapterInfo == null) {
-            return;
+            return false;
         }
         int chapter = getCurrentChapter();
         if (chapter > 0 && mProgress - mChapterInfo[chapter] < CHAPTER_MARGIN) {
@@ -165,7 +167,9 @@ public class MediaRendererModel implements PlayerModel {
         }
         if (chapter >= 0) {
             mMediaRenderer.seek(mChapterInfo[chapter], mShowToastOnError);
+            return true;
         }
+        return false;
     }
 
     private int getCurrentChapter() {

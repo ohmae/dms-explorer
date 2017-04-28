@@ -72,7 +72,8 @@
                 android:background="@drawable/bg_control_button"
                 android:onClick="@{() -> model.onClickPrevious()}"
                 android:padding="@dimen/control_button_padding"
-                android:visibility="@{model.skippable ? View.VISIBLE : View.INVISIBLE}"
+                android:alpha="@{model.previousEnabled ? 1.0f : 0.5f}"
+                android:enabled="@{model.previousEnabled}"
                 app:srcCompat="@drawable/ic_skip_previous"
                 />
 
@@ -98,7 +99,8 @@
                 android:background="@drawable/bg_control_button"
                 android:onClick="@{() -> model.onClickNext()}"
                 android:padding="@dimen/control_button_padding"
-                android:visibility="@{model.skippable ? View.VISIBLE : View.INVISIBLE}"
+                android:enabled="@{model.nextEnabled}"
+                android:alpha="@{model.nextEnabled ? 1.0f : 0.5f}"
                 app:srcCompat="@drawable/ic_skip_next"
                 />
 

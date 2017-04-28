@@ -28,11 +28,13 @@ import net.mm2d.dmsexplorer.domain.model.MoviePlayerModel;
 import net.mm2d.dmsexplorer.domain.model.PlaybackTargetModel;
 import net.mm2d.dmsexplorer.domain.model.PlayerModel;
 import net.mm2d.dmsexplorer.viewmodel.ControlPanelModel.OnCompletionListener;
+import net.mm2d.dmsexplorer.viewmodel.ControlPanelModel.SkipControlListener;
 
 /**
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
  */
-public class MovieActivityModel extends BaseObservable implements OnCompletionListener {
+public class MovieActivityModel extends BaseObservable
+        implements OnCompletionListener, SkipControlListener {
     @NonNull
     public final ControlPanelParam controlPanelParam;
 
@@ -43,24 +45,38 @@ public class MovieActivityModel extends BaseObservable implements OnCompletionLi
     private int mRightNavigationSize;
     @NonNull
     private final Activity mActivity;
+    @NonNull
+    private final VideoView mVideoView;
+    @NonNull
+    private final Repository mRepository;
 
     public MovieActivityModel(@NonNull final Activity activity,
                               @NonNull final VideoView videoView,
                               @NonNull final Repository repository) {
         mActivity = activity;
+        mVideoView = videoView;
+        mRepository = repository;
 
-        final PlaybackTargetModel targetModel = repository.getPlaybackTargetModel();
-        if (targetModel == null) {
-            throw new IllegalStateException();
-        }
-        final PlayerModel playerModel = new MoviePlayerModel(videoView);
-        mControlPanelModel = new ControlPanelModel(activity, playerModel);
-        mControlPanelModel.setOnCompletionListener(this);
-        playerModel.setUri(targetModel.getUri(), null);
-        mTitle = AribUtils.toDisplayableString(targetModel.getTitle());
         final int color = ContextCompat.getColor(activity, R.color.translucent_control);
         controlPanelParam = new ControlPanelParam();
         controlPanelParam.setBackgroundColor(color);
+        updateTargetModel();
+    }
+
+    private void updateTargetModel() {
+        final PlaybackTargetModel targetModel = mRepository.getPlaybackTargetModel();
+        if (targetModel == null) {
+            throw new IllegalStateException();
+        }
+        final PlayerModel playerModel = new MoviePlayerModel(mVideoView);
+        mControlPanelModel = new ControlPanelModel(mActivity, playerModel);
+        mControlPanelModel.setOnCompletionListener(this);
+        mControlPanelModel.setSkipControlListener(this);
+        playerModel.setUri(targetModel.getUri(), null);
+        mTitle = AribUtils.toDisplayableString(targetModel.getTitle());
+
+        notifyPropertyChanged(BR.title);
+        notifyPropertyChanged(BR.controlPanelModel);
     }
 
     public void adjustPanel(@NonNull final Activity activity) {
@@ -118,5 +134,13 @@ public class MovieActivityModel extends BaseObservable implements OnCompletionLi
     @Override
     public void onCompletion() {
         mActivity.onBackPressed();
+    }
+
+    @Override
+    public void next() {
+    }
+
+    @Override
+    public void previous() {
     }
 }

@@ -31,7 +31,21 @@ public class ControlPanelModel extends BaseObservable implements StatusListener 
         void onCompletion();
     }
 
+    interface SkipControlListener {
+        void next();
+        void previous();
+    }
+
     private static final OnCompletionListener ON_COMPLETION_LISTENER = () -> {
+    };
+    private static final SkipControlListener SKIP_CONTROL_LISTENER = new SkipControlListener() {
+        @Override
+        public void next() {
+        }
+
+        @Override
+        public void previous() {
+        }
     };
 
     private static String makeTimeText(int millisecond) {
@@ -53,7 +67,8 @@ public class ControlPanelModel extends BaseObservable implements StatusListener 
     private int mPlayButtonResId = R.drawable.ic_play;
     @NonNull
     private String mScrubText = "";
-    private boolean mSkippable;
+    private boolean mNextEnabled;
+    private boolean mPreviousEnabled;
 
     private boolean mTracking;
     @NonNull
@@ -62,11 +77,14 @@ public class ControlPanelModel extends BaseObservable implements StatusListener 
     private final PlayerModel mPlayerModel;
     @NonNull
     private OnCompletionListener mOnCompletionListener = ON_COMPLETION_LISTENER;
+    @NonNull
+    private SkipControlListener mSkipControlListener = SKIP_CONTROL_LISTENER;
 
     ControlPanelModel(@NonNull Context context, @NonNull PlayerModel playerModel) {
         mContext = context;
         mPlayerModel = playerModel;
         mPlayerModel.setStatusListener(this);
+        setPreviousEnabled(true);
     }
 
     void terminate() {
@@ -79,6 +97,10 @@ public class ControlPanelModel extends BaseObservable implements StatusListener 
 
     void setOnCompletionListener(@Nullable final OnCompletionListener listener) {
         mOnCompletionListener = listener != null ? listener : ON_COMPLETION_LISTENER;
+    }
+
+    void setSkipControlListener(@Nullable final SkipControlListener listener) {
+        mSkipControlListener = listener != null ? listener : SKIP_CONTROL_LISTENER;
     }
 
     public final ScrubBarListener seekBarListener = new ScrubBarListener() {
@@ -118,9 +140,15 @@ public class ControlPanelModel extends BaseObservable implements StatusListener 
     }
 
     public void onClickNext() {
+        if (!mPlayerModel.next()) {
+            mSkipControlListener.next();
+        }
     }
 
     public void onClickPrevious() {
+        if (!mPlayerModel.previous()) {
+            mSkipControlListener.previous();
+        }
     }
 
     @Bindable
@@ -237,13 +265,23 @@ public class ControlPanelModel extends BaseObservable implements StatusListener 
     }
 
     @Bindable
-    public boolean isSkippable() {
-        return mSkippable;
+    public boolean isNextEnabled() {
+        return mNextEnabled;
     }
 
-    public void setSkippable(final boolean skippable) {
-        mSkippable = skippable;
-        notifyPropertyChanged(BR.skippable);
+    public void setNextEnabled(final boolean nextEnabled) {
+        mNextEnabled = nextEnabled;
+        notifyPropertyChanged(BR.nextEnabled);
+    }
+
+    @Bindable
+    public boolean isPreviousEnabled() {
+        return mPreviousEnabled;
+    }
+
+    public void setPreviousEnabled(final boolean previousEnabled) {
+        mPreviousEnabled = previousEnabled;
+        notifyPropertyChanged(BR.previousEnabled);
     }
 
     @Override

@@ -17,11 +17,14 @@ import android.support.annotation.NonNull;
 import net.mm2d.dmsexplorer.domain.model.control.MediaControl;
 import net.mm2d.util.Log;
 
+import java.util.concurrent.TimeUnit;
+
 /**
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
  */
 public abstract class MediaPlayerModel implements PlayerModel, OnPreparedListener {
     private static final String TAG = MediaPlayerModel.class.getSimpleName();
+    private static final int SKIP_MARGIN = (int) TimeUnit.SECONDS.toMillis(3);
     private static final int MEDIA_ERROR_SYSTEM = -2147483648;
     private static final StatusListener STATUS_LISTENER = new StatusListenerAdapter();
 
@@ -161,11 +164,17 @@ public abstract class MediaPlayerModel implements PlayerModel, OnPreparedListene
     }
 
     @Override
-    public void next() {
+    public boolean next() {
+        return false;
     }
 
     @Override
-    public void previous() {
+    public boolean previous() {
+        if (mMediaControl.getCurrentPosition() < SKIP_MARGIN) {
+            return false;
+        }
+        seekTo(0);
+        return true;
     }
 
     @Override
