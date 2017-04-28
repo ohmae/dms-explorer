@@ -41,6 +41,8 @@ import java.util.List;
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
  */
 public class ContentListActivityModel extends BaseObservable implements ExploreListener {
+    private static final int INVALID_POSITON = -1;
+
     public interface CdsSelectListener {
         void onSelect(@NonNull View v, @NonNull CdsObject object, boolean alreadySelected);
 
@@ -68,6 +70,7 @@ public class ContentListActivityModel extends BaseObservable implements ExploreL
     @NonNull
     private String mSubtitle = "";
     private boolean mRefreshing;
+    private int mScrollPosition = INVALID_POSITON;
 
     private final Handler mHandler = new Handler(Looper.getMainLooper());
     @NonNull
@@ -170,11 +173,17 @@ public class ContentListActivityModel extends BaseObservable implements ExploreL
         final int afterSize = list.size();
         mContentListAdapter.clear();
         mContentListAdapter.addAll(list);
-        mContentListAdapter.setSelectedObject(mMediaServerModel.getSelectedObject());
+        final CdsObject object = mMediaServerModel.getSelectedObject();
+        mContentListAdapter.setSelectedObject(object);
         if (beforeSize < afterSize) {
             mContentListAdapter.notifyItemRangeInserted(beforeSize, afterSize - beforeSize);
         } else {
             mContentListAdapter.notifyDataSetChanged();
+        }
+        if (beforeSize == 0 && object != null) {
+            setScrollPosition(list.indexOf(object));
+        } else {
+            mScrollPosition = INVALID_POSITON;
         }
     }
 
@@ -186,5 +195,17 @@ public class ContentListActivityModel extends BaseObservable implements ExploreL
     public void terminate() {
         mMediaServerModel.terminate();
         mMediaServerModel.initialize();
+    }
+
+    // 選択項目を中央に表示させる処理
+    // FIXME: DataBindingを使ったことで返って複雑化してしまっている
+    @Bindable
+    public int getScrollPosition() {
+        return mScrollPosition;
+    }
+
+    public void setScrollPosition(final int position) {
+        mScrollPosition = position;
+        notifyPropertyChanged(BR.scrollPosition);
     }
 }
