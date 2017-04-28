@@ -107,12 +107,12 @@
                     android:id="@+id/text_progress"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
+                    android:layout_gravity="top"
                     android:layout_marginLeft="@dimen/control_counter_margin"
                     android:layout_marginStart="@dimen/control_counter_margin"
                     android:text="@{model.progressText}"
                     android:textColor="@color/textPrimary"
-                    android:textSize="@dimen/text_size_main"
+                    android:textSize="@dimen/text_size_counter"
                     />
 
                 <android.support.v4.widget.Space
@@ -170,12 +170,12 @@
                     android:id="@+id/text_duration"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
+                    android:layout_gravity="top"
                     android:layout_marginEnd="@dimen/control_counter_margin"
                     android:layout_marginRight="@dimen/control_counter_margin"
                     android:text="@{model.durationText}"
                     android:textColor="@color/textPrimary"
-                    android:textSize="@dimen/text_size_main"
+                    android:textSize="@dimen/text_size_counter"
                     />
             </LinearLayout>
 
@@ -184,7 +184,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="12dp"
+                android:layout_marginTop="@dimen/scrub_margin_top"
                 android:focusable="false"
                 android:focusableInTouchMode="false"
                 android:text="@{model.scrubText}"
