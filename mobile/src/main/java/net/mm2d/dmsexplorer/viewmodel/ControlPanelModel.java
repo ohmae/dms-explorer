@@ -17,8 +17,9 @@ import net.mm2d.dmsexplorer.BR;
 import net.mm2d.dmsexplorer.R;
 import net.mm2d.dmsexplorer.domain.model.PlayerModel;
 import net.mm2d.dmsexplorer.domain.model.PlayerModel.StatusListener;
+import net.mm2d.dmsexplorer.settings.RepeatMode;
 import net.mm2d.dmsexplorer.view.view.ScrubBar;
-import net.mm2d.dmsexplorer.view.view.ScrubBar.IntAccuracy;
+import net.mm2d.dmsexplorer.view.view.ScrubBar.Accuracy;
 import net.mm2d.dmsexplorer.view.view.ScrubBar.ScrubBarListener;
 
 import java.util.Locale;
@@ -33,6 +34,7 @@ public class ControlPanelModel extends BaseObservable implements StatusListener 
 
     interface SkipControlListener {
         void next();
+
         void previous();
     }
 
@@ -70,6 +72,9 @@ public class ControlPanelModel extends BaseObservable implements StatusListener 
     private boolean mNextEnabled;
     private boolean mPreviousEnabled;
 
+    @NonNull
+    private RepeatMode mRepeatMode = RepeatMode.PLAY_ONCE;
+    private boolean mError;
     private boolean mTracking;
     @NonNull
     private final Context mContext;
@@ -124,7 +129,7 @@ public class ControlPanelModel extends BaseObservable implements StatusListener 
         }
 
         @Override
-        public void onAccuracyChanged(final ScrubBar seekBar, @IntAccuracy final int accuracy) {
+        public void onAccuracyChanged(final ScrubBar seekBar, @Accuracy final int accuracy) {
             setScrubText(getScrubText(accuracy));
         }
     };
@@ -137,6 +142,20 @@ public class ControlPanelModel extends BaseObservable implements StatusListener 
             mPlayerModel.play();
         }
         setPlaying(!playing);
+    }
+
+    public void setRepeatMode(@NonNull final RepeatMode mode) {
+        mRepeatMode = mode;
+        switch (mode) {
+            case PLAY_ONCE:
+            case REPEAT_ONE:
+                setNextEnabled(false);
+                break;
+            case SEQUENTIAL:
+            case REPEAT_ALL:
+                setNextEnabled(true);
+                break;
+        }
     }
 
     public void onClickNext() {
@@ -305,6 +324,7 @@ public class ControlPanelModel extends BaseObservable implements StatusListener 
 
     @Override
     public boolean onError(final int what, final int extra) {
+        mError = true;
         return false;
     }
 
@@ -315,6 +335,10 @@ public class ControlPanelModel extends BaseObservable implements StatusListener 
 
     @Override
     public void onCompletion() {
+        if (!mError && mRepeatMode == RepeatMode.REPEAT_ONE) {
+            mPlayerModel.seekTo(0);
+            return;
+        }
         mOnCompletionListener.onCompletion();
     }
 }

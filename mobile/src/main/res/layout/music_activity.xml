@@ -34,23 +34,34 @@
                 android:theme="@style/AppTheme.AppBarOverlay"
                 android:title="@{model.title}"
                 app:popupTheme="@style/AppTheme.PopupOverlay"
-                />
+                >
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:background="@drawable/bg_tool_button"
+                    android:imageResource="@{model.repeatIconId}"
+                    android:onClick="@{() -> model.onClickRepeat()}"
+                    android:padding="@dimen/toolbar_button_padding"
+                    />
+            </android.support.v7.widget.Toolbar>
 
         </android.support.design.widget.AppBarLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginBottom="@dimen/seek_padding_top_negative"
             android:orientation="vertical"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
-            android:layout_marginBottom="@dimen/seek_padding_top_negative"
             >
 
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="1"
                 android:layout_marginBottom="@dimen/seek_padding_top_negative"
+                android:layout_weight="1"
                 >
 
                 <ImageView

@@ -9,6 +9,7 @@ package net.mm2d.dmsexplorer.settings;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 
@@ -41,18 +42,38 @@ public class Settings {
     }
 
     public boolean isPlayMovieMyself() {
-        return getPref().getBoolean(Key.LAUNCH_APP_MOVIE.name(), true);
+        return getPref().getBoolean(Key.PLAY_MOVIE_MYSELF.name(), true);
     }
 
     public boolean isPlayMusicMyself() {
-        return getPref().getBoolean(Key.LAUNCH_APP_MUSIC.name(), true);
+        return getPref().getBoolean(Key.PLAY_MUSIC_MYSELF.name(), true);
     }
 
     public boolean isPlayPhotoMyself() {
-        return getPref().getBoolean(Key.LAUNCH_APP_PHOTO.name(), true);
+        return getPref().getBoolean(Key.PLAY_PHOTO_MYSELF.name(), true);
     }
 
-    public boolean isMusicAutoPlay() {
-        return getPref().getBoolean(Key.MUSIC_AUTO_PLAY.name(), false);
+    public RepeatMode getRepeatModeMovie() {
+        final String name = getPref().getString(
+                Key.REPEAT_MODE_MOVIE.name(), RepeatMode.PLAY_ONCE.name());
+        return RepeatMode.of(name);
+    }
+
+    public void setRepeatModeMovie(@NonNull RepeatMode mode) {
+        final Editor editor = getPref().edit();
+        editor.putString(Key.REPEAT_MODE_MOVIE.name(), mode.name());
+        editor.apply();
+    }
+
+    public RepeatMode getRepeatModeMusic() {
+        final String name = getPref().getString(
+                Key.REPEAT_MODE_MUSIC.name(), RepeatMode.PLAY_ONCE.name());
+        return RepeatMode.of(name);
+    }
+
+    public void setRepeatModeMusic(@NonNull RepeatMode mode) {
+        final Editor editor = getPref().edit();
+        editor.putString(Key.REPEAT_MODE_MUSIC.name(), mode.name());
+        editor.apply();
     }
 }

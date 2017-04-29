@@ -19,13 +19,14 @@ import net.mm2d.dmsexplorer.Repository;
 import net.mm2d.dmsexplorer.databinding.MovieActivityBinding;
 import net.mm2d.dmsexplorer.util.FullscreenHelper;
 import net.mm2d.dmsexplorer.viewmodel.MovieActivityModel;
+import net.mm2d.dmsexplorer.viewmodel.MovieActivityModel.OnSwitchListener;
 
 /**
  * 動画再生のActivity。
  *
  * @author <a href="mailto:ryo@mm2d.net">大前良介(OHMAE Ryosuke)</a>
  */
-public class MovieActivity extends AppCompatActivity {
+public class MovieActivity extends AppCompatActivity implements OnSwitchListener {
     private static final String KEY_POSITION = "KEY_POSITION";
     private FullscreenHelper mFullscreenHelper;
     private MovieActivityModel mModel;
@@ -46,6 +47,7 @@ public class MovieActivity extends AppCompatActivity {
             finish();
             return;
         }
+        mModel.setOnSwitchListener(this);
         binding.setModel(mModel);
         mModel.adjustPanel(this);
         mFullscreenHelper.showNavigation();
@@ -96,5 +98,10 @@ public class MovieActivity extends AppCompatActivity {
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onSwitch() {
+        mFullscreenHelper.showNavigation();
     }
 }

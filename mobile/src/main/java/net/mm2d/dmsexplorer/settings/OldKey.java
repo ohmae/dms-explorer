@@ -10,17 +10,9 @@ package net.mm2d.dmsexplorer.settings;
 /**
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
  */
-public enum Key {
-    PLAY_MOVIE_MYSELF,
-    PLAY_MUSIC_MYSELF,
-    PLAY_PHOTO_MYSELF,
-    REPEAT_MODE_MOVIE,
-    REPEAT_MODE_MUSIC,
-    // 表示用
-    VERSION_NUMBER,
-    PLAY_STORE,
-    COPYRIGHT,
-    LICENSE,
-    // 設定バージョン
-    SETTINGS_VERSION,
+enum OldKey {
+    LAUNCH_APP_MOVIE,
+    LAUNCH_APP_MUSIC,
+    LAUNCH_APP_PHOTO,
+    MUSIC_AUTO_PLAY,
 }

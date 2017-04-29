@@ -49,9 +49,10 @@
 
             <TextView
                 android:id="@+id/toolbar_title"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
+                android:layout_weight="1"
                 android:ellipsize="end"
                 android:maxLines="1"
                 android:text="@{model.title}"
@@ -59,6 +60,15 @@
                 android:textSize="@dimen/text_size_toolbar"
                 />
 
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:background="@drawable/bg_tool_button"
+                android:imageResource="@{model.repeatIconId}"
+                android:onClick="@{() -> model.onClickRepeat()}"
+                android:padding="@dimen/toolbar_button_padding"
+                />
         </LinearLayout>
 
         <include

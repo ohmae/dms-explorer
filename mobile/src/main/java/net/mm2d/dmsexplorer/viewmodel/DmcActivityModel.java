@@ -28,7 +28,7 @@ import net.mm2d.dmsexplorer.domain.model.PlayerModel;
 import net.mm2d.dmsexplorer.domain.model.PlayerModel.StatusListener;
 import net.mm2d.dmsexplorer.view.adapter.ContentPropertyAdapter;
 import net.mm2d.dmsexplorer.view.view.ScrubBar;
-import net.mm2d.dmsexplorer.view.view.ScrubBar.IntAccuracy;
+import net.mm2d.dmsexplorer.view.view.ScrubBar.Accuracy;
 import net.mm2d.dmsexplorer.view.view.ScrubBar.ScrubBarListener;
 
 import java.util.Locale;
@@ -127,7 +127,7 @@ public class DmcActivityModel extends BaseObservable implements StatusListener {
             }
 
             @Override
-            public void onAccuracyChanged(final ScrubBar seekBar, @IntAccuracy final int accuracy) {
+            public void onAccuracyChanged(final ScrubBar seekBar, @Accuracy final int accuracy) {
                 setScrubText(getAccuracyText(accuracy));
             }
         };

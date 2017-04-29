@@ -7,6 +7,10 @@
     <string name="toast_not_support_drm">著作権保護されたコンテンツの再生には対応していません</string>
     <string name="toast_command_error_occurred">エラーが発生しました</string>
     <string name="toast_download_error_occurred">エラーが発生しました</string>
+    <string name="toast_repeat_play_once">自動再生しません</string>
+    <string name="toast_repeat_sequential">フォルダの最後まで自動再生</string>
+    <string name="toast_repeat_repeat_all">フォルダ全体をリピート</string>
+    <string name="toast_repeat_repeat_one">現在のコンテンツをリピート</string>
     <string name="seek_bar_scrub_normal">seek (x1/1)</string>
     <string name="seek_bar_scrub_half">seek (x1/2)</string>
     <string name="seek_bar_scrub_quarter">seek (x1/4)</string>

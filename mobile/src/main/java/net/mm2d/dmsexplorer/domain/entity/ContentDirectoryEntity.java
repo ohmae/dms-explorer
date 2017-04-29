@@ -20,7 +20,7 @@ import java.util.List;
 /**
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
  */
-public class ContentDirectoryEntry implements StatusListener {
+public class ContentDirectoryEntity implements StatusListener {
     private static final String ROOT_OBJECT_ID = "0";
     private static final String ROOT_TITLE = "";
     private final String mParentId;
@@ -36,11 +36,11 @@ public class ContentDirectoryEntry implements StatusListener {
         void onUpdate(@NonNull List<CdsObject> list, boolean inProgress);
     }
 
-    public ContentDirectoryEntry() {
+    public ContentDirectoryEntity() {
         this(ROOT_OBJECT_ID, ROOT_TITLE);
     }
 
-    public ContentDirectoryEntry(@NonNull final String parentId, @NonNull final String parentTitle) {
+    public ContentDirectoryEntity(@NonNull final String parentId, @NonNull final String parentTitle) {
         mParentId = parentId;
         mParentTitle = parentTitle;
     }
@@ -69,7 +69,7 @@ public class ContentDirectoryEntry implements StatusListener {
         return mList;
     }
 
-    public ContentDirectoryEntry enterChild(@NonNull final CdsObject object) {
+    public ContentDirectoryEntity enterChild(@NonNull final CdsObject object) {
         if (!mList.contains(object)) {
             return null;
         }
@@ -77,7 +77,7 @@ public class ContentDirectoryEntry implements StatusListener {
             return null;
         }
         mSelectedObject = object;
-        return new ContentDirectoryEntry(object.getObjectId(), object.getTitle());
+        return new ContentDirectoryEntity(object.getObjectId(), object.getTitle());
     }
 
     public void setSelectedObject(@Nullable final CdsObject object) {

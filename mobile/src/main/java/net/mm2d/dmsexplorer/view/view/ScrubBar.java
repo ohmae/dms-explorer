@@ -33,7 +33,7 @@ import java.lang.annotation.RetentionPolicy;
 public class ScrubBar extends View {
     @Retention(RetentionPolicy.SOURCE)
     @IntDef({ACCURACY_NORMAL, ACCURACY_HALF, ACCURACY_QUARTER})
-    public @interface IntAccuracy {
+    public @interface Accuracy {
     }
 
     public static final int ACCURACY_NORMAL = 0;
@@ -55,7 +55,7 @@ public class ScrubBar extends View {
 
         void onStopTrackingTouch(ScrubBar seekBar);
 
-        void onAccuracyChanged(ScrubBar seekBar, @IntAccuracy int accuracy);
+        void onAccuracyChanged(ScrubBar seekBar, @Accuracy int accuracy);
     }
 
     private static final ScrubBarListener LISTENER = new ScrubBarListener() {
@@ -72,7 +72,7 @@ public class ScrubBar extends View {
         }
 
         @Override
-        public void onAccuracyChanged(final ScrubBar seekBar, @IntAccuracy final int accuracy) {
+        public void onAccuracyChanged(final ScrubBar seekBar, @Accuracy final int accuracy) {
         }
     };
 
@@ -162,31 +162,37 @@ public class ScrubBar extends View {
     public void setProgressColor(@ColorInt final int color) {
         mEnabledProgressColor = color;
         mProgressColor = isEnabled() ? mEnabledProgressColor : mDisabledProgressColor;
+        invalidate();
     }
 
     public void setTrackColor(@ColorInt final int color) {
         mEnabledTrackColor = color;
         mTrackColor = isEnabled() ? mEnabledTrackColor : mDisabledTrackColor;
+        invalidate();
     }
 
     public void setDisabledProgressColor(@ColorInt final int color) {
         mDisabledProgressColor = color;
         mProgressColor = isEnabled() ? mEnabledProgressColor : mDisabledProgressColor;
+        invalidate();
     }
 
     public void setDisabledTrackColor(@ColorInt final int color) {
         mDisabledTrackColor = color;
         mTrackColor = isEnabled() ? mEnabledTrackColor : mDisabledTrackColor;
+        invalidate();
     }
 
     public void setSectionColor(@ColorInt final int color) {
         mEnabledSectionColor = color;
         mSectionColor = isEnabled() ? mEnabledSectionColor : mDisabledSectionColor;
+        invalidate();
     }
 
     public void setDisabledSectionColor(@ColorInt final int color) {
         mDisabledSectionColor = color;
         mSectionColor = isEnabled() ? mEnabledSectionColor : mDisabledSectionColor;
+        invalidate();
     }
 
     public void setScrubThreshold(final int threshold) {
@@ -195,10 +201,12 @@ public class ScrubBar extends View {
 
     public void setTopBackgroundColor(@ColorInt final int color) {
         mTopBackgroundColor = color;
+        invalidate();
     }
 
     public void setBottomBackgroundColor(@ColorInt final int color) {
         mBottomBackgroundColor = color;
+        invalidate();
     }
 
     private static class SavedState extends BaseSavedState {

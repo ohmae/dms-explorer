@@ -12,16 +12,21 @@ import android.databinding.BaseObservable;
 import android.databinding.Bindable;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
+import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.widget.Toast;
 
 import net.mm2d.android.upnp.cds.CdsObject;
 import net.mm2d.android.util.AribUtils;
 import net.mm2d.dmsexplorer.BR;
 import net.mm2d.dmsexplorer.Repository;
+import net.mm2d.dmsexplorer.domain.model.MediaServerModel;
 import net.mm2d.dmsexplorer.domain.model.MusicPlayerModel;
 import net.mm2d.dmsexplorer.domain.model.PlaybackTargetModel;
 import net.mm2d.dmsexplorer.domain.model.PlayerModel;
+import net.mm2d.dmsexplorer.settings.RepeatMode;
+import net.mm2d.dmsexplorer.settings.Settings;
 import net.mm2d.dmsexplorer.util.DownloadUtils;
 import net.mm2d.dmsexplorer.util.ThemeUtils;
 import net.mm2d.dmsexplorer.view.adapter.ContentPropertyAdapter;
@@ -47,35 +52,39 @@ public class MusicActivityModel extends BaseObservable
     private byte[] mImageBinary;
 
     @NonNull
+    private RepeatMode mRepeatMode;
+    @DrawableRes
+    private int mRepeatIconId;
+    @Nullable
+    private Toast mToast;
+
+    @NonNull
     private final Activity mActivity;
     @NonNull
     private final Repository mRepository;
+    @NonNull
+    private final MediaServerModel mServerModel;
+    @NonNull
+    private final Settings mSettings;
 
     public MusicActivityModel(@NonNull final Activity activity,
                               @NonNull final Repository repository) {
         mActivity = activity;
         mRepository = repository;
+        mServerModel = repository.getMediaServerModel();
+        mSettings = new Settings(activity);
+        mRepeatMode = mSettings.getRepeatModeMusic();
+        mRepeatIconId = mRepeatMode.getIconId();
 
         controlPanelParam = new ControlPanelParam();
         updateTargetModel();
-    }
-
-    public void terminate() {
-        mControlPanelModel.terminate();
-    }
-
-    public void restoreSaveProgress(final int position) {
-        mControlPanelModel.restoreSaveProgress(position);
-    }
-
-    public int getCurrentProgress() {
-        return mControlPanelModel.getProgress();
     }
 
     private void updateTargetModel() {
         final PlaybackTargetModel targetModel = mRepository.getPlaybackTargetModel();
         final PlayerModel playerModel = new MusicPlayerModel(mActivity);
         mControlPanelModel = new ControlPanelModel(mActivity, playerModel);
+        mControlPanelModel.setRepeatMode(mRepeatMode);
         mControlPanelModel.setOnCompletionListener(this);
         mControlPanelModel.setSkipControlListener(this);
         playerModel.setUri(targetModel.getUri(), null);
@@ -101,6 +110,45 @@ public class MusicActivityModel extends BaseObservable
         if (url != null) {
             DownloadUtils.async(url, this::setImageBinary);
         }
+    }
+
+    public void terminate() {
+        mControlPanelModel.terminate();
+    }
+
+    public void restoreSaveProgress(final int position) {
+        mControlPanelModel.restoreSaveProgress(position);
+    }
+
+    public int getCurrentProgress() {
+        return mControlPanelModel.getProgress();
+    }
+
+    public void onClickRepeat() {
+        mRepeatMode = mRepeatMode.next();
+        mControlPanelModel.setRepeatMode(mRepeatMode);
+        setRepeatIconId(mRepeatMode.getIconId());
+        mSettings.setRepeatModeMusic(mRepeatMode);
+
+        showRepeatToast();
+    }
+
+    private void showRepeatToast() {
+        if (mToast != null) {
+            mToast.cancel();
+        }
+        mToast = Toast.makeText(mActivity, mRepeatMode.getMessageId(), Toast.LENGTH_LONG);
+        mToast.show();
+    }
+
+    @Bindable
+    public int getRepeatIconId() {
+        return mRepeatIconId;
+    }
+
+    public void setRepeatIconId(@DrawableRes final int id) {
+        mRepeatIconId = id;
+        notifyPropertyChanged(BR.repeatIconId);
     }
 
     @Nullable
@@ -140,7 +188,7 @@ public class MusicActivityModel extends BaseObservable
     @Override
     public void onCompletion() {
         mControlPanelModel.terminate();
-        if (!mRepository.getMediaServerModel().selectNextObject()) {
+        if (!selectNext()) {
             mActivity.onBackPressed();
             return;
         }
@@ -149,9 +197,49 @@ public class MusicActivityModel extends BaseObservable
 
     @Override
     public void next() {
+        mControlPanelModel.terminate();
+        if (!selectNext()) {
+            mActivity.onBackPressed();
+            return;
+        }
+        updateTargetModel();
     }
 
     @Override
     public void previous() {
+        mControlPanelModel.terminate();
+        if (!selectPrevious()) {
+            mActivity.onBackPressed();
+            return;
+        }
+        updateTargetModel();
+    }
+
+    private boolean selectNext() {
+        switch (mRepeatMode) {
+            case PLAY_ONCE:
+                return false;
+            case SEQUENTIAL:
+                return mServerModel.selectNextObject(MediaServerModel.SCAN_MODE_SEQUENTIAL);
+            case REPEAT_ALL:
+                return mServerModel.selectNextObject(MediaServerModel.SCAN_MODE_LOOP);
+            case REPEAT_ONE:
+                return false;
+        }
+        return false;
+    }
+
+    private boolean selectPrevious() {
+        switch (mRepeatMode) {
+            case PLAY_ONCE:
+                return false;
+            case SEQUENTIAL:
+                return mServerModel.selectPreviousObject(MediaServerModel.SCAN_MODE_SEQUENTIAL);
+            case REPEAT_ALL:
+                return mServerModel.selectPreviousObject(MediaServerModel.SCAN_MODE_LOOP);
+            case REPEAT_ONE:
+                return false;
+        }
+        return false;
     }
 }

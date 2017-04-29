@@ -6,7 +6,7 @@
         >
         <SwitchPreference
             android:defaultValue="true"
-            android:key="LAUNCH_APP_MOVIE"
+            android:key="PLAY_MOVIE_MYSELF"
             android:summaryOff="@string/pref_message_launch_app_off"
             android:summaryOn="@string/pref_message_launch_app_on"
             android:title="@string/pref_title_launch_app_movie"
@@ -18,18 +18,10 @@
         >
         <SwitchPreference
             android:defaultValue="true"
-            android:key="LAUNCH_APP_MUSIC"
+            android:key="PLAY_MUSIC_MYSELF"
             android:summaryOff="@string/pref_message_launch_app_off"
             android:summaryOn="@string/pref_message_launch_app_on"
             android:title="@string/pref_title_launch_app_music"
-            />
-        <SwitchPreference
-            android:defaultValue="false"
-            android:dependency="LAUNCH_APP_MUSIC"
-            android:key="MUSIC_AUTO_PLAY"
-            android:summaryOff="@string/pref_message_music_auto_play_off"
-            android:summaryOn="@string/pref_message_music_auto_play_on"
-            android:title="@string/pref_title_music_auto_play"
             />
     </PreferenceCategory>
 
@@ -38,7 +30,7 @@
         >
         <SwitchPreference
             android:defaultValue="true"
-            android:key="LAUNCH_APP_PHOTO"
+            android:key="PLAY_PHOTO_MYSELF"
             android:summaryOff="@string/pref_message_launch_app_off"
             android:summaryOn="@string/pref_message_launch_app_on"
             android:title="@string/pref_title_launch_app_photo"

@@ -103,6 +103,14 @@ public class ContentListAdapter
         return position;
     }
 
+    public int indexOf(@NonNull final CdsObject obj) {
+        return mList.indexOf(obj);
+    }
+
+    public CdsObject getSelectedObject() {
+        return mSelectedObject;
+    }
+
     public void setSelectedObject(@Nullable final CdsObject object) {
         if (mSelectedObject != null && mSelectedObject.equals(object)) {
             return;

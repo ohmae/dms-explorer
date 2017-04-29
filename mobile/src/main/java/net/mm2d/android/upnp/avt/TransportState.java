@@ -36,6 +36,6 @@ public enum TransportState {
     @NonNull
     public static TransportState of(final String value) {
         final TransportState state = sMap.get(value);
-        return state == null ? OTHER : state;
+        return state != null ? state : OTHER;
     }
 }

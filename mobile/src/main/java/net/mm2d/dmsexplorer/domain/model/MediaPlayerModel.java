@@ -161,6 +161,8 @@ public abstract class MediaPlayerModel implements PlayerModel, OnPreparedListene
     @Override
     public void seekTo(int position) {
         mMediaControl.seekTo(position);
+        mHandler.removeCallbacks(mGetPositionTask);
+        mHandler.post(mGetPositionTask);
     }
 
     @Override
