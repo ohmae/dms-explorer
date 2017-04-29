@@ -12,12 +12,14 @@ import android.databinding.DataBindingUtil;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.RecyclerView.Adapter;
 import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import net.mm2d.dmsexplorer.R;
 import net.mm2d.dmsexplorer.databinding.PropertyListItemBinding;
+import net.mm2d.dmsexplorer.view.adapter.PropertyAdapter.ViewHolder;
 import net.mm2d.dmsexplorer.view.adapter.property.DescriptionFormatter;
 import net.mm2d.dmsexplorer.view.adapter.property.LinkFormatter;
 import net.mm2d.dmsexplorer.view.adapter.property.PropertyFormatter;
@@ -26,16 +28,13 @@ import net.mm2d.dmsexplorer.viewmodel.PropertyItemModel;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Pattern;
 
 /**
  * 詳細情報の各項目をRecyclerViewを使用して表示するためのAdapter。
  *
  * @author <a href="mailto:ryo@mm2d.net">大前良介(OHMAE Ryosuke)</a>
  */
-public class PropertyAdapter
-        extends RecyclerView.Adapter<PropertyAdapter.ViewHolder> {
-
+public class PropertyAdapter extends Adapter<ViewHolder> {
     public static final String TITLE_PREFIX = "##";
 
     enum Type {
@@ -120,9 +119,6 @@ public class PropertyAdapter
     public int getItemCount() {
         return mList.size();
     }
-
-    private static final Pattern URL_PATTERN =
-            Pattern.compile("https?://[\\w/:%#\\$&\\?\\(\\)~\\.=\\+\\-]+");
 
     static class ViewHolder extends RecyclerView.ViewHolder {
         private final PropertyListItemBinding mBinding;

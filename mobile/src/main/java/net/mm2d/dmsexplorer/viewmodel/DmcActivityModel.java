@@ -7,69 +7,53 @@
 
 package net.mm2d.dmsexplorer.viewmodel;
 
-import android.content.Context;
+import android.app.Activity;
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
-import android.graphics.drawable.Drawable;
-import android.os.Build.VERSION;
-import android.os.Build.VERSION_CODES;
+import android.net.Uri;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.view.View;
-import android.widget.SeekBar;
-import android.widget.SeekBar.OnSeekBarChangeListener;
+import android.widget.Toast;
 
-import net.mm2d.android.upnp.avt.MediaRenderer;
 import net.mm2d.android.upnp.cds.CdsObject;
 import net.mm2d.android.util.AribUtils;
 import net.mm2d.dmsexplorer.BR;
 import net.mm2d.dmsexplorer.R;
 import net.mm2d.dmsexplorer.Repository;
-import net.mm2d.dmsexplorer.domain.model.MediaRendererModel;
 import net.mm2d.dmsexplorer.domain.model.MediaServerModel;
 import net.mm2d.dmsexplorer.domain.model.PlaybackTargetModel;
+import net.mm2d.dmsexplorer.domain.model.PlayerModel;
+import net.mm2d.dmsexplorer.domain.model.PlayerModel.StatusListener;
 import net.mm2d.dmsexplorer.view.adapter.ContentPropertyAdapter;
+import net.mm2d.dmsexplorer.view.view.ScrubBar;
+import net.mm2d.dmsexplorer.view.view.ScrubBar.Accuracy;
+import net.mm2d.dmsexplorer.view.view.ScrubBar.ScrubBarListener;
 
-import java.util.List;
 import java.util.Locale;
 
 /**
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
  */
-public class DmcActivityModel extends BaseObservable
-        implements MediaRendererModel.ControlListener {
+public class DmcActivityModel extends BaseObservable implements StatusListener {
+    private static final long TRACKING_DELAY = 1000L;
     private static final char EN_SPACE = 0x2002; // &ensp;
+    @NonNull
     public final String title;
+    @NonNull
     public final String subtitle;
+    @NonNull
     public final ContentPropertyAdapter propertyAdapter;
     public final int imageResource;
-    public final Drawable progressDrawable;
     public final boolean isPlayControlEnabled;
     public final boolean isStillContents;
-    public final OnSeekBarChangeListener onSeekBarChangeListener = new OnSeekBarChangeListener() {
-        @Override
-        public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-            if (fromUser) {
-                setProgressText(progress);
-            }
-        }
+    @NonNull
+    public final ScrubBarListener seekBarListener;
 
-        @Override
-        public void onStartTrackingTouch(SeekBar seekBar) {
-            mHandler.removeCallbacks(mTrackingCancel);
-            mTracking = true;
-        }
-
-        @Override
-        public void onStopTrackingTouch(SeekBar seekBar) {
-            mMediaRendererModel.seek(seekBar.getProgress());
-            mHandler.postDelayed(mTrackingCancel, 1000);
-        }
-    };
-
+    @NonNull
     private String mProgressText = makeTimeText(0);
+    @NonNull
     private String mDurationText = makeTimeText(0);
     private boolean mPlaying;
     private boolean mPrepared;
@@ -77,68 +61,86 @@ public class DmcActivityModel extends BaseObservable
     private int mProgress;
     private boolean mSeekable;
     private int mPlayButtonResId;
+    @NonNull
+    private String mScrubText = "";
     @Nullable
-    private List<Integer> mChapterInfo;
+    private int[] mChapterInfo;
     private boolean mChapterInfoEnabled;
 
+    @NonNull
     private final Handler mHandler = new Handler(Looper.getMainLooper());
-    private final Context mContext;
+    @NonNull
+    private final Activity mActivity;
+    @NonNull
+    private final PlaybackTargetModel mTargetModel;
+    @NonNull
+    private final PlayerModel mRendererModel;
     private boolean mTracking;
-    private final PlaybackTargetModel mPlaybackTargetModel;
-    private final MediaRendererModel mMediaRendererModel;
 
     @NonNull
-    private final Runnable mTrackingCancel = new Runnable() {
-        @Override
-        public void run() {
-            mTracking = false;
-        }
-    };
+    private final Runnable mTrackingCancel;
 
-    public static DmcActivityModel create(@NonNull final Context context,
-                                          @NonNull final Repository repository) {
-        final MediaServerModel serverModel = repository.getMediaServerModel();
-        final MediaRendererModel rendererModel = repository.getMediaRendererModel();
+    public DmcActivityModel(@NonNull final Activity activity,
+                            @NonNull final Repository repository) {
+        mActivity = activity;
         final PlaybackTargetModel targetModel = repository.getPlaybackTargetModel();
-        if (serverModel == null || rendererModel == null
-                || targetModel == null || targetModel.getUri() == null) {
-            return null;
+        final PlayerModel playerModel = repository.getMediaRendererModel();
+        if (playerModel == null || targetModel == null || targetModel.getUri() == null) {
+            throw new IllegalStateException();
         }
-        return new DmcActivityModel(context, targetModel, serverModel, rendererModel);
-    }
+        mTargetModel = targetModel;
+        mRendererModel = playerModel;
+        mRendererModel.setStatusListener(this);
+        mPlayButtonResId = R.drawable.ic_play;
 
-    private DmcActivityModel(@NonNull final Context context,
-                             @NonNull final PlaybackTargetModel targetModel,
-                             @NonNull final MediaServerModel serverModel,
-                             @NonNull final MediaRendererModel rendererModel) {
-        mContext = context;
-        mPlaybackTargetModel = targetModel;
-        mMediaRendererModel = rendererModel;
-        mMediaRendererModel.setControlListener(this);
-        final CdsObject cdsObject = targetModel.getCdsObject();
+        final CdsObject cdsObject = mTargetModel.getCdsObject();
         title = AribUtils.toDisplayableString(cdsObject.getTitle());
-        final MediaRenderer mediaRenderer = rendererModel.getMediaRenderer();
         isStillContents = cdsObject.getType() == CdsObject.TYPE_IMAGE;
-        isPlayControlEnabled = !isStillContents && mediaRenderer.isSupportPause();
-        subtitle = mediaRenderer.getFriendlyName()
+        isPlayControlEnabled = !isStillContents && mRendererModel.canPause();
+        final MediaServerModel serverModel = repository.getMediaServerModel();
+        subtitle = mRendererModel.getName()
                 + "  ←  "
                 + serverModel.getMediaServer().getFriendlyName();
-        propertyAdapter = new ContentPropertyAdapter(context, cdsObject);
+        propertyAdapter = new ContentPropertyAdapter(mActivity, cdsObject);
         imageResource = getImageResource(cdsObject);
-        if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
-            progressDrawable = context.getDrawable(R.drawable.seekbar_track);
-        } else {
-            progressDrawable = null;
-        }
-        mPlayButtonResId = R.drawable.ic_play;
+
+        mTrackingCancel = () -> mTracking = false;
+        seekBarListener = new ScrubBarListener() {
+            @Override
+            public void onProgressChanged(ScrubBar seekBar, int progress, boolean fromUser) {
+                if (fromUser) {
+                    setProgressText(progress);
+                }
+            }
+
+            @Override
+            public void onStartTrackingTouch(ScrubBar seekBar) {
+                mHandler.removeCallbacks(mTrackingCancel);
+                mTracking = true;
+            }
+
+            @Override
+            public void onStopTrackingTouch(ScrubBar seekBar) {
+                mRendererModel.seekTo(seekBar.getProgress());
+                mHandler.postDelayed(mTrackingCancel, TRACKING_DELAY);
+                setScrubText("");
+            }
+
+            @Override
+            public void onAccuracyChanged(final ScrubBar seekBar, @Accuracy final int accuracy) {
+                setScrubText(getAccuracyText(accuracy));
+            }
+        };
     }
 
     public void initialize() {
-        mMediaRendererModel.start(mPlaybackTargetModel);
+        final Uri uri = mTargetModel.getUri();
+        final CdsObject object = mTargetModel.getCdsObject();
+        mRendererModel.setUri(uri, object);
     }
 
     public void terminate() {
-        mMediaRendererModel.stop();
+        mRendererModel.terminate();
     }
 
     @Bindable
@@ -168,6 +170,7 @@ public class DmcActivityModel extends BaseObservable
         setChapterInfoEnabled();
     }
 
+    @NonNull
     @Bindable
     public String getProgressText() {
         return mProgressText;
@@ -178,6 +181,7 @@ public class DmcActivityModel extends BaseObservable
         notifyPropertyChanged(BR.progressText);
     }
 
+    @NonNull
     @Bindable
     public String getDurationText() {
         return mDurationText;
@@ -188,7 +192,7 @@ public class DmcActivityModel extends BaseObservable
         notifyPropertyChanged(BR.durationText);
     }
 
-    public void setPlaying(final boolean playing) {
+    private void setPlaying(final boolean playing) {
         if (mPlaying == playing) {
             return;
         }
@@ -196,12 +200,36 @@ public class DmcActivityModel extends BaseObservable
         setPlayButtonResId(playing ? R.drawable.ic_pause : R.drawable.ic_play);
     }
 
+    @NonNull
+    @Bindable
+    public String getScrubText() {
+        return mScrubText;
+    }
+
+    private String getAccuracyText(final int accuracy) {
+        switch (accuracy) {
+            case ScrubBar.ACCURACY_NORMAL:
+                return mActivity.getString(R.string.seek_bar_scrub_normal);
+            case ScrubBar.ACCURACY_HALF:
+                return mActivity.getString(R.string.seek_bar_scrub_half);
+            case ScrubBar.ACCURACY_QUARTER:
+                return mActivity.getString(R.string.seek_bar_scrub_quarter);
+            default:
+                return "";
+        }
+    }
+
+    private void setScrubText(@NonNull final String scrubText) {
+        mScrubText = scrubText;
+        notifyPropertyChanged(BR.scrubText);
+    }
+
     @Bindable
     public int getPlayButtonResId() {
         return mPlayButtonResId;
     }
 
-    public void setPlayButtonResId(final int playButtonResId) {
+    private void setPlayButtonResId(final int playButtonResId) {
         mPlayButtonResId = playButtonResId;
         notifyPropertyChanged(BR.playButtonResId);
     }
@@ -228,11 +256,11 @@ public class DmcActivityModel extends BaseObservable
 
     @Bindable
     @Nullable
-    public List<Integer> getChapterInfo() {
+    public int[] getChapterInfo() {
         return mChapterInfo;
     }
 
-    private void setChapterInfo(@Nullable final List<Integer> chapterInfo) {
+    private void setChapterInfo(@Nullable final int[] chapterInfo) {
         mChapterInfo = chapterInfo;
         notifyPropertyChanged(BR.chapterInfo);
         setChapterInfoEnabled();
@@ -241,7 +269,7 @@ public class DmcActivityModel extends BaseObservable
         }
         mHandler.post(() -> {
             final int count = propertyAdapter.getItemCount();
-            propertyAdapter.addEntry(mContext.getString(R.string.prop_chapter_info),
+            propertyAdapter.addEntry(mActivity.getString(R.string.prop_chapter_info),
                     makeChapterString(chapterInfo));
             propertyAdapter.notifyItemInserted(count);
         });
@@ -277,9 +305,9 @@ public class DmcActivityModel extends BaseObservable
     }
 
     @NonNull
-    private static String makeChapterString(@NonNull final List<Integer> chapterInfo) {
+    private static String makeChapterString(@NonNull final int[] chapterInfo) {
         final StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < chapterInfo.size(); i++) {
+        for (int i = 0; i < chapterInfo.length; i++) {
             if (sb.length() != 0) {
                 sb.append("\n");
             }
@@ -288,35 +316,38 @@ public class DmcActivityModel extends BaseObservable
             }
             sb.append(String.valueOf(i + 1));
             sb.append(" : ");
-            final int chapter = chapterInfo.get(i);
+            final int chapter = chapterInfo[i];
             sb.append(makeTimeText(chapter));
         }
         return sb.toString();
     }
 
-    public void onClickPlay(final View view) {
+    public void onClickPlay() {
         if (mPlaying) {
-            mMediaRendererModel.pause();
+            mRendererModel.pause();
         } else {
-            mMediaRendererModel.play();
+            mRendererModel.play();
         }
     }
 
-    public void onClickNext(final View view) {
-        mMediaRendererModel.nextChapter();
+    public void onClickNext() {
+        mRendererModel.next();
     }
 
-    public void onClickPrevious(final View view) {
-        mMediaRendererModel.previousChapter();
+    public void onClickPrevious() {
+        mRendererModel.previous();
     }
 
     @Override
-    public void notifyPosition(final int progress, final int duration) {
+    public void notifyDuration(final int duration) {
         setDuration(duration);
-        if (mTracking) {
-            return;
+    }
+
+    @Override
+    public void notifyProgress(final int progress) {
+        if (!mTracking) {
+            setProgress(progress);
         }
-        setProgress(progress);
     }
 
     @Override
@@ -325,7 +356,27 @@ public class DmcActivityModel extends BaseObservable
     }
 
     @Override
-    public void notifyChapterInfo(@Nullable final List<Integer> chapterInfo) {
+    public void notifyChapterInfo(@Nullable final int[] chapterInfo) {
         setChapterInfo(chapterInfo);
+    }
+
+    @Override
+    public boolean onError(final int what, final int extra) {
+        showToast(R.string.toast_command_error_occurred);
+        return false;
+    }
+
+    private void showToast(int resId) {
+        Toast.makeText(mActivity, resId, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public boolean onInfo(final int what, final int extra) {
+        return false;
+    }
+
+    @Override
+    public void onCompletion() {
+        mActivity.onBackPressed();
     }
 }

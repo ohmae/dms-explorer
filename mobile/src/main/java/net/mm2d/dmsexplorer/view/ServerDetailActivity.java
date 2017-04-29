@@ -12,8 +12,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.databinding.DataBindingUtil;
-import android.os.Build.VERSION;
-import android.os.Build.VERSION_CODES;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -55,33 +54,32 @@ public class ServerDetailActivity extends AppCompatActivity {
     protected void onCreate(@Nullable final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.server_detail_activity);
-        mBinding = DataBindingUtil.findBinding(findViewById(R.id.serverDetailFragment));
+        mBinding = DataBindingUtil.findBinding(findViewById(R.id.server_detail_fragment));
         if (mBinding == null) {
             finish();
             return;
         }
         setSupportActionBar(mBinding.serverDetailToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().setStatusBarColor(
                     ThemeUtils.getDarkerColor(mBinding.getModel().collapsedColor));
         }
 
-        final boolean hasTransition = getIntent().getBooleanExtra(Const.EXTRA_HAS_TRANSITION, false);
-        prepareTransition(hasTransition && savedInstanceState == null);
+        prepareTransition(savedInstanceState != null);
     }
 
-    private void prepareTransition(final boolean hasTransition) {
-        if (VERSION.SDK_INT < VERSION_CODES.LOLLIPOP) {
+    private void prepareTransition(final boolean hasState) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
             return;
         }
         mBinding.toolbarIcon.setTransitionName(Const.SHARE_ELEMENT_NAME_DEVICE_ICON);
-        if (!hasTransition) {
+        if (hasState) {
             return;
         }
         mBinding.toolbarBackground.setVisibility(View.INVISIBLE);
         getWindow().getSharedElementEnterTransition().addListener(new TransitionListenerAdapter() {
-            @TargetApi(VERSION_CODES.KITKAT)
+            @TargetApi(Build.VERSION_CODES.KITKAT)
             @Override
             public void onTransitionEnd(final Transition transition) {
                 transition.removeListener(this);
@@ -90,7 +88,7 @@ public class ServerDetailActivity extends AppCompatActivity {
         });
     }
 
-    @TargetApi(VERSION_CODES.LOLLIPOP)
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     private void startAnimation(@NonNull final View background) {
         if (!background.isAttachedToWindow()) {
             return;

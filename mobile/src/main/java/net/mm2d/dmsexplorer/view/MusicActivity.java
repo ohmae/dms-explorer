@@ -8,22 +8,15 @@
 package net.mm2d.dmsexplorer.view;
 
 import android.databinding.DataBindingUtil;
-import android.media.AudioManager;
-import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
-import net.mm2d.android.upnp.cds.CdsObject;
 import net.mm2d.dmsexplorer.R;
 import net.mm2d.dmsexplorer.Repository;
 import net.mm2d.dmsexplorer.databinding.MusicActivityBinding;
-import net.mm2d.dmsexplorer.domain.model.PlaybackTargetModel;
-import net.mm2d.dmsexplorer.util.ImageViewUtils;
+import net.mm2d.dmsexplorer.util.RepeatIntroductionUtils;
 import net.mm2d.dmsexplorer.viewmodel.MusicActivityModel;
-import net.mm2d.util.Log;
-
-import java.io.IOException;
 
 /**
  * 音楽再生のActivity。
@@ -33,59 +26,45 @@ import java.io.IOException;
 public class MusicActivity extends AppCompatActivity {
     private static final String TAG = MusicActivity.class.getSimpleName();
     private static final String KEY_POSITION = "KEY_POSITION";
-    private MediaPlayer mMediaPlayer;
-    private MusicActivityBinding mBinding;
+    private MusicActivityModel mModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mBinding = DataBindingUtil.setContentView(this, R.layout.music_activity);
-        final MusicActivityModel model = MusicActivityModel.create(this, Repository.get());
-        if (model == null) {
-            finish();
+        final Repository repository = Repository.get();
+        final MusicActivityBinding binding
+                = DataBindingUtil.setContentView(this, R.layout.music_activity);
+        try {
+            mModel = new MusicActivityModel(this, repository);
+            binding.setModel(mModel);
+        } catch (final IllegalStateException ignored) {
             return;
         }
-        mBinding.setModel(model);
 
-        setSupportActionBar(mBinding.toolbar);
+        setSupportActionBar(binding.toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        mBinding.controlPanel.setOnCompletionListener(mp -> onBackPressed());
-        final Repository repository = Repository.get();
-        final PlaybackTargetModel targetModel = repository.getPlaybackTargetModel();
-
-        final String albumArtUri = targetModel.getCdsObject().getValue(CdsObject.UPNP_ALBUM_ART_URI);
-        if (albumArtUri != null) {
-            ImageViewUtils.downloadAndSetImage(mBinding.art, albumArtUri, null);
-        }
         if (savedInstanceState != null) {
-            mBinding.controlPanel.restoreSavePosition(savedInstanceState.getInt(KEY_POSITION, -1));
+            final int progress = savedInstanceState.getInt(KEY_POSITION, 0);
+            mModel.restoreSaveProgress(progress);
         }
-        mMediaPlayer = new MediaPlayer();
-        mMediaPlayer.setOnPreparedListener(mBinding.controlPanel);
-        mMediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-        try {
-            mMediaPlayer.setDataSource(this, targetModel.getUri());
-            mMediaPlayer.prepareAsync();
-        } catch (final IOException e) {
-            Log.w(TAG, e);
-        }
+        RepeatIntroductionUtils.show(this, binding.repeatButton);
     }
 
     @Override
     protected void onSaveInstanceState(final Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putInt(KEY_POSITION, mBinding.controlPanel.getCurrentPosition());
+        if (mModel != null) {
+            outState.putInt(KEY_POSITION, mModel.getCurrentProgress());
+        }
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        mMediaPlayer.stop();
-        mMediaPlayer.reset();
-        mMediaPlayer.release();
-        mMediaPlayer = null;
-        mBinding.art.setImageBitmap(null);
+        if (mModel != null) {
+            mModel.terminate();
+        }
     }
 
     @Override

@@ -37,24 +37,23 @@ import net.mm2d.upnp.Icon;
 public class ServerDetailFragmentModel {
     public final int collapsedColor;
     public final int expandedColor;
+    @NonNull
     public final Drawable icon;
+    @NonNull
     public final String title;
+    @NonNull
     public final ServerPropertyAdapter propertyAdapter;
 
+    @NonNull
     private final Context mContext;
 
-    public static ServerDetailFragmentModel create(@NonNull final Context context,
-                                                   @NonNull final Repository repository) {
+    public ServerDetailFragmentModel(@NonNull final Context context,
+                                     @NonNull final Repository repository) {
+        mContext = context;
         final MediaServer server = repository.getControlPointModel().getSelectedMediaServer();
         if (server == null) {
-            return null;
+            throw new IllegalStateException();
         }
-        return new ServerDetailFragmentModel(context, server);
-    }
-
-    private ServerDetailFragmentModel(@NonNull final Context context,
-                                      @NonNull final MediaServer server) {
-        mContext = context;
         title = server.getFriendlyName();
         propertyAdapter = new ServerPropertyAdapter(context, server);
         final Bitmap iconBitmap = createIconBitmap(server.getIcon());

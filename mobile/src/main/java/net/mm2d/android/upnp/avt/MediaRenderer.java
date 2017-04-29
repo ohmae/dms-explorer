@@ -252,7 +252,6 @@ public class MediaRenderer extends DeviceWrapper {
         }
         final StateVariable unit = unitArg.getRelatedStateVariable();
         final List<String> list = unit.getAllowedValueList();
-        Log.e(null, list.toString());
         if (list.contains(UNIT_REL_TIME)) {
             argument.put(UNIT, UNIT_REL_TIME);
         } else if (list.contains(UNIT_ABS_TIME)) {
@@ -261,7 +260,6 @@ public class MediaRenderer extends DeviceWrapper {
             return;
         }
         argument.put(TARGET, timeText);
-        Log.e(null, argument.toString());
         invoke(mSeek, argument, callback);
     }
 
@@ -278,8 +276,8 @@ public class MediaRenderer extends DeviceWrapper {
         mMrControlPoint.invoke(new ActionInvoker(action, argument, callback));
     }
 
-    public static String getCurrentTransportState(@NonNull final Map<String, String> result) {
-        return result.get(CURRENT_TRANSPORT_STATE);
+    public static TransportState getCurrentTransportState(@NonNull final Map<String, String> result) {
+        return TransportState.of(result.get(CURRENT_TRANSPORT_STATE));
     }
 
     public static int getDuration(@NonNull final Map<String, String> result) {

@@ -10,6 +10,7 @@ package net.mm2d.dmsexplorer;
 import android.app.Application;
 
 import net.mm2d.dmsexplorer.domain.AppRepository;
+import net.mm2d.dmsexplorer.settings.Settings;
 import net.mm2d.util.Log;
 import net.mm2d.util.Log.Print;
 
@@ -49,7 +50,9 @@ public class App extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        Settings.initialize(this);
         Repository.set(new AppRepository(this));
+
         if (BuildConfig.DEBUG) {
             Log.setLogLevel(Log.VERBOSE);
             Log.setPrint(new AndroidPrint());

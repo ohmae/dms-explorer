@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    >
+
+    <data>
+
+        <variable
+            name="model"
+            type="net.mm2d.dmsexplorer.viewmodel.ControlPanelModel"/>
+
+        <variable
+            name="param"
+            type="net.mm2d.dmsexplorer.viewmodel.ControlPanelParam"/>
+
+        <import type="android.view.View"/>
+    </data>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_marginRight="@{param.marginRight}"
+        >
+
+        <net.mm2d.dmsexplorer.view.view.ScrubBar
+            android:id="@+id/seek_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:bottomBackgroundColor="@{param.backgroundColor}"
+            android:enabled="@{model.seekable}"
+            android:max="@{model.duration}"
+            android:scrubBarListener="@{model.seekBarListener}"
+            android:paddingBottom="@dimen/seek_padding"
+            android:paddingTop="@dimen/seek_padding_top"
+            android:progress="@{model.progress}"
+            />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/seek_bar"
+            android:background="@{param.backgroundColor}"
+            android:orientation="horizontal"
+            android:paddingBottom="@{param.bottomPadding + (int)@dimen/seek_padding}"
+            >
+
+            <TextView
+                android:id="@+id/text_progress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top"
+                android:layout_marginLeft="@dimen/control_counter_margin"
+                android:layout_marginStart="@dimen/control_counter_margin"
+                android:text="@{model.progressText}"
+                android:textColor="@color/textPrimary"
+                android:textSize="@dimen/text_size_counter"
+                />
+
+            <android.support.v4.widget.Space
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                />
+
+            <ImageView
+                android:id="@+id/previous"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_control_button"
+                android:onClick="@{() -> model.onClickPrevious()}"
+                android:padding="@dimen/control_button_padding"
+                android:alpha="@{model.previousEnabled ? 1.0f : 0.5f}"
+                android:enabled="@{model.previousEnabled}"
+                app:srcCompat="@drawable/ic_skip_previous"
+                />
+
+            <ImageView
+                android:id="@+id/play"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/control_button_margin"
+                android:layout_marginLeft="@dimen/control_button_margin"
+                android:layout_marginRight="@dimen/control_button_margin"
+                android:layout_marginStart="@dimen/control_button_margin"
+                android:background="@drawable/bg_control_button"
+                android:enabled="@{model.prepared}"
+                android:imageResource="@{model.playButtonResId}"
+                android:onClick="@{() -> model.onClickPlay()}"
+                android:padding="@dimen/control_button_padding"
+                />
+
+            <ImageView
+                android:id="@+id/next"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_control_button"
+                android:onClick="@{() -> model.onClickNext()}"
+                android:padding="@dimen/control_button_padding"
+                android:enabled="@{model.nextEnabled}"
+                android:alpha="@{model.nextEnabled ? 1.0f : 0.5f}"
+                app:srcCompat="@drawable/ic_skip_next"
+                />
+
+            <android.support.v4.widget.Space
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                />
+
+            <TextView
+                android:id="@+id/text_duration"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top"
+                android:layout_marginEnd="@dimen/control_counter_margin"
+                android:layout_marginRight="@dimen/control_counter_margin"
+                android:text="@{model.durationText}"
+                android:textColor="@color/textPrimary"
+                android:textSize="@dimen/text_size_counter"
+                />
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/scrub_margin_top"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:text="@{model.scrubText}"
+            android:textColor="@color/textScrub"
+            android:textSize="@dimen/text_size_scrub"
+            />
+    </RelativeLayout>
+</layout>

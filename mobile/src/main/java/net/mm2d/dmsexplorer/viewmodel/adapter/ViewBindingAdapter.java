@@ -18,12 +18,7 @@ import net.mm2d.dmsexplorer.util.ViewLayoutUtils;
  */
 public class ViewBindingAdapter {
     @BindingAdapter("layout_marginRight")
-    public static void setLayoutMarginRight(@NonNull final View view, final int rightMargin) {
-        ViewLayoutUtils.setLayoutMarginRight(view, rightMargin);
-    }
-
-    @BindingAdapter("layout_height")
-    public static void setLayoutHeight(@NonNull final View view, final int height) {
-        ViewLayoutUtils.setLayoutHeight(view, height);
+    public static void setLayoutMarginRight(@NonNull final View view, final int margin) {
+        ViewLayoutUtils.setLayoutMarginRight(view, margin);
     }
 }

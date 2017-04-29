@@ -8,116 +8,75 @@
 package net.mm2d.dmsexplorer.domain.model;
 
 import android.content.Context;
+import android.net.Uri;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.widget.Toast;
 
 import net.mm2d.android.upnp.avt.MediaRenderer;
 import net.mm2d.android.upnp.avt.MediaRenderer.ActionCallback;
+import net.mm2d.android.upnp.avt.TransportState;
 import net.mm2d.android.upnp.cds.CdsObject;
 import net.mm2d.android.upnp.cds.ChapterInfo;
-import net.mm2d.dmsexplorer.R;
 
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 /**
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
  */
-public class MediaRendererModel {
-    public interface ControlListener {
-        void notifyPosition(int progress, int duration);
-
-        void notifyPlayingState(boolean playing);
-
-        void notifyChapterInfo(@Nullable List<Integer> chapterInfo);
-    }
-
-    private static final ControlListener CONTROL_LISTENER = new ControlListener() {
-        @Override
-        public void notifyPosition(final int progress, final int duration) {
-        }
-
-        @Override
-        public void notifyPlayingState(final boolean playing) {
-        }
-
-        @Override
-        public void notifyChapterInfo(@Nullable final List<Integer> chapterInfo) {
-        }
-    };
-
+public class MediaRendererModel implements PlayerModel {
     private static final int CHAPTER_MARGIN = (int) TimeUnit.SECONDS.toMillis(5);
-    private final Context mContext;
+    private static final StatusListener STATUS_LISTENER = new StatusListenerAdapter();
+
+    @NonNull
+    private StatusListener mStatusListener = STATUS_LISTENER;
     private final MediaRenderer mMediaRenderer;
     private final Handler mHandler = new Handler(Looper.getMainLooper());
-    private PlaybackTargetModel mPlaybackTargetModel;
-    private ControlListener mControlListener = CONTROL_LISTENER;
     @Nullable
-    private List<Integer> mChapterInfo;
+    private int[] mChapterInfo;
+    private boolean mPlaying;
     private int mProgress;
+    private int mDuration;
     private boolean mStarted;
 
     @NonNull
     private final Runnable mGetPositionTask = new Runnable() {
         @Override
         public void run() {
-            mMediaRenderer.getPositionInfo((success, result) -> onGetPositionInfo(result));
-            mMediaRenderer.getTransportInfo((success, result) -> onGetTransportInfo(result));
+            mMediaRenderer.getPositionInfo((success, result) ->
+                    mHandler.post(() -> onGetPositionInfo(result)));
+            mMediaRenderer.getTransportInfo((success, result) ->
+                    mHandler.post(() -> onGetTransportInfo(result)));
         }
     };
     @NonNull
     private final ActionCallback mShowToastOnError = (success, result) -> {
         if (!success) {
-            mHandler.post(() -> showToast(R.string.toast_command_error_occurred));
+            mHandler.post(this::onError);
         }
     };
 
     public MediaRendererModel(@NonNull Context context, @NonNull final MediaRenderer renderer) {
-        mContext = context;
         mMediaRenderer = renderer;
     }
 
-    public MediaRenderer getMediaRenderer() {
-        return mMediaRenderer;
+    @Override
+    public String getName() {
+        return mMediaRenderer.getFriendlyName();
     }
 
-    public void initialize() {
+    @Override
+    public boolean canPause() {
+        return mMediaRenderer.isSupportPause();
     }
 
+    @Override
     public void terminate() {
-        if (mStarted) {
-            stop();
+        if (!mStarted) {
+            return;
         }
-    }
-
-    public void setControlListener(ControlListener listener) {
-        mControlListener = listener != null ? listener : CONTROL_LISTENER;
-    }
-
-    public void start(PlaybackTargetModel targetModel) {
-        mPlaybackTargetModel = targetModel;
-        mMediaRenderer.clearAVTransportURI(null);
-        final CdsObject object = targetModel.getCdsObject();
-        final String uri = targetModel.getUri().toString();
-        mMediaRenderer.setAVTransportURI(object, uri, (success, result) -> {
-            if (success) {
-                mMediaRenderer.play(mShowToastOnError);
-            } else {
-                mHandler.post(() -> {
-                    showToast(R.string.toast_command_error_occurred);
-                });
-            }
-        });
-        mHandler.postDelayed(mGetPositionTask, 1000);
-        ChapterInfo.get(object, this::setChapterInfo);
-        mStarted = true;
-    }
-
-    public void stop() {
         mHandler.removeCallbacks(mGetPositionTask);
         mMediaRenderer.stop(null);
         mMediaRenderer.clearAVTransportURI(null);
@@ -125,43 +84,105 @@ public class MediaRendererModel {
         mStarted = false;
     }
 
+    @Override
+    public void setStatusListener(@NonNull final StatusListener listener) {
+        mStatusListener = listener;
+    }
+
+    @Override
+    public void setUri(@NonNull final Uri uri, @Nullable final Object metadata) {
+        if (!(metadata instanceof CdsObject)) {
+            throw new IllegalArgumentException();
+        }
+        mMediaRenderer.clearAVTransportURI(null);
+        final CdsObject object = (CdsObject) metadata;
+        mMediaRenderer.setAVTransportURI(object, uri.toString(), (success, result) -> {
+            if (success) {
+                mMediaRenderer.play(mShowToastOnError);
+            } else {
+                mHandler.post(this::onError);
+            }
+        });
+        mHandler.postDelayed(mGetPositionTask, 1000);
+        ChapterInfo.get(object, this::setChapterInfo);
+        mStarted = true;
+    }
+
+    @Override
+    public void restoreSaveProgress(final int progress) {
+        mProgress = progress;
+    }
+
+    @Override
+    public int getProgress() {
+        return mProgress;
+    }
+
+    @Override
+    public int getDuration() {
+        return mDuration;
+    }
+
+    @Override
+    public boolean isPlaying() {
+        return mPlaying;
+    }
+
+    @Override
     public void play() {
         mMediaRenderer.play(mShowToastOnError);
     }
 
+    @Override
     public void pause() {
         mMediaRenderer.pause(mShowToastOnError);
     }
 
-    public void seek(int progress) {
-        mMediaRenderer.seek(progress, mShowToastOnError);
+    @Override
+    public void seekTo(final int position) {
+        mMediaRenderer.seek(position, mShowToastOnError);
     }
 
-    public void nextChapter() {
-        final int chapter = getCurrentChapter() + 1;
-        if (chapter < mChapterInfo.size()) {
-            mMediaRenderer.seek(mChapterInfo.get(chapter), mShowToastOnError);
+    @Override
+    public boolean next() {
+        if (mChapterInfo == null) {
+            return false;
         }
+        final int chapter = getCurrentChapter() + 1;
+        if (chapter < mChapterInfo.length) {
+            mMediaRenderer.seek(mChapterInfo[chapter], mShowToastOnError);
+            return true;
+        }
+        return false;
     }
 
-    public void previousChapter() {
+    @Override
+    public boolean previous() {
+        if (mChapterInfo == null) {
+            return false;
+        }
         int chapter = getCurrentChapter();
-        if (chapter > 0 && mProgress - mChapterInfo.get(chapter) < CHAPTER_MARGIN) {
+        if (chapter > 0 && mProgress - mChapterInfo[chapter] < CHAPTER_MARGIN) {
             chapter--;
         }
         if (chapter >= 0) {
-            mMediaRenderer.seek(mChapterInfo.get(chapter), mShowToastOnError);
+            mMediaRenderer.seek(mChapterInfo[chapter], mShowToastOnError);
+            return true;
         }
+        return false;
     }
 
     private int getCurrentChapter() {
+        if (mChapterInfo == null) {
+            return 0;
+        }
         final int progress = mProgress;
-        for (int i = 0; i < mChapterInfo.size(); i++) {
-            if (progress < mChapterInfo.get(i)) {
+        for (int i = 0; i < mChapterInfo.length; i++) {
+            if (progress < mChapterInfo[i]) {
                 return i - 1;
             }
         }
-        return mChapterInfo.size() - 1;
+        return mChapterInfo.length - 1;
     }
 
     private void onGetPositionInfo(Map<String, String> result) {
@@ -175,26 +196,40 @@ public class MediaRendererModel {
             mHandler.postDelayed(mGetPositionTask, 1000);
             return;
         }
-        mProgress = progress;
+        if (mDuration != duration) {
+            mDuration = duration;
+            mStatusListener.notifyDuration(duration);
+        }
+        if (mProgress != progress) {
+            mProgress = progress;
+            mStatusListener.notifyProgress(progress);
+        }
         final long interval = 1000 - progress % 1000;
         mHandler.postDelayed(mGetPositionTask, interval);
-        mControlListener.notifyPosition(progress, duration);
     }
 
     private void onGetTransportInfo(Map<String, String> result) {
         if (result == null) {
             return;
         }
-        final boolean playing = "PLAYING".equals(MediaRenderer.getCurrentTransportState(result));
-        mControlListener.notifyPlayingState(playing);
+        final TransportState state = MediaRenderer.getCurrentTransportState(result);
+        final boolean playing = state == TransportState.PLAYING;
+        if (mPlaying != playing) {
+            mPlaying = playing;
+            mStatusListener.notifyPlayingState(playing);
+        }
+        if (state == TransportState.STOPPED) {
+            mHandler.removeCallbacks(mGetPositionTask);
+            mStatusListener.onCompletion();
+        }
     }
 
-    private void setChapterInfo(@Nullable final List<Integer> chapterInfo) {
+    private void setChapterInfo(@Nullable final int[] chapterInfo) {
         mChapterInfo = chapterInfo;
-        mControlListener.notifyChapterInfo(mChapterInfo);
+        mStatusListener.notifyChapterInfo(mChapterInfo);
     }
 
-    private void showToast(int resId) {
-        Toast.makeText(mContext, resId, Toast.LENGTH_LONG).show();
+    private void onError() {
+        mStatusListener.onError(0, 0);
     }
 }

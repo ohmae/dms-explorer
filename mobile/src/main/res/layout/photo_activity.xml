@@ -20,14 +20,15 @@
         >
 
         <ImageView
-            android:id="@+id/imageView"
+            android:id="@+id/image_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center"
+            app:imageBinary="@{model.imageBinary}"
             />
 
         <ProgressBar
-            android:id="@+id/progressBar"
+            android:id="@+id/progress_bar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -45,19 +46,20 @@
             >
 
             <ImageView
-                android:id="@+id/toolbarBack"
+                android:id="@+id/toolbar_back"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_marginEnd="@dimen/toolbar_button_margin"
                 android:layout_marginRight="@dimen/toolbar_button_margin"
                 android:background="@drawable/bg_tool_button"
+                android:onClick="@{() -> model.onClickBack()}"
                 android:padding="@dimen/toolbar_button_padding"
                 app:srcCompat="@drawable/ic_arrow_back"
                 />
 
             <TextView
-                android:id="@+id/toolbarTitle"
+                android:id="@+id/toolbar_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"

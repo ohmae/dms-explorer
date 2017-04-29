@@ -58,9 +58,9 @@ public class SelectRendererDialog extends DialogFragment {
         final LayoutInflater inflater = LayoutInflater.from(getActivity());
         final RendererSelectDialogBinding binding = DataBindingUtil.inflate(inflater,
                 R.layout.renderer_select_dialog, null, false);
-        binding.rendererList.setLayoutManager(new LinearLayoutManager(getActivity()));
-        binding.rendererList.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
-        binding.rendererList.setAdapter(adapter);
+        binding.recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        binding.recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
+        binding.recyclerView.setAdapter(adapter);
         builder.setTitle(R.string.title_dialog_select_device);
         builder.setView(binding.getRoot());
         return builder.create();

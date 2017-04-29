@@ -7,6 +7,13 @@
     <string name="toast_not_support_drm">This app does not support playback of DRM content.</string>
     <string name="toast_command_error_occurred">Error occurred</string>
     <string name="toast_download_error_occurred">Error occurred</string>
+    <string name="toast_repeat_play_once">Play 1 item</string>
+    <string name="toast_repeat_sequential">Play automatically</string>
+    <string name="toast_repeat_repeat_all">Repeat folder</string>
+    <string name="toast_repeat_repeat_one">Repeat 1 item</string>
+    <string name="seek_bar_scrub_normal">seek (x1/1)</string>
+    <string name="seek_bar_scrub_half">seek (x1/2)</string>
+    <string name="seek_bar_scrub_quarter">seek (x1/4)</string>
     <string name="network_tb">TB</string>
     <string name="network_bs">BS</string>
     <string name="network_cs">CS</string>
@@ -25,12 +32,15 @@
     <string name="prop_chapter_info">Chapter Info:</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_settings">Settings</string>
-    <string name="pref_header_general">General</string>
+    <string name="pref_header_playback">Playback</string>
     <string name="pref_message_launch_app_on">Play by this app.</string>
     <string name="pref_message_launch_app_off">Rely other app.</string>
-    <string name="pref_title_launch_app_movie">Play movie</string>
-    <string name="pref_title_launch_app_photo">Show Photo</string>
-    <string name="pref_title_launch_app_music">Play music</string>
+    <string name="pref_category_movie">Movie</string>
+    <string name="pref_category_music">Music</string>
+    <string name="pref_category_photo">Photo</string>
+    <string name="pref_title_launch_app_movie">Movie playback</string>
+    <string name="pref_title_launch_app_music">Music playback</string>
+    <string name="pref_title_launch_app_photo">Photo playback</string>
     <string name="pref_header_information">Information</string>
     <string name="pref_title_play_store">Google Play</string>
     <string name="pref_message_play_store">Go to Google Play</string>
@@ -38,4 +48,6 @@
     <string name="pref_message_copyright">Copyright© 2016 大前良介 (OHMAE Ryosuke)</string>
     <string name="pref_title_version_number">Version</string>
     <string name="pref_title_license">License Information</string>
+    <string name="repeat_introduction_title">Repeat setting</string>
+    <string name="repeat_introduction_subtitle">You can select the repeat mode.</string>
 </resources>

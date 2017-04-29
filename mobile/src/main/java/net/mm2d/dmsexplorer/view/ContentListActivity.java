@@ -46,14 +46,15 @@ public class ContentListActivity extends AppCompatActivity implements CdsSelectL
     private boolean mTwoPane;
     private ContentDetailFragment mContentDetailFragment;
     private ContentListActivityBinding mBinding;
+    private ContentListActivityModel mModel;
 
     /**
-     * インスタンスを作成する。
+     * このActivityを起動するためのIntentを作成する。
      *
-     * <p>Bundleへの値の設定と読み出しをこのクラス内で完結させる。
+     * <p>Extraの設定と読み出しをこのクラス内で完結させる。
      *
      * @param context コンテキスト
-     * @return インスタンス
+     * @return このActivityを起動するためのIntent
      */
     @NonNull
     public static Intent makeIntent(@NonNull final Context context) {
@@ -102,7 +103,12 @@ public class ContentListActivity extends AppCompatActivity implements CdsSelectL
     protected void onCreate(@Nullable final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mBinding = DataBindingUtil.setContentView(this, R.layout.content_list_activity);
-        mBinding.setModel(ContentListActivityModel.create(this, Repository.get(), this));
+        try {
+            mModel = new ContentListActivityModel(this, Repository.get(), this);
+            mBinding.setModel(mModel);
+        } catch (final IllegalStateException ignored) {
+            return;
+        }
         mTwoPane = mBinding.cdsDetailContainer != null;
 
         setSupportActionBar(mBinding.toolbar);
@@ -131,7 +137,6 @@ public class ContentListActivity extends AppCompatActivity implements CdsSelectL
 
     @Override
     protected void onSaveInstanceState(@NonNull final Bundle outState) {
-        removeDetailFragment();
         super.onSaveInstanceState(outState);
         saveScroll(outState);
     }
@@ -149,14 +154,18 @@ public class ContentListActivity extends AppCompatActivity implements CdsSelectL
     @Override
     protected void onStart() {
         super.onStart();
-        if (mBinding.getModel().isItemSelected()) {
+        if (mModel == null) {
+            return;
+        }
+        mModel.syncSelectedObject();
+        if (mModel.isItemSelected()) {
             setDetailFragment(false);
         }
     }
 
     @Override
     public void onBackPressed() {
-        if (mBinding.getModel().onBackPressed()) {
+        if (mModel.onBackPressed()) {
             return;
         }
         super.onBackPressed();
@@ -165,7 +174,7 @@ public class ContentListActivity extends AppCompatActivity implements CdsSelectL
     @Override
     public boolean onKeyLongPress(final int keyCode, final KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-            mBinding.getModel().terminate();
+            mModel.terminate();
             super.onBackPressed();
             return true;
         }
@@ -207,7 +216,7 @@ public class ContentListActivity extends AppCompatActivity implements CdsSelectL
         }
         getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.cdsDetailContainer, mContentDetailFragment)
+                .replace(R.id.cds_detail_container, mContentDetailFragment)
                 .commit();
     }
 

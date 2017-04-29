@@ -7,10 +7,12 @@
 
 package net.mm2d.dmsexplorer.viewmodel;
 
-import android.content.Context;
+import android.app.Activity;
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
 import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
+import android.view.View;
 
 import net.mm2d.android.upnp.avt.MediaRenderer;
 import net.mm2d.android.upnp.avt.MrControlPoint;
@@ -18,9 +20,10 @@ import net.mm2d.android.upnp.avt.MrControlPoint.MrDiscoveryListener;
 import net.mm2d.android.upnp.cds.CdsObject;
 import net.mm2d.android.util.AribUtils;
 import net.mm2d.dmsexplorer.BR;
+import net.mm2d.dmsexplorer.R;
 import net.mm2d.dmsexplorer.Repository;
-import net.mm2d.dmsexplorer.domain.model.ControlPointModel;
 import net.mm2d.dmsexplorer.domain.model.MediaServerModel;
+import net.mm2d.dmsexplorer.util.ItemSelectUtils;
 import net.mm2d.dmsexplorer.util.ThemeUtils;
 import net.mm2d.dmsexplorer.view.adapter.ContentPropertyAdapter;
 
@@ -30,12 +33,18 @@ import net.mm2d.dmsexplorer.view.adapter.ContentPropertyAdapter;
 public class ContentDetailFragmentModel extends BaseObservable {
     public final int collapsedColor;
     public final int expandedColor;
+    @NonNull
     public final String title;
+    @NonNull
     public final ContentPropertyAdapter propertyAdapter;
     public final boolean hasResource;
     public final boolean hasProtectedResource;
+
     private boolean mCanSend;
 
+    @NonNull
+    private final Activity mActivity;
+    @NonNull
     private final MrControlPoint mMrControlPoint;
     private final MrDiscoveryListener mMrDiscoveryListener = new MrDiscoveryListener() {
         @Override
@@ -49,30 +58,26 @@ public class ContentDetailFragmentModel extends BaseObservable {
         }
     };
 
-    public static ContentDetailFragmentModel create(@NonNull final Context context,
-                                                    @NonNull Repository repository) {
+    public ContentDetailFragmentModel(@NonNull final Activity activity,
+                                      @NonNull final Repository repository) {
         final MediaServerModel model = repository.getMediaServerModel();
         if (model == null) {
-            return null;
+            throw new IllegalStateException();
         }
         final CdsObject object = model.getSelectedObject();
         if (object == null) {
-            return null;
+            throw new IllegalStateException();
         }
-        return new ContentDetailFragmentModel(context, object, repository.getControlPointModel());
-    }
-
-    private ContentDetailFragmentModel(@NonNull final Context context,
-                                       @NonNull final CdsObject object,
-                                       @NonNull final ControlPointModel model) {
-        title = AribUtils.toDisplayableString(object.getTitle());
-        propertyAdapter = new ContentPropertyAdapter(context, object);
-        collapsedColor = ThemeUtils.getAccentColor(title);
-        expandedColor = ThemeUtils.getPastelColor(title);
-        hasResource = object.getTagList(CdsObject.RES) != null;
+        mActivity = activity;
+        final String rawTitle = object.getTitle();
+        title = AribUtils.toDisplayableString(rawTitle);
+        propertyAdapter = new ContentPropertyAdapter(activity, object);
+        collapsedColor = ThemeUtils.getAccentColor(rawTitle);
+        expandedColor = ThemeUtils.getPastelColor(rawTitle);
+        hasResource = object.hasResource();
         hasProtectedResource = object.hasProtectedResource();
 
-        mMrControlPoint = model.getMrControlPoint();
+        mMrControlPoint = repository.getControlPointModel().getMrControlPoint();
         updateCanSend();
         mMrControlPoint.addMrDiscoveryListener(mMrDiscoveryListener);
     }
@@ -89,5 +94,30 @@ public class ContentDetailFragmentModel extends BaseObservable {
 
     public void terminate() {
         mMrControlPoint.removeMrDiscoveryListener(mMrDiscoveryListener);
+    }
+
+    public void onClickPlay(@NonNull final View view) {
+        if (hasProtectedResource) {
+            showSnackbar(view);
+        } else {
+            ItemSelectUtils.play(mActivity, 0);
+        }
+    }
+
+    public boolean onLongClickPlay(@NonNull final View view) {
+        if (hasProtectedResource) {
+            showSnackbar(view);
+        } else {
+            ItemSelectUtils.play(mActivity);
+        }
+        return true;
+    }
+
+    private static void showSnackbar(@NonNull final View view) {
+        Snackbar.make(view, R.string.toast_not_support_drm, Snackbar.LENGTH_LONG).show();
+    }
+
+    public void onClickSend(@NonNull final View view) {
+        ItemSelectUtils.send(mActivity);
     }
 }

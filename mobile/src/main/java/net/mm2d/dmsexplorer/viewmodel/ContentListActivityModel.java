@@ -18,6 +18,7 @@ import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView.Adapter;
+import android.support.v7.widget.RecyclerView.ItemAnimator;
 import android.support.v7.widget.RecyclerView.ItemDecoration;
 import android.support.v7.widget.RecyclerView.LayoutManager;
 import android.view.View;
@@ -32,6 +33,7 @@ import net.mm2d.dmsexplorer.domain.model.MediaServerModel;
 import net.mm2d.dmsexplorer.domain.model.MediaServerModel.ExploreListener;
 import net.mm2d.dmsexplorer.util.ToolbarThemeUtils;
 import net.mm2d.dmsexplorer.view.adapter.ContentListAdapter;
+import net.mm2d.dmsexplorer.view.animator.CustomItemAnimator;
 
 import java.util.List;
 
@@ -39,6 +41,8 @@ import java.util.List;
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
  */
 public class ContentListActivityModel extends BaseObservable implements ExploreListener {
+    private static final int INVALID_POSITION = -1;
+
     public interface CdsSelectListener {
         void onSelect(@NonNull View v, @NonNull CdsObject object, boolean alreadySelected);
 
@@ -47,20 +51,17 @@ public class ContentListActivityModel extends BaseObservable implements ExploreL
         void onDetermine(@NonNull View v, @NonNull CdsObject object, boolean alreadySelected);
     }
 
-    public final int[] refreshColors = new int[]{
-            R.color.progress1,
-            R.color.progress2,
-            R.color.progress3,
-            R.color.progress4,
-    };
-    public final OnRefreshListener onRefreshListener = new OnRefreshListener() {
-        @Override
-        public void onRefresh() {
-            mMediaServerModel.reload();
-        }
-    };
+    @NonNull
+    public final int[] refreshColors;
+    @NonNull
+    public final OnRefreshListener onRefreshListener;
+    @NonNull
     public final ItemDecoration itemDecoration;
+    @NonNull
+    public final ItemAnimator itemAnimator;
+    @NonNull
     public final LayoutManager cdsListLayoutManager;
+    @NonNull
     public final String title;
     public final int toolbarBackground;
 
@@ -69,6 +70,7 @@ public class ContentListActivityModel extends BaseObservable implements ExploreL
     @NonNull
     private String mSubtitle = "";
     private boolean mRefreshing;
+    private int mScrollPosition = INVALID_POSITION;
 
     private final Handler mHandler = new Handler(Looper.getMainLooper());
     @NonNull
@@ -76,31 +78,31 @@ public class ContentListActivityModel extends BaseObservable implements ExploreL
     @NonNull
     private final CdsSelectListener mCdsSelectListener;
 
-    public static ContentListActivityModel create(@NonNull final Context context,
-                                                  @NonNull final Repository repository,
-                                                  @NonNull final CdsSelectListener listener) {
-        final MediaServerModel model = repository.getMediaServerModel();
-        if (model == null) {
-            return null;
-        }
-        return new ContentListActivityModel(context, model, listener);
-    }
-
-    private ContentListActivityModel(@NonNull final Context context,
-                                    @NonNull final MediaServerModel model,
+    public ContentListActivityModel(@NonNull final Context context,
+                                    @NonNull final Repository repository,
                                     @NonNull final CdsSelectListener listener) {
-        itemDecoration = new DividerItemDecoration(context, DividerItemDecoration.VERTICAL);
+        mMediaServerModel = repository.getMediaServerModel();
+        if (mMediaServerModel == null) {
+            throw new IllegalStateException();
+        }
+        mMediaServerModel.setExploreListener(this);
         mContentListAdapter = new ContentListAdapter(context);
         mContentListAdapter.setOnItemClickListener(this::onItemClick);
         mContentListAdapter.setOnItemLongClickListener(this::onItemLongClick);
-        cdsListLayoutManager = new LinearLayoutManager(context);
-
         mCdsSelectListener = listener;
-        mMediaServerModel = model;
-        mMediaServerModel.setExploreListener(this);
-        title = mMediaServerModel.getTitle();
 
-        final MediaServer server = model.getMediaServer();
+        itemDecoration = new DividerItemDecoration(context, DividerItemDecoration.VERTICAL);
+        itemAnimator = new CustomItemAnimator(context);
+        cdsListLayoutManager = new LinearLayoutManager(context);
+        title = mMediaServerModel.getTitle();
+        refreshColors = new int[]{
+                R.color.progress1,
+                R.color.progress2,
+                R.color.progress3,
+                R.color.progress4,
+        };
+        onRefreshListener = mMediaServerModel::reload;
+        final MediaServer server = mMediaServerModel.getMediaServer();
         ToolbarThemeUtils.setServerThemeColor(server, null);
         toolbarBackground = server.getIntTag(Const.KEY_TOOLBAR_COLLAPSED_COLOR, Color.BLACK);
     }
@@ -150,6 +152,10 @@ public class ContentListActivityModel extends BaseObservable implements ExploreL
         mCdsSelectListener.onDetermine(v, object, alreadySelected);
     }
 
+    public void syncSelectedObject() {
+        mContentListAdapter.setSelectedObject(mMediaServerModel.getSelectedObject());
+    }
+
     public boolean onBackPressed() {
         mCdsSelectListener.onUnselect();
         return mMediaServerModel.exitToParent();
@@ -167,11 +173,17 @@ public class ContentListActivityModel extends BaseObservable implements ExploreL
         final int afterSize = list.size();
         mContentListAdapter.clear();
         mContentListAdapter.addAll(list);
-        mContentListAdapter.setSelectedObject(mMediaServerModel.getSelectedObject());
+        final CdsObject object = mMediaServerModel.getSelectedObject();
+        mContentListAdapter.setSelectedObject(object);
         if (beforeSize < afterSize) {
             mContentListAdapter.notifyItemRangeInserted(beforeSize, afterSize - beforeSize);
         } else {
             mContentListAdapter.notifyDataSetChanged();
+        }
+        if (beforeSize == 0 && object != null) {
+            setScrollPosition(list.indexOf(object));
+        } else {
+            mScrollPosition = INVALID_POSITION;
         }
     }
 
@@ -183,5 +195,17 @@ public class ContentListActivityModel extends BaseObservable implements ExploreL
     public void terminate() {
         mMediaServerModel.terminate();
         mMediaServerModel.initialize();
+    }
+
+    // 選択項目を中央に表示させる処理
+    // FIXME: DataBindingを使ったことで返って複雑化してしまっている
+    @Bindable
+    public int getScrollPosition() {
+        return mScrollPosition;
+    }
+
+    public void setScrollPosition(final int position) {
+        mScrollPosition = position;
+        notifyPropertyChanged(BR.scrollPosition);
     }
 }

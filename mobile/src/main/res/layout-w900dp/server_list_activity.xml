@@ -19,7 +19,7 @@
         >
 
         <android.support.design.widget.AppBarLayout
-            android:id="@+id/appBar"
+            android:id="@+id/app_bar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:theme="@style/AppTheme.AppBarOverlay"
@@ -45,7 +45,7 @@
             >
 
             <android.support.v4.widget.SwipeRefreshLayout
-                android:id="@+id/swipeRefreshLayout"
+                android:id="@+id/swipe_refresh_layout"
                 android:layout_width="@dimen/item_width"
                 android:layout_height="match_parent"
                 app:colorSchemeResources="@{model.refreshColors}"
@@ -54,9 +54,10 @@
                 >
 
                 <android.support.v7.widget.RecyclerView
-                    android:id="@+id/recyclerView"
+                    android:id="@+id/recycler_view"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:itemAnimator="@{model.itemAnimator}"
                     app:adapter="@{model.serverListAdapter}"
                     app:itemDecoration="@{model.itemDecoration}"
                     app:layoutManager="@{model.serverListLayoutManager}"
@@ -66,7 +67,7 @@
             </android.support.v4.widget.SwipeRefreshLayout>
 
             <FrameLayout
-                android:id="@+id/serverDetailContainer"
+                android:id="@+id/server_detail_container"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"

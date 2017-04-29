@@ -2,9 +2,9 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <header
-        android:fragment="net.mm2d.dmsexplorer.view.SettingsActivity$GeneralPreferenceFragment"
+        android:fragment="net.mm2d.dmsexplorer.view.SettingsActivity$PlaybackPreferenceFragment"
         android:icon="@drawable/ic_settings"
-        android:title="@string/pref_header_general"
+        android:title="@string/pref_header_playback"
         />
 
     <header

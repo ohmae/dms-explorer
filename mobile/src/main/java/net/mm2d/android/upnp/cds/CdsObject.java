@@ -1161,6 +1161,26 @@ public class CdsObject implements Parcelable {
     }
 
     /**
+     * リソースの数を返す。
+     *
+     * @return リソースの数
+     */
+    public int getResourceCount() {
+        final List<Tag> list = getTagList(CdsObject.RES);
+        return list == null ? 0 : list.size();
+    }
+
+    /**
+     * リソースを持っているか否かを返す。
+     *
+     * @return リソースを持っている場合true
+     */
+    public boolean hasResource() {
+        final List<Tag> tagList = getTagList(CdsObject.RES);
+        return !(tagList == null || tagList.isEmpty());
+    }
+
+    /**
      * 著作権保護されたリソースを持っているか否かを返す。
      *
      * @return 著作権保護されたリソースを持っている場合true

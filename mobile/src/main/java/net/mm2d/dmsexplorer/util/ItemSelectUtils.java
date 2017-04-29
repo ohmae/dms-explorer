@@ -11,14 +11,12 @@ import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 
 import net.mm2d.android.upnp.cds.CdsObject;
-import net.mm2d.dmsexplorer.Const;
 import net.mm2d.dmsexplorer.Repository;
 import net.mm2d.dmsexplorer.domain.model.PlaybackTargetModel;
+import net.mm2d.dmsexplorer.settings.Settings;
 import net.mm2d.dmsexplorer.view.DmcActivity;
 import net.mm2d.dmsexplorer.view.MovieActivity;
 import net.mm2d.dmsexplorer.view.MusicActivity;
@@ -54,24 +52,24 @@ public class ItemSelectUtils {
         }
         final Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.setDataAndType(targetModel.getUri(), targetModel.getMimeType());
-        final SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(activity);
+        final Settings settings = new Settings(activity);
         switch (targetModel.getCdsObject().getType()) {
             case CdsObject.TYPE_VIDEO:
-                if (pref.getBoolean(Const.LAUNCH_APP_MOVIE, true)) {
+                if (settings.isPlayMovieMyself()) {
                     intent.setClass(activity, MovieActivity.class);
                 } else {
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 }
                 break;
             case CdsObject.TYPE_AUDIO:
-                if (pref.getBoolean(Const.LAUNCH_APP_MUSIC, true)) {
+                if (settings.isPlayMusicMyself()) {
                     intent.setClass(activity, MusicActivity.class);
                 } else {
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 }
                 break;
             case CdsObject.TYPE_IMAGE:
-                if (pref.getBoolean(Const.LAUNCH_APP_PHOTO, true)) {
+                if (settings.isPlayPhotoMyself()) {
                     intent.setClass(activity, PhotoActivity.class);
                 } else {
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

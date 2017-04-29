@@ -19,6 +19,7 @@ import net.mm2d.dmsexplorer.domain.model.ControlPointModel;
 import net.mm2d.dmsexplorer.domain.model.MediaRendererModel;
 import net.mm2d.dmsexplorer.domain.model.MediaServerModel;
 import net.mm2d.dmsexplorer.domain.model.PlaybackTargetModel;
+import net.mm2d.dmsexplorer.domain.model.PlayerModel;
 
 /**
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
@@ -27,7 +28,7 @@ public class AppRepository extends Repository {
     private final Context mContext;
     private final ControlPointModel mControlPointModel;
     private MediaServerModel mMediaServerModel;
-    private MediaRendererModel mMediaRendererModel;
+    private PlayerModel mMediaRendererModel;
     private PlaybackTargetModel mPlaybackTargetModel;
 
     @Override
@@ -44,7 +45,7 @@ public class AppRepository extends Repository {
 
     @Override
     @Nullable
-    public MediaRendererModel getMediaRendererModel() {
+    public PlayerModel getMediaRendererModel() {
         return mMediaRendererModel;
     }
 
@@ -56,11 +57,7 @@ public class AppRepository extends Repository {
 
     public AppRepository(@NonNull final Context context) {
         mContext = context;
-        mControlPointModel = new ControlPointModel(context, server -> {
-            updateMediaServer(server);
-        }, renderer -> {
-            updateMediaRenderer(renderer);
-        });
+        mControlPointModel = new ControlPointModel(context, this::updateMediaServer, this::updateMediaRenderer);
     }
 
     private void updateMediaServer(@Nullable final MediaServer server) {
@@ -74,27 +71,25 @@ public class AppRepository extends Repository {
         }
     }
 
-    public void updateMediaRenderer(@Nullable final MediaRenderer renderer) {
+    private void updateMediaRenderer(@Nullable final MediaRenderer renderer) {
         if (mMediaRendererModel != null) {
             mMediaRendererModel.terminate();
             mMediaRendererModel = null;
         }
         if (renderer != null) {
             mMediaRendererModel = createMediaRendererModel(renderer);
-            mMediaRendererModel.initialize();
         }
     }
 
     private MediaServerModel createMediaServerModel(@NonNull final MediaServer server) {
-        return new MediaServerModel(server, object -> updatePlaybackTarget(object));
+        return new MediaServerModel(mContext, server, this::updatePlaybackTarget);
     }
 
-    private MediaRendererModel createMediaRendererModel(@NonNull final MediaRenderer renderer) {
+    private PlayerModel createMediaRendererModel(@NonNull final MediaRenderer renderer) {
         return new MediaRendererModel(mContext, renderer);
     }
 
-    public void updatePlaybackTarget(@Nullable final CdsObject object) {
+    private void updatePlaybackTarget(@Nullable final CdsObject object) {
         mPlaybackTargetModel = object != null ? new PlaybackTargetModel(object) : null;
     }
-
 }

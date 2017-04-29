@@ -14,6 +14,8 @@
     <dimen name="text_size_sub">12sp</dimen>
     <dimen name="text_size_toolbar">20sp</dimen>
     <dimen name="text_size_toolbar_expand">28sp</dimen>
+    <dimen name="text_size_counter">12sp</dimen>
+    <dimen name="text_size_scrub">9dp</dimen>
 
     <dimen name="list_item_focus_elevation">2dp</dimen>
     <dimen name="app_bar_elevation">4dp</dimen>
@@ -25,20 +27,23 @@
 
     <dimen name="toolbar_button_margin">16dp</dimen>
     <dimen name="toolbar_button_padding">16dp</dimen>
-    <dimen name="tool_button_padding">16dp</dimen>
 
+    <dimen name="control_button_padding">8dp</dimen>
+    <dimen name="control_button_margin">24dp</dimen>
+    <dimen name="control_counter_margin">8dp</dimen>
     <dimen name="control_height">56dp</dimen>
-    <dimen name="control_margin">24dp</dimen>
-    <dimen name="seek_padding">12dp</dimen>
-
-    <dimen name="chapter_padding">16dp</dimen>
-    <dimen name="chapter_width">1dp</dimen>
-    <dimen name="chapter_height">16dp</dimen>
+    <dimen name="seek_padding">8dp</dimen>
+    <dimen name="seek_padding_top">24dp</dimen>
+    <dimen name="seek_padding_top_negative">-24dp</dimen>
+    <dimen name="scrub_margin_top">28dp</dimen>
 
     <dimen name="expanded_toolbar_icon_size">120dp</dimen>
     <dimen name="expanded_toolbar_icon_radius">60dp</dimen>
     <dimen name="expanded_toolbar_icon_margin">16dp</dimen>
 
-    <dimen name="seek_bar_track_background_height">2dp</dimen>
-    <dimen name="seek_bar_track_progress_height">2dp</dimen>
+    <dimen name="introduction_title_margin_top">120dp</dimen>
+    <dimen name="introduction_title_margin_horizontal">24dp</dimen>
+    <dimen name="introduction_subtitle_margin_top">8dp</dimen>
+    <dimen name="text_size_introduction_title">20sp</dimen>
+    <dimen name="text_size_introduction_subtitle">14sp</dimen>
 </resources>

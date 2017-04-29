@@ -10,17 +10,14 @@ package net.mm2d.dmsexplorer.view;
 import android.content.res.Configuration;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
-import android.widget.Toast;
+import android.view.MotionEvent;
 
 import net.mm2d.dmsexplorer.R;
 import net.mm2d.dmsexplorer.Repository;
 import net.mm2d.dmsexplorer.databinding.PhotoActivityBinding;
-import net.mm2d.dmsexplorer.domain.model.PlaybackTargetModel;
 import net.mm2d.dmsexplorer.util.FullscreenHelper;
-import net.mm2d.dmsexplorer.util.ImageViewUtils;
 import net.mm2d.dmsexplorer.viewmodel.PhotoActivityModel;
 
 /**
@@ -30,33 +27,47 @@ import net.mm2d.dmsexplorer.viewmodel.PhotoActivityModel;
  */
 public class PhotoActivity extends AppCompatActivity {
     private FullscreenHelper mFullscreenHelper;
-    private PhotoActivityBinding mBinding;
+    private PhotoActivityModel mModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mBinding = DataBindingUtil.setContentView(this, R.layout.photo_activity);
-        final PhotoActivityModel model = PhotoActivityModel.create(this, Repository.get());
-        if (model == null) {
+        final PhotoActivityBinding binding
+                = DataBindingUtil.setContentView(this, R.layout.photo_activity);
+        mFullscreenHelper = new FullscreenHelper.Builder(binding.getRoot())
+                .setTopView(binding.toolbar)
+                .build();
+        try {
+            mModel = new PhotoActivityModel(this, Repository.get());
+        } catch (final IllegalStateException ignored) {
             finish();
             return;
         }
-        mBinding.setModel(model);
-        mBinding.toolbarBack.setOnClickListener(view -> onBackPressed());
 
-        mFullscreenHelper = new FullscreenHelper.Builder(mBinding.getRoot())
-                .setTopView(mBinding.toolbar)
-                .build();
+        binding.setModel(mModel);
+        mModel.adjustPanel(this);
         mFullscreenHelper.showNavigation();
+    }
 
-        final PlaybackTargetModel targetModel = Repository.get().getPlaybackTargetModel();
-        downloadAndSetImage(targetModel.getUri().toString());
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mFullscreenHelper.terminate();
+    }
+
+    @Override
+    public boolean dispatchTouchEvent(final MotionEvent ev) {
+        final boolean result = super.dispatchTouchEvent(ev);
+        mFullscreenHelper.showNavigation();
+        return result;
     }
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-        mBinding.getModel().adjustPanel(this);
+        if (mModel != null) {
+            mModel.adjustPanel(this);
+        }
     }
 
     @Override
@@ -68,29 +79,5 @@ public class PhotoActivity extends AppCompatActivity {
                 return true;
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        mFullscreenHelper.onDestroy();
-    }
-
-    private void downloadAndSetImage(@NonNull final String url) {
-        ImageViewUtils.downloadAndSetImage(mBinding.imageView, url, new ImageViewUtils.Callback() {
-            @Override
-            public void onSuccess() {
-                mBinding.getModel().setLoading(false);
-            }
-
-            @Override
-            public void onError() {
-                showToast(R.string.toast_download_error_occurred);
-            }
-        });
-    }
-
-    private void showToast(int resId) {
-        Toast.makeText(this, resId, Toast.LENGTH_LONG).show();
     }
 }

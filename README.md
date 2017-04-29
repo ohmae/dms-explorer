@@ -19,6 +19,12 @@ You can see the metadata of the recorded content in the recorder.
 This can recognize the ARIB extension tags, and can display it.
 URL string that is included in the program information, act as a link.
 
+## Screenshots
+
+|![](doc/img/1.png)|![](doc/img/2.png)|![](doc/img/3.png)|
+|-|-|-|
+|![](doc/img/4.png)|![](doc/img/5.png)|![](doc/img/6.png)|
+
 ## Install
 [Google Play](https://play.google.com/store/apps/details?id=net.mm2d.dmsexplorer)
 

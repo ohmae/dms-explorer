@@ -141,7 +141,7 @@ public class AvControlPointManager {
      */
     public void stop() {
         if (!mInitialized.get()) {
-            throw new IllegalStateException("ControlPoint is not initialized");
+            return;
         }
         mControlPoint.stop();
     }

@@ -18,7 +18,7 @@
         >
 
         <VideoView
-            android:id="@+id/videoView"
+            android:id="@+id/video_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center"
@@ -35,22 +35,24 @@
             >
 
             <ImageView
-                android:id="@+id/toolbarBack"
+                android:id="@+id/toolbar_back"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_marginEnd="@dimen/toolbar_button_margin"
                 android:layout_marginRight="@dimen/toolbar_button_margin"
                 android:background="@drawable/bg_tool_button"
+                android:onClick="@{() -> model.onClickBack()}"
                 android:padding="@dimen/toolbar_button_padding"
                 app:srcCompat="@drawable/ic_arrow_back"
                 />
 
             <TextView
-                android:id="@+id/toolbarTitle"
-                android:layout_width="wrap_content"
+                android:id="@+id/toolbar_title"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
+                android:layout_weight="1"
                 android:ellipsize="end"
                 android:maxLines="1"
                 android:text="@{model.title}"
@@ -58,18 +60,26 @@
                 android:textSize="@dimen/text_size_toolbar"
                 />
 
+            <ImageView
+                android:id="@+id/repeat_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:background="@drawable/bg_tool_button"
+                android:imageResource="@{model.repeatIconId}"
+                android:onClick="@{() -> model.onClickRepeat()}"
+                android:padding="@dimen/toolbar_button_padding"
+                />
         </LinearLayout>
 
-        <net.mm2d.dmsexplorer.view.view.ControlView
-            android:id="@+id/controlPanel"
+        <include
+            android:id="@+id/control_panel"
+            layout="@layout/control_panel"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/control_height"
+            android:layout_height="wrap_content"
             android:layout_gravity="bottom"
-            android:background="@color/translucent_control"
-            android:paddingBottom="@{model.bottomNavigationSize}"
-            app:layout_height="@{model.bottomNavigationSize + (int)@dimen/control_height}"
-            app:layout_marginRight="@{model.rightNavigationSize}"
+            app:model="@{model.controlPanelModel}"
+            app:param="@{model.controlPanelParam}"
             />
-
     </FrameLayout>
 </layout>

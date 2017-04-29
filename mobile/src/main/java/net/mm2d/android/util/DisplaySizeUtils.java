@@ -10,6 +10,7 @@ package net.mm2d.android.util;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.graphics.Point;
+import android.os.Build;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import android.support.annotation.NonNull;
@@ -62,5 +63,26 @@ public class DisplaySizeUtils {
         } catch (final NoSuchMethodException ignored) {
         }
         return point;
+    }
+
+    /**
+     * アプリケーションエリア内のNavigationBarエリアを返す。
+     *
+     * @param activity Activity
+     * @return NavigationBarのエリア
+     */
+    @TargetApi(VERSION_CODES.HONEYCOMB_MR2)
+    public static Point getNavigationBarArea(@NonNull final Activity activity) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT // KitKat未満はアプリエリアと重複しない
+                || isInMultiWindowMode(activity)) {
+            return new Point(0, 0);
+        }
+        final Point p1 = getSize(activity);
+        final Point p2 = getRealSize(activity);
+        return new Point(p2.x - p1.x, p2.y - p1.y);
+    }
+
+    private static boolean isInMultiWindowMode(@NonNull final Activity activity) {
+        return VERSION.SDK_INT >= VERSION_CODES.N && activity.isInMultiWindowMode();
     }
 }

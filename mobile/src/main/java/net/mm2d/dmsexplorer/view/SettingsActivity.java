@@ -22,6 +22,7 @@ import net.mm2d.android.activity.AppCompatPreferenceActivity;
 import net.mm2d.android.util.LaunchUtils;
 import net.mm2d.dmsexplorer.BuildConfig;
 import net.mm2d.dmsexplorer.R;
+import net.mm2d.dmsexplorer.settings.Key;
 import net.mm2d.dmsexplorer.view.dialog.WebViewDialog;
 
 import java.util.List;
@@ -87,15 +88,15 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
     @Override
     protected boolean isValidFragment(String fragmentName) {
         return PreferenceFragment.class.getName().equals(fragmentName)
-                || GeneralPreferenceFragment.class.getName().equals(fragmentName)
+                || PlaybackPreferenceFragment.class.getName().equals(fragmentName)
                 || InformationPreferenceFragment.class.getName().equals(fragmentName);
     }
 
-    public static class GeneralPreferenceFragment extends PreferenceFragment {
+    public static class PlaybackPreferenceFragment extends PreferenceFragment {
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
-            addPreferencesFromResource(R.xml.pref_general);
+            addPreferencesFromResource(R.xml.pref_playback);
             setHasOptionsMenu(true);
         }
     }
@@ -105,13 +106,13 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             addPreferencesFromResource(R.xml.pref_information);
-            findPreference("PLAY_STORE").setOnPreferenceClickListener(preference -> {
+            findPreference(Key.PLAY_STORE.name()).setOnPreferenceClickListener(preference -> {
                 final Context context = preference.getContext();
                 LaunchUtils.openUri(context, "market://details?id=" + context.getPackageName());
                 return true;
             });
-            findPreference("VERSION_NUMBER").setSummary(BuildConfig.VERSION_NAME);
-            findPreference("LICENSE").setOnPreferenceClickListener(preference -> {
+            findPreference(Key.VERSION_NUMBER.name()).setSummary(BuildConfig.VERSION_NAME);
+            findPreference(Key.LICENSE.name()).setOnPreferenceClickListener(preference -> {
                 final WebViewDialog dialog = WebViewDialog.newInstance(
                         getString(R.string.pref_title_license),
                         "file:///android_asset/license.html");

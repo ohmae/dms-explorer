@@ -36,7 +36,7 @@ public class ChapterInfo {
     private static final String SONY_POINT_NODE = "chapter_point";
 
     public interface Callback {
-        void onResult(List<Integer> result);
+        void onResult(int[] result);
     }
 
     public static void get(@NonNull final CdsObject object, @NonNull final Callback callback) {
@@ -62,7 +62,7 @@ public class ChapterInfo {
     }
 
     @Nullable
-    private static List<Integer> parseSonyChapterInfo(@NonNull final String xml)
+    private static int[] parseSonyChapterInfo(@NonNull final String xml)
             throws ParserConfigurationException, SAXException, IOException {
         if (TextUtils.isEmpty(xml)) {
             return null;
@@ -91,7 +91,7 @@ public class ChapterInfo {
             } catch (final NumberFormatException ignored) {
             }
         }
-        return result;
+        return toIntArray(result);
     }
 
     @Nullable
@@ -107,5 +107,14 @@ public class ChapterInfo {
             }
         }
         return null;
+    }
+
+    @NonNull
+    private static int[] toIntArray(@NonNull final List<Integer> list) {
+        final int[] res = new int[list.size()];
+        for (int i = 0; i < list.size(); i++) {
+            res[i] = list.get(i);
+        }
+        return res;
     }
 }

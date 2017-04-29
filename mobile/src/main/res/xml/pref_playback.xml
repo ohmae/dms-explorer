@@ -1,0 +1,40 @@
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory
+        android:title="@string/pref_category_movie"
+        >
+        <SwitchPreference
+            android:defaultValue="true"
+            android:key="PLAY_MOVIE_MYSELF"
+            android:summaryOff="@string/pref_message_launch_app_off"
+            android:summaryOn="@string/pref_message_launch_app_on"
+            android:title="@string/pref_title_launch_app_movie"
+            />
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/pref_category_music"
+        >
+        <SwitchPreference
+            android:defaultValue="true"
+            android:key="PLAY_MUSIC_MYSELF"
+            android:summaryOff="@string/pref_message_launch_app_off"
+            android:summaryOn="@string/pref_message_launch_app_on"
+            android:title="@string/pref_title_launch_app_music"
+            />
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/pref_category_photo"
+        >
+        <SwitchPreference
+            android:defaultValue="true"
+            android:key="PLAY_PHOTO_MYSELF"
+            android:summaryOff="@string/pref_message_launch_app_off"
+            android:summaryOn="@string/pref_message_launch_app_on"
+            android:title="@string/pref_title_launch_app_photo"
+            />
+    </PreferenceCategory>
+
+</PreferenceScreen>

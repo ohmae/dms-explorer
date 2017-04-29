@@ -20,7 +20,7 @@
         >
 
         <android.support.design.widget.AppBarLayout
-            android:id="@+id/appBar"
+            android:id="@+id/app_bar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:theme="@style/AppTheme.AppBarOverlay"
@@ -34,13 +34,26 @@
                 android:theme="@style/AppTheme.AppBarOverlay"
                 android:title="@{model.title}"
                 app:popupTheme="@style/AppTheme.PopupOverlay"
-                />
+                >
+
+                <ImageView
+                    android:id="@+id/repeat_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:background="@drawable/bg_tool_button"
+                    android:imageResource="@{model.repeatIconId}"
+                    android:onClick="@{() -> model.onClickRepeat()}"
+                    android:padding="@dimen/toolbar_button_padding"
+                    />
+            </android.support.v7.widget.Toolbar>
 
         </android.support.design.widget.AppBarLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginBottom="@dimen/seek_padding_top_negative"
             android:orientation="vertical"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
             >
@@ -48,17 +61,19 @@
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
+                android:layout_marginBottom="@dimen/seek_padding_top_negative"
                 android:layout_weight="1"
                 >
 
                 <ImageView
-                    android:id="@+id/art"
+                    android:id="@+id/album_art"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_gravity="top|end"
                     android:layout_margin="@dimen/music_image_margin"
                     android:adjustViewBounds="true"
                     android:alpha="0.3"
+                    app:imageBinary="@{model.imageBinary}"
                     />
 
                 <android.support.v7.widget.RecyclerView
@@ -72,15 +87,15 @@
 
             </FrameLayout>
 
-            <net.mm2d.dmsexplorer.view.view.ControlView
-                android:id="@+id/controlPanel"
+            <include
+                android:id="@+id/control_panel"
+                layout="@layout/control_panel"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/control_height"
+                android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
-                android:background="@{model.accentColor}"
+                app:model="@{model.controlPanelModel}"
+                app:param="@{model.controlPanelParam}"
                 />
-
         </LinearLayout>
-
     </android.support.design.widget.CoordinatorLayout>
 </layout>

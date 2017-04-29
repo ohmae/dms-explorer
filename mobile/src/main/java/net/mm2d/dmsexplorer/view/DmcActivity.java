@@ -12,6 +12,7 @@ import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
@@ -38,31 +39,33 @@ public class DmcActivity extends AppCompatActivity {
         return new Intent(context, DmcActivity.class);
     }
 
-    private DmcActivityBinding mBinding;
+    private DmcActivityModel mModel;
 
     @Override
-    protected void onCreate(@NonNull final Bundle savedInstanceState) {
+    protected void onCreate(@Nullable final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mBinding = DataBindingUtil.setContentView(this, R.layout.dmc_activity);
-        final DmcActivityModel model = DmcActivityModel.create(this, Repository.get());
-        if (model == null) {
+        final DmcActivityBinding binding = DataBindingUtil.setContentView(this, R.layout.dmc_activity);
+        try {
+            mModel = new DmcActivityModel(this, Repository.get());
+            binding.setModel(mModel);
+            mModel.initialize();
+        } catch (final IllegalStateException ignored) {
             finish();
             return;
         }
-        mBinding.setModel(model);
 
-        setSupportActionBar(mBinding.toolbar);
+        setSupportActionBar(binding.toolbar);
         final ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
-
-        model.initialize();
     }
 
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        mBinding.getModel().terminate();
+        if (mModel != null) {
+            mModel.terminate();
+        }
         Repository.get().getControlPointModel().clearSelectedRenderer();
     }
 
