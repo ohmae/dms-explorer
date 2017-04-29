@@ -16,6 +16,7 @@ import android.support.annotation.NonNull;
  */
 class Maintainer {
     // 0: 0.6.20
+    // 1: 0.7.0
     private static final int SETTINGS_VERSION = 1;
 
     static void maintain(@NonNull final SharedPreferences pref) {

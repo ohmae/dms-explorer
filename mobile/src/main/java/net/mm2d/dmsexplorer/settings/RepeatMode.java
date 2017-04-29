@@ -21,10 +21,26 @@ import java.util.Map;
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
  */
 public enum RepeatMode {
-    PLAY_ONCE(0, R.drawable.ic_play_once, R.string.toast_repeat_play_once),
-    SEQUENTIAL(1, R.drawable.ic_sequential, R.string.toast_repeat_sequential),
-    REPEAT_ALL(2, R.drawable.ic_repeat_all, R.string.toast_repeat_repeat_all),
-    REPEAT_ONE(3, R.drawable.ic_repeat_one, R.string.toast_repeat_repeat_one),;
+    PLAY_ONCE(
+            0,
+            R.drawable.ic_play_once,
+            R.string.toast_repeat_play_once
+    ),
+    SEQUENTIAL(
+            1,
+            R.drawable.ic_sequential,
+            R.string.toast_repeat_sequential
+    ),
+    REPEAT_ALL(
+            2,
+            R.drawable.ic_repeat_all,
+            R.string.toast_repeat_repeat_all
+    ),
+    REPEAT_ONE(
+            3,
+            R.drawable.ic_repeat_one,
+            R.string.toast_repeat_repeat_one
+    ),;
     private final int mOrder;
     private final int mIconId;
     private final int mMessageId;
