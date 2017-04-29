@@ -18,8 +18,11 @@ import net.mm2d.dmsexplorer.R;
 import net.mm2d.dmsexplorer.Repository;
 import net.mm2d.dmsexplorer.databinding.MovieActivityBinding;
 import net.mm2d.dmsexplorer.util.FullscreenHelper;
+import net.mm2d.dmsexplorer.util.RepeatIntroductionUtils;
 import net.mm2d.dmsexplorer.viewmodel.MovieActivityModel;
 import net.mm2d.dmsexplorer.viewmodel.MovieActivityModel.OnSwitchListener;
+
+import java.util.concurrent.TimeUnit;
 
 /**
  * 動画再生のActivity。
@@ -28,6 +31,7 @@ import net.mm2d.dmsexplorer.viewmodel.MovieActivityModel.OnSwitchListener;
  */
 public class MovieActivity extends AppCompatActivity implements OnSwitchListener {
     private static final String KEY_POSITION = "KEY_POSITION";
+    private static final long TIMEOUT_DELAY = TimeUnit.SECONDS.toMillis(1);
     private FullscreenHelper mFullscreenHelper;
     private MovieActivityModel mModel;
 
@@ -50,7 +54,12 @@ public class MovieActivity extends AppCompatActivity implements OnSwitchListener
         mModel.setOnSwitchListener(this);
         binding.setModel(mModel);
         mModel.adjustPanel(this);
-        mFullscreenHelper.showNavigation();
+        if (RepeatIntroductionUtils.show(this, binding.repeatButton)) {
+            final long timeout = RepeatIntroductionUtils.TIMEOUT + TIMEOUT_DELAY;
+            mFullscreenHelper.showNavigation(timeout);
+        } else {
+            mFullscreenHelper.showNavigation();
+        }
         if (savedInstanceState != null) {
             final int progress = savedInstanceState.getInt(KEY_POSITION, 0);
             mModel.restoreSaveProgress(progress);

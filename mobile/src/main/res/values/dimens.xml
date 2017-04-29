@@ -40,4 +40,10 @@
     <dimen name="expanded_toolbar_icon_size">120dp</dimen>
     <dimen name="expanded_toolbar_icon_radius">60dp</dimen>
     <dimen name="expanded_toolbar_icon_margin">16dp</dimen>
+
+    <dimen name="introduction_title_margin_top">120dp</dimen>
+    <dimen name="introduction_title_margin_horizontal">24dp</dimen>
+    <dimen name="introduction_subtitle_margin_top">8dp</dimen>
+    <dimen name="text_size_introduction_title">20sp</dimen>
+    <dimen name="text_size_introduction_subtitle">14sp</dimen>
 </resources>

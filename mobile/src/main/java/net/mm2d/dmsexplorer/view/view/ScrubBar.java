@@ -293,8 +293,8 @@ public class ScrubBar extends View {
         final int right = getPaddingRight();
         final int top = getPaddingTop();
         final int bottom = getPaddingBottom();
-        final int width = canvas.getWidth();
-        final int height = canvas.getHeight();
+        final int width = getWidth();
+        final int height = getHeight();
         final float areaWidth = width - left - right;
         final float areaHeight = height - top - bottom;
         final float cy = areaHeight / 2 + top;

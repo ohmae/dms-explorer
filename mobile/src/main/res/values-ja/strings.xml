@@ -41,9 +41,6 @@
     <string name="pref_title_launch_app_movie">動画再生機能</string>
     <string name="pref_title_launch_app_music">音楽再生機能</string>
     <string name="pref_title_launch_app_photo">静止画表示機能</string>
-    <string name="pref_title_music_auto_play">自動再生</string>
-    <string name="pref_message_music_auto_play_on">次の曲があれば自動的に再生します</string>
-    <string name="pref_message_music_auto_play_off">再生が完了すると停止します</string>
     <string name="pref_header_information">情報</string>
     <string name="pref_title_play_store">Google Play</string>
     <string name="pref_message_play_store">Google Playを開きます</string>
@@ -51,4 +48,6 @@
     <string name="pref_message_copyright">Copyright© 2016 大前良介 (OHMAE Ryosuke)</string>
     <string name="pref_title_version_number">バージョン</string>
     <string name="pref_title_license">ライセンス情報</string>
+    <string name="repeat_introduction_title">リピート</string>
+    <string name="repeat_introduction_subtitle">リピート方法を選択できます</string>
 </resources>

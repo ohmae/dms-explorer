@@ -76,4 +76,14 @@ public class Settings {
         editor.putString(Key.REPEAT_MODE_MUSIC.name(), mode.name());
         editor.apply();
     }
+
+    public boolean isRepeatIntroduced() {
+        return getPref().getBoolean(Key.REPEAT_INTRODUCED.name(), false);
+    }
+
+    public void notifyRepeatIntroduced() {
+        final Editor editor = getPref().edit();
+        editor.putBoolean(Key.REPEAT_INTRODUCED.name(), true);
+        editor.apply();
+    }
 }

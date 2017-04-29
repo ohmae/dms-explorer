@@ -88,6 +88,7 @@ public class FullscreenHelper {
     private final Animation mExitToBottom;
     @NonNull
     private final Runnable mHideNavigationTask = this::hideNavigation;
+    private boolean mPosted = false;
 
     private FullscreenHelper(@NonNull final Builder builder) {
         mHandler = new Handler();
@@ -102,18 +103,23 @@ public class FullscreenHelper {
         mExitToBottom = AnimationUtils.loadAnimation(context, R.anim.exit_to_bottom);
 
         mRootView.setOnSystemUiVisibilityChangeListener(visibility -> {
-            if ((visibility & View.SYSTEM_UI_FLAG_HIDE_NAVIGATION) == 0) {
+            if (!mPosted && (visibility & View.SYSTEM_UI_FLAG_HIDE_NAVIGATION) == 0) {
                 showNavigation();
             }
         });
     }
 
-    private void postHideNavigation() {
+    private void postHideNavigation(final long interval) {
         mHandler.removeCallbacks(mHideNavigationTask);
-        mHandler.postDelayed(mHideNavigationTask, NAVIGATION_INTERVAL);
+        mHandler.postDelayed(mHideNavigationTask, interval);
+        mPosted = true;
     }
 
     public void showNavigation() {
+        showNavigation(NAVIGATION_INTERVAL);
+    }
+
+    public void showNavigation(final long interval) {
         if (mTopView != null && mTopView.getVisibility() != View.VISIBLE) {
             mTopView.clearAnimation();
             mTopView.startAnimation(mEnterFromTop);
@@ -125,10 +131,12 @@ public class FullscreenHelper {
             mBottomView.setVisibility(View.VISIBLE);
         }
         mRootView.setSystemUiVisibility(SYSTEM_UI_VISIBLE);
-        postHideNavigation();
+        postHideNavigation(interval);
     }
 
+
     private void hideNavigation() {
+        mPosted = false;
         if (mTopView != null) {
             mTopView.clearAnimation();
             mTopView.startAnimation(mExitToTop);

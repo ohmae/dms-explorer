@@ -41,9 +41,6 @@
     <string name="pref_title_launch_app_movie">Movie playback</string>
     <string name="pref_title_launch_app_music">Music playback</string>
     <string name="pref_title_launch_app_photo">Photo playback</string>
-    <string name="pref_title_music_auto_play">Auto play</string>
-    <string name="pref_message_music_auto_play_on">Automatically play if there is next.</string>
-    <string name="pref_message_music_auto_play_off">Stop after playback is completion.</string>
     <string name="pref_header_information">Information</string>
     <string name="pref_title_play_store">Google Play</string>
     <string name="pref_message_play_store">Go to Google Play</string>
@@ -51,4 +48,6 @@
     <string name="pref_message_copyright">Copyright© 2016 大前良介 (OHMAE Ryosuke)</string>
     <string name="pref_title_version_number">Version</string>
     <string name="pref_title_license">License Information</string>
+    <string name="repeat_introduction_title">Repeat</string>
+    <string name="repeat_introduction_subtitle">You can select the repeat mode</string>
 </resources>

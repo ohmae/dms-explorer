@@ -11,9 +11,6 @@ import android.app.Activity;
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
 import android.graphics.Point;
-import android.os.Build;
-import android.os.Build.VERSION;
-import android.os.Build.VERSION_CODES;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -112,16 +109,9 @@ public class MovieActivityModel extends BaseObservable
     }
 
     public void adjustPanel(@NonNull final Activity activity) {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT
-                || (VERSION.SDK_INT >= VERSION_CODES.N && activity.isInMultiWindowMode())) {
-            setRightNavigationSize(0);
-            controlPanelParam.setBottomPadding(0);
-            return;
-        }
-        final Point p1 = DisplaySizeUtils.getSize(activity);
-        final Point p2 = DisplaySizeUtils.getRealSize(activity);
-        setRightNavigationSize(p2.x - p1.x);
-        controlPanelParam.setBottomPadding(p2.y - p1.y);
+        final Point size = DisplaySizeUtils.getNavigationBarArea(activity);
+        setRightNavigationSize(size.x);
+        controlPanelParam.setBottomPadding(size.y);
     }
 
     public void terminate() {

@@ -3,7 +3,7 @@
     <color name="primary">#3355bb</color>
     <color name="primaryDark">#000000</color>
     <color name="defaultStatusBar">#113399</color>
-    <color name="accent">#2196F3</color>
+    <color name="accent">#2196f3</color>
     <color name="textPrimary">#ffffff</color>
     <color name="textHighlight">#3355bb</color>
     <color name="textMain">#000000</color>
@@ -16,17 +16,21 @@
     <color name="bgListItem">#ffffff</color>
     <color name="bgListItemRipple">#40000000</color>
     <color name="bgListItemPressed">#20000000</color>
-    <color name="bgListItemSelected">#DFE7FF</color>
+    <color name="bgListItemSelected">#dfe7ff</color>
     <color name="bgListItemSelectedPressed">#ffffff</color>
     <color name="bgListItemSelectedRipple">#ffffff</color>
     <color name="markListItemSelected">#002288</color>
-    <color name="progress1">#3355BB</color>
-    <color name="progress2">#BB3399</color>
-    <color name="progress3">#BB9933</color>
-    <color name="progress4">#33BB55</color>
+    <color name="progress1">#3355bb</color>
+    <color name="progress2">#bb3399</color>
+    <color name="progress3">#bb9933</color>
+    <color name="progress4">#33bb55</color>
     <color name="translucent_ripple">#40ffffff</color>
     <color name="translucent_control">#66000000</color>
     <color name="fabDisable">#808080</color>
     <color name="fabRipple">#80ffffff</color>
     <color name="toolbarBackgroundDefault">#c0c0c0</color>
+
+    <color name="textIntroductory">#ffffff</color>
+    <color name="overlayIntroductory">#ee2196f3</color>
+    <color name="dimmerIntroductory">#cc000000</color>
 </resources>

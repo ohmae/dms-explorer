@@ -15,6 +15,7 @@ import android.view.MenuItem;
 import net.mm2d.dmsexplorer.R;
 import net.mm2d.dmsexplorer.Repository;
 import net.mm2d.dmsexplorer.databinding.MusicActivityBinding;
+import net.mm2d.dmsexplorer.util.RepeatIntroductionUtils;
 import net.mm2d.dmsexplorer.viewmodel.MusicActivityModel;
 
 /**
@@ -47,6 +48,7 @@ public class MusicActivity extends AppCompatActivity {
             final int progress = savedInstanceState.getInt(KEY_POSITION, 0);
             mModel.restoreSaveProgress(progress);
         }
+        RepeatIntroductionUtils.show(this, binding.repeatButton);
     }
 
     @Override
