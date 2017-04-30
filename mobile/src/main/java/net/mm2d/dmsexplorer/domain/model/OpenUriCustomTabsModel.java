@@ -15,6 +15,7 @@ import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.customtabs.CustomTabsIntent;
 import android.text.TextUtils;
+import android.webkit.URLUtil;
 
 import net.mm2d.android.util.LaunchUtils;
 import net.mm2d.dmsexplorer.R;
@@ -42,7 +43,11 @@ public class OpenUriCustomTabsModel implements OpenUriModel {
 
     @Override
     public void openUri(@NonNull final Context context, @NonNull final String uri) {
-        if (!mUseCustomTabs || !openUriOnCustomTabs(context, uri)) {
+        if (!mUseCustomTabs || !URLUtil.isNetworkUrl(uri)) {
+            LaunchUtils.openUri(context, uri);
+            return;
+        }
+        if (!openUriOnCustomTabs(context, uri)) {
             LaunchUtils.openUri(context, uri);
         }
     }
