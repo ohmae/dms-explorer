@@ -5,7 +5,7 @@
  * http://opensource.org/licenses/MIT
  */
 
-package net.mm2d.dmsexplorer.domain;
+package net.mm2d.dmsexplorer.domain.model;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -16,31 +16,26 @@ import net.mm2d.android.util.ActivityLifecycleCallbacksAdapter;
 /**
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
  */
-class LifecycleCallbacks extends ActivityLifecycleCallbacksAdapter {
+public class CustomTabsBinder extends ActivityLifecycleCallbacksAdapter {
     @NonNull
-    private final Session mSession;
+    private final CustomTabsHelper mSession;
     private int mCreatedCount;
-    private boolean mBound;
 
-    LifecycleCallbacks(@NonNull final Session session) {
+    public CustomTabsBinder(@NonNull final CustomTabsHelper session) {
         mSession = session;
     }
 
     @Override
     public void onActivityCreated(final Activity activity, final Bundle savedInstanceState) {
         mCreatedCount++;
-        if (!mBound) {
-            mSession.bind();
-            mBound = true;
-        }
+        mSession.bind();
     }
 
     @Override
     public void onActivityDestroyed(final Activity activity) {
         mCreatedCount--;
-        if (mBound && mCreatedCount == 0 && activity.isFinishing()) {
+        if (mCreatedCount == 0 && activity.isFinishing()) {
             mSession.unbind();
-            mBound = false;
         }
     }
 }

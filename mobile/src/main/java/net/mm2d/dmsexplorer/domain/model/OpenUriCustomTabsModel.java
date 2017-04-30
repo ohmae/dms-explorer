@@ -18,7 +18,6 @@ import android.text.TextUtils;
 
 import net.mm2d.android.util.LaunchUtils;
 import net.mm2d.dmsexplorer.R;
-import net.mm2d.dmsexplorer.domain.CustomTabsSessionHelper;
 
 /**
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
@@ -26,12 +25,12 @@ import net.mm2d.dmsexplorer.domain.CustomTabsSessionHelper;
 public class OpenUriCustomTabsModel implements OpenUriModel {
     private static final int DEFAULT_TOOLBAR_COLOR = Color.BLACK;
     @NonNull
-    private final CustomTabsSessionHelper mHelper;
+    private final CustomTabsHelper mHelper;
     @NonNull
     private final ThemeModel mThemeModel;
     private boolean mUseCustomTabs;
 
-    public OpenUriCustomTabsModel(@NonNull final CustomTabsSessionHelper helper,
+    public OpenUriCustomTabsModel(@NonNull final CustomTabsHelper helper,
                                   @NonNull final ThemeModel themeModel) {
         mHelper = helper;
         mThemeModel = themeModel;
@@ -49,19 +48,19 @@ public class OpenUriCustomTabsModel implements OpenUriModel {
     }
 
     private boolean openUriOnCustomTabs(@NonNull final Context context, @NonNull final String uri) {
-        final String packageNameToBind = mHelper.getPackageNameToBind();
+        final String packageNameToBind = CustomTabsHelper.getPackageNameToBind();
         if (TextUtils.isEmpty(packageNameToBind)) {
             return false;
         }
-        final CustomTabsIntent intent = new CustomTabsIntent.Builder(mHelper.getSession())
+        final CustomTabsIntent customTabsIntent = new CustomTabsIntent.Builder(mHelper.getSession())
                 .setShowTitle(true)
                 .setToolbarColor(getToolbarColor(context))
                 .setStartAnimations(context, R.anim.slide_in_right, R.anim.slide_out_left)
                 .setExitAnimations(context, R.anim.slide_in_left, R.anim.slide_out_right)
                 .build();
-        intent.intent.setPackage(packageNameToBind);
+        customTabsIntent.intent.setPackage(packageNameToBind);
         try {
-            intent.launchUrl(context, Uri.parse(uri));
+            customTabsIntent.launchUrl(context, Uri.parse(uri));
         } catch (final ActivityNotFoundException ignored) {
             return false;
         }
@@ -73,9 +72,6 @@ public class OpenUriCustomTabsModel implements OpenUriModel {
             return DEFAULT_TOOLBAR_COLOR;
         }
         final int color = mThemeModel.getToolbarColor((Activity) context);
-        if (color == 0) {
-            return DEFAULT_TOOLBAR_COLOR;
-        }
-        return color;
+        return color != 0 ? color : DEFAULT_TOOLBAR_COLOR;
     }
 }

@@ -23,12 +23,11 @@ import net.mm2d.android.util.LaunchUtils;
 import net.mm2d.dmsexplorer.BuildConfig;
 import net.mm2d.dmsexplorer.R;
 import net.mm2d.dmsexplorer.Repository;
+import net.mm2d.dmsexplorer.domain.model.CustomTabsHelper;
 import net.mm2d.dmsexplorer.domain.model.OpenUriCustomTabsModel;
 import net.mm2d.dmsexplorer.domain.model.OpenUriModel;
 import net.mm2d.dmsexplorer.settings.Key;
 import net.mm2d.dmsexplorer.view.dialog.WebViewDialog;
-
-import org.chromium.customtabsclient.shared.CustomTabsHelper;
 
 import java.util.List;
 
@@ -96,8 +95,8 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                 || InformationPreferenceFragment.class.getName().equals(fragmentName);
     }
 
-    private static boolean canUseChromeCustomTabs(Context context) {
-        return !TextUtils.isEmpty(CustomTabsHelper.getPackageNameToUse(context));
+    private static boolean canUseChromeCustomTabs() {
+        return !TextUtils.isEmpty(CustomTabsHelper.getPackageNameToBind());
     }
 
     public static class PlaybackPreferenceFragment extends PreferenceFragment {
@@ -125,7 +124,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                 }
                 return true;
             });
-            if (canUseChromeCustomTabs(getActivity())) {
+            if (canUseChromeCustomTabs()) {
                 return;
             }
             if (customTabs.isChecked()) {

@@ -17,6 +17,8 @@ import net.mm2d.android.upnp.cds.CdsObject;
 import net.mm2d.android.upnp.cds.MediaServer;
 import net.mm2d.dmsexplorer.Repository;
 import net.mm2d.dmsexplorer.domain.model.ControlPointModel;
+import net.mm2d.dmsexplorer.domain.model.CustomTabsBinder;
+import net.mm2d.dmsexplorer.domain.model.CustomTabsHelper;
 import net.mm2d.dmsexplorer.domain.model.MediaRendererModel;
 import net.mm2d.dmsexplorer.domain.model.MediaServerModel;
 import net.mm2d.dmsexplorer.domain.model.OpenUriCustomTabsModel;
@@ -41,14 +43,15 @@ public class AppRepository extends Repository {
 
     public AppRepository(@NonNull final Application application) {
         mContext = application;
-        final CustomTabsSessionHelper helper = new CustomTabsSessionHelper(mContext);
-        application.registerActivityLifecycleCallbacks(new LifecycleCallbacks(helper));
         mControlPointModel = new ControlPointModel(mContext, this::updateMediaServer, this::updateMediaRenderer);
         final ThemeModelImpl themeModel = new ThemeModelImpl();
-        application.registerActivityLifecycleCallbacks(themeModel);
-        mThemeModel = themeModel;
+        final CustomTabsHelper helper = new CustomTabsHelper(mContext);
         mOpenUriModel = new OpenUriCustomTabsModel(helper, themeModel);
         mOpenUriModel.setUseCustomTabs(new Settings(mContext).useCustomTabs());
+        mThemeModel = themeModel;
+
+        application.registerActivityLifecycleCallbacks(new CustomTabsBinder(helper));
+        application.registerActivityLifecycleCallbacks(themeModel);
     }
 
     private void updateMediaServer(@Nullable final MediaServer server) {
