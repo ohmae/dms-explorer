@@ -50,6 +50,8 @@ public class CustomTabsSessionHelper extends CustomTabsServiceConnection
     @Override
     public void unbind() {
         mContext.unbindService(this);
+        mClient = null;
+        mSession = null;
     }
 
     public String getPackageNameToBind() {

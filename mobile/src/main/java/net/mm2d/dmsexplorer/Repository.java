@@ -14,6 +14,7 @@ import net.mm2d.dmsexplorer.domain.model.MediaServerModel;
 import net.mm2d.dmsexplorer.domain.model.OpenUriModel;
 import net.mm2d.dmsexplorer.domain.model.PlaybackTargetModel;
 import net.mm2d.dmsexplorer.domain.model.PlayerModel;
+import net.mm2d.dmsexplorer.domain.model.ThemeModel;
 
 /**
  * @author <a href="mailto:ryo@mm2d.net">大前良介(OHMAE Ryosuke)</a>
@@ -28,6 +29,8 @@ public abstract class Repository {
     static void set(@NonNull Repository instance) {
         sInstance = instance;
     }
+
+    public abstract ThemeModel getThemeModel();
 
     public abstract OpenUriModel getOpenUriModel();
 

@@ -10,8 +10,6 @@ package net.mm2d.dmsexplorer.view;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.os.Build.VERSION;
-import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
 import android.preference.PreferenceFragment;
 import android.support.v4.content.ContextCompat;
@@ -22,6 +20,7 @@ import net.mm2d.android.activity.AppCompatPreferenceActivity;
 import net.mm2d.android.util.LaunchUtils;
 import net.mm2d.dmsexplorer.BuildConfig;
 import net.mm2d.dmsexplorer.R;
+import net.mm2d.dmsexplorer.Repository;
 import net.mm2d.dmsexplorer.settings.Key;
 import net.mm2d.dmsexplorer.view.dialog.WebViewDialog;
 
@@ -54,13 +53,13 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
-            getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.defaultStatusBar));
-        }
         final ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
+        Repository.get().getThemeModel().setThemeColor(this,
+                ContextCompat.getColor(this, R.color.primary),
+                ContextCompat.getColor(this, R.color.defaultStatusBar));
     }
 
     @Override

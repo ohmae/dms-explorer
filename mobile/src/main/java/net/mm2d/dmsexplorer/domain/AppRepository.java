@@ -23,6 +23,8 @@ import net.mm2d.dmsexplorer.domain.model.OpenUriModel;
 import net.mm2d.dmsexplorer.domain.model.OpenUriModelImpl;
 import net.mm2d.dmsexplorer.domain.model.PlaybackTargetModel;
 import net.mm2d.dmsexplorer.domain.model.PlayerModel;
+import net.mm2d.dmsexplorer.domain.model.ThemeModel;
+import net.mm2d.dmsexplorer.domain.model.ThemeModelImpl;
 
 /**
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
@@ -30,17 +32,21 @@ import net.mm2d.dmsexplorer.domain.model.PlayerModel;
 public class AppRepository extends Repository {
     private final Context mContext;
     private final ControlPointModel mControlPointModel;
+    private final ThemeModel mThemeModel;
+    private final OpenUriModel mOpenUriModel;
     private MediaServerModel mMediaServerModel;
     private PlayerModel mMediaRendererModel;
     private PlaybackTargetModel mPlaybackTargetModel;
-    private final OpenUriModel mOpenUriModel;
 
     public AppRepository(@NonNull final Application application) {
         mContext = application;
         final CustomTabsSessionHelper helper = new CustomTabsSessionHelper(mContext);
         application.registerActivityLifecycleCallbacks(new LifecycleCallbacks(helper));
-        mOpenUriModel = new OpenUriModelImpl(helper);
         mControlPointModel = new ControlPointModel(mContext, this::updateMediaServer, this::updateMediaRenderer);
+        final ThemeModelImpl themeModel = new ThemeModelImpl();
+        application.registerActivityLifecycleCallbacks(themeModel);
+        mThemeModel = themeModel;
+        mOpenUriModel = new OpenUriModelImpl(helper, themeModel);
     }
 
     private void updateMediaServer(@Nullable final MediaServer server) {
@@ -74,6 +80,11 @@ public class AppRepository extends Repository {
 
     private void updatePlaybackTarget(@Nullable final CdsObject object) {
         mPlaybackTargetModel = object != null ? new PlaybackTargetModel(object) : null;
+    }
+
+    @Override
+    public ThemeModel getThemeModel() {
+        return mThemeModel;
     }
 
     @Override

@@ -10,8 +10,6 @@ package net.mm2d.dmsexplorer.viewmodel;
 import android.app.Activity;
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
-import android.os.Build.VERSION;
-import android.os.Build.VERSION_CODES;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -92,9 +90,8 @@ public class MusicActivityModel extends BaseObservable
         mTitle = AribUtils.toDisplayableString(targetModel.getTitle());
         mAccentColor = ThemeUtils.getDeepColor(mTitle);
         mPropertyAdapter = new ContentPropertyAdapter(mActivity, targetModel.getCdsObject());
-        if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
-            mActivity.getWindow().setStatusBarColor(ThemeUtils.getDarkerColor(mAccentColor));
-        }
+        mRepository.getThemeModel().setThemeColor(mActivity, mAccentColor, 0);
+
         notifyPropertyChanged(BR.title);
         notifyPropertyChanged(BR.accentColor);
         notifyPropertyChanged(BR.propertyAdapter);

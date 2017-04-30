@@ -7,12 +7,13 @@
 
 package net.mm2d.dmsexplorer.domain.model;
 
+import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
+import android.graphics.Color;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.customtabs.CustomTabsIntent;
-import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 
 import net.mm2d.android.util.LaunchUtils;
@@ -23,11 +24,16 @@ import net.mm2d.dmsexplorer.domain.CustomTabsSessionHelper;
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
  */
 public class OpenUriModelImpl implements OpenUriModel {
+    private static final int DEFAULT_TOOLBAR_COLOR = Color.BLACK;
     @NonNull
     private final CustomTabsSessionHelper mHelper;
+    @NonNull
+    private final ThemeModel mThemeModel;
 
-    public OpenUriModelImpl(@NonNull final CustomTabsSessionHelper helper) {
+    public OpenUriModelImpl(@NonNull final CustomTabsSessionHelper helper,
+                            @NonNull final ThemeModel themeModel) {
         mHelper = helper;
+        mThemeModel = themeModel;
     }
 
     @Override
@@ -44,7 +50,7 @@ public class OpenUriModelImpl implements OpenUriModel {
         }
         final CustomTabsIntent intent = new CustomTabsIntent.Builder(mHelper.getSession())
                 .setShowTitle(true)
-                .setToolbarColor(ContextCompat.getColor(context, R.color.primary))
+                .setToolbarColor(getToolbarColor(context))
                 .setStartAnimations(context, R.anim.slide_in_right, R.anim.slide_out_left)
                 .setExitAnimations(context, R.anim.slide_in_left, R.anim.slide_out_right)
                 .build();
@@ -55,5 +61,16 @@ public class OpenUriModelImpl implements OpenUriModel {
             return false;
         }
         return true;
+    }
+
+    private int getToolbarColor(@NonNull final Context context) {
+        if (!(context instanceof Activity)) {
+            return DEFAULT_TOOLBAR_COLOR;
+        }
+        final int color = mThemeModel.getToolbarColor((Activity) context);
+        if (color == 0) {
+            return DEFAULT_TOOLBAR_COLOR;
+        }
+        return color;
     }
 }
