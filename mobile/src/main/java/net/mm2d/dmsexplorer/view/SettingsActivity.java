@@ -12,8 +12,10 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.preference.PreferenceFragment;
+import android.preference.SwitchPreference;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
+import android.text.TextUtils;
 import android.view.MenuItem;
 
 import net.mm2d.android.activity.AppCompatPreferenceActivity;
@@ -21,8 +23,12 @@ import net.mm2d.android.util.LaunchUtils;
 import net.mm2d.dmsexplorer.BuildConfig;
 import net.mm2d.dmsexplorer.R;
 import net.mm2d.dmsexplorer.Repository;
+import net.mm2d.dmsexplorer.domain.model.OpenUriCustomTabsModel;
+import net.mm2d.dmsexplorer.domain.model.OpenUriModel;
 import net.mm2d.dmsexplorer.settings.Key;
 import net.mm2d.dmsexplorer.view.dialog.WebViewDialog;
+
+import org.chromium.customtabsclient.shared.CustomTabsHelper;
 
 import java.util.List;
 
@@ -86,7 +92,12 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
     protected boolean isValidFragment(String fragmentName) {
         return PreferenceFragment.class.getName().equals(fragmentName)
                 || PlaybackPreferenceFragment.class.getName().equals(fragmentName)
+                || FunctionPreferenceFragment.class.getName().equals(fragmentName)
                 || InformationPreferenceFragment.class.getName().equals(fragmentName);
+    }
+
+    private static boolean canUseChromeCustomTabs(Context context) {
+        return !TextUtils.isEmpty(CustomTabsHelper.getPackageNameToUse(context));
     }
 
     public static class PlaybackPreferenceFragment extends PreferenceFragment {
@@ -94,7 +105,33 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             addPreferencesFromResource(R.xml.pref_playback);
-            setHasOptionsMenu(true);
+        }
+    }
+
+    public static class FunctionPreferenceFragment extends PreferenceFragment {
+        @Override
+        public void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            addPreferencesFromResource(R.xml.pref_function);
+            setUpCustomTabs();
+        }
+
+        private void setUpCustomTabs() {
+            final SwitchPreference customTabs = (SwitchPreference) findPreference(Key.USE_CUSTOM_TABS.name());
+            customTabs.setOnPreferenceChangeListener((preference, newValue) -> {
+                final OpenUriModel model = Repository.get().getOpenUriModel();
+                if ((newValue instanceof Boolean) && (model instanceof OpenUriCustomTabsModel)) {
+                    ((OpenUriCustomTabsModel) model).setUseCustomTabs((Boolean) newValue);
+                }
+                return true;
+            });
+            if (canUseChromeCustomTabs(getActivity())) {
+                return;
+            }
+            if (customTabs.isChecked()) {
+                customTabs.setChecked(false);
+            }
+            customTabs.setEnabled(false);
         }
     }
 

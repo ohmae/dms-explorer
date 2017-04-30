@@ -19,12 +19,13 @@ import net.mm2d.dmsexplorer.Repository;
 import net.mm2d.dmsexplorer.domain.model.ControlPointModel;
 import net.mm2d.dmsexplorer.domain.model.MediaRendererModel;
 import net.mm2d.dmsexplorer.domain.model.MediaServerModel;
+import net.mm2d.dmsexplorer.domain.model.OpenUriCustomTabsModel;
 import net.mm2d.dmsexplorer.domain.model.OpenUriModel;
-import net.mm2d.dmsexplorer.domain.model.OpenUriModelImpl;
 import net.mm2d.dmsexplorer.domain.model.PlaybackTargetModel;
 import net.mm2d.dmsexplorer.domain.model.PlayerModel;
 import net.mm2d.dmsexplorer.domain.model.ThemeModel;
 import net.mm2d.dmsexplorer.domain.model.ThemeModelImpl;
+import net.mm2d.dmsexplorer.settings.Settings;
 
 /**
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
@@ -33,7 +34,7 @@ public class AppRepository extends Repository {
     private final Context mContext;
     private final ControlPointModel mControlPointModel;
     private final ThemeModel mThemeModel;
-    private final OpenUriModel mOpenUriModel;
+    private final OpenUriCustomTabsModel mOpenUriModel;
     private MediaServerModel mMediaServerModel;
     private PlayerModel mMediaRendererModel;
     private PlaybackTargetModel mPlaybackTargetModel;
@@ -46,7 +47,8 @@ public class AppRepository extends Repository {
         final ThemeModelImpl themeModel = new ThemeModelImpl();
         application.registerActivityLifecycleCallbacks(themeModel);
         mThemeModel = themeModel;
-        mOpenUriModel = new OpenUriModelImpl(helper, themeModel);
+        mOpenUriModel = new OpenUriCustomTabsModel(helper, themeModel);
+        mOpenUriModel.setUseCustomTabs(new Settings(mContext).useCustomTabs());
     }
 
     private void updateMediaServer(@Nullable final MediaServer server) {

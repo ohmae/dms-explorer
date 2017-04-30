@@ -23,22 +23,27 @@ import net.mm2d.dmsexplorer.domain.CustomTabsSessionHelper;
 /**
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
  */
-public class OpenUriModelImpl implements OpenUriModel {
+public class OpenUriCustomTabsModel implements OpenUriModel {
     private static final int DEFAULT_TOOLBAR_COLOR = Color.BLACK;
     @NonNull
     private final CustomTabsSessionHelper mHelper;
     @NonNull
     private final ThemeModel mThemeModel;
+    private boolean mUseCustomTabs;
 
-    public OpenUriModelImpl(@NonNull final CustomTabsSessionHelper helper,
-                            @NonNull final ThemeModel themeModel) {
+    public OpenUriCustomTabsModel(@NonNull final CustomTabsSessionHelper helper,
+                                  @NonNull final ThemeModel themeModel) {
         mHelper = helper;
         mThemeModel = themeModel;
     }
 
+    public void setUseCustomTabs(boolean use) {
+        mUseCustomTabs = use;
+    }
+
     @Override
     public void openUri(@NonNull final Context context, @NonNull final String uri) {
-        if (!openUriOnCustomTabs(context, uri)) {
+        if (!mUseCustomTabs || !openUriOnCustomTabs(context, uri)) {
             LaunchUtils.openUri(context, uri);
         }
     }

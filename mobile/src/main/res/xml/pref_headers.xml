@@ -3,8 +3,14 @@
 
     <header
         android:fragment="net.mm2d.dmsexplorer.view.SettingsActivity$PlaybackPreferenceFragment"
-        android:icon="@drawable/ic_settings"
+        android:icon="@drawable/ic_play_settings"
         android:title="@string/pref_header_playback"
+        />
+
+    <header
+        android:fragment="net.mm2d.dmsexplorer.view.SettingsActivity$FunctionPreferenceFragment"
+        android:icon="@drawable/ic_settings"
+        android:title="@string/pref_header_function"
         />
 
     <header
