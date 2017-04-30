@@ -86,4 +86,8 @@ public class Settings {
         editor.putBoolean(Key.REPEAT_INTRODUCED.name(), true);
         editor.apply();
     }
+
+    public boolean useCustomTabs() {
+        return getPref().getBoolean(Key.USE_CUSTOM_TABS.name(), true);
+    }
 }

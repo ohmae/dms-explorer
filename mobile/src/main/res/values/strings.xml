@@ -41,6 +41,11 @@
     <string name="pref_title_launch_app_movie">Movie playback</string>
     <string name="pref_title_launch_app_music">Music playback</string>
     <string name="pref_title_launch_app_photo">Photo playback</string>
+    <string name="pref_header_function">Function</string>
+    <string name="pref_category_link">Link</string>
+    <string name="pref_title_open_url">Open URL link</string>
+    <string name="pref_message_open_url_on">Use Chrome custom tabs</string>
+    <string name="pref_message_open_url_off">Launch Browser app</string>
     <string name="pref_header_information">Information</string>
     <string name="pref_title_play_store">Google Play</string>
     <string name="pref_message_play_store">Go to Google Play</string>

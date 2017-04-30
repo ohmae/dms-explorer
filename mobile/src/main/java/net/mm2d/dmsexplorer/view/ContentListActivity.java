@@ -31,7 +31,6 @@ import net.mm2d.dmsexplorer.R;
 import net.mm2d.dmsexplorer.Repository;
 import net.mm2d.dmsexplorer.databinding.ContentListActivityBinding;
 import net.mm2d.dmsexplorer.util.ItemSelectUtils;
-import net.mm2d.dmsexplorer.util.ThemeUtils;
 import net.mm2d.dmsexplorer.viewmodel.ContentListActivityModel;
 import net.mm2d.dmsexplorer.viewmodel.ContentListActivityModel.CdsSelectListener;
 
@@ -103,8 +102,9 @@ public class ContentListActivity extends AppCompatActivity implements CdsSelectL
     protected void onCreate(@Nullable final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mBinding = DataBindingUtil.setContentView(this, R.layout.content_list_activity);
+        final Repository repository = Repository.get();
         try {
-            mModel = new ContentListActivityModel(this, Repository.get(), this);
+            mModel = new ContentListActivityModel(this, repository, this);
             mBinding.setModel(mModel);
         } catch (final IllegalStateException ignored) {
             return;
@@ -117,9 +117,7 @@ public class ContentListActivity extends AppCompatActivity implements CdsSelectL
         if (savedInstanceState != null) {
             restoreScroll(savedInstanceState);
         }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            getWindow().setStatusBarColor(ThemeUtils.getDarkerColor(mBinding.getModel().toolbarBackground));
-        }
+        repository.getThemeModel().setThemeColor(this, mModel.toolbarBackground, 0);
     }
 
     private void restoreScroll(@NonNull final Bundle savedInstanceState) {

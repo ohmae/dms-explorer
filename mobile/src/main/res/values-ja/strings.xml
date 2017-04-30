@@ -32,7 +32,7 @@
     <string name="prop_chapter_info">チャプター情報:</string>
     <string name="action_settings">設定</string>
     <string name="title_activity_settings">設定</string>
-    <string name="pref_header_playback">再生機能</string>
+    <string name="pref_header_playback">再生</string>
     <string name="pref_message_launch_app_on">このアプリで開きます</string>
     <string name="pref_message_launch_app_off">他アプリを呼び出します</string>
     <string name="pref_category_movie">動画</string>
@@ -41,6 +41,11 @@
     <string name="pref_title_launch_app_movie">動画再生機能</string>
     <string name="pref_title_launch_app_music">音楽再生機能</string>
     <string name="pref_title_launch_app_photo">静止画表示機能</string>
+    <string name="pref_header_function">機能</string>
+    <string name="pref_category_link">リンク</string>
+    <string name="pref_title_open_url">リンクを開く動作</string>
+    <string name="pref_message_open_url_on">Chrome custom tabsを使用します</string>
+    <string name="pref_message_open_url_off">ブラウザアプリを起動します</string>
     <string name="pref_header_information">情報</string>
     <string name="pref_title_play_store">Google Play</string>
     <string name="pref_message_play_store">Google Playを開きます</string>

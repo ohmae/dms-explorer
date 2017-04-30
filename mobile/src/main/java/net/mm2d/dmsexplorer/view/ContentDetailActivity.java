@@ -10,8 +10,6 @@ package net.mm2d.dmsexplorer.view;
 import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
-import android.os.Build.VERSION;
-import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -24,7 +22,6 @@ import net.mm2d.dmsexplorer.R;
 import net.mm2d.dmsexplorer.Repository;
 import net.mm2d.dmsexplorer.databinding.ContentDetailFragmentBinding;
 import net.mm2d.dmsexplorer.domain.model.MediaServerModel;
-import net.mm2d.dmsexplorer.util.ThemeUtils;
 
 /**
  * CDSアイテムの詳細情報を表示するActivity。
@@ -51,7 +48,8 @@ public class ContentDetailActivity extends AppCompatActivity {
     protected void onCreate(@Nullable final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.content_detail_activity);
-        mMediaServerModel = Repository.get().getMediaServerModel();
+        final Repository repository = Repository.get();
+        mMediaServerModel = repository.getMediaServerModel();
         final ContentDetailFragmentBinding binding =
                 DataBindingUtil.findBinding(findViewById(R.id.cds_detail_fragment));
         if (binding == null) {
@@ -61,10 +59,7 @@ public class ContentDetailActivity extends AppCompatActivity {
         mCdsObject = getSelectedObject();
         setSupportActionBar(binding.cdsDetailToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
-            getWindow().setStatusBarColor(
-                    ThemeUtils.getDarkerColor(binding.getModel().collapsedColor));
-        }
+        repository.getThemeModel().setThemeColor(this, binding.getModel().collapsedColor, 0);
     }
 
     private CdsObject getSelectedObject() {

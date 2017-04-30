@@ -24,7 +24,7 @@ import java.util.regex.Pattern;
  */
 public class DescriptionFormatter implements PropertyFormatter {
     private static final Pattern URL_PATTERN =
-            Pattern.compile("https?://[\\w/:%#\\$&\\?\\(\\)~\\.=\\+\\-]+");
+            Pattern.compile("https?://[\\w/:%#$&?()~.=+\\-]+");
 
     @NonNull
     @Override
