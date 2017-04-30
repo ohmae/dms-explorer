@@ -11,6 +11,7 @@ import android.support.annotation.NonNull;
 
 import net.mm2d.dmsexplorer.domain.model.ControlPointModel;
 import net.mm2d.dmsexplorer.domain.model.MediaServerModel;
+import net.mm2d.dmsexplorer.domain.model.OpenUriModel;
 import net.mm2d.dmsexplorer.domain.model.PlaybackTargetModel;
 import net.mm2d.dmsexplorer.domain.model.PlayerModel;
 
@@ -27,6 +28,8 @@ public abstract class Repository {
     static void set(@NonNull Repository instance) {
         sInstance = instance;
     }
+
+    public abstract OpenUriModel getOpenUriModel();
 
     public abstract ControlPointModel getControlPointModel();
 

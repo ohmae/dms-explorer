@@ -7,6 +7,7 @@
 
 package net.mm2d.dmsexplorer.domain;
 
+import android.app.Application;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -18,6 +19,8 @@ import net.mm2d.dmsexplorer.Repository;
 import net.mm2d.dmsexplorer.domain.model.ControlPointModel;
 import net.mm2d.dmsexplorer.domain.model.MediaRendererModel;
 import net.mm2d.dmsexplorer.domain.model.MediaServerModel;
+import net.mm2d.dmsexplorer.domain.model.OpenUriModel;
+import net.mm2d.dmsexplorer.domain.model.OpenUriModelImpl;
 import net.mm2d.dmsexplorer.domain.model.PlaybackTargetModel;
 import net.mm2d.dmsexplorer.domain.model.PlayerModel;
 
@@ -30,34 +33,14 @@ public class AppRepository extends Repository {
     private MediaServerModel mMediaServerModel;
     private PlayerModel mMediaRendererModel;
     private PlaybackTargetModel mPlaybackTargetModel;
+    private final OpenUriModel mOpenUriModel;
 
-    @Override
-    @NonNull
-    public ControlPointModel getControlPointModel() {
-        return mControlPointModel;
-    }
-
-    @Override
-    @Nullable
-    public MediaServerModel getMediaServerModel() {
-        return mMediaServerModel;
-    }
-
-    @Override
-    @Nullable
-    public PlayerModel getMediaRendererModel() {
-        return mMediaRendererModel;
-    }
-
-    @Override
-    @Nullable
-    public PlaybackTargetModel getPlaybackTargetModel() {
-        return mPlaybackTargetModel;
-    }
-
-    public AppRepository(@NonNull final Context context) {
-        mContext = context;
-        mControlPointModel = new ControlPointModel(context, this::updateMediaServer, this::updateMediaRenderer);
+    public AppRepository(@NonNull final Application application) {
+        mContext = application;
+        final CustomTabsSessionHelper helper = new CustomTabsSessionHelper(mContext);
+        application.registerActivityLifecycleCallbacks(new LifecycleCallbacks(helper));
+        mOpenUriModel = new OpenUriModelImpl(helper);
+        mControlPointModel = new ControlPointModel(mContext, this::updateMediaServer, this::updateMediaRenderer);
     }
 
     private void updateMediaServer(@Nullable final MediaServer server) {
@@ -91,5 +74,35 @@ public class AppRepository extends Repository {
 
     private void updatePlaybackTarget(@Nullable final CdsObject object) {
         mPlaybackTargetModel = object != null ? new PlaybackTargetModel(object) : null;
+    }
+
+    @Override
+    @NonNull
+    public OpenUriModel getOpenUriModel() {
+        return mOpenUriModel;
+    }
+
+    @Override
+    @NonNull
+    public ControlPointModel getControlPointModel() {
+        return mControlPointModel;
+    }
+
+    @Override
+    @Nullable
+    public MediaServerModel getMediaServerModel() {
+        return mMediaServerModel;
+    }
+
+    @Override
+    @Nullable
+    public PlayerModel getMediaRendererModel() {
+        return mMediaRendererModel;
+    }
+
+    @Override
+    @Nullable
+    public PlaybackTargetModel getPlaybackTargetModel() {
+        return mPlaybackTargetModel;
     }
 }

@@ -33,8 +33,6 @@ import java.util.List;
  * @author <a href="mailto:ryo@mm2d.net">大前良介(OHMAE Ryosuke)</a>
  */
 public class SettingsActivity extends AppCompatPreferenceActivity {
-    private static final String TAG = "SettingsActivity";
-
     /**
      * このActivityを起動するためのIntentを作成する。
      *

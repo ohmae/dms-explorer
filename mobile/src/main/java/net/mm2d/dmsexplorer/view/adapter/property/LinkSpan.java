@@ -12,7 +12,7 @@ import android.support.annotation.NonNull;
 import android.text.style.ClickableSpan;
 import android.view.View;
 
-import net.mm2d.android.util.LaunchUtils;
+import net.mm2d.dmsexplorer.Repository;
 
 /**
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
@@ -28,6 +28,6 @@ class LinkSpan extends ClickableSpan {
 
     @Override
     public void onClick(@NonNull final View widget) {
-        LaunchUtils.openUri(mContext, mUri);
+        Repository.get().getOpenUriModel().openUri(mContext, mUri);
     }
 }
