@@ -28,6 +28,7 @@ public class CustomTabsSessionHelper extends CustomTabsServiceConnection
     private String mPackageNameToBind;
     private CustomTabsClient mClient;
     private CustomTabsSession mSession;
+    private boolean mBound;
 
     CustomTabsSessionHelper(@NonNull final Context context) {
         mContext = context;
@@ -44,12 +45,15 @@ public class CustomTabsSessionHelper extends CustomTabsServiceConnection
                 return;
             }
         }
-        CustomTabsClient.bindCustomTabsService(mContext, mPackageNameToBind, this);
+        mBound = CustomTabsClient.bindCustomTabsService(mContext, mPackageNameToBind, this);
     }
 
     @Override
     public void unbind() {
-        mContext.unbindService(this);
+        if (mBound) {
+            mContext.unbindService(this);
+            mBound = false;
+        }
         mClient = null;
         mSession = null;
     }
