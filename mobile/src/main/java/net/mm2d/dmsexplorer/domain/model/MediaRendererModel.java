@@ -28,6 +28,7 @@ import java.util.concurrent.TimeUnit;
  */
 public class MediaRendererModel implements PlayerModel {
     private static final int CHAPTER_MARGIN = (int) TimeUnit.SECONDS.toMillis(5);
+    private static final int STOPPING_THRESHOLD = 5;
     private static final StatusListener STATUS_LISTENER = new StatusListenerAdapter();
 
     @NonNull
@@ -40,6 +41,7 @@ public class MediaRendererModel implements PlayerModel {
     private int mProgress;
     private int mDuration;
     private boolean mStarted;
+    private int mStoppingCount;
 
     @NonNull
     private final Runnable mGetPositionTask = new Runnable() {
@@ -103,6 +105,7 @@ public class MediaRendererModel implements PlayerModel {
                 mHandler.post(this::onError);
             }
         });
+        mStoppingCount = 0;
         mHandler.postDelayed(mGetPositionTask, 1000);
         ChapterInfo.get(object, this::setChapterInfo);
         mStarted = true;
@@ -141,6 +144,9 @@ public class MediaRendererModel implements PlayerModel {
     @Override
     public void seekTo(final int position) {
         mMediaRenderer.seek(position, mShowToastOnError);
+        mStoppingCount = 0;
+        mHandler.removeCallbacks(mGetPositionTask);
+        mHandler.postDelayed(mGetPositionTask, 1000);
     }
 
     @Override
@@ -218,7 +224,8 @@ public class MediaRendererModel implements PlayerModel {
             mPlaying = playing;
             mStatusListener.notifyPlayingState(playing);
         }
-        if (state == TransportState.STOPPED) {
+        mStoppingCount = state == TransportState.STOPPED ? mStoppingCount + 1 : 0;
+        if (mStoppingCount > STOPPING_THRESHOLD) {
             mHandler.removeCallbacks(mGetPositionTask);
             mStatusListener.onCompletion();
         }
