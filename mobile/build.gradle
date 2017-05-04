@@ -35,6 +35,17 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+    applicationVariants.all { variant ->
+        if (variant.buildType.name != "release") {
+            return
+        }
+        variant.outputs.each { output ->
+            if (output.outputFile != null && output.outputFile.name.endsWith('.apk')) {
+                def name = "DmsExplorer-${versionName}.apk"
+                output.outputFile = new File(output.outputFile.parent, name)
+            }
+        }
+    }
 }
 
 repositories {
