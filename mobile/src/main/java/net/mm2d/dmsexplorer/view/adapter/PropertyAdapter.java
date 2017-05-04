@@ -74,6 +74,7 @@ public class PropertyAdapter extends Adapter<ViewHolder> {
             return mValue;
         }
 
+        @NonNull
         private CharSequence getFormatValue(Context context) {
             return mType.format(context, mValue);
         }

@@ -28,7 +28,18 @@ public class CustomTabsHelper extends CustomTabsServiceConnection {
     private static String sPackageNameToBind;
 
     @Nullable
+    public static String getPackageNameToBind() {
+        return sPackageNameToBind;
+    }
+
+    @Nullable
     private static String findPackageNameToUse(Context context) {
+        sPackageNameToBind = findPackageNameToUseInner(context);
+        return sPackageNameToBind;
+    }
+
+    @Nullable
+    private static String findPackageNameToUseInner(Context context) {
         final PackageManager pm = context.getPackageManager();
         Intent serviceIntent = new Intent();
         serviceIntent.setAction(ACTION_CUSTOM_TABS_CONNECTION);
@@ -37,11 +48,6 @@ public class CustomTabsHelper extends CustomTabsServiceConnection {
             return CHROME_STABLE_PACKAGE;
         }
         return null;
-    }
-
-    @Nullable
-    public static String getPackageNameToBind() {
-        return sPackageNameToBind;
     }
 
     @NonNull
@@ -58,11 +64,11 @@ public class CustomTabsHelper extends CustomTabsServiceConnection {
         if (mBound) {
             return;
         }
-        sPackageNameToBind = findPackageNameToUse(mContext);
-        if (sPackageNameToBind == null) {
+        final String packageName = findPackageNameToUse(mContext);
+        if (packageName == null) {
             return;
         }
-        mBound = CustomTabsClient.bindCustomTabsService(mContext, sPackageNameToBind, this);
+        mBound = CustomTabsClient.bindCustomTabsService(mContext, packageName, this);
     }
 
     public void unbind() {
