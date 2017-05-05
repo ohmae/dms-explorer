@@ -165,18 +165,20 @@ public class PropertyAdapter extends Adapter<ViewHolder> {
                 final int start = matcher.start();
                 final int end = matcher.end();
                 if (start != lastEnd) {
-                    final String normalText = text.substring(lastEnd, start).trim();
-                    if (lastEnd == 0) {
-                        firstNormalText = normalText;
-                    } else {
-                        addNormalText(parent, normalText);
+                    final String normalText = trim(text.substring(lastEnd, start));
+                    if (!normalText.isEmpty()) {
+                        if (lastEnd == 0) {
+                            firstNormalText = normalText;
+                        } else {
+                            addNormalText(parent, normalText);
+                        }
                     }
                 }
-                addLinkText(parent, text.substring(start, end).trim());
+                addLinkText(parent, trim(text.substring(start, end)));
                 lastEnd = end;
             }
             if (lastEnd == 0) {
-                return text.trim();
+                return trim(text);
             }
             return firstNormalText;
         }
@@ -206,5 +208,21 @@ public class PropertyAdapter extends Adapter<ViewHolder> {
             }
             Repository.get().getOpenUriModel().openUri(mContext, text.toString());
         }
+    }
+
+    private static String trim(String str) {
+        int len = str.length();
+        int st = 0;
+        while ((st < len) && isSpace(str.charAt(st))) {
+            st++;
+        }
+        while ((st < len) && isSpace(str.charAt(len - 1))) {
+            len--;
+        }
+        return ((st > 0) || (len < str.length())) ? str.substring(st, len) : str;
+    }
+
+    private static boolean isSpace(final char c) {
+        return c <= '\u0020' || c == '\u00A0' || c == '\u3000';
     }
 }

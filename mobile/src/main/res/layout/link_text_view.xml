@@ -5,7 +5,7 @@
     android:layout_height="wrap_content"
     android:background="@drawable/bg_link_text"
     android:paddingBottom="8dp"
-    android:paddingTop="8dp"
+    android:paddingTop="4dp"
     android:textColor="?attr/propertyLinkColor"
     android:textSize="@dimen/text_size_main"
     />
