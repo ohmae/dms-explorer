@@ -122,8 +122,6 @@ public class MediaRenderer extends DeviceWrapper {
     @NonNull
     private final Service mAvTransport;
     @NonNull
-    private final Service mConnectionManager;
-    @NonNull
     private final Action mSetAvTransportUri;
     @NonNull
     private final Action mGetPositionInfo;
@@ -145,7 +143,6 @@ public class MediaRenderer extends DeviceWrapper {
             throw new IllegalArgumentException("device is not MediaRenderer");
         }
         mAvTransport = findService(device, Avt.AVT_SERVICE_ID);
-        mConnectionManager = findService(device, Avt.CMS_SERVICE_ID);
         mSetAvTransportUri = findAction(mAvTransport, SET_AV_TRANSPORT_URI);
         mGetPositionInfo = findAction(mAvTransport, GET_POSITION_INFO);
         mGetTransportInfo = findAction(mAvTransport, GET_TRANSPORT_INFO);
