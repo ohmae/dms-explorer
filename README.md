@@ -28,6 +28,9 @@ URL string that is included in the program information, act as a link.
 ## Install
 [Google Play](https://play.google.com/store/apps/details?id=net.mm2d.dmsexplorer)
 
+### Repository by contributors
+[IzzyOnDroid](https://apt.izzysoft.de/fdroid/index/apk/net.mm2d.dmsexplorer)
+
 ## Build
 This is Android Studio project.
 So, you can select this repository from "Open an existing Android Studio project".

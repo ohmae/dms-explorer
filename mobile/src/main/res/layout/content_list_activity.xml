@@ -53,7 +53,6 @@
                 android:layout_height="match_parent"
                 android:itemAnimator="@{model.itemAnimator}"
                 app:adapter="@{model.contentListAdapter}"
-                app:itemDecoration="@{model.itemDecoration}"
                 app:layoutManager="@{model.cdsListLayoutManager}"
                 app:scrollPosition="@{model.scrollPosition}"
                 tools:listitem="@layout/content_list_item"

@@ -26,6 +26,7 @@ import android.view.View;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
+import java.util.Arrays;
 
 /**
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
@@ -353,6 +354,8 @@ public class ScrubBar extends View {
                 mDragging = false;
                 onTouchEnd(event);
                 break;
+            default:
+                break;
         }
         return true;
     }
@@ -416,7 +419,7 @@ public class ScrubBar extends View {
 
     @NonNull
     public int[] getSections() {
-        return mSections;
+        return Arrays.copyOf(mSections, mSections.length);
     }
 
     public void setMax(int max) {

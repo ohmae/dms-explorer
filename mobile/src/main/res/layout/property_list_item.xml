@@ -1,22 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
         <variable
             name="model"
             type="net.mm2d.dmsexplorer.viewmodel.PropertyItemModel"/>
+
+        <import type="net.mm2d.dmsexplorer.R"/>
+
+        <import type="android.view.View"/>
     </data>
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:id="@+id/container"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:paddingBottom="16dp"
+        android:paddingBottom="@{model.enableDescription ? @dimen/property_margin_bottom : 0}"
         android:paddingLeft="@dimen/horizontal_padding"
         android:paddingRight="@dimen/horizontal_padding"
-        android:paddingTop="8dp"
+        android:paddingTop="@dimen/property_margin"
         >
 
         <TextView
@@ -33,10 +39,15 @@
             android:id="@+id/description"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:background="@{model.isLink ? @drawable/bg_link_text : null}"
+            android:onClickListener="@{model.onClickListener}"
+            android:paddingBottom="@{model.isLink ? @dimen/property_margin_link : @dimen/property_margin_normal}"
+            android:paddingTop="@{model.isLink ? @dimen/property_margin_link : @dimen/property_margin_normal}"
             android:text="@{model.description}"
-            android:textColor="?attr/propertyMessageColor"
-            android:textColorLink="?attr/propertyLinkColor"
             android:textSize="@dimen/text_size_main"
+            android:visibility="@{model.enableDescription ? View.VISIBLE : View.GONE}"
+            app:textColorAttr="@{model.isLink ? R.attr.propertyLinkColor : R.attr.propertyMessageColor}"
+            app:underline="@{model.isLink}"
             />
 
     </LinearLayout>

@@ -19,6 +19,8 @@
     <color name="bgListItemSelected">#dfe7ff</color>
     <color name="bgListItemSelectedPressed">#ffffff</color>
     <color name="bgListItemSelectedRipple">#ffffff</color>
+    <color name="bgLinkText">#330080ff</color>
+    <color name="bgLinkTextRipple">#660080ff</color>
     <color name="markListItemSelected">#002288</color>
     <color name="progress1">#3355bb</color>
     <color name="progress2">#bb3399</color>

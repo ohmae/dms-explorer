@@ -12,6 +12,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.text.format.DateFormat;
+import android.util.Pair;
 
 import net.mm2d.android.upnp.cds.CdsObject;
 import net.mm2d.android.upnp.cds.Tag;
@@ -20,6 +21,7 @@ import net.mm2d.dmsexplorer.R;
 
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -75,8 +77,15 @@ public class ContentPropertyAdapter extends PropertyAdapter {
 
         adapter.addEntry(context.getString(R.string.prop_description),
                 jointTagValue(object, CdsObject.DC_DESCRIPTION));
-        adapter.addEntry(context.getString(R.string.prop_long_description),
-                jointLongDescription(object), Type.DESCRIPTION);
+        final List<Pair<String, String>> longDescriptions = parseLongDescription(object);
+
+        if (longDescriptions.size() != 0) {
+            adapter.addTitleEntry(context.getString(R.string.prop_long_description));
+            for (final Pair<String, String> pair : longDescriptions) {
+                adapter.addEntry(pair.first, pair.second, Type.DESCRIPTION);
+            }
+        }
+
         adapter.addEntry(CdsObject.UPNP_CLASS + ":",
                 object.getUpnpClass());
     }
@@ -97,45 +106,56 @@ public class ContentPropertyAdapter extends PropertyAdapter {
         return AribUtils.toDisplayableString(sb.toString());
     }
 
-    @Nullable
-    private static String jointLongDescription(@NonNull final CdsObject object) {
+    @NonNull
+    private static List<Pair<String, String>> parseLongDescription(@NonNull final CdsObject object) {
         final List<Tag> tagList = getLongDescription(object);
         if (tagList == null) {
-            return null;
+            return Collections.emptyList();
         }
+        final List<Pair<String, StringBuilder>> work = convertLongDescription(tagList);
+        if (work == null || work.size() == 0) {
+            return Collections.emptyList();
+        }
+        final List<Pair<String, String>> list = new ArrayList<>(work.size());
+        for (final Pair<String, StringBuilder> pair : work) {
+            list.add(new Pair<>(
+                    AribUtils.toDisplayableString(pair.first),
+                    AribUtils.toDisplayableString(pair.second.toString())));
+        }
+        return list;
+    }
+
+    @Nullable
+    private static List<Pair<String, StringBuilder>> convertLongDescription(@NonNull final List<Tag> tagList) {
         try {
-            final StringBuilder sb = new StringBuilder();
-            String lastName = null;
+            final List<Pair<String, StringBuilder>> list = new ArrayList<>();
+            Pair<String, StringBuilder> pair = null;
             for (final Tag tag : tagList) {
                 final String value = tag.getValue();
                 if (TextUtils.isEmpty(value)) {
                     continue;
                 }
                 final byte[] bytes = value.getBytes("UTF-8");
-                final int length = Math.min(24, bytes.length);
-                final String nameSection = new String(bytes, 0, length, "UTF-8");
+                final String nameSection = new String(bytes, 0, Math.min(24, bytes.length), "UTF-8");
                 final String name = nameSection.trim();
-
-                if (!TextUtils.equals(lastName, name)) {
-                    if (sb.length() != 0) {
-                        sb.append('\n');
-                    }
-                    sb.append(TITLE_PREFIX);
-                    sb.append(name);
-                    sb.append('\n');
+                if (pair == null || !TextUtils.equals(pair.first, name)) {
+                    pair = new Pair<>(name, new StringBuilder());
+                    list.add(pair);
                 }
-                lastName = name;
                 if (value.length() > nameSection.length()) {
-                    sb.append(value.substring(nameSection.length()).trim());
-                    sb.append('\n');
+                    if (pair.second.length() != 0) {
+                        pair.second.append('\n');
+                    }
+                    pair.second.append(value.substring(nameSection.length()).trim());
                 }
             }
-            return AribUtils.toDisplayableString(sb.toString());
+            return list;
         } catch (final UnsupportedEncodingException ignored) {
         }
         return null;
     }
 
+    @Nullable
     private static List<Tag> getLongDescription(@NonNull final CdsObject object) {
         final List<Tag> tagList = object.getTagList(CdsObject.ARIB_LONG_DESCRIPTION);
         if (tagList == null) {

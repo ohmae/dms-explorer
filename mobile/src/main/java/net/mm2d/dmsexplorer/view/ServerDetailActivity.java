@@ -26,8 +26,8 @@ import android.view.ViewAnimationUtils;
 import net.mm2d.android.view.TransitionListenerAdapter;
 import net.mm2d.dmsexplorer.Const;
 import net.mm2d.dmsexplorer.R;
+import net.mm2d.dmsexplorer.Repository;
 import net.mm2d.dmsexplorer.databinding.ServerDetailFragmentBinding;
-import net.mm2d.dmsexplorer.util.ThemeUtils;
 
 
 /**
@@ -61,10 +61,8 @@ public class ServerDetailActivity extends AppCompatActivity {
         }
         setSupportActionBar(mBinding.serverDetailToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            getWindow().setStatusBarColor(
-                    ThemeUtils.getDarkerColor(mBinding.getModel().collapsedColor));
-        }
+
+        Repository.get().getThemeModel().setThemeColor(this, mBinding.getModel().collapsedColor, 0);
 
         prepareTransition(savedInstanceState != null);
     }

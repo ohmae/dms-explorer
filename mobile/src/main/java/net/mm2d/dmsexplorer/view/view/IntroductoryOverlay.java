@@ -34,6 +34,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.OvershootInterpolator;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -69,7 +70,7 @@ public class IntroductoryOverlay extends RelativeLayout {
     private final int mMargin;
 
     @Nullable
-    private Bitmap mBitmap;
+    private Bitmap mBuffer;
     @Nullable
     private Canvas mCanvas;
     private float mCenterY;
@@ -144,6 +145,7 @@ public class IntroductoryOverlay extends RelativeLayout {
     private void setUpAnimation() {
         mAnimator = ValueAnimator.ofFloat(mCircleRadiusStart, mCircleRadius);
         mAnimator.setDuration(ANIMATION_DURATION);
+        mAnimator.setInterpolator(new OvershootInterpolator());
         mAnimator.addUpdateListener(animation -> invalidate());
         mAnimator.start();
     }
@@ -204,29 +206,29 @@ public class IntroductoryOverlay extends RelativeLayout {
         if (getContext() != null) {
             ((ViewGroup) mActivity.getWindow().getDecorView()).removeView(this);
         }
-        recycleBitmap();
+        recycleBuffer();
     }
 
-    private void recycleBitmap() {
-        if (mBitmap != null) {
-            mBitmap.recycle();
-            mBitmap = null;
+    private void recycleBuffer() {
+        if (mBuffer != null) {
+            mBuffer.recycle();
+            mBuffer = null;
         }
         mCanvas = null;
     }
 
     @Override
     protected void dispatchDraw(final Canvas canvas) {
-        if (mBitmap == null || mBitmap.getWidth() != getWidth() || mBitmap.getHeight() != getHeight()) {
-            recycleBitmap();
-            mBitmap = Bitmap.createBitmap(getWidth(), getHeight(), Config.ARGB_8888);
-            mCanvas = new Canvas(mBitmap);
+        if (mBuffer == null || mBuffer.getWidth() != getWidth() || mBuffer.getHeight() != getHeight()) {
+            recycleBuffer();
+            mBuffer = Bitmap.createBitmap(getWidth(), getHeight(), Config.ARGB_8888);
+            mCanvas = new Canvas(mBuffer);
         }
         final float radius = (float) mAnimator.getAnimatedValue();
         mCanvas.drawColor(mDimmerColor, PorterDuff.Mode.SRC);
         mCanvas.drawCircle(mCenterX, mCenterY, radius, mCirclePaint);
         mCanvas.drawCircle(mCenterX, mCenterY, mHoleRadius, mErasePaint);
-        canvas.drawBitmap(mBitmap, 0, 0, null);
+        canvas.drawBitmap(mBuffer, 0, 0, null);
         super.dispatchDraw(canvas);
     }
 

@@ -148,11 +148,13 @@ public class ServerListActivity extends AppCompatActivity
     @Override
     protected void onCreate(@Nullable final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
-            getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.defaultStatusBar));
-        }
+        final Repository repository = Repository.get();
+        repository.getThemeModel().setThemeColor(this,
+                ContextCompat.getColor(this, R.color.primary),
+                ContextCompat.getColor(this, R.color.defaultStatusBar));
+
         mBinding = DataBindingUtil.setContentView(this, R.layout.server_list_activity);
-        mBinding.setModel(new ServerListActivityModel(this, Repository.get(), this));
+        mBinding.setModel(new ServerListActivityModel(this, repository, this));
         mTwoPane = mBinding.serverDetailContainer != null;
 
         setSupportActionBar(mBinding.toolbar);

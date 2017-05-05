@@ -17,6 +17,8 @@
     <dimen name="text_size_counter">12sp</dimen>
     <dimen name="text_size_scrub">9dp</dimen>
 
+    <dimen name="list_card_margin">1dp</dimen>
+    <dimen name="list_card_radius">4dp</dimen>
     <dimen name="list_item_focus_elevation">2dp</dimen>
     <dimen name="app_bar_elevation">4dp</dimen>
 
@@ -24,6 +26,10 @@
     <dimen name="server_property_margin">128dp</dimen>
     <dimen name="cds_property_margin">200dp</dimen>
     <dimen name="music_image_margin">16dp</dimen>
+    <dimen name="property_margin">8dp</dimen>
+    <dimen name="property_margin_bottom">16dp</dimen>
+    <dimen name="property_margin_link">8dp</dimen>
+    <dimen name="property_margin_normal">0dp</dimen>
 
     <dimen name="toolbar_button_margin">16dp</dimen>
     <dimen name="toolbar_button_padding">16dp</dimen>

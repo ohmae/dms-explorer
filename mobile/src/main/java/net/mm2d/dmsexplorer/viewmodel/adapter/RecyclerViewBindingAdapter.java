@@ -42,7 +42,7 @@ public class RecyclerViewBindingAdapter {
         if (child == null) {
             return;
         }
-        final int dy = (int) (child.getY() - (view.getHeight() - child.getHeight()) / 2);
+        final int dy = (int) (child.getY() - (view.getHeight() - child.getHeight()) / 2f);
         view.smoothScrollBy(0, dy);
     }
 

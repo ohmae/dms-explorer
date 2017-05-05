@@ -7,6 +7,7 @@
 
 package net.mm2d.dmsexplorer.domain;
 
+import android.app.Application;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -16,10 +17,17 @@ import net.mm2d.android.upnp.cds.CdsObject;
 import net.mm2d.android.upnp.cds.MediaServer;
 import net.mm2d.dmsexplorer.Repository;
 import net.mm2d.dmsexplorer.domain.model.ControlPointModel;
+import net.mm2d.dmsexplorer.domain.model.CustomTabsBinder;
+import net.mm2d.dmsexplorer.domain.model.CustomTabsHelper;
 import net.mm2d.dmsexplorer.domain.model.MediaRendererModel;
 import net.mm2d.dmsexplorer.domain.model.MediaServerModel;
+import net.mm2d.dmsexplorer.domain.model.OpenUriCustomTabsModel;
+import net.mm2d.dmsexplorer.domain.model.OpenUriModel;
 import net.mm2d.dmsexplorer.domain.model.PlaybackTargetModel;
 import net.mm2d.dmsexplorer.domain.model.PlayerModel;
+import net.mm2d.dmsexplorer.domain.model.ThemeModel;
+import net.mm2d.dmsexplorer.domain.model.ThemeModelImpl;
+import net.mm2d.dmsexplorer.settings.Settings;
 
 /**
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
@@ -27,37 +35,23 @@ import net.mm2d.dmsexplorer.domain.model.PlayerModel;
 public class AppRepository extends Repository {
     private final Context mContext;
     private final ControlPointModel mControlPointModel;
+    private final ThemeModel mThemeModel;
+    private final OpenUriCustomTabsModel mOpenUriModel;
     private MediaServerModel mMediaServerModel;
     private PlayerModel mMediaRendererModel;
     private PlaybackTargetModel mPlaybackTargetModel;
 
-    @Override
-    @NonNull
-    public ControlPointModel getControlPointModel() {
-        return mControlPointModel;
-    }
+    public AppRepository(@NonNull final Application application) {
+        mContext = application;
+        mControlPointModel = new ControlPointModel(mContext, this::updateMediaServer, this::updateMediaRenderer);
+        final ThemeModelImpl themeModel = new ThemeModelImpl();
+        final CustomTabsHelper helper = new CustomTabsHelper(mContext);
+        mOpenUriModel = new OpenUriCustomTabsModel(helper, themeModel);
+        mOpenUriModel.setUseCustomTabs(new Settings(mContext).useCustomTabs());
+        mThemeModel = themeModel;
 
-    @Override
-    @Nullable
-    public MediaServerModel getMediaServerModel() {
-        return mMediaServerModel;
-    }
-
-    @Override
-    @Nullable
-    public PlayerModel getMediaRendererModel() {
-        return mMediaRendererModel;
-    }
-
-    @Override
-    @Nullable
-    public PlaybackTargetModel getPlaybackTargetModel() {
-        return mPlaybackTargetModel;
-    }
-
-    public AppRepository(@NonNull final Context context) {
-        mContext = context;
-        mControlPointModel = new ControlPointModel(context, this::updateMediaServer, this::updateMediaRenderer);
+        application.registerActivityLifecycleCallbacks(new CustomTabsBinder(helper));
+        application.registerActivityLifecycleCallbacks(themeModel);
     }
 
     private void updateMediaServer(@Nullable final MediaServer server) {
@@ -91,5 +85,40 @@ public class AppRepository extends Repository {
 
     private void updatePlaybackTarget(@Nullable final CdsObject object) {
         mPlaybackTargetModel = object != null ? new PlaybackTargetModel(object) : null;
+    }
+
+    @Override
+    public ThemeModel getThemeModel() {
+        return mThemeModel;
+    }
+
+    @Override
+    @NonNull
+    public OpenUriModel getOpenUriModel() {
+        return mOpenUriModel;
+    }
+
+    @Override
+    @NonNull
+    public ControlPointModel getControlPointModel() {
+        return mControlPointModel;
+    }
+
+    @Override
+    @Nullable
+    public MediaServerModel getMediaServerModel() {
+        return mMediaServerModel;
+    }
+
+    @Override
+    @Nullable
+    public PlayerModel getMediaRendererModel() {
+        return mMediaRendererModel;
+    }
+
+    @Override
+    @Nullable
+    public PlaybackTargetModel getPlaybackTargetModel() {
+        return mPlaybackTargetModel;
     }
 }
