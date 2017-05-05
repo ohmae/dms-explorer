@@ -40,7 +40,6 @@
             android:baselineAligned="false"
             android:divider="?android:attr/dividerHorizontal"
             android:orientation="horizontal"
-            android:showDividers="middle"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
             >
 
@@ -59,7 +58,6 @@
                     android:layout_height="match_parent"
                     android:itemAnimator="@{model.itemAnimator}"
                     app:adapter="@{model.serverListAdapter}"
-                    app:itemDecoration="@{model.itemDecoration}"
                     app:layoutManager="@{model.serverListLayoutManager}"
                     tools:listitem="@layout/server_list_item"
                     />

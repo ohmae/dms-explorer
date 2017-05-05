@@ -15,11 +15,9 @@ import android.os.Handler;
 import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView.Adapter;
 import android.support.v7.widget.RecyclerView.ItemAnimator;
-import android.support.v7.widget.RecyclerView.ItemDecoration;
 import android.support.v7.widget.RecyclerView.LayoutManager;
 import android.view.View;
 
@@ -56,8 +54,6 @@ public class ContentListActivityModel extends BaseObservable implements ExploreL
     @NonNull
     public final OnRefreshListener onRefreshListener;
     @NonNull
-    public final ItemDecoration itemDecoration;
-    @NonNull
     public final ItemAnimator itemAnimator;
     @NonNull
     public final LayoutManager cdsListLayoutManager;
@@ -91,7 +87,6 @@ public class ContentListActivityModel extends BaseObservable implements ExploreL
         mContentListAdapter.setOnItemLongClickListener(this::onItemLongClick);
         mCdsSelectListener = listener;
 
-        itemDecoration = new DividerItemDecoration(context, DividerItemDecoration.VERTICAL);
         itemAnimator = new CustomItemAnimator(context);
         cdsListLayoutManager = new LinearLayoutManager(context);
         title = mMediaServerModel.getTitle();

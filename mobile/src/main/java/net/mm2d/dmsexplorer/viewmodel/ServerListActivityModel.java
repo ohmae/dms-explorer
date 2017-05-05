@@ -16,11 +16,9 @@ import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView.Adapter;
 import android.support.v7.widget.RecyclerView.ItemAnimator;
-import android.support.v7.widget.RecyclerView.ItemDecoration;
 import android.support.v7.widget.RecyclerView.LayoutManager;
 import android.view.View;
 
@@ -50,8 +48,6 @@ public class ServerListActivityModel extends BaseObservable {
     public final int[] refreshColors;
     @NonNull
     public final OnRefreshListener onRefreshListener;
-    @NonNull
-    public final ItemDecoration itemDecoration;
     @NonNull
     public final ItemAnimator itemAnimator;
     @NonNull
@@ -87,7 +83,6 @@ public class ServerListActivityModel extends BaseObservable {
         });
 
         serverListLayoutManager = new LinearLayoutManager(context);
-        itemDecoration = new DividerItemDecoration(context, DividerItemDecoration.VERTICAL);
         itemAnimator = new CustomItemAnimator(context);
         refreshColors = new int[]{
                 R.color.progress1,

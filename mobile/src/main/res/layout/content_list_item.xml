@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
@@ -12,73 +13,81 @@
         <import type="android.view.View"/>
     </data>
 
-    <LinearLayout
+    <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/bg_list_item"
-        android:orientation="horizontal"
-        android:translationZ="@{model.selected ? @dimen/list_item_focus_elevation : 0}"
+        android:layout_margin="@dimen/list_card_margin"
+        app:cardCornerRadius="@dimen/list_card_radius"
         >
 
-        <View
-            android:id="@+id/mark"
-            android:layout_width="5dp"
-            android:layout_height="match_parent"
-            android:background="@color/markListItemSelected"
-            android:visibility="@{model.selected ? View.VISIBLE : View.INVISIBLE}"
-            />
-
-        <TextView
-            android:id="@+id/text_accent"
-            android:layout_width="@dimen/accent_size"
-            android:layout_height="@dimen/accent_size"
-            android:layout_gravity="center_vertical"
-            android:layout_margin="12dp"
-            android:background="@{model.accentBackground}"
-            android:gravity="center"
-            android:text="@{model.accentText}"
-            android:textColor="@color/textPrimary"
-            android:textSize="@dimen/text_size_accent"
-            tools:ignore="SpUsage"/>
-
         <LinearLayout
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_weight="1"
-            android:orientation="vertical"
+            android:background="@drawable/bg_list_item"
+            android:orientation="horizontal"
+            android:translationZ="@{model.selected ? @dimen/list_item_focus_elevation : 0}"
             >
 
-            <TextView
-                android:id="@+id/text_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="4dp"
-                android:layout_marginTop="8dp"
-                android:text="@{model.title}"
-                android:textColor="@color/textMain"
-                android:textSize="@dimen/text_size_main"
+            <View
+                android:id="@+id/mark"
+                android:layout_width="5dp"
+                android:layout_height="match_parent"
+                android:background="@color/markListItemSelected"
+                android:visibility="@{model.selected ? View.VISIBLE : View.INVISIBLE}"
                 />
 
             <TextView
-                android:id="@+id/text_description"
+                android:id="@+id/text_accent"
+                android:layout_width="@dimen/accent_size"
+                android:layout_height="@dimen/accent_size"
+                android:layout_gravity="center_vertical"
+                android:layout_margin="12dp"
+                android:background="@{model.accentBackground}"
+                android:gravity="center"
+                android:text="@{model.accentText}"
+                android:textColor="@color/textPrimary"
+                android:textSize="@dimen/text_size_accent"
+                tools:ignore="SpUsage"/>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                >
+
+                <TextView
+                    android:id="@+id/text_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="4dp"
+                    android:layout_marginTop="8dp"
+                    android:text="@{model.title}"
+                    android:textColor="@color/textMain"
+                    android:textSize="@dimen/text_size_main"
+                    />
+
+                <TextView
+                    android:id="@+id/text_description"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:text="@{model.description}"
+                    android:textColor="@color/textWeak"
+                    android:textSize="@dimen/text_size_sub"
+                    />
+
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/image"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:text="@{model.description}"
-                android:textColor="@color/textWeak"
-                android:textSize="@dimen/text_size_sub"
-                />
+                android:layout_gravity="center_vertical"
+                android:layout_margin="8dp"
+                android:src="@{model.imageResource}"/>
 
         </LinearLayout>
-
-        <ImageView
-            android:id="@+id/image"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_margin="8dp"
-            android:src="@{model.imageResource}"/>
-
-    </LinearLayout>
+    </android.support.v7.widget.CardView>
 </layout>

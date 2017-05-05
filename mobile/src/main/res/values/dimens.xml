@@ -17,6 +17,8 @@
     <dimen name="text_size_counter">12sp</dimen>
     <dimen name="text_size_scrub">9dp</dimen>
 
+    <dimen name="list_card_margin">1dp</dimen>
+    <dimen name="list_card_radius">4dp</dimen>
     <dimen name="list_item_focus_elevation">2dp</dimen>
     <dimen name="app_bar_elevation">4dp</dimen>
 
