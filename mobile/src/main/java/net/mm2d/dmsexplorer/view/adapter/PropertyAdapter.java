@@ -9,25 +9,29 @@ package net.mm2d.dmsexplorer.view.adapter;
 
 import android.content.Context;
 import android.databinding.DataBindingUtil;
+import android.graphics.Paint;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView.Adapter;
-import android.text.method.LinkMovementMethod;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
+import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import net.mm2d.dmsexplorer.R;
+import net.mm2d.dmsexplorer.Repository;
 import net.mm2d.dmsexplorer.databinding.PropertyListItemBinding;
 import net.mm2d.dmsexplorer.view.adapter.PropertyAdapter.ViewHolder;
-import net.mm2d.dmsexplorer.view.adapter.property.DescriptionFormatter;
-import net.mm2d.dmsexplorer.view.adapter.property.LinkFormatter;
-import net.mm2d.dmsexplorer.view.adapter.property.PropertyFormatter;
-import net.mm2d.dmsexplorer.view.adapter.property.TextFormatter;
 import net.mm2d.dmsexplorer.viewmodel.PropertyItemModel;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * 詳細情報の各項目をRecyclerViewを使用して表示するためのAdapter。
@@ -35,27 +39,17 @@ import java.util.List;
  * @author <a href="mailto:ryo@mm2d.net">大前良介(OHMAE Ryosuke)</a>
  */
 public class PropertyAdapter extends Adapter<ViewHolder> {
-    public static final String TITLE_PREFIX = "##";
+    private static final Pattern URL_PATTERN =
+            Pattern.compile("https?://[\\w/:%#$&?()~.=+\\-]+");
 
-    enum Type {
-        TEXT(new TextFormatter()),
-        LINK(new LinkFormatter()),
-        DESCRIPTION(new DescriptionFormatter());
-
-        @NonNull
-        private final PropertyFormatter mPropertyFormatter;
-
-        Type(@NonNull final PropertyFormatter formatter) {
-            mPropertyFormatter = formatter;
-        }
-
-        @NonNull
-        private CharSequence format(@NonNull final Context context, @NonNull final String string) {
-            return mPropertyFormatter.format(context, string);
-        }
+    public enum Type {
+        TITLE,
+        TEXT,
+        LINK,
+        DESCRIPTION
     }
 
-    private static class Entry {
+    public static class Entry {
         private final String mName;
         private final String mValue;
         private final Type mType;
@@ -66,17 +60,19 @@ public class PropertyAdapter extends Adapter<ViewHolder> {
             mType = type;
         }
 
-        private String getName() {
+        @NonNull
+        public String getName() {
             return mName;
         }
 
-        private String getValue() {
+        @NonNull
+        public String getValue() {
             return mValue;
         }
 
         @NonNull
-        private CharSequence getFormatValue(Context context) {
-            return mType.format(context, mValue);
+        public Type getType() {
+            return mType;
         }
     }
 
@@ -105,15 +101,24 @@ public class PropertyAdapter extends Adapter<ViewHolder> {
         mList.add(new Entry(name, value, type));
     }
 
+    public void addTitleEntry(@NonNull final String name) {
+        mList.add(new Entry(name, "", Type.TITLE));
+    }
+
+    @Override
+    public int getItemViewType(final int position) {
+        return mList.get(position).getType() != Type.DESCRIPTION ? 0 : 1;
+    }
+
     @Override
     public ViewHolder onCreateViewHolder(@NonNull final ViewGroup parent, int viewType) {
-        return new ViewHolder(DataBindingUtil
-                .inflate(mInflater, R.layout.property_list_item, parent, false));
+        return new ViewHolder(getContext(), mInflater,
+                DataBindingUtil.inflate(mInflater, R.layout.property_list_item, parent, false));
     }
 
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
-        holder.applyItem(getContext(), mList.get(position));
+        holder.applyItem(mList.get(position));
     }
 
     @Override
@@ -121,18 +126,85 @@ public class PropertyAdapter extends Adapter<ViewHolder> {
         return mList.size();
     }
 
-    static class ViewHolder extends RecyclerView.ViewHolder {
+    static class ViewHolder extends RecyclerView.ViewHolder implements OnClickListener {
+        private final Context mContext;
+        private final LayoutInflater mInflater;
         private final PropertyListItemBinding mBinding;
 
-        ViewHolder(@NonNull final PropertyListItemBinding binding) {
+        ViewHolder(@NonNull final Context context, @NonNull final LayoutInflater inflater,
+                   @NonNull final PropertyListItemBinding binding) {
             super(binding.getRoot());
+            mContext = context;
+            mInflater = inflater;
             mBinding = binding;
-            mBinding.description.setMovementMethod(LinkMovementMethod.getInstance());
         }
 
-        void applyItem(@NonNull final Context context, @NonNull final Entry entry) {
-            mBinding.setModel(new PropertyItemModel(entry.getName(), entry.getFormatValue(context)));
+        void applyItem(@NonNull final Entry entry) {
+            String value = entry.getValue();
+            if (entry.getType() == Type.DESCRIPTION) {
+                value = setUpDescription(entry);
+            }
+            mBinding.setModel(new PropertyItemModel(entry.getName(), entry.getType(), value, this));
             mBinding.executePendingBindings();
+        }
+
+        private String setUpDescription(@NonNull final Entry entry) {
+            final LinearLayout layout = mBinding.container;
+            final int count = layout.getChildCount();
+            for (int i = count - 1; i >= 2; i--) {
+                layout.removeViewAt(i);
+            }
+            return makeDescription(layout, entry.getValue());
+        }
+
+        private String makeDescription(@NonNull final ViewGroup parent, @NonNull final String text) {
+            String firstNormalText = "";
+            final Matcher matcher = URL_PATTERN.matcher(text);
+            int lastEnd = 0;
+            while (matcher.find()) {
+                final int start = matcher.start();
+                final int end = matcher.end();
+                if (start != lastEnd) {
+                    final String normalText = text.substring(lastEnd, start).trim();
+                    if (lastEnd == 0) {
+                        firstNormalText = normalText;
+                    } else {
+                        addNormalText(parent, normalText);
+                    }
+                }
+                addLinkText(parent, text.substring(start, end).trim());
+                lastEnd = end;
+            }
+            if (lastEnd == 0) {
+                return text.trim();
+            }
+            return firstNormalText;
+        }
+
+        private void addNormalText(@NonNull final ViewGroup parent, @NonNull final String text) {
+            final TextView normal = (TextView) mInflater.inflate(R.layout.normal_text_view, parent, false);
+            normal.setText(text);
+            parent.addView(normal);
+        }
+
+        private void addLinkText(@NonNull final ViewGroup parent, @NonNull final String text) {
+            final TextView link = (TextView) mInflater.inflate(R.layout.link_text_view, parent, false);
+            link.setText(text);
+            link.setPaintFlags(link.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+            link.setOnClickListener(this);
+            parent.addView(link);
+        }
+
+        @Override
+        public void onClick(final View v) {
+            if (!(v instanceof TextView)) {
+                return;
+            }
+            final CharSequence text = ((TextView) v).getText();
+            if (TextUtils.isEmpty(text)) {
+                return;
+            }
+            Repository.get().getOpenUriModel().openUri(mContext, text.toString());
         }
     }
 }

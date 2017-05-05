@@ -41,7 +41,7 @@ public class CustomTabsHelper extends CustomTabsServiceConnection {
     @Nullable
     private static String findPackageNameToUseInner(Context context) {
         final PackageManager pm = context.getPackageManager();
-        Intent serviceIntent = new Intent();
+        final Intent serviceIntent = new Intent();
         serviceIntent.setAction(ACTION_CUSTOM_TABS_CONNECTION);
         serviceIntent.setPackage(CHROME_STABLE_PACKAGE);
         if (pm.resolveService(serviceIntent, 0) != null) {
