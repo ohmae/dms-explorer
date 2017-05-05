@@ -39,7 +39,9 @@ public class LaunchUtils {
             return false;
         }
         try {
-            context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(uri)));
+            final Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
+            intent.addCategory(Intent.CATEGORY_BROWSABLE);
+            context.startActivity(intent);
         } catch (final ActivityNotFoundException e) {
             Log.w(TAG, e);
             return false;
