@@ -86,7 +86,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_margin="8dp"
-                android:src="@{model.imageResource}"/>
+                android:imageResource="@{model.imageResource}"/>
 
         </LinearLayout>
     </android.support.v7.widget.CardView>
