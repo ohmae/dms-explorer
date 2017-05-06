@@ -13,6 +13,7 @@ import android.databinding.Bindable;
 import android.graphics.Point;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.widget.Toast;
 
 import com.android.databinding.library.baseAdapters.BR;
@@ -52,6 +53,9 @@ public class PhotoActivityModel extends BaseObservable {
         DownloadUtils.async(url, data -> {
             if (data == null) {
                 showToast(R.string.toast_download_error_occurred);
+                return;
+            }
+            if (!TextUtils.equals(url, repository.getPlaybackTargetModel().getUri().toString())) {
                 return;
             }
             setLoading(false);
