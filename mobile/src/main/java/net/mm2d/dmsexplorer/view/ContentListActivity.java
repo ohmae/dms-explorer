@@ -15,6 +15,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.transition.Slide;
@@ -43,7 +44,7 @@ public class ContentListActivity extends AppCompatActivity implements CdsSelectL
     private static final String KEY_SCROLL_POSITION = "KEY_SCROLL_POSITION";
     private static final String KEY_SCROLL_OFFSET = "KEY_SCROLL_OFFSET";
     private boolean mTwoPane;
-    private ContentDetailFragment mContentDetailFragment;
+    private Fragment mFragment;
     private ContentListActivityBinding mBinding;
     private ContentListActivityModel mModel;
 
@@ -208,24 +209,24 @@ public class ContentListActivity extends AppCompatActivity implements CdsSelectL
         if (!mTwoPane) {
             return;
         }
-        mContentDetailFragment = ContentDetailFragment.newInstance();
+        mFragment = ContentDetailFragment.newInstance();
         if (animate && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            mContentDetailFragment.setEnterTransition(new Slide(Gravity.START));
+            mFragment.setEnterTransition(new Slide(Gravity.START));
         }
         getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.cds_detail_container, mContentDetailFragment)
+                .replace(R.id.cds_detail_container, mFragment)
                 .commit();
     }
 
     private void removeDetailFragment() {
-        if (!mTwoPane || mContentDetailFragment == null) {
+        if (!mTwoPane || mFragment == null) {
             return;
         }
         getSupportFragmentManager()
                 .beginTransaction()
-                .remove(mContentDetailFragment)
+                .remove(mFragment)
                 .commit();
-        mContentDetailFragment = null;
+        mFragment = null;
     }
 }

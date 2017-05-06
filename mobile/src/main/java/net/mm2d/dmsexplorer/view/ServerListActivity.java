@@ -17,6 +17,7 @@ import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.SharedElementCallback;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -59,7 +60,7 @@ public class ServerListActivity extends AppCompatActivity
     private boolean mTwoPane;
     private final ControlPointModel mControlPointModel
             = Repository.get().getControlPointModel();
-    private ServerDetailFragment mServerDetailFragment;
+    private Fragment mFragment;
     private ServerListActivityBinding mBinding;
 
     @Override
@@ -125,24 +126,24 @@ public class ServerListActivity extends AppCompatActivity
     }
 
     private void setDetailFragment(boolean animate) {
-        mServerDetailFragment = ServerDetailFragment.newInstance();
+        mFragment = ServerDetailFragment.newInstance();
         if (animate && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            mServerDetailFragment.setEnterTransition(new Slide(Gravity.START));
+            mFragment.setEnterTransition(new Slide(Gravity.START));
         }
         getSupportFragmentManager().beginTransaction()
-                .replace(R.id.server_detail_container, mServerDetailFragment)
+                .replace(R.id.server_detail_container, mFragment)
                 .commit();
     }
 
     private void removeDetailFragment() {
-        if (!mTwoPane || mServerDetailFragment == null) {
+        if (!mTwoPane || mFragment == null) {
             return;
         }
         getSupportFragmentManager()
                 .beginTransaction()
-                .remove(mServerDetailFragment)
+                .remove(mFragment)
                 .commit();
-        mServerDetailFragment = null;
+        mFragment = null;
     }
 
     @Override
