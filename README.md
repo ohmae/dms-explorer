@@ -25,6 +25,9 @@ URL string that is included in the program information, act as a link.
 |-|-|-|
 |![](doc/img/4.png)|![](doc/img/5.png)|![](doc/img/6.png)|
 
+|![](doc/img/7.png)|![](doc/img/8.png)|
+|-|-|
+
 ## Install
 [Google Play](https://play.google.com/store/apps/details?id=net.mm2d.dmsexplorer)
 
