@@ -17,7 +17,7 @@ Although it carries the minimum playback function of movies, still images and mu
 it features a metadata display function of server and contents rather than usability as a player.
 Since information on ARIB extension tag (arib:longDescription etc) is also displayed,
 detailed program information can be seen if recorder etc is compatible.
-Also, if the program information contains a URL, it will automatically function as a link.
+Also, if the program information contains a URL, it will automatically act as a link.
 
 ## Screenshots
 
