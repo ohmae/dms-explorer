@@ -1,23 +1,23 @@
 # DMS Explorer
-This is a kind of DLNA player for Android.
-That can display the information of the DLNA server (DMS),
-and can playback the contents.
+This is a DLNA player who featured to the display of server and content metadata.
+DMC function is also equipped and can be make play back to DMR. Source code is published under the MIT license.
+This is a DLNA player featuring to information display of DLNA server (DMS) and its contents.
+Since the playback function uses the codec of the device, which file can be played depends on the device.
+For example, in the case of movies,
+if it is a format compliant with the Android standard such as H.264 / VP8 / VP9, it seems playable on almost all devices.
+Some devices may be able to play MPEG 1 / MPEG 2 / WMV / DivX etc.
+If you can not play it, you can launch the external application in settings so please try it.
 
-This app has an ability of playback contents. But it isn't powerful.
-In the settings, you can choose to play with this app or to throw
-Intent to play in another app.
+As one of the playback methods, the DMC function is implemented.
+If you have a TV with DMR function on the same network, you can make DMS contents play back to DMR.
+If the DMR supports it, DTCP-IP content playback is also possible.
+Also, if you have a SONY recorder such as nasne, you can use chapter jump function.
 
-App playback ability simply uses the codec of your device, so what kind of content
-that can be played depends on your device.
-For example, in the case of video, almost device can play the
-Android-standard formats such as H.264 / VP8 / VP9,
-and some device seem to be able to play MPEG1 / MPEG2 / WMV / DivX etc..
-
-This can playback, movie, photo and music. But it isn't main function.
-Feature of this app is to display the metadata.
-You can see the metadata of the recorded content in the recorder.
-This can recognize the ARIB extension tags, and can display it.
-URL string that is included in the program information, act as a link.
+Although it carries the minimum playback function of movies, still images and music,
+it features a metadata display function of server and contents rather than usability as a player.
+Since information on ARIB extension tag (arib:longDescription etc) is also displayed,
+detailed program information can be seen if recorder etc is compatible.
+Also, if the program information contains a URL, it will automatically function as a link.
 
 ## Screenshots
 

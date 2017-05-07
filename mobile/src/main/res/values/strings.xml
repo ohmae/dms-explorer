@@ -50,9 +50,11 @@
     <string name="pref_title_play_store">Google Play</string>
     <string name="pref_message_play_store">Go to Google Play</string>
     <string name="pref_title_copyright">Copyright</string>
-    <string name="pref_message_copyright">Copyright© 2016 大前良介 (OHMAE Ryosuke)</string>
+    <string name="pref_message_copyright">© 2016 大前良介 (OHMAE Ryosuke)</string>
     <string name="pref_title_version_number">Version</string>
     <string name="pref_title_license">License Information</string>
+    <string name="pref_title_source_code">Source code</string>
+    <string name="pref_message_source_code">Go to GitHub</string>
     <string name="repeat_introduction_title">Repeat setting</string>
     <string name="repeat_introduction_subtitle">You can select the repeat mode.</string>
 </resources>

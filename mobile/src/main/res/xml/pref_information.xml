@@ -20,6 +20,12 @@
         />
 
     <Preference
+        android:key="SOURCE_CODE"
+        android:summary="@string/pref_message_source_code"
+        android:title="@string/pref_title_source_code"
+        />
+
+    <Preference
         android:key="LICENSE"
         android:title="@string/pref_title_license"
         />

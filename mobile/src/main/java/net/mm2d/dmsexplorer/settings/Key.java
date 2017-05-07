@@ -22,6 +22,7 @@ public enum Key {
     PLAY_STORE,
     COPYRIGHT,
     LICENSE,
+    SOURCE_CODE,
     // 設定バージョン
     SETTINGS_VERSION,
     // PreferenceActivity用
