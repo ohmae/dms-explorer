@@ -54,7 +54,7 @@
     <string name="pref_title_version_number">Version</string>
     <string name="pref_title_license">License Information</string>
     <string name="pref_title_source_code">Source code</string>
-    <string name="pref_message_source_code">Go to GitHub</string>
+    <string name="pref_message_source_code">Source code of this app is published under MIT license</string>
     <string name="repeat_introduction_title">Repeat setting</string>
     <string name="repeat_introduction_subtitle">You can select the repeat mode.</string>
 </resources>
