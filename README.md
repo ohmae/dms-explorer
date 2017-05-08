@@ -1,6 +1,4 @@
 # DMS Explorer
-This is a DLNA player who featured to the display of server and content metadata.
-DMC function is also equipped and can be make play back to DMR. Source code is published under the MIT license.
 This is a DLNA player featuring to information display of DLNA server (DMS) and its contents.
 Since the playback function uses the codec of the device, which file can be played depends on the device.
 For example, in the case of movies,
