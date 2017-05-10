@@ -1,6 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'me.tatarka.retrolambda'
 
+def applicationName = "DmsExplorer"
 def versionMajor = 0
 def versionMinor = 7
 def versionPatch = 5
@@ -41,7 +42,7 @@ android {
         }
         variant.outputs.each { output ->
             if (output.outputFile != null && output.outputFile.name.endsWith('.apk')) {
-                def name = "DmsExplorer-${versionName}.apk"
+                def name = "${applicationName}-${versionName}.apk"
                 output.outputFile = new File(output.outputFile.parent, name)
             }
         }
