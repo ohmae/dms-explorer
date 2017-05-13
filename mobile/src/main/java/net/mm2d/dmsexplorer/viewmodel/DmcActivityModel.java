@@ -13,6 +13,7 @@ import android.databinding.Bindable;
 import android.net.Uri;
 import android.os.Handler;
 import android.os.Looper;
+import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.widget.Toast;
@@ -45,6 +46,7 @@ public class DmcActivityModel extends BaseObservable implements StatusListener {
     public final String subtitle;
     @NonNull
     public final ContentPropertyAdapter propertyAdapter;
+    @DrawableRes
     public final int imageResource;
     public final boolean isPlayControlEnabled;
     public final boolean isStillContents;
@@ -285,6 +287,7 @@ public class DmcActivityModel extends BaseObservable implements StatusListener {
         notifyPropertyChanged(BR.chapterInfoEnabled);
     }
 
+    @DrawableRes
     private static int getImageResource(@NonNull final CdsObject object) {
         switch (object.getType()) {
             case CdsObject.TYPE_VIDEO:

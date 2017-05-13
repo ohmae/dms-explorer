@@ -9,6 +9,7 @@ package net.mm2d.android.upnp.cds;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
@@ -688,6 +689,9 @@ public class CdsObject implements Parcelable {
     public static final String ARIB_VIDEO_COMPONENT_TYPE = "arib:videoComponentType";
 
     // オブジェクト種別の定義
+    @IntDef({TYPE_UNKNOWN, TYPE_VIDEO, TYPE_AUDIO, TYPE_IMAGE, TYPE_CONTAINER})
+    public @interface ContentType{
+    }
     /**
      * 未定義
      */
@@ -755,6 +759,7 @@ public class CdsObject implements Parcelable {
      * @see #TYPE_IMAGE
      * @see #TYPE_CONTAINER
      */
+    @ContentType
     private final int mType;
 
     private static class Param {
@@ -828,6 +833,7 @@ public class CdsObject implements Parcelable {
         return map;
     }
 
+    @ContentType
     private static int getType(boolean isItem, String upnpClass) {
         if (!isItem) {
             return TYPE_CONTAINER;
@@ -874,6 +880,7 @@ public class CdsObject implements Parcelable {
      *
      * @return Type値
      */
+    @ContentType
     public int getType() {
         return mType;
     }
