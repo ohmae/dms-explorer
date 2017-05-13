@@ -75,7 +75,7 @@ public class ControlPointModel {
             if (mNetworkAvailable != available) {
                 initializeOrTerminate(available);
                 if (!available) {
-                    showToast(R.string.no_available_network);
+                    Toaster.showLong(mContext, R.string.no_available_network);
                 }
             }
             mNetworkAvailable = available;
@@ -87,7 +87,7 @@ public class ControlPointModel {
     private class SearchThread extends Thread {
         private volatile boolean mShutdownRequest;
 
-        public void shutdownRequest() {
+        void shutdownRequest() {
             interrupt();
             mShutdownRequest = true;
         }
@@ -198,7 +198,7 @@ public class ControlPointModel {
         mSearchThread = new SearchThread();
         mSearchThread.start();
         if (!mLan.hasAvailableInterface()) {
-            showToast(R.string.no_available_network);
+            Toaster.showLong(mContext, R.string.no_available_network);
         }
     }
 
@@ -243,9 +243,5 @@ public class ControlPointModel {
             mAvControlPointManager.initialize(mLan.getAvailableInterfaces());
             mAvControlPointManager.start();
         }
-    }
-
-    private void showToast(int resId) {
-        Toaster.showLong(mContext, resId);
     }
 }

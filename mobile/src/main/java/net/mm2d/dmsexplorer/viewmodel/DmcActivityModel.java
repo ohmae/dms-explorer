@@ -365,12 +365,8 @@ public class DmcActivityModel extends BaseObservable implements StatusListener {
 
     @Override
     public boolean onError(final int what, final int extra) {
-        showToast(R.string.toast_command_error_occurred);
+        Toaster.showLong(mActivity, R.string.toast_command_error_occurred);
         return false;
-    }
-
-    private void showToast(int resId) {
-        Toaster.showLong(mActivity, resId);
     }
 
     @Override

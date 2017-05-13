@@ -52,7 +52,7 @@ public class PhotoActivityModel extends BaseObservable {
         final String url = mTargetModel.getUri().toString();
         DownloadUtils.async(url, data -> {
             if (data == null) {
-                showToast(R.string.toast_download_error_occurred);
+                Toaster.showLong(mActivity, R.string.toast_download_error_occurred);
                 return;
             }
             if (!TextUtils.equals(url, repository.getPlaybackTargetModel().getUri().toString())) {
@@ -101,9 +101,5 @@ public class PhotoActivityModel extends BaseObservable {
     public void setLoading(final boolean loading) {
         mLoading = loading;
         notifyPropertyChanged(BR.loading);
-    }
-
-    private void showToast(int resId) {
-        Toaster.showLong(mActivity, resId);
     }
 }
