@@ -41,7 +41,7 @@ android {
             return
         }
         variant.outputs.each { output ->
-            if (output.outputFile != null && output.outputFile.name.endsWith('.apk')) {
+            if (output.outputFile != null && output.outputFile.name.endsWith('release.apk')) {
                 def name = "${applicationName}-${versionName}.apk"
                 output.outputFile = new File(output.outputFile.parent, name)
             }

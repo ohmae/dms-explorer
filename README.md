@@ -35,8 +35,10 @@ Also, if the program information contains a URL, it will automatically act as a 
 [IzzyOnDroid](https://apt.izzysoft.de/fdroid/index/apk/net.mm2d.dmsexplorer)
 
 ## Build
-This is Android Studio project.
-So, you can select this repository from "Open an existing Android Studio project".
+```
+gradlew assembleRelease
+```
+And this project can open as Android Studio project.
 
 ## Remarks
 This is an application example of [mmupnp](https://github.com/ohmae/mmupnp).
