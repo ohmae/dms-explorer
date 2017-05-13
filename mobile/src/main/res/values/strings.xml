@@ -7,6 +7,7 @@
     <string name="toast_not_support_drm">This app does not support playback of DRM content.</string>
     <string name="toast_command_error_occurred">Error occurred</string>
     <string name="toast_download_error_occurred">Error occurred</string>
+    <string name="toast_decode_error_occurred">Error occurred</string>
     <string name="toast_repeat_play_once">Play 1 item</string>
     <string name="toast_repeat_sequential">Play automatically</string>
     <string name="toast_repeat_repeat_all">Repeat folder</string>

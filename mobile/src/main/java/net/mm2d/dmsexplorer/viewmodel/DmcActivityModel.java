@@ -16,10 +16,10 @@ import android.os.Looper;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.widget.Toast;
 
 import net.mm2d.android.upnp.cds.CdsObject;
 import net.mm2d.android.util.AribUtils;
+import net.mm2d.android.util.Toaster;
 import net.mm2d.dmsexplorer.BR;
 import net.mm2d.dmsexplorer.R;
 import net.mm2d.dmsexplorer.Repository;
@@ -370,7 +370,7 @@ public class DmcActivityModel extends BaseObservable implements StatusListener {
     }
 
     private void showToast(int resId) {
-        Toast.makeText(mActivity, resId, Toast.LENGTH_LONG).show();
+        Toaster.showLong(mActivity, resId);
     }
 
     @Override

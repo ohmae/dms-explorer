@@ -22,6 +22,7 @@ import com.android.databinding.library.baseAdapters.BR;
 
 import net.mm2d.android.util.AribUtils;
 import net.mm2d.android.util.DisplaySizeUtils;
+import net.mm2d.android.util.Toaster;
 import net.mm2d.dmsexplorer.R;
 import net.mm2d.dmsexplorer.Repository;
 import net.mm2d.dmsexplorer.domain.model.MediaServerModel;
@@ -147,8 +148,7 @@ public class MovieActivityModel extends BaseObservable
         if (mToast != null) {
             mToast.cancel();
         }
-        mToast = Toast.makeText(mActivity, mRepeatMode.getMessageId(), Toast.LENGTH_LONG);
-        mToast.show();
+        mToast = Toaster.showLong(mActivity, mRepeatMode.getMessageId());
     }
 
     @Bindable

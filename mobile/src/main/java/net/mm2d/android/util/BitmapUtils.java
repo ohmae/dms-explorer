@@ -10,6 +10,7 @@ package net.mm2d.android.util;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 /**
  * Bitmapに関連する共通処理をまとめたユーティリティクラス。
@@ -40,7 +41,7 @@ public class BitmapUtils {
      * @param height 表示枠の高さ
      * @return Bitmap
      */
-    @NonNull
+    @Nullable
     public static Bitmap decodeBitmap(@NonNull byte[] data, int width, int height) {
         final BitmapFactory.Options options = new BitmapFactory.Options();
         options.inJustDecodeBounds = true;

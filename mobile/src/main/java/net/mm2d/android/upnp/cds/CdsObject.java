@@ -17,6 +17,8 @@ import android.text.TextUtils;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -690,8 +692,10 @@ public class CdsObject implements Parcelable {
 
     // オブジェクト種別の定義
     @IntDef({TYPE_UNKNOWN, TYPE_VIDEO, TYPE_AUDIO, TYPE_IMAGE, TYPE_CONTAINER})
-    public @interface ContentType{
+    @Retention(RetentionPolicy.SOURCE)
+    public @interface ContentType {
     }
+
     /**
      * 未定義
      */

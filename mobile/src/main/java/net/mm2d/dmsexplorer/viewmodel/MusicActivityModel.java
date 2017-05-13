@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import net.mm2d.android.upnp.cds.CdsObject;
 import net.mm2d.android.util.AribUtils;
+import net.mm2d.android.util.Toaster;
 import net.mm2d.dmsexplorer.BR;
 import net.mm2d.dmsexplorer.Repository;
 import net.mm2d.dmsexplorer.domain.model.MediaServerModel;
@@ -134,8 +135,7 @@ public class MusicActivityModel extends BaseObservable
         if (mToast != null) {
             mToast.cancel();
         }
-        mToast = Toast.makeText(mActivity, mRepeatMode.getMessageId(), Toast.LENGTH_LONG);
-        mToast.show();
+        mToast = Toaster.showLong(mActivity, mRepeatMode.getMessageId());
     }
 
     @Bindable

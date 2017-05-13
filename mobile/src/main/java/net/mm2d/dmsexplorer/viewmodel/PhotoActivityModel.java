@@ -14,12 +14,12 @@ import android.graphics.Point;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
-import android.widget.Toast;
 
 import com.android.databinding.library.baseAdapters.BR;
 
 import net.mm2d.android.util.AribUtils;
 import net.mm2d.android.util.DisplaySizeUtils;
+import net.mm2d.android.util.Toaster;
 import net.mm2d.dmsexplorer.R;
 import net.mm2d.dmsexplorer.Repository;
 import net.mm2d.dmsexplorer.domain.model.PlaybackTargetModel;
@@ -104,6 +104,6 @@ public class PhotoActivityModel extends BaseObservable {
     }
 
     private void showToast(int resId) {
-        Toast.makeText(mActivity, resId, Toast.LENGTH_LONG).show();
+        Toaster.showLong(mActivity, resId);
     }
 }
