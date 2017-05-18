@@ -15,7 +15,9 @@ import android.support.annotation.Nullable;
 import android.widget.ImageView;
 
 import net.mm2d.android.util.BitmapUtils;
+import net.mm2d.android.util.Toaster;
 import net.mm2d.android.util.ViewUtils;
+import net.mm2d.dmsexplorer.R;
 
 /**
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
@@ -38,12 +40,19 @@ public class ImageViewBindingAdapter {
         new AsyncTask<Void, Void, Bitmap>() {
             @Override
             protected Bitmap doInBackground(final Void... params) {
-                return BitmapUtils.decodeBitmap(binary, width, height);
+                try {
+                    return BitmapUtils.decodeBitmap(binary, width, height);
+                } catch (final OutOfMemoryError ignored) {
+                }
+                return null;
             }
 
             @Override
             protected void onPostExecute(final Bitmap bitmap) {
                 imageView.setImageBitmap(bitmap);
+                if (bitmap == null) {
+                    Toaster.showLong(imageView.getContext(), R.string.toast_decode_error_occurred);
+                }
             }
         }.execute();
     }

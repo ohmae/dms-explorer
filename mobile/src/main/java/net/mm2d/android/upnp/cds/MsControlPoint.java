@@ -157,7 +157,12 @@ public class MsControlPoint implements ControlPointWrapper {
         if (!device.getDeviceType().startsWith(Cds.MS_DEVICE_TYPE)) {
             return;
         }
-        final MediaServer server = createMediaServer(device);
+        final MediaServer server;
+        try {
+            server = createMediaServer(device);
+        } catch (final IllegalArgumentException ignored) {
+            return;
+        }
         mMediaServerMap.put(server.getUdn(), server);
         if (mMsDiscoveryListener != null) {
             mMsDiscoveryListener.onDiscover(server);

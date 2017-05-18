@@ -1,9 +1,11 @@
 apply plugin: 'com.android.application'
+apply plugin: 'com.google.firebase.firebase-crash'
 apply plugin: 'me.tatarka.retrolambda'
 
+def applicationName = "DmsExplorer"
 def versionMajor = 0
 def versionMinor = 7
-def versionPatch = 3
+def versionPatch = 7
 
 android {
     compileSdkVersion 25
@@ -40,8 +42,8 @@ android {
             return
         }
         variant.outputs.each { output ->
-            if (output.outputFile != null && output.outputFile.name.endsWith('.apk')) {
-                def name = "DmsExplorer-${versionName}.apk"
+            if (output.outputFile != null && output.outputFile.name.endsWith('release.apk')) {
+                def name = "${applicationName}-${versionName}.apk"
                 output.outputFile = new File(output.outputFile.parent, name)
             }
         }
@@ -62,7 +64,14 @@ dependencies {
     compile 'com.android.support:palette-v7:25.3.1'
     compile 'com.android.support:recyclerview-v7:25.3.1'
     compile 'com.android.support:support-v4:25.3.1'
+    compile 'com.google.firebase:firebase-core:10.0.1'
+    compile 'com.google.firebase:firebase-crash:10.0.1'
     compile 'net.mm2d.mmupnp:mmupnp:1.1.1'
     compile 'net.opacapp:multiline-collapsingtoolbar:1.3.1'
     testCompile 'junit:junit:4.12'
 }
+
+setProperty("FirebaseServiceAccountFilePath",
+        rootProject.rootDir.parentFile.absolutePath + "/firebase-crashreporting-mm2d.json")
+
+apply plugin: 'com.google.gms.google-services'

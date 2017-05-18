@@ -179,6 +179,11 @@ public class PropertyAdapter extends Adapter<ViewHolder> {
             }
             if (lastEnd == 0) {
                 return trim(text);
+            } else if (lastEnd != text.length()) {
+                final String normalText = trim(text.substring(lastEnd, text.length()));
+                if (!normalText.isEmpty()) {
+                    addNormalText(parent, normalText);
+                }
             }
             return firstNormalText;
         }

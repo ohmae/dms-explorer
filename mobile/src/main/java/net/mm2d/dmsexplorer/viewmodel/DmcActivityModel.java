@@ -13,12 +13,13 @@ import android.databinding.Bindable;
 import android.net.Uri;
 import android.os.Handler;
 import android.os.Looper;
+import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.widget.Toast;
 
 import net.mm2d.android.upnp.cds.CdsObject;
 import net.mm2d.android.util.AribUtils;
+import net.mm2d.android.util.Toaster;
 import net.mm2d.dmsexplorer.BR;
 import net.mm2d.dmsexplorer.R;
 import net.mm2d.dmsexplorer.Repository;
@@ -45,6 +46,7 @@ public class DmcActivityModel extends BaseObservable implements StatusListener {
     public final String subtitle;
     @NonNull
     public final ContentPropertyAdapter propertyAdapter;
+    @DrawableRes
     public final int imageResource;
     public final boolean isPlayControlEnabled;
     public final boolean isStillContents;
@@ -285,6 +287,7 @@ public class DmcActivityModel extends BaseObservable implements StatusListener {
         notifyPropertyChanged(BR.chapterInfoEnabled);
     }
 
+    @DrawableRes
     private static int getImageResource(@NonNull final CdsObject object) {
         switch (object.getType()) {
             case CdsObject.TYPE_VIDEO:
@@ -362,12 +365,8 @@ public class DmcActivityModel extends BaseObservable implements StatusListener {
 
     @Override
     public boolean onError(final int what, final int extra) {
-        showToast(R.string.toast_command_error_occurred);
+        Toaster.showLong(mActivity, R.string.toast_command_error_occurred);
         return false;
-    }
-
-    private void showToast(int resId) {
-        Toast.makeText(mActivity, resId, Toast.LENGTH_LONG).show();
     }
 
     @Override

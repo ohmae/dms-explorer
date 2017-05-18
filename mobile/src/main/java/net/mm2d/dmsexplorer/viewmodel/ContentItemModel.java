@@ -9,6 +9,7 @@ package net.mm2d.dmsexplorer.viewmodel;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.text.TextUtils;
@@ -32,6 +33,7 @@ public class ContentItemModel {
     public final String title;
     @NonNull
     public final String description;
+    @DrawableRes
     public final int imageResource;
 
     public ContentItemModel(@NonNull final Context context,
@@ -46,11 +48,12 @@ public class ContentItemModel {
         DrawableCompat.setTint(accentBackground, ThemeUtils.getAccentColor(name));
         title = AribUtils.toDisplayableString(name);
         description = object.getUpnpClass();
-        imageResource = getImageResource(object.getType());
+        imageResource = getImageResource(object);
     }
 
-    private static int getImageResource(int type) {
-        switch (type) {
+    @DrawableRes
+    private static int getImageResource(@NonNull final CdsObject object) {
+        switch (object.getType()) {
             case CdsObject.TYPE_CONTAINER:
                 return R.drawable.ic_folder;
             case CdsObject.TYPE_AUDIO:

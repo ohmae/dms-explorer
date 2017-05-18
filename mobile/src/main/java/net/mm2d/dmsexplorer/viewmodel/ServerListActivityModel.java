@@ -133,6 +133,10 @@ public class ServerListActivityModel extends BaseObservable {
         return null;
     }
 
+    public boolean hasSelectedMediaServer() {
+        return mControlPointModel.getSelectedMediaServer() != null;
+    }
+
     private void onItemClick(@NonNull final View v, @NonNull final MediaServer server) {
         final boolean alreadySelected = mControlPointModel.isSelectedMediaServer(server);
         mServerListAdapter.setSelectedServer(server);

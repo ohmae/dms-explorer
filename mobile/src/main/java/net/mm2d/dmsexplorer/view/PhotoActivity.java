@@ -10,14 +10,19 @@ package net.mm2d.dmsexplorer.view;
 import android.content.res.Configuration;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.support.v4.view.ViewPager;
+import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.support.v7.app.AppCompatActivity;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 
 import net.mm2d.dmsexplorer.R;
 import net.mm2d.dmsexplorer.Repository;
 import net.mm2d.dmsexplorer.databinding.PhotoActivityBinding;
+import net.mm2d.dmsexplorer.domain.model.MediaServerModel;
 import net.mm2d.dmsexplorer.util.FullscreenHelper;
+import net.mm2d.dmsexplorer.view.view.ViewPagerAdapter;
 import net.mm2d.dmsexplorer.viewmodel.PhotoActivityModel;
 
 /**
@@ -27,26 +32,55 @@ import net.mm2d.dmsexplorer.viewmodel.PhotoActivityModel;
  */
 public class PhotoActivity extends AppCompatActivity {
     private FullscreenHelper mFullscreenHelper;
+    private PhotoActivityBinding mBinding;
     private PhotoActivityModel mModel;
+    private Repository mRepository;
+    private MediaServerModel mServerModel;
+    private final OnPageChangeListener mOnPageChangeListener = new OnPageChangeListener() {
+        @Override
+        public void onPageScrolled(final int position, final float positionOffset, final int positionOffsetPixels) {
+        }
+
+        @Override
+        public void onPageSelected(final int position) {
+        }
+
+        @Override
+        public void onPageScrollStateChanged(final int state) {
+            if (state == ViewPager.SCROLL_STATE_IDLE) {
+                onScrollIdle();
+            }
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        final PhotoActivityBinding binding
-                = DataBindingUtil.setContentView(this, R.layout.photo_activity);
-        mFullscreenHelper = new FullscreenHelper.Builder(binding.getRoot())
-                .setTopView(binding.toolbar)
+        mBinding = DataBindingUtil.setContentView(this, R.layout.photo_activity);
+        mFullscreenHelper = new FullscreenHelper.Builder(mBinding.getRoot())
+                .setTopView(mBinding.toolbar)
                 .build();
+        mRepository = Repository.get();
+        mServerModel = mRepository.getMediaServerModel();
         try {
-            mModel = new PhotoActivityModel(this, Repository.get());
+            mModel = new PhotoActivityModel(this, mRepository);
         } catch (final IllegalStateException ignored) {
             finish();
             return;
         }
 
-        binding.setModel(mModel);
+        mBinding.setModel(mModel);
         mModel.adjustPanel(this);
         mFullscreenHelper.showNavigation();
+
+        final ViewPagerAdapter pagerAdapter = new ViewPagerAdapter();
+        final LayoutInflater inflater = LayoutInflater.from(this);
+        pagerAdapter.add(inflater.inflate(R.layout.progress_view, mBinding.viewPager, false));
+        pagerAdapter.add(inflater.inflate(R.layout.transparent_view, mBinding.viewPager, false));
+        pagerAdapter.add(inflater.inflate(R.layout.progress_view, mBinding.viewPager, false));
+        mBinding.viewPager.setAdapter(pagerAdapter);
+        mBinding.viewPager.setCurrentItem(1, false);
+        mBinding.viewPager.addOnPageChangeListener(mOnPageChangeListener);
     }
 
     @Override
@@ -79,5 +113,24 @@ public class PhotoActivity extends AppCompatActivity {
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void onScrollIdle() {
+        final int index = mBinding.viewPager.getCurrentItem();
+        if (index == 1) {
+            return;
+        }
+        if (!move(index)) {
+            finish();
+            return;
+        }
+        mModel = new PhotoActivityModel(this, mRepository);
+        mBinding.setModel(mModel);
+        mBinding.viewPager.setCurrentItem(1, false);
+    }
+
+    private boolean move(int index) {
+        return index == 0 ? mServerModel.selectPreviousObject(MediaServerModel.SCAN_MODE_SEQUENTIAL)
+                : mServerModel.selectNextObject(MediaServerModel.SCAN_MODE_SEQUENTIAL);
     }
 }

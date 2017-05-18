@@ -17,12 +17,12 @@ import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.SharedElementCallback;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.transition.Slide;
-import android.transition.Transition;
 import android.util.Pair;
 import android.view.Gravity;
 import android.view.Menu;
@@ -31,7 +31,6 @@ import android.view.View;
 
 import net.mm2d.android.util.ActivityUtils;
 import net.mm2d.android.util.ViewUtils;
-import net.mm2d.android.view.TransitionListenerAdapter;
 import net.mm2d.dmsexplorer.Const;
 import net.mm2d.dmsexplorer.R;
 import net.mm2d.dmsexplorer.Repository;
@@ -54,12 +53,10 @@ public class ServerListActivity extends AppCompatActivity
         implements ServerSelectListener {
     private static final String KEY_SCROLL_POSITION = "KEY_SCROLL_POSITION";
     private static final String KEY_SCROLL_OFFSET = "KEY_SCROLL_OFFSET";
-    private static final String KEY_HAS_REENTER_TRANSITION = "KEY_HAS_REENTER_TRANSITION";
-    private boolean mHasReenterTransition;
     private boolean mTwoPane;
     private final ControlPointModel mControlPointModel
             = Repository.get().getControlPointModel();
-    private ServerDetailFragment mServerDetailFragment;
+    private Fragment mFragment;
     private ServerListActivityBinding mBinding;
 
     @Override
@@ -97,19 +94,10 @@ public class ServerListActivity extends AppCompatActivity
     private void startServerDetailActivityLollipop(@NonNull final View v) {
         final Intent intent = ServerDetailActivity.makeIntent(this);
         final View accent = v.findViewById(R.id.accent);
-        setExitSharedElementCallback(new SharedElementCallback() {
-            @Override
-            public void onMapSharedElements(
-                    final List<String> names, final Map<String, View> sharedElements) {
-                sharedElements.clear();
-                sharedElements.put(Const.SHARE_ELEMENT_NAME_DEVICE_ICON, accent);
-            }
-        });
         startActivity(intent, ActivityOptions
                 .makeSceneTransitionAnimation(ServerListActivity.this,
                         new Pair<>(accent, Const.SHARE_ELEMENT_NAME_DEVICE_ICON))
                 .toBundle());
-        mHasReenterTransition = true;
     }
 
     private void startServerDetailActivityJellyBean(@NonNull final View v) {
@@ -125,24 +113,24 @@ public class ServerListActivity extends AppCompatActivity
     }
 
     private void setDetailFragment(boolean animate) {
-        mServerDetailFragment = ServerDetailFragment.newInstance();
+        mFragment = ServerDetailFragment.newInstance();
         if (animate && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            mServerDetailFragment.setEnterTransition(new Slide(Gravity.START));
+            mFragment.setEnterTransition(new Slide(Gravity.START));
         }
         getSupportFragmentManager().beginTransaction()
-                .replace(R.id.server_detail_container, mServerDetailFragment)
+                .replace(R.id.server_detail_container, mFragment)
                 .commit();
     }
 
     private void removeDetailFragment() {
-        if (!mTwoPane || mServerDetailFragment == null) {
+        if (!mTwoPane || mFragment == null) {
             return;
         }
         getSupportFragmentManager()
                 .beginTransaction()
-                .remove(mServerDetailFragment)
+                .remove(mFragment)
                 .commit();
-        mServerDetailFragment = null;
+        mFragment = null;
     }
 
     @Override
@@ -162,8 +150,23 @@ public class ServerListActivity extends AppCompatActivity
         if (savedInstanceState == null) {
             mControlPointModel.initialize();
         } else {
-            mHasReenterTransition = savedInstanceState.getBoolean(KEY_HAS_REENTER_TRANSITION);
             restoreScroll(savedInstanceState);
+        }
+        setSharedElementCallback();
+    }
+
+    private void setSharedElementCallback() {
+        if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
+            setExitSharedElementCallback(new SharedElementCallback() {
+                @Override
+                public void onMapSharedElements(final List<String> names, final Map<String, View> sharedElements) {
+                    sharedElements.clear();
+                    final View shared = mBinding.getModel().findSharedView();
+                    if (shared != null) {
+                        sharedElements.put(Const.SHARE_ELEMENT_NAME_DEVICE_ICON, shared);
+                    }
+                }
+            });
         }
     }
 
@@ -192,7 +195,6 @@ public class ServerListActivity extends AppCompatActivity
     protected void onSaveInstanceState(@NonNull final Bundle outState) {
         removeDetailFragment();
         super.onSaveInstanceState(outState);
-        outState.putBoolean(KEY_HAS_REENTER_TRANSITION, mHasReenterTransition);
         saveScroll(outState);
     }
 
@@ -211,67 +213,21 @@ public class ServerListActivity extends AppCompatActivity
         super.onStart();
         mControlPointModel.searchStart();
         updateState();
-        mHasReenterTransition = false;
     }
 
     private void updateState() {
-        final View shared = mBinding.getModel().findSharedView();
+        mBinding.getModel().updateListAdapter();
         if (mTwoPane) {
-            mBinding.getModel().updateListAdapter();
-            if (shared == null) {
-                removeDetailFragment();
-                return;
-            }
+            updateFragmentState();
+        }
+    }
+
+    private void updateFragmentState() {
+        if (mBinding.getModel().hasSelectedMediaServer()) {
             setDetailFragment(false);
             return;
         }
-        if (shared == null) {
-            mBinding.getModel().updateListAdapter();
-            clearExitSharedElement();
-            return;
-        }
-        if (mHasReenterTransition && VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
-            prepareReenterTransition();
-            return;
-        }
-        mBinding.getModel().updateListAdapter();
-    }
-
-    @TargetApi(VERSION_CODES.LOLLIPOP)
-    private void prepareReenterTransition() {
-        resetExitSharedElement();
-        getWindow().getSharedElementExitTransition().addListener(new TransitionListenerAdapter() {
-            @TargetApi(VERSION_CODES.KITKAT)
-            @Override
-            public void onTransitionEnd(Transition transition) {
-                mBinding.getModel().updateListAdapter();
-                transition.removeListener(this);
-            }
-        });
-    }
-
-    private void resetExitSharedElement() {
-        setExitSharedElementCallback(new SharedElementCallback() {
-            @Override
-            public void onMapSharedElements(List<String> names, Map<String, View> sharedElements) {
-                sharedElements.clear();
-                final View shared = mBinding.getModel().findSharedView();
-                if (shared != null) {
-                    sharedElements.put(Const.SHARE_ELEMENT_NAME_DEVICE_ICON, shared);
-                }
-            }
-        });
-    }
-
-    private void clearExitSharedElement() {
-        if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
-            setExitSharedElementCallback(new SharedElementCallback() {
-                @Override
-                public void onMapSharedElements(List<String> names, Map<String, View> sharedElements) {
-                    sharedElements.clear();
-                }
-            });
-        }
+        removeDetailFragment();
     }
 
     @Override

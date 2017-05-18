@@ -7,6 +7,7 @@
     <string name="toast_not_support_drm">著作権保護されたコンテンツの再生には対応していません</string>
     <string name="toast_command_error_occurred">エラーが発生しました</string>
     <string name="toast_download_error_occurred">エラーが発生しました</string>
+    <string name="toast_decode_error_occurred">エラーが発生しました</string>
     <string name="toast_repeat_play_once">1項目のみ再生</string>
     <string name="toast_repeat_sequential">最後まで連続再生</string>
     <string name="toast_repeat_repeat_all">全体をループ再生</string>
@@ -50,9 +51,11 @@
     <string name="pref_title_play_store">Google Play</string>
     <string name="pref_message_play_store">Google Playを開きます</string>
     <string name="pref_title_copyright">著作権表示</string>
-    <string name="pref_message_copyright">Copyright© 2016 大前良介 (OHMAE Ryosuke)</string>
+    <string name="pref_message_copyright">© 2016 大前良介 (OHMAE Ryosuke)</string>
     <string name="pref_title_version_number">バージョン</string>
-    <string name="pref_title_license">ライセンス情報</string>
+    <string name="pref_title_license">オープンソース ライセンス</string>
+    <string name="pref_title_source_code">ソースコード</string>
+    <string name="pref_message_source_code">本アプリのソースコードはMITライセンスで公開しています</string>
     <string name="repeat_introduction_title">連続再生設定</string>
     <string name="repeat_introduction_subtitle">連続再生方法を選択できます</string>
 </resources>

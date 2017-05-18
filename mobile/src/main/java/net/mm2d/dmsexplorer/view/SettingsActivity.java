@@ -99,6 +99,10 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         return !TextUtils.isEmpty(CustomTabsHelper.getPackageNameToBind());
     }
 
+    private static void openUrl(final Context context, final String url) {
+        Repository.get().getOpenUriModel().openUri(context, url);
+    }
+
     public static class PlaybackPreferenceFragment extends PreferenceFragment {
         @Override
         public void onCreate(Bundle savedInstanceState) {
@@ -145,6 +149,10 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                 return true;
             });
             findPreference(Key.VERSION_NUMBER.name()).setSummary(BuildConfig.VERSION_NAME);
+            findPreference(Key.SOURCE_CODE.name()).setOnPreferenceClickListener(preference -> {
+                openUrl(getActivity(), "https://github.com/ohmae/DmsExplorer");
+                return true;
+            });
             findPreference(Key.LICENSE.name()).setOnPreferenceClickListener(preference -> {
                 final WebViewDialog dialog = WebViewDialog.newInstance(
                         getString(R.string.pref_title_license),

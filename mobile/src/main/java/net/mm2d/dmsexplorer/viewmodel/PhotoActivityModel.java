@@ -13,12 +13,13 @@ import android.databinding.Bindable;
 import android.graphics.Point;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.widget.Toast;
+import android.text.TextUtils;
 
 import com.android.databinding.library.baseAdapters.BR;
 
 import net.mm2d.android.util.AribUtils;
 import net.mm2d.android.util.DisplaySizeUtils;
+import net.mm2d.android.util.Toaster;
 import net.mm2d.dmsexplorer.R;
 import net.mm2d.dmsexplorer.Repository;
 import net.mm2d.dmsexplorer.domain.model.PlaybackTargetModel;
@@ -51,7 +52,10 @@ public class PhotoActivityModel extends BaseObservable {
         final String url = mTargetModel.getUri().toString();
         DownloadUtils.async(url, data -> {
             if (data == null) {
-                showToast(R.string.toast_download_error_occurred);
+                Toaster.showLong(mActivity, R.string.toast_download_error_occurred);
+                return;
+            }
+            if (!TextUtils.equals(url, repository.getPlaybackTargetModel().getUri().toString())) {
                 return;
             }
             setLoading(false);
@@ -97,9 +101,5 @@ public class PhotoActivityModel extends BaseObservable {
     public void setLoading(final boolean loading) {
         mLoading = loading;
         notifyPropertyChanged(BR.loading);
-    }
-
-    private void showToast(int resId) {
-        Toast.makeText(mActivity, resId, Toast.LENGTH_LONG).show();
     }
 }

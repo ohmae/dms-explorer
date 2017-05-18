@@ -94,7 +94,12 @@ public class MrControlPoint implements ControlPointWrapper {
                 || device.findServiceById(Avt.AVT_SERVICE_ID) == null) {
             return;
         }
-        final MediaRenderer renderer = createMediaRenderer(device);
+        final MediaRenderer renderer;
+        try {
+            renderer = createMediaRenderer(device);
+        } catch (final IllegalArgumentException ignored) {
+            return;
+        }
         mMediaRendererMap.put(renderer.getUdn(), renderer);
         for (final MrDiscoveryListener listener : mMrDiscoveryListeners) {
             listener.onDiscover(renderer);
