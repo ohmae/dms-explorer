@@ -15,11 +15,13 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
+import android.view.LayoutInflater;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import net.mm2d.dmsexplorer.Repository;
+import net.mm2d.dmsexplorer.databinding.WebViewDialogBinding;
 
 /**
  * コンテンツ内容をWebViewで表示するダイアログ。
@@ -51,15 +53,18 @@ public class WebViewDialog extends DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        final Bundle args = getArguments();
-        final WebView webView = new WebView(getActivity());
+        final WebViewDialogBinding binding
+                = WebViewDialogBinding.inflate(LayoutInflater.from(getActivity()));
+        final WebView webView = binding.webView;
         webView.getSettings().setSupportZoom(false);
         webView.getSettings().setDisplayZoomControls(false);
         webView.setWebViewClient(new AppWebViewClient(getActivity()));
+
+        final Bundle args = getArguments();
         webView.loadUrl(args.getString(KEY_URL));
         return new AlertDialog.Builder(getActivity())
                 .setTitle(args.getString(KEY_TITLE))
-                .setView(webView)
+                .setView(binding.getRoot())
                 .create();
     }
 
