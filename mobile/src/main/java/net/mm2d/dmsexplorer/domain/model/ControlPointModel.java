@@ -190,7 +190,7 @@ public class ControlPointModel {
         }
     }
 
-    public void searchStart() {
+    public synchronized void searchStart() {
         if (mSearchThread != null) {
             searchStop();
         }
@@ -202,9 +202,11 @@ public class ControlPointModel {
         }
     }
 
-    public void searchStop() {
-        mSearchThread.shutdownRequest();
-        mSearchThread = null;
+    public synchronized void searchStop() {
+        if (mSearchThread != null) {
+            mSearchThread.shutdownRequest();
+            mSearchThread = null;
+        }
         getMsControlPoint().setMsDiscoveryListener(null);
     }
 
