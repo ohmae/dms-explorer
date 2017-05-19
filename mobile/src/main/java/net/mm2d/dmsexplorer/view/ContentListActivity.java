@@ -7,6 +7,7 @@
 
 package net.mm2d.dmsexplorer.view;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
@@ -211,7 +212,10 @@ public class ContentListActivity extends AppCompatActivity implements CdsSelectL
         }
         mFragment = ContentDetailFragment.newInstance();
         if (animate && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            mFragment.setEnterTransition(new Slide(Gravity.START));
+            @SuppressLint("RtlHardcoded")
+            final int gravity =  Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1
+                    ? Gravity.START : Gravity.LEFT;
+            mFragment.setEnterTransition(new Slide(gravity));
         }
         getSupportFragmentManager()
                 .beginTransaction()

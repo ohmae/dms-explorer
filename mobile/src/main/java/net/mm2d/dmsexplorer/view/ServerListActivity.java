@@ -7,6 +7,7 @@
 
 package net.mm2d.dmsexplorer.view;
 
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.ActivityOptions;
 import android.content.Intent;
@@ -115,7 +116,10 @@ public class ServerListActivity extends AppCompatActivity
     private void setDetailFragment(boolean animate) {
         mFragment = ServerDetailFragment.newInstance();
         if (animate && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            mFragment.setEnterTransition(new Slide(Gravity.START));
+            @SuppressLint("RtlHardcoded")
+            final int gravity =  Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1
+                    ? Gravity.START : Gravity.LEFT;
+            mFragment.setEnterTransition(new Slide(gravity));
         }
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.server_detail_container, mFragment)
