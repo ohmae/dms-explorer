@@ -66,7 +66,7 @@ dependencies {
     compile 'com.android.support:support-v4:25.3.1'
     compile 'com.google.firebase:firebase-core:10.0.1'
     compile 'com.google.firebase:firebase-crash:10.0.1'
-    compile 'net.mm2d.mmupnp:mmupnp:1.1.1'
+    compile 'net.mm2d.mmupnp:mmupnp:1.1.2'
     compile 'net.opacapp:multiline-collapsingtoolbar:1.4.0'
     testCompile 'junit:junit:4.12'
 }
