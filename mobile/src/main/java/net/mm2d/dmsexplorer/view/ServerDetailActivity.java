@@ -16,7 +16,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 import android.transition.Transition;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -35,7 +34,7 @@ import net.mm2d.dmsexplorer.databinding.ServerDetailFragmentBinding;
  *
  * @author <a href="mailto:ryo@mm2d.net">大前良介(OHMAE Ryosuke)</a>
  */
-public class ServerDetailActivity extends AppCompatActivity {
+public class ServerDetailActivity extends BaseActivity {
     /**
      * このActivityを起動するためのIntentを作成する。
      *
@@ -116,9 +115,6 @@ public class ServerDetailActivity extends AppCompatActivity {
         switch (id) {
             case R.id.action_settings:
                 startActivity(SettingsActivity.makeIntent(this));
-                return true;
-            case android.R.id.home:
-                onBackPressed();
                 return true;
         }
         return super.onOptionsItemSelected(item);

@@ -21,7 +21,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.SharedElementCallback;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.transition.Slide;
 import android.util.Pair;
@@ -50,7 +49,7 @@ import java.util.Map;
  *
  * @author <a href="mailto:ryo@mm2d.net">大前良介(OHMAE Ryosuke)</a>
  */
-public class ServerListActivity extends AppCompatActivity
+public class ServerListActivity extends BaseActivity
         implements ServerSelectListener {
     private static final String KEY_SCROLL_POSITION = "KEY_SCROLL_POSITION";
     private static final String KEY_SCROLL_OFFSET = "KEY_SCROLL_OFFSET";
@@ -117,13 +116,13 @@ public class ServerListActivity extends AppCompatActivity
         mFragment = ServerDetailFragment.newInstance();
         if (animate && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             @SuppressLint("RtlHardcoded")
-            final int gravity =  Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1
+            final int gravity = Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1
                     ? Gravity.START : Gravity.LEFT;
             mFragment.setEnterTransition(new Slide(gravity));
         }
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.server_detail_container, mFragment)
-                .commit();
+                .commitAllowingStateLoss();
     }
 
     private void removeDetailFragment() {
@@ -133,7 +132,7 @@ public class ServerListActivity extends AppCompatActivity
         getSupportFragmentManager()
                 .beginTransaction()
                 .remove(mFragment)
-                .commit();
+                .commitAllowingStateLoss();
         mFragment = null;
     }
 

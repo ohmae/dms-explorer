@@ -14,8 +14,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
-import android.view.MenuItem;
 
 import net.mm2d.dmsexplorer.R;
 import net.mm2d.dmsexplorer.Repository;
@@ -25,7 +23,7 @@ import net.mm2d.dmsexplorer.viewmodel.DmcActivityModel;
 /**
  * @author <a href="mailto:ryo@mm2d.net">大前良介(OHMAE Ryosuke)</a>
  */
-public class DmcActivity extends AppCompatActivity {
+public class DmcActivity extends BaseActivity {
 
     /**
      * このActivityを起動するためのIntentを作成する。
@@ -67,16 +65,5 @@ public class DmcActivity extends AppCompatActivity {
             mModel.terminate();
         }
         Repository.get().getControlPointModel().clearSelectedRenderer();
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        final int id = item.getItemId();
-        switch (id) {
-            case android.R.id.home:
-                onBackPressed();
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
     }
 }

@@ -9,8 +9,6 @@ package net.mm2d.dmsexplorer.view;
 
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.view.MenuItem;
 
 import net.mm2d.dmsexplorer.R;
 import net.mm2d.dmsexplorer.Repository;
@@ -23,7 +21,7 @@ import net.mm2d.dmsexplorer.viewmodel.MusicActivityModel;
  *
  * @author <a href="mailto:ryo@mm2d.net">大前良介(OHMAE Ryosuke)</a>
  */
-public class MusicActivity extends AppCompatActivity {
+public class MusicActivity extends BaseActivity {
     private static final String TAG = MusicActivity.class.getSimpleName();
     private static final String KEY_POSITION = "KEY_POSITION";
     private MusicActivityModel mModel;
@@ -65,16 +63,5 @@ public class MusicActivity extends AppCompatActivity {
         if (mModel != null) {
             mModel.terminate();
         }
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        final int id = item.getItemId();
-        switch (id) {
-            case android.R.id.home:
-                onBackPressed();
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
     }
 }

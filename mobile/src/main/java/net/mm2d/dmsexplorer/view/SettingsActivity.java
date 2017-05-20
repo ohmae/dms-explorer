@@ -13,12 +13,11 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.preference.PreferenceFragment;
 import android.preference.SwitchPreference;
+import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.text.TextUtils;
-import android.view.MenuItem;
 
-import net.mm2d.android.activity.AppCompatPreferenceActivity;
 import net.mm2d.android.util.LaunchUtils;
 import net.mm2d.dmsexplorer.BuildConfig;
 import net.mm2d.dmsexplorer.R;
@@ -46,11 +45,12 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
      * @param context コンテキスト
      * @return このActivityを起動するためのIntent
      */
-    public static Intent makeIntent(Context context) {
+    @NonNull
+    public static Intent makeIntent(@NonNull Context context) {
         return new Intent(context, SettingsActivity.class);
     }
 
-    private static boolean isXLargeTablet(Context context) {
+    private static boolean isXLargeTablet(@NonNull Context context) {
         return (context.getResources().getConfiguration().screenLayout
                 & Configuration.SCREENLAYOUT_SIZE_MASK) >= Configuration.SCREENLAYOUT_SIZE_LARGE;
     }
@@ -65,16 +65,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         Repository.get().getThemeModel().setThemeColor(this,
                 ContextCompat.getColor(this, R.color.primary),
                 ContextCompat.getColor(this, R.color.defaultStatusBar));
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        final int id = item.getItemId();
-        if (id == android.R.id.home) {
-            onBackPressed();
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -99,7 +89,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         return !TextUtils.isEmpty(CustomTabsHelper.getPackageNameToBind());
     }
 
-    private static void openUrl(final Context context, final String url) {
+    private static void openUrl(@NonNull final Context context, @NonNull final String url) {
         Repository.get().getOpenUriModel().openUri(context, url);
     }
 

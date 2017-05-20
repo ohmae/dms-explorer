@@ -11,8 +11,6 @@ import android.annotation.TargetApi;
 import android.app.Activity;
 import android.graphics.Point;
 import android.os.Build;
-import android.os.Build.VERSION;
-import android.os.Build.VERSION_CODES;
 import android.support.annotation.NonNull;
 import android.view.Display;
 
@@ -31,7 +29,7 @@ public class DisplaySizeUtils {
      * @return ディスプレイサイズ
      * @see Display#getSize(Point)
      */
-    @TargetApi(VERSION_CODES.HONEYCOMB_MR2)
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
     public static Point getSize(@NonNull final Activity activity) {
         final Display display = activity.getWindowManager().getDefaultDisplay();
         final Point point = new Point();
@@ -46,11 +44,11 @@ public class DisplaySizeUtils {
      * @return ディスプレイサイズ
      * @see Display#getRealSize(Point)
      */
-    @TargetApi(VERSION_CODES.HONEYCOMB_MR2)
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
     public static Point getRealSize(@NonNull final Activity activity) {
         final Display display = activity.getWindowManager().getDefaultDisplay();
         final Point point = new Point();
-        if (VERSION.SDK_INT >= VERSION_CODES.JELLY_BEAN_MR1) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
             display.getRealSize(point);
             return point;
         }
@@ -71,7 +69,7 @@ public class DisplaySizeUtils {
      * @param activity Activity
      * @return NavigationBarのエリア
      */
-    @TargetApi(VERSION_CODES.HONEYCOMB_MR2)
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
     public static Point getNavigationBarArea(@NonNull final Activity activity) {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT // KitKat未満はアプリエリアと重複しない
                 || isInMultiWindowMode(activity)) {
@@ -83,6 +81,6 @@ public class DisplaySizeUtils {
     }
 
     private static boolean isInMultiWindowMode(@NonNull final Activity activity) {
-        return VERSION.SDK_INT >= VERSION_CODES.N && activity.isInMultiWindowMode();
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.N && activity.isInMultiWindowMode();
     }
 }
