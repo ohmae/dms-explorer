@@ -61,7 +61,9 @@ public class ServerDetailActivity extends BaseActivity {
         setSupportActionBar(mBinding.serverDetailToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        Repository.get().getThemeModel().setThemeColor(this, mBinding.getModel().collapsedColor, 0);
+        if (mBinding.getModel() != null) {
+            Repository.get().getThemeModel().setThemeColor(this, mBinding.getModel().collapsedColor, 0);
+        }
 
         prepareTransition(savedInstanceState != null);
     }
