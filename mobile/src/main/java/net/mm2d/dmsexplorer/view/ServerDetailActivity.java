@@ -27,6 +27,7 @@ import net.mm2d.dmsexplorer.Const;
 import net.mm2d.dmsexplorer.R;
 import net.mm2d.dmsexplorer.Repository;
 import net.mm2d.dmsexplorer.databinding.ServerDetailFragmentBinding;
+import net.mm2d.dmsexplorer.viewmodel.ServerDetailFragmentModel;
 
 
 /**
@@ -61,8 +62,9 @@ public class ServerDetailActivity extends BaseActivity {
         setSupportActionBar(mBinding.serverDetailToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        if (mBinding.getModel() != null) {
-            Repository.get().getThemeModel().setThemeColor(this, mBinding.getModel().collapsedColor, 0);
+        final ServerDetailFragmentModel model = mBinding.getModel();
+        if (model != null) {
+            Repository.get().getThemeModel().setThemeColor(this, model.collapsedColor, 0);
         }
 
         prepareTransition(savedInstanceState != null);

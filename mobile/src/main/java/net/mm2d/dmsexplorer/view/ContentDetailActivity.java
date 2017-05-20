@@ -21,6 +21,7 @@ import net.mm2d.dmsexplorer.R;
 import net.mm2d.dmsexplorer.Repository;
 import net.mm2d.dmsexplorer.databinding.ContentDetailFragmentBinding;
 import net.mm2d.dmsexplorer.domain.model.MediaServerModel;
+import net.mm2d.dmsexplorer.viewmodel.ContentDetailFragmentModel;
 
 /**
  * CDSアイテムの詳細情報を表示するActivity。
@@ -58,7 +59,11 @@ public class ContentDetailActivity extends BaseActivity {
         mCdsObject = getSelectedObject();
         setSupportActionBar(binding.cdsDetailToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        repository.getThemeModel().setThemeColor(this, binding.getModel().collapsedColor, 0);
+
+        final ContentDetailFragmentModel model = binding.getModel();
+        if (model != null) {
+            repository.getThemeModel().setThemeColor(this, model.collapsedColor, 0);
+        }
     }
 
     private CdsObject getSelectedObject() {
