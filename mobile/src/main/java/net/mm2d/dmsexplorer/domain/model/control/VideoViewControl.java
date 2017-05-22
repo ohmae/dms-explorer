@@ -53,17 +53,29 @@ public class VideoViewControl implements MediaControl {
 
     @Override
     public int getCurrentPosition() {
-        return mVideoView.getCurrentPosition();
+        try {
+            return mVideoView.getCurrentPosition();
+        } catch (final IllegalStateException ignored) {
+            return 0;
+        }
     }
 
     @Override
     public int getDuration() {
-        return mVideoView.getDuration();
+        try {
+            return mVideoView.getDuration();
+        } catch (final IllegalStateException ignored) {
+            return 0;
+        }
     }
 
     @Override
     public boolean isPlaying() {
-        return mVideoView.isPlaying();
+        try {
+            return mVideoView.isPlaying();
+        } catch (final IllegalStateException ignored) {
+            return false;
+        }
     }
 
     @Override

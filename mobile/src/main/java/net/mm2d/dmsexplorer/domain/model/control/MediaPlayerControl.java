@@ -54,17 +54,29 @@ public class MediaPlayerControl implements MediaControl {
 
     @Override
     public int getCurrentPosition() {
-        return mMediaPlayer.getCurrentPosition();
+        try {
+            return mMediaPlayer.getCurrentPosition();
+        } catch (final IllegalStateException ignored) {
+            return 0;
+        }
     }
 
     @Override
     public int getDuration() {
-        return mMediaPlayer.getDuration();
+        try {
+            return mMediaPlayer.getDuration();
+        } catch (final IllegalStateException ignored) {
+            return 0;
+        }
     }
 
     @Override
     public boolean isPlaying() {
-        return mMediaPlayer.isPlaying();
+        try {
+            return mMediaPlayer.isPlaying();
+        } catch (final IllegalStateException ignored) {
+            return false;
+        }
     }
 
     @Override
