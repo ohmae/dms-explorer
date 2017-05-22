@@ -154,6 +154,7 @@ public class ServerListActivity extends BaseActivity
         mTwoPane = mBinding.serverDetailContainer != null;
 
         setSupportActionBar(mBinding.toolbar);
+        getSupportActionBar().setTitle(R.string.title_device_select);
 
         if (savedInstanceState == null) {
             mControlPointModel.initialize();

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">DMS Explorer</string>
+    <string name="title_device_select">Device Select</string>
     <string name="no_available_network">There is no available network connection.</string>
     <string name="title_dialog_select_resource">Resource</string>
     <string name="title_dialog_select_device">Playback device</string>

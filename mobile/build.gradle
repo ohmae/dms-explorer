@@ -30,11 +30,14 @@ android {
     buildTypes {
         debug {
             debuggable true
-            signingConfig signingConfigs.debug
+            applicationIdSuffix = ".debug"
+            versionNameSuffix = "d"
+            manifestPlaceholders = [app_name: "Dubug"]
         }
         release {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            manifestPlaceholders = [app_name: "@string/app_name"]
         }
     }
     applicationVariants.all { variant ->
