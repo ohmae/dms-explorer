@@ -52,6 +52,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:itemAnimator="@{model.itemAnimator}"
+                android:splitMotionEvents="false"
                 app:adapter="@{model.contentListAdapter}"
                 app:layoutManager="@{model.cdsListLayoutManager}"
                 app:scrollPosition="@{model.scrollPosition}"
