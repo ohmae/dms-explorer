@@ -36,11 +36,11 @@ public class SmilingCurveMotion extends PathMotion {
         final float middleX;
         final float middleY;
         if (startY > endY) {
-            middleX = (startX + endX * 3) / 4;
-            middleY = (startY * 3 + endY) / 4;
+            middleX = (startX + endX * 3f) / 4f;
+            middleY = (startY * 3f + endY) / 4f;
         } else {
-            middleX = (startX * 3 + endX) / 4;
-            middleY = (startY + endY * 3) / 4;
+            middleX = (startX * 3f + endX) / 4f;
+            middleY = (startY + endY * 3f) / 4f;
         }
         path.quadTo(middleX, middleY, endX, endY);
         return path;
