@@ -5,7 +5,7 @@ apply plugin: 'me.tatarka.retrolambda'
 def applicationName = "DmsExplorer"
 def versionMajor = 0
 def versionMinor = 7
-def versionPatch = 7
+def versionPatch = 10
 
 android {
     compileSdkVersion 25
@@ -30,11 +30,14 @@ android {
     buildTypes {
         debug {
             debuggable true
-            signingConfig signingConfigs.debug
+            applicationIdSuffix = ".debug"
+            versionNameSuffix = "d"
+            manifestPlaceholders = [app_name: "Dubug"]
         }
         release {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            manifestPlaceholders = [app_name: "@string/app_name"]
         }
     }
     applicationVariants.all { variant ->
@@ -66,8 +69,8 @@ dependencies {
     compile 'com.android.support:support-v4:25.3.1'
     compile 'com.google.firebase:firebase-core:10.0.1'
     compile 'com.google.firebase:firebase-crash:10.0.1'
-    compile 'net.mm2d.mmupnp:mmupnp:1.1.1'
-    compile 'net.opacapp:multiline-collapsingtoolbar:1.3.1'
+    compile 'net.mm2d.mmupnp:mmupnp:1.1.2'
+    compile 'net.opacapp:multiline-collapsingtoolbar:1.4.0'
     testCompile 'junit:junit:4.12'
 }
 

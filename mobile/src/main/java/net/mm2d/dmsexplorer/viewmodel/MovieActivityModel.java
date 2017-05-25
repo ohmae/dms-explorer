@@ -14,6 +14,7 @@ import android.graphics.Point;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.widget.Toast;
 import android.widget.VideoView;
@@ -132,7 +133,7 @@ public class MovieActivityModel extends BaseObservable
     }
 
     public void onClickBack() {
-        mActivity.onBackPressed();
+        ActivityCompat.finishAfterTransition(mActivity);
     }
 
     public void onClickRepeat() {
@@ -188,7 +189,7 @@ public class MovieActivityModel extends BaseObservable
     public void onCompletion() {
         mControlPanelModel.terminate();
         if (!selectNext()) {
-            mActivity.onBackPressed();
+            ActivityCompat.finishAfterTransition(mActivity);
             return;
         }
         updateTargetModel();
@@ -199,7 +200,7 @@ public class MovieActivityModel extends BaseObservable
     public void next() {
         mControlPanelModel.terminate();
         if (!selectNext()) {
-            mActivity.onBackPressed();
+            ActivityCompat.finishAfterTransition(mActivity);
             return;
         }
         updateTargetModel();
@@ -210,7 +211,7 @@ public class MovieActivityModel extends BaseObservable
     public void previous() {
         mControlPanelModel.terminate();
         if (!selectPrevious()) {
-            mActivity.onBackPressed();
+            ActivityCompat.finishAfterTransition(mActivity);
             return;
         }
         updateTargetModel();

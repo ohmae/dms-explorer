@@ -8,8 +8,7 @@
 package net.mm2d.dmsexplorer.domain.model;
 
 import android.app.Activity;
-import android.os.Build.VERSION;
-import android.os.Build.VERSION_CODES;
+import android.os.Build;
 import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
 
@@ -48,7 +47,7 @@ public class ThemeModelImpl extends ActivityLifecycleCallbacksAdapter implements
                               @ColorInt final int toolbarColor,
                               @ColorInt final int statusBarColor) {
         final int color = statusBarColor != 0 ? statusBarColor : ThemeUtils.getDarkerColor(toolbarColor);
-        if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             activity.getWindow().setStatusBarColor(color);
         }
         mMap.put(activity.getClass().getName(), new Theme(toolbarColor, color));

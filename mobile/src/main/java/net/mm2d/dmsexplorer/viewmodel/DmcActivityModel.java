@@ -16,6 +16,7 @@ import android.os.Looper;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 
 import net.mm2d.android.upnp.cds.CdsObject;
 import net.mm2d.android.util.AribUtils;
@@ -376,6 +377,6 @@ public class DmcActivityModel extends BaseObservable implements StatusListener {
 
     @Override
     public void onCompletion() {
-        mActivity.onBackPressed();
+        ActivityCompat.finishAfterTransition(mActivity);
     }
 }

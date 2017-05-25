@@ -13,7 +13,6 @@ import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -22,13 +21,14 @@ import net.mm2d.dmsexplorer.R;
 import net.mm2d.dmsexplorer.Repository;
 import net.mm2d.dmsexplorer.databinding.ContentDetailFragmentBinding;
 import net.mm2d.dmsexplorer.domain.model.MediaServerModel;
+import net.mm2d.dmsexplorer.viewmodel.ContentDetailFragmentModel;
 
 /**
  * CDSアイテムの詳細情報を表示するActivity。
  *
  * @author <a href="mailto:ryo@mm2d.net">大前良介(OHMAE Ryosuke)</a>
  */
-public class ContentDetailActivity extends AppCompatActivity {
+public class ContentDetailActivity extends BaseActivity {
     /**
      * このActivityを起動するためのIntentを作成する。
      *
@@ -59,7 +59,11 @@ public class ContentDetailActivity extends AppCompatActivity {
         mCdsObject = getSelectedObject();
         setSupportActionBar(binding.cdsDetailToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        repository.getThemeModel().setThemeColor(this, binding.getModel().collapsedColor, 0);
+
+        final ContentDetailFragmentModel model = binding.getModel();
+        if (model != null) {
+            repository.getThemeModel().setThemeColor(this, model.collapsedColor, 0);
+        }
     }
 
     private CdsObject getSelectedObject() {
@@ -86,9 +90,6 @@ public class ContentDetailActivity extends AppCompatActivity {
         switch (id) {
             case R.id.action_settings:
                 startActivity(SettingsActivity.makeIntent(this));
-                return true;
-            case android.R.id.home:
-                onBackPressed();
                 return true;
         }
         return super.onOptionsItemSelected(item);

@@ -50,7 +50,12 @@ public class ContentListActivityModel extends BaseObservable implements ExploreL
     }
 
     @NonNull
-    public final int[] refreshColors;
+    public final int[] refreshColors = new int[]{
+            R.color.progress1,
+            R.color.progress2,
+            R.color.progress3,
+            R.color.progress4,
+    };
     @NonNull
     public final OnRefreshListener onRefreshListener;
     @NonNull
@@ -90,12 +95,6 @@ public class ContentListActivityModel extends BaseObservable implements ExploreL
         itemAnimator = new CustomItemAnimator(context);
         cdsListLayoutManager = new LinearLayoutManager(context);
         title = mMediaServerModel.getTitle();
-        refreshColors = new int[]{
-                R.color.progress1,
-                R.color.progress2,
-                R.color.progress3,
-                R.color.progress4,
-        };
         onRefreshListener = mMediaServerModel::reload;
         final MediaServer server = mMediaServerModel.getMediaServer();
         ToolbarThemeUtils.setServerThemeColor(server, null);

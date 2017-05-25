@@ -13,6 +13,7 @@ import android.databinding.Bindable;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.widget.Toast;
 
 import net.mm2d.android.upnp.cds.CdsObject;
@@ -186,7 +187,7 @@ public class MusicActivityModel extends BaseObservable
     public void onCompletion() {
         mControlPanelModel.terminate();
         if (!selectNext()) {
-            mActivity.onBackPressed();
+            ActivityCompat.finishAfterTransition(mActivity);
             return;
         }
         updateTargetModel();
@@ -196,7 +197,7 @@ public class MusicActivityModel extends BaseObservable
     public void next() {
         mControlPanelModel.terminate();
         if (!selectNext()) {
-            mActivity.onBackPressed();
+            ActivityCompat.finishAfterTransition(mActivity);
             return;
         }
         updateTargetModel();
@@ -206,7 +207,7 @@ public class MusicActivityModel extends BaseObservable
     public void previous() {
         mControlPanelModel.terminate();
         if (!selectPrevious()) {
-            mActivity.onBackPressed();
+            ActivityCompat.finishAfterTransition(mActivity);
             return;
         }
         updateTargetModel();

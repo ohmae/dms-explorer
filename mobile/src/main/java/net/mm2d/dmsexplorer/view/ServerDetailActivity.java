@@ -16,7 +16,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 import android.transition.Transition;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -28,6 +27,7 @@ import net.mm2d.dmsexplorer.Const;
 import net.mm2d.dmsexplorer.R;
 import net.mm2d.dmsexplorer.Repository;
 import net.mm2d.dmsexplorer.databinding.ServerDetailFragmentBinding;
+import net.mm2d.dmsexplorer.viewmodel.ServerDetailFragmentModel;
 
 
 /**
@@ -35,7 +35,7 @@ import net.mm2d.dmsexplorer.databinding.ServerDetailFragmentBinding;
  *
  * @author <a href="mailto:ryo@mm2d.net">大前良介(OHMAE Ryosuke)</a>
  */
-public class ServerDetailActivity extends AppCompatActivity {
+public class ServerDetailActivity extends BaseActivity {
     /**
      * このActivityを起動するためのIntentを作成する。
      *
@@ -62,7 +62,10 @@ public class ServerDetailActivity extends AppCompatActivity {
         setSupportActionBar(mBinding.serverDetailToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        Repository.get().getThemeModel().setThemeColor(this, mBinding.getModel().collapsedColor, 0);
+        final ServerDetailFragmentModel model = mBinding.getModel();
+        if (model != null) {
+            Repository.get().getThemeModel().setThemeColor(this, model.collapsedColor, 0);
+        }
 
         prepareTransition(savedInstanceState != null);
     }
@@ -116,9 +119,6 @@ public class ServerDetailActivity extends AppCompatActivity {
         switch (id) {
             case R.id.action_settings:
                 startActivity(SettingsActivity.makeIntent(this));
-                return true;
-            case android.R.id.home:
-                onBackPressed();
                 return true;
         }
         return super.onOptionsItemSelected(item);

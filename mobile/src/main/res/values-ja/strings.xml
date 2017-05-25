@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">DMSエクスプローラー</string>
+    <string name="title_device_select">機器選択</string>
     <string name="no_available_network">利用可能なネットワーク接続がありません</string>
     <string name="title_dialog_select_resource">リソース選択</string>
     <string name="title_dialog_select_device">再生機器選択</string>

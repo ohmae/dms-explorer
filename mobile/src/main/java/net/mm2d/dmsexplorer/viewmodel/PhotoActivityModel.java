@@ -13,6 +13,7 @@ import android.databinding.Bindable;
 import android.graphics.Point;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.text.TextUtils;
 
 import com.android.databinding.library.baseAdapters.BR;
@@ -69,7 +70,7 @@ public class PhotoActivityModel extends BaseObservable {
     }
 
     public void onClickBack() {
-        mActivity.onBackPressed();
+        ActivityCompat.finishAfterTransition(mActivity);
     }
 
     @Nullable

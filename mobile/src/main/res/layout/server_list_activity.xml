@@ -49,6 +49,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:itemAnimator="@{model.itemAnimator}"
+                android:splitMotionEvents="false"
                 app:adapter="@{model.serverListAdapter}"
                 app:layoutManager="@{model.serverListLayoutManager}"
                 tools:listitem="@layout/server_list_item"

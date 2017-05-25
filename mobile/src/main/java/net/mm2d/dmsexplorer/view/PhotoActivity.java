@@ -12,9 +12,7 @@ import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
-import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.MotionEvent;
 
 import net.mm2d.dmsexplorer.R;
@@ -30,7 +28,7 @@ import net.mm2d.dmsexplorer.viewmodel.PhotoActivityModel;
  *
  * @author <a href="mailto:ryo@mm2d.net">大前良介(OHMAE Ryosuke)</a>
  */
-public class PhotoActivity extends AppCompatActivity {
+public class PhotoActivity extends BaseActivity {
     private FullscreenHelper mFullscreenHelper;
     private PhotoActivityBinding mBinding;
     private PhotoActivityModel mModel;
@@ -102,17 +100,6 @@ public class PhotoActivity extends AppCompatActivity {
         if (mModel != null) {
             mModel.adjustPanel(this);
         }
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        final int id = item.getItemId();
-        switch (id) {
-            case android.R.id.home:
-                onBackPressed();
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
     }
 
     private void onScrollIdle() {

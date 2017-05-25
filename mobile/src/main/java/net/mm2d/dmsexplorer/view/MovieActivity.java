@@ -10,8 +10,6 @@ package net.mm2d.dmsexplorer.view;
 import android.content.res.Configuration;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.view.MenuItem;
 import android.view.MotionEvent;
 
 import net.mm2d.dmsexplorer.R;
@@ -29,7 +27,7 @@ import java.util.concurrent.TimeUnit;
  *
  * @author <a href="mailto:ryo@mm2d.net">大前良介(OHMAE Ryosuke)</a>
  */
-public class MovieActivity extends AppCompatActivity implements OnSwitchListener {
+public class MovieActivity extends BaseActivity implements OnSwitchListener {
     private static final String KEY_POSITION = "KEY_POSITION";
     private static final long TIMEOUT_DELAY = TimeUnit.SECONDS.toMillis(1);
     private FullscreenHelper mFullscreenHelper;
@@ -96,17 +94,6 @@ public class MovieActivity extends AppCompatActivity implements OnSwitchListener
         if (mModel != null) {
             mModel.adjustPanel(this);
         }
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        final int id = item.getItemId();
-        switch (id) {
-            case android.R.id.home:
-                onBackPressed();
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
     }
 
     @Override

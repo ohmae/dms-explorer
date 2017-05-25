@@ -7,6 +7,8 @@
 
 package net.mm2d.android.net;
 
+import android.support.annotation.NonNull;
+
 import net.mm2d.util.NetworkUtils;
 
 import java.net.NetworkInterface;
@@ -30,6 +32,7 @@ class EmulatorLan extends Lan {
         return true;
     }
 
+    @NonNull
     @Override
     public Collection<NetworkInterface> getAvailableInterfaces() {
         return NetworkUtils.getAvailableInet4Interfaces();

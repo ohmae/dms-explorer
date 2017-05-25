@@ -45,7 +45,12 @@ public class ServerListActivityModel extends BaseObservable {
     }
 
     @NonNull
-    public final int[] refreshColors;
+    public final int[] refreshColors = new int[]{
+            R.color.progress1,
+            R.color.progress2,
+            R.color.progress3,
+            R.color.progress4,
+    };
     @NonNull
     public final OnRefreshListener onRefreshListener;
     @NonNull
@@ -84,12 +89,6 @@ public class ServerListActivityModel extends BaseObservable {
 
         serverListLayoutManager = new LinearLayoutManager(context);
         itemAnimator = new CustomItemAnimator(context);
-        refreshColors = new int[]{
-                R.color.progress1,
-                R.color.progress2,
-                R.color.progress3,
-                R.color.progress4,
-        };
         onRefreshListener = () -> mControlPointModel.restart(() -> {
             mServerListAdapter.clear();
             mServerListAdapter.notifyDataSetChanged();
