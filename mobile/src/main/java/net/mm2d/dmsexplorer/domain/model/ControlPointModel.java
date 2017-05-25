@@ -25,6 +25,8 @@ import net.mm2d.android.upnp.cds.MsControlPoint.MsDiscoveryListener;
 import net.mm2d.android.util.Toaster;
 import net.mm2d.dmsexplorer.R;
 
+import java.net.NetworkInterface;
+import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -53,7 +55,6 @@ public class ControlPointModel {
     private final Lan mLan;
     @NonNull
     private final AtomicBoolean mInitialized = new AtomicBoolean();
-    private boolean mNetworkAvailable;
     private SearchThread mSearchThread;
     private MediaServer mSelectedMediaServer;
     private MediaRenderer mSelectedMediaRenderer;
@@ -71,14 +72,9 @@ public class ControlPointModel {
     private final BroadcastReceiver mConnectivityReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            final boolean available = mLan.hasAvailableInterface();
-            if (mNetworkAvailable != available) {
-                initializeOrTerminate(available);
-                if (!available) {
-                    Toaster.showLong(mContext, R.string.no_available_network);
-                }
+            if (!initializeOrTerminate(mLan.hasAvailableInterface())) {
+                Toaster.showLong(mContext, R.string.no_available_network);
             }
-            mNetworkAvailable = available;
         }
     };
 
@@ -162,8 +158,6 @@ public class ControlPointModel {
     }
 
     public void initialize() {
-        mNetworkAvailable = mLan.hasAvailableInterface();
-        initializeOrTerminate(mNetworkAvailable);
         if (!mInitialized.getAndSet(true)) {
             mContext.registerReceiver(mConnectivityReceiver,
                     new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
@@ -172,21 +166,28 @@ public class ControlPointModel {
 
     public void terminate() {
         setSelectedMediaServer(null);
-        initializeOrTerminate(false);
+        synchronized (mAvControlPointManager) {
+            mAvControlPointManager.stop();
+            mAvControlPointManager.terminate();
+        }
         if (mInitialized.getAndSet(false)) {
             mContext.unregisterReceiver(mConnectivityReceiver);
         }
     }
 
-    private void initializeOrTerminate(boolean initialize) {
+    private boolean initializeOrTerminate(boolean initialize) {
         synchronized (mAvControlPointManager) {
             if (initialize) {
-                mAvControlPointManager.initialize(mLan.getAvailableInterfaces());
-                mAvControlPointManager.start();
-            } else {
-                mAvControlPointManager.stop();
-                mAvControlPointManager.terminate();
+                final Collection<NetworkInterface> interfaces = mLan.getAvailableInterfaces();
+                if (!interfaces.isEmpty()) {
+                    mAvControlPointManager.initialize(interfaces);
+                    mAvControlPointManager.start();
+                    return true;
+                }
             }
+            mAvControlPointManager.stop();
+            mAvControlPointManager.terminate();
+            return false;
         }
     }
 
@@ -234,6 +235,12 @@ public class ControlPointModel {
 
     public void restart(@Nullable TerminateCallback callback) {
         if (!mLan.hasAvailableInterface()) {
+            Toaster.showLong(mContext, R.string.no_available_network);
+            return;
+        }
+        final Collection<NetworkInterface> interfaces = mLan.getAvailableInterfaces();
+        if (interfaces.isEmpty()) {
+            Toaster.showLong(mContext, R.string.no_available_network);
             return;
         }
         synchronized (mAvControlPointManager) {
@@ -242,7 +249,7 @@ public class ControlPointModel {
             if (callback != null) {
                 callback.callback();
             }
-            mAvControlPointManager.initialize(mLan.getAvailableInterfaces());
+            mAvControlPointManager.initialize(interfaces);
             mAvControlPointManager.start();
         }
     }

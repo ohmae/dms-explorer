@@ -102,13 +102,6 @@ public class AvControlPointManager {
 
     /**
      * 初期化する。
-     */
-    public void initialize() {
-        initialize(null);
-    }
-
-    /**
-     * 初期化する。
      *
      * @param interfaces 使用するインターフェース
      */

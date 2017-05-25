@@ -55,15 +55,15 @@ class AndroidLan extends Lan {
                 || ni.getType() == ConnectivityManager.TYPE_ETHERNET);
     }
 
-    @Nullable
+    @NonNull
     @Override
     public Collection<NetworkInterface> getAvailableInterfaces() {
         if (!hasWifiConnection()) {
-            return null;
+            return Collections.emptyList();
         }
         final InetAddress address = getWifiInetAddress();
         if (address == null) {
-            return null;
+            return Collections.emptyList();
         }
         final List<NetworkInterface> netIfList = NetworkUtils.getNetworkInterfaceList();
         for (final NetworkInterface netIf : netIfList) {
@@ -71,7 +71,7 @@ class AndroidLan extends Lan {
                 return Collections.singletonList(netIf);
             }
         }
-        return null;
+        return Collections.emptyList();
     }
 
     private static boolean hasAddress(@NonNull final NetworkInterface netIf,

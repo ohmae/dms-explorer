@@ -9,6 +9,7 @@ package net.mm2d.android.net;
 
 import android.content.Context;
 import android.os.Build;
+import android.support.annotation.NonNull;
 
 import java.net.NetworkInterface;
 import java.util.Collection;
@@ -25,6 +26,7 @@ public abstract class Lan {
      * @param context コンテキスト
      * @return インスタンス
      */
+    @NonNull
     public static Lan createInstance(Context context) {
         return isEmulator()
                 ? new EmulatorLan()
@@ -53,5 +55,6 @@ public abstract class Lan {
      *
      * @return LANに接続された利用可能なインターフェース
      */
+    @NonNull
     public abstract Collection<NetworkInterface> getAvailableInterfaces();
 }
