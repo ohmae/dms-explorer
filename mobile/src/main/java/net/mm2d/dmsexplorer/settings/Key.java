@@ -12,7 +12,10 @@ package net.mm2d.dmsexplorer.settings;
  *
  * <p>name()の値をKeyとして利用する。
  * その為定義名を変更する場合は設定の引継ぎ処理が必要。
- * ordinal()の値は使用してはいけない。
+ * {@link #ordinal()}の値は使用してはならない。
+ *
+ * <p>使用しなくなったが引き継ぎのために必要な定義値は
+ * {@link OldKey}に移動させパッケージ外からはアクセスできなようにする。
  *
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
  */

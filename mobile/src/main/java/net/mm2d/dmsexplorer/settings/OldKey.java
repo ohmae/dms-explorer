@@ -8,6 +8,10 @@
 package net.mm2d.dmsexplorer.settings;
 
 /**
+ * 使用しなくなった旧設定定義値。
+ *
+ * <p>原則{@link Maintainer}以外からはアクセスされない。
+ *
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
  */
 enum OldKey {
