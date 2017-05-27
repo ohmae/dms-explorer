@@ -11,10 +11,10 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.util.ArrayMap;
 import android.text.TextUtils;
 
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -40,7 +40,7 @@ class TagMap implements Parcelable {
      * インスタンス作成。
      */
     TagMap() {
-        mMap = new LinkedHashMap<>();
+        mMap = new ArrayMap<>();
     }
 
     /**
@@ -50,7 +50,7 @@ class TagMap implements Parcelable {
      */
     private TagMap(Parcel in) {
         final int size = in.readInt();
-        mMap = new LinkedHashMap<>(size);
+        mMap = new ArrayMap<>(size);
         final ClassLoader classLoader = Tag.class.getClassLoader();
         for (int i = 0; i < size; i++) {
             final String name = in.readString();
