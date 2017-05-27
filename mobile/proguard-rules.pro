@@ -17,3 +17,6 @@
 #}
 -dontwarn java.lang.invoke.*
 -dontwarn **$$Lambda$*
+
+-keepattributes SourceFile,LineNumberTable
+-renamesourcefileattribute SourceFile

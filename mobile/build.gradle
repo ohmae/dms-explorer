@@ -35,6 +35,7 @@ android {
             manifestPlaceholders = [app_name: "Dubug"]
         }
         release {
+            shrinkResources true
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             manifestPlaceholders = [app_name: "@string/app_name"]
