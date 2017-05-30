@@ -155,7 +155,7 @@ public class IntroductoryOverlay extends RelativeLayout {
         ViewLayoutUtils.setLayoutMarginRight(mTitle, mMargin + size.x);
     }
 
-    public void setUpDrawingParam() {
+    private void setUpDrawingParam() {
         final Rect rect = new Rect();
         mView.getGlobalVisibleRect(rect);
         mCenterX = rect.centerX();
@@ -219,9 +219,15 @@ public class IntroductoryOverlay extends RelativeLayout {
 
     @Override
     protected void dispatchDraw(final Canvas canvas) {
-        if (mBuffer == null || mBuffer.getWidth() != getWidth() || mBuffer.getHeight() != getHeight()) {
+        final int width = getWidth();
+        final int height = getHeight();
+        if (width <= 0 || height <= 0) {
+            super.dispatchDraw(canvas);
+            return;
+        }
+        if (mBuffer == null || mBuffer.getWidth() != width || mBuffer.getHeight() != height) {
             recycleBuffer();
-            mBuffer = Bitmap.createBitmap(getWidth(), getHeight(), Config.ARGB_8888);
+            mBuffer = Bitmap.createBitmap(width, height, Config.ARGB_8888);
             mCanvas = new Canvas(mBuffer);
         }
         final float radius = (float) mAnimator.getAnimatedValue();
