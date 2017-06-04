@@ -108,6 +108,7 @@ public class ContentListActivity extends BaseActivity implements CdsSelectListen
             mModel = new ContentListActivityModel(this, repository, this);
             mBinding.setModel(mModel);
         } catch (final IllegalStateException ignored) {
+            finish();
             return;
         }
         mTwoPane = mBinding.cdsDetailContainer != null;
