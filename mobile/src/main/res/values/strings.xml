@@ -50,7 +50,7 @@
     <string name="pref_message_open_url_off">Launch Browser app</string>
     <string name="pref_header_information">Information</string>
     <string name="pref_title_play_store">Google Play</string>
-    <string name="pref_message_play_store">Go to Google Play</string>
+    <string name="pref_message_play_store">I am waiting for evaluation, comments and requests</string>
     <string name="pref_title_copyright">Copyright</string>
     <string name="pref_message_copyright">© 2016 大前良介 (OHMAE Ryosuke)</string>
     <string name="pref_title_version_number">Version</string>

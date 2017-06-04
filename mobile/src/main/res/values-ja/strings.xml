@@ -50,7 +50,7 @@
     <string name="pref_message_open_url_off">ブラウザアプリを起動します</string>
     <string name="pref_header_information">情報</string>
     <string name="pref_title_play_store">Google Play</string>
-    <string name="pref_message_play_store">Google Playを開きます</string>
+    <string name="pref_message_play_store">評価、ご意見、ご要望をお待ちしております</string>
     <string name="pref_title_copyright">著作権表示</string>
     <string name="pref_message_copyright">© 2016 大前良介 (OHMAE Ryosuke)</string>
     <string name="pref_title_version_number">バージョン</string>
