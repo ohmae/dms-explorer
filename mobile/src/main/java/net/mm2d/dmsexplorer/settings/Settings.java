@@ -22,11 +22,11 @@ public class Settings {
      * @param context コンテキスト
      */
     public static void initialize(@NonNull final Context context) {
-        PreferencesHolder.initialize(context);
+        SettingsStorage.initialize(context);
     }
 
     @NonNull
-    private final PreferencesHolder mHolder;
+    private final SettingsStorage mStorage;
 
     /**
      * インスタンス作成。
@@ -34,7 +34,7 @@ public class Settings {
      * @param context コンテキスト
      */
     public Settings(@NonNull final Context context) {
-        mHolder = new PreferencesHolder(context);
+        mStorage = new SettingsStorage(context);
     }
 
     /**
@@ -43,7 +43,7 @@ public class Settings {
      * @return アプリで行う場合true
      */
     public boolean isPlayMovieMyself() {
-        return mHolder.getBoolean(Key.PLAY_MOVIE_MYSELF, true);
+        return mStorage.getBoolean(Key.PLAY_MOVIE_MYSELF, true);
     }
 
     /**
@@ -52,7 +52,7 @@ public class Settings {
      * @return アプリで行う場合true
      */
     public boolean isPlayMusicMyself() {
-        return mHolder.getBoolean(Key.PLAY_MUSIC_MYSELF, true);
+        return mStorage.getBoolean(Key.PLAY_MUSIC_MYSELF, true);
     }
 
     /**
@@ -61,7 +61,7 @@ public class Settings {
      * @return アプリで行う場合true
      */
     public boolean isPlayPhotoMyself() {
-        return mHolder.getBoolean(Key.PLAY_PHOTO_MYSELF, true);
+        return mStorage.getBoolean(Key.PLAY_PHOTO_MYSELF, true);
     }
 
     /**
@@ -71,7 +71,7 @@ public class Settings {
      */
     @NonNull
     public RepeatMode getRepeatModeMovie() {
-        return RepeatMode.of(mHolder.getString(Key.REPEAT_MODE_MOVIE, ""));
+        return RepeatMode.of(mStorage.getString(Key.REPEAT_MODE_MOVIE, ""));
     }
 
     /**
@@ -80,7 +80,7 @@ public class Settings {
      * @param mode 動画再生のリピートモード
      */
     public void setRepeatModeMovie(@NonNull RepeatMode mode) {
-        mHolder.putString(Key.REPEAT_MODE_MOVIE, mode.name());
+        mStorage.putString(Key.REPEAT_MODE_MOVIE, mode.name());
     }
 
     /**
@@ -90,7 +90,7 @@ public class Settings {
      */
     @NonNull
     public RepeatMode getRepeatModeMusic() {
-        return RepeatMode.of(mHolder.getString(Key.REPEAT_MODE_MUSIC, ""));
+        return RepeatMode.of(mStorage.getString(Key.REPEAT_MODE_MUSIC, ""));
     }
 
     /**
@@ -99,7 +99,7 @@ public class Settings {
      * @param mode 音楽再生のリピートモード
      */
     public void setRepeatModeMusic(@NonNull RepeatMode mode) {
-        mHolder.putString(Key.REPEAT_MODE_MUSIC, mode.name());
+        mStorage.putString(Key.REPEAT_MODE_MUSIC, mode.name());
     }
 
     /**
@@ -108,14 +108,14 @@ public class Settings {
      * @return 表示した場合true
      */
     public boolean isRepeatIntroduced() {
-        return mHolder.getBoolean(Key.REPEAT_INTRODUCED, false);
+        return mStorage.getBoolean(Key.REPEAT_INTRODUCED, false);
     }
 
     /**
      * リピートモードの操作案内を表示した。
      */
     public void notifyRepeatIntroduced() {
-        mHolder.putBoolean(Key.REPEAT_INTRODUCED, true);
+        mStorage.putBoolean(Key.REPEAT_INTRODUCED, true);
     }
 
     /**
@@ -124,6 +124,6 @@ public class Settings {
      * @return 使用する場合true
      */
     public boolean useCustomTabs() {
-        return mHolder.getBoolean(Key.USE_CUSTOM_TABS, true);
+        return mStorage.getBoolean(Key.USE_CUSTOM_TABS, true);
     }
 }

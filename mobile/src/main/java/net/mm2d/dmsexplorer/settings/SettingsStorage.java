@@ -18,16 +18,18 @@ import android.support.annotation.Nullable;
  *
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
  */
-class PreferencesHolder {
-    private static SharedPreferences sPreferences;
+class SettingsStorage {
+    private static class PreferencesHolder {
+        private static SharedPreferences sPreferences;
 
-    @NonNull
-    private static SharedPreferences getPreferences(@NonNull final Context context) {
-        if (sPreferences != null) {
+        @NonNull
+        static SharedPreferences get(@NonNull final Context context) {
+            if (sPreferences != null) {
+                return sPreferences;
+            }
+            sPreferences = PreferenceManager.getDefaultSharedPreferences(context);
             return sPreferences;
         }
-        sPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-        return sPreferences;
     }
 
     /**
@@ -36,7 +38,7 @@ class PreferencesHolder {
      * @param context コンテキスト
      */
     static void initialize(@NonNull final Context context) {
-        Maintainer.maintain(getPreferences(context));
+        Maintainer.maintain(PreferencesHolder.get(context));
     }
 
     @NonNull
@@ -47,8 +49,8 @@ class PreferencesHolder {
      *
      * @param context コンテキスト
      */
-    PreferencesHolder(@NonNull final Context context) {
-        mPreferences = getPreferences(context);
+    SettingsStorage(@NonNull final Context context) {
+        mPreferences = PreferencesHolder.get(context);
     }
 
     /**
