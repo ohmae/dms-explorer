@@ -77,6 +77,52 @@ class SettingsStorage {
     }
 
     /**
+     * int値を書き込む。
+     *
+     * @param key   Key
+     * @param value 書き込む値
+     */
+    void putInt(@NonNull Key key, int value) {
+        mPreferences.edit()
+                .putInt(key.name(), value)
+                .apply();
+    }
+
+    /**
+     * int値を読み出す。
+     *
+     * @param key          Key
+     * @param defaultValue デフォルト値
+     * @return 読み出したint値
+     */
+    int getInt(@NonNull Key key, int defaultValue) {
+        return mPreferences.getInt(key.name(), defaultValue);
+    }
+
+    /**
+     * long値を書き込む。
+     *
+     * @param key   Key
+     * @param value 書き込む値
+     */
+    void putLong(@NonNull Key key, long value) {
+        mPreferences.edit()
+                .putLong(key.name(), value)
+                .apply();
+    }
+
+    /**
+     * long値を読み出す。
+     *
+     * @param key          Key
+     * @param defaultValue デフォルト値
+     * @return 読み出したlong値
+     */
+    long getLong(@NonNull Key key, long defaultValue) {
+        return mPreferences.getLong(key.name(), defaultValue);
+    }
+
+    /**
      * String値を書き込む。
      *
      * @param key   Key
