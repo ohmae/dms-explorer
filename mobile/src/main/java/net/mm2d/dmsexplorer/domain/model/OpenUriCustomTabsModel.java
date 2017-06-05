@@ -94,6 +94,9 @@ public class OpenUriCustomTabsModel implements OpenUriModel {
         final Intent intent = makeViewIntent(uri);
         final List<ResolveInfo> apps = pm.queryIntentActivities(intent, 0);
         final ResolveInfo defaultApp = pm.resolveActivity(intent, 0);
+        if (defaultApp == null || defaultApp.activityInfo == null) {
+            return false;
+        }
         return contains(defaultApp, apps) && !contains(defaultApp, browsers);
     }
 

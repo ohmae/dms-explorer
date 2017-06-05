@@ -57,6 +57,10 @@ public class PlaybackTargetModel {
         return mUri;
     }
 
+    public String getUriString() {
+        return mUri == null ? null : mUri.toString();
+    }
+
     public String getMimeType() {
         return mMimeType;
     }
