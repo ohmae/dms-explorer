@@ -128,7 +128,7 @@ public class MovieActivityModel extends BaseObservable
         return mControlPanelModel.getProgress();
     }
 
-    public void setOnSwitchListener(@NonNull final OnSwitchListener listener) {
+    public void setOnSwitchListener(@Nullable final OnSwitchListener listener) {
         mOnSwitchListener = listener != null ? listener : ON_SWITCH_LISTENER;
     }
 
