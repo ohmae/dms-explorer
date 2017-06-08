@@ -33,8 +33,6 @@ import javax.xml.parsers.ParserConfigurationException;
  * @author <a href="mailto:ryo@mm2d.net">大前良介(OHMAE Ryosuke)</a>
  */
 final class CdsObjectFactory {
-    private static final String TAG = "CdsObjectFactory";
-
     /**
      * BrowseDirectChildrenの結果をパースしてCdsObjectのリストとして返す。
      *
@@ -61,7 +59,7 @@ final class CdsObjectFactory {
                 }
             }
         } catch (ParserConfigurationException | SAXException | IOException e) {
-            Log.w(TAG, e);
+            Log.w(e);
         }
         return list;
     }
@@ -88,7 +86,7 @@ final class CdsObjectFactory {
                 return createCdsObject(udn, (Element) node);
             }
         } catch (ParserConfigurationException | SAXException | IOException e) {
-            Log.w(TAG, e);
+            Log.w(e);
         }
         return null;
     }
@@ -105,7 +103,7 @@ final class CdsObjectFactory {
         try {
             return new CdsObject(udn, element);
         } catch (final IllegalArgumentException e) {
-            Log.w(TAG, e);
+            Log.w(e);
         }
         return null;
     }

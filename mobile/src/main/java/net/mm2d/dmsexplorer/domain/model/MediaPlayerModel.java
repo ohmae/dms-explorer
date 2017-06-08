@@ -23,7 +23,6 @@ import java.util.concurrent.TimeUnit;
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
  */
 public abstract class MediaPlayerModel implements PlayerModel, OnPreparedListener {
-    private static final String TAG = MediaPlayerModel.class.getSimpleName();
     private static final int SKIP_MARGIN = (int) TimeUnit.SECONDS.toMillis(3);
     private static final int MEDIA_ERROR_SYSTEM = -2147483648;
     private static final StatusListener STATUS_LISTENER = new StatusListenerAdapter();
@@ -227,7 +226,7 @@ public abstract class MediaPlayerModel implements PlayerModel, OnPreparedListene
                 ex = "";
                 break;
         }
-        Log.e(TAG, "onError:w" + what + " " + wh + " e" + extra + " " + ex);
+        Log.e("onError:w" + what + " " + wh + " e" + extra + " " + ex);
     }
 
     private void logInfo(int what, int extra) {
@@ -267,6 +266,6 @@ public abstract class MediaPlayerModel implements PlayerModel, OnPreparedListene
                 wh = "";
                 break;
         }
-        Log.d(TAG, "onInfo:w:" + what + " " + wh + " e:" + extra);
+        Log.d("onInfo:w:" + what + " " + wh + " e:" + extra);
     }
 }

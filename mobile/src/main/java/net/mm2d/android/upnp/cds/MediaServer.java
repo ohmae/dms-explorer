@@ -29,7 +29,6 @@ import java.util.Map;
  * @author <a href="mailto:ryo@mm2d.net">大前良介(OHMAE Ryosuke)</a>
  */
 public class MediaServer extends DeviceWrapper {
-    private static final String TAG = "MediaServer";
     private static final String BROWSE = "Browse";
     private static final String OBJECT_ID = "ObjectID";
     private static final String BROWSE_FLAG = "BrowseFlag";
@@ -79,7 +78,7 @@ public class MediaServer extends DeviceWrapper {
             try {
                 mCdsService.subscribe(true);
             } catch (final IOException e) {
-                Log.w(TAG, e);
+                Log.w(e);
             }
         }).start();
     }
@@ -92,7 +91,7 @@ public class MediaServer extends DeviceWrapper {
             try {
                 mCdsService.unsubscribe();
             } catch (final IOException e) {
-                Log.w(TAG, e);
+                Log.w(e);
             }
         }).start();
     }
@@ -269,7 +268,7 @@ public class MediaServer extends DeviceWrapper {
                     mResult.setProgress(list);
                 }
             } catch (final IOException e) {
-                Log.w(TAG, e);
+                Log.w(e);
             }
             mResult.set(null);
         }
@@ -346,7 +345,7 @@ public class MediaServer extends DeviceWrapper {
                     mResult.set(result);
                 }
             } catch (final IOException e) {
-                Log.w(TAG, e);
+                Log.w(e);
                 mResult.set(null);
             }
         }

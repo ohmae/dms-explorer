@@ -22,8 +22,6 @@ import net.mm2d.util.Log;
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
  */
 public class LaunchUtils {
-    private static final String TAG = "LaunchUtils";
-
     /**
      * URIを指定して暗黙的Intentによって他のアプリを起動する。
      *
@@ -43,7 +41,7 @@ public class LaunchUtils {
             intent.addCategory(Intent.CATEGORY_BROWSABLE);
             context.startActivity(intent);
         } catch (final ActivityNotFoundException e) {
-            Log.w(TAG, e);
+            Log.w(e);
             return false;
         }
         return true;
