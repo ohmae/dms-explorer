@@ -76,6 +76,6 @@ dependencies {
 }
 
 setProperty("FirebaseServiceAccountFilePath",
-        rootProject.rootDir.parentFile.absolutePath + "/firebase-crashreporting-mm2d.json")
+        rootProject.rootDir.parentFile.absolutePath + "/firebase-crashreporting-dmsexplorer.json")
 
 apply plugin: 'com.google.gms.google-services'
