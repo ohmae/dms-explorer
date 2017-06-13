@@ -191,7 +191,7 @@ public class MediaRendererModel implements PlayerModel {
         return mChapterInfo.length - 1;
     }
 
-    private void onGetPositionInfo(Map<String, String> result) {
+    private void onGetPositionInfo(final Map<String, String> result) {
         if (result == null) {
             mHandler.postDelayed(mGetPositionTask, 1000);
             return;
@@ -214,7 +214,7 @@ public class MediaRendererModel implements PlayerModel {
         mHandler.postDelayed(mGetPositionTask, interval);
     }
 
-    private void onGetTransportInfo(Map<String, String> result) {
+    private void onGetTransportInfo(final Map<String, String> result) {
         if (result == null) {
             return;
         }
