@@ -20,14 +20,18 @@ import android.text.TextUtils;
 public class ThemeUtils {
     private static final float DARKER_RATIO = 0.7f;
 
-    /**
-     * リストアイテムのアクセントカラーをタイトルの文字から決定する。
-     *
-     * @param title アイテムのタイトル
-     * @return 先頭の文字から決定したアクセントカラー
-     */
     @ColorInt
-    public static int getAccentColor(@NonNull final String title) {
+    public static int getIconColor(@NonNull final String title) {
+        final char c = TextUtils.isEmpty(title) ? ' ' : title.charAt(0);
+        final float[] hsv = new float[3];
+        hsv[0] = (59 * c) % 360;
+        hsv[1] = 111f / 255f;
+        hsv[2] = 237f / 255f;
+        return Color.HSVToColor(hsv);
+    }
+
+    @ColorInt
+    public static int getVividColor(@NonNull final String title) {
         final char c = TextUtils.isEmpty(title) ? ' ' : title.charAt(0);
         final float[] hsv = new float[3];
         hsv[0] = (59 * c) % 360;

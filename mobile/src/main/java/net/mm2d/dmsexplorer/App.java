@@ -8,6 +8,7 @@
 package net.mm2d.dmsexplorer;
 
 import android.app.Application;
+import android.support.annotation.NonNull;
 
 import net.mm2d.dmsexplorer.domain.AppRepository;
 import net.mm2d.dmsexplorer.settings.Settings;
@@ -25,7 +26,7 @@ public class App extends Application {
      */
     private static class AndroidPrint implements Print {
         @Override
-        public void println(int level, String tag, String message) {
+        public void println(int level, @NonNull String tag, @NonNull String message) {
             final String[] lines = message.split("\n");
             for (final String line : lines) {
                 android.util.Log.println(level, tag, line);
