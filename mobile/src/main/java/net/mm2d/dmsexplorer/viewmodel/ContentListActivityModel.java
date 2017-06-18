@@ -82,10 +82,11 @@ public class ContentListActivityModel extends BaseObservable implements ExploreL
     public ContentListActivityModel(@NonNull final Context context,
                                     @NonNull final Repository repository,
                                     @NonNull final CdsSelectListener listener) {
-        mMediaServerModel = repository.getMediaServerModel();
-        if (mMediaServerModel == null) {
+        final MediaServerModel model = repository.getMediaServerModel();
+        if (model == null) {
             throw new IllegalStateException();
         }
+        mMediaServerModel = model;
         mMediaServerModel.setExploreListener(this);
         mContentListAdapter = new ContentListAdapter(context);
         mContentListAdapter.setOnItemClickListener(this::onItemClick);
