@@ -34,8 +34,6 @@ import java.util.concurrent.TimeUnit;
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
  */
 public class MediaRenderer extends DeviceWrapper {
-    private static final String TAG = "MediaRenderer";
-
     public interface ActionCallback {
         void onResult(boolean success, @Nullable Map<String, String> result);
     }
@@ -183,7 +181,7 @@ public class MediaRenderer extends DeviceWrapper {
             try {
                 mAvTransport.subscribe(true);
             } catch (final IOException e) {
-                Log.w(TAG, e);
+                Log.w(e);
             }
         });
     }
@@ -196,7 +194,7 @@ public class MediaRenderer extends DeviceWrapper {
             try {
                 mAvTransport.unsubscribe();
             } catch (final IOException e) {
-                Log.w(TAG, e);
+                Log.w(e);
             }
         });
     }

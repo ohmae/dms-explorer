@@ -72,7 +72,7 @@ public class ContentDetailFragmentModel extends BaseObservable {
         final String rawTitle = object.getTitle();
         title = AribUtils.toDisplayableString(rawTitle);
         propertyAdapter = new ContentPropertyAdapter(activity, object);
-        collapsedColor = ThemeUtils.getAccentColor(rawTitle);
+        collapsedColor = ThemeUtils.getVividColor(rawTitle);
         expandedColor = ThemeUtils.getPastelColor(rawTitle);
         hasResource = object.hasResource();
         hasProtectedResource = object.hasProtectedResource();

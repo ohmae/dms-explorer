@@ -8,6 +8,7 @@
 package net.mm2d.dmsexplorer;
 
 import android.app.Application;
+import android.support.annotation.NonNull;
 
 import net.mm2d.dmsexplorer.domain.AppRepository;
 import net.mm2d.dmsexplorer.settings.Settings;
@@ -25,24 +26,10 @@ public class App extends Application {
      */
     private static class AndroidPrint implements Print {
         @Override
-        public void println(int level, String tag, String message) {
-            switch (level) {
-                default:
-                case Log.VERBOSE:
-                    android.util.Log.v(tag, message);
-                    break;
-                case Log.DEBUG:
-                    android.util.Log.d(tag, message);
-                    break;
-                case Log.INFO:
-                    android.util.Log.i(tag, message);
-                    break;
-                case Log.WARN:
-                    android.util.Log.w(tag, message);
-                    break;
-                case Log.ERROR:
-                    android.util.Log.e(tag, message);
-                    break;
+        public void println(int level, @NonNull String tag, @NonNull String message) {
+            final String[] lines = message.split("\n");
+            for (final String line : lines) {
+                android.util.Log.println(level, tag, line);
             }
         }
     }
@@ -54,6 +41,7 @@ public class App extends Application {
         Repository.set(new AppRepository(this));
 
         if (BuildConfig.DEBUG) {
+            Log.setAppendCaller(true);
             Log.setLogLevel(Log.VERBOSE);
             Log.setPrint(new AndroidPrint());
             return;

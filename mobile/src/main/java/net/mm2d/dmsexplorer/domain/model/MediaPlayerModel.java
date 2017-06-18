@@ -23,7 +23,6 @@ import java.util.concurrent.TimeUnit;
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
  */
 public abstract class MediaPlayerModel implements PlayerModel, OnPreparedListener {
-    private static final String TAG = MediaPlayerModel.class.getSimpleName();
     private static final int SKIP_MARGIN = (int) TimeUnit.SECONDS.toMillis(3);
     private static final int MEDIA_ERROR_SYSTEM = -2147483648;
     private static final StatusListener STATUS_LISTENER = new StatusListenerAdapter();
@@ -88,7 +87,7 @@ public abstract class MediaPlayerModel implements PlayerModel, OnPreparedListene
     }
 
     @Override
-    public void setStatusListener(@NonNull StatusListener listener) {
+    public void setStatusListener(@NonNull final StatusListener listener) {
         mStatusListener = listener;
         mMediaControl.setOnErrorListener((mp, what, extra) -> {
             logError(what, extra);
@@ -105,11 +104,11 @@ public abstract class MediaPlayerModel implements PlayerModel, OnPreparedListene
     }
 
     @Override
-    public void restoreSaveProgress(int progress) {
+    public void restoreSaveProgress(final int progress) {
         mProgress = progress;
     }
 
-    private void setProgress(int progress) {
+    private void setProgress(final int progress) {
         if (mProgress == progress) {
             return;
         }
@@ -122,7 +121,7 @@ public abstract class MediaPlayerModel implements PlayerModel, OnPreparedListene
         return mProgress;
     }
 
-    private void setDuration(int duration) {
+    private void setDuration(final int duration) {
         if (mDuration == duration) {
             return;
         }
@@ -140,7 +139,7 @@ public abstract class MediaPlayerModel implements PlayerModel, OnPreparedListene
         return mPlaying;
     }
 
-    private void setPlaying(boolean playing) {
+    private void setPlaying(final boolean playing) {
         if (mPlaying == playing) {
             return;
         }
@@ -159,7 +158,7 @@ public abstract class MediaPlayerModel implements PlayerModel, OnPreparedListene
     }
 
     @Override
-    public void seekTo(int position) {
+    public void seekTo(final int position) {
         mMediaControl.seekTo(position);
         mHandler.removeCallbacks(mGetPositionTask);
         mHandler.post(mGetPositionTask);
@@ -190,83 +189,73 @@ public abstract class MediaPlayerModel implements PlayerModel, OnPreparedListene
         setPlaying(isPlaying());
     }
 
-    private void logError(int what, int extra) {
-        final String wh;
-        switch (what) {
-            case MediaPlayer.MEDIA_ERROR_SERVER_DIED:
-                wh = "MEDIA_ERROR_SERVER_DIED";
-                break;
-            case MediaPlayer.MEDIA_ERROR_UNKNOWN:
-                wh = "MEDIA_ERROR_UNKNOWN";
-                break;
-            default:
-                wh = "";
-                break;
-        }
-        final String ex;
-        switch (extra) {
-            case MediaPlayer.MEDIA_ERROR_IO:
-                ex = "MEDIA_ERROR_IO";
-                break;
-            case MediaPlayer.MEDIA_ERROR_MALFORMED:
-                ex = "MEDIA_ERROR_MALFORMED";
-                break;
-            case MediaPlayer.MEDIA_ERROR_TIMED_OUT:
-                ex = "MEDIA_ERROR_TIMED_OUT";
-                break;
-            case MediaPlayer.MEDIA_ERROR_UNSUPPORTED:
-                ex = "MEDIA_ERROR_UNSUPPORTED";
-                break;
-            case MediaPlayer.MEDIA_ERROR_NOT_VALID_FOR_PROGRESSIVE_PLAYBACK:
-                ex = "MEDIA_ERROR_NOT_VALID_FOR_PROGRESSIVE_PLAYBACK";
-                break;
-            case MEDIA_ERROR_SYSTEM:
-                ex = "MEDIA_ERROR_SYSTEM";
-                break;
-            default:
-                ex = "";
-                break;
-        }
-        Log.e(TAG, "onError:w" + what + " " + wh + " e" + extra + " " + ex);
+    private void logError(final int what, final int extra) {
+        Log.e("onError:w" + what + " " + getErrorWhatString(what)
+                + " e" + extra + " " + getErrorExtraString(extra));
     }
 
-    private void logInfo(int what, int extra) {
-        final String wh;
+    private void logInfo(final int what, final int extra) {
+        Log.d("onInfo:w:" + what + " " + getInfoWhatString(what)
+                + " e:" + extra);
+    }
+
+    @NonNull
+    private String getErrorWhatString(final int what) {
+        switch (what) {
+            case MediaPlayer.MEDIA_ERROR_SERVER_DIED:
+                return "MEDIA_ERROR_SERVER_DIED";
+            case MediaPlayer.MEDIA_ERROR_UNKNOWN:
+                return "MEDIA_ERROR_UNKNOWN";
+            default:
+                return "";
+        }
+    }
+
+    @NonNull
+    private String getErrorExtraString(final int extra) {
+        switch (extra) {
+            case MediaPlayer.MEDIA_ERROR_IO:
+                return "MEDIA_ERROR_IO";
+            case MediaPlayer.MEDIA_ERROR_MALFORMED:
+                return "MEDIA_ERROR_MALFORMED";
+            case MediaPlayer.MEDIA_ERROR_TIMED_OUT:
+                return "MEDIA_ERROR_TIMED_OUT";
+            case MediaPlayer.MEDIA_ERROR_UNSUPPORTED:
+                return "MEDIA_ERROR_UNSUPPORTED";
+            case MediaPlayer.MEDIA_ERROR_NOT_VALID_FOR_PROGRESSIVE_PLAYBACK:
+                return "MEDIA_ERROR_NOT_VALID_FOR_PROGRESSIVE_PLAYBACK";
+            case MEDIA_ERROR_SYSTEM:
+                return "MEDIA_ERROR_SYSTEM";
+            default:
+                return "";
+        }
+    }
+
+    @NonNull
+    private String getInfoWhatString(final int what) {
         switch (what) {
             case MediaPlayer.MEDIA_INFO_UNKNOWN:
-                wh = "MEDIA_INFO_UNKNOWN";
-                break;
+                return "MEDIA_INFO_UNKNOWN";
             case MediaPlayer.MEDIA_INFO_VIDEO_TRACK_LAGGING:
-                wh = "MEDIA_INFO_VIDEO_TRACK_LAGGING";
-                break;
+                return "MEDIA_INFO_VIDEO_TRACK_LAGGING";
             case MediaPlayer.MEDIA_INFO_VIDEO_RENDERING_START:
-                wh = "MEDIA_INFO_VIDEO_RENDERING_START";
-                break;
+                return "MEDIA_INFO_VIDEO_RENDERING_START";
             case MediaPlayer.MEDIA_INFO_BUFFERING_START:
-                wh = "MEDIA_INFO_BUFFERING_START";
-                break;
+                return "MEDIA_INFO_BUFFERING_START";
             case MediaPlayer.MEDIA_INFO_BUFFERING_END:
-                wh = "MEDIA_INFO_BUFFERING_END";
-                break;
+                return "MEDIA_INFO_BUFFERING_END";
             case MediaPlayer.MEDIA_INFO_BAD_INTERLEAVING:
-                wh = "MEDIA_INFO_BAD_INTERLEAVING";
-                break;
+                return "MEDIA_INFO_BAD_INTERLEAVING";
             case MediaPlayer.MEDIA_INFO_NOT_SEEKABLE:
-                wh = "MEDIA_INFO_NOT_SEEKABLE";
-                break;
+                return "MEDIA_INFO_NOT_SEEKABLE";
             case MediaPlayer.MEDIA_INFO_METADATA_UPDATE:
-                wh = "MEDIA_INFO_METADATA_UPDATE";
-                break;
+                return "MEDIA_INFO_METADATA_UPDATE";
             case MediaPlayer.MEDIA_INFO_UNSUPPORTED_SUBTITLE:
-                wh = "MEDIA_INFO_UNSUPPORTED_SUBTITLE";
-                break;
+                return "MEDIA_INFO_UNSUPPORTED_SUBTITLE";
             case MediaPlayer.MEDIA_INFO_SUBTITLE_TIMED_OUT:
-                wh = "MEDIA_INFO_SUBTITLE_TIMED_OUT";
-                break;
+                return "MEDIA_INFO_SUBTITLE_TIMED_OUT";
             default:
-                wh = "";
-                break;
+                return "";
         }
-        Log.d(TAG, "onInfo:w:" + what + " " + wh + " e:" + extra);
     }
 }

@@ -56,7 +56,11 @@ public class PhotoActivityModel extends BaseObservable {
                 Toaster.showLong(mActivity, R.string.toast_download_error_occurred);
                 return;
             }
-            if (!TextUtils.equals(url, repository.getPlaybackTargetModel().getUri().toString())) {
+            final PlaybackTargetModel model = repository.getPlaybackTargetModel();
+            if (model == null) {
+                return;
+            }
+            if (!TextUtils.equals(url, model.getUriString())) {
                 return;
             }
             setLoading(false);

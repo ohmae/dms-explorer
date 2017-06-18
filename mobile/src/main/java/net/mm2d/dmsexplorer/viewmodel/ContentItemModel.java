@@ -45,7 +45,7 @@ public class ContentItemModel {
                 : AribUtils.toDisplayableString(name.substring(0, 1));
         accentBackground = DrawableUtils.get(context, R.drawable.ic_circle);
         accentBackground.mutate();
-        DrawableCompat.setTint(accentBackground, ThemeUtils.getAccentColor(name));
+        DrawableCompat.setTint(accentBackground, ThemeUtils.getIconColor(name));
         title = AribUtils.toDisplayableString(name);
         description = object.getUpnpClass();
         imageResource = getImageResource(object);

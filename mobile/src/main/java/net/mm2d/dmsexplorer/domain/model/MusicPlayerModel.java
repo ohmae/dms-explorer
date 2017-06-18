@@ -23,7 +23,6 @@ import java.io.IOException;
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
  */
 public class MusicPlayerModel extends MediaPlayerModel {
-    private static final String TAG = MusicPlayerModel.class.getSimpleName();
     private final Context mContext;
     private final MediaPlayer mMediaPlayer;
 
@@ -50,7 +49,7 @@ public class MusicPlayerModel extends MediaPlayerModel {
             mMediaPlayer.setDataSource(mContext, uri);
             mMediaPlayer.prepareAsync();
         } catch (final IOException e) {
-            Log.w(TAG, e);
+            Log.w(e);
         }
     }
 }

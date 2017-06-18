@@ -82,6 +82,10 @@ public class MusicActivityModel extends BaseObservable
 
     private void updateTargetModel() {
         final PlaybackTargetModel targetModel = mRepository.getPlaybackTargetModel();
+        if (targetModel == null || targetModel.getUri() == null) {
+            ActivityCompat.finishAfterTransition(mActivity);
+            return;
+        }
         final PlayerModel playerModel = new MusicPlayerModel(mActivity);
         mControlPanelModel = new ControlPanelModel(mActivity, playerModel);
         mControlPanelModel.setRepeatMode(mRepeatMode);
