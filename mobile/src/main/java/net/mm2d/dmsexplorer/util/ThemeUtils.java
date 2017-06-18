@@ -23,21 +23,21 @@ public class ThemeUtils {
     @ColorInt
     public static int getIconColor(@NonNull final String title) {
         final char c = TextUtils.isEmpty(title) ? ' ' : title.charAt(0);
-        final float[] hsv = new float[3];
-        hsv[0] = (59 * c) % 360;
-        hsv[1] = 111f / 255f;
-        hsv[2] = 237f / 255f;
-        return Color.HSVToColor(hsv);
+        return Color.HSVToColor(new float[] {
+                (59 * c) % 360,
+                111f / 255f,
+                237f / 255f,
+        });
     }
 
     @ColorInt
     public static int getVividColor(@NonNull final String title) {
         final char c = TextUtils.isEmpty(title) ? ' ' : title.charAt(0);
-        final float[] hsv = new float[3];
-        hsv[0] = (59 * c) % 360;
-        hsv[1] = 185f / 255f;
-        hsv[2] = 187f / 255f;
-        return Color.HSVToColor(hsv);
+        return Color.HSVToColor(new float[] {
+                (59 * c) % 360,
+                185f / 255f,
+                187f / 255f,
+        });
     }
 
     @ColorInt
@@ -52,20 +52,20 @@ public class ThemeUtils {
     @ColorInt
     public static int getPastelColor(@NonNull final String title) {
         final char c = TextUtils.isEmpty(title) ? ' ' : title.charAt(0);
-        final float[] hsv = new float[3];
-        hsv[0] = (59 * c) % 360;
-        hsv[1] = 124f / 255f;
-        hsv[2] = 210f / 255f;
-        return Color.HSVToColor(hsv);
+        return Color.HSVToColor(new float[] {
+                (59 * c) % 360,
+                124f / 255f,
+                210f / 255f,
+        });
     }
 
     @ColorInt
     public static int getDeepColor(@NonNull final String title) {
         final char c = TextUtils.isEmpty(title) ? ' ' : title.charAt(0);
-        final float[] hsv = new float[3];
-        hsv[0] = (59 * c) % 360;
-        hsv[1] = 192f / 255f;
-        hsv[2] = 96f / 255f;
-        return Color.HSVToColor(hsv);
+        return Color.HSVToColor(new float[] {
+                (59 * c) % 360,
+                192f / 255f,
+                96f / 255f,
+        });
     }
 }
