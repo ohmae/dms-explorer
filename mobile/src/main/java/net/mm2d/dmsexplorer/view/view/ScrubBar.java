@@ -412,8 +412,8 @@ public class ScrubBar extends View {
         return (int) (dx * mMax / width);
     }
 
-    public void setSections(int... sections) {
-        mSections = sections == null ? EMPTY_ARRAY : sections;
+    public void setSections(@NonNull int... sections) {
+        mSections = sections.length == 0 ? EMPTY_ARRAY : sections;
         invalidate();
     }
 

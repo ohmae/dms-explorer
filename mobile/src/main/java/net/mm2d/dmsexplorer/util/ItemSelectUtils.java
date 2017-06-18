@@ -75,6 +75,8 @@ public class ItemSelectUtils {
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 }
                 break;
+            case CdsObject.TYPE_CONTAINER:
+            case CdsObject.TYPE_UNKNOWN:
             default:
                 return;
         }

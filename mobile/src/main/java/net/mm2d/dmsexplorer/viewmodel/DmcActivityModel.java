@@ -297,6 +297,10 @@ public class DmcActivityModel extends BaseObservable implements StatusListener {
                 return R.drawable.ic_music;
             case CdsObject.TYPE_IMAGE:
                 return R.drawable.ic_image;
+            case CdsObject.TYPE_CONTAINER:
+            case CdsObject.TYPE_UNKNOWN:
+            default:
+                break;
         }
         return 0;
     }

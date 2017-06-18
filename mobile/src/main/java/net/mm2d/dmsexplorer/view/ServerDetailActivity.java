@@ -80,7 +80,7 @@ public class ServerDetailActivity extends BaseActivity {
         }
         mBinding.toolbarBackground.setVisibility(View.INVISIBLE);
         getWindow().getSharedElementEnterTransition().addListener(new TransitionListenerAdapter() {
-            @TargetApi(Build.VERSION_CODES.KITKAT)
+            @TargetApi(Build.VERSION_CODES.LOLLIPOP)
             @Override
             public void onTransitionEnd(final Transition transition) {
                 transition.removeListener(this);

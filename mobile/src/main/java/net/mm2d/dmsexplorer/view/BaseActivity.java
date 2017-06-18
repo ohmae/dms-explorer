@@ -17,7 +17,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 /**
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
  */
-public class BaseActivity extends AppCompatActivity {
+public abstract class BaseActivity extends AppCompatActivity {
     private AtomicBoolean mFinishAfterTransitionLatch = new AtomicBoolean();
     private AtomicBoolean mFinishLatch = new AtomicBoolean();
 
