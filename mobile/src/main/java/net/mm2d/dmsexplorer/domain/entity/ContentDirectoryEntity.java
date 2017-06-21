@@ -14,6 +14,7 @@ import net.mm2d.android.upnp.cds.BrowseResult;
 import net.mm2d.android.upnp.cds.BrowseResult.StatusListener;
 import net.mm2d.android.upnp.cds.CdsObject;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -124,13 +125,13 @@ public class ContentDirectoryEntity implements StatusListener {
 
     @Override
     public void onCompletion(@NonNull final BrowseResult result) {
-        mList = result.getProgress();
+        mList = new ArrayList<>(result.getProgress());
         mEntryListener.onUpdate(mList, false);
     }
 
     @Override
     public void onProgressUpdate(@NonNull final BrowseResult result) {
-        mList = result.getProgress();
+        mList = new ArrayList<>(result.getProgress());
         mEntryListener.onUpdate(mList, true);
     }
 }
