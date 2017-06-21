@@ -22,25 +22,7 @@ import java.util.Map;
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
  */
 public class ThemeModelImpl extends ActivityLifecycleCallbacksAdapter implements ThemeModel {
-    private static class Theme {
-        private final int mToolbarColor;
-        private final int mStatusBarColor;
-
-        Theme(@ColorInt final int toolbarColor, @ColorInt final int statusBarColor) {
-            mToolbarColor = toolbarColor;
-            mStatusBarColor = statusBarColor;
-        }
-
-        int getToolbarColor() {
-            return mToolbarColor;
-        }
-
-        int getStatusBarColor() {
-            return mStatusBarColor;
-        }
-    }
-
-    private final Map<String, Theme> mMap = new HashMap<>();
+    private final Map<String, Integer> mMap = new HashMap<>();
 
     @Override
     public void setThemeColor(@NonNull final Activity activity,
@@ -50,25 +32,13 @@ public class ThemeModelImpl extends ActivityLifecycleCallbacksAdapter implements
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             activity.getWindow().setStatusBarColor(color);
         }
-        mMap.put(activity.getClass().getName(), new Theme(toolbarColor, color));
+        mMap.put(activity.getClass().getName(), toolbarColor);
     }
 
     @Override
     public int getToolbarColor(@NonNull final Activity activity) {
-        final Theme theme = mMap.get(activity.getClass().getName());
-        if (theme == null) {
-            return 0;
-        }
-        return theme.getToolbarColor();
-    }
-
-    @Override
-    public int getStatusBarColor(@NonNull final Activity activity) {
-        final Theme theme = mMap.get(activity.getClass().getName());
-        if (theme == null) {
-            return 0;
-        }
-        return theme.getStatusBarColor();
+        final Integer color = mMap.get(activity.getClass().getName());
+        return color == null ? 0 : color;
     }
 
     @Override

@@ -105,6 +105,7 @@ public class MediaServerModel implements EntryListener {
             return false;
         }
         mExploreListener.onUpdate(Collections.emptyList(), true);
+
         final ContentDirectoryEntity directory = mHistoryStack.pollFirst();
         directory.terminate();
         mPath = makePath();
@@ -223,6 +224,9 @@ public class MediaServerModel implements EntryListener {
 
     private CdsObject findNext(@Nullable final CdsObject current,
                                @ScanMode final int scanMode) {
+        if (mHistoryStack.isEmpty()) {
+            return null;
+        }
         final List<CdsObject> list = mHistoryStack.peekFirst().getList();
         if (current == null || list == null) {
             return null;

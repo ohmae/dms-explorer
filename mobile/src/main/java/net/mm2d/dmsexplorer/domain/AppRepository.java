@@ -33,12 +33,19 @@ import net.mm2d.dmsexplorer.settings.Settings;
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
  */
 public class AppRepository extends Repository {
+    @NonNull
     private final Context mContext;
+    @NonNull
     private final ControlPointModel mControlPointModel;
+    @NonNull
     private final ThemeModel mThemeModel;
+    @NonNull
     private final OpenUriCustomTabsModel mOpenUriModel;
+    @Nullable
     private MediaServerModel mMediaServerModel;
+    @Nullable
     private PlayerModel mMediaRendererModel;
+    @Nullable
     private PlaybackTargetModel mPlaybackTargetModel;
 
     public AppRepository(@NonNull final Application application) {
@@ -88,6 +95,7 @@ public class AppRepository extends Repository {
     }
 
     @Override
+    @NonNull
     public ThemeModel getThemeModel() {
         return mThemeModel;
     }

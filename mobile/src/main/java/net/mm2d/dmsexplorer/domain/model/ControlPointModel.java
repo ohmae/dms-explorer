@@ -55,8 +55,11 @@ public class ControlPointModel {
     private final Lan mLan;
     @NonNull
     private final AtomicBoolean mInitialized = new AtomicBoolean();
+    @Nullable
     private SearchThread mSearchThread;
+    @Nullable
     private MediaServer mSelectedMediaServer;
+    @Nullable
     private MediaRenderer mSelectedMediaRenderer;
     private static final MsDiscoveryListener MS_DISCOVERY_LISTENER = new MsDiscoveryListener() {
         @Override

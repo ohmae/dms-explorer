@@ -31,6 +31,7 @@ public abstract class MediaPlayerModel implements PlayerModel, OnPreparedListene
     private final Handler mHandler = new Handler(Looper.getMainLooper());
     @NonNull
     private StatusListener mStatusListener = STATUS_LISTENER;
+    @NonNull
     private final MediaControl mMediaControl;
     private boolean mPlaying;
     private int mProgress;
