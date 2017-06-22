@@ -42,7 +42,7 @@ public class RecyclerViewBindingAdapter {
         if (child == null) {
             return;
         }
-        final int dy = (int) (child.getY() - (view.getHeight() - child.getHeight()) / 2f);
+        final int dy = (int) (child.getTop() - (view.getHeight() - child.getHeight()) / 2f);
         view.smoothScrollBy(0, dy);
     }
 
@@ -52,6 +52,7 @@ public class RecyclerViewBindingAdapter {
         if (child == null) {
             return null;
         }
-        return view.getChildAt(position - view.getChildAdapterPosition(child));
+        final int top = view.getChildAdapterPosition(child);
+        return top < 0 ? null : view.getChildAt(position - top);
     }
 }

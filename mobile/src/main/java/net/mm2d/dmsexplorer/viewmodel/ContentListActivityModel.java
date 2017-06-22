@@ -148,7 +148,14 @@ public class ContentListActivityModel extends BaseObservable implements ExploreL
     }
 
     public void syncSelectedObject() {
-        mContentListAdapter.setSelectedObject(mMediaServerModel.getSelectedObject());
+        final CdsObject object = mMediaServerModel.getSelectedObject();
+        if (!mContentListAdapter.setSelectedObject(object) || object == null) {
+            return;
+        }
+        final int index = mContentListAdapter.indexOf(object);
+        if (index >= 0) {
+            setScrollPosition(index);
+        }
     }
 
     public boolean onBackPressed() {

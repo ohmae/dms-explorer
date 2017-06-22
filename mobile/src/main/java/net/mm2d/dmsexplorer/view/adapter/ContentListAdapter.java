@@ -111,14 +111,15 @@ public class ContentListAdapter
         return mSelectedObject;
     }
 
-    public void setSelectedObject(@Nullable final CdsObject object) {
+    public boolean setSelectedObject(@Nullable final CdsObject object) {
         if (mSelectedObject != null && mSelectedObject.equals(object)) {
-            return;
+            return false;
         }
         final CdsObject previous = mSelectedObject;
         mSelectedObject = object;
         notifyItemChangedIfPossible(previous);
         notifyItemChangedIfPossible(object);
+        return true;
     }
 
     private void notifyItemChangedIfPossible(@Nullable final CdsObject object) {
