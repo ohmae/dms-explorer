@@ -52,6 +52,7 @@ public class DownloadUtils {
                 return response.getBodyBinary();
             }
         } catch (final IOException ignored) {
+        } catch (final OutOfMemoryError ignored) {
         }
         return null;
     }
