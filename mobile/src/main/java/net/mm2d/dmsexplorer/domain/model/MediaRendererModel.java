@@ -33,7 +33,9 @@ public class MediaRendererModel implements PlayerModel {
 
     @NonNull
     private StatusListener mStatusListener = STATUS_LISTENER;
+    @NonNull
     private final MediaRenderer mMediaRenderer;
+    @NonNull
     private final Handler mHandler = new Handler(Looper.getMainLooper());
     @Nullable
     private int[] mChapterInfo;

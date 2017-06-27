@@ -23,7 +23,9 @@ import java.io.IOException;
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
  */
 public class MusicPlayerModel extends MediaPlayerModel {
+    @NonNull
     private final Context mContext;
+    @NonNull
     private final MediaPlayer mMediaPlayer;
 
     public MusicPlayerModel(@NonNull final Context context) {

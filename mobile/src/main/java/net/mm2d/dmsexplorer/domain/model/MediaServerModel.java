@@ -8,6 +8,8 @@
 package net.mm2d.dmsexplorer.domain.model;
 
 import android.content.Context;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -41,7 +43,7 @@ public class MediaServerModel implements EntryListener {
     }
 
     private static final String DELIMITER = " < ";
-    private final Context mContext;
+    private final Handler mHandler = new Handler(Looper.getMainLooper());
     private final PlaybackTargetObserver mPlaybackTargetObserver;
     private final MediaServer mMediaServer;
     private final Deque<ContentDirectoryEntity> mHistoryStack = new LinkedList<>();
@@ -57,7 +59,6 @@ public class MediaServerModel implements EntryListener {
     public MediaServerModel(@NonNull final Context context,
                             @NonNull final MediaServer server,
                             @NonNull final PlaybackTargetObserver observer) {
-        mContext = context;
         mMediaServer = server;
         mPlaybackTargetObserver = observer;
     }
@@ -106,13 +107,15 @@ public class MediaServerModel implements EntryListener {
         }
         mExploreListener.onUpdate(Collections.emptyList(), true);
 
-        final ContentDirectoryEntity directory = mHistoryStack.pollFirst();
-        directory.terminate();
-        mPath = makePath();
-        final ContentDirectoryEntity parent = mHistoryStack.peekFirst();
-        parent.setEntryListener(this);
-        mExploreListener.onUpdate(parent.getList(), parent.isInProgress());
-        updatePlaybackTarget();
+        mHandler.post(() ->{
+            final ContentDirectoryEntity directory = mHistoryStack.pollFirst();
+            directory.terminate();
+            mPath = makePath();
+            final ContentDirectoryEntity parent = mHistoryStack.peekFirst();
+            parent.setEntryListener(this);
+            updatePlaybackTarget();
+            mExploreListener.onUpdate(parent.getList(), parent.isInProgress());
+        });
         return true;
     }
 
@@ -170,6 +173,7 @@ public class MediaServerModel implements EntryListener {
         return true;
     }
 
+    @Nullable
     private CdsObject findPrevious(@Nullable final CdsObject current,
                                    @ScanMode final int scanMode) {
         final List<CdsObject> list = mHistoryStack.peekFirst().getList();
@@ -185,6 +189,7 @@ public class MediaServerModel implements EntryListener {
         return null;
     }
 
+    @Nullable
     private CdsObject findPreviousSequential(@NonNull final CdsObject current,
                                              @NonNull final List<CdsObject> list) {
         final int index = list.indexOf(current);
@@ -200,6 +205,7 @@ public class MediaServerModel implements EntryListener {
         return null;
     }
 
+    @Nullable
     private CdsObject findPreviousLoop(@NonNull final CdsObject current,
                                        @NonNull final List<CdsObject> list) {
         final int size = list.size();
@@ -222,6 +228,7 @@ public class MediaServerModel implements EntryListener {
         return true;
     }
 
+    @Nullable
     private CdsObject findNext(@Nullable final CdsObject current,
                                @ScanMode final int scanMode) {
         if (mHistoryStack.isEmpty()) {
@@ -240,6 +247,7 @@ public class MediaServerModel implements EntryListener {
         return null;
     }
 
+    @Nullable
     private CdsObject findNextSequential(@NonNull final CdsObject current,
                                          @NonNull final List<CdsObject> list) {
         final int size = list.size();
@@ -256,6 +264,7 @@ public class MediaServerModel implements EntryListener {
         return null;
     }
 
+    @Nullable
     private CdsObject findNextLoop(@NonNull final CdsObject current,
                                    @NonNull final List<CdsObject> list) {
         final int size = list.size();
@@ -276,6 +285,7 @@ public class MediaServerModel implements EntryListener {
                 && !target.hasProtectedResource();
     }
 
+    @NonNull
     private String makePath() {
         final StringBuilder sb = new StringBuilder();
         for (final ContentDirectoryEntity directory : mHistoryStack) {

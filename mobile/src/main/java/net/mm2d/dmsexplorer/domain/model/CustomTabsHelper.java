@@ -84,6 +84,7 @@ public class CustomTabsHelper extends CustomTabsServiceConnection {
         mSession = null;
     }
 
+    @Nullable
     CustomTabsSession getSession() {
         if (mClient == null) {
             mSession = null;
