@@ -5,7 +5,7 @@ apply plugin: 'me.tatarka.retrolambda'
 def applicationName = "DmsExplorer"
 def versionMajor = 0
 def versionMinor = 7
-def versionPatch = 14
+def versionPatch = 15
 
 android {
     compileSdkVersion 25
