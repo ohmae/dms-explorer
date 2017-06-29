@@ -16,6 +16,10 @@ import android.view.View;
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
  */
 public class ActivityUtils {
+    private ActivityUtils() {
+        throw new AssertionError();
+    }
+
     public static Bundle makeScaleUpAnimationBundle(@NonNull final View v) {
         return ActivityOptionsCompat.makeScaleUpAnimation(v, 0, 0, v.getWidth(), v.getHeight())
                 .toBundle();

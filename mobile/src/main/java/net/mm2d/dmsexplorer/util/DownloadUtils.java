@@ -22,6 +22,10 @@ import java.net.URL;
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
  */
 public class DownloadUtils {
+    private DownloadUtils() {
+        throw new AssertionError();
+    }
+
     public interface Callback {
         void onResult(byte[] data);
     }

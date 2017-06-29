@@ -17,9 +17,6 @@ import android.view.ViewTreeObserver.OnGlobalLayoutListener;
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
  */
 public class ViewUtils {
-    /**
-     * インスタンス化禁止。
-     */
     private ViewUtils() {
         throw new AssertionError();
     }

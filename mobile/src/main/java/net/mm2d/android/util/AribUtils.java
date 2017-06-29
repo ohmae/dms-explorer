@@ -15,6 +15,10 @@ import android.support.annotation.NonNull;
  * @author <a href="mailto:ryo@mm2d.net">大前良介(OHMAE Ryosuke)</a>
  */
 public class AribUtils {
+    private AribUtils() {
+        throw new AssertionError();
+    }
+
     /**
      * 文字列に含まれるARIB外字を通常のフォントでも表示できる文字コードに変換する。
      *

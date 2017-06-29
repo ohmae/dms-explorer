@@ -22,6 +22,10 @@ import java.lang.reflect.InvocationTargetException;
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
  */
 public class DisplaySizeUtils {
+    private DisplaySizeUtils() {
+        throw new AssertionError();
+    }
+
     /**
      * SystemUIを除いたディスプレイサイズを返す。
      *
@@ -30,6 +34,7 @@ public class DisplaySizeUtils {
      * @see Display#getSize(Point)
      */
     @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
+    @NonNull
     public static Point getSize(@NonNull final Activity activity) {
         final Display display = activity.getWindowManager().getDefaultDisplay();
         final Point point = new Point();
@@ -45,6 +50,7 @@ public class DisplaySizeUtils {
      * @see Display#getRealSize(Point)
      */
     @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
+    @NonNull
     public static Point getRealSize(@NonNull final Activity activity) {
         final Display display = activity.getWindowManager().getDefaultDisplay();
         final Point point = new Point();
@@ -70,6 +76,7 @@ public class DisplaySizeUtils {
      * @return NavigationBarのエリア
      */
     @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
+    @NonNull
     public static Point getNavigationBarArea(@NonNull final Activity activity) {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT // KitKat未満はアプリエリアと重複しない
                 || isInMultiWindowMode(activity)) {
