@@ -454,7 +454,7 @@ public class ScrubBar extends View {
         invalidate();
     }
 
-    public void setScrubBarListener(final ScrubBarListener listener) {
+    public void setScrubBarListener(@Nullable final ScrubBarListener listener) {
         mScrubBarListener = listener != null ? listener : LISTENER;
     }
 

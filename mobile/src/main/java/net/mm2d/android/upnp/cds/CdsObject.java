@@ -1322,7 +1322,7 @@ public class CdsObject implements Parcelable {
      */
     public static final Creator<CdsObject> CREATOR = new Creator<CdsObject>() {
         @Override
-        public CdsObject createFromParcel(Parcel in) {
+        public CdsObject createFromParcel(@NonNull Parcel in) {
             return new CdsObject(in);
         }
 
