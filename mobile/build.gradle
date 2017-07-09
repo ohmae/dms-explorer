@@ -73,6 +73,8 @@ dependencies {
     compile 'net.mm2d.mmupnp:mmupnp:1.1.5'
     compile 'net.opacapp:multiline-collapsingtoolbar:1.4.0'
     compile 'com.squareup.okhttp3:okhttp:3.8.1'
+    compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
+    compile 'io.reactivex.rxjava2:rxjava:2.1.1'
     testCompile 'junit:junit:4.12'
 }
 
