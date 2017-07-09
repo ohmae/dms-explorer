@@ -72,6 +72,7 @@ dependencies {
     compile 'com.google.firebase:firebase-crash:11.0.1'
     compile 'net.mm2d.mmupnp:mmupnp:1.1.5'
     compile 'net.opacapp:multiline-collapsingtoolbar:1.4.0'
+    compile 'com.squareup.okhttp3:okhttp:3.8.1'
     testCompile 'junit:junit:4.12'
 }
 
