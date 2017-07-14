@@ -20,6 +20,10 @@ import java.util.concurrent.TimeUnit;
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
  */
 public class RepeatIntroductionUtils {
+    private RepeatIntroductionUtils() {
+        throw new AssertionError();
+    }
+
     public static final long TIMEOUT = TimeUnit.SECONDS.toMillis(8);
 
     public static boolean show(final Activity activity, final View view) {

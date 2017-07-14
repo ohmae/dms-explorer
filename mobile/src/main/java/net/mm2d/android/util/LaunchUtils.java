@@ -22,6 +22,10 @@ import net.mm2d.util.Log;
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
  */
 public class LaunchUtils {
+    private LaunchUtils() {
+        throw new AssertionError();
+    }
+
     /**
      * URIを指定して暗黙的Intentによって他のアプリを起動する。
      *

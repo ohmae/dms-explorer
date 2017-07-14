@@ -21,11 +21,11 @@ Also, if the program information contains a URL, it will automatically act as a 
 
 ## Screenshots
 
-|![](doc/img/1.png)|![](doc/img/2.png)|![](doc/img/3.png)|
+|![](docs/img/1.png)|![](docs/img/2.png)|![](docs/img/3.png)|
 |-|-|-|
-|![](doc/img/4.png)|![](doc/img/5.png)|![](doc/img/6.png)|
+|![](docs/img/4.png)|![](docs/img/5.png)|![](docs/img/6.png)|
 
-|![](doc/img/7.png)|![](doc/img/8.png)|
+|![](docs/img/7.png)|![](docs/img/8.png)|
 |-|-|
 
 ## Install

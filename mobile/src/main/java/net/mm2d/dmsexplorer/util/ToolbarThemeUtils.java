@@ -20,6 +20,10 @@ import net.mm2d.dmsexplorer.Const;
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
  */
 public class ToolbarThemeUtils {
+    private ToolbarThemeUtils() {
+        throw new AssertionError();
+    }
+
     public static void setServerThemeColor(
             @NonNull final MediaServer server,
             @Nullable final Bitmap icon) {

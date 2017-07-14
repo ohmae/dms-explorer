@@ -412,8 +412,8 @@ public class ScrubBar extends View {
         return (int) (dx * mMax / width);
     }
 
-    public void setSections(int... sections) {
-        mSections = sections == null ? EMPTY_ARRAY : sections;
+    public void setSections(@Nullable int... sections) {
+        mSections = (sections == null || sections.length == 0) ? EMPTY_ARRAY : sections;
         invalidate();
     }
 
@@ -454,7 +454,7 @@ public class ScrubBar extends View {
         invalidate();
     }
 
-    public void setScrubBarListener(final ScrubBarListener listener) {
+    public void setScrubBarListener(@Nullable final ScrubBarListener listener) {
         mScrubBarListener = listener != null ? listener : LISTENER;
     }
 

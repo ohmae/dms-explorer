@@ -9,6 +9,7 @@ package net.mm2d.dmsexplorer.domain.model;
 
 import android.net.Uri;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import net.mm2d.android.upnp.cds.CdsObject;
 import net.mm2d.android.upnp.cds.Tag;
@@ -18,9 +19,13 @@ import net.mm2d.util.TextUtils;
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
  */
 public class PlaybackTargetModel {
+    @NonNull
     private final CdsObject mCdsObject;
+    @Nullable
     private Tag mTargetRes;
+    @Nullable
     private Uri mUri;
+    @Nullable
     private String mMimeType;
 
     public PlaybackTargetModel(@NonNull final CdsObject object) {
@@ -29,6 +34,7 @@ public class PlaybackTargetModel {
         updateUri();
     }
 
+    @NonNull
     public CdsObject getCdsObject() {
         return mCdsObject;
     }
@@ -49,18 +55,22 @@ public class PlaybackTargetModel {
         mMimeType = CdsObject.extractMimeTypeFromProtocolInfo(protocolInfo);
     }
 
+    @NonNull
     public String getTitle() {
         return mCdsObject.getTitle();
     }
 
+    @Nullable
     public Uri getUri() {
         return mUri;
     }
 
+    @Nullable
     public String getUriString() {
         return mUri == null ? null : mUri.toString();
     }
 
+    @Nullable
     public String getMimeType() {
         return mMimeType;
     }

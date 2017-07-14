@@ -25,6 +25,7 @@ public class CustomTabsHelper extends CustomTabsServiceConnection {
     private static final String CHROME_STABLE_PACKAGE = "com.android.chrome";
     private static final String ACTION_CUSTOM_TABS_CONNECTION =
             "android.support.customtabs.action.CustomTabsService";
+    @Nullable
     private static String sPackageNameToBind;
 
     @Nullable
@@ -53,7 +54,9 @@ public class CustomTabsHelper extends CustomTabsServiceConnection {
     @NonNull
     private final Context mContext;
     private boolean mBound;
+    @Nullable
     private CustomTabsClient mClient;
+    @Nullable
     private CustomTabsSession mSession;
 
     public CustomTabsHelper(@NonNull final Context context) {
@@ -71,7 +74,7 @@ public class CustomTabsHelper extends CustomTabsServiceConnection {
         mBound = CustomTabsClient.bindCustomTabsService(mContext, packageName, this);
     }
 
-    public void unbind() {
+    void unbind() {
         if (!mBound) {
             return;
         }
@@ -81,7 +84,8 @@ public class CustomTabsHelper extends CustomTabsServiceConnection {
         mSession = null;
     }
 
-    public CustomTabsSession getSession() {
+    @Nullable
+    CustomTabsSession getSession() {
         if (mClient == null) {
             mSession = null;
         } else if (mSession == null) {

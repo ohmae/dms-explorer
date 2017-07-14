@@ -19,7 +19,4 @@ public interface ThemeModel {
 
     @ColorInt
     int getToolbarColor(@NonNull Activity activity);
-
-    @ColorInt
-    int getStatusBarColor(@NonNull Activity activity);
 }

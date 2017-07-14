@@ -16,6 +16,10 @@ import android.view.ViewGroup.MarginLayoutParams;
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
  */
 public class ViewLayoutUtils {
+    private ViewLayoutUtils() {
+        throw new AssertionError();
+    }
+
     public static void setLayoutMarginRight(@NonNull final View view, final int margin) {
         final LayoutParams params = view.getLayoutParams();
         if (!(params instanceof MarginLayoutParams)) {

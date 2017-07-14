@@ -18,12 +18,16 @@ import android.text.TextUtils;
  * @author <a href="mailto:ryo@mm2d.net">大前良介(OHMAE Ryosuke)</a>
  */
 public class ThemeUtils {
+    private ThemeUtils() {
+        throw new AssertionError();
+    }
+
     private static final float DARKER_RATIO = 0.7f;
 
     @ColorInt
     public static int getIconColor(@NonNull final String title) {
         final char c = TextUtils.isEmpty(title) ? ' ' : title.charAt(0);
-        return Color.HSVToColor(new float[] {
+        return Color.HSVToColor(new float[]{
                 (59 * c) % 360,
                 111f / 255f,
                 237f / 255f,
@@ -33,7 +37,7 @@ public class ThemeUtils {
     @ColorInt
     public static int getVividColor(@NonNull final String title) {
         final char c = TextUtils.isEmpty(title) ? ' ' : title.charAt(0);
-        return Color.HSVToColor(new float[] {
+        return Color.HSVToColor(new float[]{
                 (59 * c) % 360,
                 185f / 255f,
                 187f / 255f,
@@ -52,7 +56,7 @@ public class ThemeUtils {
     @ColorInt
     public static int getPastelColor(@NonNull final String title) {
         final char c = TextUtils.isEmpty(title) ? ' ' : title.charAt(0);
-        return Color.HSVToColor(new float[] {
+        return Color.HSVToColor(new float[]{
                 (59 * c) % 360,
                 124f / 255f,
                 210f / 255f,
@@ -62,7 +66,7 @@ public class ThemeUtils {
     @ColorInt
     public static int getDeepColor(@NonNull final String title) {
         final char c = TextUtils.isEmpty(title) ? ' ' : title.charAt(0);
-        return Color.HSVToColor(new float[] {
+        return Color.HSVToColor(new float[]{
                 (59 * c) % 360,
                 192f / 255f,
                 96f / 255f,

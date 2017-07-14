@@ -14,6 +14,7 @@ import net.mm2d.android.upnp.cds.BrowseResult;
 import net.mm2d.android.upnp.cds.BrowseResult.StatusListener;
 import net.mm2d.android.upnp.cds.CdsObject;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -23,13 +24,19 @@ import java.util.List;
 public class ContentDirectoryEntity implements StatusListener {
     private static final String ROOT_OBJECT_ID = "0";
     private static final String ROOT_TITLE = "";
+    @NonNull
     private final String mParentId;
+    @NonNull
     private final String mParentTitle;
+    @Nullable
     private CdsObject mSelectedObject;
+    @NonNull
     private List<CdsObject> mList = Collections.emptyList();
+    @Nullable
     private BrowseResult mBrowseResult;
     private static final EntryListener ENTRY_LISTENER = (result, inProgress) -> {
     };
+    @NonNull
     private EntryListener mEntryListener = ENTRY_LISTENER;
 
     public interface EntryListener {
@@ -53,10 +60,12 @@ public class ContentDirectoryEntity implements StatusListener {
         }
     }
 
+    @NonNull
     public String getParentId() {
         return mParentId;
     }
 
+    @NonNull
     public String getParentTitle() {
         return mParentTitle;
     }
@@ -65,10 +74,12 @@ public class ContentDirectoryEntity implements StatusListener {
         return mBrowseResult == null || !mBrowseResult.isDone();
     }
 
+    @NonNull
     public List<CdsObject> getList() {
         return mList;
     }
 
+    @Nullable
     public ContentDirectoryEntity enterChild(@NonNull final CdsObject object) {
         if (!mList.contains(object)) {
             return null;
@@ -88,6 +99,7 @@ public class ContentDirectoryEntity implements StatusListener {
         mSelectedObject = object;
     }
 
+    @Nullable
     public CdsObject getSelectedObject() {
         return mSelectedObject;
     }
@@ -113,13 +125,13 @@ public class ContentDirectoryEntity implements StatusListener {
 
     @Override
     public void onCompletion(@NonNull final BrowseResult result) {
-        mList = result.getProgress();
+        mList = new ArrayList<>(result.getProgress());
         mEntryListener.onUpdate(mList, false);
     }
 
     @Override
     public void onProgressUpdate(@NonNull final BrowseResult result) {
-        mList = result.getProgress();
+        mList = new ArrayList<>(result.getProgress());
         mEntryListener.onUpdate(mList, true);
     }
 }
