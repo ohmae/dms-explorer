@@ -1,0 +1,12 @@
+{
+  "mobile": {
+    "versionName": "0.7.15",
+    "versionCode": 715,
+    "targetInclude": [
+      0,
+      714
+    ],
+    "targetExclude": [
+    ]
+  }
+}
