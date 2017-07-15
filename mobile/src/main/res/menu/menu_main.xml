@@ -7,4 +7,11 @@
         android:title="@string/action_settings"
         app:showAsAction="never"
         />
+    <item
+        android:id="@+id/action_update"
+        android:icon="@drawable/ic_info_notify"
+        android:title="@string/action_update"
+        android:visible="false"
+        app:showAsAction="ifRoom"
+        />
 </menu>

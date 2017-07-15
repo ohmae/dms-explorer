@@ -17,8 +17,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.transition.Transition;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewAnimationUtils;
 
@@ -27,6 +25,7 @@ import net.mm2d.dmsexplorer.Const;
 import net.mm2d.dmsexplorer.R;
 import net.mm2d.dmsexplorer.Repository;
 import net.mm2d.dmsexplorer.databinding.ServerDetailFragmentBinding;
+import net.mm2d.dmsexplorer.view.base.BaseActivity;
 import net.mm2d.dmsexplorer.viewmodel.ServerDetailFragmentModel;
 
 
@@ -49,6 +48,10 @@ public class ServerDetailActivity extends BaseActivity {
     }
 
     private ServerDetailFragmentBinding mBinding;
+
+    public ServerDetailActivity() {
+        super(true);
+    }
 
     @Override
     protected void onCreate(@Nullable final Bundle savedInstanceState) {
@@ -105,22 +108,5 @@ public class ServerDetailActivity extends BaseActivity {
 
         ViewAnimationUtils.createCircularReveal(background,
                 (int) cx, (int) cy, iconRadius, (float) Math.sqrt(cx * cx + cy * cy)).start();
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(@NonNull final Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(@NonNull final MenuItem item) {
-        final int id = item.getItemId();
-        switch (id) {
-            case R.id.action_settings:
-                startActivity(SettingsActivity.makeIntent(this));
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
     }
 }

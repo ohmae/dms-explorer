@@ -7,16 +7,14 @@
 
 package net.mm2d.dmsexplorer.view.dialog;
 
-import android.annotation.TargetApi;
+import android.app.Activity;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.Context;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
-import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
@@ -41,6 +39,7 @@ public class WebViewDialog extends DialogFragment {
      * @param url   ダイアログに表示するコンテンツを指すURL
      * @return インスタンス
      */
+    @NonNull
     public static WebViewDialog newInstance(@NonNull final String title, @NonNull final String url) {
         final Bundle args = new Bundle();
         args.putString(KEY_TITLE, title);
@@ -48,6 +47,10 @@ public class WebViewDialog extends DialogFragment {
         final WebViewDialog instance = new WebViewDialog();
         instance.setArguments(args);
         return instance;
+    }
+
+    public static void show(@NonNull final Activity activity, @NonNull final String title, @NonNull final String url) {
+        newInstance(title, url).show(activity.getFragmentManager(), "");
     }
 
     @NonNull
@@ -81,12 +84,6 @@ public class WebViewDialog extends DialogFragment {
         public boolean shouldOverrideUrlLoading(final WebView view, final String url) {
             Repository.get().getOpenUriModel().openUri(mContext, url);
             return true;
-        }
-
-        @TargetApi(Build.VERSION_CODES.N)
-        @Override
-        public boolean shouldOverrideUrlLoading(final WebView view, final WebResourceRequest request) {
-            return shouldOverrideUrlLoading(view, request.getUrl().toString());
         }
     }
 }

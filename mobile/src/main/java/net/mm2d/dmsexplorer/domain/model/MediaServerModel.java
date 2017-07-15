@@ -107,7 +107,7 @@ public class MediaServerModel implements EntryListener {
         }
         mExploreListener.onUpdate(Collections.emptyList(), true);
 
-        mHandler.post(() ->{
+        mHandler.post(() -> {
             final ContentDirectoryEntity directory = mHistoryStack.pollFirst();
             directory.terminate();
             mPath = makePath();

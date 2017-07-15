@@ -21,8 +21,6 @@ import android.support.v7.widget.RecyclerView;
 import android.transition.Slide;
 import android.view.Gravity;
 import android.view.KeyEvent;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 
 import net.mm2d.android.upnp.cds.CdsObject;
@@ -32,6 +30,7 @@ import net.mm2d.dmsexplorer.R;
 import net.mm2d.dmsexplorer.Repository;
 import net.mm2d.dmsexplorer.databinding.ContentListActivityBinding;
 import net.mm2d.dmsexplorer.util.ItemSelectUtils;
+import net.mm2d.dmsexplorer.view.base.BaseActivity;
 import net.mm2d.dmsexplorer.viewmodel.ContentListActivityModel;
 import net.mm2d.dmsexplorer.viewmodel.ContentListActivityModel.CdsSelectListener;
 
@@ -43,10 +42,6 @@ import net.mm2d.dmsexplorer.viewmodel.ContentListActivityModel.CdsSelectListener
 public class ContentListActivity extends BaseActivity implements CdsSelectListener {
     private static final String KEY_SCROLL_POSITION = "KEY_SCROLL_POSITION";
     private static final String KEY_SCROLL_OFFSET = "KEY_SCROLL_OFFSET";
-    private boolean mTwoPane;
-    private Fragment mFragment;
-    private ContentListActivityBinding mBinding;
-    private ContentListActivityModel mModel;
 
     /**
      * このActivityを起動するためのIntentを作成する。
@@ -59,6 +54,15 @@ public class ContentListActivity extends BaseActivity implements CdsSelectListen
     @NonNull
     public static Intent makeIntent(@NonNull final Context context) {
         return new Intent(context, ContentListActivity.class);
+    }
+
+    private boolean mTwoPane;
+    private Fragment mFragment;
+    private ContentListActivityBinding mBinding;
+    private ContentListActivityModel mModel;
+
+    public ContentListActivity() {
+        super(true);
     }
 
     @Override
@@ -179,23 +183,6 @@ public class ContentListActivity extends BaseActivity implements CdsSelectListen
             return true;
         }
         return super.onKeyLongPress(keyCode, event);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(@NonNull final Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(@NonNull final MenuItem item) {
-        final int id = item.getItemId();
-        switch (id) {
-            case R.id.action_settings:
-                startActivity(SettingsActivity.makeIntent(this));
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
     }
 
     private void startDetailActivity(@NonNull final View v) {
