@@ -17,6 +17,7 @@ import net.mm2d.dmsexplorer.Repository;
 import net.mm2d.dmsexplorer.databinding.MovieActivityBinding;
 import net.mm2d.dmsexplorer.util.FullscreenHelper;
 import net.mm2d.dmsexplorer.util.RepeatIntroductionUtils;
+import net.mm2d.dmsexplorer.view.base.BaseActivity;
 import net.mm2d.dmsexplorer.viewmodel.MovieActivityModel;
 import net.mm2d.dmsexplorer.viewmodel.MovieActivityModel.OnSwitchListener;
 

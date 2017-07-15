@@ -26,8 +26,6 @@ import android.transition.Slide;
 import android.transition.Transition;
 import android.util.Pair;
 import android.view.Gravity;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 
 import net.mm2d.android.util.ActivityUtils;
@@ -38,6 +36,7 @@ import net.mm2d.dmsexplorer.R;
 import net.mm2d.dmsexplorer.Repository;
 import net.mm2d.dmsexplorer.databinding.ServerListActivityBinding;
 import net.mm2d.dmsexplorer.domain.model.ControlPointModel;
+import net.mm2d.dmsexplorer.view.base.BaseActivity;
 import net.mm2d.dmsexplorer.viewmodel.ServerListActivityModel;
 import net.mm2d.dmsexplorer.viewmodel.ServerListActivityModel.ServerSelectListener;
 
@@ -62,6 +61,10 @@ public class ServerListActivity extends BaseActivity
             = Repository.get().getControlPointModel();
     private Fragment mFragment;
     private ServerListActivityBinding mBinding;
+
+    public ServerListActivity() {
+        super(true);
+    }
 
     @Override
     public void onSelect(@NonNull final View v, boolean alreadySelected) {
@@ -264,21 +267,5 @@ public class ServerListActivity extends BaseActivity
     protected void onStop() {
         super.onStop();
         mControlPointModel.searchStop();
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(@NonNull final Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(@NonNull final MenuItem item) {
-        final int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            startActivity(SettingsActivity.makeIntent(this));
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
     }
 }

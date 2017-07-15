@@ -3,8 +3,6 @@
     <string name="app_name">DMS Explorer</string>
     <string name="title_device_select">Device Select</string>
     <string name="no_available_network">There is no available network connection.</string>
-    <string name="title_dialog_select_resource">Resource</string>
-    <string name="title_dialog_select_device">Playback device</string>
     <string name="toast_not_support_drm">This app does not support playback of DRM content.</string>
     <string name="toast_command_error_occurred">Error occurred</string>
     <string name="toast_download_error_occurred">Error occurred</string>
@@ -33,6 +31,7 @@
     <string name="prop_long_description">Long Description:</string>
     <string name="prop_chapter_info">Chapter Info:</string>
     <string name="action_settings">Settings</string>
+    <string name="action_update">Update</string>
     <string name="title_activity_settings">Settings</string>
     <string name="pref_header_playback">Playback</string>
     <string name="pref_message_launch_app_on">Play by this app.</string>
@@ -59,4 +58,10 @@
     <string name="pref_message_source_code">Source code of this app is published under the MIT license</string>
     <string name="repeat_introduction_title">Repeat setting</string>
     <string name="repeat_introduction_subtitle">You can select the repeat mode.</string>
+    <string name="dialog_title_select_resource">Resource</string>
+    <string name="dialog_title_select_device">Playback device</string>
+    <string name="dialog_title_update">Update</string>
+    <string name="dialog_message_update">A newer Version is available. Version up is recommended.</string>
+    <string name="dialog_button_ok">OK</string>
+    <string name="dialog_button_cancel">Cancel</string>
 </resources>

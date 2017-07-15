@@ -44,8 +44,7 @@ public class ItemSelectUtils {
             play(activity, 0);
             return;
         }
-        final SelectResourceDialog dialog = SelectResourceDialog.newInstance();
-        dialog.show(activity.getFragmentManager(), "");
+        SelectResourceDialog.show(activity);
     }
 
     public static void play(@NonNull final Activity activity, final int index) {
@@ -92,8 +91,7 @@ public class ItemSelectUtils {
     }
 
     public static void send(@NonNull final Activity activity) {
-        final SelectRendererDialog dialog = SelectRendererDialog.newInstance();
-        dialog.show(activity.getFragmentManager(), "");
+        SelectRendererDialog.show(activity);
     }
 
     public static void sendSelectedRenderer(@NonNull final Context context) {

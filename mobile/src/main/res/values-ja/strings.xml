@@ -3,8 +3,6 @@
     <string name="app_name">DMSエクスプローラー</string>
     <string name="title_device_select">機器選択</string>
     <string name="no_available_network">利用可能なネットワーク接続がありません</string>
-    <string name="title_dialog_select_resource">リソース選択</string>
-    <string name="title_dialog_select_device">再生機器選択</string>
     <string name="toast_not_support_drm">著作権保護されたコンテンツの再生には対応していません</string>
     <string name="toast_command_error_occurred">エラーが発生しました</string>
     <string name="toast_download_error_occurred">エラーが発生しました</string>
@@ -33,6 +31,7 @@
     <string name="prop_long_description">詳細情報:</string>
     <string name="prop_chapter_info">チャプター情報:</string>
     <string name="action_settings">設定</string>
+    <string name="action_update">アップデート</string>
     <string name="title_activity_settings">設定</string>
     <string name="pref_header_playback">再生</string>
     <string name="pref_message_launch_app_on">このアプリで開きます</string>
@@ -59,4 +58,10 @@
     <string name="pref_message_source_code">本アプリのソースコードはMITライセンスで公開しています</string>
     <string name="repeat_introduction_title">連続再生設定</string>
     <string name="repeat_introduction_subtitle">連続再生方法を選択できます</string>
+    <string name="dialog_title_select_resource">リソース選択</string>
+    <string name="dialog_title_select_device">再生機器選択</string>
+    <string name="dialog_title_update">アップデートのお知らせ</string>
+    <string name="dialog_message_update">新しいバージョンが利用できます。バージョンアップをおすすめします。</string>
+    <string name="dialog_button_ok">OK</string>
+    <string name="dialog_button_cancel">キャンセル</string>
 </resources>

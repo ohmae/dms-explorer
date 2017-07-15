@@ -9,6 +9,8 @@ package net.mm2d.dmsexplorer.settings;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.text.TextUtils;
 
 /**
  * SharedPreferencesに覚えさせる設定値を集中管理するクラス。
@@ -125,5 +127,58 @@ public class Settings {
      */
     public boolean useCustomTabs() {
         return mStorage.getBoolean(Key.USE_CUSTOM_TABS, true);
+    }
+
+    /**
+     * アップデートファイルを取得した時刻を返す。
+     *
+     * @return アップデートファイルを取得した時刻
+     */
+    public long getUpdateFetchTime() {
+        return mStorage.getLong(Key.UPDATE_FETCH_TIME, 0);
+    }
+
+    /**
+     * アップデートファイルを取得した時刻を更新する。
+     */
+    public void setUpdateFetchTime() {
+        mStorage.putLong(Key.UPDATE_FETCH_TIME, System.currentTimeMillis());
+    }
+
+    /**
+     * アップデートが利用できるか否かを返す。
+     *
+     * @return アップデートが利用できるときtrue
+     */
+    public boolean isUpdateAvailable() {
+        return mStorage.getBoolean(Key.UPDATE_AVAILABLE, false);
+    }
+
+    /**
+     * アップデートが利用できるか否かを設定する。
+     *
+     * @param available アップデートが利用できるときtrue
+     */
+    public void setUpdateAvailable(final boolean available) {
+        mStorage.putBoolean(Key.UPDATE_AVAILABLE, available);
+    }
+
+    /**
+     * update.jsonの文字列を返す。
+     *
+     * @return update.jsonの文字列
+     */
+    @NonNull
+    public String getUpdateJson() {
+        return mStorage.getString(Key.UPDATE_JSON, "");
+    }
+
+    /**
+     * update.jsonの文字列を設定する。
+     *
+     * @param json update.jsonの文字列
+     */
+    public void setUpdateJson(@Nullable final String json) {
+        mStorage.putString(Key.UPDATE_JSON, TextUtils.isEmpty(json) ? "" : json);
     }
 }

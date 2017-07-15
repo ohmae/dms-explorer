@@ -18,6 +18,7 @@ import android.support.v7.app.ActionBar;
 import net.mm2d.dmsexplorer.R;
 import net.mm2d.dmsexplorer.Repository;
 import net.mm2d.dmsexplorer.databinding.DmcActivityBinding;
+import net.mm2d.dmsexplorer.view.base.BaseActivity;
 import net.mm2d.dmsexplorer.viewmodel.DmcActivityModel;
 
 /**

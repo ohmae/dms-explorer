@@ -5,7 +5,7 @@
  * http://opensource.org/licenses/MIT
  */
 
-package net.mm2d.dmsexplorer.view;
+package net.mm2d.dmsexplorer.view.base;
 
 import android.content.res.Configuration;
 import android.os.Build;

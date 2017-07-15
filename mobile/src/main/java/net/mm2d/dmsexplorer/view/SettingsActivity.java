@@ -26,6 +26,7 @@ import net.mm2d.dmsexplorer.domain.model.CustomTabsHelper;
 import net.mm2d.dmsexplorer.domain.model.OpenUriCustomTabsModel;
 import net.mm2d.dmsexplorer.domain.model.OpenUriModel;
 import net.mm2d.dmsexplorer.settings.Key;
+import net.mm2d.dmsexplorer.view.base.AppCompatPreferenceActivity;
 import net.mm2d.dmsexplorer.view.dialog.WebViewDialog;
 
 import java.util.List;
@@ -48,6 +49,10 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
     @NonNull
     public static Intent makeIntent(@NonNull Context context) {
         return new Intent(context, SettingsActivity.class);
+    }
+
+    public static void start(@NonNull Context context) {
+        context.startActivity(makeIntent(context));
     }
 
     private static boolean isXLargeTablet(@NonNull Context context) {
@@ -135,7 +140,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             addPreferencesFromResource(R.xml.pref_information);
             findPreference(Key.PLAY_STORE.name()).setOnPreferenceClickListener(preference -> {
                 final Context context = preference.getContext();
-                LaunchUtils.openUri(context, "market://details?id=" + context.getPackageName());
+                LaunchUtils.openUri(context, "market://details?id=net.mm2d.dmsexplorer");
                 return true;
             });
             findPreference(Key.VERSION_NUMBER.name()).setSummary(BuildConfig.VERSION_NAME);
@@ -144,10 +149,9 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                 return true;
             });
             findPreference(Key.LICENSE.name()).setOnPreferenceClickListener(preference -> {
-                final WebViewDialog dialog = WebViewDialog.newInstance(
+                WebViewDialog.show(getActivity(),
                         getString(R.string.pref_title_license),
                         "file:///android_asset/license.html");
-                dialog.show(getFragmentManager(), "");
                 return true;
             });
         }
