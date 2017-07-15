@@ -62,8 +62,8 @@ public enum RepeatMode {
     /**
      * コンストラクタ。
      *
-     * @param order トグル順序
-     * @param iconId モードアイコンのID
+     * @param order     トグル順序
+     * @param iconId    モードアイコンのID
      * @param messageId Toastで表示するメッセージのID
      */
     RepeatMode(int order, @DrawableRes int iconId, @StringRes int messageId) {

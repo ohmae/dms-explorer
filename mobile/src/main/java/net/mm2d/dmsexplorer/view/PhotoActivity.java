@@ -20,6 +20,7 @@ import net.mm2d.dmsexplorer.Repository;
 import net.mm2d.dmsexplorer.databinding.PhotoActivityBinding;
 import net.mm2d.dmsexplorer.domain.model.MediaServerModel;
 import net.mm2d.dmsexplorer.util.FullscreenHelper;
+import net.mm2d.dmsexplorer.view.base.BaseActivity;
 import net.mm2d.dmsexplorer.view.view.ViewPagerAdapter;
 import net.mm2d.dmsexplorer.viewmodel.PhotoActivityModel;
 

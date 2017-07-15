@@ -7,6 +7,7 @@
 
 package net.mm2d.dmsexplorer.view.dialog;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.os.Bundle;
@@ -36,8 +37,13 @@ public class SelectResourceDialog extends DialogFragment {
      *
      * @return インスタンス。
      */
+    @NonNull
     public static SelectResourceDialog newInstance() {
         return new SelectResourceDialog();
+    }
+
+    public static void show(@NonNull final Activity activity) {
+        newInstance().show(activity.getFragmentManager(), "");
     }
 
     @NonNull
@@ -46,7 +52,7 @@ public class SelectResourceDialog extends DialogFragment {
         final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         final PlaybackTargetModel targetModel = Repository.get().getPlaybackTargetModel();
         final CdsObject object = targetModel.getCdsObject();
-        builder.setTitle(R.string.title_dialog_select_resource);
+        builder.setTitle(R.string.dialog_title_select_resource);
         final String[] choices = makeChoices(object);
         builder.setItems(choices,
                 (dialog, which) -> ItemSelectUtils.play(getActivity(), which));

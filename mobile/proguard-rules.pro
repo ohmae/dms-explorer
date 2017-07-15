@@ -15,8 +15,15 @@
 #-keepclassmembers class fqcn.of.javascript.interface.for.webview {
 #   public *;
 #}
+
+# for Retrolambda
 -dontwarn java.lang.invoke.*
 -dontwarn **$$Lambda$*
+
+# for OkHttp3
+-dontwarn okio.**
+-dontwarn javax.annotation.Nullable
+-dontwarn javax.annotation.ParametersAreNonnullByDefault
 
 -keepattributes SourceFile,LineNumberTable
 -renamesourcefileattribute SourceFile

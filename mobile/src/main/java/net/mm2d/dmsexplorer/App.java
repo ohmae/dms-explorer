@@ -11,6 +11,7 @@ import android.app.Application;
 
 import net.mm2d.dmsexplorer.domain.AppRepository;
 import net.mm2d.dmsexplorer.settings.Settings;
+import net.mm2d.dmsexplorer.util.update.UpdateChecker;
 import net.mm2d.util.Log;
 
 /**
@@ -22,9 +23,13 @@ public class App extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        setUpDebugLog();
         Settings.initialize(this);
         Repository.set(new AppRepository(this));
+        new UpdateChecker(this).check();
+    }
 
+    private void setUpDebugLog() {
         if (BuildConfig.DEBUG) {
             Log.setAppendCaller(true);
             Log.setLogLevel(Log.VERBOSE);

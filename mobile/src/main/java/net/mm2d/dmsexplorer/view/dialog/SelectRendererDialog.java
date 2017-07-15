@@ -7,6 +7,7 @@
 
 package net.mm2d.dmsexplorer.view.dialog;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.databinding.DataBindingUtil;
@@ -34,8 +35,13 @@ import java.util.List;
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
  */
 public class SelectRendererDialog extends DialogFragment {
+    @NonNull
     public static SelectRendererDialog newInstance() {
         return new SelectRendererDialog();
+    }
+
+    public static void show(@NonNull final Activity activity) {
+        newInstance().show(activity.getFragmentManager(), "");
     }
 
     @NonNull
@@ -61,7 +67,7 @@ public class SelectRendererDialog extends DialogFragment {
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         binding.recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
         binding.recyclerView.setAdapter(adapter);
-        builder.setTitle(R.string.title_dialog_select_device);
+        builder.setTitle(R.string.dialog_title_select_device);
         builder.setView(binding.getRoot());
         return builder.create();
     }
