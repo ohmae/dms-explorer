@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
+import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
@@ -61,23 +62,15 @@ public class WebViewActivity extends BaseActivity {
         final WebView webView = binding.webView;
         webView.getSettings().setSupportZoom(false);
         webView.getSettings().setDisplayZoomControls(false);
-        webView.setWebViewClient(new AppWebViewClient(this));
+        webView.setWebViewClient(new WebViewClient() {
+            @SuppressWarnings("deprecation")
+            @Override
+            public boolean shouldOverrideUrlLoading(final WebView view, final String url) {
+                Repository.get().getOpenUriModel().openUri(WebViewActivity.this, url);
+                return true;
+            }
+        });
+        webView.setWebChromeClient(new WebChromeClient());
         webView.loadUrl(intent.getStringExtra(KEY_URL));
-    }
-
-    private static class AppWebViewClient extends WebViewClient {
-        @NonNull
-        private final Context mContext;
-
-        AppWebViewClient(@NonNull Context context) {
-            mContext = context;
-        }
-
-        @SuppressWarnings("deprecation")
-        @Override
-        public boolean shouldOverrideUrlLoading(final WebView view, final String url) {
-            Repository.get().getOpenUriModel().openUri(mContext, url);
-            return true;
-        }
     }
 }
