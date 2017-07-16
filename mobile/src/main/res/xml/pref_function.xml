@@ -13,4 +13,25 @@
             android:summaryOff="@string/pref_message_open_url_off"
             />
     </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/pref_category_tap_and_long_tap_operation"
+        >
+
+        <SwitchPreference
+            android:defaultValue="true"
+            android:key="SHOULD_SHOW_DEVICE_DETAIL_ON_TAP"
+            android:title="@string/pref_title_device_detail_on_tap"
+            android:summaryOn="@string/pref_message_device_detail_on_tap_on"
+            android:summaryOff="@string/pref_message_device_detail_on_tap_off"
+            />
+
+        <SwitchPreference
+            android:defaultValue="true"
+            android:key="SHOULD_SHOW_CONTENT_DETAIL_ON_TAP"
+            android:title="@string/pref_title_content_detail_on_tap"
+            android:summaryOn="@string/pref_message_content_detail_on_tap_on"
+            android:summaryOff="@string/pref_message_content_detail_on_tap_off"
+            />
+    </PreferenceCategory>
 </PreferenceScreen>

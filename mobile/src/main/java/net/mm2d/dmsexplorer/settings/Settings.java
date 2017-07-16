@@ -130,6 +130,24 @@ public class Settings {
     }
 
     /**
+     * デバイスリストのシングルタップで詳細を表示するか否か。
+     *
+     * @return シングルタップで詳細を表示する場合true
+     */
+    public boolean shouldShowDeviceDetailOnTap() {
+        return mStorage.getBoolean(Key.SHOULD_SHOW_DEVICE_DETAIL_ON_TAP, true);
+    }
+
+    /**
+     * コンテンツリストのシングルタップで詳細を表示するか否か。
+     *
+     * @return シングルタップで詳細を表示する場合true
+     */
+    public boolean shouldShowContentDetailOnTap() {
+        return mStorage.getBoolean(Key.SHOULD_SHOW_CONTENT_DETAIL_ON_TAP, true);
+    }
+
+    /**
      * アップデートファイルを取得した時刻を返す。
      *
      * @return アップデートファイルを取得した時刻

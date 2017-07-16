@@ -47,6 +47,14 @@
     <string name="pref_title_open_url">Open URL link</string>
     <string name="pref_message_open_url_on">Use Chrome custom tabs</string>
     <string name="pref_message_open_url_off">Launch Browser app</string>
+    <string name="pref_category_tap_and_long_tap_operation">Tap and Long tap operation</string>
+    <string name="pref_title_device_detail_on_tap">Device Select</string>
+    <string name="pref_message_device_detail_on_tap_on">Tap: Show the device detail\nLong tap : Go to top directory</string>
+    <string name="pref_message_device_detail_on_tap_off">Tap: Go to top directory\nLong tap : Show the device detail</string>
+    <string name="pref_title_content_detail_on_tap">Content Select</string>
+    <string name="pref_message_content_detail_on_tap_on">Tap: Show the content detail\nLong tap : Launch the player</string>
+    <string name="pref_message_content_detail_on_tap_off">Tap: Launch the player\nLong tap : Show the content detail</string>
+
     <string name="pref_header_information">Information</string>
     <string name="pref_title_play_store">Google Play</string>
     <string name="pref_message_play_store">I am waiting for evaluation, comments and requests</string>

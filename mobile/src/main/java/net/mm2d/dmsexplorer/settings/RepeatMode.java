@@ -20,6 +20,8 @@ import java.util.Map;
 /**
  * 連続再生モードを表現するenum。
  *
+ * <p>設定としてname()の文字列を保存しているため、シンボル名の変更を行う場合はマイグレーション処理必須
+ *
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
  */
 public enum RepeatMode {
