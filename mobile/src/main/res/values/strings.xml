@@ -72,5 +72,4 @@
     <string name="dialog_message_update">A newer Version is available. Version up is recommended.</string>
     <string name="dialog_button_ok">OK</string>
     <string name="dialog_button_cancel">Cancel</string>
-    <string name="title_activity_web_view">WebViewActivity</string>
 </resources>

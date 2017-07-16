@@ -76,8 +76,7 @@
         </activity>
         <activity
             android:name=".view.WebViewActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:label="@string/title_activity_web_view"
+            android:configChanges="keyboardHidden|orientation|screenSize"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
 
