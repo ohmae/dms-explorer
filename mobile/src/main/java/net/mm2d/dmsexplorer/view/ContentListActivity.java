@@ -7,42 +7,22 @@
 
 package net.mm2d.dmsexplorer.view;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-import android.databinding.DataBindingUtil;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.Fragment;
-import android.support.v7.widget.RecyclerView;
-import android.transition.Slide;
-import android.view.Gravity;
 import android.view.KeyEvent;
-import android.view.View;
 
-import net.mm2d.android.upnp.cds.CdsObject;
-import net.mm2d.android.util.ActivityUtils;
-import net.mm2d.android.util.ViewUtils;
-import net.mm2d.dmsexplorer.R;
-import net.mm2d.dmsexplorer.Repository;
-import net.mm2d.dmsexplorer.databinding.ContentListActivityBinding;
-import net.mm2d.dmsexplorer.util.ItemSelectUtils;
 import net.mm2d.dmsexplorer.view.base.BaseActivity;
-import net.mm2d.dmsexplorer.viewmodel.ContentListActivityModel;
-import net.mm2d.dmsexplorer.viewmodel.ContentListActivityModel.CdsSelectListener;
+import net.mm2d.dmsexplorer.view.delegate.ContentListActivityDelegate;
 
 /**
  * MediaServerのContentDirectoryを表示、操作するActivity。
  *
  * @author <a href="mailto:ryo@mm2d.net">大前良介(OHMAE Ryosuke)</a>
  */
-public class ContentListActivity extends BaseActivity implements CdsSelectListener {
-    private static final String KEY_SCROLL_POSITION = "KEY_SCROLL_POSITION";
-    private static final String KEY_SCROLL_OFFSET = "KEY_SCROLL_OFFSET";
-
+public class ContentListActivity extends BaseActivity {
     /**
      * このActivityを起動するためのIntentを作成する。
      *
@@ -56,120 +36,34 @@ public class ContentListActivity extends BaseActivity implements CdsSelectListen
         return new Intent(context, ContentListActivity.class);
     }
 
-    private boolean mTwoPane;
-    private Fragment mFragment;
-    private ContentListActivityBinding mBinding;
-    private ContentListActivityModel mModel;
+    private ContentListActivityDelegate mDelegate;
 
     public ContentListActivity() {
         super(true);
     }
 
     @Override
-    public void onSelect(@NonNull final View v,
-                         @NonNull final CdsObject object,
-                         final boolean alreadySelected) {
-        if (mTwoPane) {
-            if (alreadySelected) {
-                if (object.hasProtectedResource()) {
-                    Snackbar.make(v, R.string.toast_not_support_drm, Snackbar.LENGTH_LONG).show();
-                    return;
-                }
-                ItemSelectUtils.play(this, 0);
-                return;
-            }
-            setDetailFragment(true);
-        } else {
-            startDetailActivity(v);
-        }
-    }
-
-    @Override
-    public void onUnselect() {
-        removeDetailFragment();
-    }
-
-    @Override
-    public void onDetermine(@NonNull final View v,
-                            @NonNull final CdsObject object,
-                            final boolean alreadySelected) {
-        if (object.hasProtectedResource()) {
-            if (!alreadySelected) {
-                setDetailFragment(true);
-            }
-            Snackbar.make(v, R.string.toast_not_support_drm, Snackbar.LENGTH_LONG).show();
-            return;
-        }
-        ItemSelectUtils.play(this, 0);
-    }
-
-    @Override
     protected void onCreate(@Nullable final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mBinding = DataBindingUtil.setContentView(this, R.layout.content_list_activity);
-        final Repository repository = Repository.get();
-        try {
-            mModel = new ContentListActivityModel(this, repository, this);
-            mBinding.setModel(mModel);
-        } catch (final IllegalStateException ignored) {
-            finish();
-            return;
-        }
-        mTwoPane = mBinding.cdsDetailContainer != null;
-
-        setSupportActionBar(mBinding.toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-        if (savedInstanceState != null) {
-            restoreScroll(savedInstanceState);
-        }
-        repository.getThemeModel().setThemeColor(this, mModel.toolbarBackground, 0);
-    }
-
-    private void restoreScroll(@NonNull final Bundle savedInstanceState) {
-        final int position = savedInstanceState.getInt(KEY_SCROLL_POSITION, 0);
-        final int offset = savedInstanceState.getInt(KEY_SCROLL_OFFSET, 0);
-        if (position == 0 && offset == 0) {
-            return;
-        }
-        final RecyclerView recyclerView = mBinding.recyclerView;
-        ViewUtils.execOnLayout(recyclerView, () -> {
-            recyclerView.scrollToPosition(position);
-            recyclerView.post(() -> recyclerView.scrollBy(0, offset));
-        });
+        mDelegate = ContentListActivityDelegate.create(this);
+        mDelegate.onCreate(savedInstanceState);
     }
 
     @Override
     protected void onSaveInstanceState(@NonNull final Bundle outState) {
         super.onSaveInstanceState(outState);
-        saveScroll(outState);
-    }
-
-    private void saveScroll(@NonNull final Bundle outState) {
-        final RecyclerView recyclerView = mBinding.recyclerView;
-        if (recyclerView.getChildCount() == 0) {
-            return;
-        }
-        final View view = recyclerView.getChildAt(0);
-        outState.putInt(KEY_SCROLL_POSITION, recyclerView.getChildAdapterPosition(view));
-        outState.putInt(KEY_SCROLL_OFFSET, -view.getTop());
+        mDelegate.onSaveInstanceState(outState);
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        if (mModel == null) {
-            return;
-        }
-        mModel.syncSelectedObject();
-        if (mModel.isItemSelected()) {
-            setDetailFragment(false);
-        }
+        mDelegate.onStart();
     }
 
     @Override
     public void onBackPressed() {
-        if (mModel.onBackPressed()) {
+        if (mDelegate.onBackPressed()) {
             return;
         }
         super.onBackPressed();
@@ -177,44 +71,10 @@ public class ContentListActivity extends BaseActivity implements CdsSelectListen
 
     @Override
     public boolean onKeyLongPress(final int keyCode, final KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
-            mModel.terminate();
+        if (mDelegate.onKeyLongPress(keyCode, event)) {
             super.onBackPressed();
             return true;
         }
         return super.onKeyLongPress(keyCode, event);
-    }
-
-    private void startDetailActivity(@NonNull final View v) {
-        final Intent intent = ContentDetailActivity.makeIntent(v.getContext());
-        startActivity(intent, ActivityUtils.makeScaleUpAnimationBundle(v));
-    }
-
-    private void setDetailFragment(final boolean animate) {
-        if (!mTwoPane) {
-            return;
-        }
-        mFragment = ContentDetailFragment.newInstance();
-        if (animate && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            @SuppressLint("RtlHardcoded")
-            final int gravity = Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1
-                    ? Gravity.START : Gravity.LEFT;
-            mFragment.setEnterTransition(new Slide(gravity));
-        }
-        getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.cds_detail_container, mFragment)
-                .commitAllowingStateLoss();
-    }
-
-    private void removeDetailFragment() {
-        if (!mTwoPane || mFragment == null) {
-            return;
-        }
-        getSupportFragmentManager()
-                .beginTransaction()
-                .remove(mFragment)
-                .commitAllowingStateLoss();
-        mFragment = null;
     }
 }

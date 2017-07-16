@@ -29,6 +29,7 @@ import net.mm2d.dmsexplorer.R;
 import net.mm2d.dmsexplorer.Repository;
 import net.mm2d.dmsexplorer.domain.model.MediaServerModel;
 import net.mm2d.dmsexplorer.domain.model.MediaServerModel.ExploreListener;
+import net.mm2d.dmsexplorer.settings.Settings;
 import net.mm2d.dmsexplorer.util.ToolbarThemeUtils;
 import net.mm2d.dmsexplorer.view.adapter.ContentListAdapter;
 import net.mm2d.dmsexplorer.view.animator.CustomItemAnimator;
@@ -42,11 +43,11 @@ public class ContentListActivityModel extends BaseObservable implements ExploreL
     private static final int INVALID_POSITION = -1;
 
     public interface CdsSelectListener {
-        void onSelect(@NonNull View v, @NonNull CdsObject object, boolean alreadySelected);
+        void onSelect(@NonNull View v, @NonNull CdsObject object);
 
-        void onUnselect();
+        void onLostSelection();
 
-        void onDetermine(@NonNull View v, @NonNull CdsObject object, boolean alreadySelected);
+        void onExecute(@NonNull View v, @NonNull CdsObject object, boolean selected);
     }
 
     @NonNull
@@ -78,10 +79,16 @@ public class ContentListActivityModel extends BaseObservable implements ExploreL
     private final MediaServerModel mMediaServerModel;
     @NonNull
     private final CdsSelectListener mCdsSelectListener;
+    private final boolean mTwoPane;
+    @NonNull
+    private final Settings mSettings;
 
     public ContentListActivityModel(@NonNull final Context context,
                                     @NonNull final Repository repository,
-                                    @NonNull final CdsSelectListener listener) {
+                                    @NonNull final CdsSelectListener listener,
+                                    final boolean twoPane) {
+        mSettings = new Settings(context);
+        mTwoPane = twoPane;
         final MediaServerModel model = repository.getMediaServerModel();
         if (model == null) {
             throw new IllegalStateException();
@@ -131,20 +138,33 @@ public class ContentListActivityModel extends BaseObservable implements ExploreL
         if (mMediaServerModel.enterChild(object)) {
             return;
         }
-        final boolean alreadySelected = object.equals(mMediaServerModel.getSelectedObject());
+        final boolean selected = object.equals(mMediaServerModel.getSelectedObject());
         mMediaServerModel.setSelectedObject(object);
         mContentListAdapter.setSelectedObject(object);
-        mCdsSelectListener.onSelect(v, object, alreadySelected);
+        if (mSettings.shouldShowContentDetailOnTap()) {
+            if (mTwoPane && selected) {
+                mCdsSelectListener.onExecute(v, object, true);
+            } else {
+                mCdsSelectListener.onSelect(v, object);
+            }
+        } else {
+            mCdsSelectListener.onExecute(v, object, selected);
+        }
     }
 
     private void onItemLongClick(@NonNull final View v, @NonNull final CdsObject object) {
         if (mMediaServerModel.enterChild(object)) {
             return;
         }
-        final boolean alreadySelected = object.equals(mMediaServerModel.getSelectedObject());
+        final boolean selected = object.equals(mMediaServerModel.getSelectedObject());
         mMediaServerModel.setSelectedObject(object);
         mContentListAdapter.setSelectedObject(object);
-        mCdsSelectListener.onDetermine(v, object, alreadySelected);
+
+        if (mSettings.shouldShowContentDetailOnTap()) {
+            mCdsSelectListener.onExecute(v, object, selected);
+        } else {
+            mCdsSelectListener.onSelect(v, object);
+        }
     }
 
     public void syncSelectedObject() {
@@ -159,7 +179,7 @@ public class ContentListActivityModel extends BaseObservable implements ExploreL
     }
 
     public boolean onBackPressed() {
-        mCdsSelectListener.onUnselect();
+        mCdsSelectListener.onLostSelection();
         return mMediaServerModel.exitToParent();
     }
 
