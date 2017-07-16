@@ -27,7 +27,6 @@ import net.mm2d.dmsexplorer.domain.model.OpenUriCustomTabsModel;
 import net.mm2d.dmsexplorer.domain.model.OpenUriModel;
 import net.mm2d.dmsexplorer.settings.Key;
 import net.mm2d.dmsexplorer.view.base.AppCompatPreferenceActivity;
-import net.mm2d.dmsexplorer.view.dialog.WebViewDialog;
 
 import java.util.List;
 
@@ -149,7 +148,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                 return true;
             });
             findPreference(Key.LICENSE.name()).setOnPreferenceClickListener(preference -> {
-                WebViewDialog.show(getActivity(),
+                WebViewActivity.start(getActivity(),
                         getString(R.string.pref_title_license),
                         "file:///android_asset/license.html");
                 return true;

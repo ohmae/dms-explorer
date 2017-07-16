@@ -29,6 +29,7 @@ import net.mm2d.dmsexplorer.R;
 import net.mm2d.dmsexplorer.Repository;
 import net.mm2d.dmsexplorer.databinding.ServerListItemBinding;
 import net.mm2d.dmsexplorer.domain.model.ControlPointModel;
+import net.mm2d.dmsexplorer.settings.Settings;
 import net.mm2d.dmsexplorer.view.adapter.ServerListAdapter;
 import net.mm2d.dmsexplorer.view.animator.CustomItemAnimator;
 
@@ -37,11 +38,11 @@ import net.mm2d.dmsexplorer.view.animator.CustomItemAnimator;
  */
 public class ServerListActivityModel extends BaseObservable {
     public interface ServerSelectListener {
-        void onSelect(@NonNull View v, boolean alreadySelected);
+        void onSelect(@NonNull View v);
 
-        void onUnselect();
+        void onLostSelection();
 
-        void onDetermine(@NonNull View v);
+        void onExecute(@NonNull View v);
     }
 
     @NonNull
@@ -62,13 +63,21 @@ public class ServerListActivityModel extends BaseObservable {
     private final ServerListAdapter mServerListAdapter;
     private boolean mRefreshing;
 
+    @NonNull
     private final Handler mHandler = new Handler(Looper.getMainLooper());
+    @NonNull
     private final ControlPointModel mControlPointModel;
+    @NonNull
     private final ServerSelectListener mServerSelectListener;
+    private final boolean mTwoPane;
+    @NonNull
+    private final Settings mSettings;
 
-    public ServerListActivityModel(@NonNull Context context,
-                                   @NonNull Repository repository,
-                                   @NonNull ServerSelectListener listener) {
+    public ServerListActivityModel(@NonNull final Context context,
+                                   @NonNull final Repository repository,
+                                   @NonNull final ServerSelectListener listener,
+                                   final boolean twoPane) {
+        mSettings = new Settings(context);
         mControlPointModel = repository.getControlPointModel();
         mServerListAdapter = new ServerListAdapter(context, mControlPointModel.getMediaServerList());
         mServerListAdapter.setOnItemClickListener(this::onItemClick);
@@ -93,6 +102,7 @@ public class ServerListActivityModel extends BaseObservable {
             mServerListAdapter.clear();
             mServerListAdapter.notifyDataSetChanged();
         });
+        mTwoPane = twoPane;
     }
 
     @Bindable
@@ -140,13 +150,26 @@ public class ServerListActivityModel extends BaseObservable {
         final boolean alreadySelected = mControlPointModel.isSelectedMediaServer(server);
         mServerListAdapter.setSelectedServer(server);
         mControlPointModel.setSelectedMediaServer(server);
-        mServerSelectListener.onSelect(v, alreadySelected);
+        if (mSettings.shouldShowDeviceDetailOnTap()) {
+            if (mTwoPane && alreadySelected) {
+                mServerSelectListener.onExecute(v);
+            } else {
+                mServerSelectListener.onSelect(v);
+            }
+        } else {
+            mServerSelectListener.onExecute(v);
+        }
     }
 
     private void onItemLongClick(@NonNull final View v, @NonNull final MediaServer server) {
         mServerListAdapter.setSelectedServer(server);
         mControlPointModel.setSelectedMediaServer(server);
-        mServerSelectListener.onDetermine(v);
+
+        if (mSettings.shouldShowDeviceDetailOnTap()) {
+            mServerSelectListener.onExecute(v);
+        } else {
+            mServerSelectListener.onSelect(v);
+        }
     }
 
     private void onDiscoverServer(@NonNull MediaServer server) {
@@ -174,7 +197,7 @@ public class ServerListActivityModel extends BaseObservable {
             mServerListAdapter.notifyDataSetChanged();
         }
         if (server.equals(mControlPointModel.getSelectedMediaServer())) {
-            mServerSelectListener.onUnselect();
+            mServerSelectListener.onLostSelection();
             mServerListAdapter.clearSelectedServer();
             mControlPointModel.clearSelectedServer();
         }

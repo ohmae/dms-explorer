@@ -47,6 +47,14 @@
     <string name="pref_title_open_url">リンクを開く動作</string>
     <string name="pref_message_open_url_on">Chrome custom tabsを使用します</string>
     <string name="pref_message_open_url_off">ブラウザアプリを起動します</string>
+    <string name="pref_category_tap_and_long_tap_operation">タップとロングタップの動作</string>
+    <string name="pref_title_device_detail_on_tap">機器選択</string>
+    <string name="pref_message_device_detail_on_tap_on">タップ： 詳細情報を表示\nロングタップ： ディレクトリ先頭へ遷移</string>
+    <string name="pref_message_device_detail_on_tap_off">タップ： ディレクトリ先頭へ遷移\nロングタップ： 詳細情報を表示</string>
+    <string name="pref_title_content_detail_on_tap">コンテンツ選択</string>
+    <string name="pref_message_content_detail_on_tap_on">タップ： 詳細情報を表示\nロングタップ： プレーヤーを起動</string>
+    <string name="pref_message_content_detail_on_tap_off">タップ： プレーヤーを起動\nロングタップ： 詳細情報を表示</string>
+
     <string name="pref_header_information">情報</string>
     <string name="pref_title_play_store">Google Play</string>
     <string name="pref_message_play_store">評価、ご意見、ご要望をお待ちしております</string>
