@@ -98,19 +98,25 @@ class ServerListActivityDelegateOnePane extends ServerListActivityDelegate {
     public void onStart() {
         if (mHasReenterTransition) {
             mHasReenterTransition = false;
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                getActivity().getWindow().getSharedElementExitTransition().addListener(new TransitionListenerAdapter() {
-                    @TargetApi(VERSION_CODES.KITKAT)
-                    @Override
-                    public void onTransitionEnd(Transition transition) {
-                        getBinding().getModel().updateListAdapter();
-                        transition.removeListener(this);
-                    }
-                });
-                return;
-            }
+            execAfterTransitionOnce(() -> getBinding().getModel().updateListAdapter());
+            return;
         }
         getBinding().getModel().updateListAdapter();
+    }
+
+    private void execAfterTransitionOnce(@NonNull final Runnable task) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+            return;
+        }
+        getActivity().getWindow().getSharedElementExitTransition().addListener(new TransitionListenerAdapter() {
+            @TargetApi(VERSION_CODES.KITKAT)
+            @Override
+            public void onTransitionEnd(Transition transition) {
+                task.run();
+                transition.removeListener(this);
+            }
+        });
+
     }
 
     private void startServerDetailActivity(@NonNull final View v) {
