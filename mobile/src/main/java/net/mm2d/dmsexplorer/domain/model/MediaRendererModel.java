@@ -18,7 +18,7 @@ import net.mm2d.android.upnp.avt.MediaRenderer;
 import net.mm2d.android.upnp.avt.MediaRenderer.ActionCallback;
 import net.mm2d.android.upnp.avt.TransportState;
 import net.mm2d.android.upnp.cds.CdsObject;
-import net.mm2d.android.upnp.cds.ChapterInfo;
+import net.mm2d.android.upnp.cds.chapter.ChapterList;
 
 import java.util.Collections;
 import java.util.List;
@@ -111,7 +111,7 @@ public class MediaRendererModel implements PlayerModel {
         });
         mStoppingCount = 0;
         mHandler.postDelayed(mGetPositionTask, 1000);
-        ChapterInfo.get(object, this::setChapterList);
+        ChapterList.get(object, this::setChapterList);
         mStarted = true;
     }
 
