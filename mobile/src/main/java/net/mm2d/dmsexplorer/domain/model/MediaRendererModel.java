@@ -18,8 +18,10 @@ import net.mm2d.android.upnp.avt.MediaRenderer;
 import net.mm2d.android.upnp.avt.MediaRenderer.ActionCallback;
 import net.mm2d.android.upnp.avt.TransportState;
 import net.mm2d.android.upnp.cds.CdsObject;
-import net.mm2d.android.upnp.cds.ChapterInfo;
+import net.mm2d.android.upnp.cds.chapter.ChapterList;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
@@ -37,8 +39,8 @@ public class MediaRendererModel implements PlayerModel {
     private final MediaRenderer mMediaRenderer;
     @NonNull
     private final Handler mHandler = new Handler(Looper.getMainLooper());
-    @Nullable
-    private int[] mChapterInfo;
+    @NonNull
+    private List<Integer> mChapterList = Collections.emptyList();
     private boolean mPlaying;
     private int mProgress;
     private int mDuration;
@@ -109,7 +111,7 @@ public class MediaRendererModel implements PlayerModel {
         });
         mStoppingCount = 0;
         mHandler.postDelayed(mGetPositionTask, 1000);
-        ChapterInfo.get(object, this::setChapterInfo);
+        ChapterList.get(object, this::setChapterList);
         mStarted = true;
     }
 
@@ -153,12 +155,12 @@ public class MediaRendererModel implements PlayerModel {
 
     @Override
     public boolean next() {
-        if (mChapterInfo == null) {
+        if (mChapterList.isEmpty()) {
             return false;
         }
         final int chapter = getCurrentChapter() + 1;
-        if (chapter < mChapterInfo.length) {
-            mMediaRenderer.seek(mChapterInfo[chapter], mShowToastOnError);
+        if (chapter < mChapterList.size()) {
+            mMediaRenderer.seek(mChapterList.get(chapter), mShowToastOnError);
             return true;
         }
         return false;
@@ -166,31 +168,31 @@ public class MediaRendererModel implements PlayerModel {
 
     @Override
     public boolean previous() {
-        if (mChapterInfo == null) {
+        if (mChapterList.isEmpty()) {
             return false;
         }
         int chapter = getCurrentChapter();
-        if (chapter > 0 && mProgress - mChapterInfo[chapter] < CHAPTER_MARGIN) {
+        if (chapter > 0 && mProgress - mChapterList.get(chapter) < CHAPTER_MARGIN) {
             chapter--;
         }
         if (chapter >= 0) {
-            mMediaRenderer.seek(mChapterInfo[chapter], mShowToastOnError);
+            mMediaRenderer.seek(mChapterList.get(chapter), mShowToastOnError);
             return true;
         }
         return false;
     }
 
     private int getCurrentChapter() {
-        if (mChapterInfo == null) {
+        if (mChapterList.isEmpty()) {
             return 0;
         }
         final int progress = mProgress;
-        for (int i = 0; i < mChapterInfo.length; i++) {
-            if (progress < mChapterInfo[i]) {
+        for (int i = 0; i < mChapterList.size(); i++) {
+            if (progress < mChapterList.get(i)) {
                 return i - 1;
             }
         }
-        return mChapterInfo.length - 1;
+        return mChapterList.size() - 1;
     }
 
     private void onGetPositionInfo(final Map<String, String> result) {
@@ -233,9 +235,9 @@ public class MediaRendererModel implements PlayerModel {
         }
     }
 
-    private void setChapterInfo(@Nullable final int[] chapterInfo) {
-        mChapterInfo = chapterInfo;
-        mStatusListener.notifyChapterInfo(mChapterInfo);
+    private void setChapterList(@NonNull final List<Integer> chapterList) {
+        mChapterList = chapterList;
+        mStatusListener.notifyChapterList(chapterList);
     }
 
     private void onError() {
