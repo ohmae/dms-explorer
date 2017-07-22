@@ -20,6 +20,7 @@ import android.text.TextUtils;
 
 import net.mm2d.android.util.LaunchUtils;
 import net.mm2d.dmsexplorer.BuildConfig;
+import net.mm2d.dmsexplorer.Const;
 import net.mm2d.dmsexplorer.R;
 import net.mm2d.dmsexplorer.Repository;
 import net.mm2d.dmsexplorer.domain.model.CustomTabsHelper;
@@ -139,18 +140,18 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             addPreferencesFromResource(R.xml.pref_information);
             findPreference(Key.PLAY_STORE.name()).setOnPreferenceClickListener(preference -> {
                 final Context context = preference.getContext();
-                LaunchUtils.openUri(context, "market://details?id=net.mm2d.dmsexplorer");
+                LaunchUtils.openGooglePlay(context, Const.PACKAGE_NAME);
                 return true;
             });
             findPreference(Key.VERSION_NUMBER.name()).setSummary(BuildConfig.VERSION_NAME);
             findPreference(Key.SOURCE_CODE.name()).setOnPreferenceClickListener(preference -> {
-                openUrl(getActivity(), "https://github.com/ohmae/DmsExplorer");
+                openUrl(getActivity(), Const.URL_GITHUB_PROJECT);
                 return true;
             });
             findPreference(Key.LICENSE.name()).setOnPreferenceClickListener(preference -> {
                 WebViewActivity.start(getActivity(),
                         getString(R.string.pref_title_license),
-                        "file:///android_asset/license.html");
+                        Const.URL_OPENSOURCE_LICENSE);
                 return true;
             });
         }
