@@ -92,7 +92,7 @@
                 android:paddingBottom="@dimen/seek_padding"
                 android:paddingTop="@dimen/seek_padding_top"
                 android:progress="@{model.progress}"
-                android:sections="@{model.chapterInfo}"
+                android:chapterList="@{model.chapterList}"
                 />
 
             <LinearLayout

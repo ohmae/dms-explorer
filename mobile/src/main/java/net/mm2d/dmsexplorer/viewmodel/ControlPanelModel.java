@@ -22,6 +22,7 @@ import net.mm2d.dmsexplorer.view.view.ScrubBar;
 import net.mm2d.dmsexplorer.view.view.ScrubBar.Accuracy;
 import net.mm2d.dmsexplorer.view.view.ScrubBar.ScrubBarListener;
 
+import java.util.List;
 import java.util.Locale;
 
 /**
@@ -319,7 +320,7 @@ public class ControlPanelModel extends BaseObservable implements StatusListener 
     }
 
     @Override
-    public void notifyChapterInfo(@Nullable final int[] chapterInfo) {
+    public void notifyChapterList(@NonNull final List<Integer> chapterList) {
     }
 
     @Override

@@ -21,6 +21,7 @@ import org.xml.sax.SAXException;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -36,7 +37,7 @@ public class ChapterInfo {
     private static final String SONY_POINT_NODE = "chapter_point";
 
     public interface Callback {
-        void onResult(int[] result);
+        void onResult(@NonNull List<Integer> result);
     }
 
     public static void get(@NonNull final CdsObject object, @NonNull final Callback callback) {
@@ -57,23 +58,23 @@ public class ChapterInfo {
             final String xml = new HttpClient(false).downloadString(new URL(url));
             callback.onResult(parseSonyChapterInfo(xml));
         } catch (IOException | ParserConfigurationException | SAXException ignored) {
-            callback.onResult(null);
+            callback.onResult(Collections.emptyList());
         }
     }
 
-    @Nullable
-    private static int[] parseSonyChapterInfo(@NonNull final String xml)
+    @NonNull
+    private static List<Integer> parseSonyChapterInfo(@NonNull final String xml)
             throws ParserConfigurationException, SAXException, IOException {
         if (TextUtils.isEmpty(xml)) {
-            return null;
+            return Collections.emptyList();
         }
         final Element root = XmlUtils.newDocument(false, xml).getDocumentElement();
         if (root == null || !root.getNodeName().equals(SONY_ROOT_NODE)) {
-            return null;
+            return Collections.emptyList();
         }
         final Element content = findChildElementByNodeName(root, SONY_LIST_NODE);
         if (content == null) {
-            return null;
+            return Collections.emptyList();
         }
         final List<Integer> result = new ArrayList<>();
         for (Node node = content.getFirstChild(); node != null; node = node.getNextSibling()) {
@@ -91,11 +92,11 @@ public class ChapterInfo {
             } catch (final NumberFormatException ignored) {
             }
         }
-        return toIntArray(result);
+        return result;
     }
 
     @Nullable
-    public static Element findChildElementByNodeName(
+    private static Element findChildElementByNodeName(
             @NonNull final Node parent, @NonNull final String nodeName) {
         Node child = parent.getFirstChild();
         for (; child != null; child = child.getNextSibling()) {
@@ -107,14 +108,5 @@ public class ChapterInfo {
             }
         }
         return null;
-    }
-
-    @NonNull
-    private static int[] toIntArray(@NonNull final List<Integer> list) {
-        final int[] res = new int[list.size()];
-        for (int i = 0; i < list.size(); i++) {
-            res[i] = list.get(i);
-        }
-        return res;
     }
 }
