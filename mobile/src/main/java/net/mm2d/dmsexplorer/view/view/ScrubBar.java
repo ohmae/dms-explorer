@@ -26,7 +26,9 @@ import android.view.View;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
@@ -112,7 +114,7 @@ public class ScrubBar extends View {
     private int mProgress;
     private int mMax;
     @NonNull
-    private int[] mSections = EMPTY_ARRAY;
+    private List<Integer> mChapterList = Collections.emptyList();
 
     private int mAccuracyRank;
     private boolean mDragging;
@@ -213,7 +215,7 @@ public class ScrubBar extends View {
     private static class SavedState extends BaseSavedState {
         private int progress;
         private int max;
-        private int[] sections;
+        private List<Integer> chapterList;
 
         SavedState(@NonNull final Parcelable superState) {
             super(superState);
@@ -224,9 +226,13 @@ public class ScrubBar extends View {
             progress = in.readInt();
             max = in.readInt();
             final int n = in.readInt();
-            sections = new int[n];
+            if (n == 0) {
+                chapterList = Collections.emptyList();
+                return;
+            }
+            chapterList = new ArrayList<>(n);
             for (int i = 0; i < n; i++) {
-                sections[i] = in.readInt();
+                chapterList.add(in.readInt());
             }
         }
 
@@ -235,9 +241,9 @@ public class ScrubBar extends View {
             super.writeToParcel(out, flags);
             out.writeInt(progress);
             out.writeInt(max);
-            out.writeInt(sections.length);
-            for (final int section : sections) {
-                out.writeInt(section);
+            out.writeInt(chapterList.size());
+            for (final int chapter : chapterList) {
+                out.writeInt(chapter);
             }
         }
 
@@ -259,7 +265,7 @@ public class ScrubBar extends View {
         final SavedState ss = new SavedState(superState);
         ss.progress = mProgress;
         ss.max = mMax;
-        ss.sections = mSections;
+        ss.chapterList = mChapterList;
         return ss;
     }
 
@@ -269,6 +275,7 @@ public class ScrubBar extends View {
         super.onRestoreInstanceState(ss.getSuperState());
         setMax(ss.max);
         setProgress(ss.progress);
+        setChapterList(ss.chapterList);
     }
 
     @Override
@@ -324,8 +331,8 @@ public class ScrubBar extends View {
         canvas.drawCircle(cx, cy, radius, mPaint);
 
         mPaint.setColor(mSectionColor);
-        for (final int section : mSections) {
-            final float sx = section * areaWidth / mMax + left;
+        for (final int chapter : mChapterList) {
+            final float sx = chapter * areaWidth / mMax + left;
             canvas.drawLine(sx - l, cy, sx + l, cy, mPaint);
         }
     }
@@ -412,14 +419,14 @@ public class ScrubBar extends View {
         return (int) (dx * mMax / width);
     }
 
-    public void setSections(@Nullable int... sections) {
-        mSections = (sections == null || sections.length == 0) ? EMPTY_ARRAY : sections;
+    public void setChapterList(@Nullable final List<Integer> chapterList) {
+        mChapterList = chapterList != null ? chapterList : Collections.emptyList();
         invalidate();
     }
 
     @NonNull
-    public int[] getSections() {
-        return Arrays.copyOf(mSections, mSections.length);
+    public List<Integer> getChapterList() {
+        return mChapterList;
     }
 
     public void setMax(int max) {

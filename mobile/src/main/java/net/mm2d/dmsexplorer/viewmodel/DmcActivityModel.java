@@ -15,7 +15,6 @@ import android.os.Handler;
 import android.os.Looper;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 
 import net.mm2d.android.upnp.cds.CdsObject;
@@ -33,6 +32,8 @@ import net.mm2d.dmsexplorer.view.view.ScrubBar;
 import net.mm2d.dmsexplorer.view.view.ScrubBar.Accuracy;
 import net.mm2d.dmsexplorer.view.view.ScrubBar.ScrubBarListener;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.Locale;
 
 /**
@@ -66,8 +67,8 @@ public class DmcActivityModel extends BaseObservable implements StatusListener {
     private int mPlayButtonResId;
     @NonNull
     private String mScrubText = "";
-    @Nullable
-    private int[] mChapterInfo;
+    @NonNull
+    private List<Integer> mChapterList = Collections.emptyList();
     private boolean mChapterInfoEnabled;
 
     @NonNull
@@ -258,22 +259,22 @@ public class DmcActivityModel extends BaseObservable implements StatusListener {
     }
 
     @Bindable
-    @Nullable
-    public int[] getChapterInfo() {
-        return mChapterInfo;
+    @NonNull
+    public List<Integer> getChapterList() {
+        return mChapterList;
     }
 
-    private void setChapterInfo(@Nullable final int[] chapterInfo) {
-        mChapterInfo = chapterInfo;
-        notifyPropertyChanged(BR.chapterInfo);
+    private void setChapterList(@NonNull final List<Integer> chapterList) {
+        mChapterList = chapterList;
+        notifyPropertyChanged(BR.chapterList);
         setChapterInfoEnabled();
-        if (chapterInfo == null) {
+        if (chapterList.isEmpty()) {
             return;
         }
         mHandler.post(() -> {
             final int count = propertyAdapter.getItemCount();
             propertyAdapter.addEntry(mActivity.getString(R.string.prop_chapter_info),
-                    makeChapterString(chapterInfo));
+                    makeChapterString(chapterList));
             propertyAdapter.notifyItemInserted(count);
         });
     }
@@ -284,7 +285,7 @@ public class DmcActivityModel extends BaseObservable implements StatusListener {
     }
 
     private void setChapterInfoEnabled() {
-        mChapterInfoEnabled = (mDuration != 0 && mChapterInfo != null);
+        mChapterInfoEnabled = (mDuration != 0 && !mChapterList.isEmpty());
         notifyPropertyChanged(BR.chapterInfoEnabled);
     }
 
@@ -313,9 +314,9 @@ public class DmcActivityModel extends BaseObservable implements StatusListener {
     }
 
     @NonNull
-    private static String makeChapterString(@NonNull final int[] chapterInfo) {
+    private static String makeChapterString(@NonNull final List<Integer> chapterList) {
         final StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < chapterInfo.length; i++) {
+        for (int i = 0; i < chapterList.size(); i++) {
             if (sb.length() != 0) {
                 sb.append("\n");
             }
@@ -324,7 +325,7 @@ public class DmcActivityModel extends BaseObservable implements StatusListener {
             }
             sb.append(String.valueOf(i + 1));
             sb.append(" : ");
-            final int chapter = chapterInfo[i];
+            final int chapter = chapterList.get(i);
             sb.append(makeTimeText(chapter));
         }
         return sb.toString();
@@ -364,8 +365,8 @@ public class DmcActivityModel extends BaseObservable implements StatusListener {
     }
 
     @Override
-    public void notifyChapterInfo(@Nullable final int[] chapterInfo) {
-        setChapterInfo(chapterInfo);
+    public void notifyChapterList(@NonNull final List<Integer> chapterList) {
+        setChapterList(chapterList);
     }
 
     @Override
