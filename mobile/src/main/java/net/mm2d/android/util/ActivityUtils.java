@@ -21,7 +21,8 @@ public class ActivityUtils {
     }
 
     public static Bundle makeScaleUpAnimationBundle(@NonNull final View v) {
-        return ActivityOptionsCompat.makeScaleUpAnimation(v, 0, 0, v.getWidth(), v.getHeight())
+        return ActivityOptionsCompat
+                .makeScaleUpAnimation(v, 0, 0, v.getWidth(), v.getHeight())
                 .toBundle();
     }
 }

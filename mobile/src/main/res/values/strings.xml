@@ -56,7 +56,7 @@
     <string name="pref_message_content_detail_on_tap_off">Tap: Launch the player\nLong tap : Show the content detail</string>
 
     <string name="pref_header_information">Information</string>
-    <string name="pref_title_play_store">Google Play</string>
+    <string name="pref_title_play_store">Google Play Store</string>
     <string name="pref_message_play_store">Waiting for evaluation, comments and requests</string>
     <string name="pref_title_copyright">Copyright</string>
     <string name="pref_message_copyright">© 2016 大前良介 (OHMAE Ryosuke)</string>
@@ -69,7 +69,7 @@
     <string name="dialog_title_select_resource">Resource</string>
     <string name="dialog_title_select_device">Playback device</string>
     <string name="dialog_title_update">Update</string>
-    <string name="dialog_message_update">A newer Version is available. Version up is recommended.</string>
+    <string name="dialog_message_update">A newer version is available. Version up is recommended.</string>
     <string name="dialog_button_ok">OK</string>
     <string name="dialog_button_cancel">Cancel</string>
 </resources>

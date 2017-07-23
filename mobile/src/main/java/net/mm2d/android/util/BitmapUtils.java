@@ -26,11 +26,11 @@ public class BitmapUtils {
     /**
      * 画像データを指定された表示枠に必要最小限の大きさにダウンサンプリングしてBitmapを作成する。
      *
-     * <p>画像データをデコードしたサイズが表示する枠よりも十分以上に大きい場合、
+     * <p>画像データをデコードしたサイズが表示する大きさより十分に大きい場合、
      * そのままデコードするのはメモリの無駄でしかなく、OutOfMemoryErrorが発生しかねないため、
      * デコードの段階で表示品質を落とさない最小の大きさにデコードさせる。
      *
-     * <p>画像データが表示枠に完全に収まる場合はそのままの大きさでダウンサンプリングする。
+     * <p>画像データが表示枠に完全に収まる場合はそのままの大きさでサンプリングする。
      * また、縦横比が異なる場合は縦横比固定で表示枠に内接する大きさに表示させると判断する。
      *
      * <p>ダウンサンプル数は整数でしか指定できないため、
@@ -42,7 +42,7 @@ public class BitmapUtils {
      * @return Bitmap
      */
     @Nullable
-    public static Bitmap decodeBitmap(@NonNull byte[] data, int width, int height) {
+    public static Bitmap decodeBitmap(@NonNull final byte[] data, final int width, final int height) {
         final BitmapFactory.Options options = new BitmapFactory.Options();
         options.inJustDecodeBounds = true;
         BitmapFactory.decodeByteArray(data, 0, data.length, options);
@@ -52,7 +52,7 @@ public class BitmapUtils {
     }
 
     /**
-     * ダウンサンプリング数を計算する。
+     * サンプリング数を計算する。
      *
      * @param sourceWidth  元画像の幅
      * @param sourceHeight 元画像の高さ
@@ -60,10 +60,10 @@ public class BitmapUtils {
      * @param targetHeight 取得したい枠の幅
      * @return ダウンサンプル数
      */
-    private static int calcSampleSize(int sourceWidth, int sourceHeight,
-                                      int targetWidth, int targetHeight) {
+    private static int calcSampleSize(final int sourceWidth, final int sourceHeight,
+                                      final int targetWidth, final int targetHeight) {
         if (targetWidth == 0 || targetHeight == 0) {
-            return 1; // avoid divide by zero
+            return 1; // Avoid zero division
         }
         if (sourceWidth * targetHeight > targetWidth * sourceHeight) {
             // sourceの方が横長なので幅で合わせる

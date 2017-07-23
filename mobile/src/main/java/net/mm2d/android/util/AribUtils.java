@@ -26,7 +26,7 @@ public class AribUtils {
      * @return 変換後の文字列
      */
     @NonNull
-    public static String toDisplayableString(@NonNull String string) {
+    public static String toDisplayableString(@NonNull final String string) {
         final StringBuilder sb = new StringBuilder();
         final char[] array = string.toCharArray();
         for (final char c : array) {

@@ -13,6 +13,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 
 import net.mm2d.util.Log;
 
@@ -37,7 +38,7 @@ public class LaunchUtils {
      * @return 起動ができた場合true、何らかの理由で起動できない場合false
      */
     public static boolean openUri(@NonNull final Context context, @Nullable final String uri) {
-        if (uri == null) {
+        if (TextUtils.isEmpty(uri)) {
             return false;
         }
         try {
@@ -49,5 +50,16 @@ public class LaunchUtils {
             return false;
         }
         return true;
+    }
+
+    /**
+     * 指定したパッケージのアプリを指定してPlayストアを開く。
+     *
+     * @param context     コンテキスト
+     * @param packageName 開くアプリのパッケージ名
+     * @return 起動ができた場合true、何らかの理由で起動できない場合false
+     */
+    public static boolean openGooglePlay(@NonNull final Context context, @Nullable final String packageName) {
+        return openUri(context, "market://details?id=" + packageName);
     }
 }

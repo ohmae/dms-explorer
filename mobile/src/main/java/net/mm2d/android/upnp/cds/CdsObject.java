@@ -25,6 +25,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 /**
  * ContentDirectoryServiceのObjectを表現するクラス。
@@ -33,6 +34,8 @@ import java.util.Locale;
  */
 public class CdsObject implements Parcelable {
     // XML関係の定義
+
+    public static final String ROOT_TAG = "DIDL-Lite";
     /**
      * "item".
      *
@@ -794,12 +797,17 @@ public class CdsObject implements Parcelable {
     /**
      * elementをもとにインスタンス作成
      *
-     * @param element objectを示すelement
+     * @param udn                 MediaServerのUDN
+     * @param element             objectを示すelement
+     * @param namespaceAttributes DIDL-Liteノードに記載されたNamespace情報
      */
-    CdsObject(@NonNull String udn, @NonNull Element element) {
+    CdsObject(@NonNull final String udn,
+              @NonNull final Element element,
+              @NonNull final Tag namespaceAttributes) {
         mUdn = udn;
         mItem = isItem(element.getTagName());
         mTagMap = parseElement(element);
+        mTagMap.putTag(ROOT_TAG, namespaceAttributes);
         final Param param = new Param(mTagMap);
         mObjectId = param.mObjectId;
         mParentId = param.mParentId;
@@ -1029,6 +1037,18 @@ public class CdsObject implements Parcelable {
     @Nullable
     public Tag getTag(@Nullable String tagName, int index) {
         return mTagMap.getTag(tagName, index);
+    }
+
+    /**
+     * Tagを格納したマップそのものを返す。
+     *
+     * <p>CdsObjectXmlFormatterから利用するため。
+     *
+     * @return Tagインスタンスリスト
+     */
+    @NonNull
+    Map<String, List<Tag>> getRawMap() {
+        return mTagMap.getRawMap();
     }
 
     /**
