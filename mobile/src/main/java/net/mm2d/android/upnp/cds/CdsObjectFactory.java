@@ -48,13 +48,13 @@ final class CdsObjectFactory {
         }
         try {
             final Document document = XmlUtils.newDocument(false, xml);
-            final Tag namespaceAttributes = createNamespaceAttributeTag(document);
+            final Tag rootTag = createRootTag(document);
             Node node = document.getDocumentElement().getFirstChild();
             for (; node != null; node = node.getNextSibling()) {
                 if (node.getNodeType() != Node.ELEMENT_NODE) {
                     continue;
                 }
-                final CdsObject object = createCdsObject(udn, (Element) node, namespaceAttributes);
+                final CdsObject object = createCdsObject(udn, (Element) node, rootTag);
                 if (object != null) {
                     list.add(object);
                 }
@@ -79,13 +79,13 @@ final class CdsObjectFactory {
         }
         try {
             final Document document = XmlUtils.newDocument(false, xml);
-            final Tag namespaceAttributes = createNamespaceAttributeTag(document);
+            final Tag rootTag = createRootTag(document);
             Node node = document.getDocumentElement().getFirstChild();
             for (; node != null; node = node.getNextSibling()) {
                 if (node.getNodeType() != Node.ELEMENT_NODE) {
                     continue;
                 }
-                return createCdsObject(udn, (Element) node, namespaceAttributes);
+                return createCdsObject(udn, (Element) node, rootTag);
             }
         } catch (ParserConfigurationException | SAXException | IOException e) {
             Log.w(e);
@@ -93,24 +93,24 @@ final class CdsObjectFactory {
         return null;
     }
 
-    private static Tag createNamespaceAttributeTag(@NonNull final Document doc) {
+    private static Tag createRootTag(@NonNull final Document doc) {
         return new Tag(doc.getDocumentElement(), true);
     }
 
     /**
      * CdsObjectのインスタンスを作成する。
      *
-     * @param udn                 MediaServerのUDN
-     * @param element             CdsObjectを指すElement
-     * @param namespaceAttributes DIDL-Liteノードに記載されたNamespace情報
+     * @param udn     MediaServerのUDN
+     * @param element CdsObjectを指すElement
+     * @param rootTag DIDL-Liteノードに記載されたNamespace情報
      * @return CdsObjectのインスタンス、パースに失敗した場合null
      */
     @Nullable
     private static CdsObject createCdsObject(@NonNull final String udn,
                                              @NonNull final Element element,
-                                             @NonNull final Tag namespaceAttributes) {
+                                             @NonNull final Tag rootTag) {
         try {
-            return new CdsObject(udn, element, namespaceAttributes);
+            return new CdsObject(udn, element, rootTag);
         } catch (final IllegalArgumentException e) {
             Log.w(e);
         }

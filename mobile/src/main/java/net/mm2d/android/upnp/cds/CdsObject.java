@@ -25,7 +25,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 
 /**
  * ContentDirectoryServiceのObjectを表現するクラス。
@@ -35,7 +34,7 @@ import java.util.Map;
 public class CdsObject implements Parcelable {
     // XML関係の定義
 
-    public static final String ROOT_TAG = "DIDL-Lite";
+    public static final String DIDL_LITE = "DIDL-Lite";
     /**
      * "item".
      *
@@ -724,12 +723,20 @@ public class CdsObject implements Parcelable {
      * このオブジェクトがitemか否か、itemのときtrue
      */
     private final boolean mItem;
+
+    /**
+     * DIDL-Liteノードの情報
+     */
+    @NonNull
+    private final Tag mRootTag;
+
     /**
      * XMLのタグ情報。
      *
      * <p>タグ名をKeyとして、TagのListを保持する。
      * 同一のタグが複数ある場合はListに出現順に格納する。
      */
+    @NonNull
     private final TagMap mTagMap;
 
     /**
@@ -797,17 +804,17 @@ public class CdsObject implements Parcelable {
     /**
      * elementをもとにインスタンス作成
      *
-     * @param udn                 MediaServerのUDN
-     * @param element             objectを示すelement
-     * @param namespaceAttributes DIDL-Liteノードに記載されたNamespace情報
+     * @param udn     MediaServerのUDN
+     * @param element objectを示すelement
+     * @param rootTag DIDL-Liteノードの情報
      */
     CdsObject(@NonNull final String udn,
               @NonNull final Element element,
-              @NonNull final Tag namespaceAttributes) {
+              @NonNull final Tag rootTag) {
         mUdn = udn;
         mItem = isItem(element.getTagName());
+        mRootTag = rootTag;
         mTagMap = parseElement(element);
-        mTagMap.putTag(ROOT_TAG, namespaceAttributes);
         final Param param = new Param(mTagMap);
         mObjectId = param.mObjectId;
         mParentId = param.mParentId;
@@ -832,6 +839,7 @@ public class CdsObject implements Parcelable {
      *
      * @param element objectを示すelement
      */
+    @NonNull
     private static TagMap parseElement(@NonNull Element element) {
         final TagMap map = new TagMap();
         map.putTag("", new Tag(element, true));
@@ -1040,15 +1048,27 @@ public class CdsObject implements Parcelable {
     }
 
     /**
+     * ルートタグ情報を返す。
+     *
+     * <p>CdsObjectXmlFormatterから利用するため。
+     *
+     * @return ルートタグ情報
+     */
+    @NonNull
+    Tag getRootTag() {
+        return mRootTag;
+    }
+
+    /**
      * Tagを格納したマップそのものを返す。
      *
      * <p>CdsObjectXmlFormatterから利用するため。
      *
-     * @return Tagインスタンスリスト
+     * @return TagMap
      */
     @NonNull
-    Map<String, List<Tag>> getRawMap() {
-        return mTagMap.getRawMap();
+    TagMap getTagMap() {
+        return mTagMap;
     }
 
     /**
@@ -1316,6 +1336,7 @@ public class CdsObject implements Parcelable {
     private CdsObject(@NonNull Parcel in) {
         mUdn = in.readString();
         mItem = in.readByte() != 0;
+        mRootTag = in.readParcelable(Tag.class.getClassLoader());
         mTagMap = in.readParcelable(TagMap.class.getClassLoader());
         final Param param = new Param(mTagMap);
         mObjectId = param.mObjectId;
@@ -1329,6 +1350,7 @@ public class CdsObject implements Parcelable {
     public void writeToParcel(@NonNull Parcel dest, int flags) {
         dest.writeString(mUdn);
         dest.writeByte((byte) (mItem ? 1 : 0));
+        dest.writeParcelable(mRootTag, flags);
         dest.writeParcelable(mTagMap, flags);
     }
 

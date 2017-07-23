@@ -52,9 +52,9 @@ public class CdsObjectXmlConverter {
             document.appendChild(didl);
             final Element item = makeItemElement(document, object);
             didl.appendChild(item);
-            for (final Map.Entry<String, List<Tag>> tagListEntry : object.getRawMap().entrySet()) {
+            for (final Map.Entry<String, List<Tag>> tagListEntry : object.getTagMap().getRawMap().entrySet()) {
                 final String key = tagListEntry.getKey();
-                if (TextUtils.isEmpty(key) || key.equals(CdsObject.ROOT_TAG)) {
+                if (TextUtils.isEmpty(key)) {
                     continue;
                 }
                 for (final Tag tag : tagListEntry.getValue()) {
@@ -82,11 +82,11 @@ public class CdsObjectXmlConverter {
 
     @NonNull
     private static Element makeRootElement(@NonNull final Document document, @NonNull final CdsObject object) {
-        final Tag tag = object.getTag(CdsObject.ROOT_TAG);
-        if (tag == null) {
-            throw new IllegalArgumentException();
+        final Element element = document.createElement(CdsObject.DIDL_LITE);
+        for (final Map.Entry<String, String> attribute : object.getRootTag().getAttributes().entrySet()) {
+            element.setAttribute(attribute.getKey(), attribute.getValue());
         }
-        return makeElement(document, CdsObject.ROOT_TAG, tag);
+        return element;
     }
 
     @NonNull
