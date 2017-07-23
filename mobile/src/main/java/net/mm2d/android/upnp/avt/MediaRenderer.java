@@ -13,6 +13,7 @@ import android.text.TextUtils;
 
 import net.mm2d.android.upnp.DeviceWrapper;
 import net.mm2d.android.upnp.cds.CdsObject;
+import net.mm2d.android.upnp.cds.CdsObjectXmlConverter;
 import net.mm2d.upnp.Action;
 import net.mm2d.upnp.Argument;
 import net.mm2d.upnp.Device;
@@ -202,9 +203,16 @@ public class MediaRenderer extends DeviceWrapper {
     public void setAVTransportURI(@NonNull final CdsObject object, @NonNull final String uri,
                                   @Nullable final ActionCallback callback) {
         final Map<String, String> argument = new HashMap<>();
+        final String metadata = CdsObjectXmlConverter.convert(object);
+        if (TextUtils.isEmpty(metadata)) {
+            if (callback != null) {
+                callback.onResult(false, null);
+            }
+            return;
+        }
         argument.put(INSTANCE_ID, "0");
         argument.put(CURRENT_URI, uri);
-        argument.put(CURRENT_URI_META_DATA, UriMetaDataFormatter.createUriMetaData(object, uri));
+        argument.put(CURRENT_URI_META_DATA, metadata);
         invoke(mSetAvTransportUri, argument, callback);
     }
 

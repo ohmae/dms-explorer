@@ -47,13 +47,14 @@ final class CdsObjectFactory {
             return list;
         }
         try {
-            final Document doc = XmlUtils.newDocument(false, xml);
-            Node node = doc.getDocumentElement().getFirstChild();
+            final Document document = XmlUtils.newDocument(false, xml);
+            final Tag namespaceAttributes = createNamespaceAttributeTag(document);
+            Node node = document.getDocumentElement().getFirstChild();
             for (; node != null; node = node.getNextSibling()) {
                 if (node.getNodeType() != Node.ELEMENT_NODE) {
                     continue;
                 }
-                final CdsObject object = createCdsObject(udn, (Element) node);
+                final CdsObject object = createCdsObject(udn, (Element) node, namespaceAttributes);
                 if (object != null) {
                     list.add(object);
                 }
@@ -77,13 +78,14 @@ final class CdsObjectFactory {
             return null;
         }
         try {
-            final Document doc = XmlUtils.newDocument(false, xml);
-            Node node = doc.getDocumentElement().getFirstChild();
+            final Document document = XmlUtils.newDocument(false, xml);
+            final Tag namespaceAttributes = createNamespaceAttributeTag(document);
+            Node node = document.getDocumentElement().getFirstChild();
             for (; node != null; node = node.getNextSibling()) {
                 if (node.getNodeType() != Node.ELEMENT_NODE) {
                     continue;
                 }
-                return createCdsObject(udn, (Element) node);
+                return createCdsObject(udn, (Element) node, namespaceAttributes);
             }
         } catch (ParserConfigurationException | SAXException | IOException e) {
             Log.w(e);
@@ -91,17 +93,24 @@ final class CdsObjectFactory {
         return null;
     }
 
+    private static Tag createNamespaceAttributeTag(@NonNull final Document doc) {
+        return new Tag(doc.getDocumentElement(), true);
+    }
+
     /**
      * CdsObjectのインスタンスを作成する。
      *
-     * @param udn     MediaServerのUDN
-     * @param element CdsObjectを指すElement
+     * @param udn                 MediaServerのUDN
+     * @param element             CdsObjectを指すElement
+     * @param namespaceAttributes DIDL-Liteノードに記載されたNamespace情報
      * @return CdsObjectのインスタンス、パースに失敗した場合null
      */
     @Nullable
-    private static CdsObject createCdsObject(@NonNull final String udn, @NonNull final Element element) {
+    private static CdsObject createCdsObject(@NonNull final String udn,
+                                             @NonNull final Element element,
+                                             @NonNull final Tag namespaceAttributes) {
         try {
-            return new CdsObject(udn, element);
+            return new CdsObject(udn, element, namespaceAttributes);
         } catch (final IllegalArgumentException e) {
             Log.w(e);
         }

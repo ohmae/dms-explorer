@@ -245,6 +245,10 @@ class TagMap implements Parcelable {
         return mMap.get(tagName);
     }
 
+    Map<String, List<Tag>> getRawMap() {
+        return mMap;
+    }
+
     @Override
     @NonNull
     public String toString() {
