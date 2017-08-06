@@ -15,6 +15,16 @@
         <item name="windowNoTitle">true</item>
     </style>
 
+    <style name="AppTheme.List">
+        <item name="propertyMessageColor">@color/textMain</item>
+        <item name="propertyLinkColor">@color/textLink</item>
+        <item name="propertyTitleColor">@color/textHighlight</item>
+        <item name="android:windowBackground">@color/bgList</item>
+        <item name="android:colorBackground">@color/bgList</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
     <style name="AppTheme.NoActionBar.Dark">
         <item name="propertyMessageColor">@color/textMainDark</item>
         <item name="propertyLinkColor">@color/textLinkDark</item>

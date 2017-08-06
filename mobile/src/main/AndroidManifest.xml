@@ -18,7 +18,7 @@
         <activity
             android:name=".view.ServerListActivity"
             android:label="${app_name}"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.List">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
@@ -36,7 +36,7 @@
         <activity
             android:name=".view.ContentListActivity"
             android:parentActivityName=".view.ServerListActivity"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.List">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".view.ServerListActivity"/>
