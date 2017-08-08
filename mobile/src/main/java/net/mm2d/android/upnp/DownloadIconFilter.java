@@ -16,7 +16,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import javax.annotation.Nonnull;
 
 /**
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
@@ -52,9 +51,9 @@ class DownloadIconFilter implements IconFilter {
 
     private static final Comparator<Icon> ICON_COMPARATOR = (i1, i2) -> calcScore(i1) - calcScore(i2);
 
-    @Nonnull
+    @NonNull
     @Override
-    public List<Icon> filter(final @Nonnull List<Icon> list) {
+    public List<Icon> filter(final @NonNull List<Icon> list) {
         return Collections.singletonList(Collections.max(list, ICON_COMPARATOR));
     }
 }

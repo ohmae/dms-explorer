@@ -20,7 +20,6 @@ import java.io.StringWriter;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.Nonnull;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
@@ -106,8 +105,8 @@ public class CdsObjectXmlConverter {
      * @return 変換された文字列
      * @throws TransformerException 変換処理に問題が発生した場合
      */
-    @Nonnull
-    private static String formatXmlString(final @Nonnull Document document)
+    @NonNull
+    private static String formatXmlString(final @NonNull Document document)
             throws TransformerException {
         final TransformerFactory tf = TransformerFactory.newInstance();
         final Transformer transformer = tf.newTransformer();
