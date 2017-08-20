@@ -8,12 +8,13 @@
 package net.mm2d.dmsexplorer.util;
 
 import android.app.Activity;
-import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 
 import net.mm2d.android.upnp.cds.CdsObject;
+import net.mm2d.android.util.Toaster;
+import net.mm2d.dmsexplorer.R;
 import net.mm2d.dmsexplorer.Repository;
 import net.mm2d.dmsexplorer.domain.model.PlaybackTargetModel;
 import net.mm2d.dmsexplorer.settings.Settings;
@@ -51,6 +52,9 @@ public class ItemSelectUtils {
             @NonNull final Activity activity,
             final int index) {
         final PlaybackTargetModel targetModel = Repository.get().getPlaybackTargetModel();
+        if (targetModel == null) {
+            return;
+        }
         targetModel.setResIndex(index);
         if (targetModel.getUri() == null) {
             return;
@@ -88,7 +92,8 @@ public class ItemSelectUtils {
         try {
             activity.startActivity(intent);
             activity.overridePendingTransition(0, 0);
-        } catch (final ActivityNotFoundException ignored) {
+        } catch (final Exception ignored) {
+            Toaster.showLong(activity, R.string.toast_launch_error);
         }
     }
 

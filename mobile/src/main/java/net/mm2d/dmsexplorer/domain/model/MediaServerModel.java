@@ -85,6 +85,9 @@ public class MediaServerModel implements EntryListener {
 
     public boolean enterChild(@NonNull final CdsObject object) {
         final ContentDirectoryEntity directory = mHistoryStack.peekFirst();
+        if (directory == null) {
+            return false;
+        }
         final ContentDirectoryEntity child = directory.enterChild(object);
         if (child == null) {
             return false;
@@ -112,9 +115,15 @@ public class MediaServerModel implements EntryListener {
 
         mHandler.post(() -> {
             final ContentDirectoryEntity directory = mHistoryStack.pollFirst();
+            if (directory == null) {
+                return;
+            }
             directory.terminate();
             mPath = makePath();
             final ContentDirectoryEntity parent = mHistoryStack.peekFirst();
+            if (parent == null) {
+                return;
+            }
             parent.setEntryListener(this);
             updatePlaybackTarget();
             mExploreListener.onUpdate(parent.getList(), parent.isInProgress());
@@ -180,10 +189,11 @@ public class MediaServerModel implements EntryListener {
     private CdsObject findPrevious(
             @Nullable final CdsObject current,
             @ScanMode final int scanMode) {
-        final List<CdsObject> list = mHistoryStack.peekFirst().getList();
-        if (current == null || list == null) {
+        final ContentDirectoryEntity directory = mHistoryStack.peekFirst();
+        if (current == null || directory == null) {
             return null;
         }
+        final List<CdsObject> list = directory.getList();
         switch (scanMode) {
             case SCAN_MODE_SEQUENTIAL:
                 return findPreviousSequential(current, list);
