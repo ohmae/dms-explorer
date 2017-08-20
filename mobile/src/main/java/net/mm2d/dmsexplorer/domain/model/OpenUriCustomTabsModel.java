@@ -36,8 +36,9 @@ public class OpenUriCustomTabsModel implements OpenUriModel {
     private final ThemeModel mThemeModel;
     private boolean mUseCustomTabs;
 
-    public OpenUriCustomTabsModel(@NonNull final CustomTabsHelper helper,
-                                  @NonNull final ThemeModel themeModel) {
+    public OpenUriCustomTabsModel(
+            @NonNull final CustomTabsHelper helper,
+            @NonNull final ThemeModel themeModel) {
         mHelper = helper;
         mThemeModel = themeModel;
     }
@@ -47,7 +48,9 @@ public class OpenUriCustomTabsModel implements OpenUriModel {
     }
 
     @Override
-    public void openUri(@NonNull final Context context, @NonNull final String uri) {
+    public void openUri(
+            @NonNull final Context context,
+            @NonNull final String uri) {
         if (!mUseCustomTabs || !URLUtil.isNetworkUrl(uri)
                 || hasDefaultAppOtherThanBrowser(context, uri)) {
             LaunchUtils.openUri(context, uri);
@@ -58,7 +61,9 @@ public class OpenUriCustomTabsModel implements OpenUriModel {
         }
     }
 
-    private boolean openUriOnCustomTabs(@NonNull final Context context, @NonNull final String uri) {
+    private boolean openUriOnCustomTabs(
+            @NonNull final Context context,
+            @NonNull final String uri) {
         final String packageNameToBind = CustomTabsHelper.getPackageNameToBind();
         if (TextUtils.isEmpty(packageNameToBind)) {
             return false;
@@ -87,7 +92,8 @@ public class OpenUriCustomTabsModel implements OpenUriModel {
     }
 
     private static boolean hasDefaultAppOtherThanBrowser(
-            @NonNull final Context context, @NonNull final String uri) {
+            @NonNull final Context context,
+            @NonNull final String uri) {
         final PackageManager pm = context.getPackageManager();
         final List<ResolveInfo> browsers = pm.queryIntentActivities(
                 makeViewIntent("http://www.example.com/"), 0);
@@ -106,7 +112,9 @@ public class OpenUriCustomTabsModel implements OpenUriModel {
         return intent;
     }
 
-    private static boolean contains(@NonNull final ResolveInfo target, @NonNull final List<ResolveInfo> list) {
+    private static boolean contains(
+            @NonNull final ResolveInfo target,
+            @NonNull final List<ResolveInfo> list) {
         final String packageName = target.activityInfo.packageName;
         for (final ResolveInfo info : list) {
             if (TextUtils.equals(packageName, info.activityInfo.packageName)) {

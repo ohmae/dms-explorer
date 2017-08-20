@@ -33,11 +33,15 @@ import java.util.List;
 public class ServerListAdapter
         extends RecyclerView.Adapter<ServerListAdapter.ViewHolder> {
     public interface OnItemClickListener {
-        void onItemClick(@NonNull View v, @NonNull MediaServer server);
+        void onItemClick(
+                @NonNull View v,
+                @NonNull MediaServer server);
     }
 
     public interface OnItemLongClickListener {
-        void onItemLongClick(@NonNull View v, @NonNull MediaServer server);
+        void onItemLongClick(
+                @NonNull View v,
+                @NonNull MediaServer server);
     }
 
     private static final OnItemClickListener ON_ITEM_CLICK_LISTENER = (v, server) -> {
@@ -51,8 +55,9 @@ public class ServerListAdapter
     private OnItemLongClickListener mLongClickListener = ON_ITEM_LONG_CLICK_LISTENER;
     private MediaServer mSelectedServer;
 
-    public ServerListAdapter(@NonNull final Context context,
-                             @Nullable final Collection<? extends MediaServer> servers) {
+    public ServerListAdapter(
+            @NonNull final Context context,
+            @Nullable final Collection<? extends MediaServer> servers) {
         mContext = context;
         mInflater = LayoutInflater.from(context);
         if (servers == null) {
@@ -63,12 +68,16 @@ public class ServerListAdapter
     }
 
     @Override
-    public ViewHolder onCreateViewHolder(@NonNull final ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(
+            @NonNull final ViewGroup parent,
+            int viewType) {
         return new ViewHolder(DataBindingUtil.inflate(mInflater, R.layout.server_list_item, parent, false));
     }
 
     @Override
-    public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
+    public void onBindViewHolder(
+            @NonNull final ViewHolder holder,
+            int position) {
         holder.applyItem(mList.get(position));
     }
 

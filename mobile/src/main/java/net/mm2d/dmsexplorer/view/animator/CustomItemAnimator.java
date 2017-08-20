@@ -51,7 +51,10 @@ public class CustomItemAnimator extends SimpleItemAnimator {
         final int fromY;
         final int toY;
 
-        MoveInfo(ViewHolder holder, int fromY, int toY) {
+        MoveInfo(
+                ViewHolder holder,
+                int fromY,
+                int toY) {
             this.holder = holder;
             this.fromY = fromY;
             this.toY = toY;
@@ -64,8 +67,11 @@ public class CustomItemAnimator extends SimpleItemAnimator {
         final int fromY;
         final int toY;
 
-        ChangeInfo(ViewHolder oldHolder, ViewHolder newHolder,
-                   int fromY, int toY) {
+        ChangeInfo(
+                ViewHolder oldHolder,
+                ViewHolder newHolder,
+                int fromY,
+                int toY) {
             this.oldHolder = oldHolder;
             this.newHolder = newHolder;
             this.fromY = fromY;
@@ -197,7 +203,9 @@ public class CustomItemAnimator extends SimpleItemAnimator {
         return true;
     }
 
-    private void animateAddImpl(final ViewHolder holder, final long delay) {
+    private void animateAddImpl(
+            final ViewHolder holder,
+            final long delay) {
         final View view = holder.itemView;
         final ViewPropertyAnimatorCompat animation = ViewCompat.animate(view);
         mAddAnimations.add(holder);
@@ -228,7 +236,12 @@ public class CustomItemAnimator extends SimpleItemAnimator {
     }
 
     @Override
-    public boolean animateMove(final ViewHolder holder, final int fromX, final int fromY, final int toX, final int toY) {
+    public boolean animateMove(
+            final ViewHolder holder,
+            final int fromX,
+            final int fromY,
+            final int toX,
+            final int toY) {
         final View view = holder.itemView;
         final int from = (int) (fromY + ViewCompat.getTranslationY(holder.itemView));
         resetAnimation(holder);
@@ -242,7 +255,10 @@ public class CustomItemAnimator extends SimpleItemAnimator {
         return true;
     }
 
-    private void animateMoveImpl(final ViewHolder holder, int fromY, int toY) {
+    private void animateMoveImpl(
+            final ViewHolder holder,
+            int fromY,
+            int toY) {
         final View view = holder.itemView;
         final int deltaY = toY - fromY;
         if (deltaY != 0) {
@@ -274,8 +290,13 @@ public class CustomItemAnimator extends SimpleItemAnimator {
     }
 
     @Override
-    public boolean animateChange(final ViewHolder oldHolder, final ViewHolder newHolder,
-                                 final int fromX, final int fromY, final int toX, final int toY) {
+    public boolean animateChange(
+            final ViewHolder oldHolder,
+            final ViewHolder newHolder,
+            final int fromX,
+            final int fromY,
+            final int toX,
+            final int toY) {
         if (oldHolder == newHolder) {
             return animateMove(oldHolder, fromX, fromY, toX, toY);
         }
@@ -346,7 +367,9 @@ public class CustomItemAnimator extends SimpleItemAnimator {
         }
     }
 
-    private void endChangeAnimation(List<ChangeInfo> infoList, ViewHolder item) {
+    private void endChangeAnimation(
+            List<ChangeInfo> infoList,
+            ViewHolder item) {
         for (int i = infoList.size() - 1; i >= 0; i--) {
             final ChangeInfo changeInfo = infoList.get(i);
             if (endChangeAnimationIfNecessary(changeInfo, item)) {
@@ -366,7 +389,9 @@ public class CustomItemAnimator extends SimpleItemAnimator {
         }
     }
 
-    private boolean endChangeAnimationIfNecessary(ChangeInfo changeInfo, ViewHolder item) {
+    private boolean endChangeAnimationIfNecessary(
+            ChangeInfo changeInfo,
+            ViewHolder item) {
         boolean oldItem = false;
         if (changeInfo.newHolder == item) {
             changeInfo.newHolder = null;
@@ -559,8 +584,9 @@ public class CustomItemAnimator extends SimpleItemAnimator {
     }
 
     @Override
-    public boolean canReuseUpdatedViewHolder(@NonNull ViewHolder viewHolder,
-                                             @NonNull List<Object> payloads) {
+    public boolean canReuseUpdatedViewHolder(
+            @NonNull ViewHolder viewHolder,
+            @NonNull List<Object> payloads) {
         return !payloads.isEmpty() || super.canReuseUpdatedViewHolder(viewHolder, payloads);
     }
 

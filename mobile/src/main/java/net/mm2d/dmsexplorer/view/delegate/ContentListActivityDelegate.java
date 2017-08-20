@@ -43,8 +43,9 @@ public abstract class ContentListActivityDelegate implements CdsSelectListener {
     private final ContentListActivityBinding mBinding;
     private ContentListActivityModel mModel;
 
-    ContentListActivityDelegate(@NonNull final BaseActivity activity,
-                                @NonNull final ContentListActivityBinding binding) {
+    ContentListActivityDelegate(
+            @NonNull final BaseActivity activity,
+            @NonNull final ContentListActivityBinding binding) {
         mActivity = activity;
         mBinding = binding;
     }
@@ -128,7 +129,9 @@ public abstract class ContentListActivityDelegate implements CdsSelectListener {
         return mModel != null && mModel.onBackPressed();
     }
 
-    public boolean onKeyLongPress(final int keyCode, final KeyEvent event) {
+    public boolean onKeyLongPress(
+            final int keyCode,
+            final KeyEvent event) {
         if (mModel != null && keyCode == KeyEvent.KEYCODE_BACK) {
             mModel.terminate();
             return true;

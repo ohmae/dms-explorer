@@ -74,7 +74,9 @@ public class ControlPointModel {
 
     private final BroadcastReceiver mConnectivityReceiver = new BroadcastReceiver() {
         @Override
-        public void onReceive(Context context, Intent intent) {
+        public void onReceive(
+                Context context,
+                Intent intent) {
             if (!initializeOrTerminate(mLan.hasAvailableInterface())) {
                 Toaster.showLong(mContext, R.string.no_available_network);
             }
@@ -108,9 +110,10 @@ public class ControlPointModel {
     }
 
 
-    public ControlPointModel(@NonNull final Context context,
-                             @NonNull final SelectMediaServerObserver serverObserver,
-                             @NonNull final SelectMediaRendererObserver rendererObserver) {
+    public ControlPointModel(
+            @NonNull final Context context,
+            @NonNull final SelectMediaServerObserver serverObserver,
+            @NonNull final SelectMediaRendererObserver rendererObserver) {
         mContext = context.getApplicationContext();
         mLan = Lan.createInstance(mContext);
         mSelectMediaServerObserver = serverObserver;

@@ -33,11 +33,15 @@ import java.util.List;
 public class ContentListAdapter
         extends RecyclerView.Adapter<ContentListAdapter.ViewHolder> {
     public interface OnItemClickListener {
-        void onItemClick(@NonNull View v, @NonNull CdsObject object);
+        void onItemClick(
+                @NonNull View v,
+                @NonNull CdsObject object);
     }
 
     public interface OnItemLongClickListener {
-        void onItemLongClick(@NonNull View v, @NonNull CdsObject object);
+        void onItemLongClick(
+                @NonNull View v,
+                @NonNull CdsObject object);
     }
 
     private static final OnItemClickListener ON_ITEM_CLICK_LISTENER = (v, object) -> {
@@ -59,13 +63,17 @@ public class ContentListAdapter
     }
 
     @Override
-    public ViewHolder onCreateViewHolder(@NonNull final ViewGroup parent, final int viewType) {
+    public ViewHolder onCreateViewHolder(
+            @NonNull final ViewGroup parent,
+            final int viewType) {
         return new ViewHolder(DataBindingUtil
                 .inflate(mInflater, R.layout.content_list_item, parent, false));
     }
 
     @Override
-    public void onBindViewHolder(@NonNull final ViewHolder holder, final int position) {
+    public void onBindViewHolder(
+            @NonNull final ViewHolder holder,
+            final int position) {
         holder.applyItem(mList.get(position));
     }
 

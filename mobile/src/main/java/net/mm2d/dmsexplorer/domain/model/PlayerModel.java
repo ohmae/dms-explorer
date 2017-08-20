@@ -26,9 +26,13 @@ public interface PlayerModel {
 
         void notifyChapterList(@NonNull List<Integer> chapterList);
 
-        boolean onError(int what, int extra);
+        boolean onError(
+                int what,
+                int extra);
 
-        boolean onInfo(int what, int extra);
+        boolean onInfo(
+                int what,
+                int extra);
 
         void onCompletion();
     }
@@ -41,7 +45,9 @@ public interface PlayerModel {
 
     void setStatusListener(@NonNull StatusListener listener);
 
-    void setUri(@NonNull final Uri uri, @Nullable final Object metadata);
+    void setUri(
+            @NonNull final Uri uri,
+            @Nullable final Object metadata);
 
     void restoreSaveProgress(int progress);
 

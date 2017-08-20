@@ -36,7 +36,9 @@ import java.util.concurrent.TimeUnit;
  */
 public class MediaRenderer extends DeviceWrapper {
     public interface ActionCallback {
-        void onResult(boolean success, @Nullable Map<String, String> result);
+        void onResult(
+                boolean success,
+                @Nullable Map<String, String> result);
     }
 
     private static class ActionInvoker implements Runnable {
@@ -49,8 +51,10 @@ public class MediaRenderer extends DeviceWrapper {
         @NonNull
         private final ActionCallback mCallback;
 
-        ActionInvoker(@NonNull final Action action, @NonNull final Map<String, String> argument,
-                      @Nullable final ActionCallback callback) {
+        ActionInvoker(
+                @NonNull final Action action,
+                @NonNull final Map<String, String> argument,
+                @Nullable final ActionCallback callback) {
             mAction = action;
             mArgument = argument;
             mCallback = callback != null ? callback : NULL_CALLBACK;
@@ -135,7 +139,9 @@ public class MediaRenderer extends DeviceWrapper {
     @Nullable
     private final Action mPause;
 
-    MediaRenderer(@NonNull final MrControlPoint cp, @NonNull final Device device) {
+    MediaRenderer(
+            @NonNull final MrControlPoint cp,
+            @NonNull final Device device) {
         super(device);
         mMrControlPoint = cp;
         if (!device.getDeviceType().startsWith(Avt.MR_DEVICE_TYPE)) {
@@ -152,7 +158,9 @@ public class MediaRenderer extends DeviceWrapper {
     }
 
     @NonNull
-    private static Service findService(@NonNull final Device device, @NonNull final String id) {
+    private static Service findService(
+            @NonNull final Device device,
+            @NonNull final String id) {
         final Service service = device.findServiceById(id);
         if (service == null) {
             throw new IllegalArgumentException("Device doesn't have " + id);
@@ -161,7 +169,9 @@ public class MediaRenderer extends DeviceWrapper {
     }
 
     @NonNull
-    private static Action findAction(@NonNull final Service service, @NonNull final String name) {
+    private static Action findAction(
+            @NonNull final Service service,
+            @NonNull final String name) {
         final Action action = service.findAction(name);
         if (action == null) {
             throw new IllegalArgumentException("Service doesn't have " + name);
@@ -200,8 +210,10 @@ public class MediaRenderer extends DeviceWrapper {
         });
     }
 
-    public void setAVTransportURI(@NonNull final CdsObject object, @NonNull final String uri,
-                                  @Nullable final ActionCallback callback) {
+    public void setAVTransportURI(
+            @NonNull final CdsObject object,
+            @NonNull final String uri,
+            @Nullable final ActionCallback callback) {
         final Map<String, String> argument = new HashMap<>();
         final String metadata = CdsObjectXmlConverter.convert(object);
         if (TextUtils.isEmpty(metadata)) {
@@ -245,7 +257,9 @@ public class MediaRenderer extends DeviceWrapper {
         invoke(mPause, Collections.singletonMap(INSTANCE_ID, "0"), callback);
     }
 
-    public void seek(long time, @Nullable final ActionCallback callback) {
+    public void seek(
+            long time,
+            @Nullable final ActionCallback callback) {
         final Map<String, String> argument = new HashMap<>();
         argument.put(INSTANCE_ID, "0");
         final String timeText = makeTimeText(time);
@@ -274,8 +288,10 @@ public class MediaRenderer extends DeviceWrapper {
         invoke(mGetTransportInfo, Collections.singletonMap(INSTANCE_ID, "0"), callback);
     }
 
-    private void invoke(@NonNull final Action action, @NonNull final Map<String, String> argument,
-                        @Nullable final ActionCallback callback) {
+    private void invoke(
+            @NonNull final Action action,
+            @NonNull final Map<String, String> argument,
+            @Nullable final ActionCallback callback) {
         mMrControlPoint.invoke(new ActionInvoker(action, argument, callback));
     }
 

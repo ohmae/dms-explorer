@@ -26,8 +26,9 @@ import net.mm2d.dmsexplorer.view.base.BaseActivity;
 class ServerListActivityDelegateTwoPane extends ServerListActivityDelegate {
     private Fragment mFragment;
 
-    ServerListActivityDelegateTwoPane(@NonNull final BaseActivity activity,
-                                      @NonNull final ServerListActivityBinding binding) {
+    ServerListActivityDelegateTwoPane(
+            @NonNull final BaseActivity activity,
+            @NonNull final ServerListActivityBinding binding) {
         super(activity, binding);
     }
 

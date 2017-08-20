@@ -39,7 +39,9 @@ class SonyFetcher implements Fetcher {
     private static final String TIME_NODE = "chapter_point";
 
     @Override
-    public boolean get(@NonNull final CdsObject object, @NonNull final Callback callback) {
+    public boolean get(
+            @NonNull final CdsObject object,
+            @NonNull final Callback callback) {
         final String url = object.getValue(CHAPTER_INFO);
         if (TextUtils.isEmpty(url)) {
             return false;
@@ -48,7 +50,9 @@ class SonyFetcher implements Fetcher {
         return true;
     }
 
-    private void getInner(@NonNull final String url, @NonNull final Callback callback) {
+    private void getInner(
+            @NonNull final String url,
+            @NonNull final Callback callback) {
         try {
             final String xml = new HttpClient(false).downloadString(new URL(url));
             callback.onResult(parseChapterInfo(xml));
@@ -92,7 +96,8 @@ class SonyFetcher implements Fetcher {
 
     @Nullable
     private Element findChildElementByNodeName(
-            @NonNull final Node parent, @NonNull final String nodeName) {
+            @NonNull final Node parent,
+            @NonNull final String nodeName) {
         Node child = parent.getFirstChild();
         for (; child != null; child = child.getNextSibling()) {
             if (child.getNodeType() != Node.ELEMENT_NODE) {

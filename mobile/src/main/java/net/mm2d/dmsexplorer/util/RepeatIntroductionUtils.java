@@ -26,7 +26,9 @@ public class RepeatIntroductionUtils {
 
     public static final long TIMEOUT = TimeUnit.SECONDS.toMillis(8);
 
-    public static boolean show(final Activity activity, final View view) {
+    public static boolean show(
+            final Activity activity,
+            final View view) {
         final Settings settings = new Settings(activity);
         if (settings.isRepeatIntroduced()) {
             return false;

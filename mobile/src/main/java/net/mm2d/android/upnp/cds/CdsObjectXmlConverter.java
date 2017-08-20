@@ -67,7 +67,10 @@ public class CdsObjectXmlConverter {
     }
 
     @NonNull
-    private static Element makeElement(@NonNull final Document document, @NonNull final String tagName, @NonNull final Tag tag) {
+    private static Element makeElement(
+            @NonNull final Document document,
+            @NonNull final String tagName,
+            @NonNull final Tag tag) {
         final Element element = document.createElement(tagName);
         final String value = tag.getValue();
         if (!TextUtils.isEmpty(value)) {
@@ -80,7 +83,9 @@ public class CdsObjectXmlConverter {
     }
 
     @NonNull
-    private static Element makeRootElement(@NonNull final Document document, @NonNull final CdsObject object) {
+    private static Element makeRootElement(
+            @NonNull final Document document,
+            @NonNull final CdsObject object) {
         final Element element = document.createElement(CdsObject.DIDL_LITE);
         for (final Map.Entry<String, String> attribute : object.getRootTag().getAttributes().entrySet()) {
             element.setAttribute(attribute.getKey(), attribute.getValue());
@@ -90,7 +95,8 @@ public class CdsObjectXmlConverter {
 
     @NonNull
     private static Element makeItemElement(
-            @NonNull final Document document, @NonNull final CdsObject object) {
+            @NonNull final Document document,
+            @NonNull final CdsObject object) {
         final Tag tag = object.getTag("");
         if (tag == null) {
             throw new IllegalArgumentException();

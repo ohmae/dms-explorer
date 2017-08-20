@@ -76,9 +76,10 @@ public class MovieActivityModel extends BaseObservable
     @NonNull
     private final Settings mSettings;
 
-    public MovieActivityModel(@NonNull final Activity activity,
-                              @NonNull final VideoView videoView,
-                              @NonNull final Repository repository) {
+    public MovieActivityModel(
+            @NonNull final Activity activity,
+            @NonNull final VideoView videoView,
+            @NonNull final Repository repository) {
         mActivity = activity;
         mVideoView = videoView;
         mRepository = repository;

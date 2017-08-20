@@ -30,8 +30,9 @@ import net.mm2d.dmsexplorer.viewmodel.ContentListActivityModel;
 class ContentListActivityDelegateTwoPane extends ContentListActivityDelegate {
     private Fragment mFragment;
 
-    ContentListActivityDelegateTwoPane(@NonNull final BaseActivity activity,
-                                       @NonNull final ContentListActivityBinding binding) {
+    ContentListActivityDelegateTwoPane(
+            @NonNull final BaseActivity activity,
+            @NonNull final ContentListActivityBinding binding) {
         super(activity, binding);
     }
 
@@ -41,7 +42,9 @@ class ContentListActivityDelegateTwoPane extends ContentListActivityDelegate {
     }
 
     @Override
-    public void onSelect(@NonNull final View v, @NonNull final CdsObject object) {
+    public void onSelect(
+            @NonNull final View v,
+            @NonNull final CdsObject object) {
         setDetailFragment(true);
     }
 
@@ -51,7 +54,10 @@ class ContentListActivityDelegateTwoPane extends ContentListActivityDelegate {
     }
 
     @Override
-    public void onExecute(@NonNull final View v, @NonNull final CdsObject object, final boolean selected) {
+    public void onExecute(
+            @NonNull final View v,
+            @NonNull final CdsObject object,
+            final boolean selected) {
         if (object.hasProtectedResource()) {
             if (!selected) {
                 setDetailFragment(true);

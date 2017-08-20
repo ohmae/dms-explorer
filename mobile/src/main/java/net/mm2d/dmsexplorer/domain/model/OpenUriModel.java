@@ -14,5 +14,7 @@ import android.support.annotation.NonNull;
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
  */
 public interface OpenUriModel {
-    void openUri(@NonNull Context context, @NonNull String uri);
+    void openUri(
+            @NonNull Context context,
+            @NonNull String uri);
 }

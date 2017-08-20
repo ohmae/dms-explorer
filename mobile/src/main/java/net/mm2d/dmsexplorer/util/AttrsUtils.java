@@ -23,10 +23,11 @@ public class AttrsUtils {
     }
 
     @ColorInt
-    public static int resolveColor(@NonNull final Context context,
-                                   @StyleRes final int style,
-                                   @AttrRes final int attr,
-                                   @ColorInt final int defaultColor) {
+    public static int resolveColor(
+            @NonNull final Context context,
+            @StyleRes final int style,
+            @AttrRes final int attr,
+            @ColorInt final int defaultColor) {
         final TypedArray a = context.obtainStyledAttributes(style, new int[]{attr});
         final int color = a.getColor(0, defaultColor);
         a.recycle();
@@ -34,9 +35,10 @@ public class AttrsUtils {
     }
 
     @ColorInt
-    public static int resolveColor(@NonNull final Context context,
-                                   @AttrRes final int attr,
-                                   @ColorInt final int defaultColor) {
+    public static int resolveColor(
+            @NonNull final Context context,
+            @AttrRes final int attr,
+            @ColorInt final int defaultColor) {
         return resolveColor(context, 0, attr, defaultColor);
     }
 }

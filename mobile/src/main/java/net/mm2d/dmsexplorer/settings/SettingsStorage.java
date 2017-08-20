@@ -59,7 +59,9 @@ class SettingsStorage {
      * @param key   Key
      * @param value 書き込む値
      */
-    void putBoolean(@NonNull Key key, boolean value) {
+    void putBoolean(
+            @NonNull Key key,
+            boolean value) {
         mPreferences.edit()
                 .putBoolean(key.name(), value)
                 .apply();
@@ -72,7 +74,9 @@ class SettingsStorage {
      * @param defaultValue デフォルト値
      * @return 読み出したboolean値
      */
-    boolean getBoolean(@NonNull Key key, boolean defaultValue) {
+    boolean getBoolean(
+            @NonNull Key key,
+            boolean defaultValue) {
         return mPreferences.getBoolean(key.name(), defaultValue);
     }
 
@@ -82,7 +86,9 @@ class SettingsStorage {
      * @param key   Key
      * @param value 書き込む値
      */
-    void putInt(@NonNull Key key, int value) {
+    void putInt(
+            @NonNull Key key,
+            int value) {
         mPreferences.edit()
                 .putInt(key.name(), value)
                 .apply();
@@ -95,7 +101,9 @@ class SettingsStorage {
      * @param defaultValue デフォルト値
      * @return 読み出したint値
      */
-    int getInt(@NonNull Key key, int defaultValue) {
+    int getInt(
+            @NonNull Key key,
+            int defaultValue) {
         return mPreferences.getInt(key.name(), defaultValue);
     }
 
@@ -105,7 +113,9 @@ class SettingsStorage {
      * @param key   Key
      * @param value 書き込む値
      */
-    void putLong(@NonNull Key key, long value) {
+    void putLong(
+            @NonNull Key key,
+            long value) {
         mPreferences.edit()
                 .putLong(key.name(), value)
                 .apply();
@@ -118,7 +128,9 @@ class SettingsStorage {
      * @param defaultValue デフォルト値
      * @return 読み出したlong値
      */
-    long getLong(@NonNull Key key, long defaultValue) {
+    long getLong(
+            @NonNull Key key,
+            long defaultValue) {
         return mPreferences.getLong(key.name(), defaultValue);
     }
 
@@ -128,7 +140,9 @@ class SettingsStorage {
      * @param key   Key
      * @param value 書き込む値
      */
-    void putString(@NonNull Key key, @NonNull String value) {
+    void putString(
+            @NonNull Key key,
+            @NonNull String value) {
         mPreferences.edit()
                 .putString(key.name(), value)
                 .apply();
@@ -141,7 +155,9 @@ class SettingsStorage {
      * @param defaultValue デフォルト値
      * @return 読み出したString値
      */
-    String getString(@NonNull Key key, @Nullable String defaultValue) {
+    String getString(
+            @NonNull Key key,
+            @Nullable String defaultValue) {
         return mPreferences.getString(key.name(), defaultValue);
     }
 }

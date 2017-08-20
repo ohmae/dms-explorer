@@ -30,11 +30,15 @@ import java.util.List;
  */
 public class RendererListAdapter extends RecyclerView.Adapter<RendererListAdapter.ViewHolder> {
     public interface OnItemClickListener {
-        void onItemClick(@NonNull View v, @NonNull MediaRenderer renderer);
+        void onItemClick(
+                @NonNull View v,
+                @NonNull MediaRenderer renderer);
     }
 
     public interface OnItemLongClickListener {
-        void onItemLongClick(@NonNull View v, @NonNull MediaRenderer renderer);
+        void onItemLongClick(
+                @NonNull View v,
+                @NonNull MediaRenderer renderer);
     }
 
     private static final OnItemClickListener ON_ITEM_CLICK_LISTENER = (v, renderer) -> {
@@ -47,8 +51,9 @@ public class RendererListAdapter extends RecyclerView.Adapter<RendererListAdapte
     private OnItemClickListener mClickListener = ON_ITEM_CLICK_LISTENER;
     private OnItemLongClickListener mLongClickListener = ON_ITEM_LONG_CLICK_LISTENER;
 
-    public RendererListAdapter(@NonNull final Context context,
-                               @Nullable final Collection<? extends MediaRenderer> renderers) {
+    public RendererListAdapter(
+            @NonNull final Context context,
+            @Nullable final Collection<? extends MediaRenderer> renderers) {
         mContext = context;
         mInflater = LayoutInflater.from(context);
         if (renderers == null) {
@@ -59,12 +64,16 @@ public class RendererListAdapter extends RecyclerView.Adapter<RendererListAdapte
     }
 
     @Override
-    public ViewHolder onCreateViewHolder(@NonNull final ViewGroup parent, final int viewType) {
+    public ViewHolder onCreateViewHolder(
+            @NonNull final ViewGroup parent,
+            final int viewType) {
         return new ViewHolder(DataBindingUtil.inflate(mInflater, R.layout.renderer_list_item, parent, false));
     }
 
     @Override
-    public void onBindViewHolder(@NonNull final ViewHolder holder, final int position) {
+    public void onBindViewHolder(
+            @NonNull final ViewHolder holder,
+            final int position) {
         holder.applyItem(mList.get(position));
     }
 

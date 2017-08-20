@@ -43,11 +43,16 @@ public class ContentListActivityModel extends BaseObservable implements ExploreL
     private static final int INVALID_POSITION = -1;
 
     public interface CdsSelectListener {
-        void onSelect(@NonNull View v, @NonNull CdsObject object);
+        void onSelect(
+                @NonNull View v,
+                @NonNull CdsObject object);
 
         void onLostSelection();
 
-        void onExecute(@NonNull View v, @NonNull CdsObject object, boolean selected);
+        void onExecute(
+                @NonNull View v,
+                @NonNull CdsObject object,
+                boolean selected);
     }
 
     @NonNull
@@ -83,10 +88,11 @@ public class ContentListActivityModel extends BaseObservable implements ExploreL
     @NonNull
     private final Settings mSettings;
 
-    public ContentListActivityModel(@NonNull final Context context,
-                                    @NonNull final Repository repository,
-                                    @NonNull final CdsSelectListener listener,
-                                    final boolean twoPane) {
+    public ContentListActivityModel(
+            @NonNull final Context context,
+            @NonNull final Repository repository,
+            @NonNull final CdsSelectListener listener,
+            final boolean twoPane) {
         mSettings = new Settings(context);
         mTwoPane = twoPane;
         final MediaServerModel model = repository.getMediaServerModel();
@@ -134,7 +140,9 @@ public class ContentListActivityModel extends BaseObservable implements ExploreL
         return mContentListAdapter;
     }
 
-    private void onItemClick(@NonNull final View v, @NonNull final CdsObject object) {
+    private void onItemClick(
+            @NonNull final View v,
+            @NonNull final CdsObject object) {
         if (mMediaServerModel.enterChild(object)) {
             return;
         }
@@ -152,7 +160,9 @@ public class ContentListActivityModel extends BaseObservable implements ExploreL
         }
     }
 
-    private void onItemLongClick(@NonNull final View v, @NonNull final CdsObject object) {
+    private void onItemLongClick(
+            @NonNull final View v,
+            @NonNull final CdsObject object) {
         if (mMediaServerModel.enterChild(object)) {
             return;
         }
@@ -184,7 +194,9 @@ public class ContentListActivityModel extends BaseObservable implements ExploreL
     }
 
     @Override
-    public void onUpdate(@NonNull final List<CdsObject> list, final boolean inProgress) {
+    public void onUpdate(
+            @NonNull final List<CdsObject> list,
+            final boolean inProgress) {
         setRefreshing(inProgress);
         setSubtitle("[" + list.size() + "] " + mMediaServerModel.getPath());
         mHandler.post(() -> updateList(list));

@@ -32,18 +32,20 @@ public class WebViewActivity extends BaseActivity {
     private static final String KEY_TITLE = "KEY_TITLE";
     private static final String KEY_URL = "KEY_URL";
 
-    public static Intent makeIntent(@NonNull final Context context,
-                                    @NonNull final String title,
-                                    @NonNull final String url) {
+    public static Intent makeIntent(
+            @NonNull final Context context,
+            @NonNull final String title,
+            @NonNull final String url) {
         final Intent intent = new Intent(context, WebViewActivity.class);
         intent.putExtra(KEY_TITLE, title);
         intent.putExtra(KEY_URL, url);
         return intent;
     }
 
-    public static void start(@NonNull final Context context,
-                             @NonNull final String title,
-                             @NonNull final String url) {
+    public static void start(
+            @NonNull final Context context,
+            @NonNull final String title,
+            @NonNull final String url) {
         context.startActivity(makeIntent(context, title, url));
     }
 
@@ -66,7 +68,9 @@ public class WebViewActivity extends BaseActivity {
         webView.getSettings().setDisplayZoomControls(false);
         webView.setWebChromeClient(new WebChromeClient() {
             @Override
-            public void onProgressChanged(final WebView view, final int newProgress) {
+            public void onProgressChanged(
+                    final WebView view,
+                    final int newProgress) {
                 binding.progress.setProgress(newProgress);
                 if (newProgress == 100) {
                     binding.progress.setVisibility(View.GONE);
@@ -75,19 +79,26 @@ public class WebViewActivity extends BaseActivity {
         });
         webView.setWebViewClient(new WebViewClient() {
             @Override
-            public void onPageStarted(final WebView view, final String url, final Bitmap favicon) {
+            public void onPageStarted(
+                    final WebView view,
+                    final String url,
+                    final Bitmap favicon) {
                 binding.progress.setProgress(0);
                 binding.progress.setVisibility(View.VISIBLE);
             }
 
             @Override
-            public void onPageFinished(final WebView view, final String url) {
+            public void onPageFinished(
+                    final WebView view,
+                    final String url) {
                 binding.progress.setVisibility(View.GONE);
             }
 
             @SuppressWarnings("deprecation")
             @Override
-            public boolean shouldOverrideUrlLoading(final WebView view, final String url) {
+            public boolean shouldOverrideUrlLoading(
+                    final WebView view,
+                    final String url) {
                 Repository.get().getOpenUriModel().openUri(WebViewActivity.this, url);
                 return true;
             }

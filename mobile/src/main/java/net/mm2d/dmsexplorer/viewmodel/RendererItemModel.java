@@ -38,7 +38,9 @@ public class RendererItemModel {
     @NonNull
     public final String description;
 
-    public RendererItemModel(@NonNull final Context context, @NonNull final MediaRenderer renderer) {
+    public RendererItemModel(
+            @NonNull final Context context,
+            @NonNull final MediaRenderer renderer) {
         final String name = renderer.getFriendlyName();
         final Icon icon = renderer.getIcon();
         title = name;

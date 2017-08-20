@@ -42,9 +42,10 @@ public class ContentDetailFragment extends Fragment {
     private ContentDetailFragmentModel mModel;
 
     @Override
-    public View onCreateView(@NonNull final LayoutInflater inflater,
-                             @Nullable final ViewGroup container,
-                             @Nullable final Bundle savedInstanceState) {
+    public View onCreateView(
+            @NonNull final LayoutInflater inflater,
+            @Nullable final ViewGroup container,
+            @Nullable final Bundle savedInstanceState) {
         final ContentDetailFragmentBinding binding
                 = DataBindingUtil.inflate(inflater, R.layout.content_detail_fragment, container, false);
         try {

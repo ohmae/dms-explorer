@@ -86,7 +86,9 @@ public class ControlPanelModel extends BaseObservable implements StatusListener 
     @NonNull
     private SkipControlListener mSkipControlListener = SKIP_CONTROL_LISTENER;
 
-    ControlPanelModel(@NonNull Context context, @NonNull PlayerModel playerModel) {
+    ControlPanelModel(
+            @NonNull Context context,
+            @NonNull PlayerModel playerModel) {
         mContext = context;
         mPlayerModel = playerModel;
         mPlayerModel.setStatusListener(this);
@@ -111,7 +113,10 @@ public class ControlPanelModel extends BaseObservable implements StatusListener 
 
     public final ScrubBarListener seekBarListener = new ScrubBarListener() {
         @Override
-        public void onProgressChanged(final ScrubBar seekBar, final int progress, final boolean fromUser) {
+        public void onProgressChanged(
+                final ScrubBar seekBar,
+                final int progress,
+                final boolean fromUser) {
             if (fromUser) {
                 setProgressText(progress);
             }
@@ -130,7 +135,9 @@ public class ControlPanelModel extends BaseObservable implements StatusListener 
         }
 
         @Override
-        public void onAccuracyChanged(final ScrubBar seekBar, @Accuracy final int accuracy) {
+        public void onAccuracyChanged(
+                final ScrubBar seekBar,
+                @Accuracy final int accuracy) {
             setScrubText(getScrubText(accuracy));
         }
     };
@@ -324,13 +331,17 @@ public class ControlPanelModel extends BaseObservable implements StatusListener 
     }
 
     @Override
-    public boolean onError(final int what, final int extra) {
+    public boolean onError(
+            final int what,
+            final int extra) {
         mError = true;
         return false;
     }
 
     @Override
-    public boolean onInfo(final int what, final int extra) {
+    public boolean onInfo(
+            final int what,
+            final int extra) {
         return false;
     }
 

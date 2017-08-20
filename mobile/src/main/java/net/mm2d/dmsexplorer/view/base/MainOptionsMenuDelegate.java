@@ -33,7 +33,9 @@ class MainOptionsMenuDelegate implements OptionsMenuDelegate {
     private final Settings mSettings;
     private final BroadcastReceiver mUpdateReceiver = new BroadcastReceiver() {
         @Override
-        public void onReceive(final Context context, final Intent intent) {
+        public void onReceive(
+                final Context context,
+                final Intent intent) {
             mActivity.invalidateOptionsMenu();
         }
     };

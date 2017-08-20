@@ -47,7 +47,9 @@ public class ItemSelectUtils {
         SelectResourceDialog.show(activity);
     }
 
-    public static void play(@NonNull final Activity activity, final int index) {
+    public static void play(
+            @NonNull final Activity activity,
+            final int index) {
         final PlaybackTargetModel targetModel = Repository.get().getPlaybackTargetModel();
         targetModel.setResIndex(index);
         if (targetModel.getUri() == null) {

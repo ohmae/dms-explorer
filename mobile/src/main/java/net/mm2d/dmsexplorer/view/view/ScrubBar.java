@@ -52,18 +52,26 @@ public class ScrubBar extends View {
     private static final int RANK_MAX = ACCURACY_RANKS.length - 1;
 
     public interface ScrubBarListener {
-        void onProgressChanged(ScrubBar seekBar, int progress, boolean fromUser);
+        void onProgressChanged(
+                ScrubBar seekBar,
+                int progress,
+                boolean fromUser);
 
         void onStartTrackingTouch(ScrubBar seekBar);
 
         void onStopTrackingTouch(ScrubBar seekBar);
 
-        void onAccuracyChanged(ScrubBar seekBar, @Accuracy int accuracy);
+        void onAccuracyChanged(
+                ScrubBar seekBar,
+                @Accuracy int accuracy);
     }
 
     private static final ScrubBarListener LISTENER = new ScrubBarListener() {
         @Override
-        public void onProgressChanged(final ScrubBar seekBar, final int progress, final boolean fromUser) {
+        public void onProgressChanged(
+                final ScrubBar seekBar,
+                final int progress,
+                final boolean fromUser) {
         }
 
         @Override
@@ -75,7 +83,9 @@ public class ScrubBar extends View {
         }
 
         @Override
-        public void onAccuracyChanged(final ScrubBar seekBar, @Accuracy final int accuracy) {
+        public void onAccuracyChanged(
+                final ScrubBar seekBar,
+                @Accuracy final int accuracy) {
         }
     };
 
@@ -126,11 +136,16 @@ public class ScrubBar extends View {
         this(context, null);
     }
 
-    public ScrubBar(@NonNull final Context context, @Nullable final AttributeSet attrs) {
+    public ScrubBar(
+            @NonNull final Context context,
+            @Nullable final AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public ScrubBar(@NonNull final Context context, @Nullable final AttributeSet attrs, final int defStyleAttr) {
+    public ScrubBar(
+            @NonNull final Context context,
+            @Nullable final AttributeSet attrs,
+            final int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         mEnabledProgressColor = getColorAccent(context);
 
@@ -237,7 +252,9 @@ public class ScrubBar extends View {
         }
 
         @Override
-        public void writeToParcel(@NonNull final Parcel out, final int flags) {
+        public void writeToParcel(
+                @NonNull final Parcel out,
+                final int flags) {
             super.writeToParcel(out, flags);
             out.writeInt(progress);
             out.writeInt(max);
@@ -287,7 +304,9 @@ public class ScrubBar extends View {
     }
 
     @Override
-    protected void onMeasure(final int widthMeasureSpec, final int heightMeasureSpec) {
+    protected void onMeasure(
+            final int widthMeasureSpec,
+            final int heightMeasureSpec) {
         final int w = (int) (mTrackWidth + getPaddingLeft() + getPaddingRight());
         final int h = (int) (mTrackWidth + getPaddingTop() + getPaddingBottom());
         setMeasuredDimension(
@@ -451,7 +470,9 @@ public class ScrubBar extends View {
         return mProgress;
     }
 
-    private void setProgressInternal(int progress, boolean fromUser) {
+    private void setProgressInternal(
+            int progress,
+            boolean fromUser) {
         progress = clamp(progress, 0, mMax);
         if (progress == mProgress) {
             return;
@@ -465,7 +486,10 @@ public class ScrubBar extends View {
         mScrubBarListener = listener != null ? listener : LISTENER;
     }
 
-    private static int clamp(int value, int min, int max) {
+    private static int clamp(
+            int value,
+            int min,
+            int max) {
         return Math.min(Math.max(value, min), max);
     }
 }

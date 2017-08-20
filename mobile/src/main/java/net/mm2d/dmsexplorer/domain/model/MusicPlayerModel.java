@@ -32,8 +32,9 @@ public class MusicPlayerModel extends MediaPlayerModel {
         this(context, new MediaPlayer());
     }
 
-    private MusicPlayerModel(@NonNull final Context context,
-                             @NonNull final MediaPlayer mediaPlayer) {
+    private MusicPlayerModel(
+            @NonNull final Context context,
+            @NonNull final MediaPlayer mediaPlayer) {
         super(new MediaPlayerControl(mediaPlayer));
         mContext = context;
         mMediaPlayer = mediaPlayer;
@@ -45,7 +46,9 @@ public class MusicPlayerModel extends MediaPlayerModel {
     }
 
     @Override
-    public void setUri(@NonNull final Uri uri, @Nullable final Object metadata) {
+    public void setUri(
+            @NonNull final Uri uri,
+            @Nullable final Object metadata) {
         mMediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
         try {
             mMediaPlayer.setDataSource(mContext, uri);

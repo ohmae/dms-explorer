@@ -42,7 +42,10 @@ public class BitmapUtils {
      * @return Bitmap
      */
     @Nullable
-    public static Bitmap decodeBitmap(@NonNull final byte[] data, final int width, final int height) {
+    public static Bitmap decodeBitmap(
+            @NonNull final byte[] data,
+            final int width,
+            final int height) {
         final BitmapFactory.Options options = new BitmapFactory.Options();
         options.inJustDecodeBounds = true;
         BitmapFactory.decodeByteArray(data, 0, data.length, options);
@@ -60,8 +63,11 @@ public class BitmapUtils {
      * @param targetHeight 取得したい枠の幅
      * @return ダウンサンプル数
      */
-    private static int calcSampleSize(final int sourceWidth, final int sourceHeight,
-                                      final int targetWidth, final int targetHeight) {
+    private static int calcSampleSize(
+            final int sourceWidth,
+            final int sourceHeight,
+            final int targetWidth,
+            final int targetHeight) {
         if (targetWidth == 0 || targetHeight == 0) {
             return 1; // Avoid zero division
         }

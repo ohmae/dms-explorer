@@ -16,7 +16,9 @@ import android.os.Bundle;
  */
 public class ActivityLifecycleCallbacksAdapter implements ActivityLifecycleCallbacks {
     @Override
-    public void onActivityCreated(final Activity activity, final Bundle savedInstanceState) {
+    public void onActivityCreated(
+            final Activity activity,
+            final Bundle savedInstanceState) {
     }
 
     @Override
@@ -36,7 +38,9 @@ public class ActivityLifecycleCallbacksAdapter implements ActivityLifecycleCallb
     }
 
     @Override
-    public void onActivitySaveInstanceState(final Activity activity, final Bundle outState) {
+    public void onActivitySaveInstanceState(
+            final Activity activity,
+            final Bundle outState) {
     }
 
     @Override

@@ -50,7 +50,10 @@ public class UpdateChecker {
     }
 
     @VisibleForTesting
-    UpdateChecker(final Context context, final Settings settings, final int version) {
+    UpdateChecker(
+            final Context context,
+            final Settings settings,
+            final int version) {
         mContext = context;
         mSettings = settings;
         mCurrentVersion = version;

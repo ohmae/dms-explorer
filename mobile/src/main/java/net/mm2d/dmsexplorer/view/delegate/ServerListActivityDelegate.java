@@ -45,8 +45,9 @@ public abstract class ServerListActivityDelegate implements ServerSelectListener
     private final BaseActivity mActivity;
     private final ServerListActivityBinding mBinding;
 
-    ServerListActivityDelegate(@NonNull final BaseActivity activity,
-                               @NonNull final ServerListActivityBinding binding) {
+    ServerListActivityDelegate(
+            @NonNull final BaseActivity activity,
+            @NonNull final ServerListActivityBinding binding) {
         mActivity = activity;
         mBinding = binding;
     }
@@ -107,7 +108,9 @@ public abstract class ServerListActivityDelegate implements ServerSelectListener
         outState.putInt(KEY_SCROLL_OFFSET, -view.getTop());
     }
 
-    protected static void startCdsListActivity(@NonNull final Context context, @NonNull final View v) {
+    protected static void startCdsListActivity(
+            @NonNull final Context context,
+            @NonNull final View v) {
         final Intent intent = ContentListActivity.makeIntent(context);
         context.startActivity(intent, ActivityOptions.makeScaleUpAnimation(
                 v, 0, 0, v.getWidth(), v.getHeight())

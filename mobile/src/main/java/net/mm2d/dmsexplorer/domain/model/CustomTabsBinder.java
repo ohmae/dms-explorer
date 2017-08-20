@@ -26,7 +26,9 @@ public class CustomTabsBinder extends ActivityLifecycleCallbacksAdapter {
     }
 
     @Override
-    public void onActivityCreated(final Activity activity, final Bundle savedInstanceState) {
+    public void onActivityCreated(
+            final Activity activity,
+            final Bundle savedInstanceState) {
         mCreatedCount++;
         mSession.bind();
     }

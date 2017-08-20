@@ -190,12 +190,16 @@ public abstract class MediaPlayerModel implements PlayerModel, OnPreparedListene
         setPlaying(isPlaying());
     }
 
-    private void logError(final int what, final int extra) {
+    private void logError(
+            final int what,
+            final int extra) {
         Log.e("onError:w" + what + " " + getErrorWhatString(what)
                 + " e" + extra + " " + getErrorExtraString(extra));
     }
 
-    private void logInfo(final int what, final int extra) {
+    private void logInfo(
+            final int what,
+            final int extra) {
         Log.d("onInfo:w:" + what + " " + getInfoWhatString(what)
                 + " e:" + extra);
     }

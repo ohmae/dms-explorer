@@ -37,14 +37,19 @@ public class ViewPagerAdapter extends PagerAdapter {
     }
 
     @Override
-    public Object instantiateItem(ViewGroup container, int position) {
+    public Object instantiateItem(
+            ViewGroup container,
+            int position) {
         final View view = mViewList.get(position);
         container.addView(view);
         return view;
     }
 
     @Override
-    public void destroyItem(ViewGroup container, int position, Object object) {
+    public void destroyItem(
+            ViewGroup container,
+            int position,
+            Object object) {
         container.removeView((View) object);
     }
 
@@ -54,7 +59,9 @@ public class ViewPagerAdapter extends PagerAdapter {
     }
 
     @Override
-    public boolean isViewFromObject(View view, Object object) {
+    public boolean isViewFromObject(
+            View view,
+            Object object) {
         return view == object;
     }
 }

@@ -18,7 +18,8 @@ import android.support.v4.widget.SwipeRefreshLayout;
 public class SwipeRefreshLayoutBindingAdapter {
     @BindingAdapter("colorSchemeResources")
     public static void setColorSchemeResources(
-            @NonNull final SwipeRefreshLayout view, @ColorRes int... colorResIds) {
+            @NonNull final SwipeRefreshLayout view,
+            @ColorRes int... colorResIds) {
         if (colorResIds == null) {
             return;
         }

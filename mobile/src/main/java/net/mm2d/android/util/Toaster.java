@@ -14,32 +14,46 @@ public class Toaster {
     }
 
     @NonNull
-    public static Toast showLong(@NonNull final Context context, @StringRes final int resId) {
+    public static Toast showLong(
+            @NonNull final Context context,
+            @StringRes final int resId) {
         return show(context, resId, Toast.LENGTH_LONG);
     }
 
     @NonNull
-    public static Toast showLong(@NonNull final Context context, @NonNull final CharSequence text) {
+    public static Toast showLong(
+            @NonNull final Context context,
+            @NonNull final CharSequence text) {
         return show(context, text, Toast.LENGTH_LONG);
     }
 
     @NonNull
-    public static Toast showShort(@NonNull final Context context, @StringRes final int resId) {
+    public static Toast showShort(
+            @NonNull final Context context,
+            @StringRes final int resId) {
         return show(context, resId, Toast.LENGTH_SHORT);
     }
 
     @NonNull
-    public static Toast showShort(@NonNull final Context context, @NonNull final CharSequence text) {
+    public static Toast showShort(
+            @NonNull final Context context,
+            @NonNull final CharSequence text) {
         return show(context, text, Toast.LENGTH_SHORT);
     }
 
     @NonNull
-    private static Toast show(@NonNull final Context context, @StringRes final int resId, final int length) {
+    private static Toast show(
+            @NonNull final Context context,
+            @StringRes final int resId,
+            final int length) {
         return show(context, context.getText(resId), length);
     }
 
     @NonNull
-    private static Toast show(@NonNull final Context context, @NonNull final CharSequence text, final int length) {
+    private static Toast show(
+            @NonNull final Context context,
+            @NonNull final CharSequence text,
+            final int length) {
         final Toast toast = Toast.makeText(context, text, length);
         toast.show();
         return toast;

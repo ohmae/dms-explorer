@@ -37,7 +37,9 @@ public class LaunchUtils {
      * @param uri     URI
      * @return 起動ができた場合true、何らかの理由で起動できない場合false
      */
-    public static boolean openUri(@NonNull final Context context, @Nullable final String uri) {
+    public static boolean openUri(
+            @NonNull final Context context,
+            @Nullable final String uri) {
         if (TextUtils.isEmpty(uri)) {
             return false;
         }
@@ -59,7 +61,9 @@ public class LaunchUtils {
      * @param packageName 開くアプリのパッケージ名
      * @return 起動ができた場合true、何らかの理由で起動できない場合false
      */
-    public static boolean openGooglePlay(@NonNull final Context context, @Nullable final String packageName) {
+    public static boolean openGooglePlay(
+            @NonNull final Context context,
+            @Nullable final String packageName) {
         return openUri(context, "market://details?id=" + packageName);
     }
 }

@@ -34,12 +34,16 @@ class StatusListenerAdapter implements StatusListener {
     }
 
     @Override
-    public boolean onError(final int what, final int extra) {
+    public boolean onError(
+            final int what,
+            final int extra) {
         return false;
     }
 
     @Override
-    public boolean onInfo(final int what, final int extra) {
+    public boolean onInfo(
+            final int what,
+            final int extra) {
         return false;
     }
 

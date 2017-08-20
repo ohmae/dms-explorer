@@ -64,7 +64,9 @@ public class MediaRendererModel implements PlayerModel {
         }
     };
 
-    public MediaRendererModel(@NonNull Context context, @NonNull final MediaRenderer renderer) {
+    public MediaRendererModel(
+            @NonNull Context context,
+            @NonNull final MediaRenderer renderer) {
         mMediaRenderer = renderer;
     }
 
@@ -96,7 +98,9 @@ public class MediaRendererModel implements PlayerModel {
     }
 
     @Override
-    public void setUri(@NonNull final Uri uri, @Nullable final Object metadata) {
+    public void setUri(
+            @NonNull final Uri uri,
+            @Nullable final Object metadata) {
         if (!(metadata instanceof CdsObject)) {
             throw new IllegalArgumentException();
         }

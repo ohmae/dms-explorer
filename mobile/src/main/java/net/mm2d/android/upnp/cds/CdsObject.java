@@ -808,9 +808,10 @@ public class CdsObject implements Parcelable {
      * @param element objectを示すelement
      * @param rootTag DIDL-Liteノードの情報
      */
-    CdsObject(@NonNull final String udn,
-              @NonNull final Element element,
-              @NonNull final Tag rootTag) {
+    CdsObject(
+            @NonNull final String udn,
+            @NonNull final Element element,
+            @NonNull final Tag rootTag) {
         mUdn = udn;
         mItem = isItem(element.getTagName());
         mRootTag = rootTag;
@@ -854,7 +855,9 @@ public class CdsObject implements Parcelable {
     }
 
     @ContentType
-    private static int getType(boolean isItem, String upnpClass) {
+    private static int getType(
+            boolean isItem,
+            String upnpClass) {
         if (!isItem) {
             return TYPE_CONTAINER;
         } else if (upnpClass.startsWith(IMAGE_ITEM)) {
@@ -986,7 +989,9 @@ public class CdsObject implements Parcelable {
      * @return 指定された値。見つからない場合はnull
      */
     @Nullable
-    public String getValue(@NonNull String xpath, int index) {
+    public String getValue(
+            @NonNull String xpath,
+            int index) {
         return mTagMap.getValue(xpath, index);
     }
 
@@ -1002,7 +1007,9 @@ public class CdsObject implements Parcelable {
      * @see #getValue(String, String, int)
      */
     @Nullable
-    public String getValue(@Nullable String tagName, @Nullable String attrName) {
+    public String getValue(
+            @Nullable String tagName,
+            @Nullable String attrName) {
         return mTagMap.getValue(tagName, attrName);
     }
 
@@ -1018,7 +1025,10 @@ public class CdsObject implements Parcelable {
      * @return 指定された値。見つからない場合はnull
      */
     @Nullable
-    public String getValue(@Nullable String tagName, @Nullable String attrName, int index) {
+    public String getValue(
+            @Nullable String tagName,
+            @Nullable String attrName,
+            int index) {
         return mTagMap.getValue(tagName, attrName, index);
     }
 
@@ -1043,7 +1053,9 @@ public class CdsObject implements Parcelable {
      * @return Tagインスタンス、見つからない場合はnull
      */
     @Nullable
-    public Tag getTag(@Nullable String tagName, int index) {
+    public Tag getTag(
+            @Nullable String tagName,
+            int index) {
         return mTagMap.getTag(tagName, index);
     }
 
@@ -1092,7 +1104,9 @@ public class CdsObject implements Parcelable {
      * @return 指定された値
      * @see #getValue(String)
      */
-    public int getIntValue(@NonNull String xpath, int defaultValue) {
+    public int getIntValue(
+            @NonNull String xpath,
+            int defaultValue) {
         return parseIntSafely(getValue(xpath), defaultValue);
     }
 
@@ -1107,7 +1121,10 @@ public class CdsObject implements Parcelable {
      * @return 指定された値
      * @see #getValue(String, int)
      */
-    public int getIntValue(@NonNull String xpath, int index, int defaultValue) {
+    public int getIntValue(
+            @NonNull String xpath,
+            int index,
+            int defaultValue) {
         return parseIntSafely(getValue(xpath, index), defaultValue);
     }
 
@@ -1136,7 +1153,9 @@ public class CdsObject implements Parcelable {
      * @see #getValue(String, int)
      */
     @Nullable
-    public Date getDateValue(@NonNull String xpath, int index) {
+    public Date getDateValue(
+            @NonNull String xpath,
+            int index) {
         return parseDate(getValue(xpath, index));
     }
 
@@ -1147,7 +1166,9 @@ public class CdsObject implements Parcelable {
      * @param defaultValue パースできない場合のデフォルト値
      * @return パース結果
      */
-    public static int parseIntSafely(@Nullable String value, int defaultValue) {
+    public static int parseIntSafely(
+            @Nullable String value,
+            int defaultValue) {
         return parseIntSafely(value, 10, defaultValue);
     }
 
@@ -1159,7 +1180,10 @@ public class CdsObject implements Parcelable {
      * @param defaultValue パースできない場合のデフォルト値
      * @return パース結果
      */
-    public static int parseIntSafely(@Nullable String value, int radix, int defaultValue) {
+    public static int parseIntSafely(
+            @Nullable String value,
+            int radix,
+            int defaultValue) {
         if (TextUtils.isEmpty(value)) {
             return defaultValue;
         }
@@ -1347,7 +1371,9 @@ public class CdsObject implements Parcelable {
     }
 
     @Override
-    public void writeToParcel(@NonNull Parcel dest, int flags) {
+    public void writeToParcel(
+            @NonNull Parcel dest,
+            int flags) {
         dest.writeString(mUdn);
         dest.writeByte((byte) (mItem ? 1 : 0));
         dest.writeParcelable(mRootTag, flags);

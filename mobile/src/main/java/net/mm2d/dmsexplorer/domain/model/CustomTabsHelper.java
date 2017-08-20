@@ -95,7 +95,9 @@ public class CustomTabsHelper extends CustomTabsServiceConnection {
     }
 
     @Override
-    public void onCustomTabsServiceConnected(final ComponentName name, final CustomTabsClient client) {
+    public void onCustomTabsServiceConnected(
+            final ComponentName name,
+            final CustomTabsClient client) {
         mClient = client;
     }
 

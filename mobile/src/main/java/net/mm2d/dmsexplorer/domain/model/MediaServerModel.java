@@ -53,12 +53,15 @@ public class MediaServerModel implements EntryListener {
     private volatile ExploreListener mExploreListener = EXPLORE_LISTENER;
 
     public interface ExploreListener {
-        void onUpdate(@NonNull List<CdsObject> list, boolean inProgress);
+        void onUpdate(
+                @NonNull List<CdsObject> list,
+                boolean inProgress);
     }
 
-    public MediaServerModel(@NonNull final Context context,
-                            @NonNull final MediaServer server,
-                            @NonNull final PlaybackTargetObserver observer) {
+    public MediaServerModel(
+            @NonNull final Context context,
+            @NonNull final MediaServer server,
+            @NonNull final PlaybackTargetObserver observer) {
         mMediaServer = server;
         mPlaybackTargetObserver = observer;
     }
@@ -174,8 +177,9 @@ public class MediaServerModel implements EntryListener {
     }
 
     @Nullable
-    private CdsObject findPrevious(@Nullable final CdsObject current,
-                                   @ScanMode final int scanMode) {
+    private CdsObject findPrevious(
+            @Nullable final CdsObject current,
+            @ScanMode final int scanMode) {
         final List<CdsObject> list = mHistoryStack.peekFirst().getList();
         if (current == null || list == null) {
             return null;
@@ -190,8 +194,9 @@ public class MediaServerModel implements EntryListener {
     }
 
     @Nullable
-    private CdsObject findPreviousSequential(@NonNull final CdsObject current,
-                                             @NonNull final List<CdsObject> list) {
+    private CdsObject findPreviousSequential(
+            @NonNull final CdsObject current,
+            @NonNull final List<CdsObject> list) {
         final int index = list.indexOf(current);
         if (index - 1 < 0) {
             return null;
@@ -206,8 +211,9 @@ public class MediaServerModel implements EntryListener {
     }
 
     @Nullable
-    private CdsObject findPreviousLoop(@NonNull final CdsObject current,
-                                       @NonNull final List<CdsObject> list) {
+    private CdsObject findPreviousLoop(
+            @NonNull final CdsObject current,
+            @NonNull final List<CdsObject> list) {
         final int size = list.size();
         final int index = list.indexOf(current);
         for (int i = (size + index - 1) % size; i != index; i = (size + i - 1) % size) {
@@ -229,8 +235,9 @@ public class MediaServerModel implements EntryListener {
     }
 
     @Nullable
-    private CdsObject findNext(@Nullable final CdsObject current,
-                               @ScanMode final int scanMode) {
+    private CdsObject findNext(
+            @Nullable final CdsObject current,
+            @ScanMode final int scanMode) {
         if (mHistoryStack.isEmpty()) {
             return null;
         }
@@ -248,8 +255,9 @@ public class MediaServerModel implements EntryListener {
     }
 
     @Nullable
-    private CdsObject findNextSequential(@NonNull final CdsObject current,
-                                         @NonNull final List<CdsObject> list) {
+    private CdsObject findNextSequential(
+            @NonNull final CdsObject current,
+            @NonNull final List<CdsObject> list) {
         final int size = list.size();
         final int index = list.indexOf(current);
         if (index + 1 == size) {
@@ -265,8 +273,9 @@ public class MediaServerModel implements EntryListener {
     }
 
     @Nullable
-    private CdsObject findNextLoop(@NonNull final CdsObject current,
-                                   @NonNull final List<CdsObject> list) {
+    private CdsObject findNextLoop(
+            @NonNull final CdsObject current,
+            @NonNull final List<CdsObject> list) {
         final int size = list.size();
         final int index = list.indexOf(current);
         for (int i = (index + 1) % size; i != index; i = (i + 1) % size) {
@@ -278,8 +287,9 @@ public class MediaServerModel implements EntryListener {
         return null;
     }
 
-    private boolean isValidObject(@NonNull final CdsObject current,
-                                  @NonNull final CdsObject target) {
+    private boolean isValidObject(
+            @NonNull final CdsObject current,
+            @NonNull final CdsObject target) {
         return target.getType() == current.getType()
                 && target.hasResource()
                 && !target.hasProtectedResource();
@@ -298,7 +308,9 @@ public class MediaServerModel implements EntryListener {
     }
 
     @Override
-    public void onUpdate(@NonNull final List<CdsObject> list, final boolean inProgress) {
+    public void onUpdate(
+            @NonNull final List<CdsObject> list,
+            final boolean inProgress) {
         mExploreListener.onUpdate(list, inProgress);
     }
 }

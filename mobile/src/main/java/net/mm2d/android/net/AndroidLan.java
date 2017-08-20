@@ -74,8 +74,9 @@ class AndroidLan extends Lan {
         return Collections.emptyList();
     }
 
-    private static boolean hasAddress(@NonNull final NetworkInterface netIf,
-                                      @NonNull final InetAddress targetAddress) {
+    private static boolean hasAddress(
+            @NonNull final NetworkInterface netIf,
+            @NonNull final InetAddress targetAddress) {
         final List<InterfaceAddress> addressList = netIf.getInterfaceAddresses();
         for (final InterfaceAddress address : addressList) {
             if (address.getAddress().equals(targetAddress)) {
