@@ -13,6 +13,8 @@
     <color name="textHighlightDark">#4477ee</color>
     <color name="textMainDark">#ffffff</color>
     <color name="textLinkDark">#0080ff</color>
+    <color name="bgActivity">#ffffff</color>
+    <color name="bgList">#f0f0f0</color>
     <color name="bgListItem">#ffffff</color>
     <color name="bgListItemRipple">#40000000</color>
     <color name="bgListItemPressed">#20000000</color>

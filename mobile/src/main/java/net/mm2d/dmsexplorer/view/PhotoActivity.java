@@ -37,7 +37,10 @@ public class PhotoActivity extends BaseActivity {
     private MediaServerModel mServerModel;
     private final OnPageChangeListener mOnPageChangeListener = new OnPageChangeListener() {
         @Override
-        public void onPageScrolled(final int position, final float positionOffset, final int positionOffsetPixels) {
+        public void onPageScrolled(
+                final int position,
+                final float positionOffset,
+                final int positionOffsetPixels) {
         }
 
         @Override

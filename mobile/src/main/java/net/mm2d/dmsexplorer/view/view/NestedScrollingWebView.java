@@ -31,11 +31,16 @@ public class NestedScrollingWebView extends WebView implements NestedScrollingCh
         this(context, null);
     }
 
-    public NestedScrollingWebView(final Context context, final AttributeSet attrs) {
+    public NestedScrollingWebView(
+            final Context context,
+            final AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public NestedScrollingWebView(final Context context, final AttributeSet attrs, final int defStyleAttr) {
+    public NestedScrollingWebView(
+            final Context context,
+            final AttributeSet attrs,
+            final int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         mHelper = new NestedScrollingChildHelper(this);
         setNestedScrollingEnabled(true);
@@ -94,20 +99,33 @@ public class NestedScrollingWebView extends WebView implements NestedScrollingCh
         return mHelper.hasNestedScrollingParent();
     }
 
-    public boolean dispatchNestedScroll(int dxConsumed, int dyConsumed,
-                                        int dxUnconsumed, int dyUnconsumed, int[] offsetInWindow) {
+    public boolean dispatchNestedScroll(
+            int dxConsumed,
+            int dyConsumed,
+            int dxUnconsumed,
+            int dyUnconsumed,
+            int[] offsetInWindow) {
         return mHelper.dispatchNestedScroll(dxConsumed, dyConsumed, dxUnconsumed, dyUnconsumed, offsetInWindow);
     }
 
-    public boolean dispatchNestedPreScroll(int dx, int dy, int[] consumed, int[] offsetInWindow) {
+    public boolean dispatchNestedPreScroll(
+            int dx,
+            int dy,
+            int[] consumed,
+            int[] offsetInWindow) {
         return mHelper.dispatchNestedPreScroll(dx, dy, consumed, offsetInWindow);
     }
 
-    public boolean dispatchNestedFling(float velocityX, float velocityY, boolean consumed) {
+    public boolean dispatchNestedFling(
+            float velocityX,
+            float velocityY,
+            boolean consumed) {
         return mHelper.dispatchNestedFling(velocityX, velocityY, consumed);
     }
 
-    public boolean dispatchNestedPreFling(float velocityX, float velocityY) {
+    public boolean dispatchNestedPreFling(
+            float velocityX,
+            float velocityY) {
         return mHelper.dispatchNestedPreFling(velocityX, velocityY);
     }
 }

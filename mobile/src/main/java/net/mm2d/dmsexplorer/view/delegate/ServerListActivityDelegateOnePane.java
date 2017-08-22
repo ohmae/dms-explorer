@@ -39,8 +39,9 @@ class ServerListActivityDelegateOnePane extends ServerListActivityDelegate {
     private static final String KEY_HAS_REENTER_TRANSITION = "KEY_HAS_REENTER_TRANSITION";
     private boolean mHasReenterTransition;
 
-    ServerListActivityDelegateOnePane(@NonNull final BaseActivity activity,
-                                      @NonNull final ServerListActivityBinding binding) {
+    ServerListActivityDelegateOnePane(
+            @NonNull final BaseActivity activity,
+            @NonNull final ServerListActivityBinding binding) {
         super(activity, binding);
     }
 
@@ -78,7 +79,9 @@ class ServerListActivityDelegateOnePane extends ServerListActivityDelegate {
         }
         getActivity().setExitSharedElementCallback(new SharedElementCallback() {
             @Override
-            public void onMapSharedElements(final List<String> names, final Map<String, View> sharedElements) {
+            public void onMapSharedElements(
+                    final List<String> names,
+                    final Map<String, View> sharedElements) {
                 sharedElements.clear();
                 final View shared = getBinding().getModel().findSharedView();
                 if (shared != null) {

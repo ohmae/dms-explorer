@@ -34,7 +34,8 @@ public class DownloadUtils {
     };
 
     public static void async(
-            @NonNull final String url, @Nullable final Callback cb) {
+            @NonNull final String url,
+            @Nullable final Callback cb) {
         final Callback callback = cb != null ? cb : CALLBACK;
         new AsyncTask<Void, Void, byte[]>() {
             @Override

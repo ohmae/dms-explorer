@@ -42,8 +42,9 @@ public class PhotoActivityModel extends BaseObservable {
     @NonNull
     private final PlaybackTargetModel mTargetModel;
 
-    public PhotoActivityModel(@NonNull final Activity activity,
-                              @NonNull final Repository repository) {
+    public PhotoActivityModel(
+            @NonNull final Activity activity,
+            @NonNull final Repository repository) {
         mTargetModel = repository.getPlaybackTargetModel();
         if (mTargetModel == null) {
             throw new IllegalStateException();

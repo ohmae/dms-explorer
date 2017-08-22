@@ -70,7 +70,9 @@ public class ContentListActivity extends BaseActivity {
     }
 
     @Override
-    public boolean onKeyLongPress(final int keyCode, final KeyEvent event) {
+    public boolean onKeyLongPress(
+            final int keyCode,
+            final KeyEvent event) {
         if (mDelegate.onKeyLongPress(keyCode, event)) {
             super.onBackPressed();
             return true;

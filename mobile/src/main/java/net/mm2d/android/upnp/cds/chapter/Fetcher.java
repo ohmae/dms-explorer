@@ -16,5 +16,7 @@ import net.mm2d.android.upnp.cds.chapter.ChapterList.Callback;
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
  */
 interface Fetcher {
-    boolean get(@NonNull CdsObject object, @NonNull Callback callback);
+    boolean get(
+            @NonNull CdsObject object,
+            @NonNull Callback callback);
 }

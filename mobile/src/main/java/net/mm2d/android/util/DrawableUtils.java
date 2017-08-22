@@ -21,7 +21,9 @@ public class DrawableUtils {
         throw new AssertionError();
     }
 
-    public static Drawable get(@NonNull final Context context, @DrawableRes int resId) {
+    public static Drawable get(
+            @NonNull final Context context,
+            @DrawableRes int resId) {
         return AppCompatDrawableManager.get().getDrawable(context, resId);
     }
 }

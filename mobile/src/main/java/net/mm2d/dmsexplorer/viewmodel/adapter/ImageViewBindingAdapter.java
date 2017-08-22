@@ -24,8 +24,9 @@ import net.mm2d.dmsexplorer.R;
  */
 public class ImageViewBindingAdapter {
     @BindingAdapter("imageBinary")
-    public static void setImageBinary(@NonNull final ImageView imageView,
-                                      @Nullable final byte[] binary) {
+    public static void setImageBinary(
+            @NonNull final ImageView imageView,
+            @Nullable final byte[] binary) {
         if (binary == null) {
             imageView.setImageDrawable(null);
             return;
@@ -33,8 +34,9 @@ public class ImageViewBindingAdapter {
         ViewUtils.execAfterAllocateSize(imageView, () -> decodeAndSetImage(imageView, binary));
     }
 
-    private static void decodeAndSetImage(@NonNull final ImageView imageView,
-                                          @NonNull final byte[] binary) {
+    private static void decodeAndSetImage(
+            @NonNull final ImageView imageView,
+            @NonNull final byte[] binary) {
         final int width = imageView.getWidth();
         final int height = imageView.getHeight();
         new AsyncTask<Void, Void, Bitmap>() {

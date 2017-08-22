@@ -73,10 +73,11 @@ public class ServerListActivityModel extends BaseObservable {
     @NonNull
     private final Settings mSettings;
 
-    public ServerListActivityModel(@NonNull final Context context,
-                                   @NonNull final Repository repository,
-                                   @NonNull final ServerSelectListener listener,
-                                   final boolean twoPane) {
+    public ServerListActivityModel(
+            @NonNull final Context context,
+            @NonNull final Repository repository,
+            @NonNull final ServerSelectListener listener,
+            final boolean twoPane) {
         mSettings = new Settings(context);
         mControlPointModel = repository.getControlPointModel();
         mServerListAdapter = new ServerListAdapter(context, mControlPointModel.getMediaServerList());
@@ -146,7 +147,9 @@ public class ServerListActivityModel extends BaseObservable {
         return mControlPointModel.getSelectedMediaServer() != null;
     }
 
-    private void onItemClick(@NonNull final View v, @NonNull final MediaServer server) {
+    private void onItemClick(
+            @NonNull final View v,
+            @NonNull final MediaServer server) {
         final boolean alreadySelected = mControlPointModel.isSelectedMediaServer(server);
         mServerListAdapter.setSelectedServer(server);
         mControlPointModel.setSelectedMediaServer(server);
@@ -161,7 +164,9 @@ public class ServerListActivityModel extends BaseObservable {
         }
     }
 
-    private void onItemLongClick(@NonNull final View v, @NonNull final MediaServer server) {
+    private void onItemLongClick(
+            @NonNull final View v,
+            @NonNull final MediaServer server) {
         mServerListAdapter.setSelectedServer(server);
         mControlPointModel.setSelectedMediaServer(server);
 

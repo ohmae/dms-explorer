@@ -27,9 +27,7 @@ import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Single;
-import io.reactivex.SingleOnSubscribe;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.observers.DisposableSingleObserver;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -52,7 +50,10 @@ public class UpdateChecker {
     }
 
     @VisibleForTesting
-    UpdateChecker(final Context context, final Settings settings, final int version) {
+    UpdateChecker(
+            final Context context,
+            final Settings settings,
+            final int version) {
         mContext = context;
         mSettings = settings;
         mCurrentVersion = version;
@@ -69,34 +70,28 @@ public class UpdateChecker {
     }
 
     private void fetchAndCheck() {
-        Single.create(
-                (SingleOnSubscribe<String>) emitter -> {
-                    final Request request = new Builder()
-                            .url(Const.URL_UPDATE_JSON)
-                            .get()
-                            .build();
-                    final OkHttpClient client = new OkHttpClient();
-                    final Response response = client.newCall(request).execute();
-                    final ResponseBody body = response.body();
-                    if (response.isSuccessful() && body != null) {
-                        emitter.onSuccess(body.string());
-                        return;
-                    }
-                    emitter.onError(new IOException());
-                })
-                .subscribeOn(Schedulers.newThread())
+        createFetcher()
+                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new DisposableSingleObserver<String>() {
-                    @Override
-                    public void onSuccess(@NonNull final String s) {
-                        checkAndNotify(s);
-                    }
+                .subscribe(this::checkAndNotify, Log::w);
+    }
 
-                    @Override
-                    public void onError(@NonNull final Throwable throwable) {
-                        Log.w(throwable);
-                    }
-                });
+    @NonNull
+    private Single<String> createFetcher() {
+        return Single.create(emitter -> {
+            final Request request = new Builder()
+                    .url(Const.URL_UPDATE_JSON)
+                    .get()
+                    .build();
+            final OkHttpClient client = new OkHttpClient();
+            final Response response = client.newCall(request).execute();
+            final ResponseBody body = response.body();
+            if (response.isSuccessful() && body != null) {
+                emitter.onSuccess(body.string());
+                return;
+            }
+            emitter.onError(new IOException());
+        });
     }
 
     private void checkAndNotify(@NonNull final String json) {

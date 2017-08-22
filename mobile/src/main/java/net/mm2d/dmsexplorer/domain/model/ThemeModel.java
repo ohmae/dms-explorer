@@ -15,7 +15,10 @@ import android.support.annotation.NonNull;
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
  */
 public interface ThemeModel {
-    void setThemeColor(@NonNull Activity activity, @ColorInt int toolbarColor, @ColorInt int statusBarColor);
+    void setThemeColor(
+            @NonNull Activity activity,
+            @ColorInt int toolbarColor,
+            @ColorInt int statusBarColor);
 
     @ColorInt
     int getToolbarColor(@NonNull Activity activity);

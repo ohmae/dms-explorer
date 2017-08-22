@@ -27,7 +27,9 @@ public class ChapterList {
             new PanasonicFetcher(),
     };
 
-    public static void get(@NonNull final CdsObject object, @NonNull final Callback callback) {
+    public static void get(
+            @NonNull final CdsObject object,
+            @NonNull final Callback callback) {
         for (final Fetcher fetcher : sFetchers) {
             if (fetcher.get(object, callback)) {
                 return;

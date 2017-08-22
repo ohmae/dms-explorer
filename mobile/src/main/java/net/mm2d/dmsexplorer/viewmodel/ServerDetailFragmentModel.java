@@ -47,8 +47,9 @@ public class ServerDetailFragmentModel {
     @NonNull
     private final Context mContext;
 
-    public ServerDetailFragmentModel(@NonNull final Context context,
-                                     @NonNull final Repository repository) {
+    public ServerDetailFragmentModel(
+            @NonNull final Context context,
+            @NonNull final Repository repository) {
         mContext = context;
         final MediaServer server = repository.getControlPointModel().getSelectedMediaServer();
         if (server == null) {
@@ -74,9 +75,10 @@ public class ServerDetailFragmentModel {
     }
 
     @NonNull
-    private static Drawable createIconDrawable(@NonNull final Context context,
-                                               @NonNull final MediaServer server,
-                                               @Nullable final Bitmap icon) {
+    private static Drawable createIconDrawable(
+            @NonNull final Context context,
+            @NonNull final MediaServer server,
+            @Nullable final Bitmap icon) {
         if (icon != null) {
             return new BitmapDrawable(context.getResources(), icon);
         }

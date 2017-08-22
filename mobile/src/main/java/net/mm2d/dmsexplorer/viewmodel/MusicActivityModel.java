@@ -67,8 +67,9 @@ public class MusicActivityModel extends BaseObservable
     @NonNull
     private final Settings mSettings;
 
-    public MusicActivityModel(@NonNull final Activity activity,
-                              @NonNull final Repository repository) {
+    public MusicActivityModel(
+            @NonNull final Activity activity,
+            @NonNull final Repository repository) {
         mActivity = activity;
         mRepository = repository;
         mServerModel = repository.getMediaServerModel();

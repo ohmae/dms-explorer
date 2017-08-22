@@ -20,7 +20,6 @@ import java.io.StringWriter;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.Nonnull;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
@@ -52,9 +51,9 @@ public class CdsObjectXmlConverter {
             document.appendChild(didl);
             final Element item = makeItemElement(document, object);
             didl.appendChild(item);
-            for (final Map.Entry<String, List<Tag>> tagListEntry : object.getRawMap().entrySet()) {
+            for (final Map.Entry<String, List<Tag>> tagListEntry : object.getTagMap().getRawMap().entrySet()) {
                 final String key = tagListEntry.getKey();
-                if (TextUtils.isEmpty(key) || key.equals(CdsObject.ROOT_TAG)) {
+                if (TextUtils.isEmpty(key)) {
                     continue;
                 }
                 for (final Tag tag : tagListEntry.getValue()) {
@@ -68,7 +67,10 @@ public class CdsObjectXmlConverter {
     }
 
     @NonNull
-    private static Element makeElement(@NonNull final Document document, @NonNull final String tagName, @NonNull final Tag tag) {
+    private static Element makeElement(
+            @NonNull final Document document,
+            @NonNull final String tagName,
+            @NonNull final Tag tag) {
         final Element element = document.createElement(tagName);
         final String value = tag.getValue();
         if (!TextUtils.isEmpty(value)) {
@@ -81,17 +83,20 @@ public class CdsObjectXmlConverter {
     }
 
     @NonNull
-    private static Element makeRootElement(@NonNull final Document document, @NonNull final CdsObject object) {
-        final Tag tag = object.getTag(CdsObject.ROOT_TAG);
-        if (tag == null) {
-            throw new IllegalArgumentException();
+    private static Element makeRootElement(
+            @NonNull final Document document,
+            @NonNull final CdsObject object) {
+        final Element element = document.createElement(CdsObject.DIDL_LITE);
+        for (final Map.Entry<String, String> attribute : object.getRootTag().getAttributes().entrySet()) {
+            element.setAttribute(attribute.getKey(), attribute.getValue());
         }
-        return makeElement(document, CdsObject.ROOT_TAG, tag);
+        return element;
     }
 
     @NonNull
     private static Element makeItemElement(
-            @NonNull final Document document, @NonNull final CdsObject object) {
+            @NonNull final Document document,
+            @NonNull final CdsObject object) {
         final Tag tag = object.getTag("");
         if (tag == null) {
             throw new IllegalArgumentException();
@@ -106,8 +111,8 @@ public class CdsObjectXmlConverter {
      * @return 変換された文字列
      * @throws TransformerException 変換処理に問題が発生した場合
      */
-    @Nonnull
-    private static String formatXmlString(final @Nonnull Document document)
+    @NonNull
+    private static String formatXmlString(final @NonNull Document document)
             throws TransformerException {
         final TransformerFactory tf = TransformerFactory.newInstance();
         final Transformer transformer = tf.newTransformer();

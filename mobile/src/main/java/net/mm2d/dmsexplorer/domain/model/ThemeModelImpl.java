@@ -25,9 +25,10 @@ public class ThemeModelImpl extends ActivityLifecycleCallbacksAdapter implements
     private final Map<String, Integer> mMap = new HashMap<>();
 
     @Override
-    public void setThemeColor(@NonNull final Activity activity,
-                              @ColorInt final int toolbarColor,
-                              @ColorInt final int statusBarColor) {
+    public void setThemeColor(
+            @NonNull final Activity activity,
+            @ColorInt final int toolbarColor,
+            @ColorInt final int statusBarColor) {
         final int color = statusBarColor != 0 ? statusBarColor : ThemeUtils.getDarkerColor(toolbarColor);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             activity.getWindow().setStatusBarColor(color);

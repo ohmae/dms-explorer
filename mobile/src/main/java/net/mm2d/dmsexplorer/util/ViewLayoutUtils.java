@@ -20,7 +20,9 @@ public class ViewLayoutUtils {
         throw new AssertionError();
     }
 
-    public static void setLayoutMarginRight(@NonNull final View view, final int margin) {
+    public static void setLayoutMarginRight(
+            @NonNull final View view,
+            final int margin) {
         final LayoutParams params = view.getLayoutParams();
         if (!(params instanceof MarginLayoutParams)) {
             return;

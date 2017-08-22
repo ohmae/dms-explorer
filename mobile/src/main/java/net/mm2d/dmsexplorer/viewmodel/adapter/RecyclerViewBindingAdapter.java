@@ -19,8 +19,9 @@ import android.view.View;
  */
 public class RecyclerViewBindingAdapter {
     @BindingAdapter("itemDecoration")
-    public static void addItemDecoration(@NonNull final RecyclerView view,
-                                         @Nullable final ItemDecoration decor) {
+    public static void addItemDecoration(
+            @NonNull final RecyclerView view,
+            @Nullable final ItemDecoration decor) {
         if (decor != null) {
             view.addItemDecoration(decor);
         }
@@ -29,7 +30,9 @@ public class RecyclerViewBindingAdapter {
     // 選択項目を中央に表示させる処理
     // FIXME: DataBindingを使ったことで返って複雑化してしまっている
     @BindingAdapter("scrollPosition")
-    public static void setScrollPosition(@NonNull final RecyclerView view, final int position) {
+    public static void setScrollPosition(
+            @NonNull final RecyclerView view,
+            final int position) {
         if (position < 0) {
             return;
         }
@@ -37,7 +40,9 @@ public class RecyclerViewBindingAdapter {
         view.post(() -> scrollToCenter(view, position));
     }
 
-    public static void scrollToCenter(@NonNull final RecyclerView view, final int position) {
+    public static void scrollToCenter(
+            @NonNull final RecyclerView view,
+            final int position) {
         final View child = findPositionView(view, position);
         if (child == null) {
             return;
@@ -47,7 +52,9 @@ public class RecyclerViewBindingAdapter {
     }
 
     @Nullable
-    private static View findPositionView(@NonNull final RecyclerView view, final int position) {
+    private static View findPositionView(
+            @NonNull final RecyclerView view,
+            final int position) {
         final View child = view.getChildAt(0);
         if (child == null) {
             return null;

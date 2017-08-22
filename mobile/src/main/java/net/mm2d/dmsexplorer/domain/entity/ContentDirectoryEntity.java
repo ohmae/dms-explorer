@@ -40,14 +40,18 @@ public class ContentDirectoryEntity implements StatusListener {
     private EntryListener mEntryListener = ENTRY_LISTENER;
 
     public interface EntryListener {
-        void onUpdate(@NonNull List<CdsObject> list, boolean inProgress);
+        void onUpdate(
+                @NonNull List<CdsObject> list,
+                boolean inProgress);
     }
 
     public ContentDirectoryEntity() {
         this(ROOT_OBJECT_ID, ROOT_TITLE);
     }
 
-    public ContentDirectoryEntity(@NonNull final String parentId, @NonNull final String parentTitle) {
+    public ContentDirectoryEntity(
+            @NonNull final String parentId,
+            @NonNull final String parentTitle) {
         mParentId = parentId;
         mParentTitle = parentTitle;
     }

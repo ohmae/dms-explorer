@@ -58,8 +58,9 @@ public class ContentDetailFragmentModel extends BaseObservable {
         }
     };
 
-    public ContentDetailFragmentModel(@NonNull final Activity activity,
-                                      @NonNull final Repository repository) {
+    public ContentDetailFragmentModel(
+            @NonNull final Activity activity,
+            @NonNull final Repository repository) {
         final MediaServerModel model = repository.getMediaServerModel();
         if (model == null) {
             throw new IllegalStateException();

@@ -65,7 +65,9 @@ class TagMap implements Parcelable {
     }
 
     @Override
-    public void writeToParcel(Parcel dest, int flags) {
+    public void writeToParcel(
+            Parcel dest,
+            int flags) {
         dest.writeInt(mMap.size());
         for (final Entry<String, List<Tag>> entry : mMap.entrySet()) {
             dest.writeString(entry.getKey());
@@ -103,7 +105,9 @@ class TagMap implements Parcelable {
      * @param name タグ名
      * @param tag  格納するタグ情報
      */
-    void putTag(@NonNull String name, @NonNull Tag tag) {
+    void putTag(
+            @NonNull String name,
+            @NonNull Tag tag) {
         List<Tag> tags = mMap.get(name);
         if (tags == null) {
             tags = new ArrayList<>(1);
@@ -153,7 +157,9 @@ class TagMap implements Parcelable {
      * @return 指定された値。見つからない場合はnull
      */
     @Nullable
-    String getValue(@NonNull String xpath, int index) {
+    String getValue(
+            @NonNull String xpath,
+            int index) {
         final int pos = xpath.indexOf('@');
         if (pos < 0) {
             return getValue(xpath, null, index);
@@ -175,7 +181,9 @@ class TagMap implements Parcelable {
      * @see #getValue(String, String, int)
      */
     @Nullable
-    String getValue(@Nullable String tagName, @Nullable String attrName) {
+    String getValue(
+            @Nullable String tagName,
+            @Nullable String attrName) {
         return getValue(tagName, attrName, 0);
     }
 
@@ -191,7 +199,10 @@ class TagMap implements Parcelable {
      * @return 指定された値。見つからない場合はnull
      */
     @Nullable
-    String getValue(@Nullable String tagName, @Nullable String attrName, int index) {
+    String getValue(
+            @Nullable String tagName,
+            @Nullable String attrName,
+            int index) {
         final Tag tag = getTag(tagName, index);
         if (tag == null) {
             return null;
@@ -223,7 +234,9 @@ class TagMap implements Parcelable {
      * @return Tagインスタンス、見つからない場合はnull
      */
     @Nullable
-    Tag getTag(@Nullable String tagName, int index) {
+    Tag getTag(
+            @Nullable String tagName,
+            int index) {
         final List<Tag> list = getTagList(tagName);
         if (list == null || list.size() <= index) {
             return null;

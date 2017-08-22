@@ -20,7 +20,9 @@ import net.mm2d.dmsexplorer.util.AttrsUtils;
  */
 public class TextViewBindingAdapter {
     @BindingAdapter("underline")
-    public static void setUnderlineFlag(@NonNull final TextView view, final boolean underline) {
+    public static void setUnderlineFlag(
+            @NonNull final TextView view,
+            final boolean underline) {
         if (underline) {
             view.setPaintFlags(view.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
         } else {
@@ -29,7 +31,9 @@ public class TextViewBindingAdapter {
     }
 
     @BindingAdapter("textColorAttr")
-    public static void setTextColorAttr(@NonNull final TextView view, final int attr) {
+    public static void setTextColorAttr(
+            @NonNull final TextView view,
+            final int attr) {
         view.setTextColor(AttrsUtils.resolveColor(view.getContext(), attr, Color.BLACK));
     }
 }

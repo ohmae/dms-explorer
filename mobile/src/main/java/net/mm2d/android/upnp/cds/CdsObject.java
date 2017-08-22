@@ -25,7 +25,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 
 /**
  * ContentDirectoryServiceのObjectを表現するクラス。
@@ -35,7 +34,7 @@ import java.util.Map;
 public class CdsObject implements Parcelable {
     // XML関係の定義
 
-    public static final String ROOT_TAG = "DIDL-Lite";
+    public static final String DIDL_LITE = "DIDL-Lite";
     /**
      * "item".
      *
@@ -724,12 +723,20 @@ public class CdsObject implements Parcelable {
      * このオブジェクトがitemか否か、itemのときtrue
      */
     private final boolean mItem;
+
+    /**
+     * DIDL-Liteノードの情報
+     */
+    @NonNull
+    private final Tag mRootTag;
+
     /**
      * XMLのタグ情報。
      *
      * <p>タグ名をKeyとして、TagのListを保持する。
      * 同一のタグが複数ある場合はListに出現順に格納する。
      */
+    @NonNull
     private final TagMap mTagMap;
 
     /**
@@ -797,17 +804,18 @@ public class CdsObject implements Parcelable {
     /**
      * elementをもとにインスタンス作成
      *
-     * @param udn                 MediaServerのUDN
-     * @param element             objectを示すelement
-     * @param namespaceAttributes DIDL-Liteノードに記載されたNamespace情報
+     * @param udn     MediaServerのUDN
+     * @param element objectを示すelement
+     * @param rootTag DIDL-Liteノードの情報
      */
-    CdsObject(@NonNull final String udn,
-              @NonNull final Element element,
-              @NonNull final Tag namespaceAttributes) {
+    CdsObject(
+            @NonNull final String udn,
+            @NonNull final Element element,
+            @NonNull final Tag rootTag) {
         mUdn = udn;
         mItem = isItem(element.getTagName());
+        mRootTag = rootTag;
         mTagMap = parseElement(element);
-        mTagMap.putTag(ROOT_TAG, namespaceAttributes);
         final Param param = new Param(mTagMap);
         mObjectId = param.mObjectId;
         mParentId = param.mParentId;
@@ -832,6 +840,7 @@ public class CdsObject implements Parcelable {
      *
      * @param element objectを示すelement
      */
+    @NonNull
     private static TagMap parseElement(@NonNull Element element) {
         final TagMap map = new TagMap();
         map.putTag("", new Tag(element, true));
@@ -846,7 +855,9 @@ public class CdsObject implements Parcelable {
     }
 
     @ContentType
-    private static int getType(boolean isItem, String upnpClass) {
+    private static int getType(
+            boolean isItem,
+            String upnpClass) {
         if (!isItem) {
             return TYPE_CONTAINER;
         } else if (upnpClass.startsWith(IMAGE_ITEM)) {
@@ -978,7 +989,9 @@ public class CdsObject implements Parcelable {
      * @return 指定された値。見つからない場合はnull
      */
     @Nullable
-    public String getValue(@NonNull String xpath, int index) {
+    public String getValue(
+            @NonNull String xpath,
+            int index) {
         return mTagMap.getValue(xpath, index);
     }
 
@@ -994,7 +1007,9 @@ public class CdsObject implements Parcelable {
      * @see #getValue(String, String, int)
      */
     @Nullable
-    public String getValue(@Nullable String tagName, @Nullable String attrName) {
+    public String getValue(
+            @Nullable String tagName,
+            @Nullable String attrName) {
         return mTagMap.getValue(tagName, attrName);
     }
 
@@ -1010,7 +1025,10 @@ public class CdsObject implements Parcelable {
      * @return 指定された値。見つからない場合はnull
      */
     @Nullable
-    public String getValue(@Nullable String tagName, @Nullable String attrName, int index) {
+    public String getValue(
+            @Nullable String tagName,
+            @Nullable String attrName,
+            int index) {
         return mTagMap.getValue(tagName, attrName, index);
     }
 
@@ -1035,8 +1053,22 @@ public class CdsObject implements Parcelable {
      * @return Tagインスタンス、見つからない場合はnull
      */
     @Nullable
-    public Tag getTag(@Nullable String tagName, int index) {
+    public Tag getTag(
+            @Nullable String tagName,
+            int index) {
         return mTagMap.getTag(tagName, index);
+    }
+
+    /**
+     * ルートタグ情報を返す。
+     *
+     * <p>CdsObjectXmlFormatterから利用するため。
+     *
+     * @return ルートタグ情報
+     */
+    @NonNull
+    Tag getRootTag() {
+        return mRootTag;
     }
 
     /**
@@ -1044,11 +1076,11 @@ public class CdsObject implements Parcelable {
      *
      * <p>CdsObjectXmlFormatterから利用するため。
      *
-     * @return Tagインスタンスリスト
+     * @return TagMap
      */
     @NonNull
-    Map<String, List<Tag>> getRawMap() {
-        return mTagMap.getRawMap();
+    TagMap getTagMap() {
+        return mTagMap;
     }
 
     /**
@@ -1072,7 +1104,9 @@ public class CdsObject implements Parcelable {
      * @return 指定された値
      * @see #getValue(String)
      */
-    public int getIntValue(@NonNull String xpath, int defaultValue) {
+    public int getIntValue(
+            @NonNull String xpath,
+            int defaultValue) {
         return parseIntSafely(getValue(xpath), defaultValue);
     }
 
@@ -1087,7 +1121,10 @@ public class CdsObject implements Parcelable {
      * @return 指定された値
      * @see #getValue(String, int)
      */
-    public int getIntValue(@NonNull String xpath, int index, int defaultValue) {
+    public int getIntValue(
+            @NonNull String xpath,
+            int index,
+            int defaultValue) {
         return parseIntSafely(getValue(xpath, index), defaultValue);
     }
 
@@ -1116,7 +1153,9 @@ public class CdsObject implements Parcelable {
      * @see #getValue(String, int)
      */
     @Nullable
-    public Date getDateValue(@NonNull String xpath, int index) {
+    public Date getDateValue(
+            @NonNull String xpath,
+            int index) {
         return parseDate(getValue(xpath, index));
     }
 
@@ -1127,7 +1166,9 @@ public class CdsObject implements Parcelable {
      * @param defaultValue パースできない場合のデフォルト値
      * @return パース結果
      */
-    public static int parseIntSafely(@Nullable String value, int defaultValue) {
+    public static int parseIntSafely(
+            @Nullable String value,
+            int defaultValue) {
         return parseIntSafely(value, 10, defaultValue);
     }
 
@@ -1139,7 +1180,10 @@ public class CdsObject implements Parcelable {
      * @param defaultValue パースできない場合のデフォルト値
      * @return パース結果
      */
-    public static int parseIntSafely(@Nullable String value, int radix, int defaultValue) {
+    public static int parseIntSafely(
+            @Nullable String value,
+            int radix,
+            int defaultValue) {
         if (TextUtils.isEmpty(value)) {
             return defaultValue;
         }
@@ -1316,6 +1360,7 @@ public class CdsObject implements Parcelable {
     private CdsObject(@NonNull Parcel in) {
         mUdn = in.readString();
         mItem = in.readByte() != 0;
+        mRootTag = in.readParcelable(Tag.class.getClassLoader());
         mTagMap = in.readParcelable(TagMap.class.getClassLoader());
         final Param param = new Param(mTagMap);
         mObjectId = param.mObjectId;
@@ -1326,9 +1371,12 @@ public class CdsObject implements Parcelable {
     }
 
     @Override
-    public void writeToParcel(@NonNull Parcel dest, int flags) {
+    public void writeToParcel(
+            @NonNull Parcel dest,
+            int flags) {
         dest.writeString(mUdn);
         dest.writeByte((byte) (mItem ? 1 : 0));
+        dest.writeParcelable(mRootTag, flags);
         dest.writeParcelable(mTagMap, flags);
     }
 

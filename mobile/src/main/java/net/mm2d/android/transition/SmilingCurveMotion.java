@@ -25,12 +25,18 @@ public class SmilingCurveMotion extends PathMotion {
     public SmilingCurveMotion() {
     }
 
-    public SmilingCurveMotion(@NonNull final Context context, @NonNull final AttributeSet attrs) {
+    public SmilingCurveMotion(
+            @NonNull final Context context,
+            @NonNull final AttributeSet attrs) {
         super(context, attrs);
     }
 
     @Override
-    public Path getPath(final float startX, final float startY, final float endX, final float endY) {
+    public Path getPath(
+            final float startX,
+            final float startY,
+            final float endX,
+            final float endY) {
         final Path path = new Path();
         path.moveTo(startX, startY);
         final float middleX;

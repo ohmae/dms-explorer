@@ -60,7 +60,9 @@ public class MsControlPoint implements ControlPointWrapper {
          * @param server イベントを発行したMediaServer
          * @param ids    更新のあったID
          */
-        void onContainerUpdateIds(@NonNull MediaServer server, @NonNull List<String> ids);
+        void onContainerUpdateIds(
+                @NonNull MediaServer server,
+                @NonNull List<String> ids);
     }
 
     /**
@@ -73,7 +75,9 @@ public class MsControlPoint implements ControlPointWrapper {
          * @param server イベントを発行したMediaServer
          * @param id     UpdateID
          */
-        void onSystemUpdateId(@NonNull MediaServer server, @NonNull String id);
+        void onSystemUpdateId(
+                @NonNull MediaServer server,
+                @NonNull String id);
     }
 
     private final DiscoveryListener mDiscoveryListener = new DiscoveryListener() {
@@ -102,7 +106,8 @@ public class MsControlPoint implements ControlPointWrapper {
     };
 
     private void onNotifyContainerUpdateIds(
-            @NonNull final MediaServer server, @NonNull final String value) {
+            @NonNull final MediaServer server,
+            @NonNull final String value) {
         if (mContainerUpdateIdsListener == null) {
             return;
         }
@@ -118,7 +123,8 @@ public class MsControlPoint implements ControlPointWrapper {
     }
 
     private void onNotifySystemUpdateId(
-            @NonNull final MediaServer server, @NonNull final String value) {
+            @NonNull final MediaServer server,
+            @NonNull final String value) {
         if (mSystemUpdateIdListener == null) {
             return;
         }

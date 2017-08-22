@@ -30,7 +30,9 @@ public class ViewUtils {
      * @param view     対象のView
      * @param runnable 実行する処理
      */
-    public static void execAfterAllocateSize(@NonNull final View view, @NonNull final Runnable runnable) {
+    public static void execAfterAllocateSize(
+            @NonNull final View view,
+            @NonNull final Runnable runnable) {
         if (view.getWidth() == 0 || view.getHeight() == 0) {
             execOnLayout(view, runnable);
             return;
@@ -47,7 +49,9 @@ public class ViewUtils {
      * @param view     ViewTreeObserverの取得元View
      * @param runnable 実行する処理
      */
-    public static void execOnLayout(@NonNull final View view, @NonNull final Runnable runnable) {
+    public static void execOnLayout(
+            @NonNull final View view,
+            @NonNull final Runnable runnable) {
         view.getViewTreeObserver().addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {

@@ -14,6 +14,9 @@ import net.mm2d.dmsexplorer.settings.Settings;
 import net.mm2d.dmsexplorer.util.update.UpdateChecker;
 import net.mm2d.util.Log;
 
+import io.reactivex.exceptions.UndeliverableException;
+import io.reactivex.plugins.RxJavaPlugins;
+
 /**
  * Log出力変更のための継承。
  *
@@ -24,6 +27,13 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
         setUpDebugLog();
+        RxJavaPlugins.setErrorHandler(e -> {
+            if (e instanceof UndeliverableException) {
+                Log.w(e.getCause());
+                return;
+            }
+            Log.w(e);
+        });
         Settings.initialize(this);
         Repository.set(new AppRepository(this));
         new UpdateChecker(this).check();

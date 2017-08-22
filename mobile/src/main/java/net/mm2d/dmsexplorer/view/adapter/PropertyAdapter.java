@@ -54,7 +54,10 @@ public class PropertyAdapter extends Adapter<ViewHolder> {
         private final String mValue;
         private final Type mType;
 
-        private Entry(@NonNull final String name, @NonNull final String value, @NonNull final Type type) {
+        private Entry(
+                @NonNull final String name,
+                @NonNull final String value,
+                @NonNull final Type type) {
             mName = name;
             mValue = value;
             mType = type;
@@ -90,11 +93,16 @@ public class PropertyAdapter extends Adapter<ViewHolder> {
         return mContext;
     }
 
-    public void addEntry(@NonNull final String name, @Nullable final String value) {
+    public void addEntry(
+            @NonNull final String name,
+            @Nullable final String value) {
         addEntry(name, value, Type.TEXT);
     }
 
-    public void addEntry(@NonNull final String name, @Nullable final String value, @NonNull final Type type) {
+    public void addEntry(
+            @NonNull final String name,
+            @Nullable final String value,
+            @NonNull final Type type) {
         if (value == null || value.isEmpty()) {
             return;
         }
@@ -111,13 +119,17 @@ public class PropertyAdapter extends Adapter<ViewHolder> {
     }
 
     @Override
-    public ViewHolder onCreateViewHolder(@NonNull final ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(
+            @NonNull final ViewGroup parent,
+            int viewType) {
         return new ViewHolder(getContext(), mInflater,
                 DataBindingUtil.inflate(mInflater, R.layout.property_list_item, parent, false));
     }
 
     @Override
-    public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
+    public void onBindViewHolder(
+            @NonNull final ViewHolder holder,
+            int position) {
         holder.applyItem(mList.get(position));
     }
 
@@ -131,8 +143,10 @@ public class PropertyAdapter extends Adapter<ViewHolder> {
         private final LayoutInflater mInflater;
         private final PropertyListItemBinding mBinding;
 
-        ViewHolder(@NonNull final Context context, @NonNull final LayoutInflater inflater,
-                   @NonNull final PropertyListItemBinding binding) {
+        ViewHolder(
+                @NonNull final Context context,
+                @NonNull final LayoutInflater inflater,
+                @NonNull final PropertyListItemBinding binding) {
             super(binding.getRoot());
             mContext = context;
             mInflater = inflater;
@@ -157,7 +171,9 @@ public class PropertyAdapter extends Adapter<ViewHolder> {
             return makeDescription(layout, entry.getValue());
         }
 
-        private String makeDescription(@NonNull final ViewGroup parent, @NonNull final String text) {
+        private String makeDescription(
+                @NonNull final ViewGroup parent,
+                @NonNull final String text) {
             String firstNormalText = "";
             final Matcher matcher = URL_PATTERN.matcher(text);
             int lastEnd = 0;
@@ -188,13 +204,17 @@ public class PropertyAdapter extends Adapter<ViewHolder> {
             return firstNormalText;
         }
 
-        private void addNormalText(@NonNull final ViewGroup parent, @NonNull final String text) {
+        private void addNormalText(
+                @NonNull final ViewGroup parent,
+                @NonNull final String text) {
             final TextView normal = (TextView) mInflater.inflate(R.layout.normal_text_view, parent, false);
             normal.setText(text);
             parent.addView(normal);
         }
 
-        private void addLinkText(@NonNull final ViewGroup parent, @NonNull final String text) {
+        private void addLinkText(
+                @NonNull final ViewGroup parent,
+                @NonNull final String text) {
             final TextView link = (TextView) mInflater.inflate(R.layout.link_text_view, parent, false);
             link.setText(text);
             link.setPaintFlags(link.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);

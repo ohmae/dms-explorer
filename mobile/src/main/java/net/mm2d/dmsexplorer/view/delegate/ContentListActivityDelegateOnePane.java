@@ -25,8 +25,9 @@ import net.mm2d.dmsexplorer.view.base.BaseActivity;
  */
 class ContentListActivityDelegateOnePane extends ContentListActivityDelegate {
 
-    ContentListActivityDelegateOnePane(@NonNull final BaseActivity activity,
-                                       @NonNull final ContentListActivityBinding binding) {
+    ContentListActivityDelegateOnePane(
+            @NonNull final BaseActivity activity,
+            @NonNull final ContentListActivityBinding binding) {
         super(activity, binding);
     }
 
@@ -36,7 +37,9 @@ class ContentListActivityDelegateOnePane extends ContentListActivityDelegate {
     }
 
     @Override
-    public void onSelect(@NonNull final View v, @NonNull final CdsObject object) {
+    public void onSelect(
+            @NonNull final View v,
+            @NonNull final CdsObject object) {
         startDetailActivity(v);
     }
 
@@ -45,7 +48,10 @@ class ContentListActivityDelegateOnePane extends ContentListActivityDelegate {
     }
 
     @Override
-    public void onExecute(@NonNull final View v, @NonNull final CdsObject object, final boolean selected) {
+    public void onExecute(
+            @NonNull final View v,
+            @NonNull final CdsObject object,
+            final boolean selected) {
         if (object.hasProtectedResource()) {
             Snackbar.make(v, R.string.toast_not_support_drm, Snackbar.LENGTH_LONG).show();
             return;

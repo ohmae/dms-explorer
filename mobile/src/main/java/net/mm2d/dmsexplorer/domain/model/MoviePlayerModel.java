@@ -32,7 +32,9 @@ public class MoviePlayerModel extends MediaPlayerModel {
     }
 
     @Override
-    public void setUri(@NonNull final Uri uri, @Nullable final Object metadata) {
+    public void setUri(
+            @NonNull final Uri uri,
+            @Nullable final Object metadata) {
         mVideoView.setVideoURI(uri);
     }
 }

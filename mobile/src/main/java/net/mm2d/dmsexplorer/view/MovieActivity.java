@@ -19,7 +19,7 @@ import net.mm2d.dmsexplorer.util.FullscreenHelper;
 import net.mm2d.dmsexplorer.util.RepeatIntroductionUtils;
 import net.mm2d.dmsexplorer.view.base.BaseActivity;
 import net.mm2d.dmsexplorer.viewmodel.MovieActivityModel;
-import net.mm2d.dmsexplorer.viewmodel.MovieActivityModel.OnSwitchListener;
+import net.mm2d.dmsexplorer.viewmodel.MovieActivityModel.OnChangeContentListener;
 
 import java.util.concurrent.TimeUnit;
 
@@ -28,7 +28,7 @@ import java.util.concurrent.TimeUnit;
  *
  * @author <a href="mailto:ryo@mm2d.net">大前良介(OHMAE Ryosuke)</a>
  */
-public class MovieActivity extends BaseActivity implements OnSwitchListener {
+public class MovieActivity extends BaseActivity implements OnChangeContentListener {
     private static final String KEY_POSITION = "KEY_POSITION";
     private static final long TIMEOUT_DELAY = TimeUnit.SECONDS.toMillis(1);
     private FullscreenHelper mFullscreenHelper;
@@ -50,7 +50,7 @@ public class MovieActivity extends BaseActivity implements OnSwitchListener {
             finish();
             return;
         }
-        mModel.setOnSwitchListener(this);
+        mModel.setOnChangeContentListener(this);
         binding.setModel(mModel);
         mModel.adjustPanel(this);
         if (RepeatIntroductionUtils.show(this, binding.repeatButton)) {
@@ -72,6 +72,12 @@ public class MovieActivity extends BaseActivity implements OnSwitchListener {
             mModel.terminate();
         }
         mFullscreenHelper.terminate();
+    }
+
+    @Override
+    public void onPictureInPictureModeChanged(boolean isInPictureInPictureMode) {
+        super.onPictureInPictureModeChanged(isInPictureInPictureMode);
+        mFullscreenHelper.onPictureInPictureModeChanged(isInPictureInPictureMode);
     }
 
     @Override
@@ -98,7 +104,7 @@ public class MovieActivity extends BaseActivity implements OnSwitchListener {
     }
 
     @Override
-    public void onSwitch() {
+    public void onChangeContent() {
         mFullscreenHelper.showNavigation();
     }
 }

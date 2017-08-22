@@ -8,14 +8,17 @@
 package net.mm2d.dmsexplorer.viewmodel;
 
 import android.app.Activity;
+import android.app.PictureInPictureParams;
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
 import android.graphics.Point;
+import android.os.Build;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.util.Rational;
 import android.widget.Toast;
 import android.widget.VideoView;
 
@@ -40,15 +43,16 @@ import net.mm2d.dmsexplorer.viewmodel.ControlPanelModel.SkipControlListener;
  */
 public class MovieActivityModel extends BaseObservable
         implements OnCompletionListener, SkipControlListener {
-    public interface OnSwitchListener {
-        void onSwitch();
+    public interface OnChangeContentListener {
+        void onChangeContent();
     }
 
-    private static final OnSwitchListener ON_SWITCH_LISTENER = () -> {
+    private static final OnChangeContentListener ON_CHANGE_CONTENT_LISTENER = () -> {
     };
 
     @NonNull
     public final ControlPanelParam controlPanelParam;
+    public final boolean isSupportPictureInPicture = Build.VERSION.SDK_INT >= Build.VERSION_CODES.O;
 
     @NonNull
     private String mTitle;
@@ -57,7 +61,7 @@ public class MovieActivityModel extends BaseObservable
     private int mRightNavigationSize;
 
     @NonNull
-    private OnSwitchListener mOnSwitchListener = ON_SWITCH_LISTENER;
+    private OnChangeContentListener mOnChangeContentListener = ON_CHANGE_CONTENT_LISTENER;
     @NonNull
     private RepeatMode mRepeatMode;
     @DrawableRes
@@ -75,10 +79,13 @@ public class MovieActivityModel extends BaseObservable
     private final MediaServerModel mServerModel;
     @NonNull
     private final Settings mSettings;
+    @Nullable
+    private PictureInPictureParams mPictureInPictureParams;
 
-    public MovieActivityModel(@NonNull final Activity activity,
-                              @NonNull final VideoView videoView,
-                              @NonNull final Repository repository) {
+    public MovieActivityModel(
+            @NonNull final Activity activity,
+            @NonNull final VideoView videoView,
+            @NonNull final Repository repository) {
         mActivity = activity;
         mVideoView = videoView;
         mRepository = repository;
@@ -128,8 +135,8 @@ public class MovieActivityModel extends BaseObservable
         return mControlPanelModel.getProgress();
     }
 
-    public void setOnSwitchListener(@Nullable final OnSwitchListener listener) {
-        mOnSwitchListener = listener != null ? listener : ON_SWITCH_LISTENER;
+    public void setOnChangeContentListener(@Nullable final OnChangeContentListener listener) {
+        mOnChangeContentListener = listener != null ? listener : ON_CHANGE_CONTENT_LISTENER;
     }
 
     public void onClickBack() {
@@ -143,6 +150,17 @@ public class MovieActivityModel extends BaseObservable
         mSettings.setRepeatModeMovie(mRepeatMode);
 
         showRepeatToast();
+    }
+
+    public void onClickPictureInPicture() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            if (mPictureInPictureParams == null) {
+                mPictureInPictureParams = new PictureInPictureParams.Builder()
+                        .setAspectRatio(new Rational(16, 9))
+                        .build();
+            }
+            mActivity.enterPictureInPictureMode(mPictureInPictureParams);
+        }
     }
 
     private void showRepeatToast() {
@@ -193,7 +211,7 @@ public class MovieActivityModel extends BaseObservable
             return;
         }
         updateTargetModel();
-        mOnSwitchListener.onSwitch();
+        mOnChangeContentListener.onChangeContent();
     }
 
     @Override
@@ -204,7 +222,7 @@ public class MovieActivityModel extends BaseObservable
             return;
         }
         updateTargetModel();
-        mOnSwitchListener.onSwitch();
+        mOnChangeContentListener.onChangeContent();
     }
 
     @Override
@@ -215,7 +233,7 @@ public class MovieActivityModel extends BaseObservable
             return;
         }
         updateTargetModel();
-        mOnSwitchListener.onSwitch();
+        mOnChangeContentListener.onChangeContent();
     }
 
     private boolean selectNext() {

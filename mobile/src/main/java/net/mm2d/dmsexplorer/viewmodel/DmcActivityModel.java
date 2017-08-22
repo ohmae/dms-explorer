@@ -84,8 +84,9 @@ public class DmcActivityModel extends BaseObservable implements StatusListener {
     @NonNull
     private final Runnable mTrackingCancel;
 
-    public DmcActivityModel(@NonNull final Activity activity,
-                            @NonNull final Repository repository) {
+    public DmcActivityModel(
+            @NonNull final Activity activity,
+            @NonNull final Repository repository) {
         mActivity = activity;
         final PlaybackTargetModel targetModel = repository.getPlaybackTargetModel();
         final PlayerModel playerModel = repository.getMediaRendererModel();
@@ -111,7 +112,10 @@ public class DmcActivityModel extends BaseObservable implements StatusListener {
         mTrackingCancel = () -> mTracking = false;
         seekBarListener = new ScrubBarListener() {
             @Override
-            public void onProgressChanged(ScrubBar seekBar, int progress, boolean fromUser) {
+            public void onProgressChanged(
+                    ScrubBar seekBar,
+                    int progress,
+                    boolean fromUser) {
                 if (fromUser) {
                     setProgressText(progress);
                 }
@@ -131,7 +135,9 @@ public class DmcActivityModel extends BaseObservable implements StatusListener {
             }
 
             @Override
-            public void onAccuracyChanged(final ScrubBar seekBar, @Accuracy final int accuracy) {
+            public void onAccuracyChanged(
+                    final ScrubBar seekBar,
+                    @Accuracy final int accuracy) {
                 setScrubText(getAccuracyText(accuracy));
             }
         };
@@ -370,13 +376,17 @@ public class DmcActivityModel extends BaseObservable implements StatusListener {
     }
 
     @Override
-    public boolean onError(final int what, final int extra) {
+    public boolean onError(
+            final int what,
+            final int extra) {
         Toaster.showLong(mActivity, R.string.toast_command_error_occurred);
         return false;
     }
 
     @Override
-    public boolean onInfo(final int what, final int extra) {
+    public boolean onInfo(
+            final int what,
+            final int extra) {
         return false;
     }
 

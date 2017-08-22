@@ -40,9 +40,10 @@ public class ServerDetailFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(@NonNull final LayoutInflater inflater,
-                             @Nullable final ViewGroup container,
-                             @Nullable final Bundle savedInstanceState) {
+    public View onCreateView(
+            @NonNull final LayoutInflater inflater,
+            @Nullable final ViewGroup container,
+            @Nullable final Bundle savedInstanceState) {
         final Activity activity = getActivity();
         final ServerDetailFragmentBinding binding =
                 DataBindingUtil.inflate(inflater, R.layout.server_detail_fragment, container, false);

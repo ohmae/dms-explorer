@@ -36,9 +36,10 @@ public class ContentItemModel {
     @DrawableRes
     public final int imageResource;
 
-    public ContentItemModel(@NonNull final Context context,
-                            @NonNull final CdsObject object,
-                            final boolean selected) {
+    public ContentItemModel(
+            @NonNull final Context context,
+            @NonNull final CdsObject object,
+            final boolean selected) {
         this.selected = selected;
         final String name = object.getTitle();
         accentText = TextUtils.isEmpty(name) ? ""

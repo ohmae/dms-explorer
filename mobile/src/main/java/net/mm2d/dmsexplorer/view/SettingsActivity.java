@@ -94,7 +94,9 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         return !TextUtils.isEmpty(CustomTabsHelper.getPackageNameToBind());
     }
 
-    private static void openUrl(@NonNull final Context context, @NonNull final String url) {
+    private static void openUrl(
+            @NonNull final Context context,
+            @NonNull final String url) {
         Repository.get().getOpenUriModel().openUri(context, url);
     }
 

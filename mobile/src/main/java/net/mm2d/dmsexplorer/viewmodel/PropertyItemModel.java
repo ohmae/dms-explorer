@@ -26,10 +26,11 @@ public class PropertyItemModel {
     public final boolean isLink;
     public final boolean enableDescription;
 
-    public PropertyItemModel(@NonNull final String title,
-                             @NonNull final Type type,
-                             @NonNull final String description,
-                             @Nullable final OnClickListener listener) {
+    public PropertyItemModel(
+            @NonNull final String title,
+            @NonNull final Type type,
+            @NonNull final String description,
+            @Nullable final OnClickListener listener) {
         isLink = type == Type.LINK;
         enableDescription = (type != Type.TITLE && !TextUtils.isEmpty(description));
         onClickListener = isLink ? listener : null;

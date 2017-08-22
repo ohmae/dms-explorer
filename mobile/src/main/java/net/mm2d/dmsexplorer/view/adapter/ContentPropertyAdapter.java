@@ -44,15 +44,18 @@ public class ContentPropertyAdapter extends PropertyAdapter {
         sCs = context.getString(R.string.network_cs);
     }
 
-    public ContentPropertyAdapter(@NonNull final Context context, @NonNull final CdsObject object) {
+    public ContentPropertyAdapter(
+            @NonNull final Context context,
+            @NonNull final CdsObject object) {
         super(context);
         setupString(context);
         setCdsObjectInfo(context, this, object);
     }
 
-    private static void setCdsObjectInfo(@NonNull final Context context,
-                                         @NonNull final PropertyAdapter adapter,
-                                         @NonNull final CdsObject object) {
+    private static void setCdsObjectInfo(
+            @NonNull final Context context,
+            @NonNull final PropertyAdapter adapter,
+            @NonNull final CdsObject object) {
         adapter.addEntry(context.getString(R.string.prop_title),
                 AribUtils.toDisplayableString(object.getTitle()));
         adapter.addEntry(context.getString(R.string.prop_channel),
@@ -91,7 +94,9 @@ public class ContentPropertyAdapter extends PropertyAdapter {
     }
 
     @Nullable
-    private static String jointTagValue(@NonNull final CdsObject object, @NonNull final String tagName) {
+    private static String jointTagValue(
+            @NonNull final CdsObject object,
+            @NonNull final String tagName) {
         final List<Tag> tagList = object.getTagList(tagName);
         if (tagList == null) {
             return null;
@@ -172,7 +177,9 @@ public class ContentPropertyAdapter extends PropertyAdapter {
     }
 
     @Nullable
-    private static String jointMembers(@NonNull final CdsObject object, @NonNull final String tagName) {
+    private static String jointMembers(
+            @NonNull final CdsObject object,
+            @NonNull final String tagName) {
         final List<Tag> tagList = object.getTagList(tagName);
         if (tagList == null) {
             return null;
