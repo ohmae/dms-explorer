@@ -88,7 +88,8 @@ public class FullscreenHelper {
     private final Animation mExitToBottom;
     @NonNull
     private final Runnable mHideNavigationTask = this::hideNavigation;
-    private boolean mPosted = false;
+    private boolean mPosted;
+    private boolean mIsInPictureInPictureMode;
 
     private FullscreenHelper(@NonNull final Builder builder) {
         mHandler = new Handler();
@@ -120,6 +121,9 @@ public class FullscreenHelper {
     }
 
     public void showNavigation(final long interval) {
+        if (mIsInPictureInPictureMode) {
+            return;
+        }
         if (mTopView != null && mTopView.getVisibility() != View.VISIBLE) {
             mTopView.clearAnimation();
             mTopView.startAnimation(mEnterFromTop);
@@ -134,7 +138,6 @@ public class FullscreenHelper {
         postHideNavigation(interval);
     }
 
-
     private void hideNavigation() {
         mPosted = false;
         if (mTopView != null) {
@@ -148,6 +151,23 @@ public class FullscreenHelper {
             mBottomView.setVisibility(View.GONE);
         }
         mRootView.setSystemUiVisibility(SYSTEM_UI_INVISIBLE);
+    }
+
+    public void onPictureInPictureModeChanged(boolean isInPictureInPictureMode) {
+        mIsInPictureInPictureMode = isInPictureInPictureMode;
+        if (isInPictureInPictureMode) {
+            mHandler.removeCallbacks(mHideNavigationTask);
+            if (mTopView != null) {
+                mTopView.clearAnimation();
+                mTopView.setVisibility(View.GONE);
+            }
+            if (mBottomView != null) {
+                mBottomView.clearAnimation();
+                mBottomView.setVisibility(View.GONE);
+            }
+        } else {
+            showNavigation();
+        }
     }
 
     public void terminate() {
