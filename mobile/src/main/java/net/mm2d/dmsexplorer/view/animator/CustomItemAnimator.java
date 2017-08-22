@@ -7,10 +7,11 @@
 
 package net.mm2d.dmsexplorer.view.animator;
 
+import android.animation.TimeInterpolator;
+import android.animation.ValueAnimator;
 import android.content.Context;
 import android.os.Build;
 import android.support.annotation.NonNull;
-import android.support.v4.animation.AnimatorCompatHelper;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPropertyAnimatorCompat;
 import android.support.v4.view.ViewPropertyAnimatorListener;
@@ -30,6 +31,8 @@ public class CustomItemAnimator extends SimpleItemAnimator {
     private static final long ADDING_ANIMATION_DELAY_MAX = 500L;
     private static final int ADDING_TRANSLATION_Y = 200;
     private static final int ADDING_TRANSLATION_Y_KITKAT = 50;
+    private static final TimeInterpolator mDefaultInterpolator = new ValueAnimator().getInterpolator();
+
     private final int mAddingTranslationY;
 
     private final ArrayList<ViewHolder> mPendingRemovals = new ArrayList<>();
@@ -468,7 +471,7 @@ public class CustomItemAnimator extends SimpleItemAnimator {
     }
 
     private void resetAnimation(ViewHolder holder) {
-        AnimatorCompatHelper.clearInterpolator(holder.itemView);
+        holder.itemView.animate().setInterpolator(mDefaultInterpolator);
         endAnimation(holder);
     }
 

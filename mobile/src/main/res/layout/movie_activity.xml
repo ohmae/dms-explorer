@@ -9,6 +9,8 @@
         <variable
             name="model"
             type="net.mm2d.dmsexplorer.viewmodel.MovieActivityModel"/>
+
+        <import type="android.view.View"/>
     </data>
 
     <FrameLayout
@@ -58,6 +60,18 @@
                 android:text="@{model.title}"
                 android:textColor="#FFFFFF"
                 android:textSize="@dimen/text_size_toolbar"
+                />
+
+            <ImageView
+                android:id="@+id/picture_in_picture_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:background="@drawable/bg_tool_button"
+                android:onClick="@{() -> model.onClickPictureInPicture()}"
+                android:padding="@dimen/toolbar_button_padding"
+                android:visibility="@{model.isSupportPictureInPicture ? View.VISIBLE : View.GONE}"
+                app:srcCompat="@drawable/ic_picture_in_picture"
                 />
 
             <ImageView
