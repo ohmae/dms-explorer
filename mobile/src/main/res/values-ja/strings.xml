@@ -18,6 +18,12 @@
     <string name="network_tb">地上</string>
     <string name="network_bs">BS</string>
     <string name="network_cs">CS</string>
+    <string name="action_play_title">Play/Pause</string>
+    <string name="action_play_description">Play/Pause</string>
+    <string name="action_next_title">Next</string>
+    <string name="action_next_description">Skip Next</string>
+    <string name="action_previous_title">Prev</string>
+    <string name="action_previous_description">Skip Previous</string>
     <string name="prop_title">タイトル:</string>
     <string name="prop_channel">チャンネル:</string>
     <string name="prop_date">日付:</string>
