@@ -17,7 +17,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Rect;
 import android.graphics.drawable.Icon;
-import android.os.Build;
 import android.os.Build.VERSION_CODES;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
@@ -76,9 +75,7 @@ class MovieActivityPipHelperOreo implements MovieActivityPipHelper {
 
     @Override
     public void register() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            mActivity.registerReceiver(mControlReceiver, makeIntentFilter());
-        }
+        mActivity.registerReceiver(mControlReceiver, makeIntentFilter());
     }
 
     @NonNull
@@ -92,9 +89,7 @@ class MovieActivityPipHelperOreo implements MovieActivityPipHelper {
 
     @Override
     public void unregister() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            mActivity.unregisterReceiver(mControlReceiver);
-        }
+        mActivity.unregisterReceiver(mControlReceiver);
     }
 
     @Override
@@ -104,23 +99,20 @@ class MovieActivityPipHelperOreo implements MovieActivityPipHelper {
 
     @Override
     public void enterPictureInPictureMode(@NonNull final View contentView) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            final PictureInPictureParams.Builder builder = new PictureInPictureParams.Builder();
-            final List<RemoteAction> actions = makeActions();
-            if (!actions.isEmpty()) {
-                builder.setActions(actions);
-            }
-            final Rect rect = makeViewRect(contentView);
-            if (rect.width() > 0 && rect.height() > 0) {
-                builder.setSourceRectHint(rect)
-                        .setAspectRatio(new Rational(rect.width(), rect.height()));
-
-            }
-            try {
-                mActivity.enterPictureInPictureMode(builder.build());
-            } catch (final Exception e) {
-                Log.w(e);
-            }
+        final PictureInPictureParams.Builder builder = new PictureInPictureParams.Builder();
+        final List<RemoteAction> actions = makeActions();
+        if (!actions.isEmpty()) {
+            builder.setActions(actions);
+        }
+        final Rect rect = makeViewRect(contentView);
+        if (rect.width() > 0 && rect.height() > 0) {
+            builder.setSourceRectHint(rect)
+                    .setAspectRatio(new Rational(rect.width(), rect.height()));
+        }
+        try {
+            mActivity.enterPictureInPictureMode(builder.build());
+        } catch (final Exception e) {
+            Log.w(e);
         }
     }
 
