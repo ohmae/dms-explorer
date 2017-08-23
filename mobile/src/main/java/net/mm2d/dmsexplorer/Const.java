@@ -13,7 +13,14 @@ package net.mm2d.dmsexplorer;
 public class Const {
     public static final String PACKAGE_NAME = "net.mm2d.dmsexplorer";
 
+    // LocalBroadcast
     public static final String ACTION_UPDATE = "ACTION_UPDATE";
+
+    // Broadcast
+    private static final String PREFIX = PACKAGE_NAME + ".";
+    public static final String ACTION_PLAY = PREFIX + "ACTION_PLAY";
+    public static final String ACTION_NEXT = PREFIX + "ACTION_NEXT";
+    public static final String ACTION_PREV = PREFIX + "ACTION_PREV";
 
     public static final String KEY_HAS_TOOLBAR_COLOR = "KEY_HAS_TOOLBAR_COLOR";
     public static final String KEY_TOOLBAR_EXPANDED_COLOR = "KEY_TOOLBAR_EXPANDED_COLOR";
