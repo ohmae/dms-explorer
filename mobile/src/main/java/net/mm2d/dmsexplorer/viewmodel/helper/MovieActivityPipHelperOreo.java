@@ -93,7 +93,7 @@ class MovieActivityPipHelperOreo implements MovieActivityPipHelper {
     @Override
     public void unregister() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            unregister();
+            mActivity.unregisterReceiver(mControlReceiver);
         }
     }
 
