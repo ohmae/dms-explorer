@@ -7,7 +7,6 @@
 
 package net.mm2d.android.util;
 
-import android.annotation.TargetApi;
 import android.app.Activity;
 import android.graphics.Point;
 import android.os.Build;
@@ -33,7 +32,6 @@ public class DisplaySizeUtils {
      * @return ディスプレイサイズ
      * @see Display#getSize(Point)
      */
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
     @NonNull
     public static Point getSize(@NonNull final Activity activity) {
         final Display display = activity.getWindowManager().getDefaultDisplay();
@@ -49,7 +47,6 @@ public class DisplaySizeUtils {
      * @return ディスプレイサイズ
      * @see Display#getRealSize(Point)
      */
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
     @NonNull
     public static Point getRealSize(@NonNull final Activity activity) {
         final Display display = activity.getWindowManager().getDefaultDisplay();
@@ -75,7 +72,6 @@ public class DisplaySizeUtils {
      * @param activity Activity
      * @return NavigationBarのエリア
      */
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
     @NonNull
     public static Point getNavigationBarArea(@NonNull final Activity activity) {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT // KitKat未満はアプリエリアと重複しない
