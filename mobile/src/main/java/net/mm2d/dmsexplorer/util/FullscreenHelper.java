@@ -25,24 +25,30 @@ import java.util.concurrent.TimeUnit;
  */
 public class FullscreenHelper {
     public static class Builder {
+        @NonNull
         private final View mRootView;
+        @Nullable
         private View mTopView;
+        @Nullable
         private View mBottomView;
 
         public Builder(@NonNull final View view) {
             mRootView = view;
         }
 
+        @NonNull
         public Builder setTopView(@NonNull final View view) {
             mTopView = view;
             return this;
         }
 
+        @NonNull
         public Builder setBottomView(@NonNull final View view) {
             mBottomView = view;
             return this;
         }
 
+        @NonNull
         public FullscreenHelper build() {
             return new FullscreenHelper(this);
         }
@@ -153,7 +159,7 @@ public class FullscreenHelper {
         mRootView.setSystemUiVisibility(SYSTEM_UI_INVISIBLE);
     }
 
-    public void onPictureInPictureModeChanged(boolean isInPictureInPictureMode) {
+    public void onPictureInPictureModeChanged(final boolean isInPictureInPictureMode) {
         mIsInPictureInPictureMode = isInPictureInPictureMode;
         if (isInPictureInPictureMode) {
             mHandler.removeCallbacks(mHideNavigationTask);

@@ -117,13 +117,13 @@ class MovieActivityPipHelperOreo implements MovieActivityPipHelper {
     }
 
     @NonNull
-    private Rect makeViewRect(final View v) {
+    private Rect makeViewRect(@NonNull final View v) {
         final Rect rect = new Rect();
         v.getGlobalVisibleRect(rect);
         return rect;
     }
 
-    @RequiresApi(api = VERSION_CODES.O)
+    @NonNull
     private List<RemoteAction> makeActions() {
         final int max = mActivity.getMaxNumPictureInPictureActions();
         if (max <= 0) {

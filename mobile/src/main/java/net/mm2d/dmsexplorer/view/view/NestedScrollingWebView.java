@@ -8,6 +8,8 @@
 package net.mm2d.dmsexplorer.view.view;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.view.NestedScrollingChild;
 import android.support.v4.view.NestedScrollingChildHelper;
 import android.support.v4.view.ViewCompat;
@@ -27,19 +29,19 @@ public class NestedScrollingWebView extends WebView implements NestedScrollingCh
     private final int[] mConsumed = new int[2];
     private boolean mScrolling;
 
-    public NestedScrollingWebView(final Context context) {
+    public NestedScrollingWebView(@NonNull final Context context) {
         this(context, null);
     }
 
     public NestedScrollingWebView(
-            final Context context,
-            final AttributeSet attrs) {
+            @NonNull final Context context,
+            @Nullable final AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
     public NestedScrollingWebView(
-            final Context context,
-            final AttributeSet attrs,
+            @NonNull final Context context,
+            @Nullable final AttributeSet attrs,
             final int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         mHelper = new NestedScrollingChildHelper(this);
@@ -79,7 +81,7 @@ public class NestedScrollingWebView extends WebView implements NestedScrollingCh
         return super.onTouchEvent(event);
     }
 
-    public void setNestedScrollingEnabled(boolean enabled) {
+    public void setNestedScrollingEnabled(final boolean enabled) {
         mHelper.setNestedScrollingEnabled(enabled);
     }
 
@@ -87,7 +89,7 @@ public class NestedScrollingWebView extends WebView implements NestedScrollingCh
         return mHelper.isNestedScrollingEnabled();
     }
 
-    public boolean startNestedScroll(int axes) {
+    public boolean startNestedScroll(final int axes) {
         return mHelper.startNestedScroll(axes);
     }
 
@@ -100,32 +102,32 @@ public class NestedScrollingWebView extends WebView implements NestedScrollingCh
     }
 
     public boolean dispatchNestedScroll(
-            int dxConsumed,
-            int dyConsumed,
-            int dxUnconsumed,
-            int dyUnconsumed,
-            int[] offsetInWindow) {
+            final int dxConsumed,
+            final int dyConsumed,
+            final int dxUnconsumed,
+            final int dyUnconsumed,
+            final int[] offsetInWindow) {
         return mHelper.dispatchNestedScroll(dxConsumed, dyConsumed, dxUnconsumed, dyUnconsumed, offsetInWindow);
     }
 
     public boolean dispatchNestedPreScroll(
-            int dx,
-            int dy,
-            int[] consumed,
-            int[] offsetInWindow) {
+            final int dx,
+            final int dy,
+            final int[] consumed,
+            final int[] offsetInWindow) {
         return mHelper.dispatchNestedPreScroll(dx, dy, consumed, offsetInWindow);
     }
 
     public boolean dispatchNestedFling(
-            float velocityX,
-            float velocityY,
-            boolean consumed) {
+            final float velocityX,
+            final float velocityY,
+            final boolean consumed) {
         return mHelper.dispatchNestedFling(velocityX, velocityY, consumed);
     }
 
     public boolean dispatchNestedPreFling(
-            float velocityX,
-            float velocityY) {
+            final float velocityX,
+            final float velocityY) {
         return mHelper.dispatchNestedPreFling(velocityX, velocityY);
     }
 }
