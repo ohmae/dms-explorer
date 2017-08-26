@@ -89,11 +89,11 @@ public class IntroductoryOverlay extends RelativeLayout {
         mTimeout = builder.mTimeout < ANIMATION_DURATION ? DEFAULT_TIMEOUT : builder.mTimeout;
 
         LayoutInflater.from(getContext()).inflate(R.layout.introductory_overlay, this);
-        mTitle = (TextView) findViewById(R.id.title);
+        mTitle = findViewById(R.id.title);
         if (!TextUtils.isEmpty(builder.mTitleText)) {
             mTitle.setText(builder.mTitleText);
         }
-        final TextView subtitle = (TextView) findViewById(R.id.subtitle);
+        final TextView subtitle = findViewById(R.id.subtitle);
         if (!TextUtils.isEmpty(builder.mSubtitleText)) {
             subtitle.setText(builder.mSubtitleText);
         }

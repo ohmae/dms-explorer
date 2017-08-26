@@ -70,7 +70,7 @@
                 android:background="@drawable/bg_tool_button"
                 android:onClick="@{() -> model.onClickPictureInPicture()}"
                 android:padding="@dimen/toolbar_button_padding"
-                android:visibility="@{model.isSupportPictureInPicture ? View.VISIBLE : View.GONE}"
+                android:visibility="@{model.canUsePictureInPicture ? View.VISIBLE : View.GONE}"
                 app:srcCompat="@drawable/ic_picture_in_picture"
                 />
 

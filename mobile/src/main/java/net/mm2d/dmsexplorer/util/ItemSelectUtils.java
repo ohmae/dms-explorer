@@ -14,6 +14,7 @@ import android.support.annotation.NonNull;
 
 import net.mm2d.android.upnp.cds.CdsObject;
 import net.mm2d.android.util.Toaster;
+import net.mm2d.dmsexplorer.EventLogger;
 import net.mm2d.dmsexplorer.R;
 import net.mm2d.dmsexplorer.Repository;
 import net.mm2d.dmsexplorer.domain.model.PlaybackTargetModel;
@@ -61,7 +62,7 @@ public class ItemSelectUtils {
         }
         final Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.setDataAndType(targetModel.getUri(), targetModel.getMimeType());
-        final Settings settings = new Settings(activity);
+        final Settings settings = new Settings();
         switch (targetModel.getCdsObject().getType()) {
             case CdsObject.TYPE_VIDEO:
                 if (settings.isPlayMovieMyself()) {
@@ -92,6 +93,7 @@ public class ItemSelectUtils {
         try {
             activity.startActivity(intent);
             activity.overridePendingTransition(0, 0);
+            EventLogger.sendPlayContent();
         } catch (final Exception ignored) {
             Toaster.showLong(activity, R.string.toast_launch_error);
         }
@@ -102,6 +104,11 @@ public class ItemSelectUtils {
     }
 
     public static void sendSelectedRenderer(@NonNull final Context context) {
-        context.startActivity(DmcActivity.makeIntent(context));
+        try {
+            context.startActivity(DmcActivity.makeIntent(context));
+            EventLogger.sendSendContent();
+        } catch (final Exception ignored) {
+            Toaster.showLong(context, R.string.toast_launch_error);
+        }
     }
 }

@@ -16,6 +16,7 @@ import android.os.Build;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.ColorInt;
+import android.support.annotation.Dimension;
 import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -53,72 +54,96 @@ public class ScrubBar extends View {
 
     public interface ScrubBarListener {
         void onProgressChanged(
-                ScrubBar seekBar,
+                @NonNull ScrubBar seekBar,
                 int progress,
                 boolean fromUser);
 
-        void onStartTrackingTouch(ScrubBar seekBar);
+        void onStartTrackingTouch(@NonNull ScrubBar seekBar);
 
-        void onStopTrackingTouch(ScrubBar seekBar);
+        void onStopTrackingTouch(@NonNull ScrubBar seekBar);
 
         void onAccuracyChanged(
-                ScrubBar seekBar,
+                @NonNull ScrubBar seekBar,
                 @Accuracy int accuracy);
     }
 
     private static final ScrubBarListener LISTENER = new ScrubBarListener() {
         @Override
         public void onProgressChanged(
-                final ScrubBar seekBar,
+                @NonNull final ScrubBar seekBar,
                 final int progress,
                 final boolean fromUser) {
         }
 
         @Override
-        public void onStartTrackingTouch(final ScrubBar seekBar) {
+        public void onStartTrackingTouch(@NonNull final ScrubBar seekBar) {
         }
 
         @Override
-        public void onStopTrackingTouch(final ScrubBar seekBar) {
+        public void onStopTrackingTouch(@NonNull final ScrubBar seekBar) {
         }
 
         @Override
         public void onAccuracyChanged(
-                final ScrubBar seekBar,
+                @NonNull final ScrubBar seekBar,
                 @Accuracy final int accuracy) {
         }
     };
 
-    private static final int[] EMPTY_ARRAY = new int[0];
+    @Dimension(unit = Dimension.DP)
     private static final int TRACK_WIDTH_DP = 3;
+    @Dimension(unit = Dimension.DP)
     private static final int SMALL_THUMB_RADIUS_DP = 4;
+    @Dimension(unit = Dimension.DP)
     private static final int LARGE_THUMB_RADIUS_DP = 8;
-    private static final int SCRUB_THRESHOLD_DP = 150;
+    @Dimension(unit = Dimension.DP)
+    private static final int SCRUB_UNIT_LENGTH_DP = 150;
+    @ColorInt
     private static final int DEFAULT_ENABLED_TRACK_COLOR = Color.argb(0x66, 0xff, 0xff, 0xff);
+    @ColorInt
     private static final int DEFAULT_ENABLED_SECTION_COLOR = Color.argb(0xff, 0xff, 0xff, 0x0);
+    @ColorInt
     private static final int DEFAULT_DISABLED_PROGRESS_COLOR = Color.argb(0xff, 0x80, 0x80, 0x80);
+    @ColorInt
     private static final int DEFAULT_DISABLED_TRACK_COLOR = Color.argb(0x66, 0x60, 0x60, 0x60);
+    @ColorInt
     private static final int DEFAULT_DISABLED_SECTION_COLOR = Color.argb(0x66, 0xff, 0xff, 0x0);
 
     @NonNull
     private final Paint mPaint;
     @NonNull
     private ScrubBarListener mScrubBarListener = LISTENER;
+    @Dimension(unit = Dimension.PX)
     private final float mTrackWidth;
+    @Dimension(unit = Dimension.PX)
     private final float mTrackWidthHalf;
+    @Dimension(unit = Dimension.PX)
     private final float mSmallThumbRadius;
+    @Dimension(unit = Dimension.PX)
     private final float mLargeThumbRadius;
-    private int mScrubThreshold;
+    @Dimension(unit = Dimension.PX)
+    private int mScrubUnitLength;
+    @ColorInt
     private int mEnabledProgressColor;
+    @ColorInt
     private int mEnabledTrackColor = DEFAULT_ENABLED_TRACK_COLOR;
+    @ColorInt
     private int mEnabledSectionColor = DEFAULT_ENABLED_SECTION_COLOR;
+    @ColorInt
     private int mDisabledProgressColor = DEFAULT_DISABLED_PROGRESS_COLOR;
+    @ColorInt
     private int mDisabledTrackColor = DEFAULT_DISABLED_TRACK_COLOR;
+    @ColorInt
     private int mDisabledSectionColor = DEFAULT_DISABLED_SECTION_COLOR;
+    @ColorInt
     private int mProgressColor;
+    @ColorInt
     private int mTrackColor;
+    @ColorInt
     private int mSectionColor;
+    @ColorInt
     private int mTopBackgroundColor;
+    @ColorInt
     private int mBottomBackgroundColor;
 
     private int mProgress;
@@ -154,7 +179,7 @@ public class ScrubBar extends View {
         mTrackWidthHalf = mTrackWidth / 2;
         mSmallThumbRadius = SMALL_THUMB_RADIUS_DP * density;
         mLargeThumbRadius = LARGE_THUMB_RADIUS_DP * density;
-        mScrubThreshold = (int) (SCRUB_THRESHOLD_DP * density + 0.5f);
+        mScrubUnitLength = (int) (SCRUB_UNIT_LENGTH_DP * density + 0.5f);
         mPaint = new Paint();
         mPaint.setStrokeWidth(mTrackWidth);
         mPaint.setAntiAlias(true);
@@ -213,8 +238,8 @@ public class ScrubBar extends View {
         invalidate();
     }
 
-    public void setScrubThreshold(final int threshold) {
-        mScrubThreshold = threshold;
+    public void setScrubUnitLength(final int length) {
+        mScrubUnitLength = length;
     }
 
     public void setTopBackgroundColor(@ColorInt final int color) {
@@ -403,7 +428,7 @@ public class ScrubBar extends View {
         setProgressInternal(progressDiff + mBaseProgress, true);
 
         final int distance = Math.abs((int) (event.getY() - mStartY));
-        final int rank = clamp(distance / mScrubThreshold, 0, RANK_MAX);
+        final int rank = clamp(distance / mScrubUnitLength, 0, RANK_MAX);
         if (mAccuracyRank != rank) {
             mAccuracyRank = rank;
             mBaseProgress = mProgress;
@@ -418,7 +443,7 @@ public class ScrubBar extends View {
         invalidate();
     }
 
-    private int getProgressByPosition(float x) {
+    private int getProgressByPosition(final float x) {
         final int left = getPaddingLeft();
         final int right = getPaddingRight();
         final int width = getWidth() - left - right;
@@ -428,7 +453,7 @@ public class ScrubBar extends View {
         return (int) ((x - left) * mMax / width);
     }
 
-    private int getProgressByDistance(float dx) {
+    private int getProgressByDistance(final float dx) {
         final int left = getPaddingLeft();
         final int right = getPaddingRight();
         final int width = getWidth() - left - right;
@@ -462,7 +487,7 @@ public class ScrubBar extends View {
         return mMax;
     }
 
-    public void setProgress(int progress) {
+    public void setProgress(final int progress) {
         setProgressInternal(progress, false);
     }
 

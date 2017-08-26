@@ -20,6 +20,7 @@ import net.mm2d.android.upnp.cds.CdsObject;
 import net.mm2d.android.util.AribUtils;
 import net.mm2d.android.util.Toaster;
 import net.mm2d.dmsexplorer.BR;
+import net.mm2d.dmsexplorer.EventLogger;
 import net.mm2d.dmsexplorer.Repository;
 import net.mm2d.dmsexplorer.domain.model.MediaServerModel;
 import net.mm2d.dmsexplorer.domain.model.MusicPlayerModel;
@@ -73,7 +74,7 @@ public class MusicActivityModel extends BaseObservable
         mActivity = activity;
         mRepository = repository;
         mServerModel = repository.getMediaServerModel();
-        mSettings = new Settings(activity);
+        mSettings = new Settings();
         mRepeatMode = mSettings.getRepeatModeMusic();
         mRepeatIconId = mRepeatMode.getIconId();
 
@@ -196,6 +197,7 @@ public class MusicActivityModel extends BaseObservable
             return;
         }
         updateTargetModel();
+        EventLogger.sendPlayContent();
     }
 
     @Override
@@ -206,6 +208,7 @@ public class MusicActivityModel extends BaseObservable
             return;
         }
         updateTargetModel();
+        EventLogger.sendPlayContent();
     }
 
     @Override
@@ -216,6 +219,7 @@ public class MusicActivityModel extends BaseObservable
             return;
         }
         updateTargetModel();
+        EventLogger.sendPlayContent();
     }
 
     private boolean selectNext() {

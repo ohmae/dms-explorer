@@ -24,7 +24,6 @@ import net.mm2d.dmsexplorer.domain.model.MediaServerModel;
 import net.mm2d.dmsexplorer.domain.model.OpenUriCustomTabsModel;
 import net.mm2d.dmsexplorer.domain.model.OpenUriModel;
 import net.mm2d.dmsexplorer.domain.model.PlaybackTargetModel;
-import net.mm2d.dmsexplorer.domain.model.PlayerModel;
 import net.mm2d.dmsexplorer.domain.model.ThemeModel;
 import net.mm2d.dmsexplorer.domain.model.ThemeModelImpl;
 import net.mm2d.dmsexplorer.settings.Settings;
@@ -44,7 +43,7 @@ public class AppRepository extends Repository {
     @Nullable
     private MediaServerModel mMediaServerModel;
     @Nullable
-    private PlayerModel mMediaRendererModel;
+    private MediaRendererModel mMediaRendererModel;
     @Nullable
     private PlaybackTargetModel mPlaybackTargetModel;
 
@@ -54,7 +53,7 @@ public class AppRepository extends Repository {
         final ThemeModelImpl themeModel = new ThemeModelImpl();
         final CustomTabsHelper helper = new CustomTabsHelper(mContext);
         mOpenUriModel = new OpenUriCustomTabsModel(helper, themeModel);
-        mOpenUriModel.setUseCustomTabs(new Settings(mContext).useCustomTabs());
+        mOpenUriModel.setUseCustomTabs(new Settings().useCustomTabs());
         mThemeModel = themeModel;
 
         application.registerActivityLifecycleCallbacks(new CustomTabsBinder(helper));
@@ -86,7 +85,7 @@ public class AppRepository extends Repository {
         return new MediaServerModel(mContext, server, this::updatePlaybackTarget);
     }
 
-    private PlayerModel createMediaRendererModel(@NonNull final MediaRenderer renderer) {
+    private MediaRendererModel createMediaRendererModel(@NonNull final MediaRenderer renderer) {
         return new MediaRendererModel(mContext, renderer);
     }
 
@@ -120,7 +119,7 @@ public class AppRepository extends Repository {
 
     @Override
     @Nullable
-    public PlayerModel getMediaRendererModel() {
+    public MediaRendererModel getMediaRendererModel() {
         return mMediaRendererModel;
     }
 

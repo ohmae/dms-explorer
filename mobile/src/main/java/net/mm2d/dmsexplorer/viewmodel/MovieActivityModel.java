@@ -8,17 +8,14 @@
 package net.mm2d.dmsexplorer.viewmodel;
 
 import android.app.Activity;
-import android.app.PictureInPictureParams;
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
 import android.graphics.Point;
-import android.os.Build;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-import android.util.Rational;
 import android.widget.Toast;
 import android.widget.VideoView;
 
@@ -27,6 +24,7 @@ import com.android.databinding.library.baseAdapters.BR;
 import net.mm2d.android.util.AribUtils;
 import net.mm2d.android.util.DisplaySizeUtils;
 import net.mm2d.android.util.Toaster;
+import net.mm2d.dmsexplorer.EventLogger;
 import net.mm2d.dmsexplorer.R;
 import net.mm2d.dmsexplorer.Repository;
 import net.mm2d.dmsexplorer.domain.model.MediaServerModel;
@@ -37,6 +35,8 @@ import net.mm2d.dmsexplorer.settings.RepeatMode;
 import net.mm2d.dmsexplorer.settings.Settings;
 import net.mm2d.dmsexplorer.viewmodel.ControlPanelModel.OnCompletionListener;
 import net.mm2d.dmsexplorer.viewmodel.ControlPanelModel.SkipControlListener;
+import net.mm2d.dmsexplorer.viewmodel.helper.MovieActivityPipHelper;
+import net.mm2d.dmsexplorer.viewmodel.helper.PipHelpers;
 
 /**
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
@@ -52,7 +52,7 @@ public class MovieActivityModel extends BaseObservable
 
     @NonNull
     public final ControlPanelParam controlPanelParam;
-    public final boolean isSupportPictureInPicture = Build.VERSION.SDK_INT >= Build.VERSION_CODES.O;
+    public final boolean canUsePictureInPicture = PipHelpers.isSupported();
 
     @NonNull
     private String mTitle;
@@ -79,8 +79,8 @@ public class MovieActivityModel extends BaseObservable
     private final MediaServerModel mServerModel;
     @NonNull
     private final Settings mSettings;
-    @Nullable
-    private PictureInPictureParams mPictureInPictureParams;
+    @NonNull
+    private final MovieActivityPipHelper mMovieActivityPipHelper;
 
     public MovieActivityModel(
             @NonNull final Activity activity,
@@ -90,13 +90,15 @@ public class MovieActivityModel extends BaseObservable
         mVideoView = videoView;
         mRepository = repository;
         mServerModel = repository.getMediaServerModel();
-        mSettings = new Settings(activity);
+        mSettings = new Settings();
         mRepeatMode = mSettings.getRepeatModeMovie();
         mRepeatIconId = mRepeatMode.getIconId();
 
         final int color = ContextCompat.getColor(activity, R.color.translucent_control);
         controlPanelParam = new ControlPanelParam();
         controlPanelParam.setBackgroundColor(color);
+        mMovieActivityPipHelper = PipHelpers.getMovieHelper(mActivity);
+        mMovieActivityPipHelper.register();
         updateTargetModel();
     }
 
@@ -110,6 +112,7 @@ public class MovieActivityModel extends BaseObservable
         mControlPanelModel.setRepeatMode(mRepeatMode);
         mControlPanelModel.setOnCompletionListener(this);
         mControlPanelModel.setSkipControlListener(this);
+        mMovieActivityPipHelper.setControlPanelModel(mControlPanelModel);
         playerModel.setUri(targetModel.getUri(), null);
         mTitle = AribUtils.toDisplayableString(targetModel.getTitle());
 
@@ -125,6 +128,7 @@ public class MovieActivityModel extends BaseObservable
 
     public void terminate() {
         mControlPanelModel.terminate();
+        mMovieActivityPipHelper.unregister();
     }
 
     public void restoreSaveProgress(final int position) {
@@ -153,14 +157,7 @@ public class MovieActivityModel extends BaseObservable
     }
 
     public void onClickPictureInPicture() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            if (mPictureInPictureParams == null) {
-                mPictureInPictureParams = new PictureInPictureParams.Builder()
-                        .setAspectRatio(new Rational(16, 9))
-                        .build();
-            }
-            mActivity.enterPictureInPictureMode(mPictureInPictureParams);
-        }
+        mMovieActivityPipHelper.enterPictureInPictureMode(mVideoView);
     }
 
     private void showRepeatToast() {
@@ -212,6 +209,7 @@ public class MovieActivityModel extends BaseObservable
         }
         updateTargetModel();
         mOnChangeContentListener.onChangeContent();
+        EventLogger.sendPlayContent();
     }
 
     @Override
@@ -223,6 +221,7 @@ public class MovieActivityModel extends BaseObservable
         }
         updateTargetModel();
         mOnChangeContentListener.onChangeContent();
+        EventLogger.sendPlayContent();
     }
 
     @Override
@@ -234,6 +233,7 @@ public class MovieActivityModel extends BaseObservable
         }
         updateTargetModel();
         mOnChangeContentListener.onChangeContent();
+        EventLogger.sendPlayContent();
     }
 
     private boolean selectNext() {

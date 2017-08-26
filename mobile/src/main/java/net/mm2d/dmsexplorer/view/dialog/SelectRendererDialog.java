@@ -20,6 +20,7 @@ import android.view.LayoutInflater;
 
 import net.mm2d.android.upnp.avt.MediaRenderer;
 import net.mm2d.android.upnp.avt.MrControlPoint;
+import net.mm2d.dmsexplorer.EventLogger;
 import net.mm2d.dmsexplorer.R;
 import net.mm2d.dmsexplorer.Repository;
 import net.mm2d.dmsexplorer.databinding.RendererSelectDialogBinding;
@@ -58,6 +59,7 @@ public class SelectRendererDialog extends DialogFragment {
         final RendererListAdapter adapter = new RendererListAdapter(getActivity(), rendererList);
         adapter.setOnItemClickListener((v, renderer) -> {
             model.setSelectedMediaRenderer(renderer);
+            EventLogger.sendSelectRenderer();
             ItemSelectUtils.sendSelectedRenderer(getActivity());
             dismiss();
         });

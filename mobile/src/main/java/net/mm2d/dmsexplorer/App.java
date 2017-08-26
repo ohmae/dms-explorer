@@ -35,6 +35,7 @@ public class App extends Application {
             Log.w(e);
         });
         Settings.initialize(this);
+        EventLogger.initialize(this);
         Repository.set(new AppRepository(this));
         new UpdateChecker(this).check();
     }

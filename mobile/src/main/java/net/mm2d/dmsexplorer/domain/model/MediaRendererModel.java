@@ -70,6 +70,11 @@ public class MediaRendererModel implements PlayerModel {
         mMediaRenderer = renderer;
     }
 
+    @NonNull
+    public MediaRenderer getMediaRenderer() {
+        return mMediaRenderer;
+    }
+
     @Override
     public String getName() {
         return mMediaRenderer.getFriendlyName();
