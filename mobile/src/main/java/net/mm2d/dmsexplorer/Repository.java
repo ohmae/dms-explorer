@@ -10,10 +10,10 @@ package net.mm2d.dmsexplorer;
 import android.support.annotation.NonNull;
 
 import net.mm2d.dmsexplorer.domain.model.ControlPointModel;
+import net.mm2d.dmsexplorer.domain.model.MediaRendererModel;
 import net.mm2d.dmsexplorer.domain.model.MediaServerModel;
 import net.mm2d.dmsexplorer.domain.model.OpenUriModel;
 import net.mm2d.dmsexplorer.domain.model.PlaybackTargetModel;
-import net.mm2d.dmsexplorer.domain.model.PlayerModel;
 import net.mm2d.dmsexplorer.domain.model.ThemeModel;
 
 /**
@@ -38,7 +38,7 @@ public abstract class Repository {
 
     public abstract MediaServerModel getMediaServerModel();
 
-    public abstract PlayerModel getMediaRendererModel();
+    public abstract MediaRendererModel getMediaRendererModel();
 
     public abstract PlaybackTargetModel getPlaybackTargetModel();
 }
