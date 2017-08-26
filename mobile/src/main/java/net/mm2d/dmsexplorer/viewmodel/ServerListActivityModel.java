@@ -78,7 +78,7 @@ public class ServerListActivityModel extends BaseObservable {
             @NonNull final Repository repository,
             @NonNull final ServerSelectListener listener,
             final boolean twoPane) {
-        mSettings = new Settings(context);
+        mSettings = new Settings();
         mControlPointModel = repository.getControlPointModel();
         mServerListAdapter = new ServerListAdapter(context, mControlPointModel.getMediaServerList());
         mServerListAdapter.setOnItemClickListener(this::onItemClick);

@@ -93,7 +93,7 @@ public class ContentListActivityModel extends BaseObservable implements ExploreL
             @NonNull final Repository repository,
             @NonNull final CdsSelectListener listener,
             final boolean twoPane) {
-        mSettings = new Settings(context);
+        mSettings = new Settings();
         mTwoPane = twoPane;
         final MediaServerModel model = repository.getMediaServerModel();
         if (model == null) {

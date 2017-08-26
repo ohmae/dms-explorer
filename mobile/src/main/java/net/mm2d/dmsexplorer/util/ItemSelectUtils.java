@@ -61,7 +61,7 @@ public class ItemSelectUtils {
         }
         final Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.setDataAndType(targetModel.getUri(), targetModel.getMimeType());
-        final Settings settings = new Settings(activity);
+        final Settings settings = new Settings();
         switch (targetModel.getCdsObject().getType()) {
             case CdsObject.TYPE_VIDEO:
                 if (settings.isPlayMovieMyself()) {

@@ -42,7 +42,7 @@ class MainOptionsMenuDelegate implements OptionsMenuDelegate {
 
     MainOptionsMenuDelegate(@NonNull final Activity activity) {
         mActivity = activity;
-        mSettings = new Settings(mActivity);
+        mSettings = new Settings();
     }
 
     @Override
