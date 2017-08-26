@@ -15,6 +15,7 @@ import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 
+import net.mm2d.dmsexplorer.EventLogger;
 import net.mm2d.dmsexplorer.R;
 import net.mm2d.dmsexplorer.Repository;
 import net.mm2d.dmsexplorer.databinding.PhotoActivityBinding;
@@ -118,6 +119,7 @@ public class PhotoActivity extends BaseActivity {
         mModel = new PhotoActivityModel(this, mRepository);
         mBinding.setModel(mModel);
         mBinding.viewPager.setCurrentItem(1, false);
+        EventLogger.sendPlayContent();
     }
 
     private boolean move(int index) {

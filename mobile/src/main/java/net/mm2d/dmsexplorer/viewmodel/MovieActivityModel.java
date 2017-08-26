@@ -24,6 +24,7 @@ import com.android.databinding.library.baseAdapters.BR;
 import net.mm2d.android.util.AribUtils;
 import net.mm2d.android.util.DisplaySizeUtils;
 import net.mm2d.android.util.Toaster;
+import net.mm2d.dmsexplorer.EventLogger;
 import net.mm2d.dmsexplorer.R;
 import net.mm2d.dmsexplorer.Repository;
 import net.mm2d.dmsexplorer.domain.model.MediaServerModel;
@@ -208,6 +209,7 @@ public class MovieActivityModel extends BaseObservable
         }
         updateTargetModel();
         mOnChangeContentListener.onChangeContent();
+        EventLogger.sendPlayContent();
     }
 
     @Override
@@ -219,6 +221,7 @@ public class MovieActivityModel extends BaseObservable
         }
         updateTargetModel();
         mOnChangeContentListener.onChangeContent();
+        EventLogger.sendPlayContent();
     }
 
     @Override
@@ -230,6 +233,7 @@ public class MovieActivityModel extends BaseObservable
         }
         updateTargetModel();
         mOnChangeContentListener.onChangeContent();
+        EventLogger.sendPlayContent();
     }
 
     private boolean selectNext() {
