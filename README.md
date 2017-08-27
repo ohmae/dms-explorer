@@ -1,5 +1,8 @@
 # DMS Explorer
-[![license](https://img.shields.io/github/license/mashape/apistatus.svg)](./LICENSE)
+[![license](https://img.shields.io/github/license/ohmae/DmsExplorer.svg)](./LICENSE)
+[![GitHub release](https://img.shields.io/github/release/ohmae/DmsExplorer.svg)](https://github.com/ohmae/DmsExplorer/releases)
+[![GitHub issues](https://img.shields.io/github/issues/ohmae/DmsExplorer.svg)]()
+[![GitHub closed issues](https://img.shields.io/github/issues-closed/ohmae/DmsExplorer.svg)]()
 [![Build Status](https://travis-ci.org/ohmae/DmsExplorer.svg?branch=develop)](https://travis-ci.org/ohmae/DmsExplorer)
 
 This is a DLNA player who featured to the display of server and content metadata.
