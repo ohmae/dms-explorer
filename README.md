@@ -1,6 +1,8 @@
-# ![](mobile/src/main/res/mipmap-mdpi/ic_launcher.png) DMS Explorer
+# DMS Explorer
 [![license](https://img.shields.io/github/license/mashape/apistatus.svg)](./LICENSE)
 [![Build Status](https://travis-ci.org/ohmae/DmsExplorer.svg?branch=develop)](https://travis-ci.org/ohmae/DmsExplorer)
+
+<div style="float: right; margin: 10px"><img src="docs/img/ic_launcher.png" width="196"></div>
 
 This is a DLNA player who featured to the display of server and content metadata.
 DMC function is also equipped and can be make play back to DMR.
@@ -34,7 +36,7 @@ Also, if the program information contains a URL, it will automatically act as a 
 |-|-|
 
 ## Install
-[Google Play](https://play.google.com/store/apps/details?id=net.mm2d.dmsexplorer)
+<a href='https://play.google.com/store/apps/details?id=net.mm2d.dmsexplorer'><img alt='Google Play' src='https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png' width="250"/></a>
 
 ### Repository by contributors
 [IzzyOnDroid](https://apt.izzysoft.de/fdroid/index/apk/net.mm2d.dmsexplorer)
