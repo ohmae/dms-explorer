@@ -1,10 +1,10 @@
-# DMS Explorer
+# ![](mobile/src/main/res/mipmap-mdpi/ic_launcher.png) DMS Explorer
 [![license](https://img.shields.io/github/license/mashape/apistatus.svg)](./LICENSE)
 [![Build Status](https://travis-ci.org/ohmae/DmsExplorer.svg?branch=develop)](https://travis-ci.org/ohmae/DmsExplorer)
 
 This is a DLNA player who featured to the display of server and content metadata.
 DMC function is also equipped and can be make play back to DMR.
-Source code is published under the Open source license (MIT license). 
+Source code is published under the Open source license (MIT license).
 
 This app's feature is to information display of DLNA server (DMS) and its contents.
 Since the playback function uses the codec of the device, which file can be played depends on the device.
