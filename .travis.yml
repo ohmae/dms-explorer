@@ -12,6 +12,7 @@ before_install:
   - chmod +x gradlew
 
 script:
+  - ./gradlew mobile:assembleRelease
   - ./gradlew mobile:check
   - ./gradlew jacocoTestReport
 

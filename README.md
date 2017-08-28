@@ -1,9 +1,10 @@
 # DMS Explorer
 [![license](https://img.shields.io/github/license/ohmae/DmsExplorer.svg)](./LICENSE)
 [![GitHub release](https://img.shields.io/github/release/ohmae/DmsExplorer.svg)](https://github.com/ohmae/DmsExplorer/releases)
-[![GitHub issues](https://img.shields.io/github/issues/ohmae/DmsExplorer.svg)]()
-[![GitHub closed issues](https://img.shields.io/github/issues-closed/ohmae/DmsExplorer.svg)]()
+[![GitHub issues](https://img.shields.io/github/issues/ohmae/DmsExplorer.svg)](https://github.com/ohmae/DmsExplorer/issues)
+[![GitHub closed issues](https://img.shields.io/github/issues-closed/ohmae/DmsExplorer.svg)](https://github.com/ohmae/DmsExplorer/issues)
 [![Build Status](https://travis-ci.org/ohmae/DmsExplorer.svg?branch=develop)](https://travis-ci.org/ohmae/DmsExplorer)
+[![codecov](https://codecov.io/gh/ohmae/DmsExplorer/branch/develop/graph/badge.svg)](https://codecov.io/gh/ohmae/DmsExplorer)
 
 This is a DLNA player who featured to the display of server and content metadata.
 DMC function is also equipped and can be make play back to DMR.
