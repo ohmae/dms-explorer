@@ -10,12 +10,16 @@ package net.mm2d.dmsexplorer.settings;
 /**
  * SharedPreferences用のKeyの定義。
  *
- * <p>name()の値をKeyとして利用する。
- * その為定義名を変更する場合は設定の引継ぎ処理が必要。
+ * <p>PreferenceActivityからも参照する必要があるためpublicであるが、
+ * PreferenceActivity以外のパッケージ外からアクセスしてはならない。
+ *
+ * <p>{@link #name()}の値をKeyとして利用する。
+ * そのため、定義名を変更する場合は設定の引継ぎ処理が必要。
  * {@link #ordinal()}の値は使用してはならない。
  *
- * <p>使用しなくなったが引き継ぎのために必要な定義値は
- * {@link OldKey}に移動させパッケージ外からはアクセスできなようにする。
+ * <p>使用しなくなった定義値は削除してはならない。
+ * OldKeys以下にまとめ、{@code @Deprecated}をつけておく。
+ * OldKeys以下の値は{@link Maintainer}以外から利用してはならない。
  *
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
  */
@@ -44,4 +48,14 @@ public enum Key {
     UPDATE_FETCH_TIME,
     UPDATE_AVAILABLE,
     UPDATE_JSON,
+
+    // OldKeys
+    @Deprecated
+    LAUNCH_APP_MOVIE,
+    @Deprecated
+    LAUNCH_APP_MUSIC,
+    @Deprecated
+    LAUNCH_APP_PHOTO,
+    @Deprecated
+    MUSIC_AUTO_PLAY,
 }

@@ -13,6 +13,12 @@ import android.support.annotation.NonNull;
 /**
  * 設定値のメンテナー。
  *
+ * <p>アプリ設定のバージョンを付与し、
+ * 元に設定値のマイグレーション処理や初期値の書き込みを行う。
+ *
+ * <p>すでに使用しなくなった設定値にアクセスするため、
+ * {@code @Deprecated}指定をしたOldKeyに唯一アクセスしてもよいクラス。
+ *
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
  */
 class Maintainer {
@@ -51,8 +57,9 @@ class Maintainer {
      * @param pref SharedPreferences
      * @return バージョン
      */
+    @SuppressWarnings("deprecation")
     private static int getSettingsVersion(@NonNull final SharedPreferences pref) {
-        if (pref.contains(OldKey.LAUNCH_APP_MOVIE.name())) {
+        if (pref.contains(Key.LAUNCH_APP_MOVIE.name())) {
             // バージョン番号を割り振る前の設定値が含まれている
             return 0;
         }
@@ -64,11 +71,12 @@ class Maintainer {
      *
      * @param pref SharedPreferences
      */
+    @SuppressWarnings("deprecation")
     private static void migrateFrom0(@NonNull final SharedPreferences pref) {
-        final boolean launchMovie = pref.getBoolean(OldKey.LAUNCH_APP_MOVIE.name(), true);
-        final boolean launchMusic = pref.getBoolean(OldKey.LAUNCH_APP_MUSIC.name(), true);
-        final boolean launchPhoto = pref.getBoolean(OldKey.LAUNCH_APP_PHOTO.name(), true);
-        final boolean auto = pref.getBoolean(OldKey.MUSIC_AUTO_PLAY.name(), false);
+        final boolean launchMovie = pref.getBoolean(Key.LAUNCH_APP_MOVIE.name(), true);
+        final boolean launchMusic = pref.getBoolean(Key.LAUNCH_APP_MUSIC.name(), true);
+        final boolean launchPhoto = pref.getBoolean(Key.LAUNCH_APP_PHOTO.name(), true);
+        final boolean auto = pref.getBoolean(Key.MUSIC_AUTO_PLAY.name(), false);
         pref.edit()
                 .clear()
                 .putBoolean(Key.PLAY_MOVIE_MYSELF.name(), launchMovie)
