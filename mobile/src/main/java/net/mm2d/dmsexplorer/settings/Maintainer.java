@@ -17,7 +17,7 @@ import android.support.annotation.NonNull;
  * 元に設定値のマイグレーション処理や初期値の書き込みを行う。
  *
  * <p>すでに使用しなくなった設定値にアクセスするため、
- * {@code @Deprecated}指定をしたOldKeyに唯一アクセスしてもよいクラス。
+ * {@code @Deprecated}指定をしたOldKeysに唯一アクセスしてもよいクラス。
  *
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
  */
@@ -77,13 +77,13 @@ class Maintainer {
         final boolean launchMusic = pref.getBoolean(Key.LAUNCH_APP_MUSIC.name(), true);
         final boolean launchPhoto = pref.getBoolean(Key.LAUNCH_APP_PHOTO.name(), true);
         final boolean auto = pref.getBoolean(Key.MUSIC_AUTO_PLAY.name(), false);
+        final RepeatMode repeatMode = auto ? RepeatMode.SEQUENTIAL : RepeatMode.PLAY_ONCE;
         pref.edit()
                 .clear()
                 .putBoolean(Key.PLAY_MOVIE_MYSELF.name(), launchMovie)
                 .putBoolean(Key.PLAY_MUSIC_MYSELF.name(), launchMusic)
                 .putBoolean(Key.PLAY_PHOTO_MYSELF.name(), launchPhoto)
-                .putString(Key.REPEAT_MODE_MUSIC.name(),
-                        auto ? RepeatMode.SEQUENTIAL.name() : RepeatMode.PLAY_ONCE.name())
+                .putString(Key.REPEAT_MODE_MUSIC.name(), repeatMode.name())
                 .apply();
     }
 }

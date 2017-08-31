@@ -11,7 +11,7 @@ package net.mm2d.dmsexplorer.settings;
  * SharedPreferences用のKeyの定義。
  *
  * <p>PreferenceActivityからも参照する必要があるためpublicであるが、
- * PreferenceActivity以外のパッケージ外からアクセスしてはならない。
+ * PreferenceActivityを除いてパッケージ外からアクセスしてはならない。
  *
  * <p>{@link #name()}の値をKeyとして利用する。
  * そのため、定義名を変更する場合は設定の引継ぎ処理が必要。
