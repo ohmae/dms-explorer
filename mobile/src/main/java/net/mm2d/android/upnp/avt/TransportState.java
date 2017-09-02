@@ -8,8 +8,8 @@
 package net.mm2d.android.upnp.avt;
 
 import android.support.annotation.NonNull;
+import android.support.v4.util.ArrayMap;
 
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -27,7 +27,7 @@ public enum TransportState {
     private static final Map<String, TransportState> sMap;
 
     static {
-        sMap = new HashMap<>();
+        sMap = new ArrayMap<>();
         for (final TransportState state : TransportState.values()) {
             sMap.put(state.name(), state);
         }
