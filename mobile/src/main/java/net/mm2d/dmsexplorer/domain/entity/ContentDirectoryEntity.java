@@ -31,7 +31,7 @@ public class ContentDirectoryEntity implements StatusListener {
     @Nullable
     private CdsObject mSelectedObject;
     @NonNull
-    private List<CdsObject> mList = Collections.emptyList();
+    private volatile List<CdsObject> mList = Collections.emptyList();
     @Nullable
     private BrowseResult mBrowseResult;
     private static final EntryListener ENTRY_LISTENER = (result, inProgress) -> {

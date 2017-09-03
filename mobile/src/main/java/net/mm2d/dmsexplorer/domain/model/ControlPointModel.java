@@ -75,8 +75,8 @@ public class ControlPointModel {
     private final BroadcastReceiver mConnectivityReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(
-                Context context,
-                Intent intent) {
+                final Context context,
+                final Intent intent) {
             if (!initializeOrTerminate(mLan.hasAvailableInterface())) {
                 Toaster.showLong(mContext, R.string.no_available_network);
             }
@@ -181,7 +181,7 @@ public class ControlPointModel {
         }
     }
 
-    private boolean initializeOrTerminate(boolean initialize) {
+    private boolean initializeOrTerminate(final boolean initialize) {
         synchronized (mAvControlPointManager) {
             if (initialize) {
                 final Collection<NetworkInterface> interfaces = mLan.getAvailableInterfaces();
@@ -231,6 +231,7 @@ public class ControlPointModel {
         return getMsControlPoint().getDeviceListSize();
     }
 
+    @NonNull
     public List<MediaServer> getMediaServerList() {
         return getMsControlPoint().getDeviceList();
     }
@@ -239,7 +240,7 @@ public class ControlPointModel {
         void callback();
     }
 
-    public void restart(@Nullable TerminateCallback callback) {
+    public void restart(@Nullable final TerminateCallback callback) {
         if (!mLan.hasAvailableInterface()) {
             Toaster.showLong(mContext, R.string.no_available_network);
             return;

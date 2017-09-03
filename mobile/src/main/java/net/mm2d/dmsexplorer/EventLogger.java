@@ -64,7 +64,7 @@ public class EventLogger {
         }
         final CdsObject object = targetModel.getCdsObject();
         final Bundle bundle = new Bundle();
-        bundle.putString(Param.ITEM_NAME, object.getTitle());
+        bundle.putString(Param.ITEM_VARIANT, object.getValue(CdsObject.RES_PROTOCOL_INFO));
         bundle.putString(Param.CONTENT_TYPE, getTypeString(object.getType()));
         bundle.putString(Param.ORIGIN, object.hasProtectedResource() ? "dlna-dtcp" : "dlna");
         bundle.putString(Param.DESTINATION, "dmr");
@@ -78,7 +78,7 @@ public class EventLogger {
         }
         final CdsObject object = targetModel.getCdsObject();
         final Bundle bundle = new Bundle();
-        bundle.putString(Param.ITEM_NAME, object.getTitle());
+        bundle.putString(Param.ITEM_VARIANT, object.getValue(CdsObject.RES_PROTOCOL_INFO));
         bundle.putString(Param.CONTENT_TYPE, getTypeString(object.getType()));
         bundle.putString(Param.ORIGIN, "dlna");
         bundle.putString(Param.DESTINATION, isMyself(object.getType()) ? "myself" : "other");

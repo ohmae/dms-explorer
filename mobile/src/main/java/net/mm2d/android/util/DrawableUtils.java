@@ -23,7 +23,7 @@ public class DrawableUtils {
 
     public static Drawable get(
             @NonNull final Context context,
-            @DrawableRes int resId) {
+            @DrawableRes final int resId) {
         return AppCompatDrawableManager.get().getDrawable(context, resId);
     }
 }
