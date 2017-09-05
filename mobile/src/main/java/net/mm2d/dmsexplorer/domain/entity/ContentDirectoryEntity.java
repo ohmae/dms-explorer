@@ -10,18 +10,20 @@ package net.mm2d.dmsexplorer.domain.entity;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import net.mm2d.android.upnp.cds.BrowseResult;
-import net.mm2d.android.upnp.cds.BrowseResult.StatusListener;
 import net.mm2d.android.upnp.cds.CdsObject;
+import net.mm2d.util.Log;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
+
+import io.reactivex.Observable;
+import io.reactivex.disposables.Disposable;
 
 /**
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
  */
-public class ContentDirectoryEntity implements StatusListener {
+public class ContentDirectoryEntity {
     private static final String ROOT_OBJECT_ID = "0";
     private static final String ROOT_TITLE = "";
     @NonNull
@@ -31,18 +33,25 @@ public class ContentDirectoryEntity implements StatusListener {
     @Nullable
     private CdsObject mSelectedObject;
     @NonNull
-    private volatile List<CdsObject> mList = Collections.emptyList();
-    @Nullable
-    private BrowseResult mBrowseResult;
-    private static final EntryListener ENTRY_LISTENER = (result, inProgress) -> {
+    private final List<CdsObject> mList = new ArrayList<>();
+    private static final EntryListener ENTRY_LISTENER = new EntryListener() {
+        @Override
+        public void onUpdateState(final boolean inProgress) {
+        }
+
+        @Override
+        public void onUpdateList(@NonNull final List<CdsObject> list) {
+        }
     };
     @NonNull
     private EntryListener mEntryListener = ENTRY_LISTENER;
+    private volatile boolean mInProgress = true;
+    private volatile Disposable mDisposable;
 
     public interface EntryListener {
-        void onUpdate(
-                @NonNull List<CdsObject> list,
-                boolean inProgress);
+        void onUpdateState(boolean inProgress);
+
+        void onUpdateList(@NonNull List<CdsObject> list);
     }
 
     public ContentDirectoryEntity() {
@@ -58,9 +67,9 @@ public class ContentDirectoryEntity implements StatusListener {
 
     public void terminate() {
         setEntryListener(null);
-        if (mBrowseResult != null) {
-            mBrowseResult.setStatusListener(null);
-            mBrowseResult.cancel(true);
+        if (mDisposable != null) {
+            mDisposable.dispose();
+            mDisposable = null;
         }
     }
 
@@ -75,7 +84,7 @@ public class ContentDirectoryEntity implements StatusListener {
     }
 
     public boolean isInProgress() {
-        return mBrowseResult == null || !mBrowseResult.isDone();
+        return mInProgress;
     }
 
     @NonNull
@@ -113,29 +122,26 @@ public class ContentDirectoryEntity implements StatusListener {
     }
 
     public void clearState() {
-        mSelectedObject = null;
-        mList = Collections.emptyList();
-        if (mBrowseResult != null) {
-            mBrowseResult.setStatusListener(null);
-            mBrowseResult.cancel(true);
-            mBrowseResult = null;
+        if (mDisposable != null) {
+            mDisposable.dispose();
+            mDisposable = null;
         }
+        mSelectedObject = null;
+        mInProgress = true;
+        mList.clear();
+        mEntryListener.onUpdateList(mList);
+        mEntryListener.onUpdateState(true);
     }
 
-    public void setBrowseResult(@NonNull final BrowseResult result) {
-        mBrowseResult = result;
-        mBrowseResult.setStatusListener(this);
-    }
-
-    @Override
-    public void onCompletion(@NonNull final BrowseResult result) {
-        mList = new ArrayList<>(result.getProgress());
-        mEntryListener.onUpdate(mList, false);
-    }
-
-    @Override
-    public void onProgressUpdate(@NonNull final BrowseResult result) {
-        mList = new ArrayList<>(result.getProgress());
-        mEntryListener.onUpdate(mList, true);
+    public void startBrowse(@NonNull final Observable<CdsObject> observable) {
+        mDisposable = observable
+                .buffer(200L, TimeUnit.MILLISECONDS, 50)
+                .subscribe(object -> {
+            mList.addAll(object);
+            mEntryListener.onUpdateList(mList);
+        }, Log::w, () -> {
+            mInProgress = false;
+            mEntryListener.onUpdateState(false);
+        });
     }
 }

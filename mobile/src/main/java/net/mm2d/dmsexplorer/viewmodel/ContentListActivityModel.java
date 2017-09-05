@@ -193,13 +193,16 @@ public class ContentListActivityModel extends BaseObservable implements ExploreL
         return mMediaServerModel.exitToParent();
     }
 
+
     @Override
-    public void onUpdate(
-            @NonNull final List<CdsObject> list,
-            final boolean inProgress) {
-        setRefreshing(inProgress);
+    public void onUpdateList(@NonNull final List<CdsObject> list) {
         setSubtitle("[" + list.size() + "] " + mMediaServerModel.getPath());
         mHandler.post(() -> updateList(list));
+    }
+
+    @Override
+    public void onUpdateState(final boolean inProgress) {
+        setRefreshing(inProgress);
     }
 
     private void updateList(@NonNull final List<CdsObject> list) {
