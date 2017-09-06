@@ -18,12 +18,15 @@ import net.mm2d.android.upnp.avt.MediaRenderer;
 import net.mm2d.android.upnp.avt.MediaRenderer.ActionCallback;
 import net.mm2d.android.upnp.avt.TransportState;
 import net.mm2d.android.upnp.cds.CdsObject;
-import net.mm2d.android.upnp.cds.chapter.ChapterList;
+import net.mm2d.android.upnp.cds.chapter.ChapterFetcherFactory;
+import net.mm2d.util.Log;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
+
+import io.reactivex.disposables.Disposable;
 
 /**
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
@@ -46,6 +49,8 @@ public class MediaRendererModel implements PlayerModel {
     private int mDuration;
     private boolean mStarted;
     private int mStoppingCount;
+    @Nullable
+    private Disposable mDisposable;
 
     @NonNull
     private final Runnable mGetPositionTask = new Runnable() {
@@ -90,6 +95,9 @@ public class MediaRendererModel implements PlayerModel {
         if (!mStarted) {
             return;
         }
+        if (mDisposable != null) {
+            mDisposable.dispose();
+        }
         mHandler.removeCallbacks(mGetPositionTask);
         mMediaRenderer.stop(null);
         mMediaRenderer.clearAVTransportURI(null);
@@ -120,7 +128,8 @@ public class MediaRendererModel implements PlayerModel {
         });
         mStoppingCount = 0;
         mHandler.postDelayed(mGetPositionTask, 1000);
-        ChapterList.get(object, this::setChapterList);
+        mDisposable = ChapterFetcherFactory.create(object)
+                .subscribe(this::setChapterList, Log::w);
         mStarted = true;
     }
 
