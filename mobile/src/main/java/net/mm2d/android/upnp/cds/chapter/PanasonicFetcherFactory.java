@@ -13,6 +13,7 @@ import android.text.TextUtils;
 
 import net.mm2d.android.upnp.cds.CdsObject;
 import net.mm2d.upnp.HttpClient;
+import net.mm2d.util.Log;
 import net.mm2d.util.XmlUtils;
 
 import org.w3c.dom.Element;
@@ -36,7 +37,7 @@ import io.reactivex.schedulers.Schedulers;
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
  */
 class PanasonicFetcherFactory implements FetcherFactory {
-    private static final String CHAPTER_INFO = "res@pxn:ChapterFetcherFactory";
+    private static final String CHAPTER_INFO = "res@pxn:ChapterList";
     private static final String ROOT_NODE = "result";
     private static final String LIST_NODE = "chapterList";
     private static final String ITEM_NODE = "item";

@@ -65,6 +65,7 @@ public class MediaServer extends DeviceWrapper {
      */
     public void subscribe() {
         Completable.create(emitter -> mCdsService.subscribe(true))
+                .subscribeOn(Schedulers.io())
                 .subscribe(() -> {
                 }, Log::w);
     }
@@ -74,6 +75,7 @@ public class MediaServer extends DeviceWrapper {
      */
     public void unsubscribe() {
         Completable.create(emitter -> mCdsService.unsubscribe())
+                .subscribeOn(Schedulers.io())
                 .subscribe(() -> {
                 }, Log::w);
     }
