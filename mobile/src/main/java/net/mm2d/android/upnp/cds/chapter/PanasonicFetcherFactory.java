@@ -13,7 +13,6 @@ import android.text.TextUtils;
 
 import net.mm2d.android.upnp.cds.CdsObject;
 import net.mm2d.upnp.HttpClient;
-import net.mm2d.util.Log;
 import net.mm2d.util.XmlUtils;
 
 import org.w3c.dom.Element;

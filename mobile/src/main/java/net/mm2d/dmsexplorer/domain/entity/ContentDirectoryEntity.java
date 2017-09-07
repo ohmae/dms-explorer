@@ -137,11 +137,11 @@ public class ContentDirectoryEntity {
         mDisposable = observable
                 .buffer(200L, TimeUnit.MILLISECONDS, 50)
                 .subscribe(object -> {
-            mList.addAll(object);
-            mEntryListener.onUpdateList(mList);
-        }, Log::w, () -> {
-            mInProgress = false;
-            mEntryListener.onUpdateState(false);
-        });
+                    mList.addAll(object);
+                    mEntryListener.onUpdateList(mList);
+                }, Log::w, () -> {
+                    mInProgress = false;
+                    mEntryListener.onUpdateState(false);
+                });
     }
 }
