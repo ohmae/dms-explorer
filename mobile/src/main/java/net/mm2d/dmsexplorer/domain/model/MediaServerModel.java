@@ -21,7 +21,6 @@ import net.mm2d.dmsexplorer.domain.entity.ContentDirectoryEntity.EntryListener;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
-import java.util.Collections;
 import java.util.Deque;
 import java.util.LinkedList;
 import java.util.List;
@@ -48,14 +47,27 @@ public class MediaServerModel implements EntryListener {
     private final MediaServer mMediaServer;
     private final Deque<ContentDirectoryEntity> mHistoryStack = new LinkedList<>();
     private String mPath;
-    private final static ExploreListener EXPLORE_LISTENER = (list, inProgress) -> {
+    private final static ExploreListener EXPLORE_LISTENER = new ExploreListener() {
+        @Override
+        public void onStart() {
+        }
+
+        @Override
+        public void onUpdate(@NonNull final List<CdsObject> list) {
+        }
+
+        @Override
+        public void onComplete() {
+        }
     };
     private volatile ExploreListener mExploreListener = EXPLORE_LISTENER;
 
     public interface ExploreListener {
-        void onUpdate(
-                @NonNull List<CdsObject> list,
-                boolean inProgress);
+        void onStart();
+
+        void onUpdate(@NonNull List<CdsObject> list);
+
+        void onComplete();
     }
 
     public MediaServerModel(
@@ -102,16 +114,15 @@ public class MediaServerModel implements EntryListener {
         mHistoryStack.offerFirst(directory);
         mPath = makePath();
         directory.setEntryListener(this);
-        mExploreListener.onUpdate(Collections.emptyList(), true);
         directory.clearState();
-        directory.setBrowseResult(mMediaServer.browse(directory.getParentId()));
+        directory.startBrowse(mMediaServer.browse(directory.getParentId()));
     }
 
     public boolean exitToParent() {
         if (mHistoryStack.size() < 2) {
             return false;
         }
-        mExploreListener.onUpdate(Collections.emptyList(), true);
+        mExploreListener.onStart();
 
         mHandler.post(() -> {
             final ContentDirectoryEntity directory = mHistoryStack.pollFirst();
@@ -126,25 +137,29 @@ public class MediaServerModel implements EntryListener {
             }
             parent.setEntryListener(this);
             updatePlaybackTarget();
-            mExploreListener.onUpdate(parent.getList(), parent.isInProgress());
+            mExploreListener.onUpdate(parent.getList());
+            mExploreListener.onComplete();
         });
         return true;
     }
 
     public void reload() {
-        mExploreListener.onUpdate(Collections.emptyList(), true);
         final ContentDirectoryEntity directory = mHistoryStack.peekFirst();
         if (directory == null) {
             return;
         }
         directory.clearState();
-        directory.setBrowseResult(mMediaServer.browse(directory.getParentId()));
+        directory.startBrowse(mMediaServer.browse(directory.getParentId()));
     }
 
     public void setExploreListener(@Nullable final ExploreListener listener) {
         mExploreListener = listener != null ? listener : EXPLORE_LISTENER;
         final ContentDirectoryEntity directory = mHistoryStack.peekFirst();
-        mExploreListener.onUpdate(directory.getList(), directory.isInProgress());
+        mExploreListener.onStart();
+        mExploreListener.onUpdate(directory.getList());
+        if (!directory.isInProgress()) {
+            mExploreListener.onComplete();
+        }
     }
 
     public String getUdn() {
@@ -318,9 +333,17 @@ public class MediaServerModel implements EntryListener {
     }
 
     @Override
-    public void onUpdate(
-            @NonNull final List<CdsObject> list,
-            final boolean inProgress) {
-        mExploreListener.onUpdate(list, inProgress);
+    public void onStart() {
+        mExploreListener.onStart();
+    }
+
+    @Override
+    public void onUpdate(@NonNull final List<CdsObject> list) {
+        mExploreListener.onUpdate(list);
+    }
+
+    @Override
+    public void onComplete() {
+        mExploreListener.onComplete();
     }
 }

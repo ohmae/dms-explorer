@@ -15,15 +15,17 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import net.mm2d.android.upnp.avt.MediaRenderer;
-import net.mm2d.android.upnp.avt.MediaRenderer.ActionCallback;
 import net.mm2d.android.upnp.avt.TransportState;
 import net.mm2d.android.upnp.cds.CdsObject;
-import net.mm2d.android.upnp.cds.chapter.ChapterList;
+import net.mm2d.android.upnp.cds.chapter.ChapterFetcherFactory;
+import net.mm2d.util.Log;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
+
+import io.reactivex.android.schedulers.AndroidSchedulers;
 
 /**
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
@@ -46,28 +48,21 @@ public class MediaRendererModel implements PlayerModel {
     private int mDuration;
     private boolean mStarted;
     private int mStoppingCount;
-
     @NonNull
-    private final Runnable mGetPositionTask = new Runnable() {
-        @Override
-        public void run() {
-            mMediaRenderer.getPositionInfo((success, result) ->
-                    mHandler.post(() -> onGetPositionInfo(result)));
-            mMediaRenderer.getTransportInfo((success, result) ->
-                    mHandler.post(() -> onGetTransportInfo(result)));
-        }
-    };
-    @NonNull
-    private final ActionCallback mShowToastOnError = (success, result) -> {
-        if (!success) {
-            mHandler.post(this::onError);
-        }
-    };
+    private final Runnable mGetPositionTask;
 
     public MediaRendererModel(
             @NonNull Context context,
             @NonNull final MediaRenderer renderer) {
         mMediaRenderer = renderer;
+        mGetPositionTask = () -> {
+            mMediaRenderer.getPositionInfo()
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(this::onGetPositionInfo, Log::w);
+            mMediaRenderer.getTransportInfo()
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(this::onGetTransportInfo, Log::w);
+        };
     }
 
     @NonNull
@@ -90,9 +85,12 @@ public class MediaRendererModel implements PlayerModel {
         if (!mStarted) {
             return;
         }
+        mStatusListener = STATUS_LISTENER;
         mHandler.removeCallbacks(mGetPositionTask);
-        mMediaRenderer.stop(null);
-        mMediaRenderer.clearAVTransportURI(null);
+        mMediaRenderer.stop()
+                .subscribe();
+        mMediaRenderer.clearAVTransportURI()
+                .subscribe();
         mMediaRenderer.unsubscribe();
         mStarted = false;
     }
@@ -109,18 +107,18 @@ public class MediaRendererModel implements PlayerModel {
         if (!(metadata instanceof CdsObject)) {
             throw new IllegalArgumentException();
         }
-        mMediaRenderer.clearAVTransportURI(null);
+        mMediaRenderer.clearAVTransportURI()
+                .subscribe();
         final CdsObject object = (CdsObject) metadata;
-        mMediaRenderer.setAVTransportURI(object, uri.toString(), (success, result) -> {
-            if (success) {
-                mMediaRenderer.play(mShowToastOnError);
-            } else {
-                mHandler.post(this::onError);
-            }
-        });
+        mMediaRenderer.setAVTransportURI(object, uri.toString())
+                .flatMap(map -> mMediaRenderer.play())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(map -> {
+                }, e -> onError());
         mStoppingCount = 0;
         mHandler.postDelayed(mGetPositionTask, 1000);
-        ChapterList.get(object, this::setChapterList);
+        ChapterFetcherFactory.create(object)
+                .subscribe(this::setChapterList, Log::w);
         mStarted = true;
     }
 
@@ -146,17 +144,26 @@ public class MediaRendererModel implements PlayerModel {
 
     @Override
     public void play() {
-        mMediaRenderer.play(mShowToastOnError);
+        mMediaRenderer.play()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(map -> {
+                }, e -> onError());
     }
 
     @Override
     public void pause() {
-        mMediaRenderer.pause(mShowToastOnError);
+        mMediaRenderer.pause()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(map -> {
+                }, e -> onError());
     }
 
     @Override
     public void seekTo(final int position) {
-        mMediaRenderer.seek(position, mShowToastOnError);
+        mMediaRenderer.seek(position)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(map -> {
+                }, e -> onError());
         mStoppingCount = 0;
         mHandler.removeCallbacks(mGetPositionTask);
         mHandler.postDelayed(mGetPositionTask, 1000);
@@ -169,7 +176,10 @@ public class MediaRendererModel implements PlayerModel {
         }
         final int chapter = getCurrentChapter() + 1;
         if (chapter < mChapterList.size()) {
-            mMediaRenderer.seek(mChapterList.get(chapter), mShowToastOnError);
+            mMediaRenderer.seek(mChapterList.get(chapter))
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(map -> {
+                    }, e -> onError());
             return true;
         }
         return false;
@@ -185,7 +195,10 @@ public class MediaRendererModel implements PlayerModel {
             chapter--;
         }
         if (chapter >= 0) {
-            mMediaRenderer.seek(mChapterList.get(chapter), mShowToastOnError);
+            mMediaRenderer.seek(mChapterList.get(chapter))
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(map -> {
+                    }, e -> onError());
             return true;
         }
         return false;

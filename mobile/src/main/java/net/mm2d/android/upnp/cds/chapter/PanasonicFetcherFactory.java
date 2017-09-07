@@ -12,7 +12,6 @@ import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
 import net.mm2d.android.upnp.cds.CdsObject;
-import net.mm2d.android.upnp.cds.chapter.ChapterList.Callback;
 import net.mm2d.upnp.HttpClient;
 import net.mm2d.util.XmlUtils;
 
@@ -29,37 +28,35 @@ import java.util.concurrent.TimeUnit;
 
 import javax.xml.parsers.ParserConfigurationException;
 
+import io.reactivex.Single;
+import io.reactivex.SingleOnSubscribe;
+import io.reactivex.schedulers.Schedulers;
+
 /**
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
  */
-class PanasonicFetcher implements Fetcher {
+class PanasonicFetcherFactory implements FetcherFactory {
     private static final String CHAPTER_INFO = "res@pxn:ChapterList";
     private static final String ROOT_NODE = "result";
     private static final String LIST_NODE = "chapterList";
     private static final String ITEM_NODE = "item";
     private static final String TIME_NODE = "timeCode";
 
+    @Nullable
     @Override
-    public boolean get(
-            @NonNull final CdsObject object,
-            @NonNull final Callback callback) {
+    public Single<List<Integer>> create(@NonNull final CdsObject object) {
         final String url = object.getValue(CHAPTER_INFO);
         if (TextUtils.isEmpty(url)) {
-            return false;
+            return null;
         }
-        new Thread(() -> getInner(url, callback)).start();
-        return true;
-    }
-
-    private void getInner(
-            @NonNull final String url,
-            @NonNull final Callback callback) {
-        try {
-            final String xml = new HttpClient(false).downloadString(new URL(url));
-            callback.onResult(parseChapterInfo(xml));
-        } catch (IOException | ParserConfigurationException | SAXException ignored) {
-            callback.onResult(Collections.emptyList());
-        }
+        return Single.create((SingleOnSubscribe<List<Integer>>) emitter -> {
+            try {
+                final String xml = new HttpClient(false).downloadString(new URL(url));
+                emitter.onSuccess(parseChapterInfo(xml));
+            } catch (IOException | ParserConfigurationException | SAXException ignored) {
+                emitter.onSuccess(Collections.emptyList());
+            }
+        }).subscribeOn(Schedulers.io());
     }
 
     @NonNull
