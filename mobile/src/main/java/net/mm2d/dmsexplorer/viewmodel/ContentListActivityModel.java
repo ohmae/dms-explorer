@@ -34,6 +34,7 @@ import net.mm2d.dmsexplorer.util.ToolbarThemeUtils;
 import net.mm2d.dmsexplorer.view.adapter.ContentListAdapter;
 import net.mm2d.dmsexplorer.view.animator.CustomItemAnimator;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -41,6 +42,10 @@ import java.util.List;
  */
 public class ContentListActivityModel extends BaseObservable implements ExploreListener {
     private static final int INVALID_POSITION = -1;
+    private static final int FIRST_COUNT = 20;
+    private static final int SECOND_COUNT = 300;
+    private static final long FIRST_INTERVAL = 150;
+    private static final long SECOND_INTERVAL = 300;
 
     public interface CdsSelectListener {
         void onSelect(
@@ -87,6 +92,10 @@ public class ContentListActivityModel extends BaseObservable implements ExploreL
     private final boolean mTwoPane;
     @NonNull
     private final Settings mSettings;
+    @NonNull
+    private Runnable mUpdateList = () -> {
+    };
+    private long mUpdateTime;
 
     public ContentListActivityModel(
             @NonNull final Context context,
@@ -193,21 +202,58 @@ public class ContentListActivityModel extends BaseObservable implements ExploreL
         return mMediaServerModel.exitToParent();
     }
 
+    @Override
+    public void onStart() {
+        setSize(0);
+        setRefreshing(true);
+        mHandler.post(() -> updateList(Collections.emptyList()));
+    }
 
     @Override
-    public void onUpdateList(@NonNull final List<CdsObject> list) {
-        setSubtitle("[" + list.size() + "] " + mMediaServerModel.getPath());
+    public void onUpdate(@NonNull final List<CdsObject> list) {
+        setSize(list.size());
         mHandler.post(() -> updateList(list));
     }
 
     @Override
-    public void onUpdateState(final boolean inProgress) {
-        setRefreshing(inProgress);
+    public void onComplete() {
+        setRefreshing(false);
+    }
+
+    private void setSize(final int size) {
+        setSubtitle("[" + size + "] " + mMediaServerModel.getPath());
+    }
+
+    private long calculateDelay(
+            final int before,
+            final int after) {
+        if (before < after) {
+            return 0;
+        }
+        final long diff = System.currentTimeMillis() - mUpdateTime;
+        if (before == 0) {
+            if (after < FIRST_COUNT && diff < FIRST_INTERVAL) {
+                return FIRST_INTERVAL - diff;
+            }
+            return 0;
+        }
+        if (after - before < SECOND_COUNT && diff < SECOND_INTERVAL) {
+            return SECOND_INTERVAL - diff;
+        }
+        return 0;
     }
 
     private void updateList(@NonNull final List<CdsObject> list) {
         final int beforeSize = mContentListAdapter.getItemCount();
         final int afterSize = list.size();
+        mHandler.removeCallbacks(mUpdateList);
+        final long delay = calculateDelay(beforeSize, afterSize);
+        if (delay > 0) {
+            mUpdateList = () -> updateList(list);
+            mHandler.postDelayed(mUpdateList, delay);
+            return;
+        }
+        mUpdateTime = System.currentTimeMillis();
         mContentListAdapter.clear();
         mContentListAdapter.addAll(list);
         final CdsObject object = mMediaServerModel.getSelectedObject();

@@ -15,7 +15,6 @@ import net.mm2d.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observable;
 import io.reactivex.disposables.Disposable;
@@ -36,11 +35,15 @@ public class ContentDirectoryEntity {
     private final List<CdsObject> mList = new ArrayList<>();
     private static final EntryListener ENTRY_LISTENER = new EntryListener() {
         @Override
-        public void onUpdateState(final boolean inProgress) {
+        public void onStart() {
         }
 
         @Override
-        public void onUpdateList(@NonNull final List<CdsObject> list) {
+        public void onUpdate(@NonNull final List<CdsObject> list) {
+        }
+
+        @Override
+        public void onComplete() {
         }
     };
     @NonNull
@@ -49,9 +52,11 @@ public class ContentDirectoryEntity {
     private volatile Disposable mDisposable;
 
     public interface EntryListener {
-        void onUpdateState(boolean inProgress);
+        void onStart();
 
-        void onUpdateList(@NonNull List<CdsObject> list);
+        void onUpdate(@NonNull List<CdsObject> list);
+
+        void onComplete();
     }
 
     public ContentDirectoryEntity() {
@@ -129,19 +134,18 @@ public class ContentDirectoryEntity {
         mSelectedObject = null;
         mInProgress = true;
         mList.clear();
-        mEntryListener.onUpdateList(mList);
-        mEntryListener.onUpdateState(true);
+        mEntryListener.onStart();
     }
 
     public void startBrowse(@NonNull final Observable<CdsObject> observable) {
+        mEntryListener.onStart();
         mDisposable = observable
-                .buffer(200L, TimeUnit.MILLISECONDS, 50)
                 .subscribe(object -> {
-                    mList.addAll(object);
-                    mEntryListener.onUpdateList(mList);
+                    mList.add(object);
+                    mEntryListener.onUpdate(mList);
                 }, Log::w, () -> {
                     mInProgress = false;
-                    mEntryListener.onUpdateState(false);
+                    mEntryListener.onComplete();
                 });
     }
 }

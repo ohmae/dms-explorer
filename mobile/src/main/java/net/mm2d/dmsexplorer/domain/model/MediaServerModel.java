@@ -21,7 +21,6 @@ import net.mm2d.dmsexplorer.domain.entity.ContentDirectoryEntity.EntryListener;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
-import java.util.Collections;
 import java.util.Deque;
 import java.util.LinkedList;
 import java.util.List;
@@ -50,19 +49,25 @@ public class MediaServerModel implements EntryListener {
     private String mPath;
     private final static ExploreListener EXPLORE_LISTENER = new ExploreListener() {
         @Override
-        public void onUpdateState(final boolean inProgress) {
+        public void onStart() {
         }
 
         @Override
-        public void onUpdateList(@NonNull final List<CdsObject> list) {
+        public void onUpdate(@NonNull final List<CdsObject> list) {
+        }
+
+        @Override
+        public void onComplete() {
         }
     };
     private volatile ExploreListener mExploreListener = EXPLORE_LISTENER;
 
     public interface ExploreListener {
-        void onUpdateState(boolean inProgress);
+        void onStart();
 
-        void onUpdateList(@NonNull List<CdsObject> list);
+        void onUpdate(@NonNull List<CdsObject> list);
+
+        void onComplete();
     }
 
     public MediaServerModel(
@@ -117,7 +122,7 @@ public class MediaServerModel implements EntryListener {
         if (mHistoryStack.size() < 2) {
             return false;
         }
-        mExploreListener.onUpdateList(Collections.emptyList());
+        mExploreListener.onStart();
 
         mHandler.post(() -> {
             final ContentDirectoryEntity directory = mHistoryStack.pollFirst();
@@ -132,8 +137,8 @@ public class MediaServerModel implements EntryListener {
             }
             parent.setEntryListener(this);
             updatePlaybackTarget();
-            mExploreListener.onUpdateList(parent.getList());
-            mExploreListener.onUpdateState(false);
+            mExploreListener.onUpdate(parent.getList());
+            mExploreListener.onComplete();
         });
         return true;
     }
@@ -150,8 +155,11 @@ public class MediaServerModel implements EntryListener {
     public void setExploreListener(@Nullable final ExploreListener listener) {
         mExploreListener = listener != null ? listener : EXPLORE_LISTENER;
         final ContentDirectoryEntity directory = mHistoryStack.peekFirst();
-        mExploreListener.onUpdateList(directory.getList());
-        mExploreListener.onUpdateState(directory.isInProgress());
+        mExploreListener.onStart();
+        mExploreListener.onUpdate(directory.getList());
+        if (!directory.isInProgress()) {
+            mExploreListener.onComplete();
+        }
     }
 
     public String getUdn() {
@@ -325,12 +333,17 @@ public class MediaServerModel implements EntryListener {
     }
 
     @Override
-    public void onUpdateList(@NonNull final List<CdsObject> list) {
-        mExploreListener.onUpdateList(list);
+    public void onStart() {
+        mExploreListener.onStart();
     }
 
     @Override
-    public void onUpdateState(final boolean inProgress) {
-        mExploreListener.onUpdateState(inProgress);
+    public void onUpdate(@NonNull final List<CdsObject> list) {
+        mExploreListener.onUpdate(list);
+    }
+
+    @Override
+    public void onComplete() {
+        mExploreListener.onComplete();
     }
 }
