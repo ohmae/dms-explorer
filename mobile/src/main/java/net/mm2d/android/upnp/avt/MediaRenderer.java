@@ -29,48 +29,17 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
+import io.reactivex.Completable;
+import io.reactivex.Single;
+import io.reactivex.SingleOnSubscribe;
+import io.reactivex.schedulers.Schedulers;
+
 /**
  * MediaRendererを表現するクラス。
  *
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
  */
 public class MediaRenderer extends DeviceWrapper {
-    public interface ActionCallback {
-        void onResult(
-                boolean success,
-                @Nullable Map<String, String> result);
-    }
-
-    private static class ActionInvoker implements Runnable {
-        private static final ActionCallback NULL_CALLBACK = (success, result) -> {
-        };
-        @NonNull
-        private final Action mAction;
-        @NonNull
-        private final Map<String, String> mArgument;
-        @NonNull
-        private final ActionCallback mCallback;
-
-        ActionInvoker(
-                @NonNull final Action action,
-                @NonNull final Map<String, String> argument,
-                @Nullable final ActionCallback callback) {
-            mAction = action;
-            mArgument = argument;
-            mCallback = callback != null ? callback : NULL_CALLBACK;
-        }
-
-        @Override
-        public void run() {
-            try {
-                final Map<String, String> result = mAction.invoke(mArgument);
-                mCallback.onResult(true, result);
-            } catch (final IOException ignored) {
-                mCallback.onResult(false, null);
-            }
-        }
-    }
-
     private static final String SET_AV_TRANSPORT_URI = "SetAVTransportURI";
     private static final String GET_MEDIA_INFO = "GetMediaInfo";
     private static final String GET_TRANSPORT_INFO = "GetTransportInfo";
@@ -188,85 +157,70 @@ public class MediaRenderer extends DeviceWrapper {
      * AVTransportサービスを購読する。
      */
     public void subscribe() {
-        mMrControlPoint.invoke(() -> {
-            try {
-                mAvTransport.subscribe(true);
-            } catch (final IOException e) {
-                Log.w(e);
-            }
-        });
+        Completable.create(emitter -> mAvTransport.subscribe(true))
+                .subscribeOn(Schedulers.io())
+                .subscribe(() -> {
+                }, Log::w);
     }
 
     /**
      * AVTransportサービスの購読を中止する。
      */
     public void unsubscribe() {
-        mMrControlPoint.invoke(() -> {
-            try {
-                mAvTransport.unsubscribe();
-            } catch (final IOException e) {
-                Log.w(e);
-            }
-        });
+        Completable.create(emitter -> mAvTransport.unsubscribe())
+                .subscribeOn(Schedulers.io())
+                .subscribe(() -> {
+                }, Log::w);
     }
 
-    public void setAVTransportURI(
+    public Single<Map<String, String>> setAVTransportURI(
             @NonNull final CdsObject object,
-            @NonNull final String uri,
-            @Nullable final ActionCallback callback) {
-        final Map<String, String> argument = new HashMap<>();
+            @NonNull final String uri) {
         final String metadata = CdsObjectXmlConverter.convert(object);
         if (TextUtils.isEmpty(metadata)) {
-            if (callback != null) {
-                callback.onResult(false, null);
-            }
-            return;
+            return Single.error(new IllegalStateException("empty meta data"));
         }
+        final Map<String, String> argument = new HashMap<>();
         argument.put(INSTANCE_ID, "0");
         argument.put(CURRENT_URI, uri);
         argument.put(CURRENT_URI_META_DATA, metadata);
-        invoke(mSetAvTransportUri, argument, callback);
+        return invoke(mSetAvTransportUri, argument);
     }
 
-    public void clearAVTransportURI(@Nullable final ActionCallback callback) {
+    public Single<Map<String, String>> clearAVTransportURI() {
         final Map<String, String> argument = new HashMap<>();
         argument.put(INSTANCE_ID, "0");
         argument.put(CURRENT_URI, null);
         argument.put(CURRENT_URI_META_DATA, null);
-        invoke(mSetAvTransportUri, argument, callback);
+        return invoke(mSetAvTransportUri, argument);
     }
 
-    public void play(@Nullable final ActionCallback callback) {
+    public Single<Map<String, String>> play() {
         final Map<String, String> argument = new HashMap<>();
         argument.put(INSTANCE_ID, "0");
         argument.put(SPEED, "1");
-        invoke(mPlay, argument, callback);
+        return invoke(mPlay, argument);
     }
 
-    public void stop(@Nullable final ActionCallback callback) {
-        invoke(mStop, Collections.singletonMap(INSTANCE_ID, "0"), callback);
+    public Single<Map<String, String>> stop() {
+        return invoke(mStop, Collections.singletonMap(INSTANCE_ID, "0"));
     }
 
-    public void pause(@Nullable final ActionCallback callback) {
+    public Single<Map<String, String>> pause() {
         if (mPause == null) {
-            if (callback != null) {
-                callback.onResult(false, null);
-            }
-            return;
+            return Single.error(new IllegalStateException("pause is not supported"));
         }
-        invoke(mPause, Collections.singletonMap(INSTANCE_ID, "0"), callback);
+        return invoke(mPause, Collections.singletonMap(INSTANCE_ID, "0"));
     }
 
-    public void seek(
-            long time,
-            @Nullable final ActionCallback callback) {
+    public Single<Map<String, String>> seek(final long time) {
+        final Argument unitArg = mSeek.findArgument(UNIT);
+        if (unitArg == null) {
+            return Single.error(new IllegalStateException("no unit argument"));
+        }
         final Map<String, String> argument = new HashMap<>();
         argument.put(INSTANCE_ID, "0");
         final String timeText = makeTimeText(time);
-        final Argument unitArg = mSeek.findArgument(UNIT);
-        if (unitArg == null) {
-            return;
-        }
         final StateVariable unit = unitArg.getRelatedStateVariable();
         final List<String> list = unit.getAllowedValueList();
         if (list.contains(UNIT_REL_TIME)) {
@@ -274,25 +228,31 @@ public class MediaRenderer extends DeviceWrapper {
         } else if (list.contains(UNIT_ABS_TIME)) {
             argument.put(UNIT, UNIT_ABS_TIME);
         } else {
-            return;
+            return Single.error(new IllegalStateException("no supported unit"));
         }
         argument.put(TARGET, timeText);
-        invoke(mSeek, argument, callback);
+        return invoke(mSeek, argument);
     }
 
-    public void getPositionInfo(@Nullable final ActionCallback callback) {
-        invoke(mGetPositionInfo, Collections.singletonMap(INSTANCE_ID, "0"), callback);
+    public Single<Map<String, String>> getPositionInfo() {
+        return invoke(mGetPositionInfo, Collections.singletonMap(INSTANCE_ID, "0"));
     }
 
-    public void getTransportInfo(@Nullable final ActionCallback callback) {
-        invoke(mGetTransportInfo, Collections.singletonMap(INSTANCE_ID, "0"), callback);
+    public Single<Map<String, String>> getTransportInfo() {
+        return invoke(mGetTransportInfo, Collections.singletonMap(INSTANCE_ID, "0"));
     }
 
-    private void invoke(
+    private Single<Map<String, String>> invoke(
             @NonNull final Action action,
-            @NonNull final Map<String, String> argument,
-            @Nullable final ActionCallback callback) {
-        mMrControlPoint.invoke(new ActionInvoker(action, argument, callback));
+            @NonNull final Map<String, String> argument) {
+        return Single.create((SingleOnSubscribe<Map<String, String>>) emitter -> {
+            try {
+                final Map<String, String> result = action.invoke(argument);
+                emitter.onSuccess(result);
+            } catch (final IOException ignored) {
+                emitter.onError(ignored);
+            }
+        }).subscribeOn(Schedulers.io());
     }
 
     public static TransportState getCurrentTransportState(@NonNull final Map<String, String> result) {
