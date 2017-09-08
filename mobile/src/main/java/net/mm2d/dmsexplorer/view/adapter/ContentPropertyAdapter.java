@@ -170,6 +170,10 @@ public class ContentPropertyAdapter extends PropertyAdapter {
         if (size <= 2) {
             return tagList;
         }
+        final String av = object.getRootTag().getAttribute("xmlns:av");
+        if (!TextUtils.equals(av, "urn:schemas-sony-com:av")) {
+            return tagList;
+        }
         final List<Tag> list = new ArrayList<>(size);
         list.addAll(tagList.subList(size - 2, size));
         list.addAll(tagList.subList(0, size - 2));
