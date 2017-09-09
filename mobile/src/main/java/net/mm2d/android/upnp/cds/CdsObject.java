@@ -1067,7 +1067,7 @@ public class CdsObject implements Parcelable {
      * @return ルートタグ情報
      */
     @NonNull
-    Tag getRootTag() {
+    public Tag getRootTag() {
         return mRootTag;
     }
 

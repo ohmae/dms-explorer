@@ -22,8 +22,6 @@ import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
@@ -71,8 +69,6 @@ public class MrControlPoint implements ControlPointWrapper {
     private final Map<String, MediaRenderer> mMediaRendererMap;
     @NonNull
     private final Collection<MrDiscoveryListener> mMrDiscoveryListeners = new ArrayList<>();
-    @Nullable
-    private ExecutorService mExecutorService;
 
     public MrControlPoint() {
         mMediaRendererMap = Collections.synchronizedMap(new LinkedHashMap<>());
@@ -184,7 +180,6 @@ public class MrControlPoint implements ControlPointWrapper {
             terminate(controlPoint);
         }
         mInitialized.set(true);
-        mExecutorService = Executors.newSingleThreadExecutor();
         mMediaRendererMap.clear();
         controlPoint.addDiscoveryListener(mDiscoveryListener);
         controlPoint.addNotifyEventListener(mNotifyEventListener);
@@ -203,14 +198,5 @@ public class MrControlPoint implements ControlPointWrapper {
         controlPoint.removeDiscoveryListener(mDiscoveryListener);
         controlPoint.removeNotifyEventListener(mNotifyEventListener);
         mMediaRendererMap.clear();
-        mExecutorService.shutdownNow();
-        mExecutorService = null;
-    }
-
-    void invoke(@NonNull final Runnable runnable) {
-        if (!mInitialized.get()) {
-            return;
-        }
-        mExecutorService.execute(runnable);
     }
 }

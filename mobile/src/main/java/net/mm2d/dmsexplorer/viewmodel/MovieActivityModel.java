@@ -107,7 +107,7 @@ public class MovieActivityModel extends BaseObservable
         if (targetModel == null) {
             throw new IllegalStateException();
         }
-        final PlayerModel playerModel = new MoviePlayerModel(mVideoView);
+        final PlayerModel playerModel = new MoviePlayerModel(mActivity, mVideoView);
         mControlPanelModel = new ControlPanelModel(mActivity, playerModel);
         mControlPanelModel.setRepeatMode(mRepeatMode);
         mControlPanelModel.setOnCompletionListener(this);

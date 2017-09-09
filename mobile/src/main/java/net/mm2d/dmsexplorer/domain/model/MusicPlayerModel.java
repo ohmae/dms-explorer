@@ -8,9 +8,13 @@
 package net.mm2d.dmsexplorer.domain.model;
 
 import android.content.Context;
+import android.media.AudioAttributes;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
+import android.os.Build.VERSION;
+import android.os.Build.VERSION_CODES;
+import android.os.PowerManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
@@ -49,12 +53,24 @@ public class MusicPlayerModel extends MediaPlayerModel {
     public void setUri(
             @NonNull final Uri uri,
             @Nullable final Object metadata) {
-        mMediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
         try {
             mMediaPlayer.setDataSource(mContext, uri);
             mMediaPlayer.prepareAsync();
         } catch (final IOException e) {
             Log.w(e);
+        }
+    }
+
+    @Override
+    protected void preparePlaying(@NonNull final MediaPlayer mediaPlayer) {
+        mediaPlayer.setWakeMode(mContext, PowerManager.PARTIAL_WAKE_LOCK);
+        if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
+            mediaPlayer.setAudioAttributes(new AudioAttributes.Builder()
+                    .setUsage(AudioAttributes.USAGE_MEDIA)
+                    .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
+                    .build());
+        } else {
+            mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
         }
     }
 }

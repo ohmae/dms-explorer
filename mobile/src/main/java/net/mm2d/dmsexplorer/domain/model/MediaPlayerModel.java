@@ -179,8 +179,13 @@ public abstract class MediaPlayerModel implements PlayerModel, OnPreparedListene
         return true;
     }
 
+
+    protected abstract void preparePlaying(@NonNull MediaPlayer mediaPlayer);
+
+    @CallSuper
     @Override
     public void onPrepared(@NonNull final MediaPlayer mediaPlayer) {
+        preparePlaying(mediaPlayer);
         setDuration(getDuration());
         mHandler.post(mGetPositionTask);
         play();

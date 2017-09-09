@@ -44,6 +44,7 @@
             android:paddingBottom="@{model.isLink ? @dimen/property_margin_link : @dimen/property_margin_normal}"
             android:paddingTop="@{model.isLink ? @dimen/property_margin_link : @dimen/property_margin_normal}"
             android:text="@{model.description}"
+            android:textIsSelectable="true"
             android:textSize="@dimen/text_size_main"
             android:visibility="@{model.enableDescription ? View.VISIBLE : View.GONE}"
             app:textColorAttr="@{model.isLink ? R.attr.propertyLinkColor : R.attr.propertyMessageColor}"

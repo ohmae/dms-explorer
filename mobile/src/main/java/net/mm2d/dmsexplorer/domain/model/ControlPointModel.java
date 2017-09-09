@@ -12,6 +12,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.ConnectivityManager;
+import android.net.wifi.WifiManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
@@ -43,6 +44,9 @@ public class ControlPointModel {
         void update(@Nullable MediaRenderer renderer);
     }
 
+    private static final String TAG = ControlPointModel.class.getSimpleName();
+    @Nullable
+    private WifiManager.WifiLock mWifiLock;
     @NonNull
     private final SelectMediaServerObserver mSelectMediaServerObserver;
     @NonNull
@@ -163,10 +167,28 @@ public class ControlPointModel {
         setSelectedMediaRenderer(null);
     }
 
+    private void acquireWifiLock() {
+        if (mWifiLock == null) {
+            final WifiManager wm = (WifiManager) mContext.getApplicationContext()
+                    .getSystemService(Context.WIFI_SERVICE);
+            mWifiLock = wm.createWifiLock(WifiManager.WIFI_MODE_FULL, TAG);
+            mWifiLock.setReferenceCounted(true);
+        }
+        mWifiLock.acquire();
+    }
+
+    private void releaseWifiLock() {
+        if (mWifiLock != null && mWifiLock.isHeld()) {
+            mWifiLock.release();
+        }
+        mWifiLock = null;
+    }
+
     public void initialize() {
         if (!mInitialized.getAndSet(true)) {
             mContext.registerReceiver(mConnectivityReceiver,
                     new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+            acquireWifiLock();
         }
     }
 
@@ -178,6 +200,7 @@ public class ControlPointModel {
         }
         if (mInitialized.getAndSet(false)) {
             mContext.unregisterReceiver(mConnectivityReceiver);
+            releaseWifiLock();
         }
     }
 
