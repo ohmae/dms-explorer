@@ -39,7 +39,7 @@ public class MusicPlayerModel extends MediaPlayerModel {
     private MusicPlayerModel(
             @NonNull final Context context,
             @NonNull final MediaPlayer mediaPlayer) {
-        super(context, new MediaPlayerControl(mediaPlayer));
+        super(new MediaPlayerControl(mediaPlayer));
         mContext = context;
         mMediaPlayer = mediaPlayer;
     }

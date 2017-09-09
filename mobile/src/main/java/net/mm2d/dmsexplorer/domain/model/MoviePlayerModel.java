@@ -33,7 +33,7 @@ public class MoviePlayerModel extends MediaPlayerModel {
     public MoviePlayerModel(
             @NonNull final Context context,
             @NonNull final VideoView videoView) {
-        super(context, new VideoViewControl(videoView));
+        super(new VideoViewControl(videoView));
         mContext = context;
         mVideoView = videoView;
     }

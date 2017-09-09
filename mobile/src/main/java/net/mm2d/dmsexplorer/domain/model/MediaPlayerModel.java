@@ -7,10 +7,8 @@
 
 package net.mm2d.dmsexplorer.domain.model;
 
-import android.content.Context;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnPreparedListener;
-import android.net.wifi.WifiManager;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.annotation.CallSuper;
@@ -25,7 +23,6 @@ import java.util.concurrent.TimeUnit;
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
  */
 public abstract class MediaPlayerModel implements PlayerModel, OnPreparedListener {
-    private static final String TAG = MediaPlayerModel.class.getSimpleName();
     private static final int SKIP_MARGIN = (int) TimeUnit.SECONDS.toMillis(3);
     private static final int MEDIA_ERROR_SYSTEM = -2147483648;
     private static final StatusListener STATUS_LISTENER = new StatusListenerAdapter();
@@ -40,8 +37,6 @@ public abstract class MediaPlayerModel implements PlayerModel, OnPreparedListene
     private int mProgress;
     private int mDuration;
     private boolean mTerminated;
-    @NonNull
-    private final WifiManager.WifiLock mWifiLock;
 
     private final Runnable mGetPositionTask = new Runnable() {
         @Override
@@ -67,14 +62,7 @@ public abstract class MediaPlayerModel implements PlayerModel, OnPreparedListene
         }
     };
 
-    MediaPlayerModel(
-            @NonNull final Context context,
-            @NonNull final MediaControl mediaControl) {
-        final WifiManager wm = (WifiManager) context.getApplicationContext()
-                .getSystemService(Context.WIFI_SERVICE);
-        mWifiLock = wm.createWifiLock(WifiManager.WIFI_MODE_FULL, TAG);
-        mWifiLock.setReferenceCounted(true);
-        mWifiLock.acquire();
+    MediaPlayerModel(@NonNull final MediaControl mediaControl) {
         mMediaControl = mediaControl;
         mMediaControl.setOnPreparedListener(this);
     }
@@ -89,9 +77,6 @@ public abstract class MediaPlayerModel implements PlayerModel, OnPreparedListene
     public void terminate() {
         if (mTerminated) {
             return;
-        }
-        if (mWifiLock.isHeld()) {
-            mWifiLock.release();
         }
         mMediaControl.setOnPreparedListener(null);
         mMediaControl.setOnErrorListener(null);
