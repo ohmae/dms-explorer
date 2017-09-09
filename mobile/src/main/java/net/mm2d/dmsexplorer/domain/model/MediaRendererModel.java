@@ -9,6 +9,7 @@ package net.mm2d.dmsexplorer.domain.model;
 
 import android.content.Context;
 import android.net.Uri;
+import android.net.wifi.WifiManager;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.annotation.NonNull;
@@ -31,6 +32,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
  */
 public class MediaRendererModel implements PlayerModel {
+    private static final String TAG = MediaRendererModel.class.getSimpleName();
     private static final int CHAPTER_MARGIN = (int) TimeUnit.SECONDS.toMillis(5);
     private static final int STOPPING_THRESHOLD = 5;
     private static final StatusListener STATUS_LISTENER = new StatusListenerAdapter();
@@ -50,10 +52,17 @@ public class MediaRendererModel implements PlayerModel {
     private int mStoppingCount;
     @NonNull
     private final Runnable mGetPositionTask;
+    @NonNull
+    private final WifiManager.WifiLock mWifiLock;
 
     public MediaRendererModel(
-            @NonNull Context context,
+            @NonNull final Context context,
             @NonNull final MediaRenderer renderer) {
+        final WifiManager wm = (WifiManager) context.getApplicationContext()
+                .getSystemService(Context.WIFI_SERVICE);
+        mWifiLock = wm.createWifiLock(WifiManager.WIFI_MODE_FULL, TAG);
+        mWifiLock.setReferenceCounted(true);
+        mWifiLock.acquire();
         mMediaRenderer = renderer;
         mGetPositionTask = () -> {
             mMediaRenderer.getPositionInfo()
@@ -84,6 +93,9 @@ public class MediaRendererModel implements PlayerModel {
     public void terminate() {
         if (!mStarted) {
             return;
+        }
+        if (mWifiLock.isHeld()) {
+            mWifiLock.release();
         }
         mStatusListener = STATUS_LISTENER;
         mHandler.removeCallbacks(mGetPositionTask);
