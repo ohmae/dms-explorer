@@ -227,7 +227,7 @@ public class ContentListActivityModel extends BaseObservable implements ExploreL
     private long calculateDelay(
             final int before,
             final int after) {
-        if (before < after) {
+        if (before >= after) {
             return 0;
         }
         final long diff = System.currentTimeMillis() - mUpdateTime;
