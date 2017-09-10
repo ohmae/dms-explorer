@@ -93,7 +93,7 @@
             android:onClick="@{model::onClickPlay}"
             android:onLongClick="@{model::onLongClickPlay}"
             android:visibility="@{model.hasResource ? View.VISIBLE : View.INVISIBLE}"
-            app:backgroundTint="@{model.hasProtectedResource ? @color/fabDisable : @color/accent}"
+            app:backgroundTint="@{model.isProtected ? @color/fabDisable : @color/accent}"
             app:rippleColor="@color/fabRipple"
             app:srcCompat="@drawable/ic_fab_play"
             />
