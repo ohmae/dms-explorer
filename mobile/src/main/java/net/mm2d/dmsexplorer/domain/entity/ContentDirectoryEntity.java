@@ -11,6 +11,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import net.mm2d.android.upnp.cds.CdsObject;
+import net.mm2d.dmsexplorer.domain.model.ExploreListener;
 import net.mm2d.util.Log;
 
 import java.util.ArrayList;
@@ -33,7 +34,7 @@ public class ContentDirectoryEntity {
     private CdsObject mSelectedObject;
     @NonNull
     private final List<CdsObject> mList = new ArrayList<>();
-    private static final EntryListener ENTRY_LISTENER = new EntryListener() {
+    private static final ExploreListener ENTRY_LISTENER = new ExploreListener() {
         @Override
         public void onStart() {
         }
@@ -47,17 +48,9 @@ public class ContentDirectoryEntity {
         }
     };
     @NonNull
-    private EntryListener mEntryListener = ENTRY_LISTENER;
+    private ExploreListener mEntryListener = ENTRY_LISTENER;
     private volatile boolean mInProgress = true;
     private volatile Disposable mDisposable;
-
-    public interface EntryListener {
-        void onStart();
-
-        void onUpdate(@NonNull List<CdsObject> list);
-
-        void onComplete();
-    }
 
     public ContentDirectoryEntity() {
         this(ROOT_OBJECT_ID, ROOT_TITLE);
@@ -71,7 +64,7 @@ public class ContentDirectoryEntity {
     }
 
     public void terminate() {
-        setEntryListener(null);
+        setExploreListener(null);
         if (mDisposable != null) {
             mDisposable.dispose();
             mDisposable = null;
@@ -84,7 +77,7 @@ public class ContentDirectoryEntity {
     }
 
     @NonNull
-    public String getParentTitle() {
+    public String getParentName() {
         return mParentTitle;
     }
 
@@ -122,7 +115,7 @@ public class ContentDirectoryEntity {
         return mSelectedObject;
     }
 
-    public void setEntryListener(@Nullable final EntryListener listener) {
+    public void setExploreListener(@Nullable final ExploreListener listener) {
         mEntryListener = listener != null ? listener : ENTRY_LISTENER;
     }
 

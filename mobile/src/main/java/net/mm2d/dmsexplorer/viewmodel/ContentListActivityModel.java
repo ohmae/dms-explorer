@@ -28,7 +28,7 @@ import net.mm2d.dmsexplorer.Const;
 import net.mm2d.dmsexplorer.R;
 import net.mm2d.dmsexplorer.Repository;
 import net.mm2d.dmsexplorer.domain.model.MediaServerModel;
-import net.mm2d.dmsexplorer.domain.model.MediaServerModel.ExploreListener;
+import net.mm2d.dmsexplorer.domain.model.ExploreListener;
 import net.mm2d.dmsexplorer.settings.Settings;
 import net.mm2d.dmsexplorer.util.ToolbarThemeUtils;
 import net.mm2d.dmsexplorer.view.adapter.ContentListAdapter;

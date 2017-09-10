@@ -17,7 +17,6 @@ import android.support.annotation.Nullable;
 import net.mm2d.android.upnp.cds.CdsObject;
 import net.mm2d.android.upnp.cds.MediaServer;
 import net.mm2d.dmsexplorer.domain.entity.ContentDirectoryEntity;
-import net.mm2d.dmsexplorer.domain.entity.ContentDirectoryEntity.EntryListener;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -28,7 +27,7 @@ import java.util.List;
 /**
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
  */
-public class MediaServerModel implements EntryListener {
+public class MediaServerModel implements ExploreListener {
     public interface PlaybackTargetObserver {
         void update(CdsObject object);
     }
@@ -61,14 +60,6 @@ public class MediaServerModel implements EntryListener {
         }
     };
     private volatile ExploreListener mExploreListener = EXPLORE_LISTENER;
-
-    public interface ExploreListener {
-        void onStart();
-
-        void onUpdate(@NonNull List<CdsObject> list);
-
-        void onComplete();
-    }
 
     public MediaServerModel(
             @NonNull final Context context,
@@ -104,7 +95,7 @@ public class MediaServerModel implements EntryListener {
         if (child == null) {
             return false;
         }
-        directory.setEntryListener(null);
+        directory.setExploreListener(null);
         prepareEntry(child);
         updatePlaybackTarget();
         return true;
@@ -113,7 +104,7 @@ public class MediaServerModel implements EntryListener {
     private void prepareEntry(@NonNull final ContentDirectoryEntity directory) {
         mHistoryStack.offerFirst(directory);
         mPath = makePath();
-        directory.setEntryListener(this);
+        directory.setExploreListener(this);
         directory.clearState();
         directory.startBrowse(mMediaServer.browse(directory.getParentId()));
     }
@@ -135,7 +126,7 @@ public class MediaServerModel implements EntryListener {
             if (parent == null) {
                 return;
             }
-            parent.setEntryListener(this);
+            parent.setExploreListener(this);
             updatePlaybackTarget();
             mExploreListener.onUpdate(parent.getList());
             mExploreListener.onComplete();
@@ -324,10 +315,10 @@ public class MediaServerModel implements EntryListener {
     private String makePath() {
         final StringBuilder sb = new StringBuilder();
         for (final ContentDirectoryEntity directory : mHistoryStack) {
-            if (sb.length() != 0 && directory.getParentTitle().length() != 0) {
+            if (sb.length() != 0 && directory.getParentName().length() != 0) {
                 sb.append(DELIMITER);
             }
-            sb.append(directory.getParentTitle());
+            sb.append(directory.getParentName());
         }
         return sb.toString();
     }
