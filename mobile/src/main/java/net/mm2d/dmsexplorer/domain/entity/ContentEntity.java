@@ -25,10 +25,13 @@ public interface ContentEntity {
     String getDescription();
 
     @NonNull
-    ContentType getType();
+    Uri getArtUri();
 
     @NonNull
-    String getTypeText();
+    Uri getIconUri();
+
+    @NonNull
+    ContentType getType();
 
     @Nullable
     Uri getUri();

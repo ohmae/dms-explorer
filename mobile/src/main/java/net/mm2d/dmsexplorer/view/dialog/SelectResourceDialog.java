@@ -14,15 +14,10 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 
-import net.mm2d.android.upnp.cds.CdsObject;
-import net.mm2d.android.upnp.cds.Tag;
 import net.mm2d.dmsexplorer.R;
 import net.mm2d.dmsexplorer.Repository;
 import net.mm2d.dmsexplorer.domain.model.PlaybackTargetModel;
 import net.mm2d.dmsexplorer.util.ItemSelectUtils;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * マルチリソースのコンテンツの再生時にリソースの選択を促すダイアログ。
@@ -50,53 +45,11 @@ public class SelectResourceDialog extends DialogFragment {
     @Override
     public Dialog onCreateDialog(final Bundle savedInstanceState) {
         final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        final PlaybackTargetModel targetModel = Repository.get().getPlaybackTargetModel();
-        final CdsObject object = targetModel.getCdsObject();
         builder.setTitle(R.string.dialog_title_select_resource);
-        final String[] choices = makeChoices(object);
+        final PlaybackTargetModel targetModel = Repository.get().getPlaybackTargetModel();
+        final String[] choices = targetModel.createResChoices();
         builder.setItems(choices,
                 (dialog, which) -> ItemSelectUtils.play(getActivity(), which));
         return builder.create();
-    }
-
-    private String[] makeChoices(@NonNull final CdsObject object) {
-        final List<String> itemList = new ArrayList<>();
-        final List<Tag> tagList = object.getTagList(CdsObject.RES);
-        if (tagList == null) {
-            return new String[0];
-        }
-        for (final Tag tag : tagList) {
-            final String bitrate = tag.getAttribute(CdsObject.BITRATE);
-            final String resolution = tag.getAttribute(CdsObject.RESOLUTION);
-            final String protocolInfo = tag.getAttribute(CdsObject.PROTOCOL_INFO);
-            final String mimeType = CdsObject.extractMimeTypeFromProtocolInfo(protocolInfo);
-            final String protocol = CdsObject.extractProtocolFromProtocolInfo(protocolInfo);
-            final StringBuilder sb = new StringBuilder();
-            if (protocol != null) {
-                sb.append(protocol);
-            }
-            if (mimeType != null) {
-                if (sb.length() != 0) {
-                    sb.append(" ");
-                }
-                sb.append(mimeType);
-            }
-            if (bitrate != null) {
-                if (sb.length() != 0) {
-                    sb.append("\n");
-                }
-                sb.append("bitrate: ");
-                sb.append(bitrate);
-            }
-            if (resolution != null) {
-                if (sb.length() != 0) {
-                    sb.append("\n");
-                }
-                sb.append("resolution: ");
-                sb.append(resolution);
-            }
-            itemList.add(sb.toString());
-        }
-        return itemList.toArray(new String[itemList.size()]);
     }
 }

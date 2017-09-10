@@ -11,6 +11,8 @@ import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import net.mm2d.dmsexplorer.domain.entity.ContentEntity;
+
 import java.util.List;
 
 /**
@@ -47,7 +49,7 @@ public interface PlayerModel {
 
     void setUri(
             @NonNull final Uri uri,
-            @Nullable final Object metadata);
+            @Nullable final ContentEntity entity);
 
     void restoreSaveProgress(int progress);
 

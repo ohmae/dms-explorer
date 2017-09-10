@@ -32,7 +32,7 @@ public class CdsContentEntity implements ContentEntity {
             case CdsObject.TYPE_VIDEO:
                 return ContentType.MOVIE;
             case CdsObject.TYPE_AUDIO:
-                return ContentType.MOVIE;
+                return ContentType.MUSIC;
             case CdsObject.TYPE_IMAGE:
                 return ContentType.PHOTO;
             case CdsObject.TYPE_CONTAINER:
@@ -74,14 +74,24 @@ public class CdsContentEntity implements ContentEntity {
 
     @NonNull
     @Override
-    public ContentType getType() {
-        return mType;
+    public Uri getArtUri() {
+        final String uri = mObject.getValue(CdsObject.UPNP_ALBUM_ART_URI);
+        if (TextUtils.isEmpty(uri)) {
+            return Uri.EMPTY;
+        }
+        return Uri.parse(uri);
     }
 
     @NonNull
     @Override
-    public String getTypeText() {
-        return mObject.getUpnpClass();
+    public Uri getIconUri() {
+        return Uri.EMPTY;
+    }
+
+    @NonNull
+    @Override
+    public ContentType getType() {
+        return mType;
     }
 
     @Nullable

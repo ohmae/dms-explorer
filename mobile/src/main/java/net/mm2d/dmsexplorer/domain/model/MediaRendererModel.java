@@ -19,6 +19,7 @@ import net.mm2d.android.upnp.avt.MediaRenderer;
 import net.mm2d.android.upnp.avt.TransportState;
 import net.mm2d.android.upnp.cds.CdsObject;
 import net.mm2d.android.upnp.cds.chapter.ChapterFetcherFactory;
+import net.mm2d.dmsexplorer.domain.entity.ContentEntity;
 import net.mm2d.util.Log;
 
 import java.util.Collections;
@@ -115,13 +116,10 @@ public class MediaRendererModel implements PlayerModel {
     @Override
     public void setUri(
             @NonNull final Uri uri,
-            @Nullable final Object metadata) {
-        if (!(metadata instanceof CdsObject)) {
-            throw new IllegalArgumentException();
-        }
+            @Nullable final ContentEntity entity) {
         mMediaRenderer.clearAVTransportURI()
                 .subscribe();
-        final CdsObject object = (CdsObject) metadata;
+        final CdsObject object = (CdsObject) entity.getObject();
         mMediaRenderer.setAVTransportURI(object, uri.toString())
                 .flatMap(map -> mMediaRenderer.play())
                 .observeOn(AndroidSchedulers.mainThread())

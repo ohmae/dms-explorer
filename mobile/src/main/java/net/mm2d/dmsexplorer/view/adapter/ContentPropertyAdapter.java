@@ -18,6 +18,7 @@ import net.mm2d.android.upnp.cds.CdsObject;
 import net.mm2d.android.upnp.cds.Tag;
 import net.mm2d.android.util.AribUtils;
 import net.mm2d.dmsexplorer.R;
+import net.mm2d.dmsexplorer.domain.entity.ContentEntity;
 
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
@@ -29,7 +30,7 @@ import java.util.Locale;
 /**
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
  */
-public class ContentPropertyAdapter extends PropertyAdapter {
+class ContentPropertyAdapter extends PropertyAdapter {
     private static String sTb;
     private static String sBs;
     private static String sCs;
@@ -44,12 +45,12 @@ public class ContentPropertyAdapter extends PropertyAdapter {
         sCs = context.getString(R.string.network_cs);
     }
 
-    public ContentPropertyAdapter(
+    ContentPropertyAdapter(
             @NonNull final Context context,
-            @NonNull final CdsObject object) {
+            @NonNull final ContentEntity entity) {
         super(context);
         setupString(context);
-        setCdsObjectInfo(context, this, object);
+        setCdsObjectInfo(context, this, (CdsObject) entity.getObject());
     }
 
     private static void setCdsObjectInfo(

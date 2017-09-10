@@ -50,7 +50,7 @@ public class PhotoActivityModel extends BaseObservable {
             throw new IllegalStateException();
         }
         mActivity = activity;
-        title = AribUtils.toDisplayableString(mTargetModel.getCdsObject().getTitle());
+        title = AribUtils.toDisplayableString(mTargetModel.getTitle());
         final String url = mTargetModel.getUri().toString();
         DownloadUtils.async(url, data -> {
             if (data == null) {
