@@ -16,6 +16,7 @@ import net.mm2d.android.upnp.avt.MediaRenderer;
 import net.mm2d.android.upnp.cds.MediaServer;
 import net.mm2d.dmsexplorer.Repository;
 import net.mm2d.dmsexplorer.domain.entity.ContentEntity;
+import net.mm2d.dmsexplorer.domain.formatter.CdsFormatter;
 import net.mm2d.dmsexplorer.domain.model.ControlPointModel;
 import net.mm2d.dmsexplorer.domain.model.CustomTabsBinder;
 import net.mm2d.dmsexplorer.domain.model.CustomTabsHelper;
@@ -50,6 +51,7 @@ public class AppRepository extends Repository {
     public AppRepository(@NonNull final Application application) {
         mContext = application;
         mControlPointModel = new ControlPointModel(mContext, this::updateMediaServer, this::updateMediaRenderer);
+        CdsFormatter.initialize(application);
         final ThemeModelImpl themeModel = new ThemeModelImpl();
         final CustomTabsHelper helper = new CustomTabsHelper(mContext);
         mOpenUriModel = new OpenUriCustomTabsModel(helper, themeModel);
