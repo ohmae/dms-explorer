@@ -15,7 +15,6 @@ import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
-import android.text.TextUtils;
 
 import com.android.databinding.library.baseAdapters.BR;
 
@@ -55,18 +54,17 @@ public class PhotoActivityModel extends BaseObservable {
         mActivity = activity;
         title = AribUtils.toDisplayableString(mTargetModel.getTitle());
         final Uri uri = mTargetModel.getUri();
-        if (uri == null) {
+        if (uri == Uri.EMPTY) {
             throw new IllegalStateException();
         }
-        final String url = uri.toString();
-        Downloader.create(url)
+        Downloader.create(uri.toString())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(data -> {
                     final PlaybackTargetModel model = repository.getPlaybackTargetModel();
                     if (model == null) {
                         return;
                     }
-                    if (!TextUtils.equals(url, model.getUriString())) {
+                    if (!uri.equals(model.getUri())) {
                         return;
                     }
                     setLoading(false);

@@ -88,7 +88,7 @@ public class MusicActivityModel extends BaseObservable
         final PlayerModel playerModel = new MusicPlayerModel(mActivity);
         mControlPanelModel = new ControlPanelModel(mActivity, playerModel);
         final PlaybackTargetModel targetModel = mRepository.getPlaybackTargetModel();
-        if (targetModel == null || targetModel.getUri() == null) {
+        if (targetModel == null || targetModel.getUri() == Uri.EMPTY) {
             ActivityCompat.finishAfterTransition(mActivity);
             return;
         }

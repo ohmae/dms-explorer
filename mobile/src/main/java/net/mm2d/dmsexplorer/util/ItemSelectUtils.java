@@ -10,6 +10,7 @@ package net.mm2d.dmsexplorer.util;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
@@ -58,7 +59,7 @@ public class ItemSelectUtils {
             return;
         }
         targetModel.setResIndex(index);
-        if (targetModel.getUri() == null) {
+        if (targetModel.getUri() == Uri.EMPTY) {
             return;
         }
         final ContentType type = targetModel.getContentEntity().getType();
