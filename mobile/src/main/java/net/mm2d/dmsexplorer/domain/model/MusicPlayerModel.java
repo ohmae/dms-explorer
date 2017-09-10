@@ -71,6 +71,7 @@ public class MusicPlayerModel extends MediaPlayerModel {
                     .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
                     .build());
         } else {
+            //noinspection deprecation
             mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
         }
     }

@@ -113,22 +113,22 @@ public class DmcActivityModel extends BaseObservable implements StatusListener {
         seekBarListener = new ScrubBarListener() {
             @Override
             public void onProgressChanged(
-                    ScrubBar seekBar,
-                    int progress,
-                    boolean fromUser) {
+                    @NonNull final ScrubBar seekBar,
+                    final int progress,
+                    final boolean fromUser) {
                 if (fromUser) {
                     setProgressText(progress);
                 }
             }
 
             @Override
-            public void onStartTrackingTouch(ScrubBar seekBar) {
+            public void onStartTrackingTouch(@NonNull final ScrubBar seekBar) {
                 mHandler.removeCallbacks(mTrackingCancel);
                 mTracking = true;
             }
 
             @Override
-            public void onStopTrackingTouch(ScrubBar seekBar) {
+            public void onStopTrackingTouch(@NonNull final ScrubBar seekBar) {
                 mRendererModel.seekTo(seekBar.getProgress());
                 mHandler.postDelayed(mTrackingCancel, TRACKING_DELAY);
                 setScrubText("");
@@ -136,7 +136,7 @@ public class DmcActivityModel extends BaseObservable implements StatusListener {
 
             @Override
             public void onAccuracyChanged(
-                    final ScrubBar seekBar,
+                    @NonNull final ScrubBar seekBar,
                     @Accuracy final int accuracy) {
                 setScrubText(getAccuracyText(accuracy));
             }

@@ -61,6 +61,7 @@ public class MoviePlayerModel extends MediaPlayerModel {
                     .setContentType(AudioAttributes.CONTENT_TYPE_MOVIE)
                     .build());
         } else {
+            //noinspection deprecation
             mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
         }
     }

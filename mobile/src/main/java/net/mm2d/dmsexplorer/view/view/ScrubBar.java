@@ -11,7 +11,6 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Region;
 import android.os.Build;
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -353,14 +352,14 @@ public class ScrubBar extends View {
         final float l = mTrackWidthHalf;
 
         if (mTopBackgroundColor != 0) {
-            canvas.clipRect(0, 0, width, cy + l, Region.Op.REPLACE);
+            canvas.clipRect(0, 0, width, cy + l);
             canvas.drawColor(mTopBackgroundColor);
         }
         if (mBottomBackgroundColor != 0) {
-            canvas.clipRect(0, cy - l, width, height, Region.Op.REPLACE);
+            canvas.clipRect(0, cy - l, width, height);
             canvas.drawColor(mBottomBackgroundColor);
         }
-        canvas.clipRect(0, 0, width, height, Region.Op.REPLACE);
+        canvas.clipRect(0, 0, width, height);
 
         mPaint.setColor(mTrackColor);
         canvas.drawLine(left, cy, areaWidth + left, cy, mPaint);

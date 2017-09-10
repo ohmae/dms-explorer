@@ -119,7 +119,7 @@ public class ContentListAdapter
         return mSelectedEntity;
     }
 
-    public boolean setSelectedEnity(@Nullable final ContentEntity entity) {
+    public boolean setSelectedEntity(@Nullable final ContentEntity entity) {
         if (mSelectedEntity != null && mSelectedEntity.equals(entity)) {
             return false;
         }
@@ -142,7 +142,7 @@ public class ContentListAdapter
     }
 
     public void clearSelectedEntity() {
-        setSelectedEnity(null);
+        setSelectedEntity(null);
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {

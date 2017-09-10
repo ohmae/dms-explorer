@@ -78,7 +78,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:visibility="@{model.isStillContents ? View.GONE : View.VISIBLE}"
+            android:visibility="@{model.hasDuration ? View.VISIBLE : View.GONE}"
             >
 
             <net.mm2d.dmsexplorer.view.view.ScrubBar
@@ -86,13 +86,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
+                android:chapterList="@{model.chapterList}"
                 android:enabled="@{model.seekable}"
                 android:max="@{model.duration}"
-                android:scrubBarListener="@{model.seekBarListener}"
                 android:paddingBottom="@dimen/seek_padding"
                 android:paddingTop="@dimen/seek_padding_top"
                 android:progress="@{model.progress}"
-                android:chapterList="@{model.chapterList}"
+                android:scrubBarListener="@{model.seekBarListener}"
                 />
 
             <LinearLayout
@@ -146,6 +146,7 @@
                     android:imageResource="@{model.playButtonResId}"
                     android:onClick="@{() -> model.onClickPlay()}"
                     android:padding="@dimen/control_button_padding"
+                    android:visibility="@{model.isPlayControlEnabled ? View.VISIBLE : View.INVISIBLE}"
                     />
 
                 <ImageView

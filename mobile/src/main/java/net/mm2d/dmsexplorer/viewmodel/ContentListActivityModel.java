@@ -157,7 +157,7 @@ public class ContentListActivityModel extends BaseObservable implements ExploreL
         }
         final boolean selected = entity.equals(mMediaServerModel.getSelectedEntity());
         mMediaServerModel.setSelectedEntity(entity);
-        mContentListAdapter.setSelectedEnity(entity);
+        mContentListAdapter.setSelectedEntity(entity);
         if (mSettings.shouldShowContentDetailOnTap()) {
             if (mTwoPane && selected) {
                 mCdsSelectListener.onExecute(v, entity, true);
@@ -177,7 +177,7 @@ public class ContentListActivityModel extends BaseObservable implements ExploreL
         }
         final boolean selected = entity.equals(mMediaServerModel.getSelectedEntity());
         mMediaServerModel.setSelectedEntity(entity);
-        mContentListAdapter.setSelectedEnity(entity);
+        mContentListAdapter.setSelectedEntity(entity);
 
         if (mSettings.shouldShowContentDetailOnTap()) {
             mCdsSelectListener.onExecute(v, entity, selected);
@@ -188,7 +188,7 @@ public class ContentListActivityModel extends BaseObservable implements ExploreL
 
     public void syncSelectedEntity() {
         final ContentEntity entity = mMediaServerModel.getSelectedEntity();
-        if (!mContentListAdapter.setSelectedEnity(entity) || entity == null) {
+        if (!mContentListAdapter.setSelectedEntity(entity) || entity == null) {
             return;
         }
         final int index = mContentListAdapter.indexOf(entity);
@@ -257,7 +257,7 @@ public class ContentListActivityModel extends BaseObservable implements ExploreL
         mContentListAdapter.clear();
         mContentListAdapter.addAll(list);
         final ContentEntity entity = mMediaServerModel.getSelectedEntity();
-        mContentListAdapter.setSelectedEnity(entity);
+        mContentListAdapter.setSelectedEntity(entity);
         if (beforeSize < afterSize) {
             mContentListAdapter.notifyItemRangeInserted(beforeSize, afterSize - beforeSize);
         } else {
