@@ -11,6 +11,7 @@ import android.app.Activity;
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
 import android.graphics.Point;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
@@ -24,7 +25,9 @@ import net.mm2d.android.util.Toaster;
 import net.mm2d.dmsexplorer.R;
 import net.mm2d.dmsexplorer.Repository;
 import net.mm2d.dmsexplorer.domain.model.PlaybackTargetModel;
-import net.mm2d.dmsexplorer.util.DownloadUtils;
+import net.mm2d.dmsexplorer.util.Downloader;
+
+import io.reactivex.android.schedulers.AndroidSchedulers;
 
 /**
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
@@ -51,22 +54,24 @@ public class PhotoActivityModel extends BaseObservable {
         }
         mActivity = activity;
         title = AribUtils.toDisplayableString(mTargetModel.getTitle());
-        final String url = mTargetModel.getUri().toString();
-        DownloadUtils.async(url, data -> {
-            if (data == null) {
-                Toaster.showLong(mActivity, R.string.toast_download_error_occurred);
-                return;
-            }
-            final PlaybackTargetModel model = repository.getPlaybackTargetModel();
-            if (model == null) {
-                return;
-            }
-            if (!TextUtils.equals(url, model.getUriString())) {
-                return;
-            }
-            setLoading(false);
-            setImageBinary(data);
-        });
+        final Uri uri = mTargetModel.getUri();
+        if (uri == null) {
+            throw new IllegalStateException();
+        }
+        final String url = uri.toString();
+        Downloader.create(url)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(data -> {
+                    final PlaybackTargetModel model = repository.getPlaybackTargetModel();
+                    if (model == null) {
+                        return;
+                    }
+                    if (!TextUtils.equals(url, model.getUriString())) {
+                        return;
+                    }
+                    setLoading(false);
+                    setImageBinary(data);
+                }, throwable -> Toaster.showLong(mActivity, R.string.toast_download_error_occurred));
     }
 
     public void adjustPanel(@NonNull final Activity activity) {

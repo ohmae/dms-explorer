@@ -28,11 +28,13 @@ import net.mm2d.dmsexplorer.domain.model.PlaybackTargetModel;
 import net.mm2d.dmsexplorer.domain.model.PlayerModel;
 import net.mm2d.dmsexplorer.settings.RepeatMode;
 import net.mm2d.dmsexplorer.settings.Settings;
-import net.mm2d.dmsexplorer.util.DownloadUtils;
+import net.mm2d.dmsexplorer.util.Downloader;
 import net.mm2d.dmsexplorer.util.ThemeUtils;
 import net.mm2d.dmsexplorer.view.adapter.PropertyAdapter;
 import net.mm2d.dmsexplorer.viewmodel.ControlPanelModel.OnCompletionListener;
 import net.mm2d.dmsexplorer.viewmodel.ControlPanelModel.SkipControlListener;
+
+import io.reactivex.android.schedulers.AndroidSchedulers;
 
 /**
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
@@ -112,9 +114,12 @@ public class MusicActivityModel extends BaseObservable
 
     private void loadArt(@NonNull final Uri uri) {
         setImageBinary(null);
-        if (uri != Uri.EMPTY) {
-            DownloadUtils.async(uri.toString(), this::setImageBinary);
+        if (uri == Uri.EMPTY) {
+            return;
         }
+        Downloader.create(uri.toString())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(this::setImageBinary);
     }
 
     public void terminate() {

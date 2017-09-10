@@ -7,7 +7,6 @@
 
 package net.mm2d.dmsexplorer.util;
 
-import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
@@ -18,38 +17,31 @@ import net.mm2d.upnp.HttpResponse;
 import java.io.IOException;
 import java.net.URL;
 
+import io.reactivex.Single;
+import io.reactivex.SingleOnSubscribe;
+import io.reactivex.schedulers.Schedulers;
+
 /**
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
  */
-public class DownloadUtils {
-    private DownloadUtils() {
+public class Downloader {
+    private Downloader() {
         throw new AssertionError();
     }
 
-    public interface Callback {
-        void onResult(byte[] data);
+    @NonNull
+    public static Single<byte[]> create(@NonNull final String url) {
+        return Single.create((SingleOnSubscribe<byte[]>) emitter -> {
+            final byte[] binary = download(url);
+            if (binary != null) {
+                emitter.onSuccess(binary);
+            } else {
+                emitter.onError(new IOException());
+            }
+        }).subscribeOn(Schedulers.io());
     }
 
-    private static final Callback CALLBACK = data -> {
-    };
-
-    public static void async(
-            @NonNull final String url,
-            @Nullable final Callback cb) {
-        final Callback callback = cb != null ? cb : CALLBACK;
-        new AsyncTask<Void, Void, byte[]>() {
-            @Override
-            protected byte[] doInBackground(final Void... params) {
-                return download(url);
-            }
-
-            @Override
-            protected void onPostExecute(@Nullable final byte[] data) {
-                callback.onResult(data);
-            }
-        }.execute();
-    }
-
+    @Nullable
     private static byte[] download(@NonNull final String url) {
         try {
             final HttpResponse response = new HttpClient(false).download(new URL(url));

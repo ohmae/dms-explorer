@@ -18,7 +18,6 @@ import android.text.TextUtils;
 import net.mm2d.dmsexplorer.BuildConfig;
 import net.mm2d.dmsexplorer.Const;
 import net.mm2d.dmsexplorer.settings.Settings;
-import net.mm2d.util.Log;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -73,7 +72,7 @@ public class UpdateChecker {
         createFetcher()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(this::checkAndNotify, Log::w);
+                .subscribe(this::checkAndNotify);
     }
 
     @NonNull

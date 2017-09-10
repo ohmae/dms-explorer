@@ -7,9 +7,9 @@
 
 package net.mm2d.dmsexplorer.viewmodel.adapter;
 
+import android.content.Context;
 import android.databinding.BindingAdapter;
 import android.graphics.Bitmap;
-import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.widget.ImageView;
@@ -18,6 +18,10 @@ import net.mm2d.android.util.BitmapUtils;
 import net.mm2d.android.util.Toaster;
 import net.mm2d.android.util.ViewUtils;
 import net.mm2d.dmsexplorer.R;
+
+import io.reactivex.Single;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
@@ -31,31 +35,39 @@ public class ImageViewBindingAdapter {
             imageView.setImageDrawable(null);
             return;
         }
-        ViewUtils.execAfterAllocateSize(imageView, () -> decodeAndSetImage(imageView, binary));
+        createDecoder(imageView, binary)
+                .subscribeOn(Schedulers.computation())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(bitmap -> setImageBitmap(imageView, bitmap),
+                        throwable -> showToast(imageView.getContext()));
     }
 
-    private static void decodeAndSetImage(
+    private static Single<Bitmap> createDecoder(
             @NonNull final ImageView imageView,
-            @NonNull final byte[] binary) {
+            @Nullable final byte[] binary) {
         final int width = imageView.getWidth();
         final int height = imageView.getHeight();
-        new AsyncTask<Void, Void, Bitmap>() {
-            @Override
-            protected Bitmap doInBackground(final Void... params) {
-                try {
-                    return BitmapUtils.decodeBitmap(binary, width, height);
-                } catch (final OutOfMemoryError ignored) {
+        return Single.create(emitter -> {
+            try {
+                final Bitmap bitmap = BitmapUtils.decodeBitmap(binary, width, height);
+                if (bitmap != null) {
+                    emitter.onSuccess(bitmap);
+                } else {
+                    emitter.onError(new IllegalStateException());
                 }
-                return null;
+            } catch (final OutOfMemoryError ignored) {
+                emitter.onError(ignored);
             }
+        });
+    }
 
-            @Override
-            protected void onPostExecute(final Bitmap bitmap) {
-                imageView.setImageBitmap(bitmap);
-                if (bitmap == null) {
-                    Toaster.showLong(imageView.getContext(), R.string.toast_decode_error_occurred);
-                }
-            }
-        }.execute();
+    private static void showToast(@NonNull final Context context) {
+        Toaster.showLong(context, R.string.toast_decode_error_occurred);
+    }
+
+    private static void setImageBitmap(
+            @NonNull final ImageView imageView,
+            @NonNull final Bitmap bitmap) {
+        ViewUtils.execAfterAllocateSize(imageView, () -> imageView.setImageBitmap(bitmap));
     }
 }

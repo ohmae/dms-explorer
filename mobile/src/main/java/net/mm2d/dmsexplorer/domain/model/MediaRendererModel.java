@@ -68,10 +68,10 @@ public class MediaRendererModel implements PlayerModel {
         mGetPositionTask = () -> {
             mMediaRenderer.getPositionInfo()
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(this::onGetPositionInfo, Log::w);
+                    .subscribe(this::onGetPositionInfo);
             mMediaRenderer.getTransportInfo()
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(this::onGetTransportInfo, Log::w);
+                    .subscribe(this::onGetTransportInfo);
         };
     }
 
