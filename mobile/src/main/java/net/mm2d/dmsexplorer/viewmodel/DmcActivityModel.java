@@ -17,17 +17,17 @@ import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 
-import net.mm2d.android.upnp.cds.CdsObject;
 import net.mm2d.android.util.AribUtils;
 import net.mm2d.android.util.Toaster;
 import net.mm2d.dmsexplorer.BR;
 import net.mm2d.dmsexplorer.R;
 import net.mm2d.dmsexplorer.Repository;
+import net.mm2d.dmsexplorer.domain.entity.ContentEntity;
 import net.mm2d.dmsexplorer.domain.model.MediaServerModel;
 import net.mm2d.dmsexplorer.domain.model.PlaybackTargetModel;
 import net.mm2d.dmsexplorer.domain.model.PlayerModel;
 import net.mm2d.dmsexplorer.domain.model.PlayerModel.StatusListener;
-import net.mm2d.dmsexplorer.view.adapter.ContentPropertyAdapter;
+import net.mm2d.dmsexplorer.view.adapter.PropertyAdapter;
 import net.mm2d.dmsexplorer.view.view.ScrubBar;
 import net.mm2d.dmsexplorer.view.view.ScrubBar.Accuracy;
 import net.mm2d.dmsexplorer.view.view.ScrubBar.ScrubBarListener;
@@ -47,11 +47,11 @@ public class DmcActivityModel extends BaseObservable implements StatusListener {
     @NonNull
     public final String subtitle;
     @NonNull
-    public final ContentPropertyAdapter propertyAdapter;
+    public final PropertyAdapter propertyAdapter;
     @DrawableRes
     public final int imageResource;
     public final boolean isPlayControlEnabled;
-    public final boolean isStillContents;
+    public final boolean hasDuration;
     @NonNull
     public final ScrubBarListener seekBarListener;
 
@@ -98,37 +98,37 @@ public class DmcActivityModel extends BaseObservable implements StatusListener {
         mRendererModel.setStatusListener(this);
         mPlayButtonResId = R.drawable.ic_play;
 
-        final CdsObject cdsObject = mTargetModel.getCdsObject();
-        title = AribUtils.toDisplayableString(cdsObject.getTitle());
-        isStillContents = cdsObject.getType() == CdsObject.TYPE_IMAGE;
-        isPlayControlEnabled = !isStillContents && mRendererModel.canPause();
+        final ContentEntity entity = mTargetModel.getContentEntity();
+        title = AribUtils.toDisplayableString(entity.getName());
+        hasDuration = entity.getType().hasDuration();
+        isPlayControlEnabled = hasDuration && mRendererModel.canPause();
         final MediaServerModel serverModel = repository.getMediaServerModel();
         subtitle = mRendererModel.getName()
                 + "  ←  "
                 + serverModel.getMediaServer().getFriendlyName();
-        propertyAdapter = new ContentPropertyAdapter(mActivity, cdsObject);
-        imageResource = getImageResource(cdsObject);
+        propertyAdapter = PropertyAdapter.ofContent(mActivity, entity);
+        imageResource = getImageResource(entity);
 
         mTrackingCancel = () -> mTracking = false;
         seekBarListener = new ScrubBarListener() {
             @Override
             public void onProgressChanged(
-                    ScrubBar seekBar,
-                    int progress,
-                    boolean fromUser) {
+                    @NonNull final ScrubBar seekBar,
+                    final int progress,
+                    final boolean fromUser) {
                 if (fromUser) {
                     setProgressText(progress);
                 }
             }
 
             @Override
-            public void onStartTrackingTouch(ScrubBar seekBar) {
+            public void onStartTrackingTouch(@NonNull final ScrubBar seekBar) {
                 mHandler.removeCallbacks(mTrackingCancel);
                 mTracking = true;
             }
 
             @Override
-            public void onStopTrackingTouch(ScrubBar seekBar) {
+            public void onStopTrackingTouch(@NonNull final ScrubBar seekBar) {
                 mRendererModel.seekTo(seekBar.getProgress());
                 mHandler.postDelayed(mTrackingCancel, TRACKING_DELAY);
                 setScrubText("");
@@ -136,7 +136,7 @@ public class DmcActivityModel extends BaseObservable implements StatusListener {
 
             @Override
             public void onAccuracyChanged(
-                    final ScrubBar seekBar,
+                    @NonNull final ScrubBar seekBar,
                     @Accuracy final int accuracy) {
                 setScrubText(getAccuracyText(accuracy));
             }
@@ -145,8 +145,7 @@ public class DmcActivityModel extends BaseObservable implements StatusListener {
 
     public void initialize() {
         final Uri uri = mTargetModel.getUri();
-        final CdsObject object = mTargetModel.getCdsObject();
-        mRendererModel.setUri(uri, object);
+        mRendererModel.setUri(uri, mTargetModel.getContentEntity());
     }
 
     public void terminate() {
@@ -296,16 +295,14 @@ public class DmcActivityModel extends BaseObservable implements StatusListener {
     }
 
     @DrawableRes
-    private static int getImageResource(@NonNull final CdsObject object) {
-        switch (object.getType()) {
-            case CdsObject.TYPE_VIDEO:
+    private static int getImageResource(@NonNull final ContentEntity entity) {
+        switch (entity.getType()) {
+            case MOVIE:
                 return R.drawable.ic_movie;
-            case CdsObject.TYPE_AUDIO:
+            case MUSIC:
                 return R.drawable.ic_music;
-            case CdsObject.TYPE_IMAGE:
+            case PHOTO:
                 return R.drawable.ic_image;
-            case CdsObject.TYPE_CONTAINER:
-            case CdsObject.TYPE_UNKNOWN:
             default:
                 break;
         }

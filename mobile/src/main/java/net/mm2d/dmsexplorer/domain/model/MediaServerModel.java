@@ -14,10 +14,9 @@ import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import net.mm2d.android.upnp.cds.CdsObject;
 import net.mm2d.android.upnp.cds.MediaServer;
 import net.mm2d.dmsexplorer.domain.entity.ContentDirectoryEntity;
-import net.mm2d.dmsexplorer.domain.entity.ContentDirectoryEntity.EntryListener;
+import net.mm2d.dmsexplorer.domain.entity.ContentEntity;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -28,9 +27,9 @@ import java.util.List;
 /**
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
  */
-public class MediaServerModel implements EntryListener {
+public class MediaServerModel implements ExploreListener {
     public interface PlaybackTargetObserver {
-        void update(CdsObject object);
+        void update(ContentEntity entity);
     }
 
     public static final int SCAN_MODE_SEQUENTIAL = 0;
@@ -47,28 +46,10 @@ public class MediaServerModel implements EntryListener {
     private final MediaServer mMediaServer;
     private final Deque<ContentDirectoryEntity> mHistoryStack = new LinkedList<>();
     private String mPath;
-    private final static ExploreListener EXPLORE_LISTENER = new ExploreListener() {
-        @Override
-        public void onStart() {
-        }
-
-        @Override
-        public void onUpdate(@NonNull final List<CdsObject> list) {
-        }
-
-        @Override
-        public void onComplete() {
-        }
-    };
+    @NonNull
+    private final static ExploreListener EXPLORE_LISTENER = new ExploreListenerAdapter();
+    @NonNull
     private volatile ExploreListener mExploreListener = EXPLORE_LISTENER;
-
-    public interface ExploreListener {
-        void onStart();
-
-        void onUpdate(@NonNull List<CdsObject> list);
-
-        void onComplete();
-    }
 
     public MediaServerModel(
             @NonNull final Context context,
@@ -95,16 +76,16 @@ public class MediaServerModel implements EntryListener {
         mHistoryStack.clear();
     }
 
-    public boolean enterChild(@NonNull final CdsObject object) {
+    public boolean enterChild(@NonNull final ContentEntity entity) {
         final ContentDirectoryEntity directory = mHistoryStack.peekFirst();
         if (directory == null) {
             return false;
         }
-        final ContentDirectoryEntity child = directory.enterChild(object);
+        final ContentDirectoryEntity child = directory.enterChild(entity);
         if (child == null) {
             return false;
         }
-        directory.setEntryListener(null);
+        directory.setExploreListener(null);
         prepareEntry(child);
         updatePlaybackTarget();
         return true;
@@ -113,7 +94,7 @@ public class MediaServerModel implements EntryListener {
     private void prepareEntry(@NonNull final ContentDirectoryEntity directory) {
         mHistoryStack.offerFirst(directory);
         mPath = makePath();
-        directory.setEntryListener(this);
+        directory.setExploreListener(this);
         directory.clearState();
         directory.startBrowse(mMediaServer.browse(directory.getParentId()));
     }
@@ -135,9 +116,9 @@ public class MediaServerModel implements EntryListener {
             if (parent == null) {
                 return;
             }
-            parent.setEntryListener(this);
+            parent.setExploreListener(this);
             updatePlaybackTarget();
-            mExploreListener.onUpdate(parent.getList());
+            mExploreListener.onUpdate(parent.getEntities());
             mExploreListener.onComplete();
         });
         return true;
@@ -156,7 +137,7 @@ public class MediaServerModel implements EntryListener {
         mExploreListener = listener != null ? listener : EXPLORE_LISTENER;
         final ContentDirectoryEntity directory = mHistoryStack.peekFirst();
         mExploreListener.onStart();
-        mExploreListener.onUpdate(directory.getList());
+        mExploreListener.onUpdate(directory.getEntities());
         if (!directory.isInProgress()) {
             mExploreListener.onComplete();
         }
@@ -174,41 +155,41 @@ public class MediaServerModel implements EntryListener {
         return mPath;
     }
 
-    public void setSelectedObject(@NonNull final CdsObject object) {
-        mHistoryStack.peekFirst().setSelectedObject(object);
+    public void setSelectedEntity(@NonNull final ContentEntity entity) {
+        mHistoryStack.peekFirst().setSelectedEntity(entity);
         updatePlaybackTarget();
     }
 
     private void updatePlaybackTarget() {
-        mPlaybackTargetObserver.update(getSelectedObject());
+        mPlaybackTargetObserver.update(getSelectedEntity());
     }
 
-    public CdsObject getSelectedObject() {
+    public ContentEntity getSelectedEntity() {
         final ContentDirectoryEntity entry = mHistoryStack.peekFirst();
         if (entry == null) {
             return null;
         }
-        return entry.getSelectedObject();
+        return entry.getSelectedEntity();
     }
 
-    public boolean selectPreviousObject(@ScanMode final int scanMode) {
-        final CdsObject nextObject = findPrevious(getSelectedObject(), scanMode);
-        if (nextObject == null) {
+    public boolean selectPreviousEntity(@ScanMode final int scanMode) {
+        final ContentEntity nextEntity = findPrevious(getSelectedEntity(), scanMode);
+        if (nextEntity == null) {
             return false;
         }
-        setSelectedObject(nextObject);
+        setSelectedEntity(nextEntity);
         return true;
     }
 
     @Nullable
-    private CdsObject findPrevious(
-            @Nullable final CdsObject current,
+    private ContentEntity findPrevious(
+            @Nullable final ContentEntity current,
             @ScanMode final int scanMode) {
         final ContentDirectoryEntity directory = mHistoryStack.peekFirst();
         if (current == null || directory == null) {
             return null;
         }
-        final List<CdsObject> list = directory.getList();
+        final List<ContentEntity> list = directory.getEntities();
         switch (scanMode) {
             case SCAN_MODE_SEQUENTIAL:
                 return findPreviousSequential(current, list);
@@ -219,16 +200,16 @@ public class MediaServerModel implements EntryListener {
     }
 
     @Nullable
-    private CdsObject findPreviousSequential(
-            @NonNull final CdsObject current,
-            @NonNull final List<CdsObject> list) {
+    private ContentEntity findPreviousSequential(
+            @NonNull final ContentEntity current,
+            @NonNull final List<ContentEntity> list) {
         final int index = list.indexOf(current);
         if (index - 1 < 0) {
             return null;
         }
         for (int i = index - 1; i >= 0; i--) {
-            final CdsObject target = list.get(i);
-            if (isValidObject(current, target)) {
+            final ContentEntity target = list.get(i);
+            if (isValidEntity(current, target)) {
                 return target;
             }
         }
@@ -236,37 +217,37 @@ public class MediaServerModel implements EntryListener {
     }
 
     @Nullable
-    private CdsObject findPreviousLoop(
-            @NonNull final CdsObject current,
-            @NonNull final List<CdsObject> list) {
+    private ContentEntity findPreviousLoop(
+            @NonNull final ContentEntity current,
+            @NonNull final List<ContentEntity> list) {
         final int size = list.size();
         final int index = list.indexOf(current);
         for (int i = (size + index - 1) % size; i != index; i = (size + i - 1) % size) {
-            final CdsObject target = list.get(i);
-            if (isValidObject(current, target)) {
+            final ContentEntity target = list.get(i);
+            if (isValidEntity(current, target)) {
                 return target;
             }
         }
         return null;
     }
 
-    public boolean selectNextObject(@ScanMode final int scanMode) {
-        final CdsObject nextObject = findNext(getSelectedObject(), scanMode);
-        if (nextObject == null) {
+    public boolean selectNextEntity(@ScanMode final int scanMode) {
+        final ContentEntity nextEntity = findNext(getSelectedEntity(), scanMode);
+        if (nextEntity == null) {
             return false;
         }
-        setSelectedObject(nextObject);
+        setSelectedEntity(nextEntity);
         return true;
     }
 
     @Nullable
-    private CdsObject findNext(
-            @Nullable final CdsObject current,
+    private ContentEntity findNext(
+            @Nullable final ContentEntity current,
             @ScanMode final int scanMode) {
         if (mHistoryStack.isEmpty()) {
             return null;
         }
-        final List<CdsObject> list = mHistoryStack.peekFirst().getList();
+        final List<ContentEntity> list = mHistoryStack.peekFirst().getEntities();
         if (current == null || list == null) {
             return null;
         }
@@ -280,17 +261,17 @@ public class MediaServerModel implements EntryListener {
     }
 
     @Nullable
-    private CdsObject findNextSequential(
-            @NonNull final CdsObject current,
-            @NonNull final List<CdsObject> list) {
+    private ContentEntity findNextSequential(
+            @NonNull final ContentEntity current,
+            @NonNull final List<ContentEntity> list) {
         final int size = list.size();
         final int index = list.indexOf(current);
         if (index + 1 == size) {
             return null;
         }
         for (int i = index + 1; i < size; i++) {
-            final CdsObject target = list.get(i);
-            if (isValidObject(current, target)) {
+            final ContentEntity target = list.get(i);
+            if (isValidEntity(current, target)) {
                 return target;
             }
         }
@@ -298,36 +279,36 @@ public class MediaServerModel implements EntryListener {
     }
 
     @Nullable
-    private CdsObject findNextLoop(
-            @NonNull final CdsObject current,
-            @NonNull final List<CdsObject> list) {
+    private ContentEntity findNextLoop(
+            @NonNull final ContentEntity current,
+            @NonNull final List<ContentEntity> list) {
         final int size = list.size();
         final int index = list.indexOf(current);
         for (int i = (index + 1) % size; i != index; i = (i + 1) % size) {
-            final CdsObject target = list.get(i);
-            if (isValidObject(current, target)) {
+            final ContentEntity target = list.get(i);
+            if (isValidEntity(current, target)) {
                 return target;
             }
         }
         return null;
     }
 
-    private boolean isValidObject(
-            @NonNull final CdsObject current,
-            @NonNull final CdsObject target) {
+    private boolean isValidEntity(
+            @NonNull final ContentEntity current,
+            @NonNull final ContentEntity target) {
         return target.getType() == current.getType()
                 && target.hasResource()
-                && !target.hasProtectedResource();
+                && !target.isProtected();
     }
 
     @NonNull
     private String makePath() {
         final StringBuilder sb = new StringBuilder();
         for (final ContentDirectoryEntity directory : mHistoryStack) {
-            if (sb.length() != 0 && directory.getParentTitle().length() != 0) {
+            if (sb.length() != 0 && directory.getParentName().length() != 0) {
                 sb.append(DELIMITER);
             }
-            sb.append(directory.getParentTitle());
+            sb.append(directory.getParentName());
         }
         return sb.toString();
     }
@@ -338,7 +319,7 @@ public class MediaServerModel implements EntryListener {
     }
 
     @Override
-    public void onUpdate(@NonNull final List<CdsObject> list) {
+    public void onUpdate(@NonNull final List<ContentEntity> list) {
         mExploreListener.onUpdate(list);
     }
 

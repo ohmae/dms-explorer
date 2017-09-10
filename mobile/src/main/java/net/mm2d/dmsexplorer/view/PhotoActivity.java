@@ -123,7 +123,7 @@ public class PhotoActivity extends BaseActivity {
     }
 
     private boolean move(int index) {
-        return index == 0 ? mServerModel.selectPreviousObject(MediaServerModel.SCAN_MODE_SEQUENTIAL)
-                : mServerModel.selectNextObject(MediaServerModel.SCAN_MODE_SEQUENTIAL);
+        return index == 0 ? mServerModel.selectPreviousEntity(MediaServerModel.SCAN_MODE_SEQUENTIAL)
+                : mServerModel.selectNextEntity(MediaServerModel.SCAN_MODE_SEQUENTIAL);
     }
 }

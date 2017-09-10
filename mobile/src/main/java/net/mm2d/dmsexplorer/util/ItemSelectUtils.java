@@ -11,12 +11,13 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
-import net.mm2d.android.upnp.cds.CdsObject;
 import net.mm2d.android.util.Toaster;
 import net.mm2d.dmsexplorer.EventLogger;
 import net.mm2d.dmsexplorer.R;
 import net.mm2d.dmsexplorer.Repository;
+import net.mm2d.dmsexplorer.domain.entity.ContentType;
 import net.mm2d.dmsexplorer.domain.model.PlaybackTargetModel;
 import net.mm2d.dmsexplorer.settings.Settings;
 import net.mm2d.dmsexplorer.view.DmcActivity;
@@ -60,35 +61,18 @@ public class ItemSelectUtils {
         if (targetModel.getUri() == null) {
             return;
         }
+        final ContentType type = targetModel.getContentEntity().getType();
+        final Class<?> player = getPlayerClass(type);
+        if (player == null) {
+            return;
+        }
         final Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.setDataAndType(targetModel.getUri(), targetModel.getMimeType());
         final Settings settings = new Settings();
-        switch (targetModel.getCdsObject().getType()) {
-            case CdsObject.TYPE_VIDEO:
-                if (settings.isPlayMovieMyself()) {
-                    intent.setClass(activity, MovieActivity.class);
-                } else {
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                }
-                break;
-            case CdsObject.TYPE_AUDIO:
-                if (settings.isPlayMusicMyself()) {
-                    intent.setClass(activity, MusicActivity.class);
-                } else {
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                }
-                break;
-            case CdsObject.TYPE_IMAGE:
-                if (settings.isPlayPhotoMyself()) {
-                    intent.setClass(activity, PhotoActivity.class);
-                } else {
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                }
-                break;
-            case CdsObject.TYPE_CONTAINER:
-            case CdsObject.TYPE_UNKNOWN:
-            default:
-                return;
+        if (settings.isPlayMyself(type)) {
+            intent.setClass(activity, player);
+        } else {
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         }
         try {
             activity.startActivity(intent);
@@ -96,6 +80,20 @@ public class ItemSelectUtils {
             EventLogger.sendPlayContent();
         } catch (final Exception ignored) {
             Toaster.showLong(activity, R.string.toast_launch_error);
+        }
+    }
+
+    @Nullable
+    private static Class<?> getPlayerClass(@NonNull final ContentType type) {
+        switch (type) {
+            case MOVIE:
+                return MovieActivity.class;
+            case MUSIC:
+                return MusicActivity.class;
+            case PHOTO:
+                return PhotoActivity.class;
+            default:
+                return null;
         }
     }
 

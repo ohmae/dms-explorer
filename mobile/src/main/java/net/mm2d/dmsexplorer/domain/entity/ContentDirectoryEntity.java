@@ -11,6 +11,8 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import net.mm2d.android.upnp.cds.CdsObject;
+import net.mm2d.dmsexplorer.domain.model.ExploreListener;
+import net.mm2d.dmsexplorer.domain.model.ExploreListenerAdapter;
 import net.mm2d.util.Log;
 
 import java.util.ArrayList;
@@ -30,40 +32,20 @@ public class ContentDirectoryEntity {
     @NonNull
     private final String mParentTitle;
     @Nullable
-    private CdsObject mSelectedObject;
+    private ContentEntity mSelectedEntity;
     @NonNull
-    private final List<CdsObject> mList = new ArrayList<>();
-    private static final EntryListener ENTRY_LISTENER = new EntryListener() {
-        @Override
-        public void onStart() {
-        }
-
-        @Override
-        public void onUpdate(@NonNull final List<CdsObject> list) {
-        }
-
-        @Override
-        public void onComplete() {
-        }
-    };
+    private final List<ContentEntity> mList = new ArrayList<>();
+    private static final ExploreListener ENTRY_LISTENER = new ExploreListenerAdapter();
     @NonNull
-    private EntryListener mEntryListener = ENTRY_LISTENER;
+    private ExploreListener mEntryListener = ENTRY_LISTENER;
     private volatile boolean mInProgress = true;
     private volatile Disposable mDisposable;
-
-    public interface EntryListener {
-        void onStart();
-
-        void onUpdate(@NonNull List<CdsObject> list);
-
-        void onComplete();
-    }
 
     public ContentDirectoryEntity() {
         this(ROOT_OBJECT_ID, ROOT_TITLE);
     }
 
-    public ContentDirectoryEntity(
+    private ContentDirectoryEntity(
             @NonNull final String parentId,
             @NonNull final String parentTitle) {
         mParentId = parentId;
@@ -71,7 +53,7 @@ public class ContentDirectoryEntity {
     }
 
     public void terminate() {
-        setEntryListener(null);
+        setExploreListener(null);
         if (mDisposable != null) {
             mDisposable.dispose();
             mDisposable = null;
@@ -84,7 +66,7 @@ public class ContentDirectoryEntity {
     }
 
     @NonNull
-    public String getParentTitle() {
+    public String getParentName() {
         return mParentTitle;
     }
 
@@ -93,36 +75,37 @@ public class ContentDirectoryEntity {
     }
 
     @NonNull
-    public List<CdsObject> getList() {
+    public List<ContentEntity> getEntities() {
         return mList;
     }
 
     @Nullable
-    public ContentDirectoryEntity enterChild(@NonNull final CdsObject object) {
-        if (!mList.contains(object)) {
+    public ContentDirectoryEntity enterChild(@NonNull final ContentEntity entity) {
+        if (!mList.contains(entity)) {
             return null;
         }
-        if (!object.isContainer()) {
+        if (entity.getType() != ContentType.CONTAINER) {
             return null;
         }
-        mSelectedObject = object;
+        mSelectedEntity = entity;
+        final CdsObject object = (CdsObject) entity.getObject();
         return new ContentDirectoryEntity(object.getObjectId(), object.getTitle());
     }
 
-    public void setSelectedObject(@Nullable final CdsObject object) {
-        if (!mList.contains(object)) {
-            mSelectedObject = null;
+    public void setSelectedEntity(@Nullable final ContentEntity entity) {
+        if (!mList.contains(entity)) {
+            mSelectedEntity = null;
             return;
         }
-        mSelectedObject = object;
+        mSelectedEntity = entity;
     }
 
     @Nullable
-    public CdsObject getSelectedObject() {
-        return mSelectedObject;
+    public ContentEntity getSelectedEntity() {
+        return mSelectedEntity;
     }
 
-    public void setEntryListener(@Nullable final EntryListener listener) {
+    public void setExploreListener(@Nullable final ExploreListener listener) {
         mEntryListener = listener != null ? listener : ENTRY_LISTENER;
     }
 
@@ -131,7 +114,7 @@ public class ContentDirectoryEntity {
             mDisposable.dispose();
             mDisposable = null;
         }
-        mSelectedObject = null;
+        mSelectedEntity = null;
         mInProgress = true;
         mList.clear();
         mEntryListener.onStart();
@@ -141,7 +124,7 @@ public class ContentDirectoryEntity {
         mEntryListener.onStart();
         mDisposable = observable
                 .subscribe(object -> {
-                    mList.add(object);
+                    mList.add(new CdsContentEntity(object));
                     mEntryListener.onUpdate(mList);
                 }, Log::w, () -> {
                     mInProgress = false;

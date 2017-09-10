@@ -22,9 +22,11 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import net.mm2d.android.upnp.cds.MediaServer;
 import net.mm2d.dmsexplorer.R;
 import net.mm2d.dmsexplorer.Repository;
 import net.mm2d.dmsexplorer.databinding.PropertyListItemBinding;
+import net.mm2d.dmsexplorer.domain.entity.ContentEntity;
 import net.mm2d.dmsexplorer.view.adapter.PropertyAdapter.ViewHolder;
 import net.mm2d.dmsexplorer.viewmodel.PropertyItemModel;
 
@@ -38,7 +40,19 @@ import java.util.regex.Pattern;
  *
  * @author <a href="mailto:ryo@mm2d.net">大前良介(OHMAE Ryosuke)</a>
  */
-public class PropertyAdapter extends Adapter<ViewHolder> {
+public abstract class PropertyAdapter extends Adapter<ViewHolder> {
+    public static PropertyAdapter ofServer(
+            @NonNull final Context context,
+            @NonNull final MediaServer server) {
+        return new ServerPropertyAdapter(context, server);
+    }
+
+    public static PropertyAdapter ofContent(
+            @NonNull final Context context,
+            @NonNull final ContentEntity entity) {
+        return new ContentPropertyAdapter(context, entity);
+    }
+
     private static final Pattern URL_PATTERN =
             Pattern.compile("https?://[\\w/:%#$&?()~.=+\\-]+");
 
@@ -49,7 +63,7 @@ public class PropertyAdapter extends Adapter<ViewHolder> {
         DESCRIPTION
     }
 
-    public static class Entry {
+    private static class Entry {
         private final String mName;
         private final String mValue;
         private final Type mType;

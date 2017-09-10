@@ -29,7 +29,7 @@ import net.mm2d.dmsexplorer.Repository;
 import net.mm2d.dmsexplorer.util.ThemeUtils;
 import net.mm2d.dmsexplorer.util.ToolbarThemeUtils;
 import net.mm2d.dmsexplorer.view.ContentListActivity;
-import net.mm2d.dmsexplorer.view.adapter.ServerPropertyAdapter;
+import net.mm2d.dmsexplorer.view.adapter.PropertyAdapter;
 import net.mm2d.upnp.Icon;
 
 /**
@@ -43,7 +43,7 @@ public class ServerDetailFragmentModel {
     @NonNull
     public final String title;
     @NonNull
-    public final ServerPropertyAdapter propertyAdapter;
+    public final PropertyAdapter propertyAdapter;
 
     @NonNull
     private final Context mContext;
@@ -57,7 +57,7 @@ public class ServerDetailFragmentModel {
             throw new IllegalStateException();
         }
         title = server.getFriendlyName();
-        propertyAdapter = new ServerPropertyAdapter(context, server);
+        propertyAdapter = PropertyAdapter.ofServer(context, server);
         final Bitmap iconBitmap = createIconBitmap(server.getIcon());
         icon = createIconDrawable(context, server, iconBitmap);
 

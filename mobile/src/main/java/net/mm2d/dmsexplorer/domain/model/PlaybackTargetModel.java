@@ -13,12 +13,18 @@ import android.support.annotation.Nullable;
 
 import net.mm2d.android.upnp.cds.CdsObject;
 import net.mm2d.android.upnp.cds.Tag;
+import net.mm2d.dmsexplorer.domain.entity.ContentEntity;
 import net.mm2d.util.TextUtils;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
  */
 public class PlaybackTargetModel {
+    @NonNull
+    private final ContentEntity mContentEntity;
     @NonNull
     private final CdsObject mCdsObject;
     @Nullable
@@ -28,15 +34,16 @@ public class PlaybackTargetModel {
     @Nullable
     private String mMimeType;
 
-    public PlaybackTargetModel(@NonNull final CdsObject object) {
-        mCdsObject = object;
-        mTargetRes = object.getTag(CdsObject.RES);
+    public PlaybackTargetModel(@NonNull final ContentEntity entity) {
+        mContentEntity = entity;
+        mCdsObject = (CdsObject) entity.getObject();
+        mTargetRes = mCdsObject.getTag(CdsObject.RES);
         updateUri();
     }
 
     @NonNull
-    public CdsObject getCdsObject() {
-        return mCdsObject;
+    public ContentEntity getContentEntity() {
+        return mContentEntity;
     }
 
     public void setResIndex(final int index) {
@@ -76,6 +83,47 @@ public class PlaybackTargetModel {
     }
 
     public int getResCount() {
-        return mCdsObject.getResourceCount();
+        return mContentEntity.getResourceCount();
+    }
+
+    public String[] createResChoices() {
+        final List<Tag> tagList = mCdsObject.getTagList(CdsObject.RES);
+        if (tagList == null) {
+            return new String[0];
+        }
+        final List<String> itemList = new ArrayList<>();
+        for (final Tag tag : tagList) {
+            final String bitrate = tag.getAttribute(CdsObject.BITRATE);
+            final String resolution = tag.getAttribute(CdsObject.RESOLUTION);
+            final String protocolInfo = tag.getAttribute(CdsObject.PROTOCOL_INFO);
+            final String mimeType = CdsObject.extractMimeTypeFromProtocolInfo(protocolInfo);
+            final String protocol = CdsObject.extractProtocolFromProtocolInfo(protocolInfo);
+            final StringBuilder sb = new StringBuilder();
+            if (protocol != null) {
+                sb.append(protocol);
+            }
+            if (mimeType != null) {
+                if (sb.length() != 0) {
+                    sb.append(" ");
+                }
+                sb.append(mimeType);
+            }
+            if (bitrate != null) {
+                if (sb.length() != 0) {
+                    sb.append("\n");
+                }
+                sb.append("bitrate: ");
+                sb.append(bitrate);
+            }
+            if (resolution != null) {
+                if (sb.length() != 0) {
+                    sb.append("\n");
+                }
+                sb.append("resolution: ");
+                sb.append(resolution);
+            }
+            itemList.add(sb.toString());
+        }
+        return itemList.toArray(new String[itemList.size()]);
     }
 }

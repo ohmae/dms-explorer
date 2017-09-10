@@ -10,13 +10,13 @@ package net.mm2d.dmsexplorer.viewmodel;
 import android.app.Activity;
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
+import android.net.Uri;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.widget.Toast;
 
-import net.mm2d.android.upnp.cds.CdsObject;
 import net.mm2d.android.util.AribUtils;
 import net.mm2d.android.util.Toaster;
 import net.mm2d.dmsexplorer.BR;
@@ -30,7 +30,7 @@ import net.mm2d.dmsexplorer.settings.RepeatMode;
 import net.mm2d.dmsexplorer.settings.Settings;
 import net.mm2d.dmsexplorer.util.DownloadUtils;
 import net.mm2d.dmsexplorer.util.ThemeUtils;
-import net.mm2d.dmsexplorer.view.adapter.ContentPropertyAdapter;
+import net.mm2d.dmsexplorer.view.adapter.PropertyAdapter;
 import net.mm2d.dmsexplorer.viewmodel.ControlPanelModel.OnCompletionListener;
 import net.mm2d.dmsexplorer.viewmodel.ControlPanelModel.SkipControlListener;
 
@@ -48,7 +48,7 @@ public class MusicActivityModel extends BaseObservable
     @NonNull
     private ControlPanelModel mControlPanelModel;
     @NonNull
-    private ContentPropertyAdapter mPropertyAdapter;
+    private PropertyAdapter mPropertyAdapter;
     @Nullable
     private byte[] mImageBinary;
 
@@ -97,7 +97,7 @@ public class MusicActivityModel extends BaseObservable
 
         mTitle = AribUtils.toDisplayableString(targetModel.getTitle());
         mAccentColor = ThemeUtils.getDeepColor(mTitle);
-        mPropertyAdapter = new ContentPropertyAdapter(mActivity, targetModel.getCdsObject());
+        mPropertyAdapter = PropertyAdapter.ofContent(mActivity, targetModel.getContentEntity());
         mRepository.getThemeModel().setThemeColor(mActivity, mAccentColor, 0);
 
         notifyPropertyChanged(BR.title);
@@ -107,13 +107,13 @@ public class MusicActivityModel extends BaseObservable
 
         controlPanelParam.setBackgroundColor(mAccentColor);
 
-        loadArt(targetModel.getCdsObject().getValue(CdsObject.UPNP_ALBUM_ART_URI));
+        loadArt(targetModel.getContentEntity().getArtUri());
     }
 
-    private void loadArt(@Nullable final String url) {
+    private void loadArt(@NonNull final Uri uri) {
         setImageBinary(null);
-        if (url != null) {
-            DownloadUtils.async(url, this::setImageBinary);
+        if (uri != Uri.EMPTY) {
+            DownloadUtils.async(uri.toString(), this::setImageBinary);
         }
     }
 
@@ -179,7 +179,7 @@ public class MusicActivityModel extends BaseObservable
 
     @NonNull
     @Bindable
-    public ContentPropertyAdapter getPropertyAdapter() {
+    public PropertyAdapter getPropertyAdapter() {
         return mPropertyAdapter;
     }
 
@@ -227,9 +227,9 @@ public class MusicActivityModel extends BaseObservable
             case PLAY_ONCE:
                 return false;
             case SEQUENTIAL:
-                return mServerModel.selectNextObject(MediaServerModel.SCAN_MODE_SEQUENTIAL);
+                return mServerModel.selectNextEntity(MediaServerModel.SCAN_MODE_SEQUENTIAL);
             case REPEAT_ALL:
-                return mServerModel.selectNextObject(MediaServerModel.SCAN_MODE_LOOP);
+                return mServerModel.selectNextEntity(MediaServerModel.SCAN_MODE_LOOP);
             case REPEAT_ONE:
                 return false;
         }
@@ -241,9 +241,9 @@ public class MusicActivityModel extends BaseObservable
             case PLAY_ONCE:
                 return false;
             case SEQUENTIAL:
-                return mServerModel.selectPreviousObject(MediaServerModel.SCAN_MODE_SEQUENTIAL);
+                return mServerModel.selectPreviousEntity(MediaServerModel.SCAN_MODE_SEQUENTIAL);
             case REPEAT_ALL:
-                return mServerModel.selectPreviousObject(MediaServerModel.SCAN_MODE_LOOP);
+                return mServerModel.selectPreviousEntity(MediaServerModel.SCAN_MODE_LOOP);
             case REPEAT_ONE:
                 return false;
         }

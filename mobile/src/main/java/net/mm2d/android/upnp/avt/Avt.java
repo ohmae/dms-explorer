@@ -10,7 +10,7 @@ package net.mm2d.android.upnp.avt;
 /**
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
  */
-public class Avt {
+class Avt {
     /**
      * MediaRendererのデバイスタイプ。
      */
