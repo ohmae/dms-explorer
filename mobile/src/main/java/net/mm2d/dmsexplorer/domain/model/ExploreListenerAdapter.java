@@ -9,7 +9,7 @@ package net.mm2d.dmsexplorer.domain.model;
 
 import android.support.annotation.NonNull;
 
-import net.mm2d.android.upnp.cds.CdsObject;
+import net.mm2d.dmsexplorer.domain.entity.ContentEntity;
 
 import java.util.List;
 
@@ -22,7 +22,7 @@ public class ExploreListenerAdapter implements ExploreListener {
     }
 
     @Override
-    public void onUpdate(@NonNull final List<CdsObject> list) {
+    public void onUpdate(@NonNull final List<ContentEntity> list) {
     }
 
     @Override

@@ -99,7 +99,7 @@ public abstract class ContentListActivityDelegate implements CdsSelectListener {
         if (mModel == null) {
             return;
         }
-        mModel.syncSelectedObject();
+        mModel.syncSelectedEntity();
     }
 
     private void restoreScroll(@NonNull final Bundle savedInstanceState) {

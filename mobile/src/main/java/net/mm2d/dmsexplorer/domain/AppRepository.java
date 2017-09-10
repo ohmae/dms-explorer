@@ -13,9 +13,9 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import net.mm2d.android.upnp.avt.MediaRenderer;
-import net.mm2d.android.upnp.cds.CdsObject;
 import net.mm2d.android.upnp.cds.MediaServer;
 import net.mm2d.dmsexplorer.Repository;
+import net.mm2d.dmsexplorer.domain.entity.ContentEntity;
 import net.mm2d.dmsexplorer.domain.model.ControlPointModel;
 import net.mm2d.dmsexplorer.domain.model.CustomTabsBinder;
 import net.mm2d.dmsexplorer.domain.model.CustomTabsHelper;
@@ -89,7 +89,7 @@ public class AppRepository extends Repository {
         return new MediaRendererModel(mContext, renderer);
     }
 
-    private void updatePlaybackTarget(@Nullable final CdsObject object) {
+    private void updatePlaybackTarget(@Nullable final ContentEntity object) {
         mPlaybackTargetModel = object != null ? new PlaybackTargetModel(object) : null;
     }
 

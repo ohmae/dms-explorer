@@ -22,6 +22,7 @@ import net.mm2d.android.util.AribUtils;
 import net.mm2d.dmsexplorer.BR;
 import net.mm2d.dmsexplorer.R;
 import net.mm2d.dmsexplorer.Repository;
+import net.mm2d.dmsexplorer.domain.entity.ContentEntity;
 import net.mm2d.dmsexplorer.domain.model.MediaServerModel;
 import net.mm2d.dmsexplorer.util.ItemSelectUtils;
 import net.mm2d.dmsexplorer.util.ThemeUtils;
@@ -38,7 +39,7 @@ public class ContentDetailFragmentModel extends BaseObservable {
     @NonNull
     public final ContentPropertyAdapter propertyAdapter;
     public final boolean hasResource;
-    public final boolean hasProtectedResource;
+    public final boolean isProtected;
 
     private boolean mCanSend;
 
@@ -65,18 +66,18 @@ public class ContentDetailFragmentModel extends BaseObservable {
         if (model == null) {
             throw new IllegalStateException();
         }
-        final CdsObject object = model.getSelectedObject();
-        if (object == null) {
+        final ContentEntity entity = model.getSelectedEntity();
+        if (entity == null) {
             throw new IllegalStateException();
         }
         mActivity = activity;
-        final String rawTitle = object.getTitle();
+        final String rawTitle = entity.getName();
         title = AribUtils.toDisplayableString(rawTitle);
-        propertyAdapter = new ContentPropertyAdapter(activity, object);
+        propertyAdapter = new ContentPropertyAdapter(activity, (CdsObject) entity.getObject());
         collapsedColor = ThemeUtils.getVividColor(rawTitle);
         expandedColor = ThemeUtils.getPastelColor(rawTitle);
-        hasResource = object.hasResource();
-        hasProtectedResource = object.hasProtectedResource();
+        hasResource = entity.hasResource();
+        isProtected = entity.isProtected();
 
         mMrControlPoint = repository.getControlPointModel().getMrControlPoint();
         updateCanSend();
@@ -98,7 +99,7 @@ public class ContentDetailFragmentModel extends BaseObservable {
     }
 
     public void onClickPlay(@NonNull final View view) {
-        if (hasProtectedResource) {
+        if (isProtected) {
             showSnackbar(view);
         } else {
             ItemSelectUtils.play(mActivity, 0);
@@ -106,7 +107,7 @@ public class ContentDetailFragmentModel extends BaseObservable {
     }
 
     public boolean onLongClickPlay(@NonNull final View view) {
-        if (hasProtectedResource) {
+        if (isProtected) {
             showSnackbar(view);
         } else {
             ItemSelectUtils.play(mActivity);

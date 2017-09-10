@@ -14,10 +14,10 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import net.mm2d.android.upnp.cds.CdsObject;
 import net.mm2d.dmsexplorer.R;
 import net.mm2d.dmsexplorer.Repository;
 import net.mm2d.dmsexplorer.databinding.ContentDetailFragmentBinding;
+import net.mm2d.dmsexplorer.domain.entity.ContentEntity;
 import net.mm2d.dmsexplorer.domain.model.MediaServerModel;
 import net.mm2d.dmsexplorer.view.base.BaseActivity;
 import net.mm2d.dmsexplorer.viewmodel.ContentDetailFragmentModel;
@@ -41,7 +41,7 @@ public class ContentDetailActivity extends BaseActivity {
     }
 
     private MediaServerModel mMediaServerModel;
-    private CdsObject mCdsObject;
+    private ContentEntity mContentEntity;
 
     public ContentDetailActivity() {
         super(true);
@@ -59,7 +59,7 @@ public class ContentDetailActivity extends BaseActivity {
             finish();
             return;
         }
-        mCdsObject = getSelectedObject();
+        mContentEntity = getSelectedEntity();
         setSupportActionBar(binding.cdsDetailToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -69,14 +69,14 @@ public class ContentDetailActivity extends BaseActivity {
         }
     }
 
-    private CdsObject getSelectedObject() {
-        return mMediaServerModel == null ? null : mMediaServerModel.getSelectedObject();
+    private ContentEntity getSelectedEntity() {
+        return mMediaServerModel == null ? null : mMediaServerModel.getSelectedEntity();
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        if (mCdsObject != null && !mCdsObject.equals(getSelectedObject())) {
+        if (mContentEntity != null && !mContentEntity.equals(getSelectedEntity())) {
             finish();
         }
     }

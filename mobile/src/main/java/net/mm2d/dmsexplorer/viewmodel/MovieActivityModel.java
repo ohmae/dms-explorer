@@ -241,9 +241,9 @@ public class MovieActivityModel extends BaseObservable
             case PLAY_ONCE:
                 return false;
             case SEQUENTIAL:
-                return mServerModel.selectNextObject(MediaServerModel.SCAN_MODE_SEQUENTIAL);
+                return mServerModel.selectNextEntity(MediaServerModel.SCAN_MODE_SEQUENTIAL);
             case REPEAT_ALL:
-                return mServerModel.selectNextObject(MediaServerModel.SCAN_MODE_LOOP);
+                return mServerModel.selectNextEntity(MediaServerModel.SCAN_MODE_LOOP);
             case REPEAT_ONE:
                 return false;
         }
@@ -255,9 +255,9 @@ public class MovieActivityModel extends BaseObservable
             case PLAY_ONCE:
                 return false;
             case SEQUENTIAL:
-                return mServerModel.selectPreviousObject(MediaServerModel.SCAN_MODE_SEQUENTIAL);
+                return mServerModel.selectPreviousEntity(MediaServerModel.SCAN_MODE_SEQUENTIAL);
             case REPEAT_ALL:
-                return mServerModel.selectPreviousObject(MediaServerModel.SCAN_MODE_LOOP);
+                return mServerModel.selectPreviousEntity(MediaServerModel.SCAN_MODE_LOOP);
             case REPEAT_ONE:
                 return false;
         }

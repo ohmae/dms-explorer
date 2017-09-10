@@ -13,6 +13,7 @@ import android.support.annotation.Nullable;
 
 import net.mm2d.android.upnp.cds.CdsObject;
 import net.mm2d.android.upnp.cds.Tag;
+import net.mm2d.dmsexplorer.domain.entity.ContentEntity;
 import net.mm2d.util.TextUtils;
 
 /**
@@ -28,9 +29,9 @@ public class PlaybackTargetModel {
     @Nullable
     private String mMimeType;
 
-    public PlaybackTargetModel(@NonNull final CdsObject object) {
-        mCdsObject = object;
-        mTargetRes = object.getTag(CdsObject.RES);
+    public PlaybackTargetModel(@NonNull final ContentEntity entity) {
+        mCdsObject = (CdsObject) entity.getObject();
+        mTargetRes = mCdsObject.getTag(CdsObject.RES);
         updateUri();
     }
 
