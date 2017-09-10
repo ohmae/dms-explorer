@@ -33,6 +33,7 @@ public class ContentItemModel {
     public final String title;
     @NonNull
     public final String description;
+    public final boolean hasDescription;
     @DrawableRes
     public final int imageResource;
 
@@ -49,6 +50,7 @@ public class ContentItemModel {
         DrawableCompat.setTint(accentBackground, ThemeUtils.getIconColor(name));
         title = AribUtils.toDisplayableString(name);
         description = entity.getDescription();
+        hasDescription = !TextUtils.isEmpty(description);
         imageResource = getImageResource(entity);
     }
 

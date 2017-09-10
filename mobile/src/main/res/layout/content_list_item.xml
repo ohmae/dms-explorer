@@ -55,14 +55,14 @@
                 android:layout_gravity="center_vertical"
                 android:layout_weight="1"
                 android:orientation="vertical"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
                 >
 
                 <TextView
                     android:id="@+id/text_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="4dp"
-                    android:layout_marginTop="8dp"
                     android:text="@{model.title}"
                     android:textColor="@color/textMain"
                     android:textSize="@dimen/text_size_main"
@@ -72,8 +72,9 @@
                     android:id="@+id/text_description"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
+                    android:layout_marginTop="4dp"
                     android:text="@{model.description}"
+                    android:visibility="@{model.hasDescription ? View.VISIBLE : View.GONE}"
                     android:textColor="@color/textWeak"
                     android:textSize="@dimen/text_size_sub"
                     />

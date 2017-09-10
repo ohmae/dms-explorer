@@ -94,7 +94,7 @@ public class CdsContentEntity implements ContentEntity {
         if (stringJoiner.length() != 0) {
             return stringJoiner.toString();
         }
-        return mObject.getUpnpClass();
+        return "";
     }
 
     @NonNull
