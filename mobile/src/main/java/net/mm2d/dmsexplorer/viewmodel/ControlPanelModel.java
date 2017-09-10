@@ -114,7 +114,7 @@ public class ControlPanelModel extends BaseObservable implements StatusListener 
     public final ScrubBarListener seekBarListener = new ScrubBarListener() {
         @Override
         public void onProgressChanged(
-                final ScrubBar seekBar,
+                @NonNull final ScrubBar seekBar,
                 final int progress,
                 final boolean fromUser) {
             if (fromUser) {
@@ -123,12 +123,12 @@ public class ControlPanelModel extends BaseObservable implements StatusListener 
         }
 
         @Override
-        public void onStartTrackingTouch(final ScrubBar seekBar) {
+        public void onStartTrackingTouch(@NonNull final ScrubBar seekBar) {
             mTracking = true;
         }
 
         @Override
-        public void onStopTrackingTouch(final ScrubBar seekBar) {
+        public void onStopTrackingTouch(@NonNull final ScrubBar seekBar) {
             mTracking = false;
             mPlayerModel.seekTo(seekBar.getProgress());
             setScrubText("");
@@ -136,7 +136,7 @@ public class ControlPanelModel extends BaseObservable implements StatusListener 
 
         @Override
         public void onAccuracyChanged(
-                final ScrubBar seekBar,
+                @NonNull final ScrubBar seekBar,
                 @Accuracy final int accuracy) {
             setScrubText(getScrubText(accuracy));
         }

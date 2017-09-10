@@ -33,8 +33,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
  */
 public abstract class AppCompatPreferenceActivity extends PreferenceActivity {
     private AppCompatDelegate mDelegate;
-    private AtomicBoolean mFinishAfterTransitionLatch = new AtomicBoolean();
-    private AtomicBoolean mFinishLatch = new AtomicBoolean();
+    private final AtomicBoolean mFinishAfterTransitionLatch = new AtomicBoolean();
+    private final AtomicBoolean mFinishLatch = new AtomicBoolean();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

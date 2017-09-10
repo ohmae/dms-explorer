@@ -12,6 +12,8 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
+import net.mm2d.dmsexplorer.domain.entity.ContentType;
+
 /**
  * SharedPreferencesに覚えさせる設定値を集中管理するクラス。
  *
@@ -35,6 +37,24 @@ public class Settings {
      */
     public Settings() {
         mStorage = new SettingsStorage();
+    }
+
+    /**
+     * 指定コンテンツ種別をアプリで再生するか否かを返す。
+     *
+     * @param type コンテンツ種別
+     * @return アプリで再生する場合true
+     */
+    public boolean isPlayMyself(@NonNull final ContentType type) {
+        switch (type) {
+            case MOVIE:
+                return isPlayMovieMyself();
+            case MUSIC:
+                return isPlayMusicMyself();
+            case PHOTO:
+                return isPlayPhotoMyself();
+        }
+        return false;
     }
 
     /**

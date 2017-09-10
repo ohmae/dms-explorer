@@ -14,10 +14,10 @@ import android.support.annotation.NonNull;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.text.TextUtils;
 
-import net.mm2d.android.upnp.cds.CdsObject;
 import net.mm2d.android.util.AribUtils;
 import net.mm2d.android.util.DrawableUtils;
 import net.mm2d.dmsexplorer.R;
+import net.mm2d.dmsexplorer.domain.entity.ContentEntity;
 import net.mm2d.dmsexplorer.util.ThemeUtils;
 
 /**
@@ -38,32 +38,31 @@ public class ContentItemModel {
 
     public ContentItemModel(
             @NonNull final Context context,
-            @NonNull final CdsObject object,
+            @NonNull final ContentEntity entity,
             final boolean selected) {
         this.selected = selected;
-        final String name = object.getTitle();
+        final String name = entity.getName();
         accentText = TextUtils.isEmpty(name) ? ""
                 : AribUtils.toDisplayableString(name.substring(0, 1));
         accentBackground = DrawableUtils.get(context, R.drawable.ic_circle);
         accentBackground.mutate();
         DrawableCompat.setTint(accentBackground, ThemeUtils.getIconColor(name));
         title = AribUtils.toDisplayableString(name);
-        description = object.getUpnpClass();
-        imageResource = getImageResource(object);
+        description = entity.getDescription();
+        imageResource = getImageResource(entity);
     }
 
     @DrawableRes
-    private static int getImageResource(@NonNull final CdsObject object) {
-        switch (object.getType()) {
-            case CdsObject.TYPE_CONTAINER:
+    private static int getImageResource(@NonNull final ContentEntity entity) {
+        switch (entity.getType()) {
+            case CONTAINER:
                 return R.drawable.ic_folder;
-            case CdsObject.TYPE_AUDIO:
-                return R.drawable.ic_music;
-            case CdsObject.TYPE_IMAGE:
-                return R.drawable.ic_image;
-            case CdsObject.TYPE_VIDEO:
+            case MOVIE:
                 return R.drawable.ic_movie;
-            case CdsObject.TYPE_UNKNOWN:
+            case MUSIC:
+                return R.drawable.ic_music;
+            case PHOTO:
+                return R.drawable.ic_image;
             default:
                 return 0;
         }

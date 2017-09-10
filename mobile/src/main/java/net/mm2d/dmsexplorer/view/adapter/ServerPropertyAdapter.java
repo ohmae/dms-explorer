@@ -15,17 +15,17 @@ import net.mm2d.android.upnp.cds.MediaServer;
 /**
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
  */
-public class ServerPropertyAdapter extends PropertyAdapter {
-    public ServerPropertyAdapter(
-            @NonNull Context context,
-            @NonNull MediaServer server) {
+class ServerPropertyAdapter extends PropertyAdapter {
+    ServerPropertyAdapter(
+            @NonNull final Context context,
+            @NonNull final MediaServer server) {
         super(context);
         setServerInfo(this, server);
     }
 
     private static void setServerInfo(
-            PropertyAdapter adapter,
-            MediaServer server) {
+            @NonNull final PropertyAdapter adapter,
+            @NonNull final MediaServer server) {
         adapter.addEntry("FriendlyName:", server.getFriendlyName());
         adapter.addEntry("SerialNumber:", server.getSerialNumber());
         adapter.addEntry("IP Address:", server.getIpAddress());

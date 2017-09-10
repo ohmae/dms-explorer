@@ -21,14 +21,14 @@ import android.support.v7.widget.RecyclerView.ItemAnimator;
 import android.support.v7.widget.RecyclerView.LayoutManager;
 import android.view.View;
 
-import net.mm2d.android.upnp.cds.CdsObject;
 import net.mm2d.android.upnp.cds.MediaServer;
 import net.mm2d.dmsexplorer.BR;
 import net.mm2d.dmsexplorer.Const;
 import net.mm2d.dmsexplorer.R;
 import net.mm2d.dmsexplorer.Repository;
-import net.mm2d.dmsexplorer.domain.model.MediaServerModel;
+import net.mm2d.dmsexplorer.domain.entity.ContentEntity;
 import net.mm2d.dmsexplorer.domain.model.ExploreListener;
+import net.mm2d.dmsexplorer.domain.model.MediaServerModel;
 import net.mm2d.dmsexplorer.settings.Settings;
 import net.mm2d.dmsexplorer.util.ToolbarThemeUtils;
 import net.mm2d.dmsexplorer.view.adapter.ContentListAdapter;
@@ -50,13 +50,13 @@ public class ContentListActivityModel extends BaseObservable implements ExploreL
     public interface CdsSelectListener {
         void onSelect(
                 @NonNull View v,
-                @NonNull CdsObject object);
+                @NonNull ContentEntity entity);
 
         void onLostSelection();
 
         void onExecute(
                 @NonNull View v,
-                @NonNull CdsObject object,
+                @NonNull ContentEntity entity,
                 boolean selected);
     }
 
@@ -151,47 +151,49 @@ public class ContentListActivityModel extends BaseObservable implements ExploreL
 
     private void onItemClick(
             @NonNull final View v,
-            @NonNull final CdsObject object) {
-        if (mMediaServerModel.enterChild(object)) {
+            @NonNull final ContentEntity entity) {
+        if (mMediaServerModel.enterChild(entity)) {
+            mCdsSelectListener.onLostSelection();
             return;
         }
-        final boolean selected = object.equals(mMediaServerModel.getSelectedObject());
-        mMediaServerModel.setSelectedObject(object);
-        mContentListAdapter.setSelectedObject(object);
+        final boolean selected = entity.equals(mMediaServerModel.getSelectedEntity());
+        mMediaServerModel.setSelectedEntity(entity);
+        mContentListAdapter.setSelectedEntity(entity);
         if (mSettings.shouldShowContentDetailOnTap()) {
             if (mTwoPane && selected) {
-                mCdsSelectListener.onExecute(v, object, true);
+                mCdsSelectListener.onExecute(v, entity, true);
             } else {
-                mCdsSelectListener.onSelect(v, object);
+                mCdsSelectListener.onSelect(v, entity);
             }
         } else {
-            mCdsSelectListener.onExecute(v, object, selected);
+            mCdsSelectListener.onExecute(v, entity, selected);
         }
     }
 
     private void onItemLongClick(
             @NonNull final View v,
-            @NonNull final CdsObject object) {
-        if (mMediaServerModel.enterChild(object)) {
+            @NonNull final ContentEntity entity) {
+        if (mMediaServerModel.enterChild(entity)) {
+            mCdsSelectListener.onLostSelection();
             return;
         }
-        final boolean selected = object.equals(mMediaServerModel.getSelectedObject());
-        mMediaServerModel.setSelectedObject(object);
-        mContentListAdapter.setSelectedObject(object);
+        final boolean selected = entity.equals(mMediaServerModel.getSelectedEntity());
+        mMediaServerModel.setSelectedEntity(entity);
+        mContentListAdapter.setSelectedEntity(entity);
 
         if (mSettings.shouldShowContentDetailOnTap()) {
-            mCdsSelectListener.onExecute(v, object, selected);
+            mCdsSelectListener.onExecute(v, entity, selected);
         } else {
-            mCdsSelectListener.onSelect(v, object);
+            mCdsSelectListener.onSelect(v, entity);
         }
     }
 
-    public void syncSelectedObject() {
-        final CdsObject object = mMediaServerModel.getSelectedObject();
-        if (!mContentListAdapter.setSelectedObject(object) || object == null) {
+    public void syncSelectedEntity() {
+        final ContentEntity entity = mMediaServerModel.getSelectedEntity();
+        if (!mContentListAdapter.setSelectedEntity(entity) || entity == null) {
             return;
         }
-        final int index = mContentListAdapter.indexOf(object);
+        final int index = mContentListAdapter.indexOf(entity);
         if (index >= 0) {
             setScrollPosition(index);
         }
@@ -210,7 +212,7 @@ public class ContentListActivityModel extends BaseObservable implements ExploreL
     }
 
     @Override
-    public void onUpdate(@NonNull final List<CdsObject> list) {
+    public void onUpdate(@NonNull final List<ContentEntity> list) {
         setSize(list.size());
         mHandler.post(() -> updateList(list));
     }
@@ -243,7 +245,7 @@ public class ContentListActivityModel extends BaseObservable implements ExploreL
         return 0;
     }
 
-    private void updateList(@NonNull final List<CdsObject> list) {
+    private void updateList(@NonNull final List<ContentEntity> list) {
         final int beforeSize = mContentListAdapter.getItemCount();
         final int afterSize = list.size();
         mHandler.removeCallbacks(mUpdateList);
@@ -256,23 +258,23 @@ public class ContentListActivityModel extends BaseObservable implements ExploreL
         mUpdateTime = System.currentTimeMillis();
         mContentListAdapter.clear();
         mContentListAdapter.addAll(list);
-        final CdsObject object = mMediaServerModel.getSelectedObject();
-        mContentListAdapter.setSelectedObject(object);
+        final ContentEntity entity = mMediaServerModel.getSelectedEntity();
+        mContentListAdapter.setSelectedEntity(entity);
         if (beforeSize < afterSize) {
             mContentListAdapter.notifyItemRangeInserted(beforeSize, afterSize - beforeSize);
         } else {
             mContentListAdapter.notifyDataSetChanged();
         }
-        if (beforeSize == 0 && object != null) {
-            setScrollPosition(list.indexOf(object));
+        if (beforeSize == 0 && entity != null) {
+            setScrollPosition(list.indexOf(entity));
         } else {
             mScrollPosition = INVALID_POSITION;
         }
     }
 
     public boolean isItemSelected() {
-        final CdsObject object = mMediaServerModel.getSelectedObject();
-        return object != null && object.isItem();
+        final ContentEntity entity = mMediaServerModel.getSelectedEntity();
+        return entity != null && entity.getType().isPlayable();
     }
 
     public void terminate() {

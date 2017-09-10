@@ -16,9 +16,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import net.mm2d.android.upnp.cds.CdsObject;
 import net.mm2d.dmsexplorer.R;
 import net.mm2d.dmsexplorer.databinding.ContentListItemBinding;
+import net.mm2d.dmsexplorer.domain.entity.ContentEntity;
 import net.mm2d.dmsexplorer.viewmodel.ContentItemModel;
 
 import java.util.ArrayList;
@@ -35,28 +35,28 @@ public class ContentListAdapter
     public interface OnItemClickListener {
         void onItemClick(
                 @NonNull View v,
-                @NonNull CdsObject object);
+                @NonNull ContentEntity entity);
     }
 
     public interface OnItemLongClickListener {
         void onItemLongClick(
                 @NonNull View v,
-                @NonNull CdsObject object);
+                @NonNull ContentEntity entity);
     }
 
-    private static final OnItemClickListener ON_ITEM_CLICK_LISTENER = (v, object) -> {
+    private static final OnItemClickListener ON_ITEM_CLICK_LISTENER = (v, entity) -> {
     };
-    private static final OnItemLongClickListener ON_ITEM_LONG_CLICK_LISTENER = (v, object) -> {
+    private static final OnItemLongClickListener ON_ITEM_LONG_CLICK_LISTENER = (v, entity) -> {
     };
     @NonNull
     private final LayoutInflater mInflater;
     @NonNull
-    private final List<CdsObject> mList = new ArrayList<>();
+    private final List<ContentEntity> mList = new ArrayList<>();
     @NonNull
     private OnItemClickListener mClickListener = ON_ITEM_CLICK_LISTENER;
     @NonNull
     private OnItemLongClickListener mLongClickListener = ON_ITEM_LONG_CLICK_LISTENER;
-    private CdsObject mSelectedObject;
+    private ContentEntity mSelectedEntity;
 
     public ContentListAdapter(@NonNull final Context context) {
         mInflater = LayoutInflater.from(context);
@@ -94,60 +94,60 @@ public class ContentListAdapter
         mList.clear();
     }
 
-    public void addAll(@NonNull final Collection<? extends CdsObject> objects) {
-        mList.addAll(objects);
+    public void addAll(@NonNull final Collection<? extends ContentEntity> entities) {
+        mList.addAll(entities);
     }
 
-    public int add(@NonNull final CdsObject obj) {
-        mList.add(obj);
+    public int add(@NonNull final ContentEntity entity) {
+        mList.add(entity);
         return mList.size() - 1;
     }
 
-    public int remove(@NonNull final CdsObject obj) {
-        final int position = mList.indexOf(obj);
+    public int remove(@NonNull final ContentEntity entity) {
+        final int position = mList.indexOf(entity);
         if (position >= 0) {
             mList.remove(position);
         }
         return position;
     }
 
-    public int indexOf(@NonNull final CdsObject obj) {
-        return mList.indexOf(obj);
+    public int indexOf(@NonNull final ContentEntity entity) {
+        return mList.indexOf(entity);
     }
 
-    public CdsObject getSelectedObject() {
-        return mSelectedObject;
+    public ContentEntity getSelectedEntity() {
+        return mSelectedEntity;
     }
 
-    public boolean setSelectedObject(@Nullable final CdsObject object) {
-        if (mSelectedObject != null && mSelectedObject.equals(object)) {
+    public boolean setSelectedEntity(@Nullable final ContentEntity entity) {
+        if (mSelectedEntity != null && mSelectedEntity.equals(entity)) {
             return false;
         }
-        final CdsObject previous = mSelectedObject;
-        mSelectedObject = object;
+        final ContentEntity previous = mSelectedEntity;
+        mSelectedEntity = entity;
         notifyItemChangedIfPossible(previous);
-        notifyItemChangedIfPossible(object);
+        notifyItemChangedIfPossible(entity);
         return true;
     }
 
-    private void notifyItemChangedIfPossible(@Nullable final CdsObject object) {
-        if (object == null) {
+    private void notifyItemChangedIfPossible(@Nullable final ContentEntity entity) {
+        if (entity == null) {
             return;
         }
-        final int position = mList.indexOf(object);
+        final int position = mList.indexOf(entity);
         if (position < 0) {
             return;
         }
         notifyItemChanged(position);
     }
 
-    public void clearSelectedObject() {
-        setSelectedObject(null);
+    public void clearSelectedEntity() {
+        setSelectedEntity(null);
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
         private final ContentListItemBinding mBinding;
-        private CdsObject mObject;
+        private ContentEntity mEntity;
 
         ViewHolder(@NonNull final ContentListItemBinding binding) {
             super(binding.getRoot());
@@ -156,20 +156,20 @@ public class ContentListAdapter
             mBinding = binding;
         }
 
-        void applyItem(@NonNull final CdsObject object) {
-            mObject = object;
-            final boolean selected = object.equals(mSelectedObject);
+        void applyItem(@NonNull final ContentEntity entity) {
+            mEntity = entity;
+            final boolean selected = entity.equals(mSelectedEntity);
             itemView.setSelected(selected);
-            mBinding.setModel(new ContentItemModel(itemView.getContext(), object, selected));
+            mBinding.setModel(new ContentItemModel(itemView.getContext(), entity, selected));
             mBinding.executePendingBindings();
         }
 
         private void onClick(@NonNull View v) {
-            mClickListener.onItemClick(v, mObject);
+            mClickListener.onItemClick(v, mEntity);
         }
 
         public boolean onLongClick(@NonNull View v) {
-            mLongClickListener.onItemLongClick(v, mObject);
+            mLongClickListener.onItemLongClick(v, mEntity);
             return true;
         }
     }

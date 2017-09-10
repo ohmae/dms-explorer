@@ -12,10 +12,10 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.view.View;
 
-import net.mm2d.android.upnp.cds.CdsObject;
 import net.mm2d.android.util.ActivityUtils;
 import net.mm2d.dmsexplorer.R;
 import net.mm2d.dmsexplorer.databinding.ContentListActivityBinding;
+import net.mm2d.dmsexplorer.domain.entity.ContentEntity;
 import net.mm2d.dmsexplorer.util.ItemSelectUtils;
 import net.mm2d.dmsexplorer.view.ContentDetailActivity;
 import net.mm2d.dmsexplorer.view.base.BaseActivity;
@@ -39,7 +39,7 @@ class ContentListActivityDelegateOnePane extends ContentListActivityDelegate {
     @Override
     public void onSelect(
             @NonNull final View v,
-            @NonNull final CdsObject object) {
+            @NonNull final ContentEntity entity) {
         startDetailActivity(v);
     }
 
@@ -50,9 +50,9 @@ class ContentListActivityDelegateOnePane extends ContentListActivityDelegate {
     @Override
     public void onExecute(
             @NonNull final View v,
-            @NonNull final CdsObject object,
+            @NonNull final ContentEntity object,
             final boolean selected) {
-        if (object.hasProtectedResource()) {
+        if (object.isProtected()) {
             Snackbar.make(v, R.string.toast_not_support_drm, Snackbar.LENGTH_LONG).show();
             return;
         }

@@ -18,6 +18,8 @@ import com.google.firebase.analytics.FirebaseAnalytics.Param;
 import net.mm2d.android.upnp.avt.MediaRenderer;
 import net.mm2d.android.upnp.cds.CdsObject;
 import net.mm2d.android.upnp.cds.MediaServer;
+import net.mm2d.dmsexplorer.domain.entity.ContentEntity;
+import net.mm2d.dmsexplorer.domain.entity.ContentType;
 import net.mm2d.dmsexplorer.domain.model.MediaRendererModel;
 import net.mm2d.dmsexplorer.domain.model.MediaServerModel;
 import net.mm2d.dmsexplorer.domain.model.PlaybackTargetModel;
@@ -62,10 +64,11 @@ public class EventLogger {
         if (targetModel == null) {
             return;
         }
-        final CdsObject object = targetModel.getCdsObject();
+        final ContentEntity entity = targetModel.getContentEntity();
+        final CdsObject object = (CdsObject) entity.getObject();
         final Bundle bundle = new Bundle();
         bundle.putString(Param.ITEM_VARIANT, object.getValue(CdsObject.RES_PROTOCOL_INFO));
-        bundle.putString(Param.CONTENT_TYPE, getTypeString(object.getType()));
+        bundle.putString(Param.CONTENT_TYPE, getTypeString(entity.getType()));
         bundle.putString(Param.ORIGIN, object.hasProtectedResource() ? "dlna-dtcp" : "dlna");
         bundle.putString(Param.DESTINATION, "dmr");
         sAnalytics.logEvent(Event.SELECT_CONTENT, bundle);
@@ -76,38 +79,19 @@ public class EventLogger {
         if (targetModel == null) {
             return;
         }
-        final CdsObject object = targetModel.getCdsObject();
+        final ContentEntity entity = targetModel.getContentEntity();
+        final CdsObject object = (CdsObject) entity.getObject();
         final Bundle bundle = new Bundle();
         bundle.putString(Param.ITEM_VARIANT, object.getValue(CdsObject.RES_PROTOCOL_INFO));
-        bundle.putString(Param.CONTENT_TYPE, getTypeString(object.getType()));
+        bundle.putString(Param.CONTENT_TYPE, getTypeString(entity.getType()));
         bundle.putString(Param.ORIGIN, "dlna");
-        bundle.putString(Param.DESTINATION, isMyself(object.getType()) ? "myself" : "other");
+        final Settings settings = new Settings();
+        bundle.putString(Param.DESTINATION, settings.isPlayMyself(entity.getType()) ? "myself" : "other");
         sAnalytics.logEvent(Event.SELECT_CONTENT, bundle);
     }
 
-    private static boolean isMyself(final int type) {
-        final Settings settings = new Settings();
-        switch (type) {
-            case CdsObject.TYPE_VIDEO:
-                return settings.isPlayMovieMyself();
-            case CdsObject.TYPE_AUDIO:
-                return settings.isPlayMusicMyself();
-            case CdsObject.TYPE_IMAGE:
-                return settings.isPlayPhotoMyself();
-        }
-        return false;
-    }
-
     @NonNull
-    private static String getTypeString(final int type) {
-        switch (type) {
-            case CdsObject.TYPE_VIDEO:
-                return "movie";
-            case CdsObject.TYPE_AUDIO:
-                return "music";
-            case CdsObject.TYPE_IMAGE:
-                return "photo";
-        }
-        return "unknown";
+    private static String getTypeString(@NonNull final ContentType type) {
+        return type.name().toLowerCase();
     }
 }

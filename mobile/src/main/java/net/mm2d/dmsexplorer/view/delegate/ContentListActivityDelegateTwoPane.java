@@ -16,9 +16,9 @@ import android.transition.Slide;
 import android.view.Gravity;
 import android.view.View;
 
-import net.mm2d.android.upnp.cds.CdsObject;
 import net.mm2d.dmsexplorer.R;
 import net.mm2d.dmsexplorer.databinding.ContentListActivityBinding;
+import net.mm2d.dmsexplorer.domain.entity.ContentEntity;
 import net.mm2d.dmsexplorer.util.ItemSelectUtils;
 import net.mm2d.dmsexplorer.view.ContentDetailFragment;
 import net.mm2d.dmsexplorer.view.base.BaseActivity;
@@ -44,7 +44,7 @@ class ContentListActivityDelegateTwoPane extends ContentListActivityDelegate {
     @Override
     public void onSelect(
             @NonNull final View v,
-            @NonNull final CdsObject object) {
+            @NonNull final ContentEntity entity) {
         setDetailFragment(true);
     }
 
@@ -56,9 +56,9 @@ class ContentListActivityDelegateTwoPane extends ContentListActivityDelegate {
     @Override
     public void onExecute(
             @NonNull final View v,
-            @NonNull final CdsObject object,
+            @NonNull final ContentEntity entity,
             final boolean selected) {
-        if (object.hasProtectedResource()) {
+        if (entity.isProtected()) {
             if (!selected) {
                 setDetailFragment(true);
             }
