@@ -7,6 +7,8 @@ import android.text.TextUtils;
 
 import net.mm2d.android.upnp.cds.CdsObject;
 import net.mm2d.android.upnp.cds.Tag;
+import net.mm2d.dmsexplorer.domain.formatter.CdsFormatter;
+import net.mm2d.dmsexplorer.util.StringJoiner;
 
 /**
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
@@ -69,6 +71,29 @@ public class CdsContentEntity implements ContentEntity {
     @NonNull
     @Override
     public String getDescription() {
+        final StringJoiner stringJoiner = new StringJoiner();
+        switch (mType) {
+            case MOVIE:
+                stringJoiner.join(CdsFormatter.makeChannel(mObject));
+                stringJoiner.join(CdsFormatter.makeScheduleOrDate(mObject));
+                break;
+            case MUSIC:
+                stringJoiner.join(CdsFormatter.makeArtistsSimple(mObject));
+                stringJoiner.join(CdsFormatter.makeAlbum(mObject), " / ");
+                break;
+            case PHOTO:
+                stringJoiner.join(CdsFormatter.makeDate(mObject));
+                break;
+            case CONTAINER:
+                stringJoiner.join(CdsFormatter.makeChannel(mObject));
+                stringJoiner.join(CdsFormatter.makeDate(mObject), ' ');
+                break;
+            default:
+                break;
+        }
+        if (stringJoiner.length() != 0) {
+            return stringJoiner.toString();
+        }
         return mObject.getUpnpClass();
     }
 
