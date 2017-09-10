@@ -44,7 +44,7 @@ public class ContentListActivityModel extends BaseObservable implements ExploreL
     private static final int INVALID_POSITION = -1;
     private static final int FIRST_COUNT = 20;
     private static final int SECOND_COUNT = 300;
-    private static final long FIRST_INTERVAL = 150;
+    private static final long FIRST_INTERVAL = 50;
     private static final long SECOND_INTERVAL = 300;
 
     public interface CdsSelectListener {
@@ -96,6 +96,7 @@ public class ContentListActivityModel extends BaseObservable implements ExploreL
     private Runnable mUpdateList = () -> {
     };
     private long mUpdateTime;
+    private boolean mTimerResetLatch;
 
     public ContentListActivityModel(
             @NonNull final Context context,
@@ -229,7 +230,7 @@ public class ContentListActivityModel extends BaseObservable implements ExploreL
     private long calculateDelay(
             final int before,
             final int after) {
-        if (before >= after) {
+        if (before > after) {
             return 0;
         }
         final long diff = System.currentTimeMillis() - mUpdateTime;
@@ -248,6 +249,13 @@ public class ContentListActivityModel extends BaseObservable implements ExploreL
     private void updateList(@NonNull final List<ContentEntity> list) {
         final int beforeSize = mContentListAdapter.getItemCount();
         final int afterSize = list.size();
+        if (beforeSize == afterSize) {
+            return;
+        }
+        if (mTimerResetLatch && beforeSize == 0 && afterSize == 1) {
+            mUpdateTime = System.currentTimeMillis();
+        }
+        mTimerResetLatch = afterSize == 0;
         mHandler.removeCallbacks(mUpdateList);
         final long delay = calculateDelay(beforeSize, afterSize);
         if (delay > 0) {
