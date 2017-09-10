@@ -153,6 +153,7 @@ public class ContentListActivityModel extends BaseObservable implements ExploreL
             @NonNull final View v,
             @NonNull final ContentEntity entity) {
         if (mMediaServerModel.enterChild(entity)) {
+            mCdsSelectListener.onLostSelection();
             return;
         }
         final boolean selected = entity.equals(mMediaServerModel.getSelectedEntity());
@@ -173,6 +174,7 @@ public class ContentListActivityModel extends BaseObservable implements ExploreL
             @NonNull final View v,
             @NonNull final ContentEntity entity) {
         if (mMediaServerModel.enterChild(entity)) {
+            mCdsSelectListener.onLostSelection();
             return;
         }
         final boolean selected = entity.equals(mMediaServerModel.getSelectedEntity());
