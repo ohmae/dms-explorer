@@ -24,7 +24,7 @@ import io.reactivex.disposables.Disposable;
 /**
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
  */
-public class ContentDirectoryEntity {
+public class ContentDirectoryEntity implements DirectoryEntity {
     private static final String ROOT_OBJECT_ID = "0";
     private static final String ROOT_TITLE = "";
     @NonNull
@@ -66,15 +66,18 @@ public class ContentDirectoryEntity {
     }
 
     @NonNull
+    @Override
     public String getParentName() {
         return mParentTitle;
     }
 
+    @Override
     public boolean isInProgress() {
         return mInProgress;
     }
 
     @NonNull
+    @Override
     public List<ContentEntity> getEntities() {
         return mList;
     }
@@ -92,6 +95,7 @@ public class ContentDirectoryEntity {
         return new ContentDirectoryEntity(object.getObjectId(), object.getTitle());
     }
 
+    @Override
     public void setSelectedEntity(@Nullable final ContentEntity entity) {
         if (!mList.contains(entity)) {
             mSelectedEntity = null;
@@ -101,6 +105,7 @@ public class ContentDirectoryEntity {
     }
 
     @Nullable
+    @Override
     public ContentEntity getSelectedEntity() {
         return mSelectedEntity;
     }
