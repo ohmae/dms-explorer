@@ -46,19 +46,9 @@ public class MediaServerModel implements ExploreListener {
     private final MediaServer mMediaServer;
     private final Deque<ContentDirectoryEntity> mHistoryStack = new LinkedList<>();
     private String mPath;
-    private final static ExploreListener EXPLORE_LISTENER = new ExploreListener() {
-        @Override
-        public void onStart() {
-        }
-
-        @Override
-        public void onUpdate(@NonNull final List<CdsObject> list) {
-        }
-
-        @Override
-        public void onComplete() {
-        }
-    };
+    @NonNull
+    private final static ExploreListener EXPLORE_LISTENER = new ExploreListenerAdapter();
+    @NonNull
     private volatile ExploreListener mExploreListener = EXPLORE_LISTENER;
 
     public MediaServerModel(

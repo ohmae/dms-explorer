@@ -12,6 +12,7 @@ import android.support.annotation.Nullable;
 
 import net.mm2d.android.upnp.cds.CdsObject;
 import net.mm2d.dmsexplorer.domain.model.ExploreListener;
+import net.mm2d.dmsexplorer.domain.model.ExploreListenerAdapter;
 import net.mm2d.util.Log;
 
 import java.util.ArrayList;
@@ -34,19 +35,7 @@ public class ContentDirectoryEntity {
     private CdsObject mSelectedObject;
     @NonNull
     private final List<CdsObject> mList = new ArrayList<>();
-    private static final ExploreListener ENTRY_LISTENER = new ExploreListener() {
-        @Override
-        public void onStart() {
-        }
-
-        @Override
-        public void onUpdate(@NonNull final List<CdsObject> list) {
-        }
-
-        @Override
-        public void onComplete() {
-        }
-    };
+    private static final ExploreListener ENTRY_LISTENER = new ExploreListenerAdapter();
     @NonNull
     private ExploreListener mEntryListener = ENTRY_LISTENER;
     private volatile boolean mInProgress = true;
