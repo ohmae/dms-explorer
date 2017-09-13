@@ -20,6 +20,7 @@ import java.util.List;
 
 import io.reactivex.Completable;
 import io.reactivex.Observable;
+import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.Single;
 import io.reactivex.SingleOnSubscribe;
 import io.reactivex.schedulers.Schedulers;
@@ -142,25 +143,13 @@ public class MediaServer extends DeviceWrapper {
             @Nullable final String sortCriteria,
             final int startingIndex,
             final int requestedCount) {
-        return browseInner(objectId, filter, sortCriteria, startingIndex, requestedCount)
-                .flatMap(Observable::fromIterable)
-                .subscribeOn(Schedulers.io());
-    }
-
-    @NonNull
-    private Observable<List<CdsObject>> browseInner(
-            @NonNull final String objectId,
-            @Nullable final String filter,
-            @Nullable final String sortCriteria,
-            final int startingIndex,
-            final int requestedCount) {
         final BrowseArgument argument = new BrowseArgument()
                 .setObjectId(objectId)
                 .setBrowseDirectChildren()
                 .setFilter(filter)
                 .setSortCriteria(sortCriteria);
         final int request = requestedCount == 0 ? Integer.MAX_VALUE : requestedCount;
-        return Observable.create(emitter -> {
+        return Observable.create((ObservableOnSubscribe<List<CdsObject>>) emitter -> {
             int start = startingIndex;
             while (!emitter.isDisposed()) {
                 argument.setStartIndex(start)
@@ -184,7 +173,8 @@ public class MediaServer extends DeviceWrapper {
                 }
             }
             emitter.onComplete();
-        });
+        }).flatMap(Observable::fromIterable)
+                .subscribeOn(Schedulers.io());
     }
 
     /**
