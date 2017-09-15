@@ -90,6 +90,9 @@ public class MovieActivityModel extends BaseObservable
         mVideoView = videoView;
         mRepository = repository;
         mServerModel = repository.getMediaServerModel();
+        if (mServerModel == null) {
+            throw new IllegalStateException();
+        }
         mSettings = new Settings();
         mRepeatMode = mSettings.getRepeatModeMovie();
         mRepeatIconId = mRepeatMode.getIconId();
