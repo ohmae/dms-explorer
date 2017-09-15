@@ -97,7 +97,7 @@ public class ContentDirectoryEntity implements DirectoryEntity {
 
     @Override
     public void setSelectedEntity(@Nullable final ContentEntity entity) {
-        if (!mList.contains(entity)) {
+        if (entity == null || !mList.contains(entity)) {
             mSelectedEntity = null;
             return;
         }
