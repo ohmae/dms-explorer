@@ -44,7 +44,7 @@ public class MediaServer extends DeviceWrapper {
      *
      * @param device デバイス
      */
-    MediaServer(@NonNull Device device) {
+    MediaServer(@NonNull final Device device) {
         super(device);
         if (!device.getDeviceType().startsWith(Cds.MS_DEVICE_TYPE)) {
             throw new IllegalArgumentException("device is not MediaServer");
@@ -88,7 +88,7 @@ public class MediaServer extends DeviceWrapper {
      * @return 結果
      */
     @NonNull
-    public Observable<CdsObject> browse(@NonNull String objectId) {
+    public Observable<CdsObject> browse(@NonNull final String objectId) {
         return browse(objectId, "*", null);
     }
 
@@ -102,9 +102,9 @@ public class MediaServer extends DeviceWrapper {
      */
     @NonNull
     public Observable<CdsObject> browse(
-            @NonNull String objectId,
-            @Nullable String filter,
-            @Nullable String sortCriteria) {
+            @NonNull final String objectId,
+            @Nullable final String filter,
+            @Nullable final String sortCriteria) {
         return browse(objectId, filter, sortCriteria, 0, 0);
     }
 
@@ -118,9 +118,9 @@ public class MediaServer extends DeviceWrapper {
      */
     @NonNull
     public Observable<CdsObject> browse(
-            @NonNull String objectId,
-            int startingIndex,
-            int requestedCount) {
+            @NonNull final String objectId,
+            final int startingIndex,
+            final int requestedCount) {
         return browse(objectId, "*", null, startingIndex, requestedCount);
     }
 

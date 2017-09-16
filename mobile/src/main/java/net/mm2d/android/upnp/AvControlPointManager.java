@@ -105,7 +105,7 @@ public class AvControlPointManager {
      *
      * @param interfaces 使用するインターフェース
      */
-    public void initialize(@Nullable Collection<NetworkInterface> interfaces) {
+    public void initialize(@Nullable final Collection<NetworkInterface> interfaces) {
         if (mInitialized.get()) {
             terminate();
         }

@@ -82,12 +82,12 @@ public class MsControlPoint implements ControlPointWrapper {
 
     private final DiscoveryListener mDiscoveryListener = new DiscoveryListener() {
         @Override
-        public void onDiscover(@NonNull Device device) {
+        public void onDiscover(@NonNull final Device device) {
             discoverDevice(device);
         }
 
         @Override
-        public void onLost(@NonNull Device device) {
+        public void onLost(@NonNull final Device device) {
             lostDevice(device);
         }
     };
@@ -155,11 +155,11 @@ public class MsControlPoint implements ControlPointWrapper {
      * @param device Device
      * @return MediaServer
      */
-    protected MediaServer createMediaServer(Device device) {
+    protected MediaServer createMediaServer(@NonNull final Device device) {
         return new MediaServer(device);
     }
 
-    private void discoverDevice(@NonNull Device device) {
+    private void discoverDevice(@NonNull final Device device) {
         if (!device.getDeviceType().startsWith(Cds.MS_DEVICE_TYPE)) {
             return;
         }
@@ -175,7 +175,7 @@ public class MsControlPoint implements ControlPointWrapper {
         }
     }
 
-    private void lostDevice(@NonNull Device device) {
+    private void lostDevice(@NonNull final Device device) {
         final MediaServer server = mMediaServerMap.remove(device.getUdn());
         if (server == null) {
             return;
@@ -190,7 +190,7 @@ public class MsControlPoint implements ControlPointWrapper {
      *
      * @param listener リスナー
      */
-    public void setMsDiscoveryListener(@Nullable MsDiscoveryListener listener) {
+    public void setMsDiscoveryListener(@Nullable final MsDiscoveryListener listener) {
         mMsDiscoveryListener = listener;
     }
 
@@ -199,7 +199,7 @@ public class MsControlPoint implements ControlPointWrapper {
      *
      * @param listener リスナー
      */
-    public void setContainerUpdateIdsListener(@Nullable ContainerUpdateIdsListener listener) {
+    public void setContainerUpdateIdsListener(@Nullable final ContainerUpdateIdsListener listener) {
         mContainerUpdateIdsListener = listener;
     }
 
@@ -208,7 +208,7 @@ public class MsControlPoint implements ControlPointWrapper {
      *
      * @param listener リスナー
      */
-    public void setSystemUpdateIdListener(@NonNull SystemUpdateIdListener listener) {
+    public void setSystemUpdateIdListener(@NonNull final SystemUpdateIdListener listener) {
         mSystemUpdateIdListener = listener;
     }
 
@@ -245,7 +245,7 @@ public class MsControlPoint implements ControlPointWrapper {
      */
     @Nullable
     @Override
-    public MediaServer getDevice(@Nullable String udn) {
+    public MediaServer getDevice(@Nullable final String udn) {
         return mMediaServerMap.get(udn);
     }
 
@@ -255,7 +255,7 @@ public class MsControlPoint implements ControlPointWrapper {
      * @param controlPoint ControlPoint
      */
     @Override
-    public void initialize(@NonNull ControlPoint controlPoint) {
+    public void initialize(@NonNull final ControlPoint controlPoint) {
         if (mInitialized.get()) {
             terminate(controlPoint);
         }
@@ -271,7 +271,7 @@ public class MsControlPoint implements ControlPointWrapper {
      * @param controlPoint ControlPoint
      */
     @Override
-    public void terminate(@NonNull ControlPoint controlPoint) {
+    public void terminate(@NonNull final ControlPoint controlPoint) {
         if (!mInitialized.getAndSet(false)) {
             return;
         }

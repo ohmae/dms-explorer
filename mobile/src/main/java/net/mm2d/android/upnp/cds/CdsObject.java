@@ -841,7 +841,7 @@ public class CdsObject implements Parcelable {
      * @param element objectを示すelement
      */
     @NonNull
-    private static TagMap parseElement(@NonNull Element element) {
+    private static TagMap parseElement(@NonNull final Element element) {
         final TagMap map = new TagMap();
         map.putTag("", new Tag(element, true));
         Node node = element.getFirstChild();
@@ -856,8 +856,8 @@ public class CdsObject implements Parcelable {
 
     @ContentType
     private static int getType(
-            boolean isItem,
-            String upnpClass) {
+            final boolean isItem,
+            final String upnpClass) {
         if (!isItem) {
             return TYPE_CONTAINER;
         } else if (upnpClass.startsWith(IMAGE_ITEM)) {
@@ -964,7 +964,7 @@ public class CdsObject implements Parcelable {
      * @see #getValue(String, int)
      */
     @Nullable
-    public String getValue(@NonNull String xpath) {
+    public String getValue(@NonNull final String xpath) {
         return mTagMap.getValue(xpath);
     }
 
@@ -990,8 +990,8 @@ public class CdsObject implements Parcelable {
      */
     @Nullable
     public String getValue(
-            @NonNull String xpath,
-            int index) {
+            @NonNull final String xpath,
+            final int index) {
         return mTagMap.getValue(xpath, index);
     }
 
@@ -1008,8 +1008,8 @@ public class CdsObject implements Parcelable {
      */
     @Nullable
     public String getValue(
-            @Nullable String tagName,
-            @Nullable String attrName) {
+            @Nullable final String tagName,
+            @Nullable final String attrName) {
         return mTagMap.getValue(tagName, attrName);
     }
 
@@ -1026,9 +1026,9 @@ public class CdsObject implements Parcelable {
      */
     @Nullable
     public String getValue(
-            @Nullable String tagName,
-            @Nullable String attrName,
-            int index) {
+            @Nullable final String tagName,
+            @Nullable final String attrName,
+            final int index) {
         return mTagMap.getValue(tagName, attrName, index);
     }
 
@@ -1041,7 +1041,7 @@ public class CdsObject implements Parcelable {
      * @return Tagインスタンス、見つからない場合はnull
      */
     @Nullable
-    public Tag getTag(@Nullable String tagName) {
+    public Tag getTag(@Nullable final String tagName) {
         return mTagMap.getTag(tagName);
     }
 
@@ -1054,8 +1054,8 @@ public class CdsObject implements Parcelable {
      */
     @Nullable
     public Tag getTag(
-            @Nullable String tagName,
-            int index) {
+            @Nullable final String tagName,
+            final int index) {
         return mTagMap.getTag(tagName, index);
     }
 
@@ -1090,7 +1090,7 @@ public class CdsObject implements Parcelable {
      * @return Tagインスタンスリスト
      */
     @Nullable
-    public List<Tag> getTagList(@Nullable String tagName) {
+    public List<Tag> getTagList(@Nullable final String tagName) {
         return mTagMap.getTagList(tagName);
     }
 
@@ -1105,8 +1105,8 @@ public class CdsObject implements Parcelable {
      * @see #getValue(String)
      */
     public int getIntValue(
-            @NonNull String xpath,
-            int defaultValue) {
+            @NonNull final String xpath,
+            final int defaultValue) {
         return parseIntSafely(getValue(xpath), defaultValue);
     }
 
@@ -1122,9 +1122,9 @@ public class CdsObject implements Parcelable {
      * @see #getValue(String, int)
      */
     public int getIntValue(
-            @NonNull String xpath,
-            int index,
-            int defaultValue) {
+            @NonNull final String xpath,
+            final int index,
+            final int defaultValue) {
         return parseIntSafely(getValue(xpath, index), defaultValue);
     }
 
@@ -1138,7 +1138,7 @@ public class CdsObject implements Parcelable {
      * @see #getValue(String, int)
      */
     @Nullable
-    public Date getDateValue(@NonNull String xpath) {
+    public Date getDateValue(@NonNull final String xpath) {
         return parseDate(getValue(xpath));
     }
 
@@ -1154,8 +1154,8 @@ public class CdsObject implements Parcelable {
      */
     @Nullable
     public Date getDateValue(
-            @NonNull String xpath,
-            int index) {
+            @NonNull final String xpath,
+            final int index) {
         return parseDate(getValue(xpath, index));
     }
 
@@ -1167,8 +1167,8 @@ public class CdsObject implements Parcelable {
      * @return パース結果
      */
     public static int parseIntSafely(
-            @Nullable String value,
-            int defaultValue) {
+            @Nullable final String value,
+            final int defaultValue) {
         return parseIntSafely(value, 10, defaultValue);
     }
 
@@ -1181,9 +1181,9 @@ public class CdsObject implements Parcelable {
      * @return パース結果
      */
     public static int parseIntSafely(
-            @Nullable String value,
-            int radix,
-            int defaultValue) {
+            @Nullable final String value,
+            final int radix,
+            final int defaultValue) {
         if (TextUtils.isEmpty(value)) {
             return defaultValue;
         }
@@ -1198,6 +1198,25 @@ public class CdsObject implements Parcelable {
     private static final DateFormat FORMAT_T = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.JAPAN);
     private static final DateFormat FORMAT_Z = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ", Locale.JAPAN);
 
+    private static Date parseD(@NonNull final String value) throws ParseException {
+        synchronized (FORMAT_D) {
+            return FORMAT_D.parse(value);
+        }
+    }
+
+    private static Date parseT(@NonNull final String value) throws ParseException {
+        synchronized (FORMAT_T) {
+            return FORMAT_T.parse(value);
+        }
+    }
+
+    private static Date parseZ(@NonNull final String value) throws ParseException {
+        synchronized (FORMAT_Z) {
+            return FORMAT_Z.parse(value);
+        }
+    }
+
+
     /**
      * 与えられた文字列をパースしてDateとして戻す。
      *
@@ -1208,28 +1227,21 @@ public class CdsObject implements Parcelable {
      * @return パース結果、パースできない場合null
      */
     @Nullable
-    public static Date parseDate(@Nullable String value) {
+    public static Date parseDate(@Nullable final String value) {
         if (TextUtils.isEmpty(value)) {
             return null;
         }
         try {
             if (value.length() <= 10) {
-                synchronized (FORMAT_D) {
-                    return FORMAT_D.parse(value);
-                }
+                return parseD(value);
             }
             if (value.length() <= 19) {
-                synchronized (FORMAT_T) {
-                    return FORMAT_T.parse(value);
-                }
-            } else {
-                if (value.lastIndexOf(':') == 22) {
-                    value = value.substring(0, 22) + value.substring(23);
-                }
-                synchronized (FORMAT_Z) {
-                    return FORMAT_Z.parse(value);
-                }
+                return parseT(value);
             }
+            if (value.lastIndexOf(':') == 22) {
+                return parseZ(value.substring(0, 22) + value.substring(23));
+            }
+            return parseZ(value);
         } catch (final ParseException e) {
             return null;
         }
@@ -1282,7 +1294,7 @@ public class CdsObject implements Parcelable {
      * @return MimeTypeの文字列。抽出に失敗した場合null
      */
     @Nullable
-    public static String extractMimeTypeFromProtocolInfo(@Nullable String protocolInfo) {
+    public static String extractMimeTypeFromProtocolInfo(@Nullable final String protocolInfo) {
         if (TextUtils.isEmpty(protocolInfo)) {
             return null;
         }
@@ -1304,7 +1316,7 @@ public class CdsObject implements Parcelable {
      * @return Protocolの文字列。抽出に失敗した場合null
      */
     @Nullable
-    public static String extractProtocolFromProtocolInfo(@Nullable String protocolInfo) {
+    public static String extractProtocolFromProtocolInfo(@Nullable final String protocolInfo) {
         if (TextUtils.isEmpty(protocolInfo)) {
             return null;
         }
@@ -1341,7 +1353,7 @@ public class CdsObject implements Parcelable {
     }
 
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(final Object o) {
         if (this == o) {
             return true;
         }
@@ -1357,7 +1369,7 @@ public class CdsObject implements Parcelable {
      *
      * @param in Parcel
      */
-    private CdsObject(@NonNull Parcel in) {
+    private CdsObject(@NonNull final Parcel in) {
         mUdn = in.readString();
         mItem = in.readByte() != 0;
         mRootTag = in.readParcelable(Tag.class.getClassLoader());
@@ -1372,7 +1384,7 @@ public class CdsObject implements Parcelable {
 
     @Override
     public void writeToParcel(
-            @NonNull Parcel dest,
+            @NonNull final Parcel dest,
             int flags) {
         dest.writeString(mUdn);
         dest.writeByte((byte) (mItem ? 1 : 0));
@@ -1390,12 +1402,12 @@ public class CdsObject implements Parcelable {
      */
     public static final Creator<CdsObject> CREATOR = new Creator<CdsObject>() {
         @Override
-        public CdsObject createFromParcel(@NonNull Parcel in) {
+        public CdsObject createFromParcel(@NonNull final Parcel in) {
             return new CdsObject(in);
         }
 
         @Override
-        public CdsObject[] newArray(int size) {
+        public CdsObject[] newArray(final int size) {
             return new CdsObject[size];
         }
     };

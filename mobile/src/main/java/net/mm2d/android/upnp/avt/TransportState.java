@@ -24,6 +24,7 @@ public enum TransportState {
     RECORDING,
     NO_MEDIA_PRESENT,
     OTHER;
+    @NonNull
     private static final Map<String, TransportState> sMap;
 
     static {
@@ -34,7 +35,7 @@ public enum TransportState {
     }
 
     @NonNull
-    public static TransportState of(final String value) {
+    public static TransportState of(@NonNull final String value) {
         final TransportState state = sMap.get(value);
         return state != null ? state : OTHER;
     }

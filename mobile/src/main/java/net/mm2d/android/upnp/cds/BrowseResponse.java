@@ -8,6 +8,7 @@
 package net.mm2d.android.upnp.cds;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import net.mm2d.util.TextParseUtils;
 
@@ -21,6 +22,7 @@ class BrowseResponse {
     private static final String NUMBER_RETURNED = "NumberReturned";
     private static final String TOTAL_MATCHES = "TotalMatches";
     private static final String UPDATE_ID = "UpdateID";
+    @NonNull
     private final Map<String, String> mResult;
 
     BrowseResponse(@NonNull final Map<String, String> result) {
@@ -39,6 +41,7 @@ class BrowseResponse {
         return TextParseUtils.parseIntSafely(mResult.get(UPDATE_ID), -1);
     }
 
+    @Nullable
     String getResult() {
         return mResult.get(RESULT);
     }
