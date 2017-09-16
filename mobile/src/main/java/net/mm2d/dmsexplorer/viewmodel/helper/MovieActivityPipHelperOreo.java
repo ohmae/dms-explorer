@@ -17,7 +17,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Rect;
 import android.graphics.drawable.Icon;
-import android.os.Build.VERSION_CODES;
+import android.os.Build;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -39,7 +39,7 @@ import java.util.List;
 /**
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
  */
-@RequiresApi(api = VERSION_CODES.O)
+@RequiresApi(api = Build.VERSION_CODES.O)
 class MovieActivityPipHelperOreo implements MovieActivityPipHelper {
     @NonNull
     private final Activity mActivity;
