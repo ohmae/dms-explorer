@@ -25,6 +25,8 @@ import net.mm2d.dmsexplorer.domain.model.MediaServerModel;
 import net.mm2d.dmsexplorer.domain.model.PlaybackTargetModel;
 import net.mm2d.dmsexplorer.settings.Settings;
 
+import java.util.Locale;
+
 /**
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
  */
@@ -92,6 +94,6 @@ public class EventLogger {
 
     @NonNull
     private static String getTypeString(@NonNull final ContentType type) {
-        return type.name().toLowerCase();
+        return type.name().toLowerCase(Locale.ENGLISH);
     }
 }
