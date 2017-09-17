@@ -12,6 +12,7 @@
     <string name="toast_repeat_repeat_all">Repeat folder</string>
     <string name="toast_repeat_repeat_one">Repeat 1 item</string>
     <string name="toast_launch_error">Fail to launch</string>
+    <string name="toast_currently_muted">Currently muted</string>
     <string name="seek_bar_scrub_normal">seek (x1/1)</string>
     <string name="seek_bar_scrub_half">seek (x1/2)</string>
     <string name="seek_bar_scrub_quarter">seek (x1/4)</string>

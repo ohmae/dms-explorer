@@ -36,6 +36,7 @@ import net.mm2d.dmsexplorer.settings.Settings;
 import net.mm2d.dmsexplorer.viewmodel.ControlPanelModel.OnCompletionListener;
 import net.mm2d.dmsexplorer.viewmodel.ControlPanelModel.SkipControlListener;
 import net.mm2d.dmsexplorer.viewmodel.helper.MovieActivityPipHelper;
+import net.mm2d.dmsexplorer.viewmodel.helper.MuteAlertHelper;
 import net.mm2d.dmsexplorer.viewmodel.helper.PipHelpers;
 
 /**
@@ -81,6 +82,8 @@ public class MovieActivityModel extends BaseObservable
     private final Settings mSettings;
     @NonNull
     private final MovieActivityPipHelper mMovieActivityPipHelper;
+    @NonNull
+    private final MuteAlertHelper mMuteAlertHelper;
 
     public MovieActivityModel(
             @NonNull final Activity activity,
@@ -102,6 +105,7 @@ public class MovieActivityModel extends BaseObservable
         controlPanelParam.setBackgroundColor(color);
         mMovieActivityPipHelper = PipHelpers.getMovieHelper(mActivity);
         mMovieActivityPipHelper.register();
+        mMuteAlertHelper = new MuteAlertHelper(activity);
         updateTargetModel();
     }
 
@@ -110,6 +114,7 @@ public class MovieActivityModel extends BaseObservable
         if (targetModel == null) {
             throw new IllegalStateException();
         }
+        mMuteAlertHelper.alertIfMuted();
         final PlayerModel playerModel = new MoviePlayerModel(mActivity, mVideoView);
         mControlPanelModel = new ControlPanelModel(mActivity, playerModel);
         mControlPanelModel.setRepeatMode(mRepeatMode);

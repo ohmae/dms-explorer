@@ -12,6 +12,7 @@
     <string name="toast_repeat_repeat_all">全体をループ再生</string>
     <string name="toast_repeat_repeat_one">1項目をループ再生</string>
     <string name="toast_launch_error">起動できませんでした</string>
+    <string name="toast_currently_muted">ミュートされています</string>
     <string name="seek_bar_scrub_normal">seek (x1/1)</string>
     <string name="seek_bar_scrub_half">seek (x1/2)</string>
     <string name="seek_bar_scrub_quarter">seek (x1/4)</string>

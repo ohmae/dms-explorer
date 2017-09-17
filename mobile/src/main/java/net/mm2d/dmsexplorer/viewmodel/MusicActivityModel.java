@@ -33,6 +33,7 @@ import net.mm2d.dmsexplorer.util.ThemeUtils;
 import net.mm2d.dmsexplorer.view.adapter.PropertyAdapter;
 import net.mm2d.dmsexplorer.viewmodel.ControlPanelModel.OnCompletionListener;
 import net.mm2d.dmsexplorer.viewmodel.ControlPanelModel.SkipControlListener;
+import net.mm2d.dmsexplorer.viewmodel.helper.MuteAlertHelper;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 
@@ -69,6 +70,8 @@ public class MusicActivityModel extends BaseObservable
     private final MediaServerModel mServerModel;
     @NonNull
     private final Settings mSettings;
+    @NonNull
+    private final MuteAlertHelper mMuteAlertHelper;
 
     public MusicActivityModel(
             @NonNull final Activity activity,
@@ -81,17 +84,19 @@ public class MusicActivityModel extends BaseObservable
         mRepeatIconId = mRepeatMode.getIconId();
 
         controlPanelParam = new ControlPanelParam();
+        mMuteAlertHelper = new MuteAlertHelper(activity);
         updateTargetModel();
     }
 
     private void updateTargetModel() {
-        final PlayerModel playerModel = new MusicPlayerModel(mActivity);
-        mControlPanelModel = new ControlPanelModel(mActivity, playerModel);
         final PlaybackTargetModel targetModel = mRepository.getPlaybackTargetModel();
         if (targetModel == null || targetModel.getUri() == Uri.EMPTY) {
             ActivityCompat.finishAfterTransition(mActivity);
             return;
         }
+        mMuteAlertHelper.alertIfMuted();
+        final PlayerModel playerModel = new MusicPlayerModel(mActivity);
+        mControlPanelModel = new ControlPanelModel(mActivity, playerModel);
         mControlPanelModel.setRepeatMode(mRepeatMode);
         mControlPanelModel.setOnCompletionListener(this);
         mControlPanelModel.setSkipControlListener(this);
