@@ -34,9 +34,11 @@ public class Settings {
 
     /**
      * インスタンス作成。
+     *
+     * @param context コンテキスト
      */
-    public Settings() {
-        mStorage = new SettingsStorage();
+    public Settings(@NonNull final Context context) {
+        mStorage = new SettingsStorage(context);
     }
 
     /**

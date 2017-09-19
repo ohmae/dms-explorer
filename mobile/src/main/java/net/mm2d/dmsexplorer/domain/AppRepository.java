@@ -55,7 +55,7 @@ public class AppRepository extends Repository {
         final ThemeModelImpl themeModel = new ThemeModelImpl();
         final CustomTabsHelper helper = new CustomTabsHelper(mContext);
         mOpenUriModel = new OpenUriCustomTabsModel(helper, themeModel);
-        mOpenUriModel.setUseCustomTabs(new Settings().useCustomTabs());
+        mOpenUriModel.setUseCustomTabs(new Settings(application).useCustomTabs());
         mThemeModel = themeModel;
 
         application.registerActivityLifecycleCallbacks(new CustomTabsBinder(helper));

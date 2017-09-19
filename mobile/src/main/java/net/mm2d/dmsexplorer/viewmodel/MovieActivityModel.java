@@ -96,7 +96,7 @@ public class MovieActivityModel extends BaseObservable
         if (mServerModel == null) {
             throw new IllegalStateException();
         }
-        mSettings = new Settings();
+        mSettings = new Settings(activity);
         mRepeatMode = mSettings.getRepeatModeMovie();
         mRepeatIconId = mRepeatMode.getIconId();
 
@@ -217,7 +217,7 @@ public class MovieActivityModel extends BaseObservable
         }
         updateTargetModel();
         mOnChangeContentListener.onChangeContent();
-        EventLogger.sendPlayContent();
+        EventLogger.sendPlayContent(true);
     }
 
     @Override
@@ -229,7 +229,7 @@ public class MovieActivityModel extends BaseObservable
         }
         updateTargetModel();
         mOnChangeContentListener.onChangeContent();
-        EventLogger.sendPlayContent();
+        EventLogger.sendPlayContent(true);
     }
 
     @Override
@@ -241,7 +241,7 @@ public class MovieActivityModel extends BaseObservable
         }
         updateTargetModel();
         mOnChangeContentListener.onChangeContent();
-        EventLogger.sendPlayContent();
+        EventLogger.sendPlayContent(true);
     }
 
     private boolean selectNext() {

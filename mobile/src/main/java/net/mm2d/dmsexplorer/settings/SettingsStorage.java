@@ -23,19 +23,11 @@ class SettingsStorage {
         private static SharedPreferences sPreferences;
 
         @NonNull
-        static SharedPreferences get(@NonNull final Context context) {
+        static synchronized SharedPreferences get(@NonNull final Context context) {
             if (sPreferences != null) {
                 return sPreferences;
             }
             sPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-            return sPreferences;
-        }
-
-        @NonNull
-        static SharedPreferences get() {
-            if (sPreferences == null) {
-                throw new IllegalStateException("SharedPreferences does not initialized.");
-            }
             return sPreferences;
         }
     }
@@ -54,9 +46,11 @@ class SettingsStorage {
 
     /**
      * インスタンス作成。
+     *
+     * @param context コンテキスト
      */
-    SettingsStorage() {
-        mPreferences = PreferencesHolder.get();
+    SettingsStorage(@NonNull final Context context) {
+        mPreferences = PreferencesHolder.get(context);
     }
 
     /**

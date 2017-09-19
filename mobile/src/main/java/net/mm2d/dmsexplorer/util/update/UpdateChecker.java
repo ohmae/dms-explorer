@@ -45,7 +45,7 @@ public class UpdateChecker {
     private final int mCurrentVersion;
 
     public UpdateChecker(@NonNull final Context context) {
-        this(context, new Settings(), BuildConfig.VERSION_CODE);
+        this(context, new Settings(context), BuildConfig.VERSION_CODE);
     }
 
     @VisibleForTesting

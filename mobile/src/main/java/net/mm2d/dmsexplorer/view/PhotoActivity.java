@@ -119,7 +119,7 @@ public class PhotoActivity extends BaseActivity {
         mModel = new PhotoActivityModel(this, mRepository);
         mBinding.setModel(mModel);
         mBinding.viewPager.setCurrentItem(1, false);
-        EventLogger.sendPlayContent();
+        EventLogger.sendPlayContent(true);
     }
 
     private boolean move(int index) {

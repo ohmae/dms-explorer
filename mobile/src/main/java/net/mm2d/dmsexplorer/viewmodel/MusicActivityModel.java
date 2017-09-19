@@ -79,7 +79,7 @@ public class MusicActivityModel extends BaseObservable
         mActivity = activity;
         mRepository = repository;
         mServerModel = repository.getMediaServerModel();
-        mSettings = new Settings();
+        mSettings = new Settings(activity);
         mRepeatMode = mSettings.getRepeatModeMusic();
         mRepeatIconId = mRepeatMode.getIconId();
 
@@ -207,7 +207,7 @@ public class MusicActivityModel extends BaseObservable
             return;
         }
         updateTargetModel();
-        EventLogger.sendPlayContent();
+        EventLogger.sendPlayContent(true);
     }
 
     @Override
@@ -218,7 +218,7 @@ public class MusicActivityModel extends BaseObservable
             return;
         }
         updateTargetModel();
-        EventLogger.sendPlayContent();
+        EventLogger.sendPlayContent(true);
     }
 
     @Override
@@ -229,7 +229,7 @@ public class MusicActivityModel extends BaseObservable
             return;
         }
         updateTargetModel();
-        EventLogger.sendPlayContent();
+        EventLogger.sendPlayContent(true);
     }
 
     private boolean selectNext() {

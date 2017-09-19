@@ -69,7 +69,7 @@ public class ItemSelectUtils {
         }
         final Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.setDataAndType(targetModel.getUri(), targetModel.getMimeType());
-        final Settings settings = new Settings();
+        final Settings settings = new Settings(activity);
         if (settings.isPlayMyself(type)) {
             intent.setClass(activity, player);
         } else {
@@ -78,7 +78,7 @@ public class ItemSelectUtils {
         try {
             activity.startActivity(intent);
             activity.overridePendingTransition(0, 0);
-            EventLogger.sendPlayContent();
+            EventLogger.sendPlayContent(settings.isPlayMyself(type));
         } catch (final Exception ignored) {
             Toaster.showLong(activity, R.string.toast_launch_error);
         }
