@@ -41,7 +41,7 @@
                 android:layout_width="@dimen/accent_size"
                 android:layout_height="@dimen/accent_size"
                 android:layout_gravity="center_vertical"
-                android:layout_margin="12dp"
+                android:layout_margin="@dimen/icon_margin"
                 android:background="@{model.accentBackground}"
                 android:gravity="center"
                 android:text="@{model.accentText}"
@@ -55,8 +55,8 @@
                 android:layout_gravity="center_vertical"
                 android:layout_weight="1"
                 android:orientation="vertical"
-                android:paddingBottom="8dp"
-                android:paddingTop="8dp"
+                android:paddingBottom="@dimen/default_margin"
+                android:paddingTop="@dimen/default_margin"
                 >
 
                 <TextView
@@ -90,7 +90,7 @@
                     android:id="@+id/image"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="8dp"
+                    android:layout_margin="@dimen/default_margin"
                     android:imageResource="@{model.imageResource}"/>
 
                 <ImageView
@@ -98,7 +98,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="right|bottom"
-                    android:layout_margin="4dp"
+                    android:layout_margin="@dimen/small_margin"
                     android:visibility="@{model.isProtected ? View.VISIBLE : View.GONE}"
                     app:srcCompat="@drawable/ic_lock"
                     />

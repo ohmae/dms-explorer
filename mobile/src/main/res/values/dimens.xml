@@ -4,6 +4,10 @@
 
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="fab2_margin">88dp</dimen>
+    <dimen name="icon_margin">12dp</dimen>
+    <dimen name="large_margin">16dp</dimen>
+    <dimen name="default_margin">8dp</dimen>
+    <dimen name="small_margin">4dp</dimen>
 
     <dimen name="item_width">400dp</dimen>
     <dimen name="accent_size">48dp</dimen>
