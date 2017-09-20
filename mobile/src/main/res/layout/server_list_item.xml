@@ -30,7 +30,7 @@
 
             <View
                 android:id="@+id/mark"
-                android:layout_width="5dp"
+                android:layout_width="@dimen/list_focus_mark_width"
                 android:layout_height="match_parent"
                 android:background="@color/markListItemSelected"
                 android:visibility="@{model.selected ? View.VISIBLE : View.INVISIBLE}"
@@ -41,6 +41,7 @@
                 android:layout_width="@dimen/accent_size"
                 android:layout_height="@dimen/accent_size"
                 android:layout_margin="12dp"
+                android:layout_gravity="center_vertical"
                 >
 
                 <TextView

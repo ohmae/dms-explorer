@@ -36,6 +36,7 @@ public class ContentItemModel {
     public final boolean hasDescription;
     @DrawableRes
     public final int imageResource;
+    public final boolean isProtected;
 
     public ContentItemModel(
             @NonNull final Context context,
@@ -52,6 +53,7 @@ public class ContentItemModel {
         description = entity.getDescription();
         hasDescription = !TextUtils.isEmpty(description);
         imageResource = getImageResource(entity);
+        isProtected = entity.isProtected();
     }
 
     @DrawableRes
