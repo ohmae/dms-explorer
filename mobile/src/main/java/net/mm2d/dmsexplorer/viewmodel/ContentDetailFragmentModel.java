@@ -7,11 +7,11 @@
 
 package net.mm2d.dmsexplorer.viewmodel;
 
-import android.app.Activity;
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.FragmentActivity;
 import android.view.View;
 
 import net.mm2d.android.upnp.avt.MediaRenderer;
@@ -43,7 +43,7 @@ public class ContentDetailFragmentModel extends BaseObservable {
     private boolean mCanSend;
 
     @NonNull
-    private final Activity mActivity;
+    private final FragmentActivity mActivity;
     @NonNull
     private final MrControlPoint mMrControlPoint;
     private final MrDiscoveryListener mMrDiscoveryListener = new MrDiscoveryListener() {
@@ -59,7 +59,7 @@ public class ContentDetailFragmentModel extends BaseObservable {
     };
 
     public ContentDetailFragmentModel(
-            @NonNull final Activity activity,
+            @NonNull final FragmentActivity activity,
             @NonNull final Repository repository) {
         final MediaServerModel model = repository.getMediaServerModel();
         if (model == null) {

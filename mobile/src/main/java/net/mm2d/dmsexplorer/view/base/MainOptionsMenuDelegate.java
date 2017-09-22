@@ -7,7 +7,6 @@
 
 package net.mm2d.dmsexplorer.view.base;
 
-import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -15,6 +14,7 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.LocalBroadcastManager;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -29,7 +29,7 @@ import net.mm2d.dmsexplorer.view.dialog.UpdateDialog;
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
  */
 class MainOptionsMenuDelegate implements OptionsMenuDelegate {
-    private final Activity mActivity;
+    private final FragmentActivity mActivity;
     private final Settings mSettings;
     private final BroadcastReceiver mUpdateReceiver = new BroadcastReceiver() {
         @Override
@@ -40,7 +40,7 @@ class MainOptionsMenuDelegate implements OptionsMenuDelegate {
         }
     };
 
-    MainOptionsMenuDelegate(@NonNull final Activity activity) {
+    MainOptionsMenuDelegate(@NonNull final FragmentActivity activity) {
         mActivity = activity;
         mSettings = new Settings(activity);
     }

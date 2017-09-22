@@ -13,6 +13,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentActivity;
 
 import net.mm2d.android.util.Toaster;
 import net.mm2d.dmsexplorer.EventLogger;
@@ -38,7 +39,7 @@ public class ItemSelectUtils {
         throw new AssertionError();
     }
 
-    public static void play(@NonNull final Activity activity) {
+    public static void play(@NonNull final FragmentActivity activity) {
         final PlaybackTargetModel targetModel = Repository.get().getPlaybackTargetModel();
         final int resCount = targetModel.getResCount();
         if (resCount == 0) {
@@ -98,7 +99,7 @@ public class ItemSelectUtils {
         }
     }
 
-    public static void send(@NonNull final Activity activity) {
+    public static void send(@NonNull final FragmentActivity activity) {
         SelectRendererDialog.show(activity);
     }
 
