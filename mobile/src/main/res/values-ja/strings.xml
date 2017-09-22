@@ -64,6 +64,10 @@
     <string name="pref_title_content_detail_on_tap">コンテンツ選択</string>
     <string name="pref_message_content_detail_on_tap_on">タップ： 詳細情報を表示\nロングタップ： プレーヤーを起動</string>
     <string name="pref_message_content_detail_on_tap_off">タップ： プレーヤーを起動\nロングタップ： 詳細情報を表示</string>
+    <string name="pref_category_delete">削除</string>
+    <string name="pref_title_delete">コンテンツの削除</string>
+    <string name="pref_message_delete_on">削除可能な場合、削除ボタンを表示します</string>
+    <string name="pref_message_delete_off">削除ボタンを表示しません</string>
 
     <string name="pref_header_information">情報</string>
     <string name="pref_title_play_store">Google Playストア</string>
@@ -82,6 +86,6 @@
     <string name="dialog_message_update">新しいバージョンが利用できます。バージョンアップをおすすめします。</string>
     <string name="dialog_button_ok">OK</string>
     <string name="dialog_button_cancel">キャンセル</string>
-    <string name="dialog_title_delete">注意</string>
-    <string name="dialog_message_delete">「%1$s」を削除します。\n削除すると元に戻せません。\n削除しますか？</string>
+    <string name="dialog_title_delete">注意：削除</string>
+    <string name="dialog_message_delete">「%1$s」をサーバーから削除します。\n削除すると元に戻せません。\n削除しますか？</string>
 </resources>

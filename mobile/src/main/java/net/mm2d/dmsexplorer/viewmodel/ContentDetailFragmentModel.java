@@ -23,6 +23,7 @@ import net.mm2d.dmsexplorer.R;
 import net.mm2d.dmsexplorer.Repository;
 import net.mm2d.dmsexplorer.domain.entity.ContentEntity;
 import net.mm2d.dmsexplorer.domain.model.MediaServerModel;
+import net.mm2d.dmsexplorer.settings.Settings;
 import net.mm2d.dmsexplorer.util.ItemSelectUtils;
 import net.mm2d.dmsexplorer.util.ThemeUtils;
 import net.mm2d.dmsexplorer.view.adapter.PropertyAdapter;
@@ -40,10 +41,13 @@ public class ContentDetailFragmentModel extends BaseObservable {
     public final PropertyAdapter propertyAdapter;
     public final boolean hasResource;
     public final boolean isProtected;
-    public final boolean canDelete;
 
+    private final boolean mCanDelete;
     private boolean mCanSend;
+    private boolean mDeleteEnabled;
 
+    @NonNull
+    private final Settings mSettings;
     @NonNull
     private final FragmentActivity mActivity;
     @NonNull
@@ -79,16 +83,32 @@ public class ContentDetailFragmentModel extends BaseObservable {
         expandedColor = ThemeUtils.getPastelColor(rawTitle);
         hasResource = entity.hasResource();
         isProtected = entity.isProtected();
-        canDelete = model.canDelete(entity);
+        mCanDelete = model.canDelete(entity);
+        mSettings = new Settings(activity);
+        setDeleteEnabled(mSettings.isDeleteFunctionEnabled() && mCanDelete);
 
         mMrControlPoint = repository.getControlPointModel().getMrControlPoint();
         updateCanSend();
         mMrControlPoint.addMrDiscoveryListener(mMrDiscoveryListener);
     }
 
+    public void onResume() {
+        setDeleteEnabled(mSettings.isDeleteFunctionEnabled() && mCanDelete);
+    }
+
     @Bindable
     public boolean getCanSend() {
         return mCanSend;
+    }
+
+    @Bindable
+    public boolean isDeleteEnabled() {
+        return mDeleteEnabled;
+    }
+
+    private void setDeleteEnabled(final boolean enabled) {
+        mDeleteEnabled = enabled;
+        notifyPropertyChanged(BR.deleteEnabled);
     }
 
     private void updateCanSend() {

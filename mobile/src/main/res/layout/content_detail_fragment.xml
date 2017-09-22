@@ -87,10 +87,10 @@
                 android:layout_marginLeft="@dimen/fab_margin"
                 android:layout_marginStart="@dimen/fab_margin"
                 android:onClick="@{model::onClickDelete}"
-                app:rippleColor="@color/fabRipple"
-                app:show="@{model.canDelete}"
-                app:srcCompat="@drawable/ic_delete"
                 app:backgroundTint="@color/fabDelete"
+                app:rippleColor="@color/fabRipple"
+                app:show="@{model.isDeleteEnabled}"
+                app:srcCompat="@drawable/ic_delete"
                 />
 
             <android.support.design.widget.FloatingActionButton
