@@ -26,6 +26,7 @@ import net.mm2d.dmsexplorer.domain.model.MediaServerModel;
 import net.mm2d.dmsexplorer.util.ItemSelectUtils;
 import net.mm2d.dmsexplorer.util.ThemeUtils;
 import net.mm2d.dmsexplorer.view.adapter.PropertyAdapter;
+import net.mm2d.dmsexplorer.view.dialog.DeleteDialog;
 
 /**
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
@@ -39,6 +40,7 @@ public class ContentDetailFragmentModel extends BaseObservable {
     public final PropertyAdapter propertyAdapter;
     public final boolean hasResource;
     public final boolean isProtected;
+    public final boolean canDelete;
 
     private boolean mCanSend;
 
@@ -77,6 +79,7 @@ public class ContentDetailFragmentModel extends BaseObservable {
         expandedColor = ThemeUtils.getPastelColor(rawTitle);
         hasResource = entity.hasResource();
         isProtected = entity.isProtected();
+        canDelete = model.canDelete(entity);
 
         mMrControlPoint = repository.getControlPointModel().getMrControlPoint();
         updateCanSend();
@@ -120,5 +123,9 @@ public class ContentDetailFragmentModel extends BaseObservable {
 
     public void onClickSend(@NonNull final View view) {
         ItemSelectUtils.send(mActivity);
+    }
+
+    public void onClickDelete(@NonNull final View view) {
+        DeleteDialog.show(mActivity);
     }
 }

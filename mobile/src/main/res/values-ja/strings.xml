@@ -7,6 +7,8 @@
     <string name="toast_command_error">エラーが発生しました</string>
     <string name="toast_download_error">エラーが発生しました</string>
     <string name="toast_decode_error">エラーが発生しました</string>
+    <string name="toast_delete_succeed">削除しました</string>
+    <string name="toast_delete_error">エラーが発生しました</string>
     <string name="toast_repeat_play_once">1項目のみ再生</string>
     <string name="toast_repeat_sequential">最後まで連続再生</string>
     <string name="toast_repeat_repeat_all">全体をループ再生</string>
@@ -80,4 +82,6 @@
     <string name="dialog_message_update">新しいバージョンが利用できます。バージョンアップをおすすめします。</string>
     <string name="dialog_button_ok">OK</string>
     <string name="dialog_button_cancel">キャンセル</string>
+    <string name="dialog_title_delete">注意</string>
+    <string name="dialog_message_delete">「%1$s」を削除します。\n削除すると元に戻せません。\n削除しますか？</string>
 </resources>

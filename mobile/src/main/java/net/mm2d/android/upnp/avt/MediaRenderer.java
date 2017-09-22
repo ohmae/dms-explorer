@@ -19,7 +19,6 @@ import net.mm2d.upnp.Argument;
 import net.mm2d.upnp.Device;
 import net.mm2d.upnp.Service;
 import net.mm2d.upnp.StateVariable;
-import net.mm2d.util.Log;
 
 import java.io.IOException;
 import java.util.Collections;
@@ -159,8 +158,7 @@ public class MediaRenderer extends DeviceWrapper {
     public void subscribe() {
         Completable.create(emitter -> mAvTransport.subscribe(true))
                 .subscribeOn(Schedulers.io())
-                .subscribe(() -> {
-                }, Log::w);
+                .subscribe();
     }
 
     /**
@@ -169,8 +167,7 @@ public class MediaRenderer extends DeviceWrapper {
     public void unsubscribe() {
         Completable.create(emitter -> mAvTransport.unsubscribe())
                 .subscribeOn(Schedulers.io())
-                .subscribe(() -> {
-                }, Log::w);
+                .subscribe();
     }
 
     @NonNull

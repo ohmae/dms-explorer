@@ -32,6 +32,7 @@
     <color name="translucent_control">#66000000</color>
     <color name="fabDisable">#808080</color>
     <color name="fabRipple">#80ffffff</color>
+    <color name="fabDelete">#FFFF8000</color>
     <color name="toolbarBackgroundDefault">#c0c0c0</color>
 
     <color name="textIntroductory">#ffffff</color>

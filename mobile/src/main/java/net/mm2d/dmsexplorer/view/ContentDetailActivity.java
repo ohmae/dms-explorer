@@ -20,6 +20,7 @@ import net.mm2d.dmsexplorer.databinding.ContentDetailFragmentBinding;
 import net.mm2d.dmsexplorer.domain.entity.ContentEntity;
 import net.mm2d.dmsexplorer.domain.model.MediaServerModel;
 import net.mm2d.dmsexplorer.view.base.BaseActivity;
+import net.mm2d.dmsexplorer.view.dialog.DeleteDialog.OnDeleteListener;
 import net.mm2d.dmsexplorer.viewmodel.ContentDetailFragmentModel;
 
 /**
@@ -27,7 +28,7 @@ import net.mm2d.dmsexplorer.viewmodel.ContentDetailFragmentModel;
  *
  * @author <a href="mailto:ryo@mm2d.net">大前良介(OHMAE Ryosuke)</a>
  */
-public class ContentDetailActivity extends BaseActivity {
+public class ContentDetailActivity extends BaseActivity implements OnDeleteListener {
     /**
      * このActivityを起動するためのIntentを作成する。
      *
@@ -79,5 +80,10 @@ public class ContentDetailActivity extends BaseActivity {
         if (mContentEntity != null && !mContentEntity.equals(getSelectedEntity())) {
             finish();
         }
+    }
+
+    @Override
+    public void onDelete() {
+        finish();
     }
 }

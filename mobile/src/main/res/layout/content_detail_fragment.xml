@@ -70,33 +70,57 @@
             tools:listitem="@layout/property_list_item"
             />
 
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/fab_send"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|end"
-            android:layout_marginBottom="@dimen/fab2_margin"
-            android:layout_marginEnd="@dimen/fab_margin"
-            android:layout_marginRight="@dimen/fab_margin"
-            android:onClick="@{model::onClickSend}"
-            app:rippleColor="@color/fabRipple"
-            app:show="@{model.canSend}"
-            app:srcCompat="@drawable/ic_send_device"
-            />
+            android:orientation="horizontal"
+            app:layout_dodgeInsetEdges="bottom"
+            >
 
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/fab_play"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|end"
-            android:layout_margin="@dimen/fab_margin"
-            android:onClick="@{model::onClickPlay}"
-            android:onLongClick="@{model::onLongClickPlay}"
-            android:visibility="@{model.hasResource ? View.VISIBLE : View.INVISIBLE}"
-            app:backgroundTint="@{model.isProtected ? @color/fabDisable : @color/accent}"
-            app:rippleColor="@color/fabRipple"
-            app:srcCompat="@drawable/ic_fab_play"
-            />
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/fab_delete"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|end"
+                android:layout_marginBottom="@dimen/fab_margin"
+                android:layout_marginLeft="@dimen/fab_margin"
+                android:layout_marginStart="@dimen/fab_margin"
+                android:onClick="@{model::onClickDelete}"
+                app:rippleColor="@color/fabRipple"
+                app:show="@{model.canDelete}"
+                app:srcCompat="@drawable/ic_delete"
+                app:backgroundTint="@color/fabDelete"
+                />
+
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/fab_send"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|end"
+                android:layout_marginBottom="@dimen/fab_margin"
+                android:layout_marginLeft="@dimen/fab_margin"
+                android:layout_marginStart="@dimen/fab_margin"
+                android:onClick="@{model::onClickSend}"
+                app:rippleColor="@color/fabRipple"
+                app:show="@{model.canSend}"
+                app:srcCompat="@drawable/ic_send_device"
+                />
+
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/fab_play"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|end"
+                android:layout_margin="@dimen/fab_margin"
+                android:onClick="@{model::onClickPlay}"
+                android:onLongClick="@{model::onLongClickPlay}"
+                android:visibility="@{model.hasResource ? View.VISIBLE : View.INVISIBLE}"
+                app:backgroundTint="@{model.isProtected ? @color/fabDisable : @color/accent}"
+                app:rippleColor="@color/fabRipple"
+                app:srcCompat="@drawable/ic_fab_play"
+                />
+        </LinearLayout>
 
     </android.support.design.widget.CoordinatorLayout>
 </layout>

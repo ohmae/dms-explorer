@@ -147,6 +147,11 @@ public class CdsContentEntity implements ContentEntity {
     }
 
     @Override
+    public boolean canDelete() {
+        return mObject.getIntValue(CdsObject.RESTRICTED, -1) == 0;
+    }
+
+    @Override
     public void selectResource(final int index) {
         if (index < 0 || index >= getResourceCount()) {
             throw new IndexOutOfBoundsException();
