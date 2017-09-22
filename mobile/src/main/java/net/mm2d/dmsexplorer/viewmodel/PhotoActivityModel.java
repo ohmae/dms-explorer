@@ -69,7 +69,7 @@ public class PhotoActivityModel extends BaseObservable {
                     }
                     setLoading(false);
                     setImageBinary(data);
-                }, throwable -> Toaster.showLong(mActivity, R.string.toast_download_error_occurred));
+                }, throwable -> Toaster.showLong(mActivity, R.string.toast_download_error));
     }
 
     public void adjustPanel(@NonNull final Activity activity) {
