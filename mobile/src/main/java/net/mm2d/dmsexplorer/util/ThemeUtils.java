@@ -64,6 +64,16 @@ public class ThemeUtils {
     }
 
     @ColorInt
+    public static int getSlightColor(@NonNull final String title) {
+        final char c = TextUtils.isEmpty(title) ? ' ' : title.charAt(0);
+        return Color.HSVToColor(new float[]{
+                (59 * c) % 360,
+                34f / 255f,
+                248f / 255f,
+        });
+    }
+
+    @ColorInt
     public static int getDeepColor(@NonNull final String title) {
         final char c = TextUtils.isEmpty(title) ? ' ' : title.charAt(0);
         return Color.HSVToColor(new float[]{

@@ -16,13 +16,14 @@ import android.view.KeyEvent;
 
 import net.mm2d.dmsexplorer.view.base.BaseActivity;
 import net.mm2d.dmsexplorer.view.delegate.ContentListActivityDelegate;
+import net.mm2d.dmsexplorer.view.dialog.DeleteDialog.OnDeleteListener;
 
 /**
  * MediaServerのContentDirectoryを表示、操作するActivity。
  *
  * @author <a href="mailto:ryo@mm2d.net">大前良介(OHMAE Ryosuke)</a>
  */
-public class ContentListActivity extends BaseActivity {
+public class ContentListActivity extends BaseActivity implements OnDeleteListener {
     /**
      * このActivityを起動するためのIntentを作成する。
      *
@@ -78,5 +79,10 @@ public class ContentListActivity extends BaseActivity {
             return true;
         }
         return super.onKeyLongPress(keyCode, event);
+    }
+
+    @Override
+    public void onDelete() {
+        mDelegate.onDelete();
     }
 }

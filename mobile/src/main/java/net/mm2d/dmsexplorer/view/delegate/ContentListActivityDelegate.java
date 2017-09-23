@@ -21,13 +21,14 @@ import net.mm2d.dmsexplorer.R;
 import net.mm2d.dmsexplorer.Repository;
 import net.mm2d.dmsexplorer.databinding.ContentListActivityBinding;
 import net.mm2d.dmsexplorer.view.base.BaseActivity;
+import net.mm2d.dmsexplorer.view.dialog.DeleteDialog.OnDeleteListener;
 import net.mm2d.dmsexplorer.viewmodel.ContentListActivityModel;
 import net.mm2d.dmsexplorer.viewmodel.ContentListActivityModel.CdsSelectListener;
 
 /**
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
  */
-public abstract class ContentListActivityDelegate implements CdsSelectListener {
+public abstract class ContentListActivityDelegate implements CdsSelectListener, OnDeleteListener {
     private static final String KEY_SCROLL_POSITION = "KEY_SCROLL_POSITION";
     private static final String KEY_SCROLL_OFFSET = "KEY_SCROLL_OFFSET";
 

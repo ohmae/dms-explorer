@@ -52,4 +52,12 @@
         <item name="android:textSize">@dimen/text_size_toolbar_expand</item>
         <item name="android:maxLines">3</item>
     </style>
+
+    <style name="ContentCollapsedToolbarText" parent="CollapsedToolbarText">
+        <item name="android:textColor">@color/textToolbar</item>
+    </style>
+
+    <style name="ContentExpandedToolbarText" parent="ExpandedToolbarText">
+        <item name="android:textColor">@color/textToolbar</item>
+    </style>
 </resources>

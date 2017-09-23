@@ -29,7 +29,7 @@
 
     <dimen name="status_bar_size">25dp</dimen>
     <dimen name="server_property_margin">128dp</dimen>
-    <dimen name="cds_property_margin">200dp</dimen>
+    <dimen name="cds_property_margin">128dp</dimen>
     <dimen name="music_image_margin">16dp</dimen>
     <dimen name="property_margin">8dp</dimen>
     <dimen name="property_margin_bottom">16dp</dimen>

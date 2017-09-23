@@ -45,5 +45,7 @@ public interface ContentEntity {
 
     boolean isProtected();
 
+    boolean canDelete();
+
     void selectResource(int index);
 }

@@ -7,6 +7,8 @@
     <string name="toast_command_error">Error occurred</string>
     <string name="toast_download_error">Error occurred</string>
     <string name="toast_decode_error">Error occurred</string>
+    <string name="toast_delete_succeed">Deletion success</string>
+    <string name="toast_delete_error">Error occurred</string>
     <string name="toast_repeat_play_once">Play 1 item</string>
     <string name="toast_repeat_sequential">Play automatically</string>
     <string name="toast_repeat_repeat_all">Repeat folder</string>
@@ -62,6 +64,10 @@
     <string name="pref_title_content_detail_on_tap">Content Select</string>
     <string name="pref_message_content_detail_on_tap_on">Tap: Show the content detail\nLong tap : Launch the player</string>
     <string name="pref_message_content_detail_on_tap_off">Tap: Launch the player\nLong tap : Show the content detail</string>
+    <string name="pref_category_delete">Delete</string>
+    <string name="pref_title_delete">Delete Content</string>
+    <string name="pref_message_delete_on">Show delete button, if possible.</string>
+    <string name="pref_message_delete_off">Don\'t show delete button.</string>
 
     <string name="pref_header_information">Information</string>
     <string name="pref_title_play_store">Google Play Store</string>
@@ -80,4 +86,6 @@
     <string name="dialog_message_update">A newer version is available. Version up is recommended.</string>
     <string name="dialog_button_ok">OK</string>
     <string name="dialog_button_cancel">Cancel</string>
+    <string name="dialog_title_delete">Caution : Delete</string>
+    <string name="dialog_message_delete">\"%1$s\" will be deleted from server.\nDeleting it can not be undone.\nIs it OK?</string>
 </resources>

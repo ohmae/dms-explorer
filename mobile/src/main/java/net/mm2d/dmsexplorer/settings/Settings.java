@@ -168,6 +168,15 @@ public class Settings {
     }
 
     /**
+     * 削除削除機能が有効か否か。
+     *
+     * @return 削除機能が有効なときtrue
+     */
+    public boolean isDeleteFunctionEnabled() {
+        return mStorage.getBoolean(Key.DELETE_FUNCTION_ENABLED, false);
+    }
+
+    /**
      * アップデートファイルを取得した時刻を返す。
      *
      * @return アップデートファイルを取得した時刻

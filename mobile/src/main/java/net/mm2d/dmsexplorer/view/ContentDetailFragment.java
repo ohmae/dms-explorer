@@ -65,4 +65,12 @@ public class ContentDetailFragment extends Fragment {
             mModel.terminate();
         }
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (mModel != null) {
+            mModel.onResume();
+        }
+    }
 }

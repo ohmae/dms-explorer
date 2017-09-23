@@ -9,14 +9,18 @@ package net.mm2d.android.upnp.cds;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 
 import net.mm2d.android.upnp.DeviceWrapper;
 import net.mm2d.upnp.Action;
 import net.mm2d.upnp.Device;
 import net.mm2d.upnp.Service;
 import net.mm2d.util.Log;
+import net.mm2d.util.TextParseUtils;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import io.reactivex.Completable;
 import io.reactivex.Observable;
@@ -31,11 +35,16 @@ import io.reactivex.schedulers.Schedulers;
  * @author <a href="mailto:ryo@mm2d.net">大前良介(OHMAE Ryosuke)</a>
  */
 public class MediaServer extends DeviceWrapper {
+    public static final int NO_ERROR = 0;
     private static final String BROWSE = "Browse";
+    private static final String DESTROY_OBJECT = "DestroyObject";
+    private static final String OBJECT_ID = "ObjectID";
     @NonNull
     private final Service mCdsService;
     @NonNull
     private final Action mBrowse;
+    @Nullable
+    private final Action mDestroyObject;
 
     /**
      * インスタンスを作成する。
@@ -59,6 +68,7 @@ public class MediaServer extends DeviceWrapper {
         }
         mCdsService = cdsService;
         mBrowse = browse;
+        mDestroyObject = cdsService.findAction(DESTROY_OBJECT);
     }
 
     /**
@@ -67,8 +77,7 @@ public class MediaServer extends DeviceWrapper {
     public void subscribe() {
         Completable.create(emitter -> mCdsService.subscribe(true))
                 .subscribeOn(Schedulers.io())
-                .subscribe(() -> {
-                }, Log::w);
+                .subscribe();
     }
 
     /**
@@ -77,8 +86,25 @@ public class MediaServer extends DeviceWrapper {
     public void unsubscribe() {
         Completable.create(emitter -> mCdsService.unsubscribe())
                 .subscribeOn(Schedulers.io())
-                .subscribe(() -> {
-                }, Log::w);
+                .subscribe();
+    }
+
+    public boolean hasDestroyObject() {
+        return mDestroyObject != null;
+    }
+
+    public Single<Integer> destroyObject(@NonNull final String objectId) {
+        if (mDestroyObject == null) {
+            return Single.never();
+        }
+        return Single.create((SingleOnSubscribe<Integer>) emitter -> {
+            final Map<String, String> result = mDestroyObject.invoke(Collections.singletonMap(OBJECT_ID, objectId));
+            final String errorDescription = result.get(Action.ERROR_DESCRIPTION_KEY);
+            if (!TextUtils.isEmpty(errorDescription)) {
+                Log.e(errorDescription);
+            }
+            emitter.onSuccess(TextParseUtils.parseIntSafely(result.get(Action.ERROR_CODE_KEY), NO_ERROR));
+        }).subscribeOn(Schedulers.io());
     }
 
     /**
