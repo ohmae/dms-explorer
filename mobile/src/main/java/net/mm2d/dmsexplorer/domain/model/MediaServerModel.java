@@ -172,6 +172,9 @@ public class MediaServerModel implements ExploreListener {
     public void setExploreListener(@Nullable final ExploreListener listener) {
         mExploreListener = listener != null ? listener : EXPLORE_LISTENER;
         final ContentDirectoryEntity directory = mHistoryStack.peekFirst();
+        if (directory == null) {
+            return;
+        }
         mExploreListener.onStart();
         mExploreListener.onUpdate(directory.getEntities());
         if (!directory.isInProgress()) {
