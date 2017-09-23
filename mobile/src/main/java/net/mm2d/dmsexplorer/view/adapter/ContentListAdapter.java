@@ -9,6 +9,8 @@ package net.mm2d.dmsexplorer.view.adapter;
 
 import android.content.Context;
 import android.databinding.DataBindingUtil;
+import android.os.Build.VERSION;
+import android.os.Build.VERSION_CODES;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
@@ -45,7 +47,7 @@ public class ContentListAdapter
                 @NonNull ContentEntity entity);
     }
 
-    private static final float FOCUS_SCALE = 1.05f;
+    private static final float FOCUS_SCALE = 1.1f;
     private static final OnItemClickListener ON_ITEM_CLICK_LISTENER = (v, entity) -> {
     };
     private static final OnItemLongClickListener ON_ITEM_LONG_CLICK_LISTENER = (v, entity) -> {
@@ -60,10 +62,12 @@ public class ContentListAdapter
     private OnItemLongClickListener mLongClickListener = ON_ITEM_LONG_CLICK_LISTENER;
     private ContentEntity mSelectedEntity;
     private final boolean mHasTouchScreen;
+    private final float mTranslationZ;
 
     public ContentListAdapter(@NonNull final Context context) {
         mInflater = LayoutInflater.from(context);
         mHasTouchScreen = FeatureUtils.hasTouchScreen(context);
+        mTranslationZ = context.getResources().getDimension(R.dimen.list_item_focus_elevation);
     }
 
     @Override
@@ -189,6 +193,9 @@ public class ContentListAdapter
             } else {
                 v.setScaleX(1.0f);
                 v.setScaleY(1.0f);
+            }
+            if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
+                v.setTranslationZ(focus ? mTranslationZ : 0.0f);
             }
         }
     }

@@ -9,6 +9,8 @@ package net.mm2d.dmsexplorer.view.adapter;
 
 import android.content.Context;
 import android.databinding.DataBindingUtil;
+import android.os.Build.VERSION;
+import android.os.Build.VERSION_CODES;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
@@ -45,7 +47,7 @@ public class ServerListAdapter
                 @NonNull MediaServer server);
     }
 
-    private static final float FOCUS_SCALE = 1.05f;
+    private static final float FOCUS_SCALE = 1.1f;
     private static final OnItemClickListener ON_ITEM_CLICK_LISTENER = (v, server) -> {
     };
     private static final OnItemLongClickListener ON_ITEM_LONG_CLICK_LISTENER = (v, server) -> {
@@ -57,6 +59,7 @@ public class ServerListAdapter
     private OnItemLongClickListener mLongClickListener = ON_ITEM_LONG_CLICK_LISTENER;
     private MediaServer mSelectedServer;
     private final boolean mHasTouchScreen;
+    private final float mTranslationZ;
 
     public ServerListAdapter(
             @NonNull final Context context,
@@ -69,6 +72,7 @@ public class ServerListAdapter
         } else {
             mList = new ArrayList<>(servers);
         }
+        mTranslationZ = context.getResources().getDimension(R.dimen.list_item_focus_elevation);
     }
 
     @Override
@@ -188,6 +192,9 @@ public class ServerListAdapter
             } else {
                 v.setScaleX(1.0f);
                 v.setScaleY(1.0f);
+            }
+            if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
+                v.setTranslationZ(focus ? mTranslationZ : 0.0f);
             }
         }
     }

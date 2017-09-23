@@ -18,7 +18,6 @@
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/list_card_margin"
         android:focusable="true"
-        android:translationZ="@{model.selected ? @dimen/list_item_focus_elevation : 0}"
         app:cardCornerRadius="@dimen/list_card_radius"
         >
 
