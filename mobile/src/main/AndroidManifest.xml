@@ -12,14 +12,15 @@
         android:allowBackup="true"
         android:fullBackupContent="false"
         android:icon="@mipmap/ic_launcher"
-        android:roundIcon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:resizeableActivity="true"
+        android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
             android:name=".view.ServerListActivity"
             android:label="${app_name}"
+            android:launchMode="singleTask"
             android:theme="@style/AppTheme.List">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -29,6 +30,7 @@
         </activity>
         <activity
             android:name=".view.ServerDetailActivity"
+            android:launchMode="singleTask"
             android:parentActivityName=".view.ServerListActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
@@ -37,6 +39,7 @@
         </activity>
         <activity
             android:name=".view.ContentListActivity"
+            android:launchMode="singleTask"
             android:parentActivityName=".view.ServerListActivity"
             android:theme="@style/AppTheme.List">
             <meta-data
@@ -45,6 +48,7 @@
         </activity>
         <activity
             android:name=".view.ContentDetailActivity"
+            android:launchMode="singleTask"
             android:parentActivityName=".view.ContentListActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
@@ -66,21 +70,25 @@
         <activity
             android:name=".view.PhotoActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
+            android:launchMode="singleTask"
             android:theme="@style/AppTheme.NoActionBar.FullScreen">
         </activity>
         <activity
             android:name=".view.MusicActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
+            android:launchMode="singleTask"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
         <activity
             android:name=".view.DmcActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
+            android:launchMode="singleTask"
             android:theme="@style/AppTheme.NoActionBar.Dark">
         </activity>
         <activity
             android:name=".view.WebViewActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
+            android:launchMode="singleTask"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
 
