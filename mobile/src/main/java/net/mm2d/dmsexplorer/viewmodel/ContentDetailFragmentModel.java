@@ -79,8 +79,13 @@ public class ContentDetailFragmentModel extends BaseObservable {
         final String rawTitle = entity.getName();
         title = AribUtils.toDisplayableString(rawTitle);
         propertyAdapter = PropertyAdapter.ofContent(activity, entity);
-        collapsedColor = ThemeUtils.getVividColor(rawTitle);
-        expandedColor = ThemeUtils.getPastelColor(rawTitle);
+        if (activity.getResources().getBoolean(R.bool.two_pane)) {
+            collapsedColor = ThemeUtils.getSlightColor(rawTitle);
+            expandedColor = ThemeUtils.getSlightColor(rawTitle);
+        } else {
+            collapsedColor = ThemeUtils.getVividColor(rawTitle);
+            expandedColor = ThemeUtils.getPastelColor(rawTitle);
+        }
         hasResource = entity.hasResource();
         isProtected = entity.isProtected();
         mCanDelete = model.canDelete(entity);

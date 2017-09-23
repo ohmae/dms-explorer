@@ -32,8 +32,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:contentScrimColor="@{model.collapsedColor}"
-                app:collapsedTitleTextAppearance="@style/CollapsedToolbarText"
-                app:expandedTitleTextAppearance="@style/ExpandedToolbarText"
+                app:collapsedTitleTextAppearance="@style/ContentCollapsedToolbarText"
+                app:expandedTitleTextAppearance="@style/ContentExpandedToolbarText"
                 app:layout_scrollFlags="scroll|exitUntilCollapsed"
                 >
 
