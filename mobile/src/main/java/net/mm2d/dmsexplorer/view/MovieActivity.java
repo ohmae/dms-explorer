@@ -22,7 +22,6 @@ import net.mm2d.dmsexplorer.view.base.BaseActivity;
 import net.mm2d.dmsexplorer.viewmodel.ControlPanelModel;
 import net.mm2d.dmsexplorer.viewmodel.MovieActivityModel;
 import net.mm2d.dmsexplorer.viewmodel.MovieActivityModel.OnChangeContentListener;
-import net.mm2d.util.Log;
 
 import java.util.concurrent.TimeUnit;
 
@@ -90,8 +89,7 @@ public class MovieActivity extends BaseActivity implements OnChangeContentListen
             if (mFullscreenHelper.showNavigation()) {
                 mBinding.controlPanel.playPause.requestFocus();
             }
-            ControlPanelModel control = mModel.getControlPanelModel();
-            Log.e(event.toString());
+            final ControlPanelModel control = mModel.getControlPanelModel();
             switch (event.getKeyCode()) {
                 case KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE:
                     control.onClickPlayPause();
