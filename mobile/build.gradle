@@ -20,6 +20,7 @@ android {
         versionName "${versionMajor}.${versionMinor}.${versionPatch}"
         resConfigs "en", "ja"
         vectorDrawables.useSupportLibrary = true
+        buildConfigField "long", "BUILD_TIME", "${System.currentTimeMillis()}L"
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8

@@ -17,6 +17,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.text.TextUtils;
+import android.text.format.DateFormat;
 
 import net.mm2d.android.util.LaunchUtils;
 import net.mm2d.dmsexplorer.BuildConfig;
@@ -145,7 +146,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                 LaunchUtils.openGooglePlay(context, Const.PACKAGE_NAME);
                 return true;
             });
-            findPreference(Key.VERSION_NUMBER.name()).setSummary(BuildConfig.VERSION_NAME);
+            findPreference(Key.VERSION_NUMBER.name()).setSummary(makeVersionInfo());
             findPreference(Key.SOURCE_CODE.name()).setOnPreferenceClickListener(preference -> {
                 openUrl(getActivity(), Const.URL_GITHUB_PROJECT);
                 return true;
@@ -156,6 +157,14 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                         Const.URL_OPENSOURCE_LICENSE);
                 return true;
             });
+        }
+
+        private String makeVersionInfo() {
+            if (BuildConfig.DEBUG) {
+                return BuildConfig.VERSION_NAME + " # "
+                        + DateFormat.format("yyyy/M/d kk:mm:ss", BuildConfig.BUILD_TIME);
+            }
+            return BuildConfig.VERSION_NAME;
         }
     }
 }
