@@ -85,6 +85,10 @@ public class MusicActivityModel extends BaseObservable
 
         controlPanelParam = new ControlPanelParam();
         mMuteAlertHelper = new MuteAlertHelper(activity);
+        final PlaybackTargetModel targetModel = mRepository.getPlaybackTargetModel();
+        if (targetModel == null || targetModel.getUri() == Uri.EMPTY) {
+            throw new IllegalStateException();
+        }
         updateTargetModel();
     }
 

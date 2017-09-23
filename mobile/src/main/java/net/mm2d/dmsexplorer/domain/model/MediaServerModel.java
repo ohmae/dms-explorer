@@ -18,6 +18,7 @@ import net.mm2d.android.upnp.cds.CdsObject;
 import net.mm2d.android.upnp.cds.MediaServer;
 import net.mm2d.dmsexplorer.domain.entity.ContentDirectoryEntity;
 import net.mm2d.dmsexplorer.domain.entity.ContentEntity;
+import net.mm2d.dmsexplorer.domain.entity.DirectoryEntity;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -194,9 +195,14 @@ public class MediaServerModel implements ExploreListener {
         return mPath;
     }
 
-    public void setSelectedEntity(@NonNull final ContentEntity entity) {
-        mHistoryStack.peekFirst().setSelectedEntity(entity);
+    public boolean setSelectedEntity(@NonNull final ContentEntity entity) {
+        final DirectoryEntity directory = mHistoryStack.peekFirst();
+        if (directory == null) {
+            return false;
+        }
+        directory.setSelectedEntity(entity);
         updatePlaybackTarget();
+        return true;
     }
 
     private void updatePlaybackTarget() {
@@ -216,8 +222,7 @@ public class MediaServerModel implements ExploreListener {
         if (nextEntity == null) {
             return false;
         }
-        setSelectedEntity(nextEntity);
-        return true;
+        return setSelectedEntity(nextEntity);
     }
 
     @Nullable
@@ -275,8 +280,7 @@ public class MediaServerModel implements ExploreListener {
         if (nextEntity == null) {
             return false;
         }
-        setSelectedEntity(nextEntity);
-        return true;
+        return setSelectedEntity(nextEntity);
     }
 
     @Nullable
