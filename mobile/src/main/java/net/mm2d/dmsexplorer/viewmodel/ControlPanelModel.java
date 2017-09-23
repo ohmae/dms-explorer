@@ -371,4 +371,8 @@ public class ControlPanelModel extends BaseObservable implements StatusListener 
         }
         mOnCompletionListener.onCompletion();
     }
+
+    public boolean hasError() {
+        return mError;
+    }
 }

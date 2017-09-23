@@ -73,6 +73,9 @@ public class MusicActivityModel extends BaseObservable
     @NonNull
     private final MuteAlertHelper mMuteAlertHelper;
 
+    private static final long TOO_SHORT_DURATION = 2000;
+    private long mPlayStartTime;
+
     public MusicActivityModel(
             @NonNull final Activity activity,
             @NonNull final Repository repository) {
@@ -203,10 +206,14 @@ public class MusicActivityModel extends BaseObservable
         return mControlPanelModel;
     }
 
+    private boolean isTooShortDuration() {
+        return System.currentTimeMillis() - mPlayStartTime < TOO_SHORT_DURATION;
+    }
+
     @Override
     public void onCompletion() {
         mControlPanelModel.terminate();
-        if (!selectNext()) {
+        if (isTooShortDuration() || mControlPanelModel.hasError() || !selectNext()) {
             ActivityCompat.finishAfterTransition(mActivity);
             return;
         }

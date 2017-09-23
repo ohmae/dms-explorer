@@ -85,6 +85,9 @@ public class MovieActivityModel extends BaseObservable
     @NonNull
     private final MuteAlertHelper mMuteAlertHelper;
 
+    private static final long TOO_SHORT_DURATION = 2000;
+    private long mPlayStartTime;
+
     public MovieActivityModel(
             @NonNull final Activity activity,
             @NonNull final VideoView videoView,
@@ -114,6 +117,7 @@ public class MovieActivityModel extends BaseObservable
         if (targetModel == null) {
             throw new IllegalStateException();
         }
+        mPlayStartTime = System.currentTimeMillis();
         mMuteAlertHelper.alertIfMuted();
         final PlayerModel playerModel = new MoviePlayerModel(mActivity, mVideoView);
         mControlPanelModel = new ControlPanelModel(mActivity, playerModel);
@@ -208,10 +212,14 @@ public class MovieActivityModel extends BaseObservable
         notifyPropertyChanged(BR.rightNavigationSize);
     }
 
+    private boolean isTooShortDuration() {
+        return System.currentTimeMillis() - mPlayStartTime < TOO_SHORT_DURATION;
+    }
+
     @Override
     public void onCompletion() {
         mControlPanelModel.terminate();
-        if (!selectNext()) {
+        if (isTooShortDuration() || mControlPanelModel.hasError() || !selectNext()) {
             ActivityCompat.finishAfterTransition(mActivity);
             return;
         }
