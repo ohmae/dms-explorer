@@ -70,6 +70,20 @@
             tools:listitem="@layout/property_list_item"
             />
 
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab_delete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/fab_margin"
+            android:onClick="@{model::onClickDelete}"
+            app:backgroundTint="@color/fabDelete"
+            app:rippleColor="@color/fabRipple"
+            app:show="@{model.isDeleteEnabled}"
+            app:srcCompat="@drawable/ic_delete"
+            app:layout_anchor="@id/app_bar"
+            app:layout_anchorGravity="bottom|right"
+            />
+
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -77,21 +91,6 @@
             android:orientation="horizontal"
             app:layout_dodgeInsetEdges="bottom"
             >
-
-            <android.support.design.widget.FloatingActionButton
-                android:id="@+id/fab_delete"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom|end"
-                android:layout_marginBottom="@dimen/fab_margin"
-                android:layout_marginLeft="@dimen/fab_margin"
-                android:layout_marginStart="@dimen/fab_margin"
-                android:onClick="@{model::onClickDelete}"
-                app:backgroundTint="@color/fabDelete"
-                app:rippleColor="@color/fabRipple"
-                app:show="@{model.isDeleteEnabled}"
-                app:srcCompat="@drawable/ic_delete"
-                />
 
             <android.support.design.widget.FloatingActionButton
                 android:id="@+id/fab_send"
