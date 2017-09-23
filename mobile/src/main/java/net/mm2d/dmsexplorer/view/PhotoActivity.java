@@ -12,6 +12,7 @@ import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 
@@ -90,6 +91,15 @@ public class PhotoActivity extends BaseActivity {
     protected void onDestroy() {
         super.onDestroy();
         mFullscreenHelper.terminate();
+    }
+
+    @Override
+    public boolean dispatchKeyEvent(final KeyEvent event) {
+        if (event.getAction() == KeyEvent.ACTION_UP
+                && event.getKeyCode() != KeyEvent.KEYCODE_BACK) {
+            mFullscreenHelper.showNavigation();
+        }
+        return super.dispatchKeyEvent(event);
     }
 
     @Override

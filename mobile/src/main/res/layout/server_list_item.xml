@@ -17,7 +17,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/list_card_margin"
-        android:translationZ="@{model.selected ? @dimen/list_item_focus_elevation : 0}"
+        android:focusable="true"
         app:cardCornerRadius="@dimen/list_card_radius"
         >
 
@@ -40,8 +40,8 @@
                 android:id="@+id/accent"
                 android:layout_width="@dimen/accent_size"
                 android:layout_height="@dimen/accent_size"
-                android:layout_margin="@dimen/icon_margin"
                 android:layout_gravity="center_vertical"
+                android:layout_margin="@dimen/icon_margin"
                 >
 
                 <TextView

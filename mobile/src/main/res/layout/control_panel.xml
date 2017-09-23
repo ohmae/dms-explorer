@@ -32,10 +32,10 @@
             android:bottomBackgroundColor="@{param.backgroundColor}"
             android:enabled="@{model.seekable}"
             android:max="@{model.duration}"
-            android:scrubBarListener="@{model.seekBarListener}"
             android:paddingBottom="@dimen/seek_padding"
             android:paddingTop="@dimen/seek_padding_top"
             android:progress="@{model.progress}"
+            android:scrubBarListener="@{model.seekBarListener}"
             />
 
         <LinearLayout
@@ -69,16 +69,17 @@
                 android:id="@+id/previous"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:alpha="@{model.previousEnabled ? 1.0f : 0.5f}"
                 android:background="@drawable/bg_control_button"
+                android:enabled="@{model.previousEnabled}"
+                android:focusable="true"
                 android:onClick="@{() -> model.onClickPrevious()}"
                 android:padding="@dimen/control_button_padding"
-                android:alpha="@{model.previousEnabled ? 1.0f : 0.5f}"
-                android:enabled="@{model.previousEnabled}"
                 app:srcCompat="@drawable/ic_skip_previous"
                 />
 
             <ImageView
-                android:id="@+id/play"
+                android:id="@+id/play_pause"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/control_button_margin"
@@ -87,20 +88,25 @@
                 android:layout_marginStart="@dimen/control_button_margin"
                 android:background="@drawable/bg_control_button"
                 android:enabled="@{model.prepared}"
+                android:focusable="true"
                 android:imageResource="@{model.playButtonResId}"
-                android:onClick="@{() -> model.onClickPlay()}"
+                android:onClick="@{() -> model.onClickPlayPause()}"
                 android:padding="@dimen/control_button_padding"
-                />
+                >
+
+                <requestFocus/>
+            </ImageView>
 
             <ImageView
                 android:id="@+id/next"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:alpha="@{model.nextEnabled ? 1.0f : 0.5f}"
                 android:background="@drawable/bg_control_button"
+                android:enabled="@{model.nextEnabled}"
+                android:focusable="true"
                 android:onClick="@{() -> model.onClickNext()}"
                 android:padding="@dimen/control_button_padding"
-                android:enabled="@{model.nextEnabled}"
-                android:alpha="@{model.nextEnabled ? 1.0f : 0.5f}"
                 app:srcCompat="@drawable/ic_skip_next"
                 />
 

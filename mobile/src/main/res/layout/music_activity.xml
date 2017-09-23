@@ -42,6 +42,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="end"
                     android:background="@drawable/bg_tool_button"
+                    android:focusable="true"
                     android:imageResource="@{model.repeatIconId}"
                     android:onClick="@{() -> model.onClickRepeat()}"
                     android:padding="@dimen/toolbar_button_padding"

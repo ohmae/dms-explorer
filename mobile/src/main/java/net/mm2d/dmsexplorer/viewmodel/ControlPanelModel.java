@@ -142,7 +142,7 @@ public class ControlPanelModel extends BaseObservable implements StatusListener 
         }
     };
 
-    public void onClickPlay() {
+    public void onClickPlayPause() {
         final boolean playing = mPlayerModel.isPlaying();
         if (playing) {
             mPlayerModel.pause();
@@ -150,6 +150,18 @@ public class ControlPanelModel extends BaseObservable implements StatusListener 
             mPlayerModel.play();
         }
         setPlaying(!playing);
+    }
+
+    public void onClickPlay() {
+        final boolean playing = mPlayerModel.isPlaying();
+        if (!playing) {
+            mPlayerModel.play();
+            setPlaying(true);
+        }
+    }
+
+    public void onClickPause() {
+        onClickPlayPause();
     }
 
     public void setRepeatMode(@NonNull final RepeatMode mode) {
@@ -167,12 +179,18 @@ public class ControlPanelModel extends BaseObservable implements StatusListener 
     }
 
     public void onClickNext() {
+        if (!mNextEnabled) {
+            return;
+        }
         if (!mPlayerModel.next()) {
             mSkipControlListener.next();
         }
     }
 
     public void onClickPrevious() {
+        if (!mPreviousEnabled) {
+            return;
+        }
         if (!mPlayerModel.previous()) {
             mSkipControlListener.previous();
         }

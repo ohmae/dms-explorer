@@ -30,6 +30,7 @@ import net.mm2d.dmsexplorer.Repository;
 import net.mm2d.dmsexplorer.databinding.ServerListItemBinding;
 import net.mm2d.dmsexplorer.domain.model.ControlPointModel;
 import net.mm2d.dmsexplorer.settings.Settings;
+import net.mm2d.dmsexplorer.util.FeatureUtils;
 import net.mm2d.dmsexplorer.view.adapter.ServerListAdapter;
 import net.mm2d.dmsexplorer.view.animator.CustomItemAnimator;
 
@@ -58,6 +59,7 @@ public class ServerListActivityModel extends BaseObservable {
     public final ItemAnimator itemAnimator;
     @NonNull
     public final LayoutManager serverListLayoutManager;
+    public final boolean focusable;
 
     @NonNull
     private final ServerListAdapter mServerListAdapter;
@@ -97,6 +99,7 @@ public class ServerListActivityModel extends BaseObservable {
             }
         });
 
+        focusable = !FeatureUtils.hasTouchScreen(context);
         serverListLayoutManager = new LinearLayoutManager(context);
         itemAnimator = new CustomItemAnimator(context);
         onRefreshListener = () -> mControlPointModel.restart(() -> {

@@ -30,6 +30,7 @@ import net.mm2d.dmsexplorer.domain.entity.ContentEntity;
 import net.mm2d.dmsexplorer.domain.model.ExploreListener;
 import net.mm2d.dmsexplorer.domain.model.MediaServerModel;
 import net.mm2d.dmsexplorer.settings.Settings;
+import net.mm2d.dmsexplorer.util.FeatureUtils;
 import net.mm2d.dmsexplorer.util.ToolbarThemeUtils;
 import net.mm2d.dmsexplorer.view.adapter.ContentListAdapter;
 import net.mm2d.dmsexplorer.view.animator.CustomItemAnimator;
@@ -76,6 +77,7 @@ public class ContentListActivityModel extends BaseObservable implements ExploreL
     @NonNull
     public final String title;
     public final int toolbarBackground;
+    public final boolean focusable;
 
     @NonNull
     private final ContentListAdapter mContentListAdapter;
@@ -116,8 +118,9 @@ public class ContentListActivityModel extends BaseObservable implements ExploreL
         mContentListAdapter.setOnItemLongClickListener(this::onItemLongClick);
         mCdsSelectListener = listener;
 
-        itemAnimator = new CustomItemAnimator(context);
+        focusable = !FeatureUtils.hasTouchScreen(context);
         cdsListLayoutManager = new LinearLayoutManager(context);
+        itemAnimator = new CustomItemAnimator(context);
         title = mMediaServerModel.getTitle();
         onRefreshListener = mMediaServerModel::reload;
         final MediaServer server = mMediaServerModel.getMediaServer();
