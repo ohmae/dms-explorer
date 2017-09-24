@@ -12,14 +12,17 @@ import android.media.MediaPlayer.OnCompletionListener;
 import android.media.MediaPlayer.OnErrorListener;
 import android.media.MediaPlayer.OnInfoListener;
 import android.media.MediaPlayer.OnPreparedListener;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 /**
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
  */
 public class MediaPlayerControl implements MediaControl {
+    @NonNull
     private final MediaPlayer mMediaPlayer;
 
-    public MediaPlayerControl(MediaPlayer mediaPlayer) {
+    public MediaPlayerControl(@NonNull MediaPlayer mediaPlayer) {
         mMediaPlayer = mediaPlayer;
     }
 
@@ -80,22 +83,22 @@ public class MediaPlayerControl implements MediaControl {
     }
 
     @Override
-    public void setOnPreparedListener(final OnPreparedListener listener) {
+    public void setOnPreparedListener(@Nullable final OnPreparedListener listener) {
         mMediaPlayer.setOnPreparedListener(listener);
     }
 
     @Override
-    public void setOnErrorListener(final OnErrorListener listener) {
+    public void setOnErrorListener(@Nullable final OnErrorListener listener) {
         mMediaPlayer.setOnErrorListener(listener);
     }
 
     @Override
-    public void setOnInfoListener(final OnInfoListener listener) {
+    public void setOnInfoListener(@Nullable final OnInfoListener listener) {
         mMediaPlayer.setOnInfoListener(listener);
     }
 
     @Override
-    public void setOnCompletionListener(final OnCompletionListener listener) {
+    public void setOnCompletionListener(@Nullable final OnCompletionListener listener) {
         mMediaPlayer.setOnCompletionListener(listener);
     }
 }

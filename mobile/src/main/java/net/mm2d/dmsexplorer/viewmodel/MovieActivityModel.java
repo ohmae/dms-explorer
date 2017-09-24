@@ -11,6 +11,7 @@ import android.app.Activity;
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
 import android.graphics.Point;
+import android.net.Uri;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -85,8 +86,9 @@ public class MovieActivityModel extends BaseObservable
     @NonNull
     private final MuteAlertHelper mMuteAlertHelper;
 
-    private static final long TOO_SHORT_DURATION = 2000;
+    private static final long TOO_SHORT_PLAY_TIME = 2000;
     private long mPlayStartTime;
+    private boolean mFinishing;
 
     public MovieActivityModel(
             @NonNull final Activity activity,
@@ -109,13 +111,18 @@ public class MovieActivityModel extends BaseObservable
         mMovieActivityPipHelper = PipHelpers.getMovieHelper(mActivity);
         mMovieActivityPipHelper.register();
         mMuteAlertHelper = new MuteAlertHelper(activity);
+        final PlaybackTargetModel targetModel = mRepository.getPlaybackTargetModel();
+        if (targetModel == null || targetModel.getUri() == Uri.EMPTY) {
+            throw new IllegalStateException();
+        }
         updateTargetModel();
     }
 
     private void updateTargetModel() {
         final PlaybackTargetModel targetModel = mRepository.getPlaybackTargetModel();
-        if (targetModel == null) {
-            throw new IllegalStateException();
+        if (targetModel == null || targetModel.getUri() == Uri.EMPTY) {
+            finishAfterTransition();
+            return;
         }
         mPlayStartTime = System.currentTimeMillis();
         mMuteAlertHelper.alertIfMuted();
@@ -212,15 +219,17 @@ public class MovieActivityModel extends BaseObservable
         notifyPropertyChanged(BR.rightNavigationSize);
     }
 
-    private boolean isTooShortDuration() {
-        return System.currentTimeMillis() - mPlayStartTime < TOO_SHORT_DURATION;
+    private boolean isTooShortPlayTime() {
+        final long playTime = System.currentTimeMillis() - mPlayStartTime;
+        return !mControlPanelModel.isSkipped()
+                && playTime < TOO_SHORT_PLAY_TIME;
     }
 
     @Override
     public void onCompletion() {
         mControlPanelModel.terminate();
-        if (isTooShortDuration() || mControlPanelModel.hasError() || !selectNext()) {
-            ActivityCompat.finishAfterTransition(mActivity);
+        if (isTooShortPlayTime() || mControlPanelModel.hasError() || !selectNext()) {
+            finishAfterTransition();
             return;
         }
         updateTargetModel();
@@ -232,7 +241,7 @@ public class MovieActivityModel extends BaseObservable
     public void next() {
         mControlPanelModel.terminate();
         if (!selectNext()) {
-            ActivityCompat.finishAfterTransition(mActivity);
+            finishAfterTransition();
             return;
         }
         updateTargetModel();
@@ -244,12 +253,19 @@ public class MovieActivityModel extends BaseObservable
     public void previous() {
         mControlPanelModel.terminate();
         if (!selectPrevious()) {
-            ActivityCompat.finishAfterTransition(mActivity);
+            finishAfterTransition();
             return;
         }
         updateTargetModel();
         mOnChangeContentListener.onChangeContent();
         EventLogger.sendPlayContent(true);
+    }
+
+    private void finishAfterTransition() {
+        if (!mFinishing) {
+            mFinishing = true;
+            ActivityCompat.finishAfterTransition(mActivity);
+        }
     }
 
     private boolean selectNext() {

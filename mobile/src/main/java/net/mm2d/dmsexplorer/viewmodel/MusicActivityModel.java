@@ -73,8 +73,9 @@ public class MusicActivityModel extends BaseObservable
     @NonNull
     private final MuteAlertHelper mMuteAlertHelper;
 
-    private static final long TOO_SHORT_DURATION = 2000;
+    private static final long TOO_SHORT_PLAY_TIME = 2000;
     private long mPlayStartTime;
+    private boolean mFinishing;
 
     public MusicActivityModel(
             @NonNull final Activity activity,
@@ -98,9 +99,10 @@ public class MusicActivityModel extends BaseObservable
     private void updateTargetModel() {
         final PlaybackTargetModel targetModel = mRepository.getPlaybackTargetModel();
         if (targetModel == null || targetModel.getUri() == Uri.EMPTY) {
-            ActivityCompat.finishAfterTransition(mActivity);
+            finishAfterTransition();
             return;
         }
+        mPlayStartTime = System.currentTimeMillis();
         mMuteAlertHelper.alertIfMuted();
         final PlayerModel playerModel = new MusicPlayerModel(mActivity);
         mControlPanelModel = new ControlPanelModel(mActivity, playerModel);
@@ -206,15 +208,17 @@ public class MusicActivityModel extends BaseObservable
         return mControlPanelModel;
     }
 
-    private boolean isTooShortDuration() {
-        return System.currentTimeMillis() - mPlayStartTime < TOO_SHORT_DURATION;
+    private boolean isTooShortPlayTime() {
+        final long playTime = System.currentTimeMillis() - mPlayStartTime;
+        return !mControlPanelModel.isSkipped()
+                && playTime < TOO_SHORT_PLAY_TIME;
     }
 
     @Override
     public void onCompletion() {
         mControlPanelModel.terminate();
-        if (isTooShortDuration() || mControlPanelModel.hasError() || !selectNext()) {
-            ActivityCompat.finishAfterTransition(mActivity);
+        if (isTooShortPlayTime() || mControlPanelModel.hasError() || !selectNext()) {
+            finishAfterTransition();
             return;
         }
         updateTargetModel();
@@ -225,7 +229,7 @@ public class MusicActivityModel extends BaseObservable
     public void next() {
         mControlPanelModel.terminate();
         if (!selectNext()) {
-            ActivityCompat.finishAfterTransition(mActivity);
+            finishAfterTransition();
             return;
         }
         updateTargetModel();
@@ -236,11 +240,18 @@ public class MusicActivityModel extends BaseObservable
     public void previous() {
         mControlPanelModel.terminate();
         if (!selectPrevious()) {
-            ActivityCompat.finishAfterTransition(mActivity);
+            finishAfterTransition();
             return;
         }
         updateTargetModel();
         EventLogger.sendPlayContent(true);
+    }
+
+    private void finishAfterTransition() {
+        if (!mFinishing) {
+            mFinishing = true;
+            ActivityCompat.finishAfterTransition(mActivity);
+        }
     }
 
     private boolean selectNext() {

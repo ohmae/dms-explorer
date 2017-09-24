@@ -7,6 +7,7 @@
     <string name="toast_command_error">エラーが発生しました</string>
     <string name="toast_download_error">エラーが発生しました</string>
     <string name="toast_decode_error">エラーが発生しました</string>
+    <string name="toast_player_error">エラーが発生しました</string>
     <string name="toast_delete_succeed">削除しました</string>
     <string name="toast_delete_error">エラーが発生しました</string>
     <string name="toast_repeat_play_once">1項目のみ再生</string>

@@ -10,9 +10,12 @@ package net.mm2d.dmsexplorer.viewmodel;
 import android.content.Context;
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import net.mm2d.android.util.Toaster;
 import net.mm2d.dmsexplorer.BR;
 import net.mm2d.dmsexplorer.R;
 import net.mm2d.dmsexplorer.domain.model.PlayerModel;
@@ -76,6 +79,7 @@ public class ControlPanelModel extends BaseObservable implements StatusListener 
     @NonNull
     private RepeatMode mRepeatMode = RepeatMode.PLAY_ONCE;
     private boolean mError;
+    private boolean mSkipped;
     private boolean mTracking;
     @NonNull
     private final Context mContext;
@@ -85,6 +89,10 @@ public class ControlPanelModel extends BaseObservable implements StatusListener 
     private OnCompletionListener mOnCompletionListener = ON_COMPLETION_LISTENER;
     @NonNull
     private SkipControlListener mSkipControlListener = SKIP_CONTROL_LISTENER;
+    @NonNull
+    private Handler mHandler = new Handler(Looper.getMainLooper());
+    @NonNull
+    private Runnable mOnCompletion = this::onCompletion;
 
     ControlPanelModel(
             @NonNull Context context,
@@ -130,6 +138,7 @@ public class ControlPanelModel extends BaseObservable implements StatusListener 
         @Override
         public void onStopTrackingTouch(@NonNull final ScrubBar seekBar) {
             mTracking = false;
+            mSkipped = true;
             mPlayerModel.seekTo(seekBar.getProgress());
             setScrubText("");
         }
@@ -353,7 +362,10 @@ public class ControlPanelModel extends BaseObservable implements StatusListener 
             final int what,
             final int extra) {
         mError = true;
-        return false;
+        Toaster.showLong(mContext, R.string.toast_player_error);
+        mHandler.removeCallbacks(mOnCompletion);
+        mHandler.postDelayed(mOnCompletion, 1000);
+        return true;
     }
 
     @Override
@@ -374,5 +386,9 @@ public class ControlPanelModel extends BaseObservable implements StatusListener 
 
     public boolean hasError() {
         return mError;
+    }
+
+    public boolean isSkipped() {
+        return mSkipped;
     }
 }
