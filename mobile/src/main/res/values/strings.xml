@@ -66,7 +66,7 @@
     <string name="pref_message_content_detail_on_tap_on">Tap: Show the content detail\nLong tap : Launch the player</string>
     <string name="pref_message_content_detail_on_tap_off">Tap: Launch the player\nLong tap : Show the content detail</string>
     <string name="pref_category_delete">Delete</string>
-    <string name="pref_title_delete">Delete Content</string>
+    <string name="pref_title_delete">Delete content</string>
     <string name="pref_message_delete_on">Show delete button, if possible.</string>
     <string name="pref_message_delete_off">Don\'t show delete button.</string>
 
