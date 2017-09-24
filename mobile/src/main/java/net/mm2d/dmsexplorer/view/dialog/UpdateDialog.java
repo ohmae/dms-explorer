@@ -7,12 +7,12 @@
 
 package net.mm2d.dmsexplorer.view.dialog;
 
-import android.app.Activity;
 import android.app.Dialog;
-import android.app.DialogFragment;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AlertDialog;
 
 import net.mm2d.android.util.LaunchUtils;
@@ -28,8 +28,8 @@ public class UpdateDialog extends DialogFragment {
         return new UpdateDialog();
     }
 
-    public static void show(@NonNull final Activity activity) {
-        newInstance().show(activity.getFragmentManager(), "");
+    public static void show(@NonNull final FragmentActivity activity) {
+        newInstance().show(activity.getSupportFragmentManager(), "");
     }
 
     @NonNull

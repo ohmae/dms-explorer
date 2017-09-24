@@ -63,4 +63,8 @@ class ContentListActivityDelegateOnePane extends ContentListActivityDelegate {
         final Intent intent = ContentDetailActivity.makeIntent(getActivity());
         getActivity().startActivity(intent, ActivityUtils.makeScaleUpAnimationBundle(v));
     }
+
+    @Override
+    public void onDelete() {
+    }
 }

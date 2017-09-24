@@ -104,4 +104,9 @@ class ContentListActivityDelegateTwoPane extends ContentListActivityDelegate {
             setDetailFragment(false);
         }
     }
+
+    @Override
+    public void onDelete() {
+        removeDetailFragment();
+    }
 }

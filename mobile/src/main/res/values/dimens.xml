@@ -4,8 +4,12 @@
 
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="fab2_margin">88dp</dimen>
+    <dimen name="icon_margin">12dp</dimen>
+    <dimen name="large_margin">16dp</dimen>
+    <dimen name="default_margin">8dp</dimen>
+    <dimen name="small_margin">4dp</dimen>
 
-    <dimen name="item_width">400dp</dimen>
+    <dimen name="item_width">420dp</dimen>
     <dimen name="accent_size">48dp</dimen>
     <dimen name="horizontal_padding">12dp</dimen>
 
@@ -20,11 +24,14 @@
     <dimen name="list_card_margin">1dp</dimen>
     <dimen name="list_card_radius">0dp</dimen>
     <dimen name="list_item_focus_elevation">2dp</dimen>
+    <dimen name="list_focus_mark_width">5dp</dimen>
+    <dimen name="list_scale_padding">20dp</dimen>
+    <dimen name="list_non_scale_padding">0dp</dimen>
     <dimen name="app_bar_elevation">4dp</dimen>
 
     <dimen name="status_bar_size">25dp</dimen>
     <dimen name="server_property_margin">128dp</dimen>
-    <dimen name="cds_property_margin">200dp</dimen>
+    <dimen name="cds_property_margin">128dp</dimen>
     <dimen name="music_image_margin">16dp</dimen>
     <dimen name="property_margin">8dp</dimen>
     <dimen name="property_margin_bottom">16dp</dimen>

@@ -9,6 +9,8 @@ package net.mm2d.dmsexplorer.view.adapter;
 
 import android.content.Context;
 import android.databinding.DataBindingUtil;
+import android.os.Build.VERSION;
+import android.os.Build.VERSION_CODES;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
@@ -19,6 +21,7 @@ import android.view.ViewGroup;
 import net.mm2d.dmsexplorer.R;
 import net.mm2d.dmsexplorer.databinding.ContentListItemBinding;
 import net.mm2d.dmsexplorer.domain.entity.ContentEntity;
+import net.mm2d.dmsexplorer.util.FeatureUtils;
 import net.mm2d.dmsexplorer.viewmodel.ContentItemModel;
 
 import java.util.ArrayList;
@@ -44,6 +47,7 @@ public class ContentListAdapter
                 @NonNull ContentEntity entity);
     }
 
+    private static final float FOCUS_SCALE = 1.1f;
     private static final OnItemClickListener ON_ITEM_CLICK_LISTENER = (v, entity) -> {
     };
     private static final OnItemLongClickListener ON_ITEM_LONG_CLICK_LISTENER = (v, entity) -> {
@@ -57,9 +61,13 @@ public class ContentListAdapter
     @NonNull
     private OnItemLongClickListener mLongClickListener = ON_ITEM_LONG_CLICK_LISTENER;
     private ContentEntity mSelectedEntity;
+    private final boolean mHasTouchScreen;
+    private final float mTranslationZ;
 
     public ContentListAdapter(@NonNull final Context context) {
         mInflater = LayoutInflater.from(context);
+        mHasTouchScreen = FeatureUtils.hasTouchScreen(context);
+        mTranslationZ = context.getResources().getDimension(R.dimen.list_item_focus_elevation);
     }
 
     @Override
@@ -153,6 +161,9 @@ public class ContentListAdapter
             super(binding.getRoot());
             itemView.setOnClickListener(this::onClick);
             itemView.setOnLongClickListener(this::onLongClick);
+            if (!mHasTouchScreen) {
+                itemView.setOnFocusChangeListener(this::onFocusChange);
+            }
             mBinding = binding;
         }
 
@@ -164,13 +175,28 @@ public class ContentListAdapter
             mBinding.executePendingBindings();
         }
 
-        private void onClick(@NonNull View v) {
+        private void onClick(@NonNull final View v) {
             mClickListener.onItemClick(v, mEntity);
         }
 
-        public boolean onLongClick(@NonNull View v) {
+        private boolean onLongClick(@NonNull final View v) {
             mLongClickListener.onItemLongClick(v, mEntity);
             return true;
+        }
+
+        private void onFocusChange(
+                @NonNull final View v,
+                final boolean focus) {
+            if (focus) {
+                v.setScaleX(FOCUS_SCALE);
+                v.setScaleY(FOCUS_SCALE);
+            } else {
+                v.setScaleX(1.0f);
+                v.setScaleY(1.0f);
+            }
+            if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
+                v.setTranslationZ(focus ? mTranslationZ : 0.0f);
+            }
         }
     }
 }

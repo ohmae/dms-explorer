@@ -29,8 +29,8 @@ public class PlaybackTargetModel {
     private final CdsObject mCdsObject;
     @Nullable
     private Tag mTargetRes;
-    @Nullable
-    private Uri mUri;
+    @NonNull
+    private Uri mUri = Uri.EMPTY;
     @Nullable
     private String mMimeType;
 
@@ -53,7 +53,7 @@ public class PlaybackTargetModel {
 
     private void updateUri() {
         if (mTargetRes == null || TextUtils.isEmpty(mTargetRes.getValue())) {
-            mUri = null;
+            mUri = Uri.EMPTY;
             mMimeType = null;
             return;
         }
@@ -67,14 +67,9 @@ public class PlaybackTargetModel {
         return mCdsObject.getTitle();
     }
 
-    @Nullable
+    @NonNull
     public Uri getUri() {
         return mUri;
-    }
-
-    @Nullable
-    public String getUriString() {
-        return mUri == null ? null : mUri.toString();
     }
 
     @Nullable

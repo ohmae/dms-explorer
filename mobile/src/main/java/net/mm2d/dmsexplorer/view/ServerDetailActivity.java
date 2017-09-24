@@ -7,7 +7,6 @@
 
 package net.mm2d.dmsexplorer.view;
 
-import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -16,6 +15,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.transition.Transition;
 import android.view.View;
 import android.view.ViewAnimationUtils;
@@ -83,7 +83,7 @@ public class ServerDetailActivity extends BaseActivity {
         }
         mBinding.toolbarBackground.setVisibility(View.INVISIBLE);
         getWindow().getSharedElementEnterTransition().addListener(new TransitionListenerAdapter() {
-            @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+            @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
             @Override
             public void onTransitionEnd(final Transition transition) {
                 transition.removeListener(this);
@@ -92,7 +92,7 @@ public class ServerDetailActivity extends BaseActivity {
         });
     }
 
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private void startAnimation(@NonNull final View background) {
         if (!background.isAttachedToWindow()) {
             return;

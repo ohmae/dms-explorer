@@ -90,7 +90,7 @@ public class DmcActivityModel extends BaseObservable implements StatusListener {
         mActivity = activity;
         final PlaybackTargetModel targetModel = repository.getPlaybackTargetModel();
         final PlayerModel playerModel = repository.getMediaRendererModel();
-        if (playerModel == null || targetModel == null || targetModel.getUri() == null) {
+        if (playerModel == null || targetModel == null || targetModel.getUri() == Uri.EMPTY) {
             throw new IllegalStateException();
         }
         mTargetModel = targetModel;
@@ -376,7 +376,7 @@ public class DmcActivityModel extends BaseObservable implements StatusListener {
     public boolean onError(
             final int what,
             final int extra) {
-        Toaster.showLong(mActivity, R.string.toast_command_error_occurred);
+        Toaster.showLong(mActivity, R.string.toast_command_error);
         return false;
     }
 

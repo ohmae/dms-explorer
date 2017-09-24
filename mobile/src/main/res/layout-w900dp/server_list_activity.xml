@@ -34,19 +34,33 @@
 
         </android.support.design.widget.AppBarLayout>
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:baselineAligned="false"
+            android:clipChildren="false"
             android:divider="?android:attr/dividerHorizontal"
             android:orientation="horizontal"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
             >
 
+            <FrameLayout
+                android:id="@+id/server_detail_container"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_toEndOf="@+id/swipe_refresh_layout"
+                android:layout_toRightOf="@+id/swipe_refresh_layout"
+                />
+
             <android.support.v4.widget.SwipeRefreshLayout
                 android:id="@+id/swipe_refresh_layout"
                 android:layout_width="@dimen/item_width"
                 android:layout_height="match_parent"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:clipChildren="false"
                 app:colorSchemeResources="@{model.refreshColors}"
                 app:onRefreshListener="@{model.onRefreshListener}"
                 app:refreshing="@{model.refreshing}"
@@ -56,7 +70,11 @@
                     android:id="@+id/recycler_view"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:background="@color/bgList"
+                    android:clipChildren="false"
+                    android:clipToPadding="false"
                     android:itemAnimator="@{model.itemAnimator}"
+                    android:paddingLeft="@{model.focusable ? @dimen/list_scale_padding : @dimen/list_non_scale_padding}"
                     android:splitMotionEvents="false"
                     app:adapter="@{model.serverListAdapter}"
                     app:layoutManager="@{model.serverListLayoutManager}"
@@ -65,14 +83,7 @@
 
             </android.support.v4.widget.SwipeRefreshLayout>
 
-            <FrameLayout
-                android:id="@+id/server_detail_container"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                />
-
-        </LinearLayout>
+        </RelativeLayout>
 
     </android.support.design.widget.CoordinatorLayout>
 </layout>

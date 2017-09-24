@@ -11,6 +11,7 @@ import android.app.Activity;
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
 import android.graphics.Point;
+import android.net.Uri;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -36,6 +37,7 @@ import net.mm2d.dmsexplorer.settings.Settings;
 import net.mm2d.dmsexplorer.viewmodel.ControlPanelModel.OnCompletionListener;
 import net.mm2d.dmsexplorer.viewmodel.ControlPanelModel.SkipControlListener;
 import net.mm2d.dmsexplorer.viewmodel.helper.MovieActivityPipHelper;
+import net.mm2d.dmsexplorer.viewmodel.helper.MuteAlertHelper;
 import net.mm2d.dmsexplorer.viewmodel.helper.PipHelpers;
 
 /**
@@ -81,6 +83,12 @@ public class MovieActivityModel extends BaseObservable
     private final Settings mSettings;
     @NonNull
     private final MovieActivityPipHelper mMovieActivityPipHelper;
+    @NonNull
+    private final MuteAlertHelper mMuteAlertHelper;
+
+    private static final long TOO_SHORT_PLAY_TIME = 2000;
+    private long mPlayStartTime;
+    private boolean mFinishing;
 
     public MovieActivityModel(
             @NonNull final Activity activity,
@@ -90,7 +98,10 @@ public class MovieActivityModel extends BaseObservable
         mVideoView = videoView;
         mRepository = repository;
         mServerModel = repository.getMediaServerModel();
-        mSettings = new Settings();
+        if (mServerModel == null) {
+            throw new IllegalStateException();
+        }
+        mSettings = new Settings(activity);
         mRepeatMode = mSettings.getRepeatModeMovie();
         mRepeatIconId = mRepeatMode.getIconId();
 
@@ -99,14 +110,22 @@ public class MovieActivityModel extends BaseObservable
         controlPanelParam.setBackgroundColor(color);
         mMovieActivityPipHelper = PipHelpers.getMovieHelper(mActivity);
         mMovieActivityPipHelper.register();
+        mMuteAlertHelper = new MuteAlertHelper(activity);
+        final PlaybackTargetModel targetModel = mRepository.getPlaybackTargetModel();
+        if (targetModel == null || targetModel.getUri() == Uri.EMPTY) {
+            throw new IllegalStateException();
+        }
         updateTargetModel();
     }
 
     private void updateTargetModel() {
         final PlaybackTargetModel targetModel = mRepository.getPlaybackTargetModel();
-        if (targetModel == null) {
-            throw new IllegalStateException();
+        if (targetModel == null || targetModel.getUri() == Uri.EMPTY) {
+            finishAfterTransition();
+            return;
         }
+        mPlayStartTime = System.currentTimeMillis();
+        mMuteAlertHelper.alertIfMuted();
         final PlayerModel playerModel = new MoviePlayerModel(mActivity, mVideoView);
         mControlPanelModel = new ControlPanelModel(mActivity, playerModel);
         mControlPanelModel.setRepeatMode(mRepeatMode);
@@ -200,40 +219,53 @@ public class MovieActivityModel extends BaseObservable
         notifyPropertyChanged(BR.rightNavigationSize);
     }
 
+    private boolean isTooShortPlayTime() {
+        final long playTime = System.currentTimeMillis() - mPlayStartTime;
+        return !mControlPanelModel.isSkipped()
+                && playTime < TOO_SHORT_PLAY_TIME;
+    }
+
     @Override
     public void onCompletion() {
         mControlPanelModel.terminate();
-        if (!selectNext()) {
-            ActivityCompat.finishAfterTransition(mActivity);
+        if (isTooShortPlayTime() || mControlPanelModel.hasError() || !selectNext()) {
+            finishAfterTransition();
             return;
         }
         updateTargetModel();
         mOnChangeContentListener.onChangeContent();
-        EventLogger.sendPlayContent();
+        EventLogger.sendPlayContent(true);
     }
 
     @Override
     public void next() {
         mControlPanelModel.terminate();
         if (!selectNext()) {
-            ActivityCompat.finishAfterTransition(mActivity);
+            finishAfterTransition();
             return;
         }
         updateTargetModel();
         mOnChangeContentListener.onChangeContent();
-        EventLogger.sendPlayContent();
+        EventLogger.sendPlayContent(true);
     }
 
     @Override
     public void previous() {
         mControlPanelModel.terminate();
         if (!selectPrevious()) {
-            ActivityCompat.finishAfterTransition(mActivity);
+            finishAfterTransition();
             return;
         }
         updateTargetModel();
         mOnChangeContentListener.onChangeContent();
-        EventLogger.sendPlayContent();
+        EventLogger.sendPlayContent(true);
+    }
+
+    private void finishAfterTransition() {
+        if (!mFinishing) {
+            mFinishing = true;
+            ActivityCompat.finishAfterTransition(mActivity);
+        }
     }
 
     private boolean selectNext() {

@@ -7,15 +7,13 @@
 
 package net.mm2d.dmsexplorer.view.delegate;
 
-import android.annotation.TargetApi;
 import android.app.ActivityOptions;
 import android.content.Intent;
 import android.os.Build;
-import android.os.Build.VERSION;
-import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.SharedElementCallback;
 import android.transition.Transition;
 import android.util.Pair;
@@ -74,7 +72,7 @@ class ServerListActivityDelegateOnePane extends ServerListActivityDelegate {
     }
 
     private void setSharedElementCallback() {
-        if (VERSION.SDK_INT < VERSION_CODES.LOLLIPOP) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
             return;
         }
         getActivity().setExitSharedElementCallback(new SharedElementCallback() {
@@ -112,7 +110,7 @@ class ServerListActivityDelegateOnePane extends ServerListActivityDelegate {
             return;
         }
         getActivity().getWindow().getSharedElementExitTransition().addListener(new TransitionListenerAdapter() {
-            @TargetApi(VERSION_CODES.KITKAT)
+            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
             public void onTransitionEnd(Transition transition) {
                 task.run();
@@ -130,7 +128,7 @@ class ServerListActivityDelegateOnePane extends ServerListActivityDelegate {
         }
     }
 
-    @TargetApi(VERSION_CODES.LOLLIPOP)
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private void startServerDetailActivityLollipop(@NonNull final View v) {
         final Intent intent = ServerDetailActivity.makeIntent(getActivity());
         final View accent = v.findViewById(R.id.accent);

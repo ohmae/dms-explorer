@@ -351,15 +351,18 @@ public class ScrubBar extends View {
         final float cy = areaHeight / 2 + top;
         final float l = mTrackWidthHalf;
 
+        canvas.save();
         if (mTopBackgroundColor != 0) {
             canvas.clipRect(0, 0, width, cy + l);
             canvas.drawColor(mTopBackgroundColor);
         }
+        canvas.restore();
+        canvas.save();
         if (mBottomBackgroundColor != 0) {
             canvas.clipRect(0, cy - l, width, height);
             canvas.drawColor(mBottomBackgroundColor);
         }
-        canvas.clipRect(0, 0, width, height);
+        canvas.restore();
 
         mPaint.setColor(mTrackColor);
         canvas.drawLine(left, cy, areaWidth + left, cy, mPaint);

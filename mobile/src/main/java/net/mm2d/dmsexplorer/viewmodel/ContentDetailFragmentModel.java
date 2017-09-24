@@ -7,11 +7,11 @@
 
 package net.mm2d.dmsexplorer.viewmodel;
 
-import android.app.Activity;
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.FragmentActivity;
 import android.view.View;
 
 import net.mm2d.android.upnp.avt.MediaRenderer;
@@ -23,9 +23,11 @@ import net.mm2d.dmsexplorer.R;
 import net.mm2d.dmsexplorer.Repository;
 import net.mm2d.dmsexplorer.domain.entity.ContentEntity;
 import net.mm2d.dmsexplorer.domain.model.MediaServerModel;
+import net.mm2d.dmsexplorer.settings.Settings;
 import net.mm2d.dmsexplorer.util.ItemSelectUtils;
 import net.mm2d.dmsexplorer.util.ThemeUtils;
 import net.mm2d.dmsexplorer.view.adapter.PropertyAdapter;
+import net.mm2d.dmsexplorer.view.dialog.DeleteDialog;
 
 /**
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
@@ -40,10 +42,14 @@ public class ContentDetailFragmentModel extends BaseObservable {
     public final boolean hasResource;
     public final boolean isProtected;
 
+    private final boolean mCanDelete;
     private boolean mCanSend;
+    private boolean mDeleteEnabled;
 
     @NonNull
-    private final Activity mActivity;
+    private final Settings mSettings;
+    @NonNull
+    private final FragmentActivity mActivity;
     @NonNull
     private final MrControlPoint mMrControlPoint;
     private final MrDiscoveryListener mMrDiscoveryListener = new MrDiscoveryListener() {
@@ -59,7 +65,7 @@ public class ContentDetailFragmentModel extends BaseObservable {
     };
 
     public ContentDetailFragmentModel(
-            @NonNull final Activity activity,
+            @NonNull final FragmentActivity activity,
             @NonNull final Repository repository) {
         final MediaServerModel model = repository.getMediaServerModel();
         if (model == null) {
@@ -73,19 +79,41 @@ public class ContentDetailFragmentModel extends BaseObservable {
         final String rawTitle = entity.getName();
         title = AribUtils.toDisplayableString(rawTitle);
         propertyAdapter = PropertyAdapter.ofContent(activity, entity);
-        collapsedColor = ThemeUtils.getVividColor(rawTitle);
-        expandedColor = ThemeUtils.getPastelColor(rawTitle);
+        if (activity.getResources().getBoolean(R.bool.two_pane)) {
+            collapsedColor = ThemeUtils.getSlightColor(rawTitle);
+            expandedColor = ThemeUtils.getSlightColor(rawTitle);
+        } else {
+            collapsedColor = ThemeUtils.getVividColor(rawTitle);
+            expandedColor = ThemeUtils.getPastelColor(rawTitle);
+        }
         hasResource = entity.hasResource();
         isProtected = entity.isProtected();
+        mCanDelete = model.canDelete(entity);
+        mSettings = new Settings(activity);
+        setDeleteEnabled(mSettings.isDeleteFunctionEnabled() && mCanDelete);
 
         mMrControlPoint = repository.getControlPointModel().getMrControlPoint();
         updateCanSend();
         mMrControlPoint.addMrDiscoveryListener(mMrDiscoveryListener);
     }
 
+    public void onResume() {
+        setDeleteEnabled(mSettings.isDeleteFunctionEnabled() && mCanDelete);
+    }
+
     @Bindable
     public boolean getCanSend() {
         return mCanSend;
+    }
+
+    @Bindable
+    public boolean isDeleteEnabled() {
+        return mDeleteEnabled;
+    }
+
+    private void setDeleteEnabled(final boolean enabled) {
+        mDeleteEnabled = enabled;
+        notifyPropertyChanged(BR.deleteEnabled);
     }
 
     private void updateCanSend() {
@@ -120,5 +148,9 @@ public class ContentDetailFragmentModel extends BaseObservable {
 
     public void onClickSend(@NonNull final View view) {
         ItemSelectUtils.send(mActivity);
+    }
+
+    public void onClickDelete(@NonNull final View view) {
+        DeleteDialog.show(mActivity);
     }
 }

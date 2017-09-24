@@ -28,11 +28,14 @@ import net.mm2d.dmsexplorer.domain.model.PlaybackTargetModel;
 import net.mm2d.dmsexplorer.domain.model.PlayerModel;
 import net.mm2d.dmsexplorer.settings.RepeatMode;
 import net.mm2d.dmsexplorer.settings.Settings;
-import net.mm2d.dmsexplorer.util.DownloadUtils;
+import net.mm2d.dmsexplorer.util.Downloader;
 import net.mm2d.dmsexplorer.util.ThemeUtils;
 import net.mm2d.dmsexplorer.view.adapter.PropertyAdapter;
 import net.mm2d.dmsexplorer.viewmodel.ControlPanelModel.OnCompletionListener;
 import net.mm2d.dmsexplorer.viewmodel.ControlPanelModel.SkipControlListener;
+import net.mm2d.dmsexplorer.viewmodel.helper.MuteAlertHelper;
+
+import io.reactivex.android.schedulers.AndroidSchedulers;
 
 /**
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
@@ -67,6 +70,12 @@ public class MusicActivityModel extends BaseObservable
     private final MediaServerModel mServerModel;
     @NonNull
     private final Settings mSettings;
+    @NonNull
+    private final MuteAlertHelper mMuteAlertHelper;
+
+    private static final long TOO_SHORT_PLAY_TIME = 2000;
+    private long mPlayStartTime;
+    private boolean mFinishing;
 
     public MusicActivityModel(
             @NonNull final Activity activity,
@@ -74,22 +83,29 @@ public class MusicActivityModel extends BaseObservable
         mActivity = activity;
         mRepository = repository;
         mServerModel = repository.getMediaServerModel();
-        mSettings = new Settings();
+        mSettings = new Settings(activity);
         mRepeatMode = mSettings.getRepeatModeMusic();
         mRepeatIconId = mRepeatMode.getIconId();
 
         controlPanelParam = new ControlPanelParam();
+        mMuteAlertHelper = new MuteAlertHelper(activity);
+        final PlaybackTargetModel targetModel = mRepository.getPlaybackTargetModel();
+        if (targetModel == null || targetModel.getUri() == Uri.EMPTY) {
+            throw new IllegalStateException();
+        }
         updateTargetModel();
     }
 
     private void updateTargetModel() {
-        final PlayerModel playerModel = new MusicPlayerModel(mActivity);
-        mControlPanelModel = new ControlPanelModel(mActivity, playerModel);
         final PlaybackTargetModel targetModel = mRepository.getPlaybackTargetModel();
-        if (targetModel == null || targetModel.getUri() == null) {
-            ActivityCompat.finishAfterTransition(mActivity);
+        if (targetModel == null || targetModel.getUri() == Uri.EMPTY) {
+            finishAfterTransition();
             return;
         }
+        mPlayStartTime = System.currentTimeMillis();
+        mMuteAlertHelper.alertIfMuted();
+        final PlayerModel playerModel = new MusicPlayerModel(mActivity);
+        mControlPanelModel = new ControlPanelModel(mActivity, playerModel);
         mControlPanelModel.setRepeatMode(mRepeatMode);
         mControlPanelModel.setOnCompletionListener(this);
         mControlPanelModel.setSkipControlListener(this);
@@ -112,9 +128,12 @@ public class MusicActivityModel extends BaseObservable
 
     private void loadArt(@NonNull final Uri uri) {
         setImageBinary(null);
-        if (uri != Uri.EMPTY) {
-            DownloadUtils.async(uri.toString(), this::setImageBinary);
+        if (uri == Uri.EMPTY) {
+            return;
         }
+        Downloader.create(uri.toString())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(this::setImageBinary);
     }
 
     public void terminate() {
@@ -189,37 +208,50 @@ public class MusicActivityModel extends BaseObservable
         return mControlPanelModel;
     }
 
+    private boolean isTooShortPlayTime() {
+        final long playTime = System.currentTimeMillis() - mPlayStartTime;
+        return !mControlPanelModel.isSkipped()
+                && playTime < TOO_SHORT_PLAY_TIME;
+    }
+
     @Override
     public void onCompletion() {
         mControlPanelModel.terminate();
-        if (!selectNext()) {
-            ActivityCompat.finishAfterTransition(mActivity);
+        if (isTooShortPlayTime() || mControlPanelModel.hasError() || !selectNext()) {
+            finishAfterTransition();
             return;
         }
         updateTargetModel();
-        EventLogger.sendPlayContent();
+        EventLogger.sendPlayContent(true);
     }
 
     @Override
     public void next() {
         mControlPanelModel.terminate();
         if (!selectNext()) {
-            ActivityCompat.finishAfterTransition(mActivity);
+            finishAfterTransition();
             return;
         }
         updateTargetModel();
-        EventLogger.sendPlayContent();
+        EventLogger.sendPlayContent(true);
     }
 
     @Override
     public void previous() {
         mControlPanelModel.terminate();
         if (!selectPrevious()) {
-            ActivityCompat.finishAfterTransition(mActivity);
+            finishAfterTransition();
             return;
         }
         updateTargetModel();
-        EventLogger.sendPlayContent();
+        EventLogger.sendPlayContent(true);
+    }
+
+    private void finishAfterTransition() {
+        if (!mFinishing) {
+            mFinishing = true;
+            ActivityCompat.finishAfterTransition(mActivity);
+        }
     }
 
     private boolean selectNext() {

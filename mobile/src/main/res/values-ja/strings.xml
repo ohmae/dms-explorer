@@ -4,14 +4,18 @@
     <string name="title_device_select">機器選択</string>
     <string name="no_available_network">利用可能なネットワーク接続がありません</string>
     <string name="toast_not_support_drm">著作権保護されたコンテンツの再生には対応していません</string>
-    <string name="toast_command_error_occurred">エラーが発生しました</string>
-    <string name="toast_download_error_occurred">エラーが発生しました</string>
-    <string name="toast_decode_error_occurred">エラーが発生しました</string>
+    <string name="toast_command_error">エラーが発生しました</string>
+    <string name="toast_download_error">エラーが発生しました</string>
+    <string name="toast_decode_error">エラーが発生しました</string>
+    <string name="toast_player_error">エラーが発生しました</string>
+    <string name="toast_delete_succeed">削除しました</string>
+    <string name="toast_delete_error">エラーが発生しました</string>
     <string name="toast_repeat_play_once">1項目のみ再生</string>
     <string name="toast_repeat_sequential">最後まで連続再生</string>
     <string name="toast_repeat_repeat_all">全体をループ再生</string>
     <string name="toast_repeat_repeat_one">1項目をループ再生</string>
     <string name="toast_launch_error">起動できませんでした</string>
+    <string name="toast_currently_muted">ミュートされています</string>
     <string name="seek_bar_scrub_normal">seek (x1/1)</string>
     <string name="seek_bar_scrub_half">seek (x1/2)</string>
     <string name="seek_bar_scrub_quarter">seek (x1/4)</string>
@@ -61,6 +65,10 @@
     <string name="pref_title_content_detail_on_tap">コンテンツ選択</string>
     <string name="pref_message_content_detail_on_tap_on">タップ： 詳細情報を表示\nロングタップ： プレーヤーを起動</string>
     <string name="pref_message_content_detail_on_tap_off">タップ： プレーヤーを起動\nロングタップ： 詳細情報を表示</string>
+    <string name="pref_category_delete">削除</string>
+    <string name="pref_title_delete">コンテンツの削除</string>
+    <string name="pref_message_delete_on">削除可能な場合、削除ボタンを表示します</string>
+    <string name="pref_message_delete_off">削除ボタンを表示しません</string>
 
     <string name="pref_header_information">情報</string>
     <string name="pref_title_play_store">Google Playストア</string>
@@ -79,4 +87,6 @@
     <string name="dialog_message_update">新しいバージョンが利用できます。バージョンアップをおすすめします。</string>
     <string name="dialog_button_ok">OK</string>
     <string name="dialog_button_cancel">キャンセル</string>
+    <string name="dialog_title_delete">注意：削除</string>
+    <string name="dialog_message_delete">「%1$s」をサーバーから削除します。\n削除すると元に戻せません。\n削除しますか？</string>
 </resources>

@@ -47,7 +47,7 @@ public class Tag implements Parcelable {
      *
      * @param element タグ情報
      */
-    Tag(@NonNull Element element) {
+    Tag(@NonNull final Element element) {
         this(element, false);
     }
 
@@ -60,8 +60,8 @@ public class Tag implements Parcelable {
      * @param root    タグがitem/containerのときtrue
      */
     Tag(
-            @NonNull Element element,
-            boolean root) {
+            @NonNull final Element element,
+            final boolean root) {
         this(element, root ? "" : element.getTextContent());
     }
 
@@ -72,8 +72,8 @@ public class Tag implements Parcelable {
      * @param value   タグの値
      */
     private Tag(
-            @NonNull Element element,
-            @NonNull String value) {
+            @NonNull final Element element,
+            @NonNull final String value) {
         mName = element.getTagName();
         mValue = value;
         final NamedNodeMap attributes = element.getAttributes();
@@ -116,7 +116,7 @@ public class Tag implements Parcelable {
      * @return 属性値、見つからない場合null
      */
     @Nullable
-    public String getAttribute(@Nullable String name) {
+    public String getAttribute(@Nullable final String name) {
         return mAttribute.get(name);
     }
 
@@ -152,7 +152,7 @@ public class Tag implements Parcelable {
      *
      * @param in Parcel
      */
-    private Tag(@NonNull Parcel in) {
+    private Tag(@NonNull final Parcel in) {
         mName = in.readString();
         mValue = in.readString();
         final int size = in.readInt();
@@ -170,8 +170,8 @@ public class Tag implements Parcelable {
 
     @Override
     public void writeToParcel(
-            @NonNull Parcel dest,
-            int flags) {
+            @NonNull final Parcel dest,
+            final int flags) {
         dest.writeString(mName);
         dest.writeString(mValue);
         dest.writeInt(mAttribute.size());
@@ -191,12 +191,12 @@ public class Tag implements Parcelable {
      */
     public static final Creator<Tag> CREATOR = new Creator<Tag>() {
         @Override
-        public Tag createFromParcel(Parcel in) {
+        public Tag createFromParcel(final Parcel in) {
             return new Tag(in);
         }
 
         @Override
-        public Tag[] newArray(int size) {
+        public Tag[] newArray(final int size) {
             return new Tag[size];
         }
     };

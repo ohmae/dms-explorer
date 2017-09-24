@@ -24,7 +24,7 @@
             android:id="@+id/accent"
             android:layout_width="@dimen/accent_size"
             android:layout_height="@dimen/accent_size"
-            android:layout_margin="12dp"
+            android:layout_margin="@dimen/icon_margin"
             >
 
             <TextView
@@ -63,8 +63,8 @@
                 android:id="@+id/text_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="4dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginBottom="@dimen/small_margin"
+                android:layout_marginTop="@dimen/default_margin"
                 android:text="@{model.title}"
                 android:textColor="@color/textMain"
                 android:textSize="@dimen/text_size_main"
@@ -74,7 +74,7 @@
                 android:id="@+id/text_description"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
+                android:layout_marginBottom="@dimen/default_margin"
                 android:text="@{model.description}"
                 android:textColor="@color/textWeak"
                 android:textSize="@dimen/text_size_sub"

@@ -13,6 +13,7 @@
     <color name="textHighlightDark">#4477ee</color>
     <color name="textMainDark">#ffffff</color>
     <color name="textLinkDark">#0080ff</color>
+    <color name="textToolbar">#ffffff</color>
     <color name="bgActivity">#ffffff</color>
     <color name="bgList">#f0f0f0</color>
     <color name="bgListItem">#ffffff</color>
@@ -32,8 +33,9 @@
     <color name="translucent_control">#66000000</color>
     <color name="fabDisable">#808080</color>
     <color name="fabRipple">#80ffffff</color>
+    <color name="fabDelete">#ffd00000</color>
     <color name="toolbarBackgroundDefault">#c0c0c0</color>
-
+    <color name="toolbarBackgroundContent">#d0e0f0</color>
     <color name="textIntroductory">#ffffff</color>
     <color name="overlayIntroductory">#ee2196f3</color>
     <color name="dimmerIntroductory">#cc000000</color>

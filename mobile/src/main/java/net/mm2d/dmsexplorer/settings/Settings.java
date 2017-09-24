@@ -34,9 +34,11 @@ public class Settings {
 
     /**
      * インスタンス作成。
+     *
+     * @param context コンテキスト
      */
-    public Settings() {
-        mStorage = new SettingsStorage();
+    public Settings(@NonNull final Context context) {
+        mStorage = new SettingsStorage(context);
     }
 
     /**
@@ -163,6 +165,15 @@ public class Settings {
      */
     public boolean shouldShowContentDetailOnTap() {
         return mStorage.getBoolean(Key.SHOULD_SHOW_CONTENT_DETAIL_ON_TAP, true);
+    }
+
+    /**
+     * 削除削除機能が有効か否か。
+     *
+     * @return 削除機能が有効なときtrue
+     */
+    public boolean isDeleteFunctionEnabled() {
+        return mStorage.getBoolean(Key.DELETE_FUNCTION_ENABLED, false);
     }
 
     /**

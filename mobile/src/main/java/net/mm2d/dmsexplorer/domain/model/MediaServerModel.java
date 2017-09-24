@@ -14,15 +14,18 @@ import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import net.mm2d.android.upnp.cds.CdsObject;
 import net.mm2d.android.upnp.cds.MediaServer;
 import net.mm2d.dmsexplorer.domain.entity.ContentDirectoryEntity;
 import net.mm2d.dmsexplorer.domain.entity.ContentEntity;
+import net.mm2d.dmsexplorer.domain.entity.DirectoryEntity;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
-import java.util.Deque;
 import java.util.LinkedList;
 import java.util.List;
+
+import io.reactivex.android.schedulers.AndroidSchedulers;
 
 /**
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
@@ -44,7 +47,7 @@ public class MediaServerModel implements ExploreListener {
     private final Handler mHandler = new Handler(Looper.getMainLooper());
     private final PlaybackTargetObserver mPlaybackTargetObserver;
     private final MediaServer mMediaServer;
-    private final Deque<ContentDirectoryEntity> mHistoryStack = new LinkedList<>();
+    private final LinkedList<ContentDirectoryEntity> mHistoryStack = new LinkedList<>();
     private String mPath;
     @NonNull
     private final static ExploreListener EXPLORE_LISTENER = new ExploreListenerAdapter();
@@ -74,6 +77,40 @@ public class MediaServerModel implements ExploreListener {
             directory.terminate();
         }
         mHistoryStack.clear();
+    }
+
+    public boolean canDelete(@NonNull final ContentEntity entity) {
+        if (!entity.canDelete()) {
+            return false;
+        }
+        if (mHistoryStack.size() >= 2) {
+            final ContentEntity p = mHistoryStack.get(1).getSelectedEntity();
+            if (p != null && !p.canDelete()) {
+                return false;
+            }
+        }
+        return mMediaServer.hasDestroyObject();
+    }
+
+    public void delete(
+            @NonNull final ContentEntity entity,
+            @Nullable final Runnable successCallback,
+            @Nullable final Runnable errorCallback) {
+        final Runnable doNothing = () -> {
+        };
+        final Runnable onSuccess = successCallback == null ? doNothing : successCallback;
+        final Runnable onError = errorCallback == null ? doNothing : errorCallback;
+        final String id = ((CdsObject) entity.getObject()).getObjectId();
+        mMediaServer.destroyObject(id)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(integer -> {
+                    if (integer == MediaServer.NO_ERROR) {
+                        onSuccess.run();
+                        reload();
+                        return;
+                    }
+                    onError.run();
+                }, throwable -> onError.run());
     }
 
     public boolean enterChild(@NonNull final ContentEntity entity) {
@@ -136,6 +173,9 @@ public class MediaServerModel implements ExploreListener {
     public void setExploreListener(@Nullable final ExploreListener listener) {
         mExploreListener = listener != null ? listener : EXPLORE_LISTENER;
         final ContentDirectoryEntity directory = mHistoryStack.peekFirst();
+        if (directory == null) {
+            return;
+        }
         mExploreListener.onStart();
         mExploreListener.onUpdate(directory.getEntities());
         if (!directory.isInProgress()) {
@@ -155,9 +195,14 @@ public class MediaServerModel implements ExploreListener {
         return mPath;
     }
 
-    public void setSelectedEntity(@NonNull final ContentEntity entity) {
-        mHistoryStack.peekFirst().setSelectedEntity(entity);
+    public boolean setSelectedEntity(@NonNull final ContentEntity entity) {
+        final DirectoryEntity directory = mHistoryStack.peekFirst();
+        if (directory == null) {
+            return false;
+        }
+        directory.setSelectedEntity(entity);
         updatePlaybackTarget();
+        return true;
     }
 
     private void updatePlaybackTarget() {
@@ -177,8 +222,7 @@ public class MediaServerModel implements ExploreListener {
         if (nextEntity == null) {
             return false;
         }
-        setSelectedEntity(nextEntity);
-        return true;
+        return setSelectedEntity(nextEntity);
     }
 
     @Nullable
@@ -236,8 +280,7 @@ public class MediaServerModel implements ExploreListener {
         if (nextEntity == null) {
             return false;
         }
-        setSelectedEntity(nextEntity);
-        return true;
+        return setSelectedEntity(nextEntity);
     }
 
     @Nullable

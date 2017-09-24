@@ -7,11 +7,11 @@
 
 package net.mm2d.android.transition;
 
-import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.Path;
-import android.os.Build.VERSION_CODES;
+import android.os.Build;
 import android.support.annotation.NonNull;
+import android.support.annotation.RequiresApi;
 import android.transition.PathMotion;
 import android.util.AttributeSet;
 
@@ -20,7 +20,7 @@ import android.util.AttributeSet;
  *
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
  */
-@TargetApi(VERSION_CODES.LOLLIPOP)
+@RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
 public class SmilingCurveMotion extends PathMotion {
     public SmilingCurveMotion() {
     }

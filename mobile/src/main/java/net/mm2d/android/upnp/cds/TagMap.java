@@ -48,7 +48,7 @@ class TagMap implements Parcelable {
      *
      * @param in Parcel
      */
-    private TagMap(Parcel in) {
+    private TagMap(final Parcel in) {
         final int size = in.readInt();
         mMap = new ArrayMap<>(size);
         final ClassLoader classLoader = Tag.class.getClassLoader();
@@ -66,8 +66,8 @@ class TagMap implements Parcelable {
 
     @Override
     public void writeToParcel(
-            Parcel dest,
-            int flags) {
+            final Parcel dest,
+            final int flags) {
         dest.writeInt(mMap.size());
         for (final Entry<String, List<Tag>> entry : mMap.entrySet()) {
             dest.writeString(entry.getKey());
@@ -89,12 +89,12 @@ class TagMap implements Parcelable {
      */
     public static final Creator<TagMap> CREATOR = new Creator<TagMap>() {
         @Override
-        public TagMap createFromParcel(Parcel in) {
+        public TagMap createFromParcel(final Parcel in) {
             return new TagMap(in);
         }
 
         @Override
-        public TagMap[] newArray(int size) {
+        public TagMap[] newArray(final int size) {
             return new TagMap[size];
         }
     };
@@ -106,8 +106,8 @@ class TagMap implements Parcelable {
      * @param tag  格納するタグ情報
      */
     void putTag(
-            @NonNull String name,
-            @NonNull Tag tag) {
+            @NonNull final String name,
+            @NonNull final Tag tag) {
         List<Tag> tags = mMap.get(name);
         if (tags == null) {
             tags = new ArrayList<>(1);
@@ -132,7 +132,7 @@ class TagMap implements Parcelable {
      * @see #getValue(String, int)
      */
     @Nullable
-    String getValue(@NonNull String xpath) {
+    String getValue(@NonNull final String xpath) {
         return getValue(xpath, 0);
     }
 
@@ -158,8 +158,8 @@ class TagMap implements Parcelable {
      */
     @Nullable
     String getValue(
-            @NonNull String xpath,
-            int index) {
+            @NonNull final String xpath,
+            final int index) {
         final int pos = xpath.indexOf('@');
         if (pos < 0) {
             return getValue(xpath, null, index);
@@ -182,8 +182,8 @@ class TagMap implements Parcelable {
      */
     @Nullable
     String getValue(
-            @Nullable String tagName,
-            @Nullable String attrName) {
+            @Nullable final String tagName,
+            @Nullable final String attrName) {
         return getValue(tagName, attrName, 0);
     }
 
@@ -200,8 +200,8 @@ class TagMap implements Parcelable {
      */
     @Nullable
     String getValue(
-            @Nullable String tagName,
-            @Nullable String attrName,
+            @Nullable final String tagName,
+            @Nullable final String attrName,
             int index) {
         final Tag tag = getTag(tagName, index);
         if (tag == null) {
@@ -222,7 +222,7 @@ class TagMap implements Parcelable {
      * @return Tagインスタンス、見つからない場合はnull
      */
     @Nullable
-    Tag getTag(@Nullable String tagName) {
+    Tag getTag(@Nullable final String tagName) {
         return getTag(tagName, 0);
     }
 
@@ -235,8 +235,8 @@ class TagMap implements Parcelable {
      */
     @Nullable
     Tag getTag(
-            @Nullable String tagName,
-            int index) {
+            @Nullable final String tagName,
+            final int index) {
         final List<Tag> list = getTagList(tagName);
         if (list == null || list.size() <= index) {
             return null;
@@ -251,9 +251,9 @@ class TagMap implements Parcelable {
      * @return Tagインスタンスリスト
      */
     @Nullable
-    List<Tag> getTagList(@Nullable String tagName) {
+    List<Tag> getTagList(@Nullable final String tagName) {
         if (tagName == null) {
-            tagName = "";
+            return mMap.get("");
         }
         return mMap.get(tagName);
     }
@@ -299,7 +299,7 @@ class TagMap implements Parcelable {
     }
 
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(final Object o) {
         if (this == o) {
             return true;
         }

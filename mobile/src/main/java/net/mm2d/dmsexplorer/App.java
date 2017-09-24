@@ -8,6 +8,9 @@
 package net.mm2d.dmsexplorer;
 
 import android.app.Application;
+import android.os.Handler;
+import android.os.Looper;
+import android.support.annotation.NonNull;
 
 import net.mm2d.dmsexplorer.domain.AppRepository;
 import net.mm2d.dmsexplorer.settings.Settings;
@@ -41,19 +44,32 @@ public class App extends Application {
     }
 
     private void setUpDebugLog() {
-        if (BuildConfig.DEBUG) {
-            Log.setAppendCaller(true);
-            Log.setLogLevel(Log.VERBOSE);
-            Log.setPrint((level, tag, message) -> {
-                final String[] lines = message.split("\n");
-                for (final String line : lines) {
-                    android.util.Log.println(level, tag, line);
-                }
-            });
+        if (!BuildConfig.DEBUG) {
+            Log.setLogLevel(Log.ASSERT);
+            Log.setPrint(Log.EMPTY_PRINT);
             return;
         }
-        Log.setLogLevel(Log.ASSERT);
+        final Looper mainLooper = Looper.getMainLooper();
+        final Thread mainThread = mainLooper.getThread();
+        final Handler handler = new Handler(mainLooper);
+        Log.setAppendCaller(true);
+        Log.setLogLevel(Log.VERBOSE);
         Log.setPrint((level, tag, message) -> {
+            if (Thread.currentThread() == mainThread) {
+                println(level, tag, message);
+                return;
+            }
+            handler.post(() -> println(level, tag, message));
         });
+    }
+
+    private void println(
+            int level,
+            @NonNull String tag,
+            @NonNull String message) {
+        final String[] lines = message.split("\n");
+        for (final String line : lines) {
+            android.util.Log.println(level, tag, line);
+        }
     }
 }

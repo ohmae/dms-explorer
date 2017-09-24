@@ -34,4 +34,16 @@
             android:summaryOff="@string/pref_message_content_detail_on_tap_off"
             />
     </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/pref_category_delete">
+
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="DELETE_FUNCTION_ENABLED"
+            android:title="@string/pref_title_delete"
+            android:summaryOn="@string/pref_message_delete_on"
+            android:summaryOff="@string/pref_message_delete_off"
+            />
+    </PreferenceCategory>
 </PreferenceScreen>

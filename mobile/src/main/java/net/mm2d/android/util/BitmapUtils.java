@@ -46,12 +46,16 @@ public class BitmapUtils {
             @NonNull final byte[] data,
             final int width,
             final int height) {
-        final BitmapFactory.Options options = new BitmapFactory.Options();
-        options.inJustDecodeBounds = true;
-        BitmapFactory.decodeByteArray(data, 0, data.length, options);
-        options.inSampleSize = calcSampleSize(options.outWidth, options.outHeight, width, height);
-        options.inJustDecodeBounds = false;
-        return BitmapFactory.decodeByteArray(data, 0, data.length, options);
+        try {
+            final BitmapFactory.Options options = new BitmapFactory.Options();
+            options.inJustDecodeBounds = true;
+            BitmapFactory.decodeByteArray(data, 0, data.length, options);
+            options.inSampleSize = calcSampleSize(options.outWidth, options.outHeight, width, height);
+            options.inJustDecodeBounds = false;
+            return BitmapFactory.decodeByteArray(data, 0, data.length, options);
+        } catch (final Exception ignored) {
+            return null;
+        }
     }
 
     /**

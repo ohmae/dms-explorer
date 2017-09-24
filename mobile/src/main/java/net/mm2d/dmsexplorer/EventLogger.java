@@ -23,7 +23,8 @@ import net.mm2d.dmsexplorer.domain.entity.ContentType;
 import net.mm2d.dmsexplorer.domain.model.MediaRendererModel;
 import net.mm2d.dmsexplorer.domain.model.MediaServerModel;
 import net.mm2d.dmsexplorer.domain.model.PlaybackTargetModel;
-import net.mm2d.dmsexplorer.settings.Settings;
+
+import java.util.Locale;
 
 /**
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
@@ -74,7 +75,7 @@ public class EventLogger {
         sAnalytics.logEvent(Event.SELECT_CONTENT, bundle);
     }
 
-    public static void sendPlayContent() {
+    public static void sendPlayContent(final boolean playMyself) {
         final PlaybackTargetModel targetModel = Repository.get().getPlaybackTargetModel();
         if (targetModel == null) {
             return;
@@ -85,13 +86,12 @@ public class EventLogger {
         bundle.putString(Param.ITEM_VARIANT, object.getValue(CdsObject.RES_PROTOCOL_INFO));
         bundle.putString(Param.CONTENT_TYPE, getTypeString(entity.getType()));
         bundle.putString(Param.ORIGIN, "dlna");
-        final Settings settings = new Settings();
-        bundle.putString(Param.DESTINATION, settings.isPlayMyself(entity.getType()) ? "myself" : "other");
+        bundle.putString(Param.DESTINATION, playMyself ? "myself" : "other");
         sAnalytics.logEvent(Event.SELECT_CONTENT, bundle);
     }
 
     @NonNull
     private static String getTypeString(@NonNull final ContentType type) {
-        return type.name().toLowerCase();
+        return type.name().toLowerCase(Locale.ENGLISH);
     }
 }

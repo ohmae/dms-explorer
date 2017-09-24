@@ -9,6 +9,8 @@ package net.mm2d.dmsexplorer.view.adapter;
 
 import android.content.Context;
 import android.databinding.DataBindingUtil;
+import android.os.Build.VERSION;
+import android.os.Build.VERSION_CODES;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
@@ -19,6 +21,7 @@ import android.view.ViewGroup;
 import net.mm2d.android.upnp.cds.MediaServer;
 import net.mm2d.dmsexplorer.R;
 import net.mm2d.dmsexplorer.databinding.ServerListItemBinding;
+import net.mm2d.dmsexplorer.util.FeatureUtils;
 import net.mm2d.dmsexplorer.viewmodel.ServerItemModel;
 
 import java.util.ArrayList;
@@ -44,6 +47,7 @@ public class ServerListAdapter
                 @NonNull MediaServer server);
     }
 
+    private static final float FOCUS_SCALE = 1.1f;
     private static final OnItemClickListener ON_ITEM_CLICK_LISTENER = (v, server) -> {
     };
     private static final OnItemLongClickListener ON_ITEM_LONG_CLICK_LISTENER = (v, server) -> {
@@ -54,17 +58,21 @@ public class ServerListAdapter
     private OnItemClickListener mClickListener = ON_ITEM_CLICK_LISTENER;
     private OnItemLongClickListener mLongClickListener = ON_ITEM_LONG_CLICK_LISTENER;
     private MediaServer mSelectedServer;
+    private final boolean mHasTouchScreen;
+    private final float mTranslationZ;
 
     public ServerListAdapter(
             @NonNull final Context context,
             @Nullable final Collection<? extends MediaServer> servers) {
         mContext = context;
         mInflater = LayoutInflater.from(context);
+        mHasTouchScreen = FeatureUtils.hasTouchScreen(context);
         if (servers == null) {
             mList = new ArrayList<>();
         } else {
             mList = new ArrayList<>(servers);
         }
+        mTranslationZ = context.getResources().getDimension(R.dimen.list_item_focus_elevation);
     }
 
     @Override
@@ -152,6 +160,9 @@ public class ServerListAdapter
             super(binding.getRoot());
             itemView.setOnClickListener(this::onClick);
             itemView.setOnLongClickListener(this::onLongClick);
+            if (!mHasTouchScreen) {
+                itemView.setOnFocusChangeListener(this::onFocusChange);
+            }
             mBinding = binding;
         }
 
@@ -163,13 +174,28 @@ public class ServerListAdapter
             mBinding.executePendingBindings();
         }
 
-        private void onClick(View v) {
+        private void onClick(@NonNull final View v) {
             mClickListener.onItemClick(v, mServer);
         }
 
-        private boolean onLongClick(View v) {
+        private boolean onLongClick(@NonNull final View v) {
             mLongClickListener.onItemLongClick(v, mServer);
             return true;
+        }
+
+        private void onFocusChange(
+                @NonNull final View v,
+                final boolean focus) {
+            if (focus) {
+                v.setScaleX(FOCUS_SCALE);
+                v.setScaleY(FOCUS_SCALE);
+            } else {
+                v.setScaleX(1.0f);
+                v.setScaleY(1.0f);
+            }
+            if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
+                v.setTranslationZ(focus ? mTranslationZ : 0.0f);
+            }
         }
     }
 }

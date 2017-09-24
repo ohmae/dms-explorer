@@ -19,7 +19,6 @@ import net.mm2d.upnp.Argument;
 import net.mm2d.upnp.Device;
 import net.mm2d.upnp.Service;
 import net.mm2d.upnp.StateVariable;
-import net.mm2d.util.Log;
 
 import java.io.IOException;
 import java.util.Collections;
@@ -159,8 +158,7 @@ public class MediaRenderer extends DeviceWrapper {
     public void subscribe() {
         Completable.create(emitter -> mAvTransport.subscribe(true))
                 .subscribeOn(Schedulers.io())
-                .subscribe(() -> {
-                }, Log::w);
+                .subscribe();
     }
 
     /**
@@ -169,10 +167,10 @@ public class MediaRenderer extends DeviceWrapper {
     public void unsubscribe() {
         Completable.create(emitter -> mAvTransport.unsubscribe())
                 .subscribeOn(Schedulers.io())
-                .subscribe(() -> {
-                }, Log::w);
+                .subscribe();
     }
 
+    @NonNull
     public Single<Map<String, String>> setAVTransportURI(
             @NonNull final CdsObject object,
             @NonNull final String uri) {
@@ -187,6 +185,7 @@ public class MediaRenderer extends DeviceWrapper {
         return invoke(mSetAvTransportUri, argument);
     }
 
+    @NonNull
     public Single<Map<String, String>> clearAVTransportURI() {
         final Map<String, String> argument = new HashMap<>();
         argument.put(INSTANCE_ID, "0");
@@ -195,6 +194,7 @@ public class MediaRenderer extends DeviceWrapper {
         return invoke(mSetAvTransportUri, argument);
     }
 
+    @NonNull
     public Single<Map<String, String>> play() {
         final Map<String, String> argument = new HashMap<>();
         argument.put(INSTANCE_ID, "0");
@@ -202,10 +202,12 @@ public class MediaRenderer extends DeviceWrapper {
         return invoke(mPlay, argument);
     }
 
+    @NonNull
     public Single<Map<String, String>> stop() {
         return invoke(mStop, Collections.singletonMap(INSTANCE_ID, "0"));
     }
 
+    @NonNull
     public Single<Map<String, String>> pause() {
         if (mPause == null) {
             return Single.error(new IllegalStateException("pause is not supported"));
@@ -213,6 +215,7 @@ public class MediaRenderer extends DeviceWrapper {
         return invoke(mPause, Collections.singletonMap(INSTANCE_ID, "0"));
     }
 
+    @NonNull
     public Single<Map<String, String>> seek(final long time) {
         final Argument unitArg = mSeek.findArgument(UNIT);
         if (unitArg == null) {
@@ -234,14 +237,17 @@ public class MediaRenderer extends DeviceWrapper {
         return invoke(mSeek, argument);
     }
 
+    @NonNull
     public Single<Map<String, String>> getPositionInfo() {
         return invoke(mGetPositionInfo, Collections.singletonMap(INSTANCE_ID, "0"));
     }
 
+    @NonNull
     public Single<Map<String, String>> getTransportInfo() {
         return invoke(mGetTransportInfo, Collections.singletonMap(INSTANCE_ID, "0"));
     }
 
+    @NonNull
     private Single<Map<String, String>> invoke(
             @NonNull final Action action,
             @NonNull final Map<String, String> argument) {
@@ -255,6 +261,7 @@ public class MediaRenderer extends DeviceWrapper {
         }).subscribeOn(Schedulers.io());
     }
 
+    @NonNull
     public static TransportState getCurrentTransportState(@NonNull final Map<String, String> result) {
         return TransportState.of(result.get(CURRENT_TRANSPORT_STATE));
     }

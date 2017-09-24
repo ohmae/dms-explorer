@@ -122,26 +122,30 @@ public class FullscreenHelper {
         mPosted = true;
     }
 
-    public void showNavigation() {
-        showNavigation(NAVIGATION_INTERVAL);
+    public boolean showNavigation() {
+        return showNavigation(NAVIGATION_INTERVAL);
     }
 
-    public void showNavigation(final long interval) {
+    public boolean showNavigation(final long interval) {
         if (mIsInPictureInPictureMode) {
-            return;
+            return false;
         }
+        boolean execute = false;
         if (mTopView != null && mTopView.getVisibility() != View.VISIBLE) {
             mTopView.clearAnimation();
             mTopView.startAnimation(mEnterFromTop);
             mTopView.setVisibility(View.VISIBLE);
+            execute = true;
         }
         if (mBottomView != null && mBottomView.getVisibility() != View.VISIBLE) {
             mBottomView.clearAnimation();
             mBottomView.startAnimation(mEnterFromBottom);
             mBottomView.setVisibility(View.VISIBLE);
+            execute = true;
         }
         mRootView.setSystemUiVisibility(SYSTEM_UI_VISIBLE);
         postHideNavigation(interval);
+        return execute;
     }
 
     private void hideNavigation() {
