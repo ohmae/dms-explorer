@@ -27,23 +27,25 @@ public abstract class BaseActivity extends AppCompatActivity {
     private final AtomicBoolean mFinishAfterTransitionLatch = new AtomicBoolean();
     @NonNull
     private final AtomicBoolean mFinishLatch = new AtomicBoolean();
-    @NonNull
-    private final OptionsMenuDelegate mDelegate;
+
+    private final boolean mMainMenu;
+    private OptionsMenuDelegate mDelegate;
 
     public BaseActivity() {
         this(false);
     }
 
     public BaseActivity(final boolean mainMenu) {
-        mDelegate = mainMenu
-                ? new MainOptionsMenuDelegate(this)
-                : new BaseOptionsMenuDelegate(this);
+        mMainMenu = mainMenu;
     }
 
     @CallSuper
     @Override
     protected void onCreate(@Nullable final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mDelegate = mMainMenu
+                ? new MainOptionsMenuDelegate(this)
+                : new BaseOptionsMenuDelegate(this);
         mDelegate.onCreate(savedInstanceState);
     }
 
