@@ -2,7 +2,7 @@
 [![license](https://img.shields.io/github/license/ohmae/DmsExplorer.svg)](./LICENSE)
 [![GitHub release](https://img.shields.io/github/release/ohmae/DmsExplorer.svg)](https://github.com/ohmae/DmsExplorer/releases)
 [![GitHub issues](https://img.shields.io/github/issues/ohmae/DmsExplorer.svg)](https://github.com/ohmae/DmsExplorer/issues)
-[![GitHub closed issues](https://img.shields.io/github/issues-closed/ohmae/DmsExplorer.svg)](https://github.com/ohmae/DmsExplorer/issues)
+[![GitHub closed issues](https://img.shields.io/github/issues-closed/ohmae/DmsExplorer.svg)](https://github.com/ohmae/DmsExplorer/issues?q=is%3Aissue+is%3Aclosed)
 [![Build Status](https://travis-ci.org/ohmae/DmsExplorer.svg?branch=develop)](https://travis-ci.org/ohmae/DmsExplorer)
 [![codecov](https://codecov.io/gh/ohmae/DmsExplorer/branch/develop/graph/badge.svg)](https://codecov.io/gh/ohmae/DmsExplorer)
 
