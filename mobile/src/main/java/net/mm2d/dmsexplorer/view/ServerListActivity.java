@@ -26,7 +26,7 @@ import net.mm2d.dmsexplorer.view.delegate.ServerListActivityDelegate;
  * @author <a href="mailto:ryo@mm2d.net">大前良介(OHMAE Ryosuke)</a>
  */
 public class ServerListActivity extends BaseActivity {
-    private final ControlPointModel mControlPointModel = Repository.get().getControlPointModel();
+    private ControlPointModel mControlPointModel;
 
     private ServerListActivityDelegate mDelegate;
 
@@ -38,6 +38,8 @@ public class ServerListActivity extends BaseActivity {
     protected void onCreate(@Nullable final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         final Repository repository = Repository.get();
+        mControlPointModel = repository.getControlPointModel();
+
         repository.getThemeModel().setThemeColor(this,
                 ContextCompat.getColor(this, R.color.primary),
                 ContextCompat.getColor(this, R.color.defaultStatusBar));
