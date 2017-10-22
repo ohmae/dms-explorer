@@ -85,7 +85,7 @@ dependencies {
     compile 'com.android.support:support-v4:26.0.1'
     compile 'com.google.firebase:firebase-core:11.2.0'
     compile 'com.google.firebase:firebase-crash:11.2.0'
-    compile 'net.mm2d.mmupnp:mmupnp:1.2.2'
+    compile 'net.mm2d.mmupnp:mmupnp:1.2.3'
     compile 'net.opacapp:multiline-collapsingtoolbar:1.5.0'
     compile 'com.squareup.okhttp3:okhttp:3.8.1'
     compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
