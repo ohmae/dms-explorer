@@ -57,7 +57,10 @@ class MovieActivityPipHelperOreo implements MovieActivityPipHelper {
             }
             switch (intent.getAction()) {
                 case Const.ACTION_PLAY:
-                    mControlPanelModel.onClickPlay();
+                    mControlPanelModel.onClickPlayPause();
+                    final PictureInPictureParams.Builder builder = new PictureInPictureParams.Builder();
+                    builder.setActions(makeActions(mControlPanelModel.isPlaying()));
+                    mActivity.setPictureInPictureParams(builder.build());
                     break;
                 case Const.ACTION_NEXT:
                     mControlPanelModel.onClickNext();
@@ -100,7 +103,7 @@ class MovieActivityPipHelperOreo implements MovieActivityPipHelper {
     @Override
     public void enterPictureInPictureMode(@NonNull final View contentView) {
         final PictureInPictureParams.Builder builder = new PictureInPictureParams.Builder();
-        final List<RemoteAction> actions = makeActions();
+        final List<RemoteAction> actions = makeActions(mControlPanelModel.isPlaying());
         if (!actions.isEmpty()) {
             builder.setActions(actions);
         }
@@ -124,7 +127,7 @@ class MovieActivityPipHelperOreo implements MovieActivityPipHelper {
     }
 
     @NonNull
-    private List<RemoteAction> makeActions() {
+    private List<RemoteAction> makeActions(final boolean isPlaying) {
         final int max = mActivity.getMaxNumPictureInPictureActions();
         if (max <= 0) {
             return Collections.emptyList();
@@ -132,17 +135,17 @@ class MovieActivityPipHelperOreo implements MovieActivityPipHelper {
         if (max >= 3) {
             return Arrays.asList(
                     makePreviousAction(),
-                    makePlayAction(),
+                    makePlayAction(isPlaying),
                     makeNextAction()
             );
         }
-        return Collections.singletonList(makePlayAction());
+        return Collections.singletonList(makePlayAction(isPlaying));
     }
 
     @NonNull
-    private RemoteAction makePlayAction() {
+    private RemoteAction makePlayAction(final boolean isPlaying) {
         return new RemoteAction(
-                makeIcon(R.drawable.ic_play),
+                makeIcon(isPlaying ? R.drawable.ic_pause : R.drawable.ic_play),
                 getString(R.string.action_play_title),
                 getString(R.string.action_play_description),
                 makePlayPendingIntent(mActivity));

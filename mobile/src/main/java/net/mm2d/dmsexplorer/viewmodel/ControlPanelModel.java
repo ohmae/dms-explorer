@@ -264,6 +264,10 @@ public class ControlPanelModel extends BaseObservable implements StatusListener 
         setPlayButtonResId(playing ? R.drawable.ic_pause : R.drawable.ic_play);
     }
 
+    public boolean isPlaying() {
+        return mPlaying;
+    }
+
     @NonNull
     @Bindable
     public String getScrubText() {
