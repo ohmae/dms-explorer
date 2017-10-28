@@ -5,7 +5,7 @@ apply plugin: 'jacoco-android'
 def applicationName = "DmsExplorer"
 def versionMajor = 0
 def versionMinor = 7
-def versionPatch = 29
+def versionPatch = 30
 
 android {
     compileSdkVersion 26
