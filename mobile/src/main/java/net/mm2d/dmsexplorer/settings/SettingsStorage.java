@@ -59,7 +59,7 @@ class SettingsStorage {
      * @param key   Key
      * @param value 書き込む値
      */
-    void putBoolean(
+    void writeBoolean(
             @NonNull Key key,
             boolean value) {
         mPreferences.edit()
@@ -74,7 +74,7 @@ class SettingsStorage {
      * @param defaultValue デフォルト値
      * @return 読み出したboolean値
      */
-    boolean getBoolean(
+    boolean readBoolean(
             @NonNull Key key,
             boolean defaultValue) {
         return mPreferences.getBoolean(key.name(), defaultValue);
@@ -86,7 +86,7 @@ class SettingsStorage {
      * @param key   Key
      * @param value 書き込む値
      */
-    void putInt(
+    void writeInt(
             @NonNull Key key,
             int value) {
         mPreferences.edit()
@@ -101,7 +101,7 @@ class SettingsStorage {
      * @param defaultValue デフォルト値
      * @return 読み出したint値
      */
-    int getInt(
+    int readInt(
             @NonNull Key key,
             int defaultValue) {
         return mPreferences.getInt(key.name(), defaultValue);
@@ -113,7 +113,7 @@ class SettingsStorage {
      * @param key   Key
      * @param value 書き込む値
      */
-    void putLong(
+    void writeLong(
             @NonNull Key key,
             long value) {
         mPreferences.edit()
@@ -128,7 +128,7 @@ class SettingsStorage {
      * @param defaultValue デフォルト値
      * @return 読み出したlong値
      */
-    long getLong(
+    long readLong(
             @NonNull Key key,
             long defaultValue) {
         return mPreferences.getLong(key.name(), defaultValue);
@@ -140,7 +140,7 @@ class SettingsStorage {
      * @param key   Key
      * @param value 書き込む値
      */
-    void putString(
+    void writeString(
             @NonNull Key key,
             @NonNull String value) {
         mPreferences.edit()
@@ -155,7 +155,7 @@ class SettingsStorage {
      * @param defaultValue デフォルト値
      * @return 読み出したString値
      */
-    String getString(
+    String readString(
             @NonNull Key key,
             @Nullable String defaultValue) {
         return mPreferences.getString(key.name(), defaultValue);

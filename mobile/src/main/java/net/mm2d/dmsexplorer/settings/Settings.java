@@ -65,7 +65,7 @@ public class Settings {
      * @return アプリで行う場合true
      */
     public boolean isPlayMovieMyself() {
-        return mStorage.getBoolean(Key.PLAY_MOVIE_MYSELF, true);
+        return mStorage.readBoolean(Key.PLAY_MOVIE_MYSELF, true);
     }
 
     /**
@@ -74,7 +74,7 @@ public class Settings {
      * @return アプリで行う場合true
      */
     public boolean isPlayMusicMyself() {
-        return mStorage.getBoolean(Key.PLAY_MUSIC_MYSELF, true);
+        return mStorage.readBoolean(Key.PLAY_MUSIC_MYSELF, true);
     }
 
     /**
@@ -83,7 +83,7 @@ public class Settings {
      * @return アプリで行う場合true
      */
     public boolean isPlayPhotoMyself() {
-        return mStorage.getBoolean(Key.PLAY_PHOTO_MYSELF, true);
+        return mStorage.readBoolean(Key.PLAY_PHOTO_MYSELF, true);
     }
 
     /**
@@ -93,7 +93,7 @@ public class Settings {
      */
     @NonNull
     public RepeatMode getRepeatModeMovie() {
-        return RepeatMode.of(mStorage.getString(Key.REPEAT_MODE_MOVIE, ""));
+        return RepeatMode.of(mStorage.readString(Key.REPEAT_MODE_MOVIE, ""));
     }
 
     /**
@@ -102,7 +102,7 @@ public class Settings {
      * @param mode 動画再生のリピートモード
      */
     public void setRepeatModeMovie(@NonNull RepeatMode mode) {
-        mStorage.putString(Key.REPEAT_MODE_MOVIE, mode.name());
+        mStorage.writeString(Key.REPEAT_MODE_MOVIE, mode.name());
     }
 
     /**
@@ -112,7 +112,7 @@ public class Settings {
      */
     @NonNull
     public RepeatMode getRepeatModeMusic() {
-        return RepeatMode.of(mStorage.getString(Key.REPEAT_MODE_MUSIC, ""));
+        return RepeatMode.of(mStorage.readString(Key.REPEAT_MODE_MUSIC, ""));
     }
 
     /**
@@ -121,7 +121,7 @@ public class Settings {
      * @param mode 音楽再生のリピートモード
      */
     public void setRepeatModeMusic(@NonNull RepeatMode mode) {
-        mStorage.putString(Key.REPEAT_MODE_MUSIC, mode.name());
+        mStorage.writeString(Key.REPEAT_MODE_MUSIC, mode.name());
     }
 
     /**
@@ -130,14 +130,14 @@ public class Settings {
      * @return 表示した場合true
      */
     public boolean isRepeatIntroduced() {
-        return mStorage.getBoolean(Key.REPEAT_INTRODUCED, false);
+        return mStorage.readBoolean(Key.REPEAT_INTRODUCED, false);
     }
 
     /**
      * リピートモードの操作案内を表示した。
      */
     public void notifyRepeatIntroduced() {
-        mStorage.putBoolean(Key.REPEAT_INTRODUCED, true);
+        mStorage.writeBoolean(Key.REPEAT_INTRODUCED, true);
     }
 
     /**
@@ -146,7 +146,7 @@ public class Settings {
      * @return 使用する場合true
      */
     public boolean useCustomTabs() {
-        return mStorage.getBoolean(Key.USE_CUSTOM_TABS, true);
+        return mStorage.readBoolean(Key.USE_CUSTOM_TABS, true);
     }
 
     /**
@@ -155,7 +155,7 @@ public class Settings {
      * @return シングルタップで詳細を表示する場合true
      */
     public boolean shouldShowDeviceDetailOnTap() {
-        return mStorage.getBoolean(Key.SHOULD_SHOW_DEVICE_DETAIL_ON_TAP, true);
+        return mStorage.readBoolean(Key.SHOULD_SHOW_DEVICE_DETAIL_ON_TAP, true);
     }
 
     /**
@@ -164,7 +164,7 @@ public class Settings {
      * @return シングルタップで詳細を表示する場合true
      */
     public boolean shouldShowContentDetailOnTap() {
-        return mStorage.getBoolean(Key.SHOULD_SHOW_CONTENT_DETAIL_ON_TAP, true);
+        return mStorage.readBoolean(Key.SHOULD_SHOW_CONTENT_DETAIL_ON_TAP, true);
     }
 
     /**
@@ -173,7 +173,7 @@ public class Settings {
      * @return 削除機能が有効なときtrue
      */
     public boolean isDeleteFunctionEnabled() {
-        return mStorage.getBoolean(Key.DELETE_FUNCTION_ENABLED, false);
+        return mStorage.readBoolean(Key.DELETE_FUNCTION_ENABLED, false);
     }
 
     /**
@@ -182,14 +182,14 @@ public class Settings {
      * @return アップデートファイルを取得した時刻
      */
     public long getUpdateFetchTime() {
-        return mStorage.getLong(Key.UPDATE_FETCH_TIME, 0);
+        return mStorage.readLong(Key.UPDATE_FETCH_TIME, 0);
     }
 
     /**
      * アップデートファイルを取得した時刻を更新する。
      */
     public void setUpdateFetchTime() {
-        mStorage.putLong(Key.UPDATE_FETCH_TIME, System.currentTimeMillis());
+        mStorage.writeLong(Key.UPDATE_FETCH_TIME, System.currentTimeMillis());
     }
 
     /**
@@ -198,7 +198,7 @@ public class Settings {
      * @return アップデートが利用できるときtrue
      */
     public boolean isUpdateAvailable() {
-        return mStorage.getBoolean(Key.UPDATE_AVAILABLE, false);
+        return mStorage.readBoolean(Key.UPDATE_AVAILABLE, false);
     }
 
     /**
@@ -207,7 +207,7 @@ public class Settings {
      * @param available アップデートが利用できるときtrue
      */
     public void setUpdateAvailable(final boolean available) {
-        mStorage.putBoolean(Key.UPDATE_AVAILABLE, available);
+        mStorage.writeBoolean(Key.UPDATE_AVAILABLE, available);
     }
 
     /**
@@ -217,7 +217,7 @@ public class Settings {
      */
     @NonNull
     public String getUpdateJson() {
-        return mStorage.getString(Key.UPDATE_JSON, "");
+        return mStorage.readString(Key.UPDATE_JSON, "");
     }
 
     /**
@@ -226,6 +226,6 @@ public class Settings {
      * @param json update.jsonの文字列
      */
     public void setUpdateJson(@Nullable final String json) {
-        mStorage.putString(Key.UPDATE_JSON, TextUtils.isEmpty(json) ? "" : json);
+        mStorage.writeString(Key.UPDATE_JSON, TextUtils.isEmpty(json) ? "" : json);
     }
 }
