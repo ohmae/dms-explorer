@@ -366,7 +366,7 @@ public class ControlPanelModel extends BaseObservable implements StatusListener 
             final int what,
             final int extra) {
         mError = true;
-        Toaster.showLong(mContext, R.string.toast_player_error);
+        Toaster.show(mContext, R.string.toast_player_error);
         mHandler.removeCallbacks(mOnCompletion);
         mHandler.postDelayed(mOnCompletion, 1000);
         return true;

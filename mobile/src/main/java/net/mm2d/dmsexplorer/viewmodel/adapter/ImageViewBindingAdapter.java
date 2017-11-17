@@ -62,7 +62,7 @@ public class ImageViewBindingAdapter {
     }
 
     private static void showToast(@NonNull final Context context) {
-        Toaster.showLong(context, R.string.toast_decode_error);
+        Toaster.show(context, R.string.toast_decode_error);
     }
 
     private static void setImageBitmap(

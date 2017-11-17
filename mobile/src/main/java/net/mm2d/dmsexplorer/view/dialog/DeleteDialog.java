@@ -77,12 +77,12 @@ public class DeleteDialog extends DialogFragment {
                 .setPositiveButton(R.string.dialog_button_ok, (d, i) ->
                         model.delete(entity,
                                 () -> {
-                                    Toaster.showLong(applicationContext, R.string.toast_delete_succeed);
+                                    Toaster.show(applicationContext, R.string.toast_delete_succeed);
                                     if (mOnDeleteListener != null) {
                                         mOnDeleteListener.onDelete();
                                     }
                                 },
-                                () -> Toaster.showLong(applicationContext, R.string.toast_delete_error)))
+                                () -> Toaster.show(applicationContext, R.string.toast_delete_error)))
                 .create();
     }
 }

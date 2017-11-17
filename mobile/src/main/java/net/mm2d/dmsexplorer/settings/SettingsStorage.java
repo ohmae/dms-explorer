@@ -60,8 +60,8 @@ class SettingsStorage {
      * @param value 書き込む値
      */
     void writeBoolean(
-            @NonNull Key key,
-            boolean value) {
+            @NonNull final Key key,
+            final boolean value) {
         mPreferences.edit()
                 .putBoolean(key.name(), value)
                 .apply();
@@ -75,8 +75,8 @@ class SettingsStorage {
      * @return 読み出したboolean値
      */
     boolean readBoolean(
-            @NonNull Key key,
-            boolean defaultValue) {
+            @NonNull final Key key,
+            final boolean defaultValue) {
         return mPreferences.getBoolean(key.name(), defaultValue);
     }
 
@@ -87,8 +87,8 @@ class SettingsStorage {
      * @param value 書き込む値
      */
     void writeInt(
-            @NonNull Key key,
-            int value) {
+            @NonNull final Key key,
+            final int value) {
         mPreferences.edit()
                 .putInt(key.name(), value)
                 .apply();
@@ -102,8 +102,8 @@ class SettingsStorage {
      * @return 読み出したint値
      */
     int readInt(
-            @NonNull Key key,
-            int defaultValue) {
+            @NonNull final Key key,
+            final int defaultValue) {
         return mPreferences.getInt(key.name(), defaultValue);
     }
 
@@ -114,8 +114,8 @@ class SettingsStorage {
      * @param value 書き込む値
      */
     void writeLong(
-            @NonNull Key key,
-            long value) {
+            @NonNull final Key key,
+            final long value) {
         mPreferences.edit()
                 .putLong(key.name(), value)
                 .apply();
@@ -129,8 +129,8 @@ class SettingsStorage {
      * @return 読み出したlong値
      */
     long readLong(
-            @NonNull Key key,
-            long defaultValue) {
+            @NonNull final Key key,
+            final long defaultValue) {
         return mPreferences.getLong(key.name(), defaultValue);
     }
 
@@ -141,8 +141,8 @@ class SettingsStorage {
      * @param value 書き込む値
      */
     void writeString(
-            @NonNull Key key,
-            @NonNull String value) {
+            @NonNull final Key key,
+            @NonNull final String value) {
         mPreferences.edit()
                 .putString(key.name(), value)
                 .apply();
@@ -156,8 +156,8 @@ class SettingsStorage {
      * @return 読み出したString値
      */
     String readString(
-            @NonNull Key key,
-            @Nullable String defaultValue) {
+            @NonNull final Key key,
+            @Nullable final String defaultValue) {
         return mPreferences.getString(key.name(), defaultValue);
     }
 }

@@ -28,7 +28,7 @@ public class MuteAlertHelper {
 
     public void alertIfMuted() {
         if (mAudioManager.getStreamVolume(AudioManager.STREAM_MUSIC) == 0) {
-            Toaster.showLong(mContext, R.string.toast_currently_muted);
+            Toaster.show(mContext, R.string.toast_currently_muted);
         }
     }
 }
