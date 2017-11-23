@@ -13,7 +13,7 @@ import android.support.annotation.Nullable;
 import net.mm2d.android.upnp.cds.CdsObject;
 import net.mm2d.dmsexplorer.domain.model.ExploreListener;
 import net.mm2d.dmsexplorer.domain.model.ExploreListenerAdapter;
-import net.mm2d.util.Log;
+import net.mm2d.log.Log;
 
 import java.util.ArrayList;
 import java.util.List;

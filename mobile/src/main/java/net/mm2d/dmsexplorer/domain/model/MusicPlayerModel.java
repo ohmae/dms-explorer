@@ -19,7 +19,7 @@ import android.support.annotation.Nullable;
 
 import net.mm2d.dmsexplorer.domain.entity.ContentEntity;
 import net.mm2d.dmsexplorer.domain.model.control.MediaPlayerControl;
-import net.mm2d.util.Log;
+import net.mm2d.log.Log;
 
 import java.io.IOException;
 

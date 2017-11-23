@@ -30,7 +30,7 @@ import android.view.View;
 import net.mm2d.dmsexplorer.Const;
 import net.mm2d.dmsexplorer.R;
 import net.mm2d.dmsexplorer.viewmodel.ControlPanelModel;
-import net.mm2d.util.Log;
+import net.mm2d.log.Log;
 
 import java.util.Arrays;
 import java.util.Collections;

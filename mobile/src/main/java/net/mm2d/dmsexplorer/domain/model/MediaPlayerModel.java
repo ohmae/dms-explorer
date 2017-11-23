@@ -15,7 +15,7 @@ import android.support.annotation.CallSuper;
 import android.support.annotation.NonNull;
 
 import net.mm2d.dmsexplorer.domain.model.control.MediaControl;
-import net.mm2d.util.Log;
+import net.mm2d.log.Log;
 
 import java.util.concurrent.TimeUnit;
 
