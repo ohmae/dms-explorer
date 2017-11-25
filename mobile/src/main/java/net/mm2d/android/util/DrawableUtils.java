@@ -11,6 +11,7 @@ import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.content.res.AppCompatResources;
 
 /**
@@ -21,6 +22,7 @@ public class DrawableUtils {
         throw new AssertionError();
     }
 
+    @Nullable
     public static Drawable get(
             @NonNull final Context context,
             @DrawableRes final int resId) {

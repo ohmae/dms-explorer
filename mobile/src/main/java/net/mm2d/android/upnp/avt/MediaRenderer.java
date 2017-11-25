@@ -88,6 +88,10 @@ public class MediaRenderer extends DeviceWrapper {
     private static final String UNIT_REL_TIME = "REL_TIME";
     private static final String UNIT_ABS_TIME = "ABS_TIME";
 
+    private static final long ONE_SECOND = TimeUnit.SECONDS.toMillis(1);
+    private static final long ONE_MINUTE = TimeUnit.MINUTES.toMillis(1);
+    private static final long ONE_HOUR = TimeUnit.HOURS.toMillis(1);
+
     @NonNull
     private final MrControlPoint mMrControlPoint;
     @NonNull
@@ -306,9 +310,9 @@ public class MediaRenderer extends DeviceWrapper {
     }
 
     private static String makeTimeText(final long millisecond) {
-        final long second = (millisecond / 1000) % 60;
-        final long minute = (millisecond / 60000) % 60;
-        final long hour = millisecond / 3600000;
+        final long second = (millisecond / ONE_SECOND) % 60;
+        final long minute = (millisecond / ONE_MINUTE) % 60;
+        final long hour = millisecond / ONE_HOUR;
         return String.format(Locale.US, "%01d:%02d:%02d", hour, minute, second);
     }
 }
