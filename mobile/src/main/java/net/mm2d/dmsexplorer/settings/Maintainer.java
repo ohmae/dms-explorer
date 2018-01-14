@@ -7,7 +7,6 @@
 
 package net.mm2d.dmsexplorer.settings;
 
-import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 
 /**
@@ -36,54 +35,50 @@ class Maintainer {
     /**
      * 起動時に一度だけ呼び出され、SharedPreferencesのメンテナンスを行う。
      *
-     * @param pref SharedPreferences
+     * @param storage SharedPreferences
      */
-    static void maintain(@NonNull final SharedPreferences pref) {
-        final int currentVersion = getSettingsVersion(pref);
+    static void maintain(@NonNull final SettingsStorage storage) {
+        final int currentVersion = getSettingsVersion(storage);
         if (currentVersion == SETTINGS_VERSION) {
             return;
         }
         if (currentVersion == 0) {
-            migrateFrom0(pref);
+            migrateFrom0(storage);
         }
-        pref.edit()
-                .putInt(Key.SETTINGS_VERSION.name(), SETTINGS_VERSION)
-                .apply();
+        storage.writeInt(Key.SETTINGS_VERSION, SETTINGS_VERSION);
     }
 
     /**
      * SharedPreferencesのバージョンを取得する。
      *
-     * @param pref SharedPreferences
+     * @param storage SharedPreferences
      * @return バージョン
      */
     @SuppressWarnings("deprecation")
-    private static int getSettingsVersion(@NonNull final SharedPreferences pref) {
-        if (pref.contains(Key.LAUNCH_APP_MOVIE.name())) {
+    private static int getSettingsVersion(@NonNull final SettingsStorage storage) {
+        if (storage.contains(Key.LAUNCH_APP_MOVIE)) {
             // バージョン番号を割り振る前の設定値が含まれている
             return 0;
         }
-        return pref.getInt(Key.SETTINGS_VERSION.name(), -1);
+        return storage.readInt(Key.SETTINGS_VERSION, -1);
     }
 
     /**
      * 設定バージョン0からのマイグレーションを行う。
      *
-     * @param pref SharedPreferences
+     * @param storage SharedPreferences
      */
     @SuppressWarnings("deprecation")
-    private static void migrateFrom0(@NonNull final SharedPreferences pref) {
-        final boolean launchMovie = pref.getBoolean(Key.LAUNCH_APP_MOVIE.name(), true);
-        final boolean launchMusic = pref.getBoolean(Key.LAUNCH_APP_MUSIC.name(), true);
-        final boolean launchPhoto = pref.getBoolean(Key.LAUNCH_APP_PHOTO.name(), true);
-        final boolean auto = pref.getBoolean(Key.MUSIC_AUTO_PLAY.name(), false);
+    private static void migrateFrom0(@NonNull final SettingsStorage storage) {
+        final boolean launchMovie = storage.readBoolean(Key.LAUNCH_APP_MOVIE, true);
+        final boolean launchMusic = storage.readBoolean(Key.LAUNCH_APP_MUSIC, true);
+        final boolean launchPhoto = storage.readBoolean(Key.LAUNCH_APP_PHOTO, true);
+        final boolean auto = storage.readBoolean(Key.MUSIC_AUTO_PLAY, false);
         final RepeatMode repeatMode = auto ? RepeatMode.SEQUENTIAL : RepeatMode.PLAY_ONCE;
-        pref.edit()
-                .clear()
-                .putBoolean(Key.PLAY_MOVIE_MYSELF.name(), launchMovie)
-                .putBoolean(Key.PLAY_MUSIC_MYSELF.name(), launchMusic)
-                .putBoolean(Key.PLAY_PHOTO_MYSELF.name(), launchPhoto)
-                .putString(Key.REPEAT_MODE_MUSIC.name(), repeatMode.name())
-                .apply();
+        storage.clear();
+        storage.writeBoolean(Key.PLAY_MOVIE_MYSELF, launchMovie);
+        storage.writeBoolean(Key.PLAY_MUSIC_MYSELF, launchMusic);
+        storage.writeBoolean(Key.PLAY_PHOTO_MYSELF, launchPhoto);
+        storage.writeString(Key.REPEAT_MODE_MUSIC, repeatMode.name());
     }
 }

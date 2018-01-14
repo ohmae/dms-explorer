@@ -38,7 +38,7 @@ class SettingsStorage {
      * @param context コンテキスト
      */
     static void initialize(@NonNull final Context context) {
-        Maintainer.maintain(PreferencesHolder.get(context));
+        Maintainer.maintain(new SettingsStorage(context));
     }
 
     @NonNull
@@ -51,6 +51,39 @@ class SettingsStorage {
      */
     SettingsStorage(@NonNull final Context context) {
         mPreferences = PreferencesHolder.get(context);
+    }
+
+    /**
+     * SharedPreferencesのインスタンスを返す。
+     *
+     * <p>Maintainerで必要な場合のみ利用する。
+     * それ以外では使用しないこと。
+     *
+     * @return SharedPreferences
+     */
+    @NonNull
+    @Deprecated
+    SharedPreferences getPreferences() {
+        return mPreferences;
+    }
+
+    /**
+     * 書き込まれている内容を消去する。
+     */
+    void clear() {
+        mPreferences.edit()
+                .clear()
+                .apply();
+    }
+
+    /**
+     * keyの値が書き込まれているかを返す。
+     *
+     * @param key Key
+     * @return 含まれている場合true
+     */
+    boolean contains(@NonNull final Key key) {
+        return mPreferences.contains(key.name());
     }
 
     /**
