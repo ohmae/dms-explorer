@@ -16,10 +16,6 @@
 #   public *;
 #}
 
-# for Retrolambda
--dontwarn java.lang.invoke.*
--dontwarn **$$Lambda$*
-
 # for OkHttp3
 -dontwarn okio.**
 -dontwarn javax.annotation.Nullable
