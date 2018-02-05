@@ -8,6 +8,7 @@
 package net.mm2d.dmsexplorer.view.dialog;
 
 import android.app.Dialog;
+import android.arch.lifecycle.Lifecycle;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -29,6 +30,9 @@ public class UpdateDialog extends DialogFragment {
     }
 
     public static void show(@NonNull final FragmentActivity activity) {
+        if (activity.getLifecycle().getCurrentState() != Lifecycle.State.RESUMED) {
+            return;
+        }
         newInstance().show(activity.getSupportFragmentManager(), "");
     }
 
