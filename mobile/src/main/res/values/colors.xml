@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="primary">#3355bb</color>
+    <color name="primary">#212121</color>
     <color name="primaryDark">#000000</color>
-    <color name="defaultStatusBar">#113399</color>
-    <color name="accent">#2196f3</color>
+    <color name="defaultStatusBar">#000000</color>
+    <color name="accent">#2962FF</color>
     <color name="textPrimary">#ffffff</color>
-    <color name="textHighlight">#3355bb</color>
+    <color name="textHighlight">#0D47A1</color>
     <color name="textMain">#000000</color>
     <color name="textLink">#0040ff</color>
     <color name="textWeak">#606060</color>
     <color name="textScrub">#80ffffff</color>
-    <color name="textHighlightDark">#4477ee</color>
+    <color name="textHighlightDark">#82B1FF</color>
     <color name="textMainDark">#ffffff</color>
     <color name="textLinkDark">#0080ff</color>
     <color name="textToolbar">#ffffff</color>
@@ -19,24 +19,24 @@
     <color name="bgListItem">#ffffff</color>
     <color name="bgListItemRipple">#40000000</color>
     <color name="bgListItemPressed">#20000000</color>
-    <color name="bgListItemSelected">#dfe7ff</color>
+    <color name="bgListItemSelected">#E3F2FD</color>
     <color name="bgListItemSelectedPressed">#ffffff</color>
     <color name="bgListItemSelectedRipple">#ffffff</color>
     <color name="bgLinkText">#330080ff</color>
     <color name="bgLinkTextRipple">#660080ff</color>
-    <color name="markListItemSelected">#002288</color>
-    <color name="progress1">#3355bb</color>
-    <color name="progress2">#bb3399</color>
-    <color name="progress3">#bb9933</color>
-    <color name="progress4">#33bb55</color>
+    <color name="markListItemSelected">#0D47A1</color>
+    <color name="progress1">#2962FF</color>
+    <color name="progress2">#00C853</color>
+    <color name="progress3">#FFD600</color>
+    <color name="progress4">#AA00FF</color>
     <color name="translucent_ripple">#40ffffff</color>
     <color name="translucent_control">#66000000</color>
     <color name="fabDisable">#808080</color>
     <color name="fabRipple">#80ffffff</color>
-    <color name="fabDelete">#ffd00000</color>
+    <color name="fabDelete">#D50000</color>
     <color name="toolbarBackgroundDefault">#c0c0c0</color>
     <color name="toolbarBackgroundContent">#d0e0f0</color>
     <color name="textIntroductory">#ffffff</color>
-    <color name="overlayIntroductory">#ee2196f3</color>
+    <color name="overlayIntroductory">#ee2962FF</color>
     <color name="dimmerIntroductory">#cc000000</color>
 </resources>
