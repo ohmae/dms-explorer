@@ -22,6 +22,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -124,11 +125,25 @@ public abstract class AppCompatPreferenceActivity extends PreferenceActivity {
         getDelegate().invalidateOptionsMenu();
     }
 
+    @NonNull
     private AppCompatDelegate getDelegate() {
         if (mDelegate == null) {
             mDelegate = AppCompatDelegate.create(this, null);
         }
         return mDelegate;
+    }
+
+    @Nullable
+    protected LinearLayout findRootContainer() {
+        final View content = findViewById(android.R.id.content);
+        if (!(content instanceof ViewGroup) || ((ViewGroup) content).getChildCount() < 1) {
+            return null;
+        }
+        final View container = ((ViewGroup) content).getChildAt(0);
+        if (!(container instanceof LinearLayout)) {
+            return null;
+        }
+        return (LinearLayout) container;
     }
 
     @Override

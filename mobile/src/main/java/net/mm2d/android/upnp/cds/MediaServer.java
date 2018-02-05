@@ -12,10 +12,10 @@ import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
 import net.mm2d.android.upnp.DeviceWrapper;
+import net.mm2d.log.Log;
 import net.mm2d.upnp.Action;
 import net.mm2d.upnp.Device;
 import net.mm2d.upnp.Service;
-import net.mm2d.util.Log;
 import net.mm2d.util.TextParseUtils;
 
 import java.util.Collections;

@@ -183,7 +183,7 @@ public class MovieActivityModel extends BaseObservable
         if (mToast != null) {
             mToast.cancel();
         }
-        mToast = Toaster.showLong(mActivity, mRepeatMode.getMessageId());
+        mToast = Toaster.show(mActivity, mRepeatMode.getMessageId());
     }
 
     @Bindable

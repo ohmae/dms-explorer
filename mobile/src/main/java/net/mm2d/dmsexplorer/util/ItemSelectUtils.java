@@ -81,7 +81,7 @@ public class ItemSelectUtils {
             activity.overridePendingTransition(0, 0);
             EventLogger.sendPlayContent(settings.isPlayMyself(type));
         } catch (final Exception ignored) {
-            Toaster.showLong(activity, R.string.toast_launch_error);
+            Toaster.show(activity, R.string.toast_launch_error);
         }
     }
 
@@ -108,7 +108,7 @@ public class ItemSelectUtils {
             context.startActivity(DmcActivity.makeIntent(context));
             EventLogger.sendSendContent();
         } catch (final Exception ignored) {
-            Toaster.showLong(context, R.string.toast_launch_error);
+            Toaster.show(context, R.string.toast_launch_error);
         }
     }
 }

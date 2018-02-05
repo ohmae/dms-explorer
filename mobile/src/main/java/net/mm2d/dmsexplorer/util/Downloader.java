@@ -33,7 +33,7 @@ public class Downloader {
     public static Single<byte[]> create(@NonNull final String url) {
         return Single.create((SingleOnSubscribe<byte[]>) emitter -> {
             final byte[] binary = download(url);
-            if (binary != null) {
+            if (binary != null && binary.length > 0) {
                 emitter.onSuccess(binary);
             } else {
                 emitter.onError(new IOException());

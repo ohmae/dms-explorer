@@ -24,6 +24,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import javax.xml.parsers.ParserConfigurationException;
 
@@ -78,14 +79,13 @@ class SonyFetcherFactory implements FetcherFactory {
                     || !node.getNodeName().equals(ITEM_NODE)) {
                 continue;
             }
-            final Element point = findChildElementByNodeName(node, TIME_NODE);
-            if (point == null || TextUtils.isEmpty(point.getTextContent())) {
+            final Element timeNode = findChildElementByNodeName(node, TIME_NODE);
+            if (timeNode == null || TextUtils.isEmpty(timeNode.getTextContent())) {
                 continue;
             }
             try {
-                final float value = Float.parseFloat(point.getTextContent());
-                result.add((int) (value * 1000));
-            } catch (final NumberFormatException ignored) {
+                result.add(parseTimeNode(timeNode.getTextContent()));
+            } catch (final IllegalArgumentException ignored) {
             }
         }
         return result;
@@ -95,8 +95,7 @@ class SonyFetcherFactory implements FetcherFactory {
     private Element findChildElementByNodeName(
             @NonNull final Node parent,
             @NonNull final String nodeName) {
-        Node child = parent.getFirstChild();
-        for (; child != null; child = child.getNextSibling()) {
+        for (Node child = parent.getFirstChild(); child != null; child = child.getNextSibling()) {
             if (child.getNodeType() != Node.ELEMENT_NODE) {
                 continue;
             }
@@ -105,5 +104,21 @@ class SonyFetcherFactory implements FetcherFactory {
             }
         }
         return null;
+    }
+
+    /**
+     * 時間を表現する文字列をミリ秒に変換する。
+     *
+     * <p>フォーマット：0.000
+     *
+     * @param timeNode 時間文字列
+     * @return ミリ秒
+     */
+    private int parseTimeNode(@NonNull final String timeNode) {
+        try {
+            return (int) (Float.parseFloat(timeNode) * TimeUnit.SECONDS.toMillis(1));
+        } catch (final NumberFormatException e) {
+            throw new IllegalArgumentException(e);
+        }
     }
 }

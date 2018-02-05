@@ -5,14 +5,14 @@ android:
   components:
     - tools
     - platform-tools
-    - build-tools-26.0.1
-    - android-26
+    - build-tools-27.0.3
+    - android-27
 
 before_install:
   - chmod +x gradlew
+  - yes | sdkmanager "platforms;android-27"
 
 script:
-  - ./gradlew mobile:assembleRelease
   - ./gradlew mobile:check
   - ./gradlew jacocoTestReport
 

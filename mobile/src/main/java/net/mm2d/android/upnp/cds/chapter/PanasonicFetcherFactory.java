@@ -79,12 +79,12 @@ class PanasonicFetcherFactory implements FetcherFactory {
                     || !node.getNodeName().equals(ITEM_NODE)) {
                 continue;
             }
-            final Element point = findChildElementByNodeName(node, TIME_NODE);
-            if (point == null || TextUtils.isEmpty(point.getTextContent())) {
+            final Element timeNode = findChildElementByNodeName(node, TIME_NODE);
+            if (timeNode == null || TextUtils.isEmpty(timeNode.getTextContent())) {
                 continue;
             }
             try {
-                result.add(parseTimeCode(point.getTextContent()));
+                result.add(parseTimeNode(timeNode.getTextContent()));
             } catch (final IllegalArgumentException ignored) {
             }
         }
@@ -95,8 +95,7 @@ class PanasonicFetcherFactory implements FetcherFactory {
     private Element findChildElementByNodeName(
             @NonNull final Node parent,
             @NonNull final String nodeName) {
-        Node child = parent.getFirstChild();
-        for (; child != null; child = child.getNextSibling()) {
+        for (Node child = parent.getFirstChild(); child != null; child = child.getNextSibling()) {
             if (child.getNodeType() != Node.ELEMENT_NODE) {
                 continue;
             }
@@ -107,15 +106,23 @@ class PanasonicFetcherFactory implements FetcherFactory {
         return null;
     }
 
-    private int parseTimeCode(@NonNull final String timeCode) {
-        final String[] times = timeCode.split(":");
+    /**
+     * 時間を表現する文字列をミリ秒に変換する。
+     *
+     * <p>フォーマット：00:00:00.000
+     *
+     * @param timeNode 時間文字列
+     * @return ミリ秒
+     */
+    private int parseTimeNode(@NonNull final String timeNode) {
+        final String[] times = timeNode.split(":");
         if (times.length != 3) {
             throw new IllegalArgumentException();
         }
         try {
             return (int) TimeUnit.HOURS.toMillis(Integer.parseInt(times[0]))
                     + (int) TimeUnit.MINUTES.toMillis(Integer.parseInt(times[1]))
-                    + (int) (Float.parseFloat(times[2]) * 1000);
+                    + (int) (Float.parseFloat(times[2]) * TimeUnit.SECONDS.toMillis(1));
         } catch (final NumberFormatException e) {
             throw new IllegalArgumentException(e);
         }

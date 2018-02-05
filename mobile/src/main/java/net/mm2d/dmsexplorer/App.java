@@ -8,14 +8,12 @@
 package net.mm2d.dmsexplorer;
 
 import android.app.Application;
-import android.os.Handler;
-import android.os.Looper;
-import android.support.annotation.NonNull;
 
 import net.mm2d.dmsexplorer.domain.AppRepository;
 import net.mm2d.dmsexplorer.settings.Settings;
 import net.mm2d.dmsexplorer.util.update.UpdateChecker;
-import net.mm2d.util.Log;
+import net.mm2d.log.AndroidLogInitializer;
+import net.mm2d.log.Log;
 
 import io.reactivex.exceptions.UndeliverableException;
 import io.reactivex.plugins.RxJavaPlugins;
@@ -44,32 +42,7 @@ public class App extends Application {
     }
 
     private void setUpDebugLog() {
-        if (!BuildConfig.DEBUG) {
-            Log.setLogLevel(Log.ASSERT);
-            Log.setPrint(Log.EMPTY_PRINT);
-            return;
-        }
-        final Looper mainLooper = Looper.getMainLooper();
-        final Thread mainThread = mainLooper.getThread();
-        final Handler handler = new Handler(mainLooper);
-        Log.setAppendCaller(true);
-        Log.setLogLevel(Log.VERBOSE);
-        Log.setPrint((level, tag, message) -> {
-            if (Thread.currentThread() == mainThread) {
-                println(level, tag, message);
-                return;
-            }
-            handler.post(() -> println(level, tag, message));
-        });
-    }
-
-    private void println(
-            int level,
-            @NonNull String tag,
-            @NonNull String message) {
-        final String[] lines = message.split("\n");
-        for (final String line : lines) {
-            android.util.Log.println(level, tag, line);
-        }
+        Log.setInitializer(AndroidLogInitializer.get());
+        Log.initialize(BuildConfig.DEBUG, true);
     }
 }

@@ -82,7 +82,7 @@ public class ControlPointModel {
                 final Context context,
                 final Intent intent) {
             if (!initializeOrTerminate(mLan.hasAvailableInterface())) {
-                Toaster.showLong(mContext, R.string.no_available_network);
+                Toaster.show(mContext, R.string.no_available_network);
             }
         }
     };
@@ -228,7 +228,7 @@ public class ControlPointModel {
         mSearchThread = new SearchThread();
         mSearchThread.start();
         if (!mLan.hasAvailableInterface()) {
-            Toaster.showLong(mContext, R.string.no_available_network);
+            Toaster.show(mContext, R.string.no_available_network);
         }
     }
 
@@ -265,12 +265,12 @@ public class ControlPointModel {
 
     public void restart(@Nullable final TerminateCallback callback) {
         if (!mLan.hasAvailableInterface()) {
-            Toaster.showLong(mContext, R.string.no_available_network);
+            Toaster.show(mContext, R.string.no_available_network);
             return;
         }
         final Collection<NetworkInterface> interfaces = mLan.getAvailableInterfaces();
         if (interfaces.isEmpty()) {
-            Toaster.showLong(mContext, R.string.no_available_network);
+            Toaster.show(mContext, R.string.no_available_network);
             return;
         }
         synchronized (mAvControlPointManager) {

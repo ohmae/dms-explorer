@@ -38,7 +38,7 @@ class SettingsStorage {
      * @param context コンテキスト
      */
     static void initialize(@NonNull final Context context) {
-        Maintainer.maintain(PreferencesHolder.get(context));
+        Maintainer.maintain(new SettingsStorage(context));
     }
 
     @NonNull
@@ -54,14 +54,47 @@ class SettingsStorage {
     }
 
     /**
+     * SharedPreferencesのインスタンスを返す。
+     *
+     * <p>Maintainerで必要な場合のみ利用する。
+     * それ以外では使用しないこと。
+     *
+     * @return SharedPreferences
+     */
+    @NonNull
+    @Deprecated
+    SharedPreferences getPreferences() {
+        return mPreferences;
+    }
+
+    /**
+     * 書き込まれている内容を消去する。
+     */
+    void clear() {
+        mPreferences.edit()
+                .clear()
+                .apply();
+    }
+
+    /**
+     * keyの値が書き込まれているかを返す。
+     *
+     * @param key Key
+     * @return 含まれている場合true
+     */
+    boolean contains(@NonNull final Key key) {
+        return mPreferences.contains(key.name());
+    }
+
+    /**
      * boolean値を書き込む。
      *
      * @param key   Key
      * @param value 書き込む値
      */
-    void putBoolean(
-            @NonNull Key key,
-            boolean value) {
+    void writeBoolean(
+            @NonNull final Key key,
+            final boolean value) {
         mPreferences.edit()
                 .putBoolean(key.name(), value)
                 .apply();
@@ -74,9 +107,9 @@ class SettingsStorage {
      * @param defaultValue デフォルト値
      * @return 読み出したboolean値
      */
-    boolean getBoolean(
-            @NonNull Key key,
-            boolean defaultValue) {
+    boolean readBoolean(
+            @NonNull final Key key,
+            final boolean defaultValue) {
         return mPreferences.getBoolean(key.name(), defaultValue);
     }
 
@@ -86,9 +119,9 @@ class SettingsStorage {
      * @param key   Key
      * @param value 書き込む値
      */
-    void putInt(
-            @NonNull Key key,
-            int value) {
+    void writeInt(
+            @NonNull final Key key,
+            final int value) {
         mPreferences.edit()
                 .putInt(key.name(), value)
                 .apply();
@@ -101,9 +134,9 @@ class SettingsStorage {
      * @param defaultValue デフォルト値
      * @return 読み出したint値
      */
-    int getInt(
-            @NonNull Key key,
-            int defaultValue) {
+    int readInt(
+            @NonNull final Key key,
+            final int defaultValue) {
         return mPreferences.getInt(key.name(), defaultValue);
     }
 
@@ -113,9 +146,9 @@ class SettingsStorage {
      * @param key   Key
      * @param value 書き込む値
      */
-    void putLong(
-            @NonNull Key key,
-            long value) {
+    void writeLong(
+            @NonNull final Key key,
+            final long value) {
         mPreferences.edit()
                 .putLong(key.name(), value)
                 .apply();
@@ -128,9 +161,9 @@ class SettingsStorage {
      * @param defaultValue デフォルト値
      * @return 読み出したlong値
      */
-    long getLong(
-            @NonNull Key key,
-            long defaultValue) {
+    long readLong(
+            @NonNull final Key key,
+            final long defaultValue) {
         return mPreferences.getLong(key.name(), defaultValue);
     }
 
@@ -140,9 +173,9 @@ class SettingsStorage {
      * @param key   Key
      * @param value 書き込む値
      */
-    void putString(
-            @NonNull Key key,
-            @NonNull String value) {
+    void writeString(
+            @NonNull final Key key,
+            @NonNull final String value) {
         mPreferences.edit()
                 .putString(key.name(), value)
                 .apply();
@@ -155,9 +188,9 @@ class SettingsStorage {
      * @param defaultValue デフォルト値
      * @return 読み出したString値
      */
-    String getString(
-            @NonNull Key key,
-            @Nullable String defaultValue) {
+    String readString(
+            @NonNull final Key key,
+            @Nullable final String defaultValue) {
         return mPreferences.getString(key.name(), defaultValue);
     }
 }

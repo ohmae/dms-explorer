@@ -11,7 +11,8 @@ import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
-import android.support.v7.widget.AppCompatDrawableManager;
+import android.support.annotation.Nullable;
+import android.support.v7.content.res.AppCompatResources;
 
 /**
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
@@ -21,9 +22,10 @@ public class DrawableUtils {
         throw new AssertionError();
     }
 
+    @Nullable
     public static Drawable get(
             @NonNull final Context context,
             @DrawableRes final int resId) {
-        return AppCompatDrawableManager.get().getDrawable(context, resId);
+        return AppCompatResources.getDrawable(context, resId);
     }
 }
