@@ -27,22 +27,12 @@ public class App extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        setUpDebugLog();
-        RxJavaPlugins.setErrorHandler(e -> {
-            if (e instanceof UndeliverableException) {
-                Log.w(e.getCause());
-                return;
-            }
-            Log.w(e);
-        });
+        Log.setInitializer(AndroidLogInitializer.get());
+        Log.initialize(BuildConfig.DEBUG, true);
+        RxJavaPlugins.setErrorHandler(e -> Log.w(e instanceof UndeliverableException ? e.getCause() : e));
         Settings.initialize(this);
         EventLogger.initialize(this);
         Repository.set(new AppRepository(this));
         new UpdateChecker(this).check();
-    }
-
-    private void setUpDebugLog() {
-        Log.setInitializer(AndroidLogInitializer.get());
-        Log.initialize(BuildConfig.DEBUG, true);
     }
 }
