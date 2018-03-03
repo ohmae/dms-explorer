@@ -29,7 +29,7 @@ import net.mm2d.dmsexplorer.viewmodel.PhotoActivityModel;
 /**
  * 静止画表示のActivity。
  *
- * @author <a href="mailto:ryo@mm2d.net">大前良介(OHMAE Ryosuke)</a>
+ * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
  */
 public class PhotoActivity extends BaseActivity {
     private FullscreenHelper mFullscreenHelper;

@@ -38,7 +38,7 @@ import java.util.regex.Pattern;
 /**
  * 詳細情報の各項目をRecyclerViewを使用して表示するためのAdapter。
  *
- * @author <a href="mailto:ryo@mm2d.net">大前良介(OHMAE Ryosuke)</a>
+ * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
  */
 public abstract class PropertyAdapter extends Adapter<ViewHolder> {
     public static PropertyAdapter ofServer(

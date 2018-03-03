@@ -21,7 +21,7 @@ import io.reactivex.plugins.RxJavaPlugins;
 /**
  * Log出力変更のための継承。
  *
- * @author <a href="mailto:ryo@mm2d.net">大前良介(OHMAE Ryosuke)</a>
+ * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
  */
 public class App extends Application {
     @Override

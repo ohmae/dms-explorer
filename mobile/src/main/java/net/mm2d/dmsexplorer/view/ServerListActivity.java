@@ -23,7 +23,7 @@ import net.mm2d.dmsexplorer.view.delegate.ServerListActivityDelegate;
  *
  * <p>アプリ起動時最初に表示されるActivity
  *
- * @author <a href="mailto:ryo@mm2d.net">大前良介(OHMAE Ryosuke)</a>
+ * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
  */
 public class ServerListActivity extends BaseActivity {
     private ControlPointModel mControlPointModel;

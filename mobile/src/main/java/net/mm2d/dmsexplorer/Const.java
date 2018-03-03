@@ -8,7 +8,7 @@
 package net.mm2d.dmsexplorer;
 
 /**
- * @author <a href="mailto:ryo@mm2d.net">大前良介(OHMAE Ryosuke)</a>
+ * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
  */
 public class Const {
     public static final String PACKAGE_NAME = "net.mm2d.dmsexplorer";

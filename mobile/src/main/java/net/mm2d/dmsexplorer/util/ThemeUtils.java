@@ -15,7 +15,7 @@ import android.text.TextUtils;
 /**
  * テーマとしての色を決定するメソッドを持つクラス。
  *
- * @author <a href="mailto:ryo@mm2d.net">大前良介(OHMAE Ryosuke)</a>
+ * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
  */
 public class ThemeUtils {
     private ThemeUtils() {

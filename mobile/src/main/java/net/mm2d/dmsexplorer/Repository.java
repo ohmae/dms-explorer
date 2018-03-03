@@ -17,7 +17,7 @@ import net.mm2d.dmsexplorer.domain.model.PlaybackTargetModel;
 import net.mm2d.dmsexplorer.domain.model.ThemeModel;
 
 /**
- * @author <a href="mailto:ryo@mm2d.net">大前良介(OHMAE Ryosuke)</a>
+ * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
  */
 public abstract class Repository {
     private static Repository sInstance;

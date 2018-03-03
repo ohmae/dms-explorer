@@ -21,7 +21,7 @@ import net.mm2d.dmsexplorer.view.dialog.DeleteDialog.OnDeleteListener;
 /**
  * MediaServerのContentDirectoryを表示、操作するActivity。
  *
- * @author <a href="mailto:ryo@mm2d.net">大前良介(OHMAE Ryosuke)</a>
+ * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
  */
 public class ContentListActivity extends BaseActivity implements OnDeleteListener {
     /**

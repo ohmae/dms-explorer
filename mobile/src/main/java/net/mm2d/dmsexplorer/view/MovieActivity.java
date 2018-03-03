@@ -28,7 +28,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * 動画再生のActivity。
  *
- * @author <a href="mailto:ryo@mm2d.net">大前良介(OHMAE Ryosuke)</a>
+ * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
  */
 public class MovieActivity extends BaseActivity implements OnChangeContentListener {
     private static final String KEY_POSITION = "KEY_POSITION";

@@ -12,7 +12,7 @@ import android.support.annotation.NonNull;
 /**
  * ARIB特有の処理を行うユーティリティクラス。
  *
- * @author <a href="mailto:ryo@mm2d.net">大前良介(OHMAE Ryosuke)</a>
+ * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
  */
 public class AribUtils {
     private AribUtils() {
