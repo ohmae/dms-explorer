@@ -154,7 +154,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             findPreference(Key.LICENSE.name()).setOnPreferenceClickListener(preference -> {
                 WebViewActivity.start(getActivity(),
                         getString(R.string.pref_title_license),
-                        Const.URL_OPENSOURCE_LICENSE);
+                        Const.URL_OPEN_SOURCE_LICENSE);
                 return true;
             });
         }
