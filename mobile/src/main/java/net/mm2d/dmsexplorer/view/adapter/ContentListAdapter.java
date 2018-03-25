@@ -31,7 +31,7 @@ import java.util.List;
 /**
  * CDSのコンテンツリストをRecyclerViewへ表示するためのAdapter。
  *
- * @author <a href="mailto:ryo@mm2d.net">大前良介(OHMAE Ryosuke)</a>
+ * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
  */
 public class ContentListAdapter
         extends RecyclerView.Adapter<ContentListAdapter.ViewHolder> {

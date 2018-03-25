@@ -32,7 +32,7 @@ import io.reactivex.schedulers.Schedulers;
 /**
  * MediaServerを表現するクラス。
  *
- * @author <a href="mailto:ryo@mm2d.net">大前良介(OHMAE Ryosuke)</a>
+ * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
  */
 public class MediaServer extends DeviceWrapper {
     public static final int NO_ERROR = 0;

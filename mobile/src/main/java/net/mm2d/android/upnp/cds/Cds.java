@@ -10,7 +10,7 @@ package net.mm2d.android.upnp.cds;
 /**
  * 内部で使用する定数を定義する。
  *
- * @author <a href="mailto:ryo@mm2d.net">大前良介(OHMAE Ryosuke)</a>
+ * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
  */
 final class Cds {
     /**

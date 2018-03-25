@@ -35,7 +35,7 @@ import java.util.List;
 /**
  * アプリ設定を行うActivity。
  *
- * @author <a href="mailto:ryo@mm2d.net">大前良介(OHMAE Ryosuke)</a>
+ * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
  */
 public class SettingsActivity extends AppCompatPreferenceActivity {
     /**
@@ -154,7 +154,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             findPreference(Key.LICENSE.name()).setOnPreferenceClickListener(preference -> {
                 WebViewActivity.start(getActivity(),
                         getString(R.string.pref_title_license),
-                        Const.URL_OPENSOURCE_LICENSE);
+                        Const.URL_OPEN_SOURCE_LICENSE);
                 return true;
             });
         }

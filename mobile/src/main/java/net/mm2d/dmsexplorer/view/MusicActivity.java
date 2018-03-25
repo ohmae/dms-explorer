@@ -20,7 +20,7 @@ import net.mm2d.dmsexplorer.viewmodel.MusicActivityModel;
 /**
  * 音楽再生のActivity。
  *
- * @author <a href="mailto:ryo@mm2d.net">大前良介(OHMAE Ryosuke)</a>
+ * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
  */
 public class MusicActivity extends BaseActivity {
     private static final String KEY_POSITION = "KEY_POSITION";

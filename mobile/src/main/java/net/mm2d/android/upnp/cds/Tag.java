@@ -30,7 +30,7 @@ import java.util.Map.Entry;
  * タグ＋値、属性＋値の情報を表現できれば十分なものを表現するのに使用する。
  * 入れ子関係を持つXMLは表現できない。
  *
- * @author <a href="mailto:ryo@mm2d.net">大前良介(OHMAE Ryosuke)</a>
+ * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
  */
 public class Tag implements Parcelable {
     @NonNull

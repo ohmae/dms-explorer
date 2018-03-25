@@ -8,7 +8,7 @@
 package net.mm2d.dmsexplorer;
 
 /**
- * @author <a href="mailto:ryo@mm2d.net">大前良介(OHMAE Ryosuke)</a>
+ * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
  */
 public class Const {
     public static final String PACKAGE_NAME = "net.mm2d.dmsexplorer";
@@ -30,7 +30,7 @@ public class Const {
 
     public static final String URL_UPDATE_JSON = "https://ohmae.github.io/DmsExplorer/json/update.json";
     public static final String URL_GITHUB_PROJECT = "https://github.com/ohmae/DmsExplorer";
-    public static final String URL_OPENSOURCE_LICENSE = "file:///android_asset/license.html";
+    public static final String URL_OPEN_SOURCE_LICENSE = "file:///android_asset/license.html";
 
     public static final int REQUEST_CODE_ACTION_PLAY = 1;
     public static final int REQUEST_CODE_ACTION_NEXT = 2;
