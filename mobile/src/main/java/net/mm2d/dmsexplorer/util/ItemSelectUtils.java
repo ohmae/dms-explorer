@@ -16,7 +16,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
 
 import net.mm2d.android.util.Toaster;
-import net.mm2d.dmsexplorer.EventLogger;
+import net.mm2d.dmsexplorer.log.EventLogger;
 import net.mm2d.dmsexplorer.R;
 import net.mm2d.dmsexplorer.Repository;
 import net.mm2d.dmsexplorer.domain.entity.ContentType;

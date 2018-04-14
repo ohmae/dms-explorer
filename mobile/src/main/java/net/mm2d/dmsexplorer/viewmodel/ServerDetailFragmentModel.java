@@ -23,7 +23,7 @@ import net.mm2d.android.upnp.cds.MediaServer;
 import net.mm2d.android.util.ActivityUtils;
 import net.mm2d.android.util.DrawableUtils;
 import net.mm2d.dmsexplorer.Const;
-import net.mm2d.dmsexplorer.EventLogger;
+import net.mm2d.dmsexplorer.log.EventLogger;
 import net.mm2d.dmsexplorer.R;
 import net.mm2d.dmsexplorer.Repository;
 import net.mm2d.dmsexplorer.util.ThemeUtils;

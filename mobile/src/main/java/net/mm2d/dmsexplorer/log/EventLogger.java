@@ -1,23 +1,20 @@
 /*
- * Copyright (c) 2017 大前良介 (OHMAE Ryosuke)
+ * Copyright (c) 2018 大前良介 (OHMAE Ryosuke)
  *
  * This software is released under the MIT License.
  * http://opensource.org/licenses/MIT
  */
 
-package net.mm2d.dmsexplorer;
+package net.mm2d.dmsexplorer.log;
 
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 
-import com.google.firebase.analytics.FirebaseAnalytics;
-import com.google.firebase.analytics.FirebaseAnalytics.Event;
-import com.google.firebase.analytics.FirebaseAnalytics.Param;
-
 import net.mm2d.android.upnp.avt.MediaRenderer;
 import net.mm2d.android.upnp.cds.CdsObject;
 import net.mm2d.android.upnp.cds.MediaServer;
+import net.mm2d.dmsexplorer.Repository;
 import net.mm2d.dmsexplorer.domain.entity.ContentEntity;
 import net.mm2d.dmsexplorer.domain.entity.ContentType;
 import net.mm2d.dmsexplorer.domain.model.MediaRendererModel;
@@ -30,10 +27,10 @@ import java.util.Locale;
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
  */
 public class EventLogger {
-    private static FirebaseAnalytics sAnalytics;
+    private static Sender sSender;
 
     public static void initialize(@NonNull final Context context) {
-        sAnalytics = FirebaseAnalytics.getInstance(context);
+        sSender = SenderFactory.create(context);
     }
 
     public static void sendSelectServer() {
@@ -45,7 +42,7 @@ public class EventLogger {
         final Bundle bundle = new Bundle();
         bundle.putString(Param.ITEM_NAME, server.getFriendlyName());
         bundle.putString(Param.ITEM_BRAND, server.getManufacture());
-        sAnalytics.logEvent("select_server", bundle);
+        sSender.logEvent("select_server", bundle);
     }
 
     public static void sendSelectRenderer() {
@@ -57,7 +54,7 @@ public class EventLogger {
         final Bundle bundle = new Bundle();
         bundle.putString(Param.ITEM_NAME, renderer.getFriendlyName());
         bundle.putString(Param.ITEM_BRAND, renderer.getManufacture());
-        sAnalytics.logEvent("select_renderer", bundle);
+        sSender.logEvent("select_renderer", bundle);
     }
 
     public static void sendSendContent() {
@@ -72,7 +69,7 @@ public class EventLogger {
         bundle.putString(Param.CONTENT_TYPE, getTypeString(entity.getType()));
         bundle.putString(Param.ORIGIN, object.hasProtectedResource() ? "dlna-dtcp" : "dlna");
         bundle.putString(Param.DESTINATION, "dmr");
-        sAnalytics.logEvent(Event.SELECT_CONTENT, bundle);
+        sSender.logEvent(Event.SELECT_CONTENT, bundle);
     }
 
     public static void sendPlayContent(final boolean playMyself) {
@@ -87,7 +84,7 @@ public class EventLogger {
         bundle.putString(Param.CONTENT_TYPE, getTypeString(entity.getType()));
         bundle.putString(Param.ORIGIN, "dlna");
         bundle.putString(Param.DESTINATION, playMyself ? "myself" : "other");
-        sAnalytics.logEvent(Event.SELECT_CONTENT, bundle);
+        sSender.logEvent(Event.SELECT_CONTENT, bundle);
     }
 
     @NonNull

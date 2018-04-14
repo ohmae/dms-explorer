@@ -16,7 +16,7 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 
-import net.mm2d.dmsexplorer.EventLogger;
+import net.mm2d.dmsexplorer.log.EventLogger;
 import net.mm2d.dmsexplorer.R;
 import net.mm2d.dmsexplorer.Repository;
 import net.mm2d.dmsexplorer.databinding.PhotoActivityBinding;
