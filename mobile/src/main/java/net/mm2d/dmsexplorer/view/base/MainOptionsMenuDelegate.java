@@ -14,7 +14,6 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.LocalBroadcastManager;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -29,8 +28,13 @@ import net.mm2d.dmsexplorer.view.dialog.UpdateDialog;
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
  */
 class MainOptionsMenuDelegate implements OptionsMenuDelegate {
-    private final FragmentActivity mActivity;
+    @NonNull
+    private final BaseActivity mActivity;
+    @NonNull
     private final Settings mSettings;
+    @NonNull
+    private final LocalBroadcastManager mBroadcastManager;
+    @NonNull
     private final BroadcastReceiver mUpdateReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(
@@ -40,21 +44,20 @@ class MainOptionsMenuDelegate implements OptionsMenuDelegate {
         }
     };
 
-    MainOptionsMenuDelegate(@NonNull final FragmentActivity activity) {
+    MainOptionsMenuDelegate(@NonNull final BaseActivity activity) {
         mActivity = activity;
         mSettings = new Settings(activity);
+        mBroadcastManager = LocalBroadcastManager.getInstance(activity);
     }
 
     @Override
     public void onCreate(@Nullable final Bundle savedInstanceState) {
-        LocalBroadcastManager.getInstance(mActivity)
-                .registerReceiver(mUpdateReceiver, new IntentFilter(Const.ACTION_UPDATE));
+        mBroadcastManager.registerReceiver(mUpdateReceiver, new IntentFilter(Const.ACTION_UPDATE));
     }
 
     @Override
     public void onDestroy() {
-        LocalBroadcastManager.getInstance(mActivity)
-                .unregisterReceiver(mUpdateReceiver);
+        mBroadcastManager.unregisterReceiver(mUpdateReceiver);
     }
 
     @Override
@@ -69,7 +72,7 @@ class MainOptionsMenuDelegate implements OptionsMenuDelegate {
         final int id = item.getItemId();
         switch (id) {
             case android.R.id.home:
-                mActivity.onBackPressed();
+                mActivity.navigateUpTo();
                 return true;
             case R.id.action_settings:
                 SettingsActivity.start(mActivity);

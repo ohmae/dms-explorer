@@ -19,10 +19,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import net.mm2d.android.util.ViewUtils;
-import net.mm2d.dmsexplorer.log.EventLogger;
 import net.mm2d.dmsexplorer.R;
 import net.mm2d.dmsexplorer.Repository;
 import net.mm2d.dmsexplorer.databinding.ServerListActivityBinding;
+import net.mm2d.dmsexplorer.log.EventLogger;
 import net.mm2d.dmsexplorer.view.ContentListActivity;
 import net.mm2d.dmsexplorer.view.base.BaseActivity;
 import net.mm2d.dmsexplorer.viewmodel.ServerListActivityModel;

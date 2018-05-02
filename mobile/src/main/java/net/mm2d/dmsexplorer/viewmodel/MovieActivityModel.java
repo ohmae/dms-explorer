@@ -25,15 +25,16 @@ import com.android.databinding.library.baseAdapters.BR;
 import net.mm2d.android.util.AribUtils;
 import net.mm2d.android.util.DisplaySizeUtils;
 import net.mm2d.android.util.Toaster;
-import net.mm2d.dmsexplorer.log.EventLogger;
 import net.mm2d.dmsexplorer.R;
 import net.mm2d.dmsexplorer.Repository;
 import net.mm2d.dmsexplorer.domain.model.MediaServerModel;
 import net.mm2d.dmsexplorer.domain.model.MoviePlayerModel;
 import net.mm2d.dmsexplorer.domain.model.PlaybackTargetModel;
 import net.mm2d.dmsexplorer.domain.model.PlayerModel;
+import net.mm2d.dmsexplorer.log.EventLogger;
 import net.mm2d.dmsexplorer.settings.RepeatMode;
 import net.mm2d.dmsexplorer.settings.Settings;
+import net.mm2d.dmsexplorer.view.base.BaseActivity;
 import net.mm2d.dmsexplorer.viewmodel.ControlPanelModel.OnCompletionListener;
 import net.mm2d.dmsexplorer.viewmodel.ControlPanelModel.SkipControlListener;
 import net.mm2d.dmsexplorer.viewmodel.helper.MovieActivityPipHelper;
@@ -72,7 +73,7 @@ public class MovieActivityModel extends BaseObservable
     private Toast mToast;
 
     @NonNull
-    private final Activity mActivity;
+    private final BaseActivity mActivity;
     @NonNull
     private final VideoView mVideoView;
     @NonNull
@@ -91,7 +92,7 @@ public class MovieActivityModel extends BaseObservable
     private boolean mFinishing;
 
     public MovieActivityModel(
-            @NonNull final Activity activity,
+            @NonNull final BaseActivity activity,
             @NonNull final VideoView videoView,
             @NonNull final Repository repository) {
         mActivity = activity;
@@ -118,7 +119,7 @@ public class MovieActivityModel extends BaseObservable
         updateTargetModel();
     }
 
-    private void updateTargetModel() {
+    public void updateTargetModel() {
         final PlaybackTargetModel targetModel = mRepository.getPlaybackTargetModel();
         if (targetModel == null || targetModel.getUri() == Uri.EMPTY) {
             finishAfterTransition();
@@ -163,7 +164,7 @@ public class MovieActivityModel extends BaseObservable
     }
 
     public void onClickBack() {
-        ActivityCompat.finishAfterTransition(mActivity);
+        mActivity.navigateUpTo();
     }
 
     public void onClickRepeat() {

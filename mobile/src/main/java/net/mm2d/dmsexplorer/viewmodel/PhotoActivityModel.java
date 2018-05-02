@@ -14,7 +14,6 @@ import android.graphics.Point;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.ActivityCompat;
 
 import com.android.databinding.library.baseAdapters.BR;
 
@@ -25,6 +24,7 @@ import net.mm2d.dmsexplorer.R;
 import net.mm2d.dmsexplorer.Repository;
 import net.mm2d.dmsexplorer.domain.model.PlaybackTargetModel;
 import net.mm2d.dmsexplorer.util.Downloader;
+import net.mm2d.dmsexplorer.view.base.BaseActivity;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 
@@ -40,12 +40,12 @@ public class PhotoActivityModel extends BaseObservable {
     private int mRightNavigationSize;
 
     @NonNull
-    private final Activity mActivity;
+    private final BaseActivity mActivity;
     @NonNull
     private final PlaybackTargetModel mTargetModel;
 
     public PhotoActivityModel(
-            @NonNull final Activity activity,
+            @NonNull final BaseActivity activity,
             @NonNull final Repository repository) {
         mTargetModel = repository.getPlaybackTargetModel();
         if (mTargetModel == null) {
@@ -78,7 +78,7 @@ public class PhotoActivityModel extends BaseObservable {
     }
 
     public void onClickBack() {
-        ActivityCompat.finishAfterTransition(mActivity);
+        mActivity.navigateUpTo();
     }
 
     @Nullable

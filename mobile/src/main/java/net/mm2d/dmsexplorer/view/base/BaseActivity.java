@@ -7,12 +7,15 @@
 
 package net.mm2d.dmsexplorer.view.base;
 
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.CallSuper;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
+import android.support.v4.app.NavUtils;
+import android.support.v4.app.TaskStackBuilder;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -54,6 +57,21 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         mDelegate.onDestroy();
+    }
+
+    public void navigateUpTo() {
+        final Intent upIntent = NavUtils.getParentActivityIntent(this);
+        if (upIntent == null) {
+            onBackPressed();
+            return;
+        }
+        if (NavUtils.shouldUpRecreateTask(this, upIntent)) {
+            TaskStackBuilder.create(this)
+                    .addNextIntentWithParentStack(upIntent)
+                    .startActivities();
+        } else {
+            NavUtils.navigateUpTo(this, upIntent);
+        }
     }
 
     @Override

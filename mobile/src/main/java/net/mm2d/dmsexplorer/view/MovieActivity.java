@@ -7,6 +7,7 @@
 
 package net.mm2d.dmsexplorer.view;
 
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
@@ -74,6 +75,12 @@ public class MovieActivity extends BaseActivity implements OnChangeContentListen
             mModel.terminate();
         }
         mFullscreenHelper.terminate();
+    }
+
+    @Override
+    protected void onNewIntent(final Intent intent) {
+        super.onNewIntent(intent);
+        mModel.updateTargetModel();
     }
 
     @Override

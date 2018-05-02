@@ -7,7 +7,6 @@
 
 package net.mm2d.dmsexplorer.view.base;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -18,9 +17,10 @@ import android.view.MenuItem;
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
  */
 class BaseOptionsMenuDelegate implements OptionsMenuDelegate {
-    private final Activity mActivity;
+    @NonNull
+    private final BaseActivity mActivity;
 
-    BaseOptionsMenuDelegate(@NonNull final Activity activity) {
+    BaseOptionsMenuDelegate(@NonNull final BaseActivity activity) {
         mActivity = activity;
     }
 
@@ -41,7 +41,7 @@ class BaseOptionsMenuDelegate implements OptionsMenuDelegate {
     public boolean onOptionsItemSelected(@NonNull final MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                mActivity.onBackPressed();
+                mActivity.navigateUpTo();
                 return true;
         }
         return false;
