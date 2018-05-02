@@ -79,8 +79,8 @@ dependencies {
     implementation 'com.android.support:customtabs:27.1.1'
     implementation 'com.android.support:exifinterface:27.1.1'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    implementation 'net.mm2d:log:0.0.1'
-    implementation 'net.mm2d:log-android:0.0.1'
+    implementation 'net.mm2d:log:0.0.2'
+    implementation 'net.mm2d:log-android:0.0.2'
     implementation 'net.mm2d:mmupnp:1.6.0'
     implementation 'net.opacapp:multiline-collapsingtoolbar:1.6.0'
     implementation 'com.squareup.okhttp3:okhttp:3.10.0'
