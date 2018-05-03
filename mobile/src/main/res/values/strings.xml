@@ -73,6 +73,7 @@
     <string name="pref_category_orientation">Screen Orientation</string>
     <string name="pref_title_category_orientation">Caution</string>
     <string name="pref_message_category_orientation">These settings are highly dependent on the device. In some cases, settings may not be applied or display may be disturbed. If you have a problem, please return the setting to "unspecified"</string>
+    <string name="pref_title_orientation_collective">Collective setting</string>
     <string name="pref_title_orientation_browse">Browse Screen</string>
     <string name="pref_title_orientation_movie">Movie Playback Screen</string>
     <string name="pref_title_orientation_music">Music Playback Screen</string>

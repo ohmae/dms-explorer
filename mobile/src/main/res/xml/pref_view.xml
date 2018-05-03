@@ -10,6 +10,12 @@
             android:summary="@string/pref_message_category_orientation"
             />
         <ListPreference
+            android:key="ORIENTATION_COLLECTIVE"
+            android:title="@string/pref_title_orientation_collective"
+            android:entries="@array/orientation_entries"
+            android:entryValues="@array/orientation_values"
+            />
+        <ListPreference
             android:defaultValue="UNSPECIFIED"
             android:entries="@array/orientation_entries"
             android:entryValues="@array/orientation_values"

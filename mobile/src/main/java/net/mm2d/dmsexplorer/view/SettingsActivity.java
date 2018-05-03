@@ -12,6 +12,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.PreferenceFragment;
@@ -36,6 +37,7 @@ import net.mm2d.dmsexplorer.settings.Orientation;
 import net.mm2d.dmsexplorer.util.ViewSettingsNotifier;
 import net.mm2d.dmsexplorer.view.base.AppCompatPreferenceActivity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -144,33 +146,57 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
     }
 
     public static class ViewPreferenceFragment extends PreferenceFragment {
-        private SharedPreferences mSharedPreferences;
-        private ViewSettingsNotifier mViewSettingsNotifier;
-
-        private final OnPreferenceChangeListener mBindSummaryListener = (preference, value) -> {
-            final Orientation orientation = Orientation.of(value.toString());
-            preference.setSummary(orientation.getName(preference.getContext()));
-            mViewSettingsNotifier.update();
-            return true;
+        private static final String[] ORIENTATION_KEYS = new String[]{
+                Key.ORIENTATION_BROWSE.name(),
+                Key.ORIENTATION_MOVIE.name(),
+                Key.ORIENTATION_MUSIC.name(),
+                Key.ORIENTATION_PHOTO.name(),
+                Key.ORIENTATION_DMC.name(),
         };
+        private ViewSettingsNotifier mViewSettingsNotifier;
 
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             mViewSettingsNotifier = new ViewSettingsNotifier(getActivity());
-            mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+            final SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
             addPreferencesFromResource(R.xml.pref_view);
-            bindOrientationSummary(findPreference(Key.ORIENTATION_BROWSE.name()));
-            bindOrientationSummary(findPreference(Key.ORIENTATION_MOVIE.name()));
-            bindOrientationSummary(findPreference(Key.ORIENTATION_MUSIC.name()));
-            bindOrientationSummary(findPreference(Key.ORIENTATION_PHOTO.name()));
-            bindOrientationSummary(findPreference(Key.ORIENTATION_DMC.name()));
+            final List<ListPreference> preferences = new ArrayList<>();
+            for (final String key : ORIENTATION_KEYS) {
+                preferences.add((ListPreference) findPreference(key));
+            }
+            final OnPreferenceChangeListener listener = createBindSummaryListener();
+            for (final Preference p : preferences) {
+                p.setOnPreferenceChangeListener(listener);
+                final String value = sharedPreferences.getString(p.getKey(), "");
+                listener.onPreferenceChange(p, value);
+            }
+            findPreference(Key.ORIENTATION_COLLECTIVE.name())
+                    .setOnPreferenceChangeListener(createCollectiveSettingListener(preferences));
         }
 
-        private void bindOrientationSummary(@NonNull final Preference preference) {
-            preference.setOnPreferenceChangeListener(mBindSummaryListener);
-            mBindSummaryListener.onPreferenceChange(preference,
-                    mSharedPreferences.getString(preference.getKey(), ""));
+        @NonNull
+        private OnPreferenceChangeListener createBindSummaryListener() {
+            return (preference, value) -> {
+                final Orientation orientation = Orientation.of(value.toString());
+                preference.setSummary(orientation.getName(preference.getContext()));
+                mViewSettingsNotifier.update();
+                return true;
+            };
+        }
+
+        @NonNull
+        private OnPreferenceChangeListener createCollectiveSettingListener(@NonNull final List<ListPreference> preferences) {
+            return (preference, value) -> {
+                final String stringValue = value.toString();
+                final String summary = Orientation.of(stringValue).getName(preference.getContext());
+                for (final ListPreference p : preferences) {
+                    p.setValue(stringValue);
+                    p.setSummary(summary);
+                }
+                mViewSettingsNotifier.update();
+                return false; // Do not write the value of collective setting
+            };
         }
     }
 
