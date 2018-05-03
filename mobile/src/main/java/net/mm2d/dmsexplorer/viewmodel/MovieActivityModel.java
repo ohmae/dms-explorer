@@ -10,8 +10,10 @@ package net.mm2d.dmsexplorer.viewmodel;
 import android.app.Activity;
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
+import android.graphics.Color;
 import android.graphics.Point;
 import android.net.Uri;
+import android.support.annotation.ColorInt;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -56,6 +58,8 @@ public class MovieActivityModel extends BaseObservable
     @NonNull
     public final ControlPanelParam controlPanelParam;
     public final boolean canUsePictureInPicture = PipHelpers.isSupported();
+    @ColorInt
+    public final int background;
 
     @NonNull
     private String mTitle;
@@ -106,9 +110,12 @@ public class MovieActivityModel extends BaseObservable
         mRepeatMode = mSettings.getRepeatModeMovie();
         mRepeatIconId = mRepeatMode.getIconId();
 
-        final int color = ContextCompat.getColor(activity, R.color.translucent_control);
+        background = mSettings.isMovieUiBackgroundTransparent()
+                ? Color.TRANSPARENT
+                : ContextCompat.getColor(activity, R.color.translucent_control);
         controlPanelParam = new ControlPanelParam();
-        controlPanelParam.setBackgroundColor(color);
+        controlPanelParam.setBackgroundColor(background);
+
         mMovieActivityPipHelper = PipHelpers.getMovieHelper(mActivity);
         mMovieActivityPipHelper.register();
         mMuteAlertHelper = new MuteAlertHelper(activity);
@@ -134,7 +141,9 @@ public class MovieActivityModel extends BaseObservable
         mControlPanelModel.setSkipControlListener(this);
         mMovieActivityPipHelper.setControlPanelModel(mControlPanelModel);
         playerModel.setUri(targetModel.getUri(), null);
-        mTitle = AribUtils.toDisplayableString(targetModel.getTitle());
+        mTitle = mSettings.shouldShowTitleInMovieUi()
+                ? AribUtils.toDisplayableString(targetModel.getTitle())
+                : "";
 
         notifyPropertyChanged(BR.title);
         notifyPropertyChanged(BR.controlPanelModel);

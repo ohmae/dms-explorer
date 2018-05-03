@@ -70,6 +70,8 @@
     <string name="pref_message_delete_on">Show delete button, if possible.</string>
     <string name="pref_message_delete_off">Don\'t show delete button.</string>
     <string name="pref_header_view">View</string>
+    <string name="pref_title_for_mania">Setting for Mania</string>
+    <string name="pref_message_for_mania">The following settings are for people who want to stick to details. Depending on how to set it, operation becomes impossible or operation may become unstable. Please set only those who are self-resolvable when problems occur</string>
     <string name="pref_category_orientation">Screen Orientation</string>
     <string name="pref_title_category_orientation">Caution</string>
     <string name="pref_message_category_orientation">These settings are highly dependent on the device. In some cases, settings may not be applied or display may be disturbed. If you have a problem, please return the setting to "unspecified"</string>
@@ -85,6 +87,26 @@
     <string name="orientation_landscape">Landscape</string>
     <string name="orientation_reverse_portrait">Reverse Portrait</string>
     <string name="orientation_reverse_landscape">Reverse Landscape</string>
+
+    <string name="pref_category_movie_ui">Customize Movie UI</string>
+    <string name="pref_title_movie_ui_do_not_show_on_start">Do not show UI on start</string>
+    <string name="pref_message_movie_ui_do_not_show_on_start">When set to ON, do not show UI on playback start</string>
+    <string name="pref_title_movie_ui_do_not_show_on_touch">Do not show UI on touch</string>
+    <string name="pref_message_movie_ui_do_not_show_on_touch">When set to ON, UI is not shown by simply touching. Please swipe inward from the top outside the screen</string>
+    <string name="pref_title_movie_ui_do_not_show_title">Do not show content name</string>
+    <string name="pref_message_movie_ui_do_not_show_title">When set to ON, do not show content name on ActionBar</string>
+    <string name="pref_title_movie_ui_transparent">Make the background of the UI panel transparent</string>
+    <string name="pref_message_movie_ui_transparent">When set to ON, make the background of the UI panel completely transparent</string>
+
+    <string name="pref_category_photo_ui">Customize Photo UI</string>
+    <string name="pref_title_photo_ui_do_not_show_on_start">Do not show UI on start</string>
+    <string name="pref_message_photo_ui_do_not_show_on_start">When set to ON, do not show UI on playback start</string>
+    <string name="pref_title_photo_ui_do_not_show_on_touch">Do not show UI on touch</string>
+    <string name="pref_message_photo_ui_do_not_show_on_touch">When set to ON, UI is not shown by simply touching. Please swipe inward from the top outside the screen</string>
+    <string name="pref_title_photo_ui_do_not_show_title">Do not show content name</string>
+    <string name="pref_message_photo_ui_do_not_show_title">When set to ON, do not show content name on ActionBar</string>
+    <string name="pref_title_photo_ui_transparent">Make the background of the UI panel transparent</string>
+    <string name="pref_message_photo_ui_transparent">When set to ON, make the background of the UI panel completely transparent</string>
 
     <string name="pref_header_information">Information</string>
     <string name="pref_title_play_store">Google Play Store</string>

@@ -30,7 +30,7 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/translucent_control"
+            android:background="@{model.background}"
             android:orientation="horizontal"
             android:paddingTop="@dimen/status_bar_size"
             app:layout_marginRight="@{model.rightNavigationSize}"

@@ -34,6 +34,7 @@ import net.mm2d.dmsexplorer.viewmodel.PhotoActivityModel;
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
  */
 public class PhotoActivity extends BaseActivity {
+    private Settings mSettings;
     private FullscreenHelper mFullscreenHelper;
     private PhotoActivityBinding mBinding;
     private PhotoActivityModel mModel;
@@ -62,6 +63,7 @@ public class PhotoActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        mSettings = new Settings(this);
         mViewSettingsObserver = new ViewSettingsObserver(this);
         mViewSettingsObserver.register(this::updateViewSettings);
         super.onCreate(savedInstanceState);
@@ -80,7 +82,11 @@ public class PhotoActivity extends BaseActivity {
 
         mBinding.setModel(mModel);
         mModel.adjustPanel(this);
-        mFullscreenHelper.showNavigation();
+        if (mSettings.shouldShowPhotoUiOnStart()) {
+            mFullscreenHelper.showNavigation();
+        } else {
+            mFullscreenHelper.hideNavigationImmediately();
+        }
 
         final ViewPagerAdapter pagerAdapter = new ViewPagerAdapter();
         final LayoutInflater inflater = LayoutInflater.from(this);
@@ -100,7 +106,7 @@ public class PhotoActivity extends BaseActivity {
     }
 
     private void updateViewSettings() {
-        new Settings(this).getPhotoOrientation()
+        mSettings.getPhotoOrientation()
                 .setRequestedOrientation(this);
     }
 
@@ -116,7 +122,9 @@ public class PhotoActivity extends BaseActivity {
     @Override
     public boolean dispatchTouchEvent(final MotionEvent ev) {
         final boolean result = super.dispatchTouchEvent(ev);
-        mFullscreenHelper.showNavigation();
+        if (mSettings.shouldShowPhotoUiOnTouch()) {
+            mFullscreenHelper.showNavigation();
+        }
         return result;
     }
 

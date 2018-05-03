@@ -36,6 +36,7 @@ import java.util.concurrent.TimeUnit;
 public class MovieActivity extends BaseActivity implements OnChangeContentListener {
     private static final String KEY_POSITION = "KEY_POSITION";
     private static final long TIMEOUT_DELAY = TimeUnit.SECONDS.toMillis(1);
+    private Settings mSettings;
     private FullscreenHelper mFullscreenHelper;
     private MovieActivityBinding mBinding;
     private MovieActivityModel mModel;
@@ -43,6 +44,7 @@ public class MovieActivity extends BaseActivity implements OnChangeContentListen
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        mSettings = new Settings(this);
         mViewSettingsObserver = new ViewSettingsObserver(this);
         mViewSettingsObserver.register(this::updateViewSettings);
         super.onCreate(savedInstanceState);
@@ -65,7 +67,11 @@ public class MovieActivity extends BaseActivity implements OnChangeContentListen
             final long timeout = RepeatIntroductionUtils.TIMEOUT + TIMEOUT_DELAY;
             mFullscreenHelper.showNavigation(timeout);
         } else {
-            mFullscreenHelper.showNavigation();
+            if (mSettings.shouldShowMovieUiOnStart()) {
+                mFullscreenHelper.showNavigation();
+            } else {
+                mFullscreenHelper.hideNavigationImmediately();
+            }
         }
         if (savedInstanceState != null) {
             final int progress = savedInstanceState.getInt(KEY_POSITION, 0);
@@ -84,7 +90,7 @@ public class MovieActivity extends BaseActivity implements OnChangeContentListen
     }
 
     private void updateViewSettings() {
-        new Settings(this).getMovieOrientation()
+        mSettings.getMovieOrientation()
                 .setRequestedOrientation(this);
     }
 
@@ -134,7 +140,9 @@ public class MovieActivity extends BaseActivity implements OnChangeContentListen
     @Override
     public boolean dispatchTouchEvent(final MotionEvent ev) {
         final boolean result = super.dispatchTouchEvent(ev);
-        mFullscreenHelper.showNavigation();
+        if (mSettings.shouldShowMovieUiOnTouch()) {
+            mFullscreenHelper.showNavigation();
+        }
         return result;
     }
 
@@ -156,6 +164,8 @@ public class MovieActivity extends BaseActivity implements OnChangeContentListen
 
     @Override
     public void onChangeContent() {
-        mFullscreenHelper.showNavigation();
+        if (mSettings.shouldShowMovieUiOnStart()) {
+            mFullscreenHelper.showNavigation();
+        }
     }
 }
