@@ -9,9 +9,13 @@ package net.mm2d.dmsexplorer.view;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.preference.Preference;
+import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.PreferenceFragment;
+import android.preference.PreferenceManager;
 import android.preference.SwitchPreference;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
@@ -28,6 +32,8 @@ import net.mm2d.dmsexplorer.domain.model.CustomTabsHelper;
 import net.mm2d.dmsexplorer.domain.model.OpenUriCustomTabsModel;
 import net.mm2d.dmsexplorer.domain.model.OpenUriModel;
 import net.mm2d.dmsexplorer.settings.Key;
+import net.mm2d.dmsexplorer.settings.Orientation;
+import net.mm2d.dmsexplorer.util.ViewSettingsNotifier;
 import net.mm2d.dmsexplorer.view.base.AppCompatPreferenceActivity;
 
 import java.util.List;
@@ -88,6 +94,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         return PreferenceFragment.class.getName().equals(fragmentName)
                 || PlaybackPreferenceFragment.class.getName().equals(fragmentName)
                 || FunctionPreferenceFragment.class.getName().equals(fragmentName)
+                || ViewPreferenceFragment.class.getName().equals(fragmentName)
                 || InformationPreferenceFragment.class.getName().equals(fragmentName);
     }
 
@@ -133,6 +140,37 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                 customTabs.setChecked(false);
             }
             customTabs.setEnabled(false);
+        }
+    }
+
+    public static class ViewPreferenceFragment extends PreferenceFragment {
+        private SharedPreferences mSharedPreferences;
+        private ViewSettingsNotifier mViewSettingsNotifier;
+
+        private final OnPreferenceChangeListener mBindSummaryListener = (preference, value) -> {
+            final Orientation orientation = Orientation.of(value.toString());
+            preference.setSummary(orientation.getName(preference.getContext()));
+            mViewSettingsNotifier.update();
+            return true;
+        };
+
+        @Override
+        public void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            mViewSettingsNotifier = new ViewSettingsNotifier(getActivity());
+            mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+            addPreferencesFromResource(R.xml.pref_view);
+            bindOrientationSummary(findPreference(Key.ORIENTATION_BROWSE.name()));
+            bindOrientationSummary(findPreference(Key.ORIENTATION_MOVIE.name()));
+            bindOrientationSummary(findPreference(Key.ORIENTATION_MUSIC.name()));
+            bindOrientationSummary(findPreference(Key.ORIENTATION_PHOTO.name()));
+            bindOrientationSummary(findPreference(Key.ORIENTATION_DMC.name()));
+        }
+
+        private void bindOrientationSummary(@NonNull final Preference preference) {
+            preference.setOnPreferenceChangeListener(mBindSummaryListener);
+            mBindSummaryListener.onPreferenceChange(preference,
+                    mSharedPreferences.getString(preference.getKey(), ""));
         }
     }
 

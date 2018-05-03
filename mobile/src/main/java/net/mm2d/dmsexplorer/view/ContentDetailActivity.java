@@ -19,6 +19,8 @@ import net.mm2d.dmsexplorer.Repository;
 import net.mm2d.dmsexplorer.databinding.ContentDetailFragmentBinding;
 import net.mm2d.dmsexplorer.domain.entity.ContentEntity;
 import net.mm2d.dmsexplorer.domain.model.MediaServerModel;
+import net.mm2d.dmsexplorer.settings.Settings;
+import net.mm2d.dmsexplorer.util.ViewSettingsObserver;
 import net.mm2d.dmsexplorer.view.base.BaseActivity;
 import net.mm2d.dmsexplorer.view.dialog.DeleteDialog.OnDeleteListener;
 import net.mm2d.dmsexplorer.viewmodel.ContentDetailFragmentModel;
@@ -43,6 +45,7 @@ public class ContentDetailActivity extends BaseActivity implements OnDeleteListe
 
     private MediaServerModel mMediaServerModel;
     private ContentEntity mContentEntity;
+    private ViewSettingsObserver mViewSettingsObserver;
 
     public ContentDetailActivity() {
         super(true);
@@ -50,6 +53,8 @@ public class ContentDetailActivity extends BaseActivity implements OnDeleteListe
 
     @Override
     protected void onCreate(@Nullable final Bundle savedInstanceState) {
+        mViewSettingsObserver = new ViewSettingsObserver(this);
+        mViewSettingsObserver.register(this::updateViewSettings);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.content_detail_activity);
         final Repository repository = Repository.get();
@@ -68,6 +73,17 @@ public class ContentDetailActivity extends BaseActivity implements OnDeleteListe
         if (model != null) {
             repository.getThemeModel().setThemeColor(this, model.collapsedColor, 0);
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        mViewSettingsObserver.unregister();
+        super.onDestroy();
+    }
+
+    private void updateViewSettings() {
+        new Settings(this).getBrowseOrientation()
+                .setRequestedOrientation(this);
     }
 
     private ContentEntity getSelectedEntity() {

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <string-array name="orientation_entries">
+        <item>@string/orientation_unspecified</item>
+        <item>@string/orientation_portrait</item>
+        <item>@string/orientation_landscape</item>
+        <item>@string/orientation_reverse_portrait</item>
+        <item>@string/orientation_reverse_landscape</item>
+    </string-array>
+    <string-array name="orientation_values" tools:ignore="MissingTranslation">
+        <item>UNSPECIFIED</item>
+        <item>PORTRAIT</item>
+        <item>LANDSCAPE</item>
+        <item>REVERSE_PORTRAIT</item>
+        <item>REVERSE_LANDSCAPE</item>
+    </string-array>
+</resources>

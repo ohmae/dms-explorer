@@ -18,6 +18,8 @@ import android.support.v7.app.ActionBar;
 import net.mm2d.dmsexplorer.R;
 import net.mm2d.dmsexplorer.Repository;
 import net.mm2d.dmsexplorer.databinding.DmcActivityBinding;
+import net.mm2d.dmsexplorer.settings.Settings;
+import net.mm2d.dmsexplorer.util.ViewSettingsObserver;
 import net.mm2d.dmsexplorer.view.base.BaseActivity;
 import net.mm2d.dmsexplorer.viewmodel.DmcActivityModel;
 
@@ -25,7 +27,6 @@ import net.mm2d.dmsexplorer.viewmodel.DmcActivityModel;
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
  */
 public class DmcActivity extends BaseActivity {
-
     /**
      * このActivityを起動するためのIntentを作成する。
      *
@@ -39,9 +40,12 @@ public class DmcActivity extends BaseActivity {
     }
 
     private DmcActivityModel mModel;
+    private ViewSettingsObserver mViewSettingsObserver;
 
     @Override
     protected void onCreate(@Nullable final Bundle savedInstanceState) {
+        mViewSettingsObserver = new ViewSettingsObserver(this);
+        mViewSettingsObserver.register(this::updateViewSettings);
         super.onCreate(savedInstanceState);
         final DmcActivityBinding binding = DataBindingUtil.setContentView(this, R.layout.dmc_activity);
         try {
@@ -58,13 +62,18 @@ public class DmcActivity extends BaseActivity {
         actionBar.setDisplayHomeAsUpEnabled(true);
     }
 
-
     @Override
     protected void onDestroy() {
+        mViewSettingsObserver.unregister();
         super.onDestroy();
         if (mModel != null) {
             mModel.terminate();
         }
         Repository.get().getControlPointModel().clearSelectedRenderer();
+    }
+
+    private void updateViewSettings() {
+        new Settings(this).getDmcOrientation()
+                .setRequestedOrientation(this);
     }
 }

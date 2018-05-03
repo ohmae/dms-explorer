@@ -15,6 +15,8 @@ import android.support.v4.content.ContextCompat;
 import net.mm2d.dmsexplorer.R;
 import net.mm2d.dmsexplorer.Repository;
 import net.mm2d.dmsexplorer.domain.model.ControlPointModel;
+import net.mm2d.dmsexplorer.settings.Settings;
+import net.mm2d.dmsexplorer.util.ViewSettingsObserver;
 import net.mm2d.dmsexplorer.view.base.BaseActivity;
 import net.mm2d.dmsexplorer.view.delegate.ServerListActivityDelegate;
 
@@ -27,8 +29,8 @@ import net.mm2d.dmsexplorer.view.delegate.ServerListActivityDelegate;
  */
 public class ServerListActivity extends BaseActivity {
     private ControlPointModel mControlPointModel;
-
     private ServerListActivityDelegate mDelegate;
+    private ViewSettingsObserver mViewSettingsObserver;
 
     public ServerListActivity() {
         super(true);
@@ -36,6 +38,8 @@ public class ServerListActivity extends BaseActivity {
 
     @Override
     protected void onCreate(@Nullable final Bundle savedInstanceState) {
+        mViewSettingsObserver = new ViewSettingsObserver(this);
+        mViewSettingsObserver.register(this::updateViewSettings);
         super.onCreate(savedInstanceState);
         final Repository repository = Repository.get();
         mControlPointModel = repository.getControlPointModel();
@@ -53,10 +57,16 @@ public class ServerListActivity extends BaseActivity {
 
     @Override
     protected void onDestroy() {
+        mViewSettingsObserver.unregister();
         super.onDestroy();
         if (isFinishing()) {
             mControlPointModel.terminate();
         }
+    }
+
+    private void updateViewSettings() {
+        new Settings(this).getBrowseOrientation()
+                .setRequestedOrientation(this);
     }
 
     @Override

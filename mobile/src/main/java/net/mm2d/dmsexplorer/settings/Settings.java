@@ -228,4 +228,54 @@ public class Settings {
     public void setUpdateJson(@Nullable final String json) {
         mStorage.writeString(Key.UPDATE_JSON, TextUtils.isEmpty(json) ? "" : json);
     }
+
+    /**
+     * ブラウズ画面の画面の向き設定を返す。
+     *
+     * @return ブラウズ画面の画面の向き設定
+     */
+    @NonNull
+    public Orientation getBrowseOrientation() {
+        return Orientation.of(mStorage.readString(Key.ORIENTATION_BROWSE, ""));
+    }
+
+    /**
+     * 動画画面の画面の向き設定を返す。
+     *
+     * @return 動画画面の画面の向き設定
+     */
+    @NonNull
+    public Orientation getMovieOrientation() {
+        return Orientation.of(mStorage.readString(Key.ORIENTATION_MOVIE, ""));
+    }
+
+    /**
+     * 音楽画面の画面の向き設定を返す。
+     *
+     * @return 音楽画面の画面の向き設定
+     */
+    @NonNull
+    public Orientation getMusicOrientation() {
+        return Orientation.of(mStorage.readString(Key.ORIENTATION_MUSIC, ""));
+    }
+
+    /**
+     * 画面の画面の向き設定を返す。
+     *
+     * @return ブラウズ画面の画面の向き設定
+     */
+    @NonNull
+    public Orientation getPhotoOrientation() {
+        return Orientation.of(mStorage.readString(Key.ORIENTATION_PHOTO, ""));
+    }
+
+    /**
+     * DMC画面の画面の向き設定を返す。
+     *
+     * @return DMC画面の画面の向き設定
+     */
+    @NonNull
+    public Orientation getDmcOrientation() {
+        return Orientation.of(mStorage.readString(Key.ORIENTATION_DMC, ""));
+    }
 }

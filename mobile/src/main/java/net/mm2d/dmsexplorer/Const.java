@@ -15,6 +15,7 @@ public class Const {
 
     // LocalBroadcast
     public static final String ACTION_UPDATE = "ACTION_UPDATE";
+    public static final String ACTION_UPDATE_VIEW_SETTINGS = "ACTION_UPDATE_VIEW_SETTINGS";
 
     // Broadcast
     private static final String PREFIX = PACKAGE_NAME + ".";

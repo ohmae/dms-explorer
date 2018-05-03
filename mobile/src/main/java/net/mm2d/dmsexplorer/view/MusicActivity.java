@@ -13,7 +13,9 @@ import android.os.Bundle;
 import net.mm2d.dmsexplorer.R;
 import net.mm2d.dmsexplorer.Repository;
 import net.mm2d.dmsexplorer.databinding.MusicActivityBinding;
+import net.mm2d.dmsexplorer.settings.Settings;
 import net.mm2d.dmsexplorer.util.RepeatIntroductionUtils;
+import net.mm2d.dmsexplorer.util.ViewSettingsObserver;
 import net.mm2d.dmsexplorer.view.base.BaseActivity;
 import net.mm2d.dmsexplorer.viewmodel.MusicActivityModel;
 
@@ -25,9 +27,12 @@ import net.mm2d.dmsexplorer.viewmodel.MusicActivityModel;
 public class MusicActivity extends BaseActivity {
     private static final String KEY_POSITION = "KEY_POSITION";
     private MusicActivityModel mModel;
+    private ViewSettingsObserver mViewSettingsObserver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        mViewSettingsObserver = new ViewSettingsObserver(this);
+        mViewSettingsObserver.register(this::updateViewSettings);
         super.onCreate(savedInstanceState);
         final Repository repository = Repository.get();
         final MusicActivityBinding binding
@@ -50,18 +55,24 @@ public class MusicActivity extends BaseActivity {
     }
 
     @Override
+    protected void onDestroy() {
+        mViewSettingsObserver.unregister();
+        super.onDestroy();
+        if (mModel != null) {
+            mModel.terminate();
+        }
+    }
+
+    private void updateViewSettings() {
+        new Settings(this).getMusicOrientation()
+                .setRequestedOrientation(this);
+    }
+
+    @Override
     protected void onSaveInstanceState(final Bundle outState) {
         super.onSaveInstanceState(outState);
         if (mModel != null) {
             outState.putInt(KEY_POSITION, mModel.getCurrentProgress());
-        }
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if (mModel != null) {
-            mModel.terminate();
         }
     }
 }
