@@ -12,6 +12,6 @@ import android.os.Bundle
 /**
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
  */
-class EmptySender internal constructor() : Sender {
+internal class EmptySender internal constructor() : Sender {
     override fun logEvent(name: String, params: Bundle?) {}
 }

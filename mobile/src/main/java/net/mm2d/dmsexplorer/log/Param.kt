@@ -10,7 +10,7 @@ package net.mm2d.dmsexplorer.log
 /**
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
  */
-object Param {
+internal object Param {
     const val ACHIEVEMENT_ID = "achievement_id"
     const val CHARACTER = "character"
     const val TRAVEL_CLASS = "travel_class"

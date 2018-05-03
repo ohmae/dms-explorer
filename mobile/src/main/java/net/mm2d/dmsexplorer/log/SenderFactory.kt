@@ -14,7 +14,7 @@ import net.mm2d.dmsexplorer.BuildConfig
 /**
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
  */
-object SenderFactory {
+internal object SenderFactory {
     @JvmStatic
     fun create(context: Context): Sender {
         return if (BuildConfig.DEBUG) DebugSender() else EmptySender()

@@ -10,7 +10,7 @@ package net.mm2d.dmsexplorer.log
 /**
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
  */
-object Event {
+internal object Event {
     const val ADD_PAYMENT_INFO = "add_payment_info"
     const val ADD_TO_CART = "add_to_cart"
     const val ADD_TO_WISHLIST = "add_to_wishlist"

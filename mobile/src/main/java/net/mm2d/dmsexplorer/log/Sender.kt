@@ -13,6 +13,6 @@ import android.support.annotation.Size
 /**
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
  */
-interface Sender {
+internal interface Sender {
     fun logEvent(@Size(min = 1L, max = 40L) name: String, params: Bundle?)
 }
