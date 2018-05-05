@@ -119,6 +119,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                 || PlaybackPreferenceFragment.class.getName().equals(fragmentName)
                 || FunctionPreferenceFragment.class.getName().equals(fragmentName)
                 || ViewPreferenceFragment.class.getName().equals(fragmentName)
+                || ExpertPreferenceFragment.class.getName().equals(fragmentName)
                 || InformationPreferenceFragment.class.getName().equals(fragmentName);
     }
 
@@ -168,14 +169,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
     }
 
     public static class ViewPreferenceFragment extends PreferenceFragment {
-        private static final String[] ORIENTATION_KEYS = new String[]{
-                Key.ORIENTATION_BROWSE.name(),
-                Key.ORIENTATION_MOVIE.name(),
-                Key.ORIENTATION_MUSIC.name(),
-                Key.ORIENTATION_PHOTO.name(),
-                Key.ORIENTATION_DMC.name(),
-        };
-        private ViewSettingsNotifier mViewSettingsNotifier;
         private FinishNotifier mFinishNotifier;
         private boolean mSetFromCode;
 
@@ -184,8 +177,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             super.onCreate(savedInstanceState);
             final Context context = getActivity();
             mFinishNotifier = new FinishNotifier(context);
-            mViewSettingsNotifier = new ViewSettingsNotifier(context);
-            final SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
             addPreferencesFromResource(R.xml.pref_view);
             findPreference(Key.DARK_THEME.name()).setOnPreferenceChangeListener((preference, newValue) -> {
                 if (mSetFromCode) {
@@ -207,6 +198,26 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                         .show();
                 return false;
             });
+        }
+    }
+
+    public static class ExpertPreferenceFragment extends PreferenceFragment {
+        private static final String[] ORIENTATION_KEYS = new String[]{
+                Key.ORIENTATION_BROWSE.name(),
+                Key.ORIENTATION_MOVIE.name(),
+                Key.ORIENTATION_MUSIC.name(),
+                Key.ORIENTATION_PHOTO.name(),
+                Key.ORIENTATION_DMC.name(),
+        };
+        private ViewSettingsNotifier mViewSettingsNotifier;
+
+        @Override
+        public void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            final Context context = getActivity();
+            mViewSettingsNotifier = new ViewSettingsNotifier(context);
+            final SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+            addPreferencesFromResource(R.xml.pref_expert);
             final List<ListPreference> preferences = new ArrayList<>();
             for (final String key : ORIENTATION_KEYS) {
                 preferences.add((ListPreference) findPreference(key));

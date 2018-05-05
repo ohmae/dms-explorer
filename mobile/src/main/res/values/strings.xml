@@ -70,8 +70,15 @@
     <string name="pref_message_delete_on">Show delete button, if possible.</string>
     <string name="pref_message_delete_off">Don\'t show delete button.</string>
     <string name="pref_header_view">View</string>
-    <string name="pref_title_for_mania">Setting for Mania</string>
-    <string name="pref_message_for_mania">The following settings are for people who want to stick to details. Depending on how to set it, operation becomes impossible or operation may become unstable. Please set only those who are self-resolvable when problems occur</string>
+    <string name="pref_category_theme">Theme</string>
+    <string name="pref_title_dark_theme">Dark theme</string>
+    <string name="pref_message_dark_theme">Change to the dark theme. This app will be restart to apply the theme settings.</string>
+    <string name="dialog_title_change_theme">Change theme</string>
+    <string name="dialog_message_change_theme">Do you want to change the theme?\nIf you select "OK", this app will be restarted and the theme will be changed.</string>
+
+    <string name="pref_header_expert">Expert</string>
+    <string name="pref_title_for_expert">Settings for Expert</string>
+    <string name="pref_message_for_expert">This settings are for people who want to stick to details. Depending on how to set it, operation becomes impossible or operation may become unstable. Please set only those who are self-resolvable when problems occur</string>
     <string name="pref_category_orientation">Screen Orientation</string>
     <string name="pref_title_category_orientation">Caution</string>
     <string name="pref_message_category_orientation">These settings are highly dependent on the device. In some cases, settings may not be applied or display may be disturbed. If you have a problem, please return the setting to "unspecified"</string>
@@ -87,12 +94,6 @@
     <string name="orientation_landscape">Landscape</string>
     <string name="orientation_reverse_portrait">Reverse Portrait</string>
     <string name="orientation_reverse_landscape">Reverse Landscape</string>
-
-    <string name="pref_category_theme">Theme</string>
-    <string name="pref_title_dark_theme">Dark theme</string>
-    <string name="pref_message_dark_theme">Change to the dark theme. This app will be restart to apply the theme settings.</string>
-    <string name="dialog_title_change_theme">Change theme</string>
-    <string name="dialog_message_change_theme">Do you want to change the theme? If you select "OK", the theme setting is changed and this app will be restarted.</string>
 
     <string name="pref_category_movie_ui">Customize Movie UI</string>
     <string name="pref_title_movie_ui_do_not_show_on_start">Do not show UI on start</string>

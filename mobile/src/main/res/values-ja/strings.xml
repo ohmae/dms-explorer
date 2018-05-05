@@ -70,8 +70,15 @@
     <string name="pref_message_delete_on">削除可能な場合、削除ボタンを表示します</string>
     <string name="pref_message_delete_off">削除ボタンを表示しません</string>
     <string name="pref_header_view">表示</string>
-    <string name="pref_title_for_mania">マニア向け設定</string>
-    <string name="pref_message_for_mania">以下の設定は細部までこだわりたい人向けの設定です。設定の仕方によっては操作不能になったり動作が不安定になる可能性もあります。問題が発生したときに自己解決できる自身のある方のみ設定を行ってください</string>
+    <string name="pref_category_theme">テーマ</string>
+    <string name="pref_title_dark_theme">ダークテーマ</string>
+    <string name="pref_message_dark_theme">黒を基調としたダークテーマに変更します。設定を変更するとアプリが一度終了します。</string>
+    <string name="dialog_title_change_theme">テーマ変更</string>
+    <string name="dialog_message_change_theme">テーマを変更しますか？\n「OK」を選択するとアプリが再起動し、テーマが変更されます。</string>
+
+    <string name="pref_header_expert">玄人</string>
+    <string name="pref_title_for_expert">玄人向け設定</string>
+    <string name="pref_message_for_expert">この設定は細部までこだわりたい人向けの設定です。設定の仕方によっては操作不能になったり動作が不安定になる可能性もあります。問題が発生したときに自己解決できる方のみ設定を行ってください</string>
     <string name="pref_category_orientation">画面の向き</string>
     <string name="pref_title_category_orientation">注意</string>
     <string name="pref_message_category_orientation">機種依存性の高い機能です。設定が反映されなかったり、表示に乱れが発生する可能性があります。問題が発生した場合は「未指定」に戻してお使いください</string>
@@ -87,12 +94,6 @@
     <string name="orientation_landscape">横</string>
     <string name="orientation_reverse_portrait">逆縦</string>
     <string name="orientation_reverse_landscape">逆横</string>
-
-    <string name="pref_category_theme">テーマ</string>
-    <string name="pref_title_dark_theme">ダークテーマ</string>
-    <string name="pref_message_dark_theme">黒を基調としたダークテーマに変更します。設定を変更するとアプリが一度終了します。</string>
-    <string name="dialog_title_change_theme">テーマ変更</string>
-    <string name="dialog_message_change_theme">テーマを変更しますか？「OK」を選択するとテーマが変更されアプリが再起動します。</string>
 
     <string name="pref_category_movie_ui">動画UIのカスタマイズ</string>
     <string name="pref_title_movie_ui_do_not_show_on_start">UIを非表示で始める</string>

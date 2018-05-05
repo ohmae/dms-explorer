@@ -58,6 +58,8 @@ enum Theme {
                 return R.drawable.ic_function_settings_white;
             case R.drawable.ic_view_settings:
                 return R.drawable.ic_view_settings_white;
+            case R.drawable.ic_expert_settings:
+                return R.drawable.ic_expert_settings_white;
             case R.drawable.ic_info_settings:
                 return R.drawable.ic_info_settings_white;
         }
