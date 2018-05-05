@@ -88,6 +88,12 @@
     <string name="orientation_reverse_portrait">逆縦</string>
     <string name="orientation_reverse_landscape">逆横</string>
 
+    <string name="pref_category_theme">テーマ</string>
+    <string name="pref_title_dark_theme">ダークテーマ</string>
+    <string name="pref_message_dark_theme">黒を基調としたダークテーマに変更します。設定を変更するとアプリが一度終了します。</string>
+    <string name="dialog_title_change_theme">テーマ変更</string>
+    <string name="dialog_message_change_theme">テーマを変更しますか？「OK」を選択するとテーマが変更されアプリが再起動します。</string>
+
     <string name="pref_category_movie_ui">動画UIのカスタマイズ</string>
     <string name="pref_title_movie_ui_do_not_show_on_start">UIを非表示で始める</string>
     <string name="pref_message_movie_ui_do_not_show_on_start">ONにすると再生開始時のUI表示を行いません</string>
@@ -123,8 +129,8 @@
     <string name="dialog_title_select_device">再生機器選択</string>
     <string name="dialog_title_update">アップデートのお知らせ</string>
     <string name="dialog_message_update">新しいバージョンが利用できます。バージョンアップをおすすめします。</string>
-    <string name="dialog_button_ok">OK</string>
-    <string name="dialog_button_cancel">キャンセル</string>
+    <string name="ok">OK</string>
+    <string name="cancel">キャンセル</string>
     <string name="dialog_title_delete">注意：削除</string>
     <string name="dialog_message_delete">「%1$s」をサーバーから削除します。\n削除すると元に戻せません。\n削除しますか？</string>
 </resources>

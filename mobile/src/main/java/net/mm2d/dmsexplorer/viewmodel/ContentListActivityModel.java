@@ -30,8 +30,8 @@ import net.mm2d.dmsexplorer.domain.entity.ContentEntity;
 import net.mm2d.dmsexplorer.domain.model.ExploreListener;
 import net.mm2d.dmsexplorer.domain.model.MediaServerModel;
 import net.mm2d.dmsexplorer.settings.Settings;
+import net.mm2d.dmsexplorer.util.AttrUtils;
 import net.mm2d.dmsexplorer.util.FeatureUtils;
-import net.mm2d.dmsexplorer.util.ToolbarThemeUtils;
 import net.mm2d.dmsexplorer.view.adapter.ContentListAdapter;
 import net.mm2d.dmsexplorer.view.animator.CustomItemAnimator;
 
@@ -68,6 +68,7 @@ public class ContentListActivityModel extends BaseObservable implements ExploreL
             R.color.progress3,
             R.color.progress4,
     };
+    public final int progressBackground;
     @NonNull
     public final OnRefreshListener onRefreshListener;
     @NonNull
@@ -105,6 +106,7 @@ public class ContentListActivityModel extends BaseObservable implements ExploreL
             @NonNull final Repository repository,
             @NonNull final CdsSelectListener listener,
             final boolean twoPane) {
+        progressBackground = AttrUtils.resolveColor(context, R.attr.themeProgressBackground, Color.BLACK);
         mSettings = new Settings(context);
         mTwoPane = twoPane;
         final MediaServerModel model = repository.getMediaServerModel();
@@ -124,7 +126,7 @@ public class ContentListActivityModel extends BaseObservable implements ExploreL
         title = mMediaServerModel.getTitle();
         onRefreshListener = mMediaServerModel::reload;
         final MediaServer server = mMediaServerModel.getMediaServer();
-        ToolbarThemeUtils.setServerThemeColor(server, null);
+        new Settings(context).getColorThemeParams().getServerColorExtractor().setServerThemeColor(server, null);
         toolbarBackground = server.getIntTag(Const.KEY_TOOLBAR_COLLAPSED_COLOR, Color.BLACK);
     }
 

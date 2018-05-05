@@ -57,7 +57,7 @@ public abstract class ContentListActivityDelegate implements CdsSelectListener, 
     }
 
     @NonNull
-    protected ContentListActivityBinding getBinding() {
+    public ContentListActivityBinding getBinding() {
         return mBinding;
     }
 

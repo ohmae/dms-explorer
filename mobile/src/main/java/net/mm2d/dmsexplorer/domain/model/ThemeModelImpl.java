@@ -13,7 +13,7 @@ import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
 
 import net.mm2d.android.util.ActivityLifecycleCallbacksAdapter;
-import net.mm2d.dmsexplorer.util.ThemeUtils;
+import net.mm2d.dmsexplorer.util.ColorUtils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -29,7 +29,7 @@ public class ThemeModelImpl extends ActivityLifecycleCallbacksAdapter implements
             @NonNull final Activity activity,
             @ColorInt final int toolbarColor,
             @ColorInt final int statusBarColor) {
-        final int color = statusBarColor != 0 ? statusBarColor : ThemeUtils.getDarkerColor(toolbarColor);
+        final int color = statusBarColor != 0 ? statusBarColor : ColorUtils.getDarkerColor(toolbarColor);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             activity.getWindow().setStatusBarColor(color);
         }

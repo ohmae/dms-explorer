@@ -17,8 +17,8 @@ import android.support.annotation.StyleRes;
 /**
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
  */
-public class AttrsUtils {
-    private AttrsUtils() {
+public class AttrUtils {
+    private AttrUtils() {
         throw new AssertionError();
     }
 

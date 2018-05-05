@@ -88,6 +88,12 @@
     <string name="orientation_reverse_portrait">Reverse Portrait</string>
     <string name="orientation_reverse_landscape">Reverse Landscape</string>
 
+    <string name="pref_category_theme">Theme</string>
+    <string name="pref_title_dark_theme">Dark theme</string>
+    <string name="pref_message_dark_theme">Change to the dark theme. This app will be restart to apply the theme settings.</string>
+    <string name="dialog_title_change_theme">Change theme</string>
+    <string name="dialog_message_change_theme">Do you want to change the theme? If you select "OK", the theme setting is changed and this app will be restarted.</string>
+
     <string name="pref_category_movie_ui">Customize Movie UI</string>
     <string name="pref_title_movie_ui_do_not_show_on_start">Do not show UI on start</string>
     <string name="pref_message_movie_ui_do_not_show_on_start">When set to ON, do not show UI on playback start</string>
@@ -123,8 +129,8 @@
     <string name="dialog_title_select_device">Playback device</string>
     <string name="dialog_title_update">Update</string>
     <string name="dialog_message_update">A newer version is available. Version up is recommended.</string>
-    <string name="dialog_button_ok">OK</string>
-    <string name="dialog_button_cancel">Cancel</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
     <string name="dialog_title_delete">Caution : Delete</string>
     <string name="dialog_message_delete">\"%1$s\" will be deleted from server.\nDeleting it can not be undone.\nIs it OK?</string>
 </resources>

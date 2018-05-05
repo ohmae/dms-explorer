@@ -57,7 +57,7 @@ public abstract class ServerListActivityDelegate implements ServerSelectListener
         return mActivity;
     }
 
-    protected ServerListActivityBinding getBinding() {
+    public ServerListActivityBinding getBinding() {
         return mBinding;
     }
 

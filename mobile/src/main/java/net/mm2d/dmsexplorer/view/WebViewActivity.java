@@ -7,22 +7,27 @@
 
 package net.mm2d.dmsexplorer.view;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.view.View;
 import android.webkit.WebChromeClient;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import net.mm2d.dmsexplorer.R;
 import net.mm2d.dmsexplorer.Repository;
 import net.mm2d.dmsexplorer.databinding.WebViewActivityBinding;
+import net.mm2d.dmsexplorer.settings.Settings;
+import net.mm2d.dmsexplorer.util.AttrUtils;
 import net.mm2d.dmsexplorer.view.base.BaseActivity;
 
 /**
@@ -49,8 +54,10 @@ public class WebViewActivity extends BaseActivity {
         context.startActivity(makeIntent(context, title, url));
     }
 
+    @SuppressLint("SetJavaScriptEnabled")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setTheme(new Settings(this).getColorThemeParams().getThemeNoActionBar());
         super.onCreate(savedInstanceState);
         final WebViewActivityBinding binding = DataBindingUtil.setContentView(this, R.layout.web_view_activity);
         final Intent intent = getIntent();
@@ -60,12 +67,14 @@ public class WebViewActivity extends BaseActivity {
         actionBar.setTitle(intent.getStringExtra(KEY_TITLE));
 
         Repository.get().getThemeModel().setThemeColor(this,
-                ContextCompat.getColor(this, R.color.primary),
+                AttrUtils.resolveColor(this, R.attr.colorPrimary, Color.BLACK),
                 ContextCompat.getColor(this, R.color.defaultStatusBar));
 
         final WebView webView = binding.webView;
-        webView.getSettings().setSupportZoom(false);
-        webView.getSettings().setDisplayZoomControls(false);
+        final WebSettings settings = webView.getSettings();
+        settings.setSupportZoom(false);
+        settings.setDisplayZoomControls(false);
+        settings.setJavaScriptEnabled(true);
         webView.setWebChromeClient(new WebChromeClient() {
             @Override
             public void onProgressChanged(

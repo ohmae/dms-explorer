@@ -68,6 +68,8 @@ public enum Key {
     ORIENTATION_PHOTO,
     ORIENTATION_DMC,
 
+    DARK_THEME,
+
     // OldKeys
     @Deprecated
     LAUNCH_APP_MOVIE,

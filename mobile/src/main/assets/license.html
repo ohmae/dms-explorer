@@ -7,34 +7,31 @@
 body {
   font-size: 9pt;
   font-family: Roboto, sans-serif;
-  background-color:#eee;
-  color: #222;
-}
-.license {
-  padding: 0 1em;
-  background-color:#fff;
-  border: 1px solid #ddd;
-  border-radius: 10px;
-}
-h1 {
-  font-size: 12pt;
-  color: #000;
-}
-h2 {
-  font-size: 10pt;
-  color: #000;
-}
-strong {
-  color: #000;
-}
-hr {
-  border: 1px solid #ccc;
-  margin: 2em 0;
+  background-color:#333;
+  color: #333;
 }
 a {
-  color: #35b;
+  color: #333;
 }
     </style>
+    <link id="css" rel="stylesheet" type="text/css">
+    <script type="text/javascript">
+function getQuery(key) {
+    var params = window.location.search.substr(1) || '';
+    var items = params.split('&');
+    for (var i = 0; i < items.length; i++) {
+        var pair = items[i].split('=');
+        if (pair[0] == key) {
+            return pair[1];
+        }
+    }
+}
+if (getQuery('t') == 'dark') {
+    document.getElementById('css').href = "license_dark.css";
+} else {
+    document.getElementById('css').href = "license.css";
+}
+    </script>
 </head>
 <body>
 

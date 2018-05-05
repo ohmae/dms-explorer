@@ -20,6 +20,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import net.mm2d.dmsexplorer.util.FinishObserver;
+
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
@@ -30,9 +32,9 @@ public abstract class BaseActivity extends AppCompatActivity {
     private final AtomicBoolean mFinishAfterTransitionLatch = new AtomicBoolean();
     @NonNull
     private final AtomicBoolean mFinishLatch = new AtomicBoolean();
-
     private final boolean mMainMenu;
     private OptionsMenuDelegate mDelegate;
+    private FinishObserver mFinishObserver;
 
     public BaseActivity() {
         this(false);
@@ -50,6 +52,8 @@ public abstract class BaseActivity extends AppCompatActivity {
                 ? new MainOptionsMenuDelegate(this)
                 : new BaseOptionsMenuDelegate(this);
         mDelegate.onCreate(savedInstanceState);
+        mFinishObserver = new FinishObserver(this);
+        mFinishObserver.register(this::finish);
     }
 
     @CallSuper
@@ -57,6 +61,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         mDelegate.onDestroy();
+        mFinishObserver.unregister();
     }
 
     public void navigateUpTo() {

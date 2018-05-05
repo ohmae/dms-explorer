@@ -11,7 +11,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceChangeListener;
@@ -21,6 +23,7 @@ import android.preference.SwitchPreference;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.text.format.DateFormat;
 
@@ -34,6 +37,10 @@ import net.mm2d.dmsexplorer.domain.model.OpenUriCustomTabsModel;
 import net.mm2d.dmsexplorer.domain.model.OpenUriModel;
 import net.mm2d.dmsexplorer.settings.Key;
 import net.mm2d.dmsexplorer.settings.Orientation;
+import net.mm2d.dmsexplorer.settings.Settings;
+import net.mm2d.dmsexplorer.util.AttrUtils;
+import net.mm2d.dmsexplorer.util.FinishNotifier;
+import net.mm2d.dmsexplorer.util.FinishObserver;
 import net.mm2d.dmsexplorer.util.ViewSettingsNotifier;
 import net.mm2d.dmsexplorer.view.base.AppCompatPreferenceActivity;
 
@@ -69,16 +76,27 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                 & Configuration.SCREENLAYOUT_SIZE_MASK) >= Configuration.SCREENLAYOUT_SIZE_LARGE;
     }
 
+    private FinishObserver mFinishObserver;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setTheme(new Settings(this).getColorThemeParams().getTheme());
         super.onCreate(savedInstanceState);
         final ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
         Repository.get().getThemeModel().setThemeColor(this,
-                ContextCompat.getColor(this, R.color.primary),
+                AttrUtils.resolveColor(this, R.attr.colorPrimary, Color.BLACK),
                 ContextCompat.getColor(this, R.color.defaultStatusBar));
+        mFinishObserver = new FinishObserver(this);
+        mFinishObserver.register(this::finish);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mFinishObserver.unregister();
     }
 
     @Override
@@ -87,8 +105,12 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
     }
 
     @Override
-    public void onBuildHeaders(List<Header> target) {
+    public void onBuildHeaders(final List<Header> target) {
         loadHeadersFromResource(R.xml.pref_headers, target);
+        new Settings(this)
+                .getColorThemeParams()
+                .getPreferenceHeaderConverter()
+                .convert(target);
     }
 
     @Override
@@ -154,13 +176,37 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                 Key.ORIENTATION_DMC.name(),
         };
         private ViewSettingsNotifier mViewSettingsNotifier;
+        private FinishNotifier mFinishNotifier;
+        private boolean mSetFromCode;
 
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
-            mViewSettingsNotifier = new ViewSettingsNotifier(getActivity());
+            final Context context = getActivity();
+            mFinishNotifier = new FinishNotifier(context);
+            mViewSettingsNotifier = new ViewSettingsNotifier(context);
             final SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
             addPreferencesFromResource(R.xml.pref_view);
+            findPreference(Key.DARK_THEME.name()).setOnPreferenceChangeListener((preference, newValue) -> {
+                if (mSetFromCode) {
+                    mSetFromCode = false;
+                    return true;
+                }
+                final SwitchPreference switchPreference = (SwitchPreference) preference;
+                final boolean checked = switchPreference.isChecked();
+                new AlertDialog.Builder(context)
+                        .setTitle(R.string.dialog_title_change_theme)
+                        .setMessage(R.string.dialog_message_change_theme)
+                        .setPositiveButton(R.string.ok, (dialog, which) -> {
+                            mSetFromCode = true;
+                            switchPreference.setChecked(!checked);
+                            mFinishNotifier.send();
+                            new Handler().postDelayed(() -> ServerListActivity.start(context), 500);
+                        })
+                        .setNegativeButton(R.string.cancel, null)
+                        .show();
+                return false;
+            });
             final List<ListPreference> preferences = new ArrayList<>();
             for (final String key : ORIENTATION_KEYS) {
                 preferences.add((ListPreference) findPreference(key));
@@ -215,10 +261,12 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                 openUrl(getActivity(), Const.URL_GITHUB_PROJECT);
                 return true;
             });
+            final Settings settings = new Settings(getActivity());
             findPreference(Key.LICENSE.name()).setOnPreferenceClickListener(preference -> {
+                final String query = settings.getColorThemeParams().getHtmlQuery();
                 WebViewActivity.start(getActivity(),
                         getString(R.string.pref_title_license),
-                        Const.URL_OPEN_SOURCE_LICENSE);
+                        Const.URL_OPEN_SOURCE_LICENSE + "?" + query);
                 return true;
             });
         }

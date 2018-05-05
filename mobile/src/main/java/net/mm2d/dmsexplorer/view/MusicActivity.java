@@ -26,11 +26,14 @@ import net.mm2d.dmsexplorer.viewmodel.MusicActivityModel;
  */
 public class MusicActivity extends BaseActivity {
     private static final String KEY_POSITION = "KEY_POSITION";
+    private Settings mSettings;
     private MusicActivityModel mModel;
     private ViewSettingsObserver mViewSettingsObserver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        mSettings = new Settings(this);
+        setTheme(mSettings.getColorThemeParams().getThemeNoActionBar());
         mViewSettingsObserver = new ViewSettingsObserver(this);
         mViewSettingsObserver.register(this::updateViewSettings);
         super.onCreate(savedInstanceState);
@@ -64,7 +67,7 @@ public class MusicActivity extends BaseActivity {
     }
 
     private void updateViewSettings() {
-        new Settings(this).getMusicOrientation()
+        mSettings.getMusicOrientation()
                 .setRequestedOrientation(this);
     }
 

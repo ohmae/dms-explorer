@@ -64,6 +64,7 @@ public class PhotoActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         mSettings = new Settings(this);
+        setTheme(mSettings.getColorThemeParams().getThemeFullscreen());
         mViewSettingsObserver = new ViewSettingsObserver(this);
         mViewSettingsObserver.register(this::updateViewSettings);
         super.onCreate(savedInstanceState);

@@ -9,19 +9,19 @@
 
     <header
         android:fragment="net.mm2d.dmsexplorer.view.SettingsActivity$FunctionPreferenceFragment"
-        android:icon="@drawable/ic_settings"
+        android:icon="@drawable/ic_function_settings"
         android:title="@string/pref_header_function"
         />
 
     <header
         android:fragment="net.mm2d.dmsexplorer.view.SettingsActivity$ViewPreferenceFragment"
-        android:icon="@drawable/ic_view"
+        android:icon="@drawable/ic_view_settings"
         android:title="@string/pref_header_view"
         />
 
     <header
         android:fragment="net.mm2d.dmsexplorer.view.SettingsActivity$InformationPreferenceFragment"
-        android:icon="@drawable/ic_info"
+        android:icon="@drawable/ic_info_settings"
         android:title="@string/pref_header_information"
         />
 

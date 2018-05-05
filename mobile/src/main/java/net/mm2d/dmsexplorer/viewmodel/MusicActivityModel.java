@@ -28,7 +28,7 @@ import net.mm2d.dmsexplorer.log.EventLogger;
 import net.mm2d.dmsexplorer.settings.RepeatMode;
 import net.mm2d.dmsexplorer.settings.Settings;
 import net.mm2d.dmsexplorer.util.Downloader;
-import net.mm2d.dmsexplorer.util.ThemeUtils;
+import net.mm2d.dmsexplorer.util.ThemeColorGenerator;
 import net.mm2d.dmsexplorer.view.adapter.PropertyAdapter;
 import net.mm2d.dmsexplorer.view.base.BaseActivity;
 import net.mm2d.dmsexplorer.viewmodel.ControlPanelModel.OnCompletionListener;
@@ -112,7 +112,8 @@ public class MusicActivityModel extends BaseObservable
         playerModel.setUri(targetModel.getUri(), null);
 
         mTitle = AribUtils.toDisplayableString(targetModel.getTitle());
-        mAccentColor = ThemeUtils.getDeepColor(mTitle);
+        final ThemeColorGenerator generator = mSettings.getColorThemeParams().getThemeColorGenerator();
+        mAccentColor = generator.getDeepColor(mTitle);
         mPropertyAdapter = PropertyAdapter.ofContent(mActivity, targetModel.getContentEntity());
         mRepository.getThemeModel().setThemeColor(mActivity, mAccentColor, 0);
 

@@ -29,7 +29,7 @@
             android:name=".view.ServerListActivity"
             android:label="${app_name}"
             android:launchMode="singleTop"
-            android:theme="@style/AppTheme.List"
+            android:theme="@style/DarkTheme.List"
             >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>

@@ -39,6 +39,7 @@ public class ContentListActivity extends BaseActivity implements OnDeleteListene
         return new Intent(context, ContentListActivity.class);
     }
 
+    private Settings mSettings;
     private ContentListActivityDelegate mDelegate;
     private ViewSettingsObserver mViewSettingsObserver;
 
@@ -48,10 +49,13 @@ public class ContentListActivity extends BaseActivity implements OnDeleteListene
 
     @Override
     protected void onCreate(@Nullable final Bundle savedInstanceState) {
+        mSettings = new Settings(this);
+        setTheme(mSettings.getColorThemeParams().getThemeList());
         mViewSettingsObserver = new ViewSettingsObserver(this);
         mViewSettingsObserver.register(this::updateViewSettings);
         super.onCreate(savedInstanceState);
         mDelegate = ContentListActivityDelegate.create(this);
+        mDelegate.getBinding().toolbar.setPopupTheme(mSettings.getColorThemeParams().getThemePopup());
         mDelegate.onCreate(savedInstanceState);
     }
 
@@ -62,7 +66,7 @@ public class ContentListActivity extends BaseActivity implements OnDeleteListene
     }
 
     private void updateViewSettings() {
-        new Settings(this).getBrowseOrientation()
+        mSettings.getBrowseOrientation()
                 .setRequestedOrientation(this);
     }
 

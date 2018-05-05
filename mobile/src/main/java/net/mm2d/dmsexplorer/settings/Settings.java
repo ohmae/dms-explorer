@@ -8,13 +8,19 @@
 package net.mm2d.dmsexplorer.settings;
 
 import android.content.Context;
+import android.preference.PreferenceActivity.Header;
 import android.preference.PreferenceManager;
+import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
 import net.mm2d.dmsexplorer.R;
 import net.mm2d.dmsexplorer.domain.entity.ContentType;
+import net.mm2d.dmsexplorer.util.ServerColorExtractorDark;
+import net.mm2d.dmsexplorer.util.ServerColorExtractorNormal;
+import net.mm2d.dmsexplorer.util.ThemeColorGeneratorDark;
+import net.mm2d.dmsexplorer.util.ThemeColorGeneratorNormal;
 
 /**
  * SharedPreferencesに覚えさせる設定値を集中管理するクラス。
@@ -354,5 +360,53 @@ public class Settings {
      */
     public boolean isPhotoUiBackgroundTransparent() {
         return mStorage.readBoolean(Key.IS_PHOTO_UI_BACKGROUND_TRANSPARENT, false);
+    }
+
+    private static final ColorThemeParams NORMAL = new ColorThemeParams.Builder()
+            .setHtmlQuery("t=normal")
+            .setTheme(R.style.AppTheme)
+            .setThemeNoActionBar(R.style.AppTheme_NoActionBar)
+            .setThemeList(R.style.AppTheme_List)
+            .setThemePopup(R.style.AppTheme_PopupOverlay)
+            .setThemeFullscreen(R.style.AppTheme_NoActionBar_FullScreen)
+            .setPreferenceHeaderConverter(headers -> {
+            })
+            .setThemeColorGenerator(new ThemeColorGeneratorNormal())
+            .setServerColorExtractor(new ServerColorExtractorNormal())
+            .build();
+
+    private static final ColorThemeParams DARK = new ColorThemeParams.Builder()
+            .setHtmlQuery("t=dark")
+            .setTheme(R.style.DarkTheme)
+            .setThemeNoActionBar(R.style.DarkTheme_NoActionBar)
+            .setThemeList(R.style.DarkTheme_List)
+            .setThemePopup(R.style.DarkTheme_PopupOverlay)
+            .setThemeFullscreen(R.style.DarkTheme_NoActionBar_FullScreen)
+            .setPreferenceHeaderConverter(headers -> {
+                for (final Header header : headers) {
+                    header.iconRes = convertIcon(header.iconRes);
+                }
+            })
+            .setThemeColorGenerator(new ThemeColorGeneratorDark())
+            .setServerColorExtractor(new ServerColorExtractorDark())
+            .build();
+
+    @DrawableRes
+    private static int convertIcon(@DrawableRes final int iconRes) {
+        switch (iconRes) {
+            case R.drawable.ic_play_settings:
+                return R.drawable.ic_play_settings_white;
+            case R.drawable.ic_function_settings:
+                return R.drawable.ic_function_settings_white;
+            case R.drawable.ic_view_settings:
+                return R.drawable.ic_view_settings_white;
+            case R.drawable.ic_info_settings:
+                return R.drawable.ic_info_settings_white;
+        }
+        return iconRes;
+    }
+
+    public ColorThemeParams getColorThemeParams() {
+        return mStorage.readBoolean(Key.DARK_THEME, false) ? DARK : NORMAL;
     }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 大前良介 (OHMAE Ryosuke)
+ * Copyright (c) 2018 大前良介 (OHMAE Ryosuke)
  *
  * This software is released under the MIT License.
  * http://opensource.org/licenses/MIT
@@ -19,12 +19,11 @@ import net.mm2d.dmsexplorer.Const;
 /**
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
  */
-public class ToolbarThemeUtils {
-    private ToolbarThemeUtils() {
-        throw new AssertionError();
-    }
+public class ServerColorExtractorDark implements ServerColorExtractor {
+    private static final ThemeColorGenerator GENERATOR = new ThemeColorGeneratorDark();
 
-    public static void setServerThemeColor(
+    @Override
+    public void setServerThemeColor(
             @NonNull final MediaServer server,
             @Nullable final Bitmap icon) {
         if (server.getBooleanTag(Const.KEY_HAS_TOOLBAR_COLOR, false)) {
@@ -33,7 +32,8 @@ public class ToolbarThemeUtils {
         setServerThemeColorInner(server, icon);
     }
 
-    public static void setServerThemeColorAsync(
+    @Override
+    public void setServerThemeColorAsync(
             @NonNull final MediaServer server,
             @Nullable final Bitmap icon) {
         if (server.getBooleanTag(Const.KEY_HAS_TOOLBAR_COLOR, false)) {
@@ -46,67 +46,31 @@ public class ToolbarThemeUtils {
         new Palette.Builder(icon).generate(palette -> setServerThemeColorFromPalette(server, palette));
     }
 
-    private static void setServerThemeColorInner(
+    private void setServerThemeColorInner(
             @NonNull final MediaServer server,
             @Nullable final Bitmap icon) {
         final Palette palette = icon == null ? null : new Palette.Builder(icon).generate();
         setServerThemeColorFromPalette(server, palette);
     }
 
-    private static void setServerThemeColorFromPalette(
+    private void setServerThemeColorFromPalette(
             @NonNull final MediaServer server,
             @Nullable final Palette palette) {
         final String friendlyName = server.getFriendlyName();
-        int expandedColor = ThemeUtils.getPastelColor(friendlyName);
-        int collapsedColor = ThemeUtils.getDeepColor(friendlyName);
+        int expandedColor = GENERATOR.getPastelColor(friendlyName);
+        int collapsedColor = GENERATOR.getDeepColor(friendlyName);
         if (palette != null) {
-            final Swatch lightSwatch = selectLightSwatch(palette);
+            final Swatch lightSwatch = PaletteUtils.selectLightSwatch(palette);
             if (lightSwatch != null) {
-                expandedColor = lightSwatch.getRgb();
+                expandedColor = ColorUtils.getDarkerColor(lightSwatch.getRgb(), 0.3f);
             }
-            final Swatch darkSwatch = selectDarkSwatch(palette);
+            final Swatch darkSwatch = PaletteUtils.selectDarkSwatch(palette);
             if (darkSwatch != null) {
-                collapsedColor = darkSwatch.getRgb();
+                collapsedColor = ColorUtils.getDarkerColor(darkSwatch.getRgb(), 0.3f);
             }
         }
         server.putIntTag(Const.KEY_TOOLBAR_EXPANDED_COLOR, expandedColor);
         server.putIntTag(Const.KEY_TOOLBAR_COLLAPSED_COLOR, collapsedColor);
         server.putBooleanTag(Const.KEY_HAS_TOOLBAR_COLOR, true);
-    }
-
-    @Nullable
-    private static Swatch selectLightSwatch(@NonNull final Palette palette) {
-        Swatch swatch;
-        swatch = palette.getVibrantSwatch();
-        if (swatch != null) {
-            return swatch;
-        }
-        swatch = palette.getMutedSwatch();
-        if (swatch != null) {
-            return swatch;
-        }
-        return palette.getDominantSwatch();
-    }
-
-    @Nullable
-    private static Swatch selectDarkSwatch(@NonNull final Palette palette) {
-        Swatch swatch;
-        swatch = palette.getDarkVibrantSwatch();
-        if (swatch != null) {
-            return swatch;
-        }
-        swatch = palette.getDarkMutedSwatch();
-        if (swatch != null) {
-            return swatch;
-        }
-        swatch = palette.getVibrantSwatch();
-        if (swatch != null) {
-            return swatch;
-        }
-        swatch = palette.getMutedSwatch();
-        if (swatch != null) {
-            return swatch;
-        }
-        return palette.getDominantSwatch();
     }
 }
