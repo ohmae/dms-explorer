@@ -17,7 +17,7 @@ import android.support.v7.graphics.Palette.Swatch;
  */
 public class PaletteUtils {
     @Nullable
-    static Swatch selectLightSwatch(@NonNull final Palette palette) {
+    public static Swatch selectLightSwatch(@NonNull final Palette palette) {
         Swatch swatch;
         swatch = palette.getVibrantSwatch();
         if (swatch != null) {
@@ -31,7 +31,7 @@ public class PaletteUtils {
     }
 
     @Nullable
-    static Swatch selectDarkSwatch(@NonNull final Palette palette) {
+    public static Swatch selectDarkSwatch(@NonNull final Palette palette) {
         Swatch swatch;
         swatch = palette.getDarkVibrantSwatch();
         if (swatch != null) {

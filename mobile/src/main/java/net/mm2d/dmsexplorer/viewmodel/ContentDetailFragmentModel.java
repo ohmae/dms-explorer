@@ -27,7 +27,7 @@ import net.mm2d.dmsexplorer.domain.model.MediaServerModel;
 import net.mm2d.dmsexplorer.settings.Settings;
 import net.mm2d.dmsexplorer.util.AttrUtils;
 import net.mm2d.dmsexplorer.util.ItemSelectUtils;
-import net.mm2d.dmsexplorer.util.ThemeColorGenerator;
+import net.mm2d.dmsexplorer.settings.theme.ThemeColorGenerator;
 import net.mm2d.dmsexplorer.view.adapter.PropertyAdapter;
 import net.mm2d.dmsexplorer.view.dialog.DeleteDialog;
 

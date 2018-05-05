@@ -28,7 +28,7 @@ import net.mm2d.dmsexplorer.log.EventLogger;
 import net.mm2d.dmsexplorer.settings.RepeatMode;
 import net.mm2d.dmsexplorer.settings.Settings;
 import net.mm2d.dmsexplorer.util.Downloader;
-import net.mm2d.dmsexplorer.util.ThemeColorGenerator;
+import net.mm2d.dmsexplorer.settings.theme.ThemeColorGenerator;
 import net.mm2d.dmsexplorer.view.adapter.PropertyAdapter;
 import net.mm2d.dmsexplorer.view.base.BaseActivity;
 import net.mm2d.dmsexplorer.viewmodel.ControlPanelModel.OnCompletionListener;

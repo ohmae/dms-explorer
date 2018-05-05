@@ -5,7 +5,7 @@
  * http://opensource.org/licenses/MIT
  */
 
-package net.mm2d.dmsexplorer.util;
+package net.mm2d.dmsexplorer.settings.theme;
 
 import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;

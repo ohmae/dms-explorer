@@ -21,7 +21,7 @@ import net.mm2d.android.util.AribUtils;
 import net.mm2d.android.util.DrawableUtils;
 import net.mm2d.dmsexplorer.R;
 import net.mm2d.dmsexplorer.settings.Settings;
-import net.mm2d.dmsexplorer.util.ThemeColorGenerator;
+import net.mm2d.dmsexplorer.settings.theme.ThemeColorGenerator;
 import net.mm2d.upnp.Icon;
 
 /**

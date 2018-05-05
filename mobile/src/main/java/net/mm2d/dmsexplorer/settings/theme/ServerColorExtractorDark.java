@@ -5,7 +5,7 @@
  * http://opensource.org/licenses/MIT
  */
 
-package net.mm2d.dmsexplorer.util;
+package net.mm2d.dmsexplorer.settings.theme;
 
 import android.graphics.Bitmap;
 import android.support.annotation.NonNull;
@@ -15,11 +15,13 @@ import android.support.v7.graphics.Palette.Swatch;
 
 import net.mm2d.android.upnp.cds.MediaServer;
 import net.mm2d.dmsexplorer.Const;
+import net.mm2d.dmsexplorer.util.ColorUtils;
+import net.mm2d.dmsexplorer.util.PaletteUtils;
 
 /**
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
  */
-public class ServerColorExtractorNormal implements ServerColorExtractor {
+public class ServerColorExtractorDark implements ServerColorExtractor {
     private static final ThemeColorGenerator GENERATOR = new ThemeColorGeneratorDark();
 
     @Override
@@ -62,11 +64,11 @@ public class ServerColorExtractorNormal implements ServerColorExtractor {
         if (palette != null) {
             final Swatch lightSwatch = PaletteUtils.selectLightSwatch(palette);
             if (lightSwatch != null) {
-                expandedColor = lightSwatch.getRgb();
+                expandedColor = ColorUtils.getDarkerColor(lightSwatch.getRgb(), 0.3f);
             }
             final Swatch darkSwatch = PaletteUtils.selectDarkSwatch(palette);
             if (darkSwatch != null) {
-                collapsedColor = darkSwatch.getRgb();
+                collapsedColor = ColorUtils.getDarkerColor(darkSwatch.getRgb(), 0.3f);
             }
         }
         server.putIntTag(Const.KEY_TOOLBAR_EXPANDED_COLOR, expandedColor);

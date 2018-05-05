@@ -19,7 +19,7 @@ import net.mm2d.android.util.DrawableUtils;
 import net.mm2d.dmsexplorer.R;
 import net.mm2d.dmsexplorer.domain.entity.ContentEntity;
 import net.mm2d.dmsexplorer.settings.Settings;
-import net.mm2d.dmsexplorer.util.ThemeColorGenerator;
+import net.mm2d.dmsexplorer.settings.theme.ThemeColorGenerator;
 
 /**
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>

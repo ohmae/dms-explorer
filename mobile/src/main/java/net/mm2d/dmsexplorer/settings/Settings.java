@@ -17,10 +17,10 @@ import android.text.TextUtils;
 
 import net.mm2d.dmsexplorer.R;
 import net.mm2d.dmsexplorer.domain.entity.ContentType;
-import net.mm2d.dmsexplorer.util.ServerColorExtractorDark;
-import net.mm2d.dmsexplorer.util.ServerColorExtractorNormal;
-import net.mm2d.dmsexplorer.util.ThemeColorGeneratorDark;
-import net.mm2d.dmsexplorer.util.ThemeColorGeneratorNormal;
+import net.mm2d.dmsexplorer.settings.theme.ServerColorExtractorDark;
+import net.mm2d.dmsexplorer.settings.theme.ServerColorExtractorNormal;
+import net.mm2d.dmsexplorer.settings.theme.ThemeColorGeneratorDark;
+import net.mm2d.dmsexplorer.settings.theme.ThemeColorGeneratorNormal;
 
 /**
  * SharedPreferencesに覚えさせる設定値を集中管理するクラス。

@@ -11,8 +11,8 @@ import android.preference.PreferenceActivity.Header;
 import android.support.annotation.NonNull;
 import android.support.annotation.StyleRes;
 
-import net.mm2d.dmsexplorer.util.ServerColorExtractor;
-import net.mm2d.dmsexplorer.util.ThemeColorGenerator;
+import net.mm2d.dmsexplorer.settings.theme.ServerColorExtractor;
+import net.mm2d.dmsexplorer.settings.theme.ThemeColorGenerator;
 
 import java.util.List;
 
