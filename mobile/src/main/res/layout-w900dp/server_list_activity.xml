@@ -61,9 +61,10 @@
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
                 android:clipChildren="false"
-                app:progressBackgroundColorSchemeColor="@{model.progressBackground}"
                 app:colorSchemeResources="@{model.refreshColors}"
+                app:distanceToTriggerSync="@{model.distanceToTriggerSync}"
                 app:onRefreshListener="@{model.onRefreshListener}"
+                app:progressBackgroundColorSchemeColor="@{model.progressBackground}"
                 app:refreshing="@{model.refreshing}"
                 >
 
