@@ -112,7 +112,9 @@ public class MusicActivityModel extends BaseObservable
         playerModel.setUri(targetModel.getUri(), null);
 
         mTitle = AribUtils.toDisplayableString(targetModel.getTitle());
-        final ThemeColorGenerator generator = mSettings.getColorThemeParams().getThemeColorGenerator();
+        final ThemeColorGenerator generator = mSettings
+                .getThemeParams()
+                .getThemeColorGenerator();
         mAccentColor = generator.getDeepColor(mTitle);
         mPropertyAdapter = PropertyAdapter.ofContent(mActivity, targetModel.getContentEntity());
         mRepository.getThemeModel().setThemeColor(mActivity, mAccentColor, 0);

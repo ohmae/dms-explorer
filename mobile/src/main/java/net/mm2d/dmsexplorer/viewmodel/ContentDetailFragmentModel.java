@@ -78,10 +78,12 @@ public class ContentDetailFragmentModel extends BaseObservable {
             throw new IllegalStateException();
         }
         mActivity = activity;
+        mSettings = new Settings(activity);
         final String rawTitle = entity.getName();
         title = AribUtils.toDisplayableString(rawTitle);
         propertyAdapter = PropertyAdapter.ofContent(activity, entity);
-        final ThemeColorGenerator generator = new Settings(activity).getColorThemeParams().getThemeColorGenerator();
+        final ThemeColorGenerator generator = mSettings.getThemeParams()
+                .getThemeColorGenerator();
         if (activity.getResources().getBoolean(R.bool.two_pane)) {
             collapsedColor = generator.getSlightColor(rawTitle);
             expandedColor = generator.getSlightColor(rawTitle);
@@ -92,7 +94,6 @@ public class ContentDetailFragmentModel extends BaseObservable {
         hasResource = entity.hasResource();
         isProtected = entity.isProtected();
         mCanDelete = model.canDelete(entity);
-        mSettings = new Settings(activity);
         setDeleteEnabled(mSettings.isDeleteFunctionEnabled() && mCanDelete);
 
         mMrControlPoint = repository.getControlPointModel().getMrControlPoint();

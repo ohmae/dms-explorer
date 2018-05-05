@@ -126,7 +126,9 @@ public class ContentListActivityModel extends BaseObservable implements ExploreL
         title = mMediaServerModel.getTitle();
         onRefreshListener = mMediaServerModel::reload;
         final MediaServer server = mMediaServerModel.getMediaServer();
-        new Settings(context).getColorThemeParams().getServerColorExtractor().setServerThemeColor(server, null);
+        mSettings.getThemeParams()
+                .getServerColorExtractor()
+                .invoke(server, null);
         toolbarBackground = server.getIntTag(Const.KEY_TOOLBAR_COLLAPSED_COLOR, Color.BLACK);
     }
 

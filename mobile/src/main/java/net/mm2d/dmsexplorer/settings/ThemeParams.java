@@ -17,9 +17,9 @@ import net.mm2d.dmsexplorer.settings.theme.ThemeColorGenerator;
 import java.util.List;
 
 /**
- * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
+ * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
  */
-public class ColorThemeParams {
+public class ThemeParams {
     public interface PreferenceHeaderConverter {
         void convert(@NonNull List<Header> headers);
     }
@@ -27,16 +27,16 @@ public class ColorThemeParams {
     public static class Builder {
         private String mHtmlQuery;
         @StyleRes
-        private int mTheme;
+        private int mThemeId;
         @StyleRes
-        private int mThemeNoActionBar;
+        private int mNoActionBarThemeId;
         @StyleRes
-        private int mThemeList;
+        private int mListThemeId;
         @StyleRes
-        private int mThemeFullscreen;
+        private int mFullscreenThemeId;
         @StyleRes
-        private int mThemePopup;
-        private PreferenceHeaderConverter mConverter;
+        private int mPopupThemeId;
+        private PreferenceHeaderConverter mPreferenceHeaderConverter;
         private ThemeColorGenerator mThemeColorGenerator;
         private ServerColorExtractor mServerColorExtractor;
 
@@ -45,33 +45,33 @@ public class ColorThemeParams {
             return this;
         }
 
-        public Builder setTheme(@StyleRes final int id) {
-            mTheme = id;
+        public Builder setThemeId(@StyleRes final int id) {
+            mThemeId = id;
             return this;
         }
 
-        public Builder setThemeNoActionBar(@StyleRes final int id) {
-            mThemeNoActionBar = id;
+        public Builder setNoActionBarThemeId(@StyleRes final int id) {
+            mNoActionBarThemeId = id;
             return this;
         }
 
-        public Builder setThemeList(@StyleRes final int id) {
-            mThemeList = id;
+        public Builder setListThemeId(@StyleRes final int id) {
+            mListThemeId = id;
             return this;
         }
 
-        public Builder setThemeFullscreen(@StyleRes final int id) {
-            mThemeFullscreen = id;
+        public Builder setFullscreenThemeId(@StyleRes final int id) {
+            mFullscreenThemeId = id;
             return this;
         }
 
-        public Builder setThemePopup(@StyleRes final int id) {
-            mThemePopup = id;
+        public Builder setPopupThemeId(@StyleRes final int id) {
+            mPopupThemeId = id;
             return this;
         }
 
         public Builder setPreferenceHeaderConverter(final PreferenceHeaderConverter converter) {
-            mConverter = converter;
+            mPreferenceHeaderConverter = converter;
             return this;
         }
 
@@ -85,75 +85,89 @@ public class ColorThemeParams {
             return this;
         }
 
-        public ColorThemeParams build() {
-            return new ColorThemeParams(this);
+        public ThemeParams build() {
+            if (mHtmlQuery == null ||
+                    mPreferenceHeaderConverter == null ||
+                    mThemeColorGenerator == null ||
+                    mServerColorExtractor == null) {
+                throw new IllegalStateException();
+            }
+            return new ThemeParams(this);
         }
     }
 
+    @NonNull
     private final String mHtmlQuery;
     @StyleRes
-    private final int mTheme;
+    private final int mThemeId;
     @StyleRes
-    private final int mThemeNoActionBar;
+    private final int mNoActionBarThemeId;
     @StyleRes
-    private final int mThemeList;
+    private final int mListThemeId;
     @StyleRes
-    private final int mThemeFullscreen;
+    private final int mFullscreenThemeId;
     @StyleRes
-    private final int mThemePopup;
-    private final PreferenceHeaderConverter mConverter;
+    private final int mPopupThemeId;
+    @NonNull
+    private final PreferenceHeaderConverter mPreferenceHeaderConverter;
+    @NonNull
     private final ThemeColorGenerator mThemeColorGenerator;
-    private ServerColorExtractor mServerColorExtractor;
+    @NonNull
+    private final ServerColorExtractor mServerColorExtractor;
 
-    private ColorThemeParams(@NonNull final Builder builder) {
+    private ThemeParams(@NonNull final Builder builder) {
         mHtmlQuery = builder.mHtmlQuery;
-        mTheme = builder.mTheme;
-        mThemeNoActionBar = builder.mThemeNoActionBar;
-        mThemeList = builder.mThemeList;
-        mThemeFullscreen = builder.mThemeFullscreen;
-        mThemePopup = builder.mThemePopup;
-        mConverter = builder.mConverter;
+        mThemeId = builder.mThemeId;
+        mNoActionBarThemeId = builder.mNoActionBarThemeId;
+        mListThemeId = builder.mListThemeId;
+        mFullscreenThemeId = builder.mFullscreenThemeId;
+        mPopupThemeId = builder.mPopupThemeId;
+        mPreferenceHeaderConverter = builder.mPreferenceHeaderConverter;
         mThemeColorGenerator = builder.mThemeColorGenerator;
         mServerColorExtractor = builder.mServerColorExtractor;
     }
 
+    @NonNull
     public String getHtmlQuery() {
         return mHtmlQuery;
     }
 
     @StyleRes
-    public int getTheme() {
-        return mTheme;
+    public int getThemeId() {
+        return mThemeId;
     }
 
     @StyleRes
-    public int getThemeNoActionBar() {
-        return mThemeNoActionBar;
+    public int getNoActionBarThemeId() {
+        return mNoActionBarThemeId;
     }
 
     @StyleRes
-    public int getThemeList() {
-        return mThemeList;
+    public int getListThemeId() {
+        return mListThemeId;
     }
 
     @StyleRes
-    public int getThemeFullscreen() {
-        return mThemeFullscreen;
+    public int getFullscreenThemeId() {
+        return mFullscreenThemeId;
     }
 
     @StyleRes
-    public int getThemePopup() {
-        return mThemePopup;
+    public int getPopupThemeId() {
+        return mPopupThemeId;
     }
 
+    @NonNull
     public PreferenceHeaderConverter getPreferenceHeaderConverter() {
-        return mConverter;
+        return mPreferenceHeaderConverter;
     }
 
+    @NonNull
     public ThemeColorGenerator getThemeColorGenerator() {
         return mThemeColorGenerator;
     }
 
+    @NonNull
     public ServerColorExtractor getServerColorExtractor() {
         return mServerColorExtractor;
     }

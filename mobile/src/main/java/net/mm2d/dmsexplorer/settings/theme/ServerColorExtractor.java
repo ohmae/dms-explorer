@@ -17,11 +17,11 @@ import net.mm2d.android.upnp.cds.MediaServer;
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
  */
 public interface ServerColorExtractor {
-    void setServerThemeColor(
+    void invoke(
             @NonNull final MediaServer server,
             @Nullable final Bitmap icon);
 
-    void setServerThemeColorAsync(
+    void invokeAsync(
             @NonNull final MediaServer server,
             @Nullable final Bitmap icon);
 }

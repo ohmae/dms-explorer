@@ -50,12 +50,12 @@ public class ContentListActivity extends BaseActivity implements OnDeleteListene
     @Override
     protected void onCreate(@Nullable final Bundle savedInstanceState) {
         mSettings = new Settings(this);
-        setTheme(mSettings.getColorThemeParams().getThemeList());
+        setTheme(mSettings.getThemeParams().getListThemeId());
         mViewSettingsObserver = new ViewSettingsObserver(this);
         mViewSettingsObserver.register(this::updateViewSettings);
         super.onCreate(savedInstanceState);
         mDelegate = ContentListActivityDelegate.create(this);
-        mDelegate.getBinding().toolbar.setPopupTheme(mSettings.getColorThemeParams().getThemePopup());
+        mDelegate.getBinding().toolbar.setPopupTheme(mSettings.getThemeParams().getPopupThemeId());
         mDelegate.onCreate(savedInstanceState);
     }
 

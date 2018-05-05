@@ -61,7 +61,10 @@ public class ServerDetailFragmentModel {
         final Bitmap iconBitmap = createIconBitmap(server.getIcon());
         icon = createIconDrawable(context, server, iconBitmap);
 
-        new Settings(context).getColorThemeParams().getServerColorExtractor().setServerThemeColor(server, iconBitmap);
+        new Settings(context)
+                .getThemeParams()
+                .getServerColorExtractor()
+                .invoke(server, iconBitmap);
         expandedColor = server.getIntTag(Const.KEY_TOOLBAR_EXPANDED_COLOR, Color.BLACK);
         collapsedColor = server.getIntTag(Const.KEY_TOOLBAR_COLLAPSED_COLOR, Color.BLACK);
     }
@@ -83,7 +86,9 @@ public class ServerDetailFragmentModel {
         if (icon != null) {
             return new BitmapDrawable(context.getResources(), icon);
         }
-        final ThemeColorGenerator generator = new Settings(context).getColorThemeParams().getThemeColorGenerator();
+        final ThemeColorGenerator generator = new Settings(context)
+                .getThemeParams()
+                .getThemeColorGenerator();
         final Drawable drawable = DrawableUtils.get(context, R.drawable.ic_circle);
         drawable.mutate();
         DrawableCompat.setTint(drawable, generator.getIconColor(server.getFriendlyName()));

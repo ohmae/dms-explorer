@@ -25,37 +25,37 @@ public class ServerColorExtractorDark implements ServerColorExtractor {
     private static final ThemeColorGenerator GENERATOR = new ThemeColorGeneratorDark();
 
     @Override
-    public void setServerThemeColor(
+    public void invoke(
             @NonNull final MediaServer server,
             @Nullable final Bitmap icon) {
         if (server.getBooleanTag(Const.KEY_HAS_TOOLBAR_COLOR, false)) {
             return;
         }
-        setServerThemeColorInner(server, icon);
+        extract(server, icon);
     }
 
     @Override
-    public void setServerThemeColorAsync(
+    public void invokeAsync(
             @NonNull final MediaServer server,
             @Nullable final Bitmap icon) {
         if (server.getBooleanTag(Const.KEY_HAS_TOOLBAR_COLOR, false)) {
             return;
         }
         if (icon == null) {
-            setServerThemeColorInner(server, null);
+            extract(server, null);
             return;
         }
-        new Palette.Builder(icon).generate(palette -> setServerThemeColorFromPalette(server, palette));
+        new Palette.Builder(icon).generate(palette -> extractFromPalette(server, palette));
     }
 
-    private void setServerThemeColorInner(
+    private void extract(
             @NonNull final MediaServer server,
             @Nullable final Bitmap icon) {
         final Palette palette = icon == null ? null : new Palette.Builder(icon).generate();
-        setServerThemeColorFromPalette(server, palette);
+        extractFromPalette(server, palette);
     }
 
-    private void setServerThemeColorFromPalette(
+    private void extractFromPalette(
             @NonNull final MediaServer server,
             @Nullable final Palette palette) {
         final String friendlyName = server.getFriendlyName();

@@ -55,7 +55,7 @@ public class ContentDetailActivity extends BaseActivity implements OnDeleteListe
     @Override
     protected void onCreate(@Nullable final Bundle savedInstanceState) {
         mSettings = new Settings(this);
-        setTheme(mSettings.getColorThemeParams().getThemeNoActionBar());
+        setTheme(mSettings.getThemeParams().getNoActionBarThemeId());
         mViewSettingsObserver = new ViewSettingsObserver(this);
         mViewSettingsObserver.register(this::updateViewSettings);
         super.onCreate(savedInstanceState);
@@ -68,7 +68,7 @@ public class ContentDetailActivity extends BaseActivity implements OnDeleteListe
             finish();
             return;
         }
-        binding.cdsDetailToolbar.setPopupTheme(mSettings.getColorThemeParams().getThemePopup());
+        binding.cdsDetailToolbar.setPopupTheme(mSettings.getThemeParams().getPopupThemeId());
         mContentEntity = getSelectedEntity();
         setSupportActionBar(binding.cdsDetailToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);

@@ -80,7 +80,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        setTheme(new Settings(this).getColorThemeParams().getTheme());
+        setTheme(new Settings(this).getThemeParams().getThemeId());
         super.onCreate(savedInstanceState);
         final ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
@@ -108,7 +108,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
     public void onBuildHeaders(final List<Header> target) {
         loadHeadersFromResource(R.xml.pref_headers, target);
         new Settings(this)
-                .getColorThemeParams()
+                .getThemeParams()
                 .getPreferenceHeaderConverter()
                 .convert(target);
     }
@@ -263,7 +263,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             });
             final Settings settings = new Settings(getActivity());
             findPreference(Key.LICENSE.name()).setOnPreferenceClickListener(preference -> {
-                final String query = settings.getColorThemeParams().getHtmlQuery();
+                final String query = settings.getThemeParams().getHtmlQuery();
                 WebViewActivity.start(getActivity(),
                         getString(R.string.pref_title_license),
                         Const.URL_OPEN_SOURCE_LICENSE + "?" + query);

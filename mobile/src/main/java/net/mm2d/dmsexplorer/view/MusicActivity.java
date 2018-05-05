@@ -33,7 +33,7 @@ public class MusicActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         mSettings = new Settings(this);
-        setTheme(mSettings.getColorThemeParams().getThemeNoActionBar());
+        setTheme(mSettings.getThemeParams().getNoActionBarThemeId());
         mViewSettingsObserver = new ViewSettingsObserver(this);
         mViewSettingsObserver.register(this::updateViewSettings);
         super.onCreate(savedInstanceState);
