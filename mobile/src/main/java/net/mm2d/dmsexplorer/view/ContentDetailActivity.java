@@ -43,6 +43,7 @@ public class ContentDetailActivity extends BaseActivity implements OnDeleteListe
         return new Intent(context, ContentDetailActivity.class);
     }
 
+    private Settings mSettings;
     private MediaServerModel mMediaServerModel;
     private ContentEntity mContentEntity;
     private ViewSettingsObserver mViewSettingsObserver;
@@ -53,6 +54,8 @@ public class ContentDetailActivity extends BaseActivity implements OnDeleteListe
 
     @Override
     protected void onCreate(@Nullable final Bundle savedInstanceState) {
+        mSettings = new Settings(this);
+        setTheme(mSettings.getThemeParams().getNoActionBarThemeId());
         mViewSettingsObserver = new ViewSettingsObserver(this);
         mViewSettingsObserver.register(this::updateViewSettings);
         super.onCreate(savedInstanceState);
@@ -65,6 +68,7 @@ public class ContentDetailActivity extends BaseActivity implements OnDeleteListe
             finish();
             return;
         }
+        binding.cdsDetailToolbar.setPopupTheme(mSettings.getThemeParams().getPopupThemeId());
         mContentEntity = getSelectedEntity();
         setSupportActionBar(binding.cdsDetailToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -82,7 +86,7 @@ public class ContentDetailActivity extends BaseActivity implements OnDeleteListe
     }
 
     private void updateViewSettings() {
-        new Settings(this).getBrowseOrientation()
+        mSettings.getBrowseOrientation()
                 .setRequestedOrientation(this);
     }
 

@@ -355,4 +355,11 @@ public class Settings {
     public boolean isPhotoUiBackgroundTransparent() {
         return mStorage.readBoolean(Key.IS_PHOTO_UI_BACKGROUND_TRANSPARENT, false);
     }
+
+    @NonNull
+    public ThemeParams getThemeParams() {
+        final Theme theme = mStorage.readBoolean(Key.DARK_THEME, false)
+                ? Theme.DARK : Theme.NORMAL;
+        return theme.getParams();
+    }
 }

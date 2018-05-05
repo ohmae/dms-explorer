@@ -16,7 +16,7 @@
     <android.support.design.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/bgActivity"
+        android:background="?attr/themeFragmentBackground"
         >
 
         <android.support.design.widget.AppBarLayout
@@ -115,7 +115,7 @@
                 android:onClick="@{model::onClickPlay}"
                 android:onLongClick="@{model::onLongClickPlay}"
                 android:visibility="@{model.hasResource ? View.VISIBLE : View.INVISIBLE}"
-                app:backgroundTint="@{model.isProtected ? @color/fabDisable : @color/accent}"
+                app:backgroundTint="@{model.playBackgroundTint}"
                 app:rippleColor="@color/fabRipple"
                 app:srcCompat="@drawable/ic_fab_play"
                 />

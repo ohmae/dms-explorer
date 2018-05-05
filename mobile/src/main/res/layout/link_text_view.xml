@@ -6,7 +6,7 @@
     android:background="@drawable/bg_link_text"
     android:paddingBottom="@dimen/default_margin"
     android:paddingTop="@dimen/small_margin"
-    android:textColor="?attr/propertyLinkColor"
+    android:textColor="?attr/themeLinkColor"
     android:textIsSelectable="true"
     android:textSize="@dimen/text_size_main"
     />

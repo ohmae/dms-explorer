@@ -45,6 +45,7 @@ public class MovieActivity extends BaseActivity implements OnChangeContentListen
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         mSettings = new Settings(this);
+        setTheme(mSettings.getThemeParams().getFullscreenThemeId());
         mViewSettingsObserver = new ViewSettingsObserver(this);
         mViewSettingsObserver.register(this::updateViewSettings);
         super.onCreate(savedInstanceState);

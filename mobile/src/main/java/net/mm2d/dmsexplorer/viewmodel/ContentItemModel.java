@@ -18,7 +18,8 @@ import net.mm2d.android.util.AribUtils;
 import net.mm2d.android.util.DrawableUtils;
 import net.mm2d.dmsexplorer.R;
 import net.mm2d.dmsexplorer.domain.entity.ContentEntity;
-import net.mm2d.dmsexplorer.util.ThemeUtils;
+import net.mm2d.dmsexplorer.settings.Settings;
+import net.mm2d.dmsexplorer.settings.theme.ThemeColorGenerator;
 
 /**
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
@@ -48,7 +49,10 @@ public class ContentItemModel {
                 : AribUtils.toDisplayableString(name.substring(0, 1));
         accentBackground = DrawableUtils.get(context, R.drawable.ic_circle);
         accentBackground.mutate();
-        DrawableCompat.setTint(accentBackground, ThemeUtils.getIconColor(name));
+        final ThemeColorGenerator generator = new Settings(context)
+                .getThemeParams()
+                .getThemeColorGenerator();
+        DrawableCompat.setTint(accentBackground, generator.getIconColor(name));
         title = AribUtils.toDisplayableString(name);
         description = entity.getDescription();
         hasDescription = !TextUtils.isEmpty(description);

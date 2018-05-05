@@ -77,8 +77,8 @@ public class DeleteDialog extends DialogFragment {
                 .setTitle(R.string.dialog_title_delete)
                 .setMessage(getString(R.string.dialog_message_delete,
                         AribUtils.toDisplayableString(entity.getName())))
-                .setNegativeButton(R.string.dialog_button_cancel, null)
-                .setPositiveButton(R.string.dialog_button_ok, (d, i) ->
+                .setNegativeButton(R.string.cancel, null)
+                .setPositiveButton(R.string.ok, (d, i) ->
                         model.delete(entity,
                                 () -> {
                                     Toaster.show(applicationContext, R.string.toast_delete_succeed);

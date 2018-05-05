@@ -8,24 +8,15 @@
 package net.mm2d.dmsexplorer.util;
 
 import android.content.Context;
-import android.content.Intent;
 import android.support.annotation.NonNull;
-import android.support.v4.content.LocalBroadcastManager;
 
 import net.mm2d.dmsexplorer.Const;
 
 /**
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
  */
-public class ViewSettingsNotifier {
-    @NonNull
-    private final LocalBroadcastManager mBroadcastManager;
-
+public class ViewSettingsNotifier extends LocalBroadcastNotifier {
     public ViewSettingsNotifier(@NonNull final Context context) {
-        mBroadcastManager = LocalBroadcastManager.getInstance(context);
-    }
-
-    public void update() {
-        mBroadcastManager.sendBroadcast(new Intent(Const.ACTION_UPDATE_VIEW_SETTINGS));
+        super(context, Const.ACTION_UPDATE_VIEW_SETTINGS);
     }
 }

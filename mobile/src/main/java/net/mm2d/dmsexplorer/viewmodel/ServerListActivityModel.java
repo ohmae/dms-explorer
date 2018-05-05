@@ -11,6 +11,7 @@ import android.content.Context;
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
 import android.databinding.DataBindingUtil;
+import android.graphics.Color;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.annotation.NonNull;
@@ -30,6 +31,7 @@ import net.mm2d.dmsexplorer.Repository;
 import net.mm2d.dmsexplorer.databinding.ServerListItemBinding;
 import net.mm2d.dmsexplorer.domain.model.ControlPointModel;
 import net.mm2d.dmsexplorer.settings.Settings;
+import net.mm2d.dmsexplorer.util.AttrUtils;
 import net.mm2d.dmsexplorer.util.FeatureUtils;
 import net.mm2d.dmsexplorer.view.adapter.ServerListAdapter;
 import net.mm2d.dmsexplorer.view.animator.CustomItemAnimator;
@@ -53,6 +55,8 @@ public class ServerListActivityModel extends BaseObservable {
             R.color.progress3,
             R.color.progress4,
     };
+    public final int progressBackground;
+
     @NonNull
     public final OnRefreshListener onRefreshListener;
     @NonNull
@@ -80,6 +84,7 @@ public class ServerListActivityModel extends BaseObservable {
             @NonNull final Repository repository,
             @NonNull final ServerSelectListener listener,
             final boolean twoPane) {
+        progressBackground = AttrUtils.resolveColor(context, R.attr.themeProgressBackground, Color.BLACK);
         mSettings = new Settings(context);
         mControlPointModel = repository.getControlPointModel();
         mServerListAdapter = new ServerListAdapter(context, mControlPointModel.getMediaServerList());

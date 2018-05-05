@@ -1,8 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <declare-styleable name="RecyclerTheme">
-        <attr name="propertyTitleColor" format="color"/>
-        <attr name="propertyMessageColor" format="color"/>
-        <attr name="propertyLinkColor" format="color"/>
+    <declare-styleable name="ColorTheme">
+        <attr name="themePropertyTitleColor" format="color"/>
+        <attr name="themeTextColor" format="color"/>
+        <attr name="themeSubTextColor" format="color"/>
+        <attr name="themeLinkColor" format="color"/>
+        <attr name="themeFragmentBackground" format="color"/>
+        <attr name="themeListBackground" format="color"/>
+        <attr name="themeCardBackground" format="color"/>
+        <attr name="themeFabDisable" format="color"/>
+        <attr name="themeToolbarBackgroundDefault" format="color"/>
+        <attr name="themeToolbarText" format="color"/>
+        <attr name="themeProgressBackground" format="color"/>
     </declare-styleable>
 </resources>

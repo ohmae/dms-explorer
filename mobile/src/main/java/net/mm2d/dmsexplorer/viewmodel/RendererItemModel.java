@@ -20,7 +20,8 @@ import net.mm2d.android.upnp.avt.MediaRenderer;
 import net.mm2d.android.util.AribUtils;
 import net.mm2d.android.util.DrawableUtils;
 import net.mm2d.dmsexplorer.R;
-import net.mm2d.dmsexplorer.util.ThemeUtils;
+import net.mm2d.dmsexplorer.settings.Settings;
+import net.mm2d.dmsexplorer.settings.theme.ThemeColorGenerator;
 import net.mm2d.upnp.Icon;
 
 /**
@@ -51,7 +52,10 @@ public class RendererItemModel {
                     : AribUtils.toDisplayableString(name.substring(0, 1));
             accentBackground = DrawableUtils.get(context, R.drawable.ic_circle);
             accentBackground.mutate();
-            DrawableCompat.setTint(accentBackground, ThemeUtils.getIconColor(name));
+            final ThemeColorGenerator generator = new Settings(context)
+                    .getThemeParams()
+                    .getThemeColorGenerator();
+            DrawableCompat.setTint(accentBackground, generator.getIconColor(name));
             return;
         }
         final byte[] binary = icon.getBinary();

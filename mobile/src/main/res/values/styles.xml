@@ -2,23 +2,28 @@
 <resources>
 
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="themeTextColor">@color/textMain</item>
+        <item name="themeSubTextColor">@color/textWeak</item>
+        <item name="themeLinkColor">@color/textLink</item>
+        <item name="themePropertyTitleColor">@color/textHighlight</item>
+        <item name="themeFragmentBackground">@color/bgFragment</item>
+        <item name="themeListBackground">@color/bgList</item>
+        <item name="themeCardBackground">@color/bgCard</item>
+        <item name="themeFabDisable">@color/fabDisable</item>
+        <item name="themeToolbarBackgroundDefault">@color/toolbarBackgroundDefault</item>
+        <item name="themeToolbarText">@color/textToolbar</item>
+        <item name="themeProgressBackground">@color/bgProgress</item>
         <item name="colorPrimary">@color/primary</item>
         <item name="colorPrimaryDark">@color/primaryDark</item>
         <item name="colorAccent">@color/accent</item>
     </style>
 
     <style name="AppTheme.NoActionBar">
-        <item name="propertyMessageColor">@color/textMain</item>
-        <item name="propertyLinkColor">@color/textLink</item>
-        <item name="propertyTitleColor">@color/textHighlight</item>
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
 
     <style name="AppTheme.List">
-        <item name="propertyMessageColor">@color/textMain</item>
-        <item name="propertyLinkColor">@color/textLink</item>
-        <item name="propertyTitleColor">@color/textHighlight</item>
         <item name="android:windowBackground">@color/bgList</item>
         <item name="android:colorBackground">@color/bgList</item>
         <item name="windowActionBar">false</item>
@@ -26,9 +31,10 @@
     </style>
 
     <style name="AppTheme.NoActionBar.Dark">
-        <item name="propertyMessageColor">@color/textMainDark</item>
-        <item name="propertyLinkColor">@color/textLinkDark</item>
-        <item name="propertyTitleColor">@color/textHighlightDark</item>
+        <item name="themeTextColor">@color/textMainDark</item>
+        <item name="themeSubTextColor">@color/textWeak</item>
+        <item name="themeLinkColor">@color/textLinkDark</item>
+        <item name="themePropertyTitleColor">@color/textHighlightDark</item>
         <item name="android:windowBackground">@android:color/black</item>
         <item name="android:colorBackground">@android:color/black</item>
     </style>
@@ -54,10 +60,10 @@
     </style>
 
     <style name="ContentCollapsedToolbarText" parent="CollapsedToolbarText">
-        <item name="android:textColor">@color/textToolbar</item>
+        <item name="android:textColor">?attr/themeToolbarText</item>
     </style>
 
     <style name="ContentExpandedToolbarText" parent="ExpandedToolbarText">
-        <item name="android:textColor">@color/textToolbar</item>
+        <item name="android:textColor">?attr/themeToolbarText</item>
     </style>
 </resources>

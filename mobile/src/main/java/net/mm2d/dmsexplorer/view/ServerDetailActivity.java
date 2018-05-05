@@ -49,6 +49,7 @@ public class ServerDetailActivity extends BaseActivity {
         return new Intent(context, ServerDetailActivity.class);
     }
 
+    private Settings mSettings;
     private ServerDetailFragmentBinding mBinding;
     private ViewSettingsObserver mViewSettingsObserver;
 
@@ -58,6 +59,8 @@ public class ServerDetailActivity extends BaseActivity {
 
     @Override
     protected void onCreate(@Nullable final Bundle savedInstanceState) {
+        mSettings = new Settings(this);
+        setTheme(mSettings.getThemeParams().getNoActionBarThemeId());
         mViewSettingsObserver = new ViewSettingsObserver(this);
         mViewSettingsObserver.register(this::updateViewSettings);
         super.onCreate(savedInstanceState);
@@ -67,6 +70,7 @@ public class ServerDetailActivity extends BaseActivity {
             finish();
             return;
         }
+        mBinding.serverDetailToolbar.setPopupTheme(mSettings.getThemeParams().getPopupThemeId());
         setSupportActionBar(mBinding.serverDetailToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -85,7 +89,7 @@ public class ServerDetailActivity extends BaseActivity {
     }
 
     private void updateViewSettings() {
-        new Settings(this).getBrowseOrientation()
+        mSettings.getBrowseOrientation()
                 .setRequestedOrientation(this);
     }
 

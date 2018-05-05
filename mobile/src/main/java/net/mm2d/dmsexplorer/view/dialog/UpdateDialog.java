@@ -43,9 +43,9 @@ public class UpdateDialog extends DialogFragment {
         return new AlertDialog.Builder(context)
                 .setTitle(R.string.dialog_title_update)
                 .setMessage(R.string.dialog_message_update)
-                .setPositiveButton(R.string.dialog_button_ok, (dialog, which) ->
+                .setPositiveButton(R.string.ok, (dialog, which) ->
                         LaunchUtils.openGooglePlay(context, Const.PACKAGE_NAME))
-                .setNegativeButton(R.string.dialog_button_cancel, null)
+                .setNegativeButton(R.string.cancel, null)
                 .create();
     }
 }
