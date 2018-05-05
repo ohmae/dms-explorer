@@ -69,6 +69,51 @@
     <string name="pref_title_delete">Delete content</string>
     <string name="pref_message_delete_on">Show delete button, if possible.</string>
     <string name="pref_message_delete_off">Don\'t show delete button.</string>
+    <string name="pref_header_view">View</string>
+    <string name="pref_category_theme">Theme</string>
+    <string name="pref_title_dark_theme">Dark theme</string>
+    <string name="pref_message_dark_theme">Change to the dark theme. This app will be restart to apply the theme settings.</string>
+    <string name="dialog_title_change_theme">Change theme</string>
+    <string name="dialog_message_change_theme">Do you want to change the theme?\nIf you select "OK", this app will be restarted and the theme will be changed.</string>
+
+    <string name="pref_header_expert">Expert</string>
+    <string name="pref_title_for_expert">Settings for Expert</string>
+    <string name="pref_message_for_expert">This settings are for people who want to stick to details. Depending on how to set it, operation becomes impossible or operation may become unstable. Please set only those who are self-resolvable when problems occur</string>
+    <string name="pref_category_orientation">Screen Orientation</string>
+    <string name="pref_title_category_orientation">Caution</string>
+    <string name="pref_message_category_orientation">These settings are highly dependent on the device. In some cases, settings may not be applied or display may be disturbed. If you have a problem, please return the setting to "unspecified"</string>
+    <string name="pref_title_orientation_collective">Collective setting</string>
+    <string name="pref_title_orientation_browse">Browse Screen</string>
+    <string name="pref_title_orientation_movie">Movie Playback Screen</string>
+    <string name="pref_title_orientation_music">Music Playback Screen</string>
+    <string name="pref_title_orientation_photo">Photo Screen</string>
+    <string name="pref_title_orientation_dmc">DMC Screen</string>
+
+    <string name="orientation_unspecified">Unspecified</string>
+    <string name="orientation_portrait">Portrait</string>
+    <string name="orientation_landscape">Landscape</string>
+    <string name="orientation_reverse_portrait">Reverse Portrait</string>
+    <string name="orientation_reverse_landscape">Reverse Landscape</string>
+
+    <string name="pref_category_movie_ui">Customize Movie UI</string>
+    <string name="pref_title_movie_ui_do_not_show_on_start">Do not show UI on start</string>
+    <string name="pref_message_movie_ui_do_not_show_on_start">When set to ON, do not show UI on playback start</string>
+    <string name="pref_title_movie_ui_do_not_show_on_touch">Do not show UI on touch</string>
+    <string name="pref_message_movie_ui_do_not_show_on_touch">When set to ON, UI is not shown by simply touching. Please swipe inward from the top outside the screen</string>
+    <string name="pref_title_movie_ui_do_not_show_title">Do not show content name</string>
+    <string name="pref_message_movie_ui_do_not_show_title">When set to ON, do not show content name on ActionBar</string>
+    <string name="pref_title_movie_ui_transparent">Make the background of the UI panel transparent</string>
+    <string name="pref_message_movie_ui_transparent">When set to ON, make the background of the UI panel completely transparent</string>
+
+    <string name="pref_category_photo_ui">Customize Photo UI</string>
+    <string name="pref_title_photo_ui_do_not_show_on_start">Do not show UI on start</string>
+    <string name="pref_message_photo_ui_do_not_show_on_start">When set to ON, do not show UI on playback start</string>
+    <string name="pref_title_photo_ui_do_not_show_on_touch">Do not show UI on touch</string>
+    <string name="pref_message_photo_ui_do_not_show_on_touch">When set to ON, UI is not shown by simply touching. Please swipe inward from the top outside the screen</string>
+    <string name="pref_title_photo_ui_do_not_show_title">Do not show content name</string>
+    <string name="pref_message_photo_ui_do_not_show_title">When set to ON, do not show content name on ActionBar</string>
+    <string name="pref_title_photo_ui_transparent">Make the background of the UI panel transparent</string>
+    <string name="pref_message_photo_ui_transparent">When set to ON, make the background of the UI panel completely transparent</string>
 
     <string name="pref_header_information">Information</string>
     <string name="pref_title_play_store">Google Play Store</string>
@@ -85,8 +130,8 @@
     <string name="dialog_title_select_device">Playback device</string>
     <string name="dialog_title_update">Update</string>
     <string name="dialog_message_update">A newer version is available. Version up is recommended.</string>
-    <string name="dialog_button_ok">OK</string>
-    <string name="dialog_button_cancel">Cancel</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
     <string name="dialog_title_delete">Caution : Delete</string>
     <string name="dialog_message_delete">\"%1$s\" will be deleted from server.\nDeleting it can not be undone.\nIs it OK?</string>
 </resources>

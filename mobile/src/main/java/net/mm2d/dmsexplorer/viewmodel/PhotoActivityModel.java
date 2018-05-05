@@ -10,11 +10,13 @@ package net.mm2d.dmsexplorer.viewmodel;
 import android.app.Activity;
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
+import android.graphics.Color;
 import android.graphics.Point;
 import android.net.Uri;
+import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 
 import com.android.databinding.library.baseAdapters.BR;
 
@@ -24,7 +26,9 @@ import net.mm2d.android.util.Toaster;
 import net.mm2d.dmsexplorer.R;
 import net.mm2d.dmsexplorer.Repository;
 import net.mm2d.dmsexplorer.domain.model.PlaybackTargetModel;
+import net.mm2d.dmsexplorer.settings.Settings;
 import net.mm2d.dmsexplorer.util.Downloader;
+import net.mm2d.dmsexplorer.view.base.BaseActivity;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 
@@ -34,25 +38,33 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 public class PhotoActivityModel extends BaseObservable {
     @NonNull
     public final String title;
+    @ColorInt
+    public final int background;
     @Nullable
     private byte[] mImageBinary;
     private boolean mLoading = true;
     private int mRightNavigationSize;
 
     @NonNull
-    private final Activity mActivity;
+    private final BaseActivity mActivity;
     @NonNull
     private final PlaybackTargetModel mTargetModel;
 
     public PhotoActivityModel(
-            @NonNull final Activity activity,
+            @NonNull final BaseActivity activity,
             @NonNull final Repository repository) {
         mTargetModel = repository.getPlaybackTargetModel();
         if (mTargetModel == null) {
             throw new IllegalStateException();
         }
         mActivity = activity;
-        title = AribUtils.toDisplayableString(mTargetModel.getTitle());
+        final Settings settings = new Settings(activity);
+        title = settings.shouldShowTitleInPhotoUi()
+                ? AribUtils.toDisplayableString(mTargetModel.getTitle())
+                : "";
+        background = settings.isPhotoUiBackgroundTransparent()
+                ? Color.TRANSPARENT
+                : ContextCompat.getColor(activity, R.color.translucent_control);
         final Uri uri = mTargetModel.getUri();
         if (uri == Uri.EMPTY) {
             throw new IllegalStateException();
@@ -78,7 +90,7 @@ public class PhotoActivityModel extends BaseObservable {
     }
 
     public void onClickBack() {
-        ActivityCompat.finishAfterTransition(mActivity);
+        mActivity.navigateUpTo();
     }
 
     @Nullable

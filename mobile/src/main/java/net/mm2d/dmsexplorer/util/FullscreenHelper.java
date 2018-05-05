@@ -161,6 +161,21 @@ public class FullscreenHelper {
             mBottomView.setVisibility(View.GONE);
         }
         mRootView.setSystemUiVisibility(SYSTEM_UI_INVISIBLE);
+        mHandler.removeCallbacks(mHideNavigationTask);
+    }
+
+    public void hideNavigationImmediately() {
+        mPosted = false;
+        if (mTopView != null) {
+            mTopView.clearAnimation();
+            mTopView.setVisibility(View.GONE);
+        }
+        if (mBottomView != null) {
+            mBottomView.clearAnimation();
+            mBottomView.setVisibility(View.GONE);
+        }
+        mRootView.setSystemUiVisibility(SYSTEM_UI_INVISIBLE);
+        mHandler.removeCallbacks(mHideNavigationTask);
     }
 
     public void onPictureInPictureModeChanged(final boolean isInPictureInPictureMode) {

@@ -7,7 +7,6 @@
 
 package net.mm2d.dmsexplorer.viewmodel;
 
-import android.app.Activity;
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
 import android.net.Uri;
@@ -20,17 +19,18 @@ import android.widget.Toast;
 import net.mm2d.android.util.AribUtils;
 import net.mm2d.android.util.Toaster;
 import net.mm2d.dmsexplorer.BR;
-import net.mm2d.dmsexplorer.EventLogger;
 import net.mm2d.dmsexplorer.Repository;
 import net.mm2d.dmsexplorer.domain.model.MediaServerModel;
 import net.mm2d.dmsexplorer.domain.model.MusicPlayerModel;
 import net.mm2d.dmsexplorer.domain.model.PlaybackTargetModel;
 import net.mm2d.dmsexplorer.domain.model.PlayerModel;
+import net.mm2d.dmsexplorer.log.EventLogger;
 import net.mm2d.dmsexplorer.settings.RepeatMode;
 import net.mm2d.dmsexplorer.settings.Settings;
 import net.mm2d.dmsexplorer.util.Downloader;
-import net.mm2d.dmsexplorer.util.ThemeUtils;
+import net.mm2d.dmsexplorer.settings.theme.ThemeColorGenerator;
 import net.mm2d.dmsexplorer.view.adapter.PropertyAdapter;
+import net.mm2d.dmsexplorer.view.base.BaseActivity;
 import net.mm2d.dmsexplorer.viewmodel.ControlPanelModel.OnCompletionListener;
 import net.mm2d.dmsexplorer.viewmodel.ControlPanelModel.SkipControlListener;
 import net.mm2d.dmsexplorer.viewmodel.helper.MuteAlertHelper;
@@ -63,7 +63,7 @@ public class MusicActivityModel extends BaseObservable
     private Toast mToast;
 
     @NonNull
-    private final Activity mActivity;
+    private final BaseActivity mActivity;
     @NonNull
     private final Repository mRepository;
     @NonNull
@@ -78,7 +78,7 @@ public class MusicActivityModel extends BaseObservable
     private boolean mFinishing;
 
     public MusicActivityModel(
-            @NonNull final Activity activity,
+            @NonNull final BaseActivity activity,
             @NonNull final Repository repository) {
         mActivity = activity;
         mRepository = repository;
@@ -112,7 +112,10 @@ public class MusicActivityModel extends BaseObservable
         playerModel.setUri(targetModel.getUri(), null);
 
         mTitle = AribUtils.toDisplayableString(targetModel.getTitle());
-        mAccentColor = ThemeUtils.getDeepColor(mTitle);
+        final ThemeColorGenerator generator = mSettings
+                .getThemeParams()
+                .getThemeColorGenerator();
+        mAccentColor = generator.getDeepColor(mTitle);
         mPropertyAdapter = PropertyAdapter.ofContent(mActivity, targetModel.getContentEntity());
         mRepository.getThemeModel().setThemeColor(mActivity, mAccentColor, 0);
 

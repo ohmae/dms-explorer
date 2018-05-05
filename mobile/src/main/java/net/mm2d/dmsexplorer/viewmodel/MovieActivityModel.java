@@ -10,8 +10,10 @@ package net.mm2d.dmsexplorer.viewmodel;
 import android.app.Activity;
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
+import android.graphics.Color;
 import android.graphics.Point;
 import android.net.Uri;
+import android.support.annotation.ColorInt;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -25,15 +27,16 @@ import com.android.databinding.library.baseAdapters.BR;
 import net.mm2d.android.util.AribUtils;
 import net.mm2d.android.util.DisplaySizeUtils;
 import net.mm2d.android.util.Toaster;
-import net.mm2d.dmsexplorer.EventLogger;
 import net.mm2d.dmsexplorer.R;
 import net.mm2d.dmsexplorer.Repository;
 import net.mm2d.dmsexplorer.domain.model.MediaServerModel;
 import net.mm2d.dmsexplorer.domain.model.MoviePlayerModel;
 import net.mm2d.dmsexplorer.domain.model.PlaybackTargetModel;
 import net.mm2d.dmsexplorer.domain.model.PlayerModel;
+import net.mm2d.dmsexplorer.log.EventLogger;
 import net.mm2d.dmsexplorer.settings.RepeatMode;
 import net.mm2d.dmsexplorer.settings.Settings;
+import net.mm2d.dmsexplorer.view.base.BaseActivity;
 import net.mm2d.dmsexplorer.viewmodel.ControlPanelModel.OnCompletionListener;
 import net.mm2d.dmsexplorer.viewmodel.ControlPanelModel.SkipControlListener;
 import net.mm2d.dmsexplorer.viewmodel.helper.MovieActivityPipHelper;
@@ -55,6 +58,8 @@ public class MovieActivityModel extends BaseObservable
     @NonNull
     public final ControlPanelParam controlPanelParam;
     public final boolean canUsePictureInPicture = PipHelpers.isSupported();
+    @ColorInt
+    public final int background;
 
     @NonNull
     private String mTitle;
@@ -72,7 +77,7 @@ public class MovieActivityModel extends BaseObservable
     private Toast mToast;
 
     @NonNull
-    private final Activity mActivity;
+    private final BaseActivity mActivity;
     @NonNull
     private final VideoView mVideoView;
     @NonNull
@@ -91,7 +96,7 @@ public class MovieActivityModel extends BaseObservable
     private boolean mFinishing;
 
     public MovieActivityModel(
-            @NonNull final Activity activity,
+            @NonNull final BaseActivity activity,
             @NonNull final VideoView videoView,
             @NonNull final Repository repository) {
         mActivity = activity;
@@ -105,9 +110,12 @@ public class MovieActivityModel extends BaseObservable
         mRepeatMode = mSettings.getRepeatModeMovie();
         mRepeatIconId = mRepeatMode.getIconId();
 
-        final int color = ContextCompat.getColor(activity, R.color.translucent_control);
+        background = mSettings.isMovieUiBackgroundTransparent()
+                ? Color.TRANSPARENT
+                : ContextCompat.getColor(activity, R.color.translucent_control);
         controlPanelParam = new ControlPanelParam();
-        controlPanelParam.setBackgroundColor(color);
+        controlPanelParam.setBackgroundColor(background);
+
         mMovieActivityPipHelper = PipHelpers.getMovieHelper(mActivity);
         mMovieActivityPipHelper.register();
         mMuteAlertHelper = new MuteAlertHelper(activity);
@@ -118,7 +126,7 @@ public class MovieActivityModel extends BaseObservable
         updateTargetModel();
     }
 
-    private void updateTargetModel() {
+    public void updateTargetModel() {
         final PlaybackTargetModel targetModel = mRepository.getPlaybackTargetModel();
         if (targetModel == null || targetModel.getUri() == Uri.EMPTY) {
             finishAfterTransition();
@@ -133,7 +141,9 @@ public class MovieActivityModel extends BaseObservable
         mControlPanelModel.setSkipControlListener(this);
         mMovieActivityPipHelper.setControlPanelModel(mControlPanelModel);
         playerModel.setUri(targetModel.getUri(), null);
-        mTitle = AribUtils.toDisplayableString(targetModel.getTitle());
+        mTitle = mSettings.shouldShowTitleInMovieUi()
+                ? AribUtils.toDisplayableString(targetModel.getTitle())
+                : "";
 
         notifyPropertyChanged(BR.title);
         notifyPropertyChanged(BR.controlPanelModel);
@@ -163,7 +173,7 @@ public class MovieActivityModel extends BaseObservable
     }
 
     public void onClickBack() {
-        ActivityCompat.finishAfterTransition(mActivity);
+        mActivity.navigateUpTo();
     }
 
     public void onClickRepeat() {

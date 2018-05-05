@@ -19,6 +19,7 @@
         android:layout_margin="@dimen/list_card_margin"
         android:focusable="true"
         app:cardCornerRadius="@dimen/list_card_radius"
+        app:cardBackgroundColor="?attr/themeCardBackground"
         >
 
         <LinearLayout
@@ -64,7 +65,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@{model.title}"
-                    android:textColor="@color/textMain"
+                    android:textColor="?attr/themeTextColor"
                     android:textSize="@dimen/text_size_main"
                     />
 
@@ -74,7 +75,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
                     android:text="@{model.description}"
-                    android:textColor="@color/textWeak"
+                    android:textColor="?attr/themeSubTextColor"
                     android:textSize="@dimen/text_size_sub"
                     android:visibility="@{model.hasDescription ? View.VISIBLE : View.GONE}"
                     />

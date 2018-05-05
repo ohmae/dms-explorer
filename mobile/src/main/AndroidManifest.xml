@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          xmlns:tools="http://schemas.android.com/tools"
           package="net.mm2d.dmsexplorer">
 
     <uses-permission android:name="android.permission.INTERNET"/>
@@ -14,19 +15,22 @@
 
     <application
         android:name=".App"
-        android:allowBackup="true"
+        android:allowBackup="false"
         android:fullBackupContent="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:resizeableActivity="true"
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        tools:ignore="GoogleAppIndexingWarning"
+        >
         <activity
             android:name=".view.ServerListActivity"
             android:label="${app_name}"
-            android:launchMode="singleTask"
-            android:theme="@style/AppTheme.List">
+            android:launchMode="singleTop"
+            android:theme="@style/DarkTheme.List"
+            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
@@ -35,70 +39,103 @@
         </activity>
         <activity
             android:name=".view.ServerDetailActivity"
-            android:launchMode="singleTask"
+            android:launchMode="singleTop"
             android:parentActivityName=".view.ServerListActivity"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBar"
+            >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".view.ServerListActivity"/>
+                android:value=".view.ServerListActivity"
+                />
         </activity>
         <activity
             android:name=".view.ContentListActivity"
-            android:launchMode="singleTask"
+            android:launchMode="singleTop"
             android:parentActivityName=".view.ServerListActivity"
-            android:theme="@style/AppTheme.List">
+            android:theme="@style/AppTheme.List"
+            >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".view.ServerListActivity"/>
+                android:value=".view.ServerListActivity"
+                />
         </activity>
         <activity
             android:name=".view.ContentDetailActivity"
-            android:launchMode="singleTask"
+            android:launchMode="singleTop"
             android:parentActivityName=".view.ContentListActivity"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBar"
+            >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".view.ContentListActivity"/>
+                android:value=".view.ContentListActivity"
+                />
         </activity>
         <activity
             android:name=".view.SettingsActivity"
             android:label="@string/title_activity_settings"
-            android:theme="@style/AppTheme">
+            android:theme="@style/AppTheme"
+            >
         </activity>
         <activity
             android:name=".view.MovieActivity"
             android:configChanges="keyboardHidden|orientation|screenSize|smallestScreenSize|screenLayout"
             android:launchMode="singleTask"
+            android:parentActivityName=".view.ContentListActivity"
             android:supportsPictureInPicture="true"
-            android:theme="@style/AppTheme.NoActionBar.FullScreen">
+            android:theme="@style/AppTheme.NoActionBar.FullScreen"
+            >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".view.ContentListActivity"
+                />
         </activity>
         <activity
             android:name=".view.PhotoActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:launchMode="singleTask"
-            android:theme="@style/AppTheme.NoActionBar.FullScreen">
+            android:parentActivityName=".view.ContentListActivity"
+            android:theme="@style/AppTheme.NoActionBar.FullScreen"
+            >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".view.ContentListActivity"
+                />
         </activity>
         <activity
             android:name=".view.MusicActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:launchMode="singleTask"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:parentActivityName=".view.ContentListActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".view.ContentListActivity"
+                />
         </activity>
         <activity
             android:name=".view.DmcActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
-            android:launchMode="singleTask"
-            android:theme="@style/AppTheme.NoActionBar.Dark">
+            android:launchMode="singleTop"
+            android:parentActivityName=".view.ContentListActivity"
+            android:theme="@style/AppTheme.NoActionBar.Dark"
+            >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".view.ContentListActivity"
+                />
         </activity>
         <activity
             android:name=".view.WebViewActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
-            android:launchMode="singleTask"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:launchMode="singleTop"
+            android:theme="@style/AppTheme.NoActionBar"
+            >
         </activity>
 
         <meta-data
             android:name="android.max_aspect"
-            android:value="3"/>
+            android:value="3"
+            />
     </application>
 </manifest>

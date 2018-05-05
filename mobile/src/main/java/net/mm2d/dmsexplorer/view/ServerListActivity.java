@@ -7,6 +7,9 @@
 
 package net.mm2d.dmsexplorer.view;
 
+import android.content.Context;
+import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -15,6 +18,9 @@ import android.support.v4.content.ContextCompat;
 import net.mm2d.dmsexplorer.R;
 import net.mm2d.dmsexplorer.Repository;
 import net.mm2d.dmsexplorer.domain.model.ControlPointModel;
+import net.mm2d.dmsexplorer.settings.Settings;
+import net.mm2d.dmsexplorer.util.AttrUtils;
+import net.mm2d.dmsexplorer.util.ViewSettingsObserver;
 import net.mm2d.dmsexplorer.view.base.BaseActivity;
 import net.mm2d.dmsexplorer.view.delegate.ServerListActivityDelegate;
 
@@ -26,9 +32,17 @@ import net.mm2d.dmsexplorer.view.delegate.ServerListActivityDelegate;
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
  */
 public class ServerListActivity extends BaseActivity {
+    private Settings mSettings;
     private ControlPointModel mControlPointModel;
-
     private ServerListActivityDelegate mDelegate;
+    private ViewSettingsObserver mViewSettingsObserver;
+
+    public static void start(@NonNull final Context context) {
+        final Intent intent = new Intent(context, ServerListActivity.class);
+        intent.addCategory(Intent.CATEGORY_LAUNCHER);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(intent);
+    }
 
     public ServerListActivity() {
         super(true);
@@ -36,12 +50,16 @@ public class ServerListActivity extends BaseActivity {
 
     @Override
     protected void onCreate(@Nullable final Bundle savedInstanceState) {
+        mSettings = new Settings(this);
+        setTheme(mSettings.getThemeParams().getListThemeId());
+        mViewSettingsObserver = new ViewSettingsObserver(this);
+        mViewSettingsObserver.register(this::updateViewSettings);
         super.onCreate(savedInstanceState);
         final Repository repository = Repository.get();
         mControlPointModel = repository.getControlPointModel();
 
         repository.getThemeModel().setThemeColor(this,
-                ContextCompat.getColor(this, R.color.primary),
+                AttrUtils.resolveColor(this, R.attr.colorPrimary, Color.BLACK),
                 ContextCompat.getColor(this, R.color.defaultStatusBar));
 
         if (savedInstanceState == null) {
@@ -53,10 +71,16 @@ public class ServerListActivity extends BaseActivity {
 
     @Override
     protected void onDestroy() {
+        mViewSettingsObserver.unregister();
         super.onDestroy();
         if (isFinishing()) {
             mControlPointModel.terminate();
         }
+    }
+
+    private void updateViewSettings() {
+        mSettings.getBrowseOrientation()
+                .setRequestedOrientation(this);
     }
 
     @Override

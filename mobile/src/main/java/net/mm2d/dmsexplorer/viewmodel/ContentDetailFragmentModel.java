@@ -9,6 +9,7 @@ package net.mm2d.dmsexplorer.viewmodel;
 
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
+import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentActivity;
@@ -24,8 +25,9 @@ import net.mm2d.dmsexplorer.Repository;
 import net.mm2d.dmsexplorer.domain.entity.ContentEntity;
 import net.mm2d.dmsexplorer.domain.model.MediaServerModel;
 import net.mm2d.dmsexplorer.settings.Settings;
+import net.mm2d.dmsexplorer.util.AttrUtils;
 import net.mm2d.dmsexplorer.util.ItemSelectUtils;
-import net.mm2d.dmsexplorer.util.ThemeUtils;
+import net.mm2d.dmsexplorer.settings.theme.ThemeColorGenerator;
 import net.mm2d.dmsexplorer.view.adapter.PropertyAdapter;
 import net.mm2d.dmsexplorer.view.dialog.DeleteDialog;
 
@@ -76,20 +78,22 @@ public class ContentDetailFragmentModel extends BaseObservable {
             throw new IllegalStateException();
         }
         mActivity = activity;
+        mSettings = new Settings(activity);
         final String rawTitle = entity.getName();
         title = AribUtils.toDisplayableString(rawTitle);
         propertyAdapter = PropertyAdapter.ofContent(activity, entity);
+        final ThemeColorGenerator generator = mSettings.getThemeParams()
+                .getThemeColorGenerator();
         if (activity.getResources().getBoolean(R.bool.two_pane)) {
-            collapsedColor = ThemeUtils.getSlightColor(rawTitle);
-            expandedColor = ThemeUtils.getSlightColor(rawTitle);
+            collapsedColor = generator.getSlightColor(rawTitle);
+            expandedColor = generator.getSlightColor(rawTitle);
         } else {
-            collapsedColor = ThemeUtils.getVividColor(rawTitle);
-            expandedColor = ThemeUtils.getPastelColor(rawTitle);
+            collapsedColor = generator.getVividColor(rawTitle);
+            expandedColor = generator.getPastelColor(rawTitle);
         }
         hasResource = entity.hasResource();
         isProtected = entity.isProtected();
         mCanDelete = model.canDelete(entity);
-        mSettings = new Settings(activity);
         setDeleteEnabled(mSettings.isDeleteFunctionEnabled() && mCanDelete);
 
         mMrControlPoint = repository.getControlPointModel().getMrControlPoint();
@@ -109,6 +113,13 @@ public class ContentDetailFragmentModel extends BaseObservable {
     @Bindable
     public boolean isDeleteEnabled() {
         return mDeleteEnabled;
+    }
+
+    @Bindable
+    public int getPlayBackgroundTint() {
+        return isProtected
+                ? AttrUtils.resolveColor(mActivity, R.attr.themeFabDisable, Color.BLACK)
+                : AttrUtils.resolveColor(mActivity, R.attr.colorAccent, Color.BLACK);
     }
 
     private void setDeleteEnabled(final boolean enabled) {

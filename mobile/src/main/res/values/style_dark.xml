@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="DarkTheme" parent="Theme.AppCompat">
+        <item name="themeTextColor">@color/textMainDark</item>
+        <item name="themeSubTextColor">@color/textWeakDark</item>
+        <item name="themeLinkColor">@color/textLinkDark</item>
+        <item name="themePropertyTitleColor">@color/textHighlightDark</item>
+        <item name="themeFragmentBackground">@color/bgFragmentDark</item>
+        <item name="themeListBackground">@color/bgListDark</item>
+        <item name="themeCardBackground">@color/bgCardDark</item>
+        <item name="themeFabDisable">@color/fabDisableDark</item>
+        <item name="themeToolbarBackgroundDefault">@color/toolbarBackgroundDefaultDark</item>
+        <item name="themeToolbarText">@color/textMainDark</item>
+        <item name="themeProgressBackground">@color/bgProgressDark</item>
+        <item name="colorPrimary">@color/primaryDark</item>
+        <item name="colorPrimaryDark">@color/primaryDark</item>
+        <item name="colorAccent">@color/accentDark</item>
+        <item name="android:windowBackground">@color/bgDark</item>
+        <item name="android:colorBackground">@color/bgDark</item>
+    </style>
+
+    <style name="DarkTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="DarkTheme.List">
+        <item name="android:windowBackground">@color/bgListDark</item>
+        <item name="android:colorBackground">@color/bgListDark</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="DarkTheme.NoActionBar.Dark">
+        <item name="android:windowBackground">@android:color/black</item>
+        <item name="android:colorBackground">@android:color/black</item>
+    </style>
+
+    <style name="DarkTheme.NoActionBar.FullScreen">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowBackground">@android:color/black</item>
+        <item name="android:colorBackground">@android:color/black</item>
+    </style>
+
+    <style name="DarkTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Dark"/>
+</resources>

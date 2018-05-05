@@ -2,6 +2,7 @@
 *.apk
 .gradle
 /local.properties
+/.idea/caches
 /.idea/copyright
 /.idea/dictionaries
 /.idea/misc.xml

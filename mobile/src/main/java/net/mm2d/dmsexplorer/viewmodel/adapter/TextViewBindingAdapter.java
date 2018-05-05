@@ -13,7 +13,7 @@ import android.graphics.Paint;
 import android.support.annotation.NonNull;
 import android.widget.TextView;
 
-import net.mm2d.dmsexplorer.util.AttrsUtils;
+import net.mm2d.dmsexplorer.util.AttrUtils;
 
 /**
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
@@ -34,6 +34,6 @@ public class TextViewBindingAdapter {
     public static void setTextColorAttr(
             @NonNull final TextView view,
             final int attr) {
-        view.setTextColor(AttrsUtils.resolveColor(view.getContext(), attr, Color.BLACK));
+        view.setTextColor(AttrUtils.resolveColor(view.getContext(), attr, Color.BLACK));
     }
 }

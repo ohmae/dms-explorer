@@ -7,6 +7,7 @@
 
 package net.mm2d.dmsexplorer.view;
 
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
@@ -16,8 +17,10 @@ import android.view.MotionEvent;
 import net.mm2d.dmsexplorer.R;
 import net.mm2d.dmsexplorer.Repository;
 import net.mm2d.dmsexplorer.databinding.MovieActivityBinding;
+import net.mm2d.dmsexplorer.settings.Settings;
 import net.mm2d.dmsexplorer.util.FullscreenHelper;
 import net.mm2d.dmsexplorer.util.RepeatIntroductionUtils;
+import net.mm2d.dmsexplorer.util.ViewSettingsObserver;
 import net.mm2d.dmsexplorer.view.base.BaseActivity;
 import net.mm2d.dmsexplorer.viewmodel.ControlPanelModel;
 import net.mm2d.dmsexplorer.viewmodel.MovieActivityModel;
@@ -33,12 +36,18 @@ import java.util.concurrent.TimeUnit;
 public class MovieActivity extends BaseActivity implements OnChangeContentListener {
     private static final String KEY_POSITION = "KEY_POSITION";
     private static final long TIMEOUT_DELAY = TimeUnit.SECONDS.toMillis(1);
+    private Settings mSettings;
     private FullscreenHelper mFullscreenHelper;
     private MovieActivityBinding mBinding;
     private MovieActivityModel mModel;
+    private ViewSettingsObserver mViewSettingsObserver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        mSettings = new Settings(this);
+        setTheme(mSettings.getThemeParams().getFullscreenThemeId());
+        mViewSettingsObserver = new ViewSettingsObserver(this);
+        mViewSettingsObserver.register(this::updateViewSettings);
         super.onCreate(savedInstanceState);
         mBinding = DataBindingUtil.setContentView(this, R.layout.movie_activity);
         mFullscreenHelper = new FullscreenHelper.Builder(mBinding.getRoot())
@@ -59,7 +68,11 @@ public class MovieActivity extends BaseActivity implements OnChangeContentListen
             final long timeout = RepeatIntroductionUtils.TIMEOUT + TIMEOUT_DELAY;
             mFullscreenHelper.showNavigation(timeout);
         } else {
-            mFullscreenHelper.showNavigation();
+            if (mSettings.shouldShowMovieUiOnStart()) {
+                mFullscreenHelper.showNavigation();
+            } else {
+                mFullscreenHelper.hideNavigationImmediately();
+            }
         }
         if (savedInstanceState != null) {
             final int progress = savedInstanceState.getInt(KEY_POSITION, 0);
@@ -69,11 +82,23 @@ public class MovieActivity extends BaseActivity implements OnChangeContentListen
 
     @Override
     protected void onDestroy() {
+        mViewSettingsObserver.unregister();
         super.onDestroy();
         if (mModel != null) {
             mModel.terminate();
         }
         mFullscreenHelper.terminate();
+    }
+
+    private void updateViewSettings() {
+        mSettings.getMovieOrientation()
+                .setRequestedOrientation(this);
+    }
+
+    @Override
+    protected void onNewIntent(final Intent intent) {
+        super.onNewIntent(intent);
+        mModel.updateTargetModel();
     }
 
     @Override
@@ -116,7 +141,9 @@ public class MovieActivity extends BaseActivity implements OnChangeContentListen
     @Override
     public boolean dispatchTouchEvent(final MotionEvent ev) {
         final boolean result = super.dispatchTouchEvent(ev);
-        mFullscreenHelper.showNavigation();
+        if (mSettings.shouldShowMovieUiOnTouch()) {
+            mFullscreenHelper.showNavigation();
+        }
         return result;
     }
 
@@ -138,6 +165,8 @@ public class MovieActivity extends BaseActivity implements OnChangeContentListen
 
     @Override
     public void onChangeContent() {
-        mFullscreenHelper.showNavigation();
+        if (mSettings.shouldShowMovieUiOnStart()) {
+            mFullscreenHelper.showNavigation();
+        }
     }
 }

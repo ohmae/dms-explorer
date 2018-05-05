@@ -16,12 +16,14 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 
-import net.mm2d.dmsexplorer.EventLogger;
 import net.mm2d.dmsexplorer.R;
 import net.mm2d.dmsexplorer.Repository;
 import net.mm2d.dmsexplorer.databinding.PhotoActivityBinding;
 import net.mm2d.dmsexplorer.domain.model.MediaServerModel;
+import net.mm2d.dmsexplorer.log.EventLogger;
+import net.mm2d.dmsexplorer.settings.Settings;
 import net.mm2d.dmsexplorer.util.FullscreenHelper;
+import net.mm2d.dmsexplorer.util.ViewSettingsObserver;
 import net.mm2d.dmsexplorer.view.base.BaseActivity;
 import net.mm2d.dmsexplorer.view.view.ViewPagerAdapter;
 import net.mm2d.dmsexplorer.viewmodel.PhotoActivityModel;
@@ -32,11 +34,13 @@ import net.mm2d.dmsexplorer.viewmodel.PhotoActivityModel;
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
  */
 public class PhotoActivity extends BaseActivity {
+    private Settings mSettings;
     private FullscreenHelper mFullscreenHelper;
     private PhotoActivityBinding mBinding;
     private PhotoActivityModel mModel;
     private Repository mRepository;
     private MediaServerModel mServerModel;
+    private ViewSettingsObserver mViewSettingsObserver;
     private final OnPageChangeListener mOnPageChangeListener = new OnPageChangeListener() {
         @Override
         public void onPageScrolled(
@@ -59,6 +63,10 @@ public class PhotoActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        mSettings = new Settings(this);
+        setTheme(mSettings.getThemeParams().getFullscreenThemeId());
+        mViewSettingsObserver = new ViewSettingsObserver(this);
+        mViewSettingsObserver.register(this::updateViewSettings);
         super.onCreate(savedInstanceState);
         mBinding = DataBindingUtil.setContentView(this, R.layout.photo_activity);
         mFullscreenHelper = new FullscreenHelper.Builder(mBinding.getRoot())
@@ -75,7 +83,11 @@ public class PhotoActivity extends BaseActivity {
 
         mBinding.setModel(mModel);
         mModel.adjustPanel(this);
-        mFullscreenHelper.showNavigation();
+        if (mSettings.shouldShowPhotoUiOnStart()) {
+            mFullscreenHelper.showNavigation();
+        } else {
+            mFullscreenHelper.hideNavigationImmediately();
+        }
 
         final ViewPagerAdapter pagerAdapter = new ViewPagerAdapter();
         final LayoutInflater inflater = LayoutInflater.from(this);
@@ -89,8 +101,14 @@ public class PhotoActivity extends BaseActivity {
 
     @Override
     protected void onDestroy() {
+        mViewSettingsObserver.unregister();
         super.onDestroy();
         mFullscreenHelper.terminate();
+    }
+
+    private void updateViewSettings() {
+        mSettings.getPhotoOrientation()
+                .setRequestedOrientation(this);
     }
 
     @Override
@@ -105,7 +123,9 @@ public class PhotoActivity extends BaseActivity {
     @Override
     public boolean dispatchTouchEvent(final MotionEvent ev) {
         final boolean result = super.dispatchTouchEvent(ev);
-        mFullscreenHelper.showNavigation();
+        if (mSettings.shouldShowPhotoUiOnTouch()) {
+            mFullscreenHelper.showNavigation();
+        }
         return result;
     }
 

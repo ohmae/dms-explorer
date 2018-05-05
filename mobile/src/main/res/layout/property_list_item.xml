@@ -31,7 +31,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="4dp"
             android:text="@{model.title}"
-            android:textColor="?attr/propertyTitleColor"
+            android:textColor="?attr/themePropertyTitleColor"
             android:textSize="@dimen/text_size_sub"
             />
 
@@ -47,7 +47,7 @@
             android:textIsSelectable="true"
             android:textSize="@dimen/text_size_main"
             android:visibility="@{model.enableDescription ? View.VISIBLE : View.GONE}"
-            app:textColorAttr="@{model.isLink ? R.attr.propertyLinkColor : R.attr.propertyMessageColor}"
+            app:textColorAttr="@{model.isLink ? R.attr.themeLinkColor : R.attr.themeTextColor}"
             app:underline="@{model.isLink}"
             />
 

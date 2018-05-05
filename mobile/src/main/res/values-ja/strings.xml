@@ -69,6 +69,51 @@
     <string name="pref_title_delete">コンテンツの削除</string>
     <string name="pref_message_delete_on">削除可能な場合、削除ボタンを表示します</string>
     <string name="pref_message_delete_off">削除ボタンを表示しません</string>
+    <string name="pref_header_view">表示</string>
+    <string name="pref_category_theme">テーマ</string>
+    <string name="pref_title_dark_theme">ダークテーマ</string>
+    <string name="pref_message_dark_theme">黒を基調としたダークテーマに変更します。設定を変更するとアプリが一度終了します。</string>
+    <string name="dialog_title_change_theme">テーマ変更</string>
+    <string name="dialog_message_change_theme">テーマを変更しますか？\n「OK」を選択するとアプリが再起動し、テーマが変更されます。</string>
+
+    <string name="pref_header_expert">玄人</string>
+    <string name="pref_title_for_expert">玄人向け設定</string>
+    <string name="pref_message_for_expert">この設定は細部までこだわりたい人向けの設定です。設定の仕方によっては操作不能になったり動作が不安定になる可能性もあります。問題が発生したときに自己解決できる方のみ設定を行ってください</string>
+    <string name="pref_category_orientation">画面の向き</string>
+    <string name="pref_title_category_orientation">注意</string>
+    <string name="pref_message_category_orientation">機種依存性の高い機能です。設定が反映されなかったり、表示に乱れが発生する可能性があります。問題が発生した場合は「未指定」に戻してお使いください</string>
+    <string name="pref_title_orientation_collective">一括設定</string>
+    <string name="pref_title_orientation_browse">ブラウズ画面</string>
+    <string name="pref_title_orientation_movie">動画再生画面</string>
+    <string name="pref_title_orientation_music">音楽再生画面</string>
+    <string name="pref_title_orientation_photo">静止画画面</string>
+    <string name="pref_title_orientation_dmc">DMC画面</string>
+
+    <string name="orientation_unspecified">未指定</string>
+    <string name="orientation_portrait">縦</string>
+    <string name="orientation_landscape">横</string>
+    <string name="orientation_reverse_portrait">逆縦</string>
+    <string name="orientation_reverse_landscape">逆横</string>
+
+    <string name="pref_category_movie_ui">動画UIのカスタマイズ</string>
+    <string name="pref_title_movie_ui_do_not_show_on_start">UIを非表示で始める</string>
+    <string name="pref_message_movie_ui_do_not_show_on_start">ONにすると再生開始時のUI表示を行いません</string>
+    <string name="pref_title_movie_ui_do_not_show_on_touch">タッチでUIを表示させない</string>
+    <string name="pref_message_movie_ui_do_not_show_on_touch">ONにするとタッチしただけではUIを表示しなくなります。画面外上部から内側にスワイプで表示させてください</string>
+    <string name="pref_title_movie_ui_do_not_show_title">コンテンツ名を表示しない</string>
+    <string name="pref_message_movie_ui_do_not_show_title">ONにするとコンテンツ名を表示しません</string>
+    <string name="pref_title_movie_ui_transparent">UIパネルの背景を透明にする</string>
+    <string name="pref_message_movie_ui_transparent">ONにするとUIパネルの背景を完全な透明にします</string>
+
+    <string name="pref_category_photo_ui">静止画UIのカスタマイズ</string>
+    <string name="pref_title_photo_ui_do_not_show_on_start">UIを非表示で始める</string>
+    <string name="pref_message_photo_ui_do_not_show_on_start">ONにすると再生開始時のUI表示を行いません</string>
+    <string name="pref_title_photo_ui_do_not_show_on_touch">タッチでUIを表示させない</string>
+    <string name="pref_message_photo_ui_do_not_show_on_touch">ONにするとタッチしただけではUIを表示しなくなります。画面外上部から内側にスワイプで表示させてください</string>
+    <string name="pref_title_photo_ui_do_not_show_title">コンテンツ名を表示しない</string>
+    <string name="pref_message_photo_ui_do_not_show_title">ONにするとコンテンツ名を表示しません</string>
+    <string name="pref_title_photo_ui_transparent">UIパネルの背景を透明にする</string>
+    <string name="pref_message_photo_ui_transparent">ONにするとUIパネルの背景を完全な透明にします</string>
 
     <string name="pref_header_information">情報</string>
     <string name="pref_title_play_store">Google Playストア</string>
@@ -85,8 +130,8 @@
     <string name="dialog_title_select_device">再生機器選択</string>
     <string name="dialog_title_update">アップデートのお知らせ</string>
     <string name="dialog_message_update">新しいバージョンが利用できます。バージョンアップをおすすめします。</string>
-    <string name="dialog_button_ok">OK</string>
-    <string name="dialog_button_cancel">キャンセル</string>
+    <string name="ok">OK</string>
+    <string name="cancel">キャンセル</string>
     <string name="dialog_title_delete">注意：削除</string>
     <string name="dialog_message_delete">「%1$s」をサーバーから削除します。\n削除すると元に戻せません。\n削除しますか？</string>
 </resources>

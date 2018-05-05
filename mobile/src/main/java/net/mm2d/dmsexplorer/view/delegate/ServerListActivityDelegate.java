@@ -19,10 +19,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import net.mm2d.android.util.ViewUtils;
-import net.mm2d.dmsexplorer.EventLogger;
 import net.mm2d.dmsexplorer.R;
 import net.mm2d.dmsexplorer.Repository;
 import net.mm2d.dmsexplorer.databinding.ServerListActivityBinding;
+import net.mm2d.dmsexplorer.log.EventLogger;
+import net.mm2d.dmsexplorer.settings.Settings;
 import net.mm2d.dmsexplorer.view.ContentListActivity;
 import net.mm2d.dmsexplorer.view.base.BaseActivity;
 import net.mm2d.dmsexplorer.viewmodel.ServerListActivityModel;
@@ -57,7 +58,7 @@ public abstract class ServerListActivityDelegate implements ServerSelectListener
         return mActivity;
     }
 
-    protected ServerListActivityBinding getBinding() {
+    public ServerListActivityBinding getBinding() {
         return mBinding;
     }
 
@@ -65,10 +66,12 @@ public abstract class ServerListActivityDelegate implements ServerSelectListener
 
     @CallSuper
     public void onCreate(@Nullable final Bundle savedInstanceState) {
-        getBinding().setModel(new ServerListActivityModel(getActivity(), Repository.get(), this, isTwoPane()));
-
-        getActivity().setSupportActionBar(getBinding().toolbar);
-        getActivity().getSupportActionBar().setTitle(R.string.title_device_select);
+        final ServerListActivityBinding binding = getBinding();
+        final BaseActivity activity = getActivity();
+        binding.toolbar.setPopupTheme(new Settings(activity).getThemeParams().getPopupThemeId());
+        binding.setModel(new ServerListActivityModel(activity, Repository.get(), this, isTwoPane()));
+        activity.setSupportActionBar(binding.toolbar);
+        activity.getSupportActionBar().setTitle(R.string.title_device_select);
 
         if (savedInstanceState != null) {
             restoreScroll(savedInstanceState);

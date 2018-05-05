@@ -20,8 +20,10 @@ import net.mm2d.android.upnp.cds.MediaServer;
 import net.mm2d.android.util.AribUtils;
 import net.mm2d.android.util.DrawableUtils;
 import net.mm2d.dmsexplorer.R;
-import net.mm2d.dmsexplorer.util.ThemeUtils;
-import net.mm2d.dmsexplorer.util.ToolbarThemeUtils;
+import net.mm2d.dmsexplorer.settings.ThemeParams;
+import net.mm2d.dmsexplorer.settings.Settings;
+import net.mm2d.dmsexplorer.settings.theme.ServerColorExtractor;
+import net.mm2d.dmsexplorer.settings.theme.ThemeColorGenerator;
 import net.mm2d.upnp.Icon;
 
 /**
@@ -49,21 +51,24 @@ public class ServerItemModel {
         final Icon icon = server.getIcon();
         title = name;
         description = makeDescription(server);
+        final ThemeParams params = new Settings(context).getThemeParams();
+        final ThemeColorGenerator generator = params.getThemeColorGenerator();
+        final ServerColorExtractor extractor = params.getServerColorExtractor();
         if (icon == null) {
             accentIcon = null;
             accentText = TextUtils.isEmpty(name) ? ""
                     : AribUtils.toDisplayableString(name.substring(0, 1));
             accentBackground = DrawableUtils.get(context, R.drawable.ic_circle);
             accentBackground.mutate();
-            DrawableCompat.setTint(accentBackground, ThemeUtils.getIconColor(name));
-            ToolbarThemeUtils.setServerThemeColorAsync(server, null);
+            DrawableCompat.setTint(accentBackground, generator.getIconColor(name));
+            extractor.invokeAsync(server, null);
             return;
         }
         final byte[] binary = icon.getBinary();
         accentIcon = BitmapFactory.decodeByteArray(binary, 0, binary.length);
         accentText = null;
         accentBackground = null;
-        ToolbarThemeUtils.setServerThemeColorAsync(server, accentIcon);
+        extractor.invokeAsync(server, accentIcon);
     }
 
     private String makeDescription(@NonNull final MediaServer server) {
