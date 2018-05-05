@@ -226,7 +226,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             return (preference, value) -> {
                 final Orientation orientation = Orientation.of(value.toString());
                 preference.setSummary(orientation.getName(preference.getContext()));
-                mViewSettingsNotifier.update();
+                mViewSettingsNotifier.send();
                 return true;
             };
         }
@@ -240,7 +240,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                     p.setValue(stringValue);
                     p.setSummary(summary);
                 }
-                mViewSettingsNotifier.update();
+                mViewSettingsNotifier.send();
                 return false; // Do not write the value of collective setting
             };
         }
