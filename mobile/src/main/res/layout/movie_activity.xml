@@ -58,6 +58,7 @@
                 android:layout_weight="1"
                 android:ellipsize="end"
                 android:maxLines="1"
+                android:singleLine="true"
                 android:text="@{model.title}"
                 android:textColor="#FFFFFF"
                 android:textSize="@dimen/text_size_toolbar"
