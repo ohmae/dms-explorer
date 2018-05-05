@@ -66,7 +66,6 @@ public class ServerListActivity extends BaseActivity {
             mControlPointModel.initialize();
         }
         mDelegate = ServerListActivityDelegate.create(this);
-        mDelegate.getBinding().toolbar.setPopupTheme(mSettings.getThemeParams().getPopupThemeId());
         mDelegate.onCreate(savedInstanceState);
     }
 

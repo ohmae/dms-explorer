@@ -20,6 +20,7 @@ import net.mm2d.android.util.ViewUtils;
 import net.mm2d.dmsexplorer.R;
 import net.mm2d.dmsexplorer.Repository;
 import net.mm2d.dmsexplorer.databinding.ContentListActivityBinding;
+import net.mm2d.dmsexplorer.settings.Settings;
 import net.mm2d.dmsexplorer.view.base.BaseActivity;
 import net.mm2d.dmsexplorer.view.dialog.DeleteDialog.OnDeleteListener;
 import net.mm2d.dmsexplorer.viewmodel.ContentListActivityModel;
@@ -70,17 +71,20 @@ public abstract class ContentListActivityDelegate implements CdsSelectListener, 
 
     @CallSuper
     public void onCreate(@Nullable final Bundle savedInstanceState) {
+        final BaseActivity activity = getActivity();
         final Repository repository = Repository.get();
         try {
             mModel = new ContentListActivityModel(getActivity(), repository, this, isTwoPane());
         } catch (final IllegalStateException ignored) {
-            getActivity().finish();
+            activity.finish();
             return;
         }
-        getBinding().setModel(mModel);
+        final ContentListActivityBinding binding = getBinding();
 
-        getActivity().setSupportActionBar(mBinding.toolbar);
-        getActivity().getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        binding.toolbar.setPopupTheme(new Settings(activity).getThemeParams().getPopupThemeId());
+        binding.setModel(mModel);
+        activity.setSupportActionBar(mBinding.toolbar);
+        activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         if (savedInstanceState != null) {
             restoreScroll(savedInstanceState);
         }

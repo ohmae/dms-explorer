@@ -55,7 +55,6 @@ public class ContentListActivity extends BaseActivity implements OnDeleteListene
         mViewSettingsObserver.register(this::updateViewSettings);
         super.onCreate(savedInstanceState);
         mDelegate = ContentListActivityDelegate.create(this);
-        mDelegate.getBinding().toolbar.setPopupTheme(mSettings.getThemeParams().getPopupThemeId());
         mDelegate.onCreate(savedInstanceState);
     }
 
