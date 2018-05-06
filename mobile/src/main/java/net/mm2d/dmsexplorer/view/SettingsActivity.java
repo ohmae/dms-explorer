@@ -209,13 +209,13 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                 Key.ORIENTATION_PHOTO.name(),
                 Key.ORIENTATION_DMC.name(),
         };
-        private EventNotifier mViewSettingsNotifier;
+        private EventNotifier mOrientationSettingsNotifier;
 
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             final Context context = getActivity();
-            mViewSettingsNotifier = EventRouter.createViewSettingsNotifier(context);
+            mOrientationSettingsNotifier = EventRouter.createOrientationSettingsNotifier(context);
             final SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
             addPreferencesFromResource(R.xml.pref_expert);
             final List<ListPreference> preferences = new ArrayList<>();
@@ -237,7 +237,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             return (preference, value) -> {
                 final Orientation orientation = Orientation.of(value.toString());
                 preference.setSummary(orientation.getName(preference.getContext()));
-                mViewSettingsNotifier.send();
+                mOrientationSettingsNotifier.send();
                 return true;
             };
         }
@@ -251,7 +251,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                     p.setValue(stringValue);
                     p.setSummary(summary);
                 }
-                mViewSettingsNotifier.send();
+                mOrientationSettingsNotifier.send();
                 return false; // Do not write the value of collective setting
             };
         }

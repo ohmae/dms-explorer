@@ -15,7 +15,7 @@ import android.support.annotation.NonNull;
  */
 public class EventRouter {
     private static final String ACTION_UPDATE_AVAILABILITY = "ACTION_UPDATE_AVAILABILITY";
-    private static final String ACTION_VIEW_SETTINGS = "ACTION_VIEW_SETTINGS";
+    private static final String ACTION_ORIENTATION_SETTINGS = "ACTION_ORIENTATION_SETTINGS";
     private static final String ACTION_FINISH = "ACTION_FINISH";
 
     public static EventNotifier createFinishNotifier(@NonNull final Context context) {
@@ -26,12 +26,12 @@ public class EventRouter {
         return new LocalBroadcastObserver(context, ACTION_FINISH);
     }
 
-    public static EventNotifier createViewSettingsNotifier(@NonNull final Context context) {
-        return new LocalBroadcastNotifier(context, ACTION_VIEW_SETTINGS);
+    public static EventNotifier createOrientationSettingsNotifier(@NonNull final Context context) {
+        return new LocalBroadcastNotifier(context, ACTION_ORIENTATION_SETTINGS);
     }
 
-    public static EventObserver createViewSettingsObserver(@NonNull final Context context) {
-        return new LocalBroadcastObserver(context, ACTION_VIEW_SETTINGS) {
+    public static EventObserver createOrientationSettingsObserver(@NonNull final Context context) {
+        return new LocalBroadcastObserver(context, ACTION_ORIENTATION_SETTINGS) {
             @Override
             public void register(@NonNull final Callback callback) {
                 callback.onReceive();

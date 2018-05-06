@@ -18,8 +18,6 @@ import net.mm2d.dmsexplorer.settings.Settings;
 import net.mm2d.dmsexplorer.view.base.BaseActivity;
 import net.mm2d.dmsexplorer.view.delegate.ContentListActivityDelegate;
 import net.mm2d.dmsexplorer.view.dialog.DeleteDialog.OnDeleteListener;
-import net.mm2d.dmsexplorer.view.eventrouter.EventObserver;
-import net.mm2d.dmsexplorer.view.eventrouter.EventRouter;
 
 /**
  * MediaServerのContentDirectoryを表示、操作するActivity。
@@ -42,7 +40,6 @@ public class ContentListActivity extends BaseActivity implements OnDeleteListene
 
     private Settings mSettings;
     private ContentListActivityDelegate mDelegate;
-    private EventObserver mViewSettingsObserver;
 
     public ContentListActivity() {
         super(true);
@@ -52,20 +49,13 @@ public class ContentListActivity extends BaseActivity implements OnDeleteListene
     protected void onCreate(@Nullable final Bundle savedInstanceState) {
         mSettings = new Settings(this);
         setTheme(mSettings.getThemeParams().getListThemeId());
-        mViewSettingsObserver = EventRouter.createViewSettingsObserver(this);
-        mViewSettingsObserver.register(this::updateViewSettings);
         super.onCreate(savedInstanceState);
         mDelegate = ContentListActivityDelegate.create(this);
         mDelegate.onCreate(savedInstanceState);
     }
 
     @Override
-    protected void onDestroy() {
-        mViewSettingsObserver.unregister();
-        super.onDestroy();
-    }
-
-    private void updateViewSettings() {
+    protected void updateOrientationSettings() {
         mSettings.getBrowseOrientation()
                 .setRequestedOrientation(this);
     }

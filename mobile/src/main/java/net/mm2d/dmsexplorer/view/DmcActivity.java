@@ -20,8 +20,6 @@ import net.mm2d.dmsexplorer.Repository;
 import net.mm2d.dmsexplorer.databinding.DmcActivityBinding;
 import net.mm2d.dmsexplorer.settings.Settings;
 import net.mm2d.dmsexplorer.view.base.BaseActivity;
-import net.mm2d.dmsexplorer.view.eventrouter.EventObserver;
-import net.mm2d.dmsexplorer.view.eventrouter.EventRouter;
 import net.mm2d.dmsexplorer.viewmodel.DmcActivityModel;
 
 /**
@@ -41,12 +39,9 @@ public class DmcActivity extends BaseActivity {
     }
 
     private DmcActivityModel mModel;
-    private EventObserver mViewSettingsObserver;
 
     @Override
     protected void onCreate(@Nullable final Bundle savedInstanceState) {
-        mViewSettingsObserver = EventRouter.createViewSettingsObserver(this);
-        mViewSettingsObserver.register(this::updateViewSettings);
         super.onCreate(savedInstanceState);
         final DmcActivityBinding binding = DataBindingUtil.setContentView(this, R.layout.dmc_activity);
         try {
@@ -65,7 +60,6 @@ public class DmcActivity extends BaseActivity {
 
     @Override
     protected void onDestroy() {
-        mViewSettingsObserver.unregister();
         super.onDestroy();
         if (mModel != null) {
             mModel.terminate();
@@ -73,7 +67,8 @@ public class DmcActivity extends BaseActivity {
         Repository.get().getControlPointModel().clearSelectedRenderer();
     }
 
-    private void updateViewSettings() {
+    @Override
+    protected void updateOrientationSettings() {
         new Settings(this).getDmcOrientation()
                 .setRequestedOrientation(this);
     }

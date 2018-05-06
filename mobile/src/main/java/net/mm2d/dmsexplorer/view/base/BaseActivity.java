@@ -36,6 +36,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     private final boolean mMainMenu;
     private OptionsMenuDelegate mDelegate;
     private EventObserver mFinishObserver;
+    private EventObserver mOrientationSettingsObserver;
 
     public BaseActivity() {
         this(false);
@@ -55,6 +56,8 @@ public abstract class BaseActivity extends AppCompatActivity {
         mDelegate.onCreate(savedInstanceState);
         mFinishObserver = EventRouter.createFinishObserver(this);
         mFinishObserver.register(this::finish);
+        mOrientationSettingsObserver = EventRouter.createOrientationSettingsObserver(this);
+        mOrientationSettingsObserver.register(this::updateOrientationSettings);
     }
 
     @CallSuper
@@ -63,6 +66,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         super.onDestroy();
         mDelegate.onDestroy();
         mFinishObserver.unregister();
+        mOrientationSettingsObserver.unregister();
     }
 
     public void navigateUpTo() {
@@ -109,6 +113,9 @@ public abstract class BaseActivity extends AppCompatActivity {
                 finish();
             }
         }
+    }
+
+    protected void updateOrientationSettings() {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)

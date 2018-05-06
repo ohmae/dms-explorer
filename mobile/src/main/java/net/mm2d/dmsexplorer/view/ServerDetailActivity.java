@@ -27,8 +27,6 @@ import net.mm2d.dmsexplorer.Repository;
 import net.mm2d.dmsexplorer.databinding.ServerDetailFragmentBinding;
 import net.mm2d.dmsexplorer.settings.Settings;
 import net.mm2d.dmsexplorer.view.base.BaseActivity;
-import net.mm2d.dmsexplorer.view.eventrouter.EventObserver;
-import net.mm2d.dmsexplorer.view.eventrouter.EventRouter;
 import net.mm2d.dmsexplorer.viewmodel.ServerDetailFragmentModel;
 
 
@@ -52,7 +50,6 @@ public class ServerDetailActivity extends BaseActivity {
 
     private Settings mSettings;
     private ServerDetailFragmentBinding mBinding;
-    private EventObserver mViewSettingsObserver;
 
     public ServerDetailActivity() {
         super(true);
@@ -62,8 +59,6 @@ public class ServerDetailActivity extends BaseActivity {
     protected void onCreate(@Nullable final Bundle savedInstanceState) {
         mSettings = new Settings(this);
         setTheme(mSettings.getThemeParams().getNoActionBarThemeId());
-        mViewSettingsObserver = EventRouter.createViewSettingsObserver(this);
-        mViewSettingsObserver.register(this::updateViewSettings);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.server_detail_activity);
         mBinding = DataBindingUtil.findBinding(findViewById(R.id.server_detail_fragment));
@@ -84,12 +79,7 @@ public class ServerDetailActivity extends BaseActivity {
     }
 
     @Override
-    protected void onDestroy() {
-        mViewSettingsObserver.unregister();
-        super.onDestroy();
-    }
-
-    private void updateViewSettings() {
+    protected void updateOrientationSettings() {
         mSettings.getBrowseOrientation()
                 .setRequestedOrientation(this);
     }

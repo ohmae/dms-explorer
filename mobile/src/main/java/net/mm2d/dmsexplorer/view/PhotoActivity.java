@@ -24,8 +24,6 @@ import net.mm2d.dmsexplorer.log.EventLogger;
 import net.mm2d.dmsexplorer.settings.Settings;
 import net.mm2d.dmsexplorer.util.FullscreenHelper;
 import net.mm2d.dmsexplorer.view.base.BaseActivity;
-import net.mm2d.dmsexplorer.view.eventrouter.EventObserver;
-import net.mm2d.dmsexplorer.view.eventrouter.EventRouter;
 import net.mm2d.dmsexplorer.view.view.ViewPagerAdapter;
 import net.mm2d.dmsexplorer.viewmodel.PhotoActivityModel;
 
@@ -41,7 +39,6 @@ public class PhotoActivity extends BaseActivity {
     private PhotoActivityModel mModel;
     private Repository mRepository;
     private MediaServerModel mServerModel;
-    private EventObserver mViewSettingsObserver;
     private final OnPageChangeListener mOnPageChangeListener = new OnPageChangeListener() {
         @Override
         public void onPageScrolled(
@@ -66,8 +63,6 @@ public class PhotoActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         mSettings = new Settings(this);
         setTheme(mSettings.getThemeParams().getFullscreenThemeId());
-        mViewSettingsObserver = EventRouter.createViewSettingsObserver(this);
-        mViewSettingsObserver.register(this::updateViewSettings);
         super.onCreate(savedInstanceState);
         mBinding = DataBindingUtil.setContentView(this, R.layout.photo_activity);
         mFullscreenHelper = new FullscreenHelper.Builder(mBinding.getRoot())
@@ -102,12 +97,12 @@ public class PhotoActivity extends BaseActivity {
 
     @Override
     protected void onDestroy() {
-        mViewSettingsObserver.unregister();
         super.onDestroy();
         mFullscreenHelper.terminate();
     }
 
-    private void updateViewSettings() {
+    @Override
+    protected void updateOrientationSettings() {
         mSettings.getPhotoOrientation()
                 .setRequestedOrientation(this);
     }
