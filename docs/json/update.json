@@ -1,10 +1,10 @@
 {
   "mobile": {
-    "versionName": "0.7.33",
-    "versionCode": 733,
+    "versionName": "0.7.34",
+    "versionCode": 734,
     "targetInclude": [
       0,
-      732
+      733
     ],
     "targetExclude": [
     ]
