@@ -16,8 +16,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/bg_list_item"
-        android:orientation="horizontal"
         android:baselineAligned="false"
+        android:orientation="horizontal"
         >
 
         <FrameLayout

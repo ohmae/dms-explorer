@@ -7,7 +7,6 @@
         <item name="themeLinkColor">@color/textLink</item>
         <item name="themePropertyTitleColor">@color/textHighlight</item>
         <item name="themeFragmentBackground">@color/bgFragment</item>
-        <item name="themeListBackground">@color/bgList</item>
         <item name="themeCardBackground">@color/bgCard</item>
         <item name="themeFabDisable">@color/fabDisable</item>
         <item name="themeToolbarBackgroundDefault">@color/toolbarBackgroundDefault</item>
@@ -32,7 +31,7 @@
 
     <style name="AppTheme.NoActionBar.Dark">
         <item name="themeTextColor">@color/textMainDark</item>
-        <item name="themeSubTextColor">@color/textWeak</item>
+        <item name="themeSubTextColor">@color/textWeakDark</item>
         <item name="themeLinkColor">@color/textLinkDark</item>
         <item name="themePropertyTitleColor">@color/textHighlightDark</item>
         <item name="android:windowBackground">@android:color/black</item>

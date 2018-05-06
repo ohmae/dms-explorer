@@ -6,7 +6,6 @@
         <attr name="themeSubTextColor" format="color"/>
         <attr name="themeLinkColor" format="color"/>
         <attr name="themeFragmentBackground" format="color"/>
-        <attr name="themeListBackground" format="color"/>
         <attr name="themeCardBackground" format="color"/>
         <attr name="themeFabDisable" format="color"/>
         <attr name="themeToolbarBackgroundDefault" format="color"/>

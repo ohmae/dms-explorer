@@ -7,7 +7,6 @@
         <item name="themeLinkColor">@color/textLinkDark</item>
         <item name="themePropertyTitleColor">@color/textHighlightDark</item>
         <item name="themeFragmentBackground">@color/bgFragmentDark</item>
-        <item name="themeListBackground">@color/bgListDark</item>
         <item name="themeCardBackground">@color/bgCardDark</item>
         <item name="themeFabDisable">@color/fabDisableDark</item>
         <item name="themeToolbarBackgroundDefault">@color/toolbarBackgroundDefaultDark</item>
@@ -37,7 +36,7 @@
         <item name="android:colorBackground">@android:color/black</item>
     </style>
 
-    <style name="DarkTheme.NoActionBar.FullScreen">
+    <style name="DarkTheme.FullScreen">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <item name="android:windowBackground">@android:color/black</item>

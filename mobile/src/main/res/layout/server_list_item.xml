@@ -18,8 +18,8 @@
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/list_card_margin"
         android:focusable="true"
-        app:cardCornerRadius="@dimen/list_card_radius"
         app:cardBackgroundColor="?attr/themeCardBackground"
+        app:cardCornerRadius="@dimen/list_card_radius"
         >
 
         <LinearLayout

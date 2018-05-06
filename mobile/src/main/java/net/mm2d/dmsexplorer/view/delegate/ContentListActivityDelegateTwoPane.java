@@ -7,7 +7,6 @@
 
 package net.mm2d.dmsexplorer.view.delegate;
 
-import android.annotation.SuppressLint;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
@@ -71,10 +70,7 @@ class ContentListActivityDelegateTwoPane extends ContentListActivityDelegate {
     private void setDetailFragment(final boolean animate) {
         mFragment = ContentDetailFragment.newInstance();
         if (animate && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            @SuppressLint("RtlHardcoded")
-            final int gravity = Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1
-                    ? Gravity.START : Gravity.LEFT;
-            mFragment.setEnterTransition(new Slide(gravity));
+            mFragment.setEnterTransition(new Slide(Gravity.BOTTOM));
         }
         getActivity().getSupportFragmentManager()
                 .beginTransaction()
