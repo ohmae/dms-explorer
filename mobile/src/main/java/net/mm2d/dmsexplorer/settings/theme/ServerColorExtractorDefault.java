@@ -15,13 +15,12 @@ import android.support.v7.graphics.Palette.Swatch;
 
 import net.mm2d.android.upnp.cds.MediaServer;
 import net.mm2d.dmsexplorer.Const;
-import net.mm2d.dmsexplorer.util.PaletteUtils;
 
 /**
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
  */
-public class ServerColorExtractorNormal implements ServerColorExtractor {
-    private static final ThemeColorGenerator GENERATOR = new ThemeColorGeneratorDark();
+class ServerColorExtractorDefault implements ServerColorExtractor {
+    private static final ThemeColorGenerator GENERATOR = new ThemeColorGeneratorDefault();
 
     @Override
     public void invoke(
@@ -61,8 +60,8 @@ public class ServerColorExtractorNormal implements ServerColorExtractor {
             @NonNull final MediaServer server,
             @Nullable final Palette palette) {
         final String friendlyName = server.getFriendlyName();
-        int expandedColor = GENERATOR.getPastelColor(friendlyName);
-        int collapsedColor = GENERATOR.getDeepColor(friendlyName);
+        int expandedColor = GENERATOR.getExpandedToolbarColor(friendlyName);
+        int collapsedColor = GENERATOR.getControlColor(friendlyName);
         if (palette != null) {
             final Swatch lightSwatch = PaletteUtils.selectLightSwatch(palette);
             if (lightSwatch != null) {

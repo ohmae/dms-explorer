@@ -47,7 +47,7 @@ public class MusicActivityModel extends BaseObservable
 
     @NonNull
     private String mTitle;
-    private int mAccentColor;
+    private int mControlColor;
     @NonNull
     private ControlPanelModel mControlPanelModel;
     @NonNull
@@ -115,16 +115,16 @@ public class MusicActivityModel extends BaseObservable
         final ThemeColorGenerator generator = mSettings
                 .getThemeParams()
                 .getThemeColorGenerator();
-        mAccentColor = generator.getDeepColor(mTitle);
+        mControlColor = generator.getControlColor(mTitle);
         mPropertyAdapter = PropertyAdapter.ofContent(mActivity, targetModel.getContentEntity());
-        mRepository.getThemeModel().setThemeColor(mActivity, mAccentColor, 0);
+        mRepository.getThemeModel().setThemeColor(mActivity, mControlColor, 0);
 
         notifyPropertyChanged(BR.title);
-        notifyPropertyChanged(BR.accentColor);
+        notifyPropertyChanged(BR.controlColor);
         notifyPropertyChanged(BR.propertyAdapter);
         notifyPropertyChanged(BR.controlPanelModel);
 
-        controlPanelParam.setBackgroundColor(mAccentColor);
+        controlPanelParam.setBackgroundColor(mControlColor);
 
         loadArt(targetModel.getContentEntity().getArtUri());
     }
@@ -195,8 +195,8 @@ public class MusicActivityModel extends BaseObservable
     }
 
     @Bindable
-    public int getAccentColor() {
-        return mAccentColor;
+    public int getControlColor() {
+        return mControlColor;
     }
 
     @NonNull

@@ -56,6 +56,7 @@ public class ServerListActivityModel extends BaseObservable {
             R.color.progress4,
     };
     public final int progressBackground;
+    public final int distanceToTriggerSync;
 
     @NonNull
     public final OnRefreshListener onRefreshListener;
@@ -85,6 +86,7 @@ public class ServerListActivityModel extends BaseObservable {
             @NonNull final ServerSelectListener listener,
             final boolean twoPane) {
         progressBackground = AttrUtils.resolveColor(context, R.attr.themeProgressBackground, Color.BLACK);
+        distanceToTriggerSync = context.getResources().getDimensionPixelOffset(R.dimen.distance_to_trigger_sync);
         mSettings = new Settings(context);
         mControlPointModel = repository.getControlPointModel();
         mServerListAdapter = new ServerListAdapter(context, mControlPointModel.getMediaServerList());

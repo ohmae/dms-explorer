@@ -5,24 +5,21 @@
  * http://opensource.org/licenses/MIT
  */
 
-package net.mm2d.dmsexplorer.settings;
+package net.mm2d.dmsexplorer.settings.theme;
 
 import android.preference.PreferenceActivity.Header;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 
 import net.mm2d.dmsexplorer.R;
-import net.mm2d.dmsexplorer.settings.theme.ServerColorExtractorDark;
-import net.mm2d.dmsexplorer.settings.theme.ServerColorExtractorNormal;
-import net.mm2d.dmsexplorer.settings.theme.ThemeColorGeneratorDark;
-import net.mm2d.dmsexplorer.settings.theme.ThemeColorGeneratorNormal;
+import net.mm2d.dmsexplorer.settings.theme.ThemeParams.Builder;
 
 /**
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
  */
-enum Theme {
-    NORMAL(new ThemeParams.Builder()
-            .setHtmlQuery("t=normal")
+public enum Theme {
+    DEFAULT(new Builder()
+            .setHtmlQuery("t=default")
             .setThemeId(R.style.AppTheme)
             .setNoActionBarThemeId(R.style.AppTheme_NoActionBar)
             .setListThemeId(R.style.AppTheme_List)
@@ -30,10 +27,10 @@ enum Theme {
             .setFullscreenThemeId(R.style.AppTheme_NoActionBar_FullScreen)
             .setPreferenceHeaderConverter(headers -> {
             })
-            .setThemeColorGenerator(new ThemeColorGeneratorNormal())
-            .setServerColorExtractor(new ServerColorExtractorNormal())
+            .setThemeColorGenerator(new ThemeColorGeneratorDefault())
+            .setServerColorExtractor(new ServerColorExtractorDefault())
             .build()),
-    DARK(new ThemeParams.Builder()
+    DARK(new Builder()
             .setHtmlQuery("t=dark")
             .setThemeId(R.style.DarkTheme)
             .setNoActionBarThemeId(R.style.DarkTheme_NoActionBar)

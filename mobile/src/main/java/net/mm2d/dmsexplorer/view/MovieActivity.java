@@ -20,7 +20,6 @@ import net.mm2d.dmsexplorer.databinding.MovieActivityBinding;
 import net.mm2d.dmsexplorer.settings.Settings;
 import net.mm2d.dmsexplorer.util.FullscreenHelper;
 import net.mm2d.dmsexplorer.util.RepeatIntroductionUtils;
-import net.mm2d.dmsexplorer.util.ViewSettingsObserver;
 import net.mm2d.dmsexplorer.view.base.BaseActivity;
 import net.mm2d.dmsexplorer.viewmodel.ControlPanelModel;
 import net.mm2d.dmsexplorer.viewmodel.MovieActivityModel;
@@ -40,14 +39,11 @@ public class MovieActivity extends BaseActivity implements OnChangeContentListen
     private FullscreenHelper mFullscreenHelper;
     private MovieActivityBinding mBinding;
     private MovieActivityModel mModel;
-    private ViewSettingsObserver mViewSettingsObserver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         mSettings = new Settings(this);
         setTheme(mSettings.getThemeParams().getFullscreenThemeId());
-        mViewSettingsObserver = new ViewSettingsObserver(this);
-        mViewSettingsObserver.register(this::updateViewSettings);
         super.onCreate(savedInstanceState);
         mBinding = DataBindingUtil.setContentView(this, R.layout.movie_activity);
         mFullscreenHelper = new FullscreenHelper.Builder(mBinding.getRoot())
@@ -82,7 +78,6 @@ public class MovieActivity extends BaseActivity implements OnChangeContentListen
 
     @Override
     protected void onDestroy() {
-        mViewSettingsObserver.unregister();
         super.onDestroy();
         if (mModel != null) {
             mModel.terminate();
@@ -90,7 +85,8 @@ public class MovieActivity extends BaseActivity implements OnChangeContentListen
         mFullscreenHelper.terminate();
     }
 
-    private void updateViewSettings() {
+    @Override
+    protected void updateOrientationSettings() {
         mSettings.getMovieOrientation()
                 .setRequestedOrientation(this);
     }

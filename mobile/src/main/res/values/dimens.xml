@@ -12,6 +12,7 @@
     <dimen name="item_width">420dp</dimen>
     <dimen name="accent_size">48dp</dimen>
     <dimen name="horizontal_padding">12dp</dimen>
+    <dimen name="distance_to_trigger_sync">240dp</dimen>
 
     <dimen name="text_size_accent">22dp</dimen>
     <dimen name="text_size_main">16sp</dimen>

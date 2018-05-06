@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="distance_to_trigger_sync">280dp</dimen>
+</resources>

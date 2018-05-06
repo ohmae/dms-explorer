@@ -20,7 +20,6 @@ import net.mm2d.dmsexplorer.databinding.ContentDetailFragmentBinding;
 import net.mm2d.dmsexplorer.domain.entity.ContentEntity;
 import net.mm2d.dmsexplorer.domain.model.MediaServerModel;
 import net.mm2d.dmsexplorer.settings.Settings;
-import net.mm2d.dmsexplorer.util.ViewSettingsObserver;
 import net.mm2d.dmsexplorer.view.base.BaseActivity;
 import net.mm2d.dmsexplorer.view.dialog.DeleteDialog.OnDeleteListener;
 import net.mm2d.dmsexplorer.viewmodel.ContentDetailFragmentModel;
@@ -46,7 +45,6 @@ public class ContentDetailActivity extends BaseActivity implements OnDeleteListe
     private Settings mSettings;
     private MediaServerModel mMediaServerModel;
     private ContentEntity mContentEntity;
-    private ViewSettingsObserver mViewSettingsObserver;
 
     public ContentDetailActivity() {
         super(true);
@@ -56,8 +54,6 @@ public class ContentDetailActivity extends BaseActivity implements OnDeleteListe
     protected void onCreate(@Nullable final Bundle savedInstanceState) {
         mSettings = new Settings(this);
         setTheme(mSettings.getThemeParams().getNoActionBarThemeId());
-        mViewSettingsObserver = new ViewSettingsObserver(this);
-        mViewSettingsObserver.register(this::updateViewSettings);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.content_detail_activity);
         final Repository repository = Repository.get();
@@ -80,12 +76,7 @@ public class ContentDetailActivity extends BaseActivity implements OnDeleteListe
     }
 
     @Override
-    protected void onDestroy() {
-        mViewSettingsObserver.unregister();
-        super.onDestroy();
-    }
-
-    private void updateViewSettings() {
+    protected void updateOrientationSettings() {
         mSettings.getBrowseOrientation()
                 .setRequestedOrientation(this);
     }

@@ -5,7 +5,7 @@
  * http://opensource.org/licenses/MIT
  */
 
-package net.mm2d.dmsexplorer.util;
+package net.mm2d.dmsexplorer.settings.theme;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -15,7 +15,7 @@ import android.support.v7.graphics.Palette.Swatch;
 /**
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
  */
-public class PaletteUtils {
+class PaletteUtils {
     @Nullable
     public static Swatch selectLightSwatch(@NonNull final Palette palette) {
         Swatch swatch;

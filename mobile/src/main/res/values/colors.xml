@@ -30,7 +30,7 @@
     <color name="bgListItemSelectedRipple">#20ffffff</color>
     <color name="bgLinkText">#330080ff</color>
     <color name="bgLinkTextRipple">#660080ff</color>
-    <color name="bgProgress">#ffffff</color>
+    <color name="bgProgress">#fafafa</color>
     <color name="bgProgressDark">#222222</color>
     <color name="bgCard">#ffffff</color>
     <color name="bgCardDark">#000000</color>

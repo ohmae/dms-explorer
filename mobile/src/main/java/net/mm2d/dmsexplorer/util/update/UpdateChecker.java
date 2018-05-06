@@ -8,16 +8,16 @@
 package net.mm2d.dmsexplorer.util.update;
 
 import android.content.Context;
-import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.VisibleForTesting;
-import android.support.v4.content.LocalBroadcastManager;
 import android.text.TextUtils;
 
 import net.mm2d.dmsexplorer.BuildConfig;
 import net.mm2d.dmsexplorer.Const;
 import net.mm2d.dmsexplorer.settings.Settings;
+import net.mm2d.dmsexplorer.view.eventrouter.EventNotifier;
+import net.mm2d.dmsexplorer.view.eventrouter.EventRouter;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -43,6 +43,7 @@ public class UpdateChecker {
     private final Context mContext;
     private final Settings mSettings;
     private final int mCurrentVersion;
+    private final EventNotifier mUpdateAvailabilityNotifier;
 
     public UpdateChecker(@NonNull final Context context) {
         this(context, new Settings(context), BuildConfig.VERSION_CODE);
@@ -56,6 +57,7 @@ public class UpdateChecker {
         mContext = context;
         mSettings = settings;
         mCurrentVersion = version;
+        mUpdateAvailabilityNotifier = EventRouter.createUpdateAvailabilityNotifier(context);
     }
 
     public void check() {
@@ -103,8 +105,7 @@ public class UpdateChecker {
         if (mSettings.isUpdateAvailable() == before) {
             return;
         }
-        LocalBroadcastManager.getInstance(mContext)
-                .sendBroadcast(new Intent(Const.ACTION_UPDATE));
+        mUpdateAvailabilityNotifier.send();
     }
 
     private void checkAndSave(@NonNull final String json) throws JSONException {

@@ -69,6 +69,7 @@ public class ContentListActivityModel extends BaseObservable implements ExploreL
             R.color.progress4,
     };
     public final int progressBackground;
+    public final int distanceToTriggerSync;
     @NonNull
     public final OnRefreshListener onRefreshListener;
     @NonNull
@@ -107,6 +108,7 @@ public class ContentListActivityModel extends BaseObservable implements ExploreL
             @NonNull final CdsSelectListener listener,
             final boolean twoPane) {
         progressBackground = AttrUtils.resolveColor(context, R.attr.themeProgressBackground, Color.BLACK);
+        distanceToTriggerSync = context.getResources().getDimensionPixelOffset(R.dimen.distance_to_trigger_sync);
         mSettings = new Settings(context);
         mTwoPane = twoPane;
         final MediaServerModel model = repository.getMediaServerModel();

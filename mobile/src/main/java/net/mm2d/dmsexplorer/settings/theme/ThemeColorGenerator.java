@@ -18,14 +18,14 @@ public interface ThemeColorGenerator {
     int getIconColor(@NonNull final String title);
 
     @ColorInt
-    int getVividColor(@NonNull final String title);
+    int getCollapsedToolbarColor(@NonNull final String title);
 
     @ColorInt
-    int getPastelColor(@NonNull final String title);
+    int getExpandedToolbarColor(@NonNull final String title);
 
     @ColorInt
-    int getSlightColor(@NonNull final String title);
+    int getSubToolbarColor(@NonNull final String title);
 
     @ColorInt
-    int getDeepColor(@NonNull final String title);
+    int getControlColor(@NonNull final String title);
 }

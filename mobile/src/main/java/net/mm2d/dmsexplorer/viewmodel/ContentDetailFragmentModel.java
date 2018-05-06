@@ -85,11 +85,11 @@ public class ContentDetailFragmentModel extends BaseObservable {
         final ThemeColorGenerator generator = mSettings.getThemeParams()
                 .getThemeColorGenerator();
         if (activity.getResources().getBoolean(R.bool.two_pane)) {
-            collapsedColor = generator.getSlightColor(rawTitle);
-            expandedColor = generator.getSlightColor(rawTitle);
+            collapsedColor = generator.getSubToolbarColor(rawTitle);
+            expandedColor = generator.getSubToolbarColor(rawTitle);
         } else {
-            collapsedColor = generator.getVividColor(rawTitle);
-            expandedColor = generator.getPastelColor(rawTitle);
+            collapsedColor = generator.getCollapsedToolbarColor(rawTitle);
+            expandedColor = generator.getExpandedToolbarColor(rawTitle);
         }
         hasResource = entity.hasResource();
         isProtected = entity.isProtected();

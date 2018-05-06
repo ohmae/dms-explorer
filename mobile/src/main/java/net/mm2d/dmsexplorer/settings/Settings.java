@@ -15,6 +15,8 @@ import android.text.TextUtils;
 
 import net.mm2d.dmsexplorer.R;
 import net.mm2d.dmsexplorer.domain.entity.ContentType;
+import net.mm2d.dmsexplorer.settings.theme.Theme;
+import net.mm2d.dmsexplorer.settings.theme.ThemeParams;
 
 /**
  * SharedPreferencesに覚えさせる設定値を集中管理するクラス。
@@ -359,7 +361,7 @@ public class Settings {
     @NonNull
     public ThemeParams getThemeParams() {
         final Theme theme = mStorage.readBoolean(Key.DARK_THEME, false)
-                ? Theme.DARK : Theme.NORMAL;
+                ? Theme.DARK : Theme.DEFAULT;
         return theme.getParams();
     }
 }

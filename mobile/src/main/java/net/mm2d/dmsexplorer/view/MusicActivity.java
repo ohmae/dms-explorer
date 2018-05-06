@@ -15,7 +15,6 @@ import net.mm2d.dmsexplorer.Repository;
 import net.mm2d.dmsexplorer.databinding.MusicActivityBinding;
 import net.mm2d.dmsexplorer.settings.Settings;
 import net.mm2d.dmsexplorer.util.RepeatIntroductionUtils;
-import net.mm2d.dmsexplorer.util.ViewSettingsObserver;
 import net.mm2d.dmsexplorer.view.base.BaseActivity;
 import net.mm2d.dmsexplorer.viewmodel.MusicActivityModel;
 
@@ -28,14 +27,11 @@ public class MusicActivity extends BaseActivity {
     private static final String KEY_POSITION = "KEY_POSITION";
     private Settings mSettings;
     private MusicActivityModel mModel;
-    private ViewSettingsObserver mViewSettingsObserver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         mSettings = new Settings(this);
         setTheme(mSettings.getThemeParams().getNoActionBarThemeId());
-        mViewSettingsObserver = new ViewSettingsObserver(this);
-        mViewSettingsObserver.register(this::updateViewSettings);
         super.onCreate(savedInstanceState);
         final Repository repository = Repository.get();
         final MusicActivityBinding binding
@@ -59,14 +55,14 @@ public class MusicActivity extends BaseActivity {
 
     @Override
     protected void onDestroy() {
-        mViewSettingsObserver.unregister();
         super.onDestroy();
         if (mModel != null) {
             mModel.terminate();
         }
     }
 
-    private void updateViewSettings() {
+    @Override
+    protected void updateOrientationSettings() {
         mSettings.getMusicOrientation()
                 .setRequestedOrientation(this);
     }
