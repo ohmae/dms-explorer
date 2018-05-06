@@ -15,12 +15,11 @@ import android.support.v7.graphics.Palette.Swatch;
 
 import net.mm2d.android.upnp.cds.MediaServer;
 import net.mm2d.dmsexplorer.Const;
-import net.mm2d.dmsexplorer.util.PaletteUtils;
 
 /**
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
  */
-public class ServerColorExtractorDefault implements ServerColorExtractor {
+class ServerColorExtractorDefault implements ServerColorExtractor {
     private static final ThemeColorGenerator GENERATOR = new ThemeColorGeneratorDefault();
 
     @Override

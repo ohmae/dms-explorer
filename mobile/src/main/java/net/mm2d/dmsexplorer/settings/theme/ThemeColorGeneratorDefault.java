@@ -14,7 +14,7 @@ import android.text.TextUtils;
 /**
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
  */
-public class ThemeColorGeneratorDefault implements ThemeColorGenerator {
+class ThemeColorGeneratorDefault implements ThemeColorGenerator {
     @Override
     public int getIconColor(@NonNull final String title) {
         final char c = TextUtils.isEmpty(title) ? ' ' : title.charAt(0);

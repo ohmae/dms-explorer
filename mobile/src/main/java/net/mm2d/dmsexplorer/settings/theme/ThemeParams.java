@@ -5,14 +5,11 @@
  * http://opensource.org/licenses/MIT
  */
 
-package net.mm2d.dmsexplorer.settings;
+package net.mm2d.dmsexplorer.settings.theme;
 
 import android.preference.PreferenceActivity.Header;
 import android.support.annotation.NonNull;
 import android.support.annotation.StyleRes;
-
-import net.mm2d.dmsexplorer.settings.theme.ServerColorExtractor;
-import net.mm2d.dmsexplorer.settings.theme.ThemeColorGenerator;
 
 import java.util.List;
 

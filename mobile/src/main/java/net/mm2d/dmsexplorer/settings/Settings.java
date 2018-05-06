@@ -15,6 +15,8 @@ import android.text.TextUtils;
 
 import net.mm2d.dmsexplorer.R;
 import net.mm2d.dmsexplorer.domain.entity.ContentType;
+import net.mm2d.dmsexplorer.settings.theme.Theme;
+import net.mm2d.dmsexplorer.settings.theme.ThemeParams;
 
 /**
  * SharedPreferencesに覚えさせる設定値を集中管理するクラス。
