@@ -62,7 +62,7 @@ public class ServerDetailActivity extends BaseActivity {
     protected void onCreate(@Nullable final Bundle savedInstanceState) {
         mSettings = new Settings(this);
         setTheme(mSettings.getThemeParams().getNoActionBarThemeId());
-        mViewSettingsObserver = EventRouter.getViewSettingsObserver(this);
+        mViewSettingsObserver = EventRouter.createViewSettingsObserver(this);
         mViewSettingsObserver.register(this::updateViewSettings);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.server_detail_activity);

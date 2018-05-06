@@ -53,7 +53,7 @@ public class ServerListActivity extends BaseActivity {
     protected void onCreate(@Nullable final Bundle savedInstanceState) {
         mSettings = new Settings(this);
         setTheme(mSettings.getThemeParams().getListThemeId());
-        mViewSettingsObserver = EventRouter.getViewSettingsObserver(this);
+        mViewSettingsObserver = EventRouter.createViewSettingsObserver(this);
         mViewSettingsObserver.register(this::updateViewSettings);
         super.onCreate(savedInstanceState);
         final Repository repository = Repository.get();

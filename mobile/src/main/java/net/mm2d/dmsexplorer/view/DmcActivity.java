@@ -45,7 +45,7 @@ public class DmcActivity extends BaseActivity {
 
     @Override
     protected void onCreate(@Nullable final Bundle savedInstanceState) {
-        mViewSettingsObserver = EventRouter.getViewSettingsObserver(this);
+        mViewSettingsObserver = EventRouter.createViewSettingsObserver(this);
         mViewSettingsObserver.register(this::updateViewSettings);
         super.onCreate(savedInstanceState);
         final DmcActivityBinding binding = DataBindingUtil.setContentView(this, R.layout.dmc_activity);

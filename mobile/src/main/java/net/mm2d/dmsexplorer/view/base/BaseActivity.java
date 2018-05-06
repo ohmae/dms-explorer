@@ -53,7 +53,7 @@ public abstract class BaseActivity extends AppCompatActivity {
                 ? new MainOptionsMenuDelegate(this)
                 : new BaseOptionsMenuDelegate(this);
         mDelegate.onCreate(savedInstanceState);
-        mFinishObserver = EventRouter.getFinishObserver(this);
+        mFinishObserver = EventRouter.createFinishObserver(this);
         mFinishObserver.register(this::finish);
     }
 

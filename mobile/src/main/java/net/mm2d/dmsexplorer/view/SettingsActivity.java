@@ -89,7 +89,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         Repository.get().getThemeModel().setThemeColor(this,
                 AttrUtils.resolveColor(this, R.attr.colorPrimary, Color.BLACK),
                 ContextCompat.getColor(this, R.color.defaultStatusBar));
-        mFinishObserver = EventRouter.getFinishObserver(this);
+        mFinishObserver = EventRouter.createFinishObserver(this);
         mFinishObserver.register(this::finish);
     }
 
@@ -176,7 +176,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             final Context context = getActivity();
-            mFinishNotifier = EventRouter.getFinishNotifier(context);
+            mFinishNotifier = EventRouter.createFinishNotifier(context);
             addPreferencesFromResource(R.xml.pref_view);
             findPreference(Key.DARK_THEME.name()).setOnPreferenceChangeListener((preference, newValue) -> {
                 if (mSetFromCode) {
@@ -215,7 +215,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             final Context context = getActivity();
-            mViewSettingsNotifier = EventRouter.getViewSettingsNotifier(context);
+            mViewSettingsNotifier = EventRouter.createViewSettingsNotifier(context);
             final SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
             addPreferencesFromResource(R.xml.pref_expert);
             final List<ListPreference> preferences = new ArrayList<>();

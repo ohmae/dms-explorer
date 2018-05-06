@@ -52,7 +52,7 @@ public class ContentListActivity extends BaseActivity implements OnDeleteListene
     protected void onCreate(@Nullable final Bundle savedInstanceState) {
         mSettings = new Settings(this);
         setTheme(mSettings.getThemeParams().getListThemeId());
-        mViewSettingsObserver = EventRouter.getViewSettingsObserver(this);
+        mViewSettingsObserver = EventRouter.createViewSettingsObserver(this);
         mViewSettingsObserver.register(this::updateViewSettings);
         super.onCreate(savedInstanceState);
         mDelegate = ContentListActivityDelegate.create(this);

@@ -57,7 +57,7 @@ public class UpdateChecker {
         mContext = context;
         mSettings = settings;
         mCurrentVersion = version;
-        mUpdateAvailabilityNotifier = EventRouter.getUpdateAvailabilityNotifier(context);
+        mUpdateAvailabilityNotifier = EventRouter.createUpdateAvailabilityNotifier(context);
     }
 
     public void check() {

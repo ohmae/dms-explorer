@@ -66,7 +66,7 @@ public class PhotoActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         mSettings = new Settings(this);
         setTheme(mSettings.getThemeParams().getFullscreenThemeId());
-        mViewSettingsObserver = EventRouter.getViewSettingsObserver(this);
+        mViewSettingsObserver = EventRouter.createViewSettingsObserver(this);
         mViewSettingsObserver.register(this::updateViewSettings);
         super.onCreate(savedInstanceState);
         mBinding = DataBindingUtil.setContentView(this, R.layout.photo_activity);

@@ -35,7 +35,7 @@ public class MusicActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         mSettings = new Settings(this);
         setTheme(mSettings.getThemeParams().getNoActionBarThemeId());
-        mViewSettingsObserver = EventRouter.getViewSettingsObserver(this);
+        mViewSettingsObserver = EventRouter.createViewSettingsObserver(this);
         mViewSettingsObserver.register(this::updateViewSettings);
         super.onCreate(savedInstanceState);
         final Repository repository = Repository.get();
