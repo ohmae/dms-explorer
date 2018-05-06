@@ -26,11 +26,7 @@ function getQuery(key) {
         }
     }
 }
-if (getQuery('t') == 'dark') {
-    document.getElementById('css').href = "license_dark.css";
-} else {
-    document.getElementById('css').href = "license.css";
-}
+document.getElementById('css').href = 'license_' + getQuery('t') + '.css';
     </script>
 </head>
 <body>

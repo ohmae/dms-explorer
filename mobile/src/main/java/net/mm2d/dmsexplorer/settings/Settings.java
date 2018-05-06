@@ -359,7 +359,7 @@ public class Settings {
     @NonNull
     public ThemeParams getThemeParams() {
         final Theme theme = mStorage.readBoolean(Key.DARK_THEME, false)
-                ? Theme.DARK : Theme.NORMAL;
+                ? Theme.DARK : Theme.DEFAULT;
         return theme.getParams();
     }
 }

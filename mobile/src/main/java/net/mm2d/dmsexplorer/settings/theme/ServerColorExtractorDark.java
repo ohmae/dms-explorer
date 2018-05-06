@@ -59,8 +59,8 @@ public class ServerColorExtractorDark implements ServerColorExtractor {
             @NonNull final MediaServer server,
             @Nullable final Palette palette) {
         final String friendlyName = server.getFriendlyName();
-        int expandedColor = GENERATOR.getPastelColor(friendlyName);
-        int collapsedColor = GENERATOR.getDeepColor(friendlyName);
+        int expandedColor = GENERATOR.getExpandedToolbarColor(friendlyName);
+        int collapsedColor = GENERATOR.getControlColor(friendlyName);
         if (palette != null) {
             final Swatch lightSwatch = PaletteUtils.selectLightSwatch(palette);
             if (lightSwatch != null) {
