@@ -25,8 +25,14 @@ function getQuery(key) {
             return pair[1];
         }
     }
+    return null;
 }
-document.getElementById('css').href = 'license_' + getQuery('t') + '.css';
+var type = getQuery('t')
+if (type == null) {
+    document.getElementById('css').href = 'license_default.css';
+} else {
+    document.getElementById('css').href = 'license_' + type + '.css';
+}
     </script>
 </head>
 <body>

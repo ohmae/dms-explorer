@@ -39,10 +39,10 @@ import net.mm2d.dmsexplorer.settings.Key;
 import net.mm2d.dmsexplorer.settings.Orientation;
 import net.mm2d.dmsexplorer.settings.Settings;
 import net.mm2d.dmsexplorer.util.AttrUtils;
-import net.mm2d.dmsexplorer.util.FinishNotifier;
-import net.mm2d.dmsexplorer.util.FinishObserver;
-import net.mm2d.dmsexplorer.util.ViewSettingsNotifier;
 import net.mm2d.dmsexplorer.view.base.AppCompatPreferenceActivity;
+import net.mm2d.dmsexplorer.view.eventrouter.EventNotifier;
+import net.mm2d.dmsexplorer.view.eventrouter.EventObserver;
+import net.mm2d.dmsexplorer.view.eventrouter.EventRouter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -76,7 +76,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                 & Configuration.SCREENLAYOUT_SIZE_MASK) >= Configuration.SCREENLAYOUT_SIZE_LARGE;
     }
 
-    private FinishObserver mFinishObserver;
+    private EventObserver mFinishObserver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,7 +89,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         Repository.get().getThemeModel().setThemeColor(this,
                 AttrUtils.resolveColor(this, R.attr.colorPrimary, Color.BLACK),
                 ContextCompat.getColor(this, R.color.defaultStatusBar));
-        mFinishObserver = new FinishObserver(this);
+        mFinishObserver = EventRouter.getFinishObserver(this);
         mFinishObserver.register(this::finish);
     }
 
@@ -169,14 +169,14 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
     }
 
     public static class ViewPreferenceFragment extends PreferenceFragment {
-        private FinishNotifier mFinishNotifier;
+        private EventNotifier mFinishNotifier;
         private boolean mSetFromCode;
 
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             final Context context = getActivity();
-            mFinishNotifier = new FinishNotifier(context);
+            mFinishNotifier = EventRouter.getFinishNotifier(context);
             addPreferencesFromResource(R.xml.pref_view);
             findPreference(Key.DARK_THEME.name()).setOnPreferenceChangeListener((preference, newValue) -> {
                 if (mSetFromCode) {
@@ -209,13 +209,13 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                 Key.ORIENTATION_PHOTO.name(),
                 Key.ORIENTATION_DMC.name(),
         };
-        private ViewSettingsNotifier mViewSettingsNotifier;
+        private EventNotifier mViewSettingsNotifier;
 
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             final Context context = getActivity();
-            mViewSettingsNotifier = new ViewSettingsNotifier(context);
+            mViewSettingsNotifier = EventRouter.getViewSettingsNotifier(context);
             final SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
             addPreferencesFromResource(R.xml.pref_expert);
             final List<ListPreference> preferences = new ArrayList<>();

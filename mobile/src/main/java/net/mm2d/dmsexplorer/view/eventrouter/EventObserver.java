@@ -5,18 +5,15 @@
  * http://opensource.org/licenses/MIT
  */
 
-package net.mm2d.dmsexplorer.util;
+package net.mm2d.dmsexplorer.view.eventrouter;
 
-import android.content.Context;
 import android.support.annotation.NonNull;
-
-import net.mm2d.dmsexplorer.Const;
 
 /**
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
  */
-public class FinishNotifier extends LocalBroadcastNotifier {
-    public FinishNotifier(@NonNull final Context context) {
-        super(context, Const.ACTION_FINISH);
-    }
+public interface EventObserver {
+    void register(@NonNull final Callback callback);
+
+    void unregister();
 }

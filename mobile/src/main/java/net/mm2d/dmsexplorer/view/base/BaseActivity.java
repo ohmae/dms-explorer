@@ -20,7 +20,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import net.mm2d.dmsexplorer.util.FinishObserver;
+import net.mm2d.dmsexplorer.view.eventrouter.EventObserver;
+import net.mm2d.dmsexplorer.view.eventrouter.EventRouter;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -34,7 +35,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     private final AtomicBoolean mFinishLatch = new AtomicBoolean();
     private final boolean mMainMenu;
     private OptionsMenuDelegate mDelegate;
-    private FinishObserver mFinishObserver;
+    private EventObserver mFinishObserver;
 
     public BaseActivity() {
         this(false);
@@ -52,7 +53,7 @@ public abstract class BaseActivity extends AppCompatActivity {
                 ? new MainOptionsMenuDelegate(this)
                 : new BaseOptionsMenuDelegate(this);
         mDelegate.onCreate(savedInstanceState);
-        mFinishObserver = new FinishObserver(this);
+        mFinishObserver = EventRouter.getFinishObserver(this);
         mFinishObserver.register(this::finish);
     }
 

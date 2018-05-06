@@ -19,8 +19,9 @@ import net.mm2d.dmsexplorer.R;
 import net.mm2d.dmsexplorer.Repository;
 import net.mm2d.dmsexplorer.databinding.DmcActivityBinding;
 import net.mm2d.dmsexplorer.settings.Settings;
-import net.mm2d.dmsexplorer.util.ViewSettingsObserver;
 import net.mm2d.dmsexplorer.view.base.BaseActivity;
+import net.mm2d.dmsexplorer.view.eventrouter.EventObserver;
+import net.mm2d.dmsexplorer.view.eventrouter.EventRouter;
 import net.mm2d.dmsexplorer.viewmodel.DmcActivityModel;
 
 /**
@@ -40,11 +41,11 @@ public class DmcActivity extends BaseActivity {
     }
 
     private DmcActivityModel mModel;
-    private ViewSettingsObserver mViewSettingsObserver;
+    private EventObserver mViewSettingsObserver;
 
     @Override
     protected void onCreate(@Nullable final Bundle savedInstanceState) {
-        mViewSettingsObserver = new ViewSettingsObserver(this);
+        mViewSettingsObserver = EventRouter.getViewSettingsObserver(this);
         mViewSettingsObserver.register(this::updateViewSettings);
         super.onCreate(savedInstanceState);
         final DmcActivityBinding binding = DataBindingUtil.setContentView(this, R.layout.dmc_activity);

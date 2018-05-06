@@ -5,7 +5,7 @@
  * http://opensource.org/licenses/MIT
  */
 
-package net.mm2d.dmsexplorer.util;
+package net.mm2d.dmsexplorer.view.eventrouter;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -17,11 +17,7 @@ import android.support.v4.content.LocalBroadcastManager;
 /**
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
  */
-public class LocalBroadcastObserver {
-    public interface Callback {
-        void onReceive();
-    }
-
+class LocalBroadcastObserver implements EventObserver {
     @NonNull
     private static final Callback EMPTY_CALLBACK = () -> {
     };
@@ -41,18 +37,20 @@ public class LocalBroadcastObserver {
         }
     };
 
-    public LocalBroadcastObserver(
+    LocalBroadcastObserver(
             @NonNull final Context context,
             @NonNull final String action) {
         mAction = action;
         mBroadcastManager = LocalBroadcastManager.getInstance(context);
     }
 
+    @Override
     public void register(@NonNull final Callback callback) {
         mCallback = callback;
         mBroadcastManager.registerReceiver(mBroadcastReceiver, new IntentFilter(mAction));
     }
 
+    @Override
     public void unregister() {
         mBroadcastManager.unregisterReceiver(mBroadcastReceiver);
     }

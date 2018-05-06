@@ -26,8 +26,9 @@ import net.mm2d.dmsexplorer.R;
 import net.mm2d.dmsexplorer.Repository;
 import net.mm2d.dmsexplorer.databinding.ServerDetailFragmentBinding;
 import net.mm2d.dmsexplorer.settings.Settings;
-import net.mm2d.dmsexplorer.util.ViewSettingsObserver;
 import net.mm2d.dmsexplorer.view.base.BaseActivity;
+import net.mm2d.dmsexplorer.view.eventrouter.EventObserver;
+import net.mm2d.dmsexplorer.view.eventrouter.EventRouter;
 import net.mm2d.dmsexplorer.viewmodel.ServerDetailFragmentModel;
 
 
@@ -51,7 +52,7 @@ public class ServerDetailActivity extends BaseActivity {
 
     private Settings mSettings;
     private ServerDetailFragmentBinding mBinding;
-    private ViewSettingsObserver mViewSettingsObserver;
+    private EventObserver mViewSettingsObserver;
 
     public ServerDetailActivity() {
         super(true);
@@ -61,7 +62,7 @@ public class ServerDetailActivity extends BaseActivity {
     protected void onCreate(@Nullable final Bundle savedInstanceState) {
         mSettings = new Settings(this);
         setTheme(mSettings.getThemeParams().getNoActionBarThemeId());
-        mViewSettingsObserver = new ViewSettingsObserver(this);
+        mViewSettingsObserver = EventRouter.getViewSettingsObserver(this);
         mViewSettingsObserver.register(this::updateViewSettings);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.server_detail_activity);

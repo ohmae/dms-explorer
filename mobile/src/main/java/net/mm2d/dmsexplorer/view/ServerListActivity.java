@@ -20,9 +20,10 @@ import net.mm2d.dmsexplorer.Repository;
 import net.mm2d.dmsexplorer.domain.model.ControlPointModel;
 import net.mm2d.dmsexplorer.settings.Settings;
 import net.mm2d.dmsexplorer.util.AttrUtils;
-import net.mm2d.dmsexplorer.util.ViewSettingsObserver;
 import net.mm2d.dmsexplorer.view.base.BaseActivity;
 import net.mm2d.dmsexplorer.view.delegate.ServerListActivityDelegate;
+import net.mm2d.dmsexplorer.view.eventrouter.EventObserver;
+import net.mm2d.dmsexplorer.view.eventrouter.EventRouter;
 
 /**
  * MediaServerのサーチ、選択を行うActivity。
@@ -35,7 +36,7 @@ public class ServerListActivity extends BaseActivity {
     private Settings mSettings;
     private ControlPointModel mControlPointModel;
     private ServerListActivityDelegate mDelegate;
-    private ViewSettingsObserver mViewSettingsObserver;
+    private EventObserver mViewSettingsObserver;
 
     public static void start(@NonNull final Context context) {
         final Intent intent = new Intent(context, ServerListActivity.class);
@@ -52,7 +53,7 @@ public class ServerListActivity extends BaseActivity {
     protected void onCreate(@Nullable final Bundle savedInstanceState) {
         mSettings = new Settings(this);
         setTheme(mSettings.getThemeParams().getListThemeId());
-        mViewSettingsObserver = new ViewSettingsObserver(this);
+        mViewSettingsObserver = EventRouter.getViewSettingsObserver(this);
         mViewSettingsObserver.register(this::updateViewSettings);
         super.onCreate(savedInstanceState);
         final Repository repository = Repository.get();
