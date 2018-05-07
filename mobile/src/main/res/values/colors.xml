@@ -21,7 +21,7 @@
     <color name="bgFragment">#ffffff</color>
     <color name="bgFragmentDark">#000000</color>
     <color name="bgList">#f0f0f0</color>
-    <color name="bgListDark">#111111</color>
+    <color name="bgListDark">#222222</color>
     <color name="bgListItem">#00000000</color>
     <color name="bgListItemRipple">#40000000</color>
     <color name="bgListItemPressed">#20000000</color>
