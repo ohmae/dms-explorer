@@ -24,6 +24,7 @@ import static org.mockito.Mockito.*;
 /**
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
  */
+@SuppressWarnings("NonAsciiCharacters")
 @RunWith(RobolectricTestRunner.class)
 @Config(manifest = Config.NONE)
 public class UpdateCheckerTest {

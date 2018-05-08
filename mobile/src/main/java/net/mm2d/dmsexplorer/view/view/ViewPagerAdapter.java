@@ -7,6 +7,7 @@
 
 package net.mm2d.dmsexplorer.view.view;
 
+import android.support.annotation.NonNull;
 import android.support.v4.view.PagerAdapter;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,17 +19,18 @@ import java.util.List;
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
  */
 public class ViewPagerAdapter extends PagerAdapter {
+    @NonNull
     private final List<View> mViewList;
 
     public ViewPagerAdapter() {
         mViewList = new ArrayList<>();
     }
 
-    public void add(View view) {
+    public void add(@NonNull final View view) {
         mViewList.add(view);
     }
 
-    public View get(int position) {
+    public View get(final int position) {
         return mViewList.get(position);
     }
 
@@ -36,10 +38,11 @@ public class ViewPagerAdapter extends PagerAdapter {
         mViewList.clear();
     }
 
+    @NonNull
     @Override
     public Object instantiateItem(
-            ViewGroup container,
-            int position) {
+            @NonNull final ViewGroup container,
+            final int position) {
         final View view = mViewList.get(position);
         container.addView(view);
         return view;
@@ -47,9 +50,9 @@ public class ViewPagerAdapter extends PagerAdapter {
 
     @Override
     public void destroyItem(
-            ViewGroup container,
-            int position,
-            Object object) {
+            @NonNull final ViewGroup container,
+            final int position,
+            @NonNull final Object object) {
         container.removeView((View) object);
     }
 
@@ -60,8 +63,8 @@ public class ViewPagerAdapter extends PagerAdapter {
 
     @Override
     public boolean isViewFromObject(
-            View view,
-            Object object) {
+            @NonNull final View view,
+            @NonNull final Object object) {
         return view == object;
     }
 }

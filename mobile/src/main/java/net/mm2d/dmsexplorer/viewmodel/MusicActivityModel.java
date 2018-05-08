@@ -46,7 +46,7 @@ public class MusicActivityModel extends BaseObservable
     public final ControlPanelParam controlPanelParam;
 
     @NonNull
-    private String mTitle;
+    private String mTitle = "";
     private int mControlColor;
     @NonNull
     private ControlPanelModel mControlPanelModel;

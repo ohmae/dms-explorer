@@ -191,6 +191,7 @@
                 android:text="@{model.scrubText}"
                 android:textColor="@color/textScrub"
                 android:textSize="@dimen/text_size_scrub"
+                tools:ignore="SpUsage"
                 />
         </RelativeLayout>
     </LinearLayout>

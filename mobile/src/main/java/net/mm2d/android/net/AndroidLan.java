@@ -10,7 +10,6 @@ package net.mm2d.android.net;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.net.wifi.WifiManager;
 import android.support.annotation.NonNull;
 
 import net.mm2d.util.NetworkUtils;
@@ -23,6 +22,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * 実機環境でのLAN接続情報を扱うクラス。
@@ -30,8 +30,6 @@ import java.util.List;
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
  */
 class AndroidLan extends Lan {
-    @NonNull
-    private final WifiManager mWifiManager;
     @NonNull
     private final ConnectivityManager mConnectivityManager;
 
@@ -42,8 +40,7 @@ class AndroidLan extends Lan {
      */
     AndroidLan(@NonNull final Context context) {
         final Context appContext = context.getApplicationContext();
-        mWifiManager = (WifiManager) appContext.getSystemService(Context.WIFI_SERVICE);
-        mConnectivityManager = (ConnectivityManager) appContext.getSystemService(Context.CONNECTIVITY_SERVICE);
+        mConnectivityManager = (ConnectivityManager) Objects.requireNonNull(appContext.getSystemService(Context.CONNECTIVITY_SERVICE));
     }
 
     @Override

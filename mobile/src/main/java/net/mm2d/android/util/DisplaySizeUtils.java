@@ -47,6 +47,7 @@ public class DisplaySizeUtils {
      * @return ディスプレイサイズ
      * @see Display#getRealSize(Point)
      */
+    @SuppressWarnings("JavaReflectionMemberAccess")
     @NonNull
     public static Point getRealSize(@NonNull final Activity activity) {
         final Display display = activity.getWindowManager().getDefaultDisplay();

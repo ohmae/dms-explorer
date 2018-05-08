@@ -62,7 +62,7 @@ public class MovieActivityModel extends BaseObservable
     public final int background;
 
     @NonNull
-    private String mTitle;
+    private String mTitle = "";
     @NonNull
     private ControlPanelModel mControlPanelModel;
     private int mRightNavigationSize;

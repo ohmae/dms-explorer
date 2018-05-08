@@ -70,6 +70,7 @@ public class ContentListAdapter
         mTranslationZ = context.getResources().getDimension(R.dimen.list_item_focus_elevation);
     }
 
+    @NonNull
     @Override
     public ViewHolder onCreateViewHolder(
             @NonNull final ViewGroup parent,

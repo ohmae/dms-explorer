@@ -63,6 +63,7 @@ public class RendererListAdapter extends RecyclerView.Adapter<RendererListAdapte
         }
     }
 
+    @NonNull
     @Override
     public ViewHolder onCreateViewHolder(
             @NonNull final ViewGroup parent,
