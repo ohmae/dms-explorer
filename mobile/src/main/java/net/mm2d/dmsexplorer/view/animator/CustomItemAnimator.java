@@ -34,6 +34,7 @@ import java.util.Collections;
 import java.util.List;
 
 // copy from android-27/android/support/v7/widget/DefaultItemAnimator.java
+
 /**
  * This implementation of {@link RecyclerView.ItemAnimator} provides basic
  * animations on remove, add, and move events that happen to the items in
@@ -70,7 +71,12 @@ public class CustomItemAnimator extends SimpleItemAnimator {
         public ViewHolder holder;
         public int fromX, fromY, toX, toY;
 
-        MoveInfo(ViewHolder holder, int fromX, int fromY, int toX, int toY) {
+        MoveInfo(
+                ViewHolder holder,
+                int fromX,
+                int fromY,
+                int toX,
+                int toY) {
             this.holder = holder;
             this.fromX = fromX;
             this.fromY = fromY;
@@ -82,13 +88,21 @@ public class CustomItemAnimator extends SimpleItemAnimator {
     private static class ChangeInfo {
         public ViewHolder oldHolder, newHolder;
         public int fromX, fromY, toX, toY;
-        private ChangeInfo(ViewHolder oldHolder, ViewHolder newHolder) {
+
+        private ChangeInfo(
+                ViewHolder oldHolder,
+                ViewHolder newHolder) {
             this.oldHolder = oldHolder;
             this.newHolder = newHolder;
         }
 
-        ChangeInfo(ViewHolder oldHolder, ViewHolder newHolder,
-                int fromX, int fromY, int toX, int toY) {
+        ChangeInfo(
+                ViewHolder oldHolder,
+                ViewHolder newHolder,
+                int fromX,
+                int fromY,
+                int toX,
+                int toY) {
             this(oldHolder, newHolder);
             this.fromX = fromX;
             this.fromY = fromY;
@@ -248,7 +262,9 @@ public class CustomItemAnimator extends SimpleItemAnimator {
         return true;
     }
 
-    void animateAddImpl(final ViewHolder holder, final long delay) {
+    void animateAddImpl(
+            final ViewHolder holder,
+            final long delay) {
         final View view = holder.itemView;
         final ViewPropertyAnimator animation = view.animate();
         mAddAnimations.add(holder);
@@ -277,8 +293,12 @@ public class CustomItemAnimator extends SimpleItemAnimator {
     }
 
     @Override
-    public boolean animateMove(final ViewHolder holder, int fromX, int fromY,
-            int toX, int toY) {
+    public boolean animateMove(
+            final ViewHolder holder,
+            int fromX,
+            int fromY,
+            int toX,
+            int toY) {
         final View view = holder.itemView;
         fromX += (int) holder.itemView.getTranslationX();
         fromY += (int) holder.itemView.getTranslationY();
@@ -299,7 +319,12 @@ public class CustomItemAnimator extends SimpleItemAnimator {
         return true;
     }
 
-    void animateMoveImpl(final ViewHolder holder, int fromX, int fromY, int toX, int toY) {
+    void animateMoveImpl(
+            final ViewHolder holder,
+            int fromX,
+            int fromY,
+            int toX,
+            int toY) {
         final View view = holder.itemView;
         final int deltaX = toX - fromX;
         final int deltaY = toY - fromY;
@@ -341,8 +366,13 @@ public class CustomItemAnimator extends SimpleItemAnimator {
     }
 
     @Override
-    public boolean animateChange(ViewHolder oldHolder, ViewHolder newHolder,
-            int fromX, int fromY, int toX, int toY) {
+    public boolean animateChange(
+            ViewHolder oldHolder,
+            ViewHolder newHolder,
+            int fromX,
+            int fromY,
+            int toX,
+            int toY) {
         if (oldHolder == newHolder) {
             // Don't know how to run change animations when the same view holder is re-used.
             // run a move animation to handle position changes.
@@ -403,25 +433,28 @@ public class CustomItemAnimator extends SimpleItemAnimator {
             mChangeAnimations.add(changeInfo.newHolder);
             newViewAnimation.translationX(0).translationY(0).setDuration(getChangeDuration())
                     .alpha(1).setListener(new AnimatorListenerAdapter() {
-                        @Override
-                        public void onAnimationStart(Animator animator) {
-                            dispatchChangeStarting(changeInfo.newHolder, false);
-                        }
-                        @Override
-                        public void onAnimationEnd(Animator animator) {
-                            newViewAnimation.setListener(null);
-                            newView.setAlpha(1);
-                            newView.setTranslationX(0);
-                            newView.setTranslationY(0);
-                            dispatchChangeFinished(changeInfo.newHolder, false);
-                            mChangeAnimations.remove(changeInfo.newHolder);
-                            dispatchFinishedWhenDone();
-                        }
-                    }).start();
+                @Override
+                public void onAnimationStart(Animator animator) {
+                    dispatchChangeStarting(changeInfo.newHolder, false);
+                }
+
+                @Override
+                public void onAnimationEnd(Animator animator) {
+                    newViewAnimation.setListener(null);
+                    newView.setAlpha(1);
+                    newView.setTranslationX(0);
+                    newView.setTranslationY(0);
+                    dispatchChangeFinished(changeInfo.newHolder, false);
+                    mChangeAnimations.remove(changeInfo.newHolder);
+                    dispatchFinishedWhenDone();
+                }
+            }).start();
         }
     }
 
-    private void endChangeAnimation(List<ChangeInfo> infoList, ViewHolder item) {
+    private void endChangeAnimation(
+            List<ChangeInfo> infoList,
+            ViewHolder item) {
         for (int i = infoList.size() - 1; i >= 0; i--) {
             ChangeInfo changeInfo = infoList.get(i);
             if (endChangeAnimationIfNecessary(changeInfo, item)) {
@@ -440,7 +473,10 @@ public class CustomItemAnimator extends SimpleItemAnimator {
             endChangeAnimationIfNecessary(changeInfo, changeInfo.newHolder);
         }
     }
-    private boolean endChangeAnimationIfNecessary(ChangeInfo changeInfo, ViewHolder item) {
+
+    private boolean endChangeAnimationIfNecessary(
+            ChangeInfo changeInfo,
+            ViewHolder item) {
         boolean oldItem = false;
         if (changeInfo.newHolder == item) {
             changeInfo.newHolder = null;
@@ -685,7 +721,8 @@ public class CustomItemAnimator extends SimpleItemAnimator {
      * </ul>
      */
     @Override
-    public boolean canReuseUpdatedViewHolder(@NonNull ViewHolder viewHolder,
+    public boolean canReuseUpdatedViewHolder(
+            @NonNull ViewHolder viewHolder,
             @NonNull List<Object> payloads) {
         return !payloads.isEmpty() || super.canReuseUpdatedViewHolder(viewHolder, payloads);
     }
