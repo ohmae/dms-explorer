@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    >
 
     <data>
 
@@ -47,6 +48,7 @@
                 android:imageBitmap="@{model.accentIcon}"
                 android:scaleType="fitCenter"
                 android:visibility="@{model.accentIcon != null ? View.VISIBLE : View.INVISIBLE}"
+                tools:ignore="ContentDescription"
                 />
 
         </FrameLayout>
