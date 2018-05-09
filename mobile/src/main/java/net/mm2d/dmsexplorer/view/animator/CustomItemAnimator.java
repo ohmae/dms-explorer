@@ -19,6 +19,8 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.TimeInterpolator;
 import android.animation.ValueAnimator;
+import android.content.Context;
+import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.RecyclerView;
@@ -28,6 +30,7 @@ import android.view.View;
 import android.view.ViewPropertyAnimator;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 // copy from android-27/android/support/v7/widget/DefaultItemAnimator.java
@@ -40,6 +43,12 @@ import java.util.List;
  */
 public class CustomItemAnimator extends SimpleItemAnimator {
     private static final boolean DEBUG = false;
+
+    private static final long ADDING_ANIMATION_DELAY = 16L;
+    private static final long ADDING_ANIMATION_DELAY_MAX = 500L;
+    private static final int ADDING_TRANSLATION_Y = 200;
+    private static final int ADDING_TRANSLATION_Y_KITKAT = 50;
+    private final int mAddingTranslationY;
 
     private static TimeInterpolator sDefaultInterpolator;
 
@@ -98,6 +107,13 @@ public class CustomItemAnimator extends SimpleItemAnimator {
                     + ", toY=" + toY
                     + '}';
         }
+    }
+
+    public CustomItemAnimator(@NonNull final Context context) {
+        final float density = context.getResources().getDisplayMetrics().density;
+        final int translationY = Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP
+                ? ADDING_TRANSLATION_Y : ADDING_TRANSLATION_Y_KITKAT;
+        mAddingTranslationY = (int) (translationY * density + 0.5f);
     }
 
     @Override
@@ -171,8 +187,11 @@ public class CustomItemAnimator extends SimpleItemAnimator {
             Runnable adder = new Runnable() {
                 @Override
                 public void run() {
+                    long delay = mAddAnimations.size() * ADDING_ANIMATION_DELAY;
+                    Collections.sort(additions, (o1, o2) -> o1.getAdapterPosition() - o2.getAdapterPosition());
                     for (ViewHolder holder : additions) {
-                        animateAddImpl(holder);
+                        animateAddImpl(holder, delay);
+                        delay = Math.min(delay + ADDING_ANIMATION_DELAY, ADDING_ANIMATION_DELAY_MAX);
                     }
                     additions.clear();
                     mAdditionsList.remove(additions);
@@ -224,15 +243,18 @@ public class CustomItemAnimator extends SimpleItemAnimator {
     public boolean animateAdd(final ViewHolder holder) {
         resetAnimation(holder);
         holder.itemView.setAlpha(0);
+        holder.itemView.setTranslationY(mAddingTranslationY);
         mPendingAdditions.add(holder);
         return true;
     }
 
-    void animateAddImpl(final ViewHolder holder) {
+    void animateAddImpl(final ViewHolder holder, final long delay) {
         final View view = holder.itemView;
         final ViewPropertyAnimator animation = view.animate();
         mAddAnimations.add(holder);
         animation.alpha(1).setDuration(getAddDuration())
+                .translationY(0f)
+                .setStartDelay(delay)
                 .setListener(new AnimatorListenerAdapter() {
                     @Override
                     public void onAnimationStart(Animator animator) {
