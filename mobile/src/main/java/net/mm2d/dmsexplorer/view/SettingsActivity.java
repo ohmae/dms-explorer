@@ -7,6 +7,7 @@
 
 package net.mm2d.dmsexplorer.view;
 
+import android.app.FragmentBreadCrumbs;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -20,12 +21,17 @@ import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.preference.SwitchPreference;
+import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.text.format.DateFormat;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
 
 import net.mm2d.android.util.LaunchUtils;
 import net.mm2d.dmsexplorer.BuildConfig;
@@ -77,6 +83,20 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
     }
 
     private EventObserver mFinishObserver;
+    private FragmentBreadCrumbs mFragmentBreadCrumbs;
+
+    @Override
+    public void onBuildHeaders(final List<Header> target) {
+        loadHeadersFromResource(R.xml.pref_headers, target);
+        new Settings(this)
+                .getThemeParams()
+                .getPreferenceHeaderConverter()
+                .convert(target);
+        final View title = findViewById(android.R.id.title);
+        if (title instanceof FragmentBreadCrumbs) {
+            mFragmentBreadCrumbs = (FragmentBreadCrumbs) title;
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,12 +125,29 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
     }
 
     @Override
-    public void onBuildHeaders(final List<Header> target) {
-        loadHeadersFromResource(R.xml.pref_headers, target);
-        new Settings(this)
-                .getThemeParams()
-                .getPreferenceHeaderConverter()
-                .convert(target);
+    public void showBreadCrumbs(
+            final CharSequence title,
+            final CharSequence shortTitle) {
+        super.showBreadCrumbs(title, shortTitle);
+        setBreadCrumbsTextColor();
+    }
+
+    private void setBreadCrumbsTextColor() {
+        final int color = AttrUtils.resolveColor(this, R.attr.themeTextColor, Color.BLACK);
+        setTextColorRecursively(mFragmentBreadCrumbs, color);
+    }
+
+    private void setTextColorRecursively(
+            @Nullable final View view,
+            @ColorInt final int color) {
+        if (view instanceof TextView) {
+            ((TextView) view).setTextColor(color);
+        } else if (view instanceof ViewGroup) {
+            final ViewGroup group = (ViewGroup) view;
+            for (int i = 0; i < group.getChildCount(); i++) {
+                setTextColorRecursively(group.getChildAt(i), color);
+            }
+        }
     }
 
     @Override
