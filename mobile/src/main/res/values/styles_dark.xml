@@ -18,6 +18,18 @@
         <item name="android:windowBackground">@color/bgDark</item>
         <item name="android:colorBackground">@color/bgDark</item>
         <item name="android:textColorPrimaryInverse">?android:attr/textColorPrimary</item>
+        <item name="dialogTheme">@style/DarkDialog</item>
+        <item name="android:dialogTheme">@style/DarkDialog</item>
+        <item name="alertDialogTheme">@style/DarkDialog.Alert</item>
+        <item name="android:alertDialogTheme">@style/DarkDialog.Alert</item>
+    </style>
+
+    <style name="DarkDialog" parent="ThemeOverlay.AppCompat.Dialog">
+        <item name="android:background">@color/bgDialogDark</item>
+    </style>
+
+    <style name="DarkDialog.Alert" parent="ThemeOverlay.AppCompat.Dialog.Alert">
+        <item name="android:background">@color/bgDialogDark</item>
     </style>
 
     <style name="DarkTheme.NoActionBar">
