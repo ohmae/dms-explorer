@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppThemeBase" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="themeTextColor">@color/textMain</item>
         <item name="themeSubTextColor">@color/textWeak</item>
         <item name="themeLinkColor">@color/textLink</item>
@@ -15,6 +15,9 @@
         <item name="colorPrimary">@color/primary</item>
         <item name="colorPrimaryDark">@color/primaryDark</item>
         <item name="colorAccent">@color/accent</item>
+    </style>
+
+    <style name="AppTheme" parent="AppThemeBase">
     </style>
 
     <style name="AppTheme.NoActionBar">

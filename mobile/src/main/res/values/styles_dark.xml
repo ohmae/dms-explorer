@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="DarkTheme" parent="Theme.AppCompat">
+    <style name="DarkThemeBase" parent="Theme.AppCompat">
         <item name="themeTextColor">@color/textMainDark</item>
         <item name="themeSubTextColor">@color/textWeakDark</item>
         <item name="themeLinkColor">@color/textLinkDark</item>
@@ -18,10 +18,11 @@
         <item name="android:windowBackground">@color/bgDark</item>
         <item name="android:colorBackground">@color/bgDark</item>
         <item name="android:textColorPrimaryInverse">?android:attr/textColorPrimary</item>
+    </style>
+
+    <style name="DarkTheme" parent="DarkThemeBase">
         <item name="dialogTheme">@style/DarkDialog</item>
-        <item name="android:dialogTheme">@style/DarkDialog</item>
         <item name="alertDialogTheme">@style/DarkDialog.Alert</item>
-        <item name="android:alertDialogTheme">@style/DarkDialog.Alert</item>
     </style>
 
     <style name="DarkDialog" parent="ThemeOverlay.AppCompat.Dialog">

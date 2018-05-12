@@ -59,6 +59,17 @@ public enum Theme {
                 return R.drawable.ic_expert_settings_dark;
             case R.drawable.ic_info_settings_light:
                 return R.drawable.ic_info_settings_dark;
+            // for 4.x
+            case R.drawable.ic_play_settings_black:
+                return R.drawable.ic_play_settings_white;
+            case R.drawable.ic_function_settings_black:
+                return R.drawable.ic_function_settings_white;
+            case R.drawable.ic_view_settings_black:
+                return R.drawable.ic_view_settings_white;
+            case R.drawable.ic_expert_settings_black:
+                return R.drawable.ic_expert_settings_white;
+            case R.drawable.ic_info_settings_black:
+                return R.drawable.ic_info_settings_white;
         }
         return iconRes;
     }
