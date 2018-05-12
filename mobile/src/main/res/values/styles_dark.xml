@@ -17,6 +17,7 @@
         <item name="colorAccent">@color/accentDark</item>
         <item name="android:windowBackground">@color/bgDark</item>
         <item name="android:colorBackground">@color/bgDark</item>
+        <item name="android:textColorPrimaryInverse">?android:attr/textColorPrimary</item>
     </style>
 
     <style name="DarkTheme.NoActionBar">

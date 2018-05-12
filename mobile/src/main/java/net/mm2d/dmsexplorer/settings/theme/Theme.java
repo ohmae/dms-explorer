@@ -49,16 +49,16 @@ public enum Theme {
     @DrawableRes
     private static int convertIcon(@DrawableRes final int iconRes) {
         switch (iconRes) {
-            case R.drawable.ic_play_settings:
-                return R.drawable.ic_play_settings_white;
-            case R.drawable.ic_function_settings:
-                return R.drawable.ic_function_settings_white;
-            case R.drawable.ic_view_settings:
-                return R.drawable.ic_view_settings_white;
-            case R.drawable.ic_expert_settings:
-                return R.drawable.ic_expert_settings_white;
-            case R.drawable.ic_info_settings:
-                return R.drawable.ic_info_settings_white;
+            case R.drawable.ic_play_settings_light:
+                return R.drawable.ic_play_settings_dark;
+            case R.drawable.ic_function_settings_light:
+                return R.drawable.ic_function_settings_dark;
+            case R.drawable.ic_view_settings_light:
+                return R.drawable.ic_view_settings_dark;
+            case R.drawable.ic_expert_settings_light:
+                return R.drawable.ic_expert_settings_dark;
+            case R.drawable.ic_info_settings_light:
+                return R.drawable.ic_info_settings_dark;
         }
         return iconRes;
     }
