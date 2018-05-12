@@ -109,7 +109,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         Repository.get().getThemeModel().setThemeColor(this,
                 AttrUtils.resolveColor(this, R.attr.colorPrimary, Color.BLACK),
                 ContextCompat.getColor(this, R.color.defaultStatusBar));
-        mFinishObserver = EventRouter.createFinishObserver(this);
+        mFinishObserver = EventRouter.createFinishObserver();
         mFinishObserver.register(this::finish);
     }
 
@@ -206,14 +206,13 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
     }
 
     public static class ViewPreferenceFragment extends PreferenceFragment {
-        private EventNotifier mFinishNotifier;
         private boolean mSetFromCode;
 
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             final Context context = getActivity();
-            mFinishNotifier = EventRouter.createFinishNotifier(context);
+            final EventNotifier finishNotifier = EventRouter.createFinishNotifier();
             addPreferencesFromResource(R.xml.pref_view);
             findPreference(Key.DARK_THEME.name()).setOnPreferenceChangeListener((preference, newValue) -> {
                 if (mSetFromCode) {
@@ -228,7 +227,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                         .setPositiveButton(R.string.ok, (dialog, which) -> {
                             mSetFromCode = true;
                             switchPreference.setChecked(!checked);
-                            mFinishNotifier.send();
+                            finishNotifier.send();
                             new Handler().postDelayed(() -> ServerListActivity.start(context), 500);
                         })
                         .setNegativeButton(R.string.cancel, null)
@@ -251,8 +250,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
-            final Context context = getActivity();
-            mOrientationSettingsNotifier = EventRouter.createOrientationSettingsNotifier(context);
+            mOrientationSettingsNotifier = EventRouter.createOrientationSettingsNotifier();
             final SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
             addPreferencesFromResource(R.xml.pref_expert);
             final List<ListPreference> preferences = new ArrayList<>();

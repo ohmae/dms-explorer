@@ -45,7 +45,7 @@ public class Settings {
         try {
             while (sSettings == null) {
                 if (BuildConfig.DEBUG) {
-                    Log.e("!!!!!!!!!! BLOCK !!!!!!!!!!");
+                    Log.e(null, "!!!!!!!!!! BLOCK !!!!!!!!!!", new Throwable());
                 }
                 try {
                     sCondition.await();

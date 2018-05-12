@@ -54,9 +54,9 @@ public abstract class BaseActivity extends AppCompatActivity {
                 ? new MainOptionsMenuDelegate(this)
                 : new BaseOptionsMenuDelegate(this);
         mDelegate.onCreate(savedInstanceState);
-        mFinishObserver = EventRouter.createFinishObserver(this);
+        mFinishObserver = EventRouter.createFinishObserver();
         mFinishObserver.register(this::finish);
-        mOrientationSettingsObserver = EventRouter.createOrientationSettingsObserver(this);
+        mOrientationSettingsObserver = EventRouter.createOrientationSettingsObserver();
         mOrientationSettingsObserver.register(this::updateOrientationSettings);
     }
 

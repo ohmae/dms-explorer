@@ -16,6 +16,7 @@ import net.mm2d.dmsexplorer.domain.AppRepository;
 import net.mm2d.dmsexplorer.log.EventLogger;
 import net.mm2d.dmsexplorer.settings.Settings;
 import net.mm2d.dmsexplorer.util.update.UpdateChecker;
+import net.mm2d.dmsexplorer.view.eventrouter.EventRouter;
 import net.mm2d.log.AndroidLogInitializer;
 import net.mm2d.log.Log;
 
@@ -36,9 +37,10 @@ public class App extends Application {
         setStrictMode();
         RxJavaPlugins.setErrorHandler(e -> Log.w(e instanceof UndeliverableException ? e.getCause() : e));
         Settings.initialize(this);
+        EventRouter.initialize(this);
         EventLogger.initialize(this);
         Repository.set(new AppRepository(this));
-        new UpdateChecker(this).check();
+        new UpdateChecker().check();
     }
 
     private void setStrictMode() {
