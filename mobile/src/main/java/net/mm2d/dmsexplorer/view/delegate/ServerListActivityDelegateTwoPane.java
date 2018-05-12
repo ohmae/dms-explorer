@@ -65,10 +65,12 @@ class ServerListActivityDelegateTwoPane extends ServerListActivityDelegate {
 
     private void setDetailFragment(boolean animate) {
         mFragment = ServerDetailFragment.newInstance();
-        final Transition transition = new Slide(Gravity.BOTTOM)
-                .setDuration(100L)
-                .setInterpolator(new DecelerateInterpolator());
-        mFragment.setEnterTransition(transition);
+        if (animate) {
+            final Transition transition = new Slide(Gravity.BOTTOM)
+                    .setDuration(150L)
+                    .setInterpolator(new DecelerateInterpolator());
+            mFragment.setEnterTransition(transition);
+        }
         getActivity().getSupportFragmentManager().beginTransaction()
                 .replace(R.id.server_detail_container, mFragment)
                 .commitAllowingStateLoss();

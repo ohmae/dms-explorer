@@ -70,10 +70,12 @@ class ContentListActivityDelegateTwoPane extends ContentListActivityDelegate {
 
     private void setDetailFragment(final boolean animate) {
         mFragment = ContentDetailFragment.newInstance();
-        final Transition transition = new Slide(Gravity.BOTTOM)
-                .setDuration(100L)
-                .setInterpolator(new DecelerateInterpolator());
-        mFragment.setEnterTransition(transition);
+        if (animate) {
+            final Transition transition = new Slide(Gravity.BOTTOM)
+                    .setDuration(150L)
+                    .setInterpolator(new DecelerateInterpolator());
+            mFragment.setEnterTransition(transition);
+        }
         getActivity().getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.cds_detail_container, mFragment)
