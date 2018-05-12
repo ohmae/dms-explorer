@@ -8,6 +8,7 @@
 package net.mm2d.dmsexplorer.settings;
 
 import android.content.Context;
+import android.os.Looper;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -39,12 +40,14 @@ public class Settings {
     private static final Lock sLock = new ReentrantLock();
     @NonNull
     private static final Condition sCondition = sLock.newCondition();
+    @NonNull
+    private static final Thread sMainThread = Looper.getMainLooper().getThread();
 
     public static Settings get() {
         sLock.lock();
         try {
             while (sSettings == null) {
-                if (BuildConfig.DEBUG) {
+                if (BuildConfig.DEBUG && Thread.currentThread() == sMainThread) {
                     Log.e(null, "!!!!!!!!!! BLOCK !!!!!!!!!!", new Throwable());
                 }
                 try {
