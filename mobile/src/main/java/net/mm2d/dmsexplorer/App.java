@@ -8,6 +8,9 @@
 package net.mm2d.dmsexplorer;
 
 import android.app.Application;
+import android.os.StrictMode;
+import android.os.StrictMode.ThreadPolicy;
+import android.os.StrictMode.VmPolicy;
 
 import net.mm2d.dmsexplorer.domain.AppRepository;
 import net.mm2d.dmsexplorer.log.EventLogger;
@@ -30,10 +33,30 @@ public class App extends Application {
         super.onCreate();
         Log.setInitializer(AndroidLogInitializer.get());
         Log.initialize(BuildConfig.DEBUG, true);
+        setStrictMode();
         RxJavaPlugins.setErrorHandler(e -> Log.w(e instanceof UndeliverableException ? e.getCause() : e));
         Settings.initialize(this);
         EventLogger.initialize(this);
         Repository.set(new AppRepository(this));
         new UpdateChecker(this).check();
+    }
+
+    private void setStrictMode() {
+        if (BuildConfig.DEBUG) {
+            StrictMode.setThreadPolicy(new ThreadPolicy.Builder()
+                    .detectAll()
+                    .penaltyLog()
+                    .penaltyDropBox()
+                    .penaltyDialog()
+                    .build());
+            StrictMode.setVmPolicy(new VmPolicy.Builder()
+                    .detectAll()
+                    .penaltyLog()
+                    .penaltyDropBox()
+                    .build());
+        } else {
+            StrictMode.setThreadPolicy(ThreadPolicy.LAX);
+            StrictMode.setVmPolicy(VmPolicy.LAX);
+        }
     }
 }
