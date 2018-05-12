@@ -69,7 +69,7 @@ public class DmcActivity extends BaseActivity {
 
     @Override
     protected void updateOrientationSettings() {
-        new Settings(this).getDmcOrientation()
+        Settings.get().getDmcOrientation()
                 .setRequestedOrientation(this);
     }
 }

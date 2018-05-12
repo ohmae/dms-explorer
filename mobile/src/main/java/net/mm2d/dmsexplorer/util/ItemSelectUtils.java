@@ -70,7 +70,7 @@ public class ItemSelectUtils {
         }
         final Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.setDataAndType(targetModel.getUri(), targetModel.getMimeType());
-        final Settings settings = new Settings(activity);
+        final Settings settings = Settings.get();
         if (settings.isPlayMyself(type)) {
             intent.setClass(activity, player);
         } else {

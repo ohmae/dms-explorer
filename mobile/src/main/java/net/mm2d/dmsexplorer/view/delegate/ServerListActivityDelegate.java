@@ -68,7 +68,7 @@ public abstract class ServerListActivityDelegate implements ServerSelectListener
     public void onCreate(@Nullable final Bundle savedInstanceState) {
         final ServerListActivityBinding binding = getBinding();
         final BaseActivity activity = getActivity();
-        binding.toolbar.setPopupTheme(new Settings(activity).getThemeParams().getPopupThemeId());
+        binding.toolbar.setPopupTheme(Settings.get().getThemeParams().getPopupThemeId());
         binding.setModel(new ServerListActivityModel(activity, Repository.get(), this, isTwoPane()));
         activity.setSupportActionBar(binding.toolbar);
         activity.getSupportActionBar().setTitle(R.string.title_device_select);

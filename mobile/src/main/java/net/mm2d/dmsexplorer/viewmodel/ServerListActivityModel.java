@@ -87,7 +87,7 @@ public class ServerListActivityModel extends BaseObservable {
             final boolean twoPane) {
         progressBackground = AttrUtils.resolveColor(context, R.attr.themeProgressBackground, Color.BLACK);
         distanceToTriggerSync = context.getResources().getDimensionPixelOffset(R.dimen.distance_to_trigger_sync);
-        mSettings = new Settings(context);
+        mSettings = Settings.get();
         mControlPointModel = repository.getControlPointModel();
         mServerListAdapter = new ServerListAdapter(context, mControlPointModel.getMediaServerList());
         mServerListAdapter.setOnItemClickListener(this::onItemClick);

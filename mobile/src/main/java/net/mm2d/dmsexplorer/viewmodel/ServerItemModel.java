@@ -51,7 +51,7 @@ public class ServerItemModel {
         final Icon icon = server.getIcon();
         title = name;
         description = makeDescription(server);
-        final ThemeParams params = new Settings(context).getThemeParams();
+        final ThemeParams params = Settings.get().getThemeParams();
         final ThemeColorGenerator generator = params.getThemeColorGenerator();
         final ServerColorExtractor extractor = params.getServerColorExtractor();
         if (icon == null) {

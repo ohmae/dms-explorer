@@ -48,7 +48,7 @@ public class ServerListActivity extends BaseActivity {
 
     @Override
     protected void onCreate(@Nullable final Bundle savedInstanceState) {
-        mSettings = new Settings(this);
+        mSettings = Settings.get();
         setTheme(mSettings.getThemeParams().getListThemeId());
         super.onCreate(savedInstanceState);
         final Repository repository = Repository.get();

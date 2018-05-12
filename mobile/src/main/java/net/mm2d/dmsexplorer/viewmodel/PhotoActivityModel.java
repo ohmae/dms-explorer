@@ -58,7 +58,7 @@ public class PhotoActivityModel extends BaseObservable {
             throw new IllegalStateException();
         }
         mActivity = activity;
-        final Settings settings = new Settings(activity);
+        final Settings settings = Settings.get();
         title = settings.shouldShowTitleInPhotoUi()
                 ? AribUtils.toDisplayableString(mTargetModel.getTitle())
                 : "";

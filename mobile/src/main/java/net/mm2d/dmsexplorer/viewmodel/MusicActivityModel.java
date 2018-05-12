@@ -83,7 +83,7 @@ public class MusicActivityModel extends BaseObservable
         mActivity = activity;
         mRepository = repository;
         mServerModel = repository.getMediaServerModel();
-        mSettings = new Settings(activity);
+        mSettings = Settings.get();
         mRepeatMode = mSettings.getRepeatModeMusic();
         mRepeatIconId = mRepeatMode.getIconId();
 

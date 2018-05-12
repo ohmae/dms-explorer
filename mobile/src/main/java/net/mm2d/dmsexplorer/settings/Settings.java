@@ -13,10 +13,19 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
+import net.mm2d.dmsexplorer.BuildConfig;
 import net.mm2d.dmsexplorer.R;
 import net.mm2d.dmsexplorer.domain.entity.ContentType;
 import net.mm2d.dmsexplorer.settings.theme.Theme;
 import net.mm2d.dmsexplorer.settings.theme.ThemeParams;
+import net.mm2d.log.Log;
+
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
+
+import io.reactivex.Completable;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * SharedPreferencesに覚えさせる設定値を集中管理するクラス。
@@ -24,16 +33,53 @@ import net.mm2d.dmsexplorer.settings.theme.ThemeParams;
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
  */
 public class Settings {
+    @Nullable
+    private static Settings sSettings;
+    @NonNull
+    private static final Lock sLock = new ReentrantLock();
+    @NonNull
+    private static final Condition sCondition = sLock.newCondition();
+
+    public static Settings get() {
+        sLock.lock();
+        try {
+            while (sSettings == null) {
+                if (BuildConfig.DEBUG) {
+                    Log.e("!!!!!!!!!! BLOCK !!!!!!!!!!");
+                }
+                try {
+                    sCondition.await();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+            return sSettings;
+        } finally {
+            sLock.unlock();
+        }
+    }
+
     /**
      * アプリ起動時に一度だけコールされ、初期化を行う。
      *
      * @param context コンテキスト
      */
     public static void initialize(@NonNull final Context context) {
-        SettingsStorage.initialize(context);
-        PreferenceManager.setDefaultValues(context, R.xml.pref_playback, true);
-        PreferenceManager.setDefaultValues(context, R.xml.pref_function, true);
-        PreferenceManager.setDefaultValues(context, R.xml.pref_view, true);
+        Completable.fromAction(() -> {
+            SettingsStorage.initialize(context);
+            PreferenceManager.setDefaultValues(context, R.xml.pref_playback, true);
+            PreferenceManager.setDefaultValues(context, R.xml.pref_function, true);
+            PreferenceManager.setDefaultValues(context, R.xml.pref_view, true);
+            sLock.lock();
+            try {
+                sSettings = new Settings(context);
+                sCondition.signalAll();
+            } finally {
+                sLock.unlock();
+            }
+        })
+                .subscribeOn(Schedulers.io())
+                .subscribe();
     }
 
     @NonNull
@@ -44,7 +90,7 @@ public class Settings {
      *
      * @param context コンテキスト
      */
-    public Settings(@NonNull final Context context) {
+    private Settings(@NonNull final Context context) {
         mStorage = new SettingsStorage(context);
     }
 

@@ -78,7 +78,7 @@ public class ContentDetailFragmentModel extends BaseObservable {
             throw new IllegalStateException();
         }
         mActivity = activity;
-        mSettings = new Settings(activity);
+        mSettings = Settings.get();
         final String rawTitle = entity.getName();
         title = AribUtils.toDisplayableString(rawTitle);
         propertyAdapter = PropertyAdapter.ofContent(activity, entity);

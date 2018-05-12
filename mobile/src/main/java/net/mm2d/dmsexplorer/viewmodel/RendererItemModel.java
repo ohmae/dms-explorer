@@ -52,7 +52,7 @@ public class RendererItemModel {
                     : AribUtils.toDisplayableString(name.substring(0, 1));
             accentBackground = DrawableUtils.get(context, R.drawable.ic_circle);
             accentBackground.mutate();
-            final ThemeColorGenerator generator = new Settings(context)
+            final ThemeColorGenerator generator = Settings.get()
                     .getThemeParams()
                     .getThemeColorGenerator();
             DrawableCompat.setTint(accentBackground, generator.getIconColor(name));

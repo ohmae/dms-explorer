@@ -46,7 +46,7 @@ public class UpdateChecker {
     private final EventNotifier mUpdateAvailabilityNotifier;
 
     public UpdateChecker(@NonNull final Context context) {
-        this(context, new Settings(context), BuildConfig.VERSION_CODE);
+        this(context, Settings.get(), BuildConfig.VERSION_CODE);
     }
 
     @VisibleForTesting

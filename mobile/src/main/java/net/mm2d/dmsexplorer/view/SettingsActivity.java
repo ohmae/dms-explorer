@@ -88,7 +88,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
     @Override
     public void onBuildHeaders(final List<Header> target) {
         loadHeadersFromResource(R.xml.pref_headers, target);
-        new Settings(this)
+        Settings.get()
                 .getThemeParams()
                 .getPreferenceHeaderConverter()
                 .convert(target);
@@ -100,7 +100,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        setTheme(new Settings(this).getThemeParams().getThemeId());
+        setTheme(Settings.get().getThemeParams().getThemeId());
         super.onCreate(savedInstanceState);
         final ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
@@ -309,7 +309,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                 openUrl(getActivity(), Const.URL_GITHUB_PROJECT);
                 return true;
             });
-            final Settings settings = new Settings(getActivity());
+            final Settings settings = Settings.get();
             findPreference(Key.LICENSE.name()).setOnPreferenceClickListener(preference -> {
                 final String query = settings.getThemeParams().getHtmlQuery();
                 WebViewActivity.start(getActivity(),

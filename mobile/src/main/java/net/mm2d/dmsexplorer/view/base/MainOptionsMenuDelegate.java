@@ -33,7 +33,7 @@ class MainOptionsMenuDelegate implements OptionsMenuDelegate {
 
     MainOptionsMenuDelegate(@NonNull final BaseActivity activity) {
         mActivity = activity;
-        mSettings = new Settings(activity);
+        mSettings = Settings.get();
         mUpdateAvailabilityObserver = EventRouter.createUpdateAvailabilityObserver(activity);
     }
 
