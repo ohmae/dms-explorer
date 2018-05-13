@@ -51,9 +51,6 @@ android {
             outputFileName = "${applicationName}-${versionName}.apk"
         }
     }
-    lintOptions {
-        abortOnError false
-    }
     testOptions {
         unitTests.all {
             jacoco {
