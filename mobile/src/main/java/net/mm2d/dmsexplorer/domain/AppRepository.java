@@ -29,6 +29,9 @@ import net.mm2d.dmsexplorer.domain.model.ThemeModel;
 import net.mm2d.dmsexplorer.domain.model.ThemeModelImpl;
 import net.mm2d.dmsexplorer.settings.Settings;
 
+import io.reactivex.Completable;
+import io.reactivex.schedulers.Schedulers;
+
 /**
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
  */
@@ -51,7 +54,9 @@ public class AppRepository extends Repository {
     public AppRepository(@NonNull final Application application) {
         mContext = application;
         mControlPointModel = new ControlPointModel(mContext, this::updateMediaServer, this::updateMediaRenderer);
-        CdsFormatter.initialize(application);
+        Completable.fromAction(() -> CdsFormatter.initialize(application))
+                .subscribeOn(Schedulers.io())
+                .subscribe();
         final ThemeModelImpl themeModel = new ThemeModelImpl();
         final CustomTabsHelper helper = new CustomTabsHelper(mContext);
         mOpenUriModel = new OpenUriCustomTabsModel(helper, themeModel);
