@@ -32,15 +32,6 @@ class SettingsStorage {
         }
     }
 
-    /**
-     * SharedPreferencesのインスタンスを作成し初期化する。
-     *
-     * @param context コンテキスト
-     */
-    static void initialize(@NonNull final Context context) {
-        Maintainer.maintain(new SettingsStorage(context));
-    }
-
     @NonNull
     private final SharedPreferences mPreferences;
 

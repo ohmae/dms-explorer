@@ -67,10 +67,11 @@ public class Settings {
      */
     public static void initialize(@NonNull final Context context) {
         Completable.fromAction(() -> {
-            SettingsStorage.initialize(context);
+            final SettingsStorage storage = new SettingsStorage(context);
+            Maintainer.maintain(storage);
             sLock.lock();
             try {
-                sSettings = new Settings(context);
+                sSettings = new Settings(storage);
                 sCondition.signalAll();
             } finally {
                 sLock.unlock();
@@ -86,10 +87,10 @@ public class Settings {
     /**
      * インスタンス作成。
      *
-     * @param context コンテキスト
+     * @param storage SettingsStorage
      */
-    private Settings(@NonNull final Context context) {
-        mStorage = new SettingsStorage(context);
+    private Settings(@NonNull final SettingsStorage storage) {
+        mStorage = storage;
     }
 
     /**
