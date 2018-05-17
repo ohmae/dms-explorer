@@ -4,7 +4,7 @@
     <PreferenceCategory
         android:title="@string/pref_category_movie"
         >
-        <SwitchPreference
+        <SwitchPreferenceCompat
             android:defaultValue="true"
             android:key="PLAY_MOVIE_MYSELF"
             android:summaryOff="@string/pref_message_launch_app_off"
@@ -16,7 +16,7 @@
     <PreferenceCategory
         android:title="@string/pref_category_music"
         >
-        <SwitchPreference
+        <SwitchPreferenceCompat
             android:defaultValue="true"
             android:key="PLAY_MUSIC_MYSELF"
             android:summaryOff="@string/pref_message_launch_app_off"
@@ -28,7 +28,7 @@
     <PreferenceCategory
         android:title="@string/pref_category_photo"
         >
-        <SwitchPreference
+        <SwitchPreferenceCompat
             android:defaultValue="true"
             android:key="PLAY_PHOTO_MYSELF"
             android:summaryOff="@string/pref_message_launch_app_off"

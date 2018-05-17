@@ -13,25 +13,25 @@
     <PreferenceCategory
         android:title="@string/pref_category_movie_ui"
         >
-        <SwitchPreference
+        <SwitchPreferenceCompat
             android:defaultValue="false"
             android:key="DO_NOT_SHOW_MOVIE_UI_ON_START"
             android:summary="@string/pref_message_movie_ui_do_not_show_on_start"
             android:title="@string/pref_title_movie_ui_do_not_show_on_start"
             />
-        <SwitchPreference
+        <SwitchPreferenceCompat
             android:defaultValue="false"
             android:key="DO_NOT_SHOW_MOVIE_UI_ON_TOUCH"
             android:summary="@string/pref_message_movie_ui_do_not_show_on_touch"
             android:title="@string/pref_title_movie_ui_do_not_show_on_touch"
             />
-        <SwitchPreference
+        <SwitchPreferenceCompat
             android:defaultValue="false"
             android:key="DO_NOT_SHOW_TITLE_IN_MOVIE_UI"
             android:summary="@string/pref_message_movie_ui_do_not_show_title"
             android:title="@string/pref_title_movie_ui_do_not_show_title"
             />
-        <SwitchPreference
+        <SwitchPreferenceCompat
             android:defaultValue="false"
             android:key="IS_MOVIE_UI_BACKGROUND_TRANSPARENT"
             android:summary="@string/pref_message_movie_ui_transparent"
@@ -42,25 +42,25 @@
     <PreferenceCategory
         android:title="@string/pref_category_photo_ui"
         >
-        <SwitchPreference
+        <SwitchPreferenceCompat
             android:defaultValue="false"
             android:key="DO_NOT_SHOW_PHOTO_UI_ON_START"
             android:summary="@string/pref_message_photo_ui_do_not_show_on_start"
             android:title="@string/pref_title_photo_ui_do_not_show_on_start"
             />
-        <SwitchPreference
+        <SwitchPreferenceCompat
             android:defaultValue="false"
             android:key="DO_NOT_SHOW_PHOTO_UI_ON_TOUCH"
             android:summary="@string/pref_message_photo_ui_do_not_show_on_touch"
             android:title="@string/pref_title_photo_ui_do_not_show_on_touch"
             />
-        <SwitchPreference
+        <SwitchPreferenceCompat
             android:defaultValue="false"
             android:key="DO_NOT_SHOW_TITLE_IN_PHOTO_UI"
             android:summary="@string/pref_message_photo_ui_do_not_show_title"
             android:title="@string/pref_title_photo_ui_do_not_show_title"
             />
-        <SwitchPreference
+        <SwitchPreferenceCompat
             android:defaultValue="false"
             android:key="IS_PHOTO_UI_BACKGROUND_TRANSPARENT"
             android:summary="@string/pref_message_photo_ui_transparent"

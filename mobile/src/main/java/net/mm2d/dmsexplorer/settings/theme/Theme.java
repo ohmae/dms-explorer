@@ -7,12 +7,12 @@
 
 package net.mm2d.dmsexplorer.settings.theme;
 
-import android.preference.PreferenceActivity.Header;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 
 import net.mm2d.dmsexplorer.R;
 import net.mm2d.dmsexplorer.settings.theme.ThemeParams.Builder;
+import net.mm2d.preference.Header;
 
 /**
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)

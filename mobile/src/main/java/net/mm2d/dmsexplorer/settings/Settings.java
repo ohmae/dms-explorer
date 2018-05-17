@@ -9,13 +9,11 @@ package net.mm2d.dmsexplorer.settings;
 
 import android.content.Context;
 import android.os.Looper;
-import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
 import net.mm2d.dmsexplorer.BuildConfig;
-import net.mm2d.dmsexplorer.R;
 import net.mm2d.dmsexplorer.domain.entity.ContentType;
 import net.mm2d.dmsexplorer.settings.theme.Theme;
 import net.mm2d.dmsexplorer.settings.theme.ThemeParams;
@@ -70,9 +68,6 @@ public class Settings {
     public static void initialize(@NonNull final Context context) {
         Completable.fromAction(() -> {
             SettingsStorage.initialize(context);
-            PreferenceManager.setDefaultValues(context, R.xml.pref_playback, true);
-            PreferenceManager.setDefaultValues(context, R.xml.pref_function, true);
-            PreferenceManager.setDefaultValues(context, R.xml.pref_view, true);
             sLock.lock();
             try {
                 sSettings = new Settings(context);

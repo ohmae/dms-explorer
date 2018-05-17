@@ -18,6 +18,7 @@
         <item name="android:windowBackground">@color/bgDark</item>
         <item name="android:colorBackground">@color/bgDark</item>
         <item name="android:textColorPrimaryInverse">?android:attr/textColorPrimary</item>
+        <item name="preferenceTheme">@style/PreferenceThemeOverlay.v14.Material</item>
     </style>
 
     <style name="DarkTheme" parent="DarkThemeBase">
