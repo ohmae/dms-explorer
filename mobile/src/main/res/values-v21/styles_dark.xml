@@ -6,6 +6,7 @@
         <item name="android:dialogTheme">@style/DarkDialog</item>
         <item name="alertDialogTheme">@style/DarkDialog.Alert</item>
         <item name="android:alertDialogTheme">@style/DarkDialog.Alert</item>
+        <item name="android:navigationBarColor">@color/bgDark</item>
     </style>
 
     <style name="DarkTheme.NoActionBar">
