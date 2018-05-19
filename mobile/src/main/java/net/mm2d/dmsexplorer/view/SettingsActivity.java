@@ -24,13 +24,9 @@ import android.support.v7.preference.Preference.OnPreferenceChangeListener;
 import android.support.v7.preference.PreferenceFragmentCompat;
 import android.support.v7.preference.PreferenceManager;
 import android.support.v7.preference.SwitchPreferenceCompat;
-import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.text.format.DateFormat;
-import android.view.LayoutInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
 
 import net.mm2d.android.util.LaunchUtils;
 import net.mm2d.dmsexplorer.BuildConfig;
@@ -44,7 +40,7 @@ import net.mm2d.dmsexplorer.settings.Key;
 import net.mm2d.dmsexplorer.settings.Orientation;
 import net.mm2d.dmsexplorer.settings.Settings;
 import net.mm2d.dmsexplorer.util.AttrUtils;
-import net.mm2d.dmsexplorer.util.ViewLayoutUtils;
+import net.mm2d.dmsexplorer.view.base.PreferenceFragmentBase;
 import net.mm2d.dmsexplorer.view.eventrouter.EventNotifier;
 import net.mm2d.dmsexplorer.view.eventrouter.EventObserver;
 import net.mm2d.dmsexplorer.view.eventrouter.EventRouter;
@@ -147,19 +143,6 @@ public class SettingsActivity extends PreferenceActivityCompat {
             @NonNull final Context context,
             @NonNull final String url) {
         Repository.get().getOpenUriModel().openUri(context, url);
-    }
-
-    private static abstract class PreferenceFragmentBase extends PreferenceFragmentCompat {
-        @Override
-        public View onCreateView(
-                final LayoutInflater inflater,
-                final ViewGroup container,
-                final Bundle savedInstanceState) {
-            final View view = super.onCreateView(inflater, container, savedInstanceState);
-            getListView().setOverScrollMode(RecyclerView.OVER_SCROLL_NEVER);
-            ViewLayoutUtils.setPaddingBottom(container, 0);
-            return view;
-        }
     }
 
     public static class PlaybackPreferenceFragment extends PreferenceFragmentBase {
