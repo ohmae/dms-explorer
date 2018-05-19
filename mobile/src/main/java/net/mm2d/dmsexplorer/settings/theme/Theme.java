@@ -25,6 +25,7 @@ public enum Theme {
             .setListThemeId(R.style.AppTheme_List)
             .setPopupThemeId(R.style.AppTheme_PopupOverlay)
             .setFullscreenThemeId(R.style.AppTheme_FullScreen)
+            .setSettingsThemeId(R.style.AppTheme_Settings)
             .setPreferenceHeaderConverter(headers -> {
             })
             .setThemeColorGenerator(new ThemeColorGeneratorDefault())
@@ -37,6 +38,7 @@ public enum Theme {
             .setListThemeId(R.style.DarkTheme_List)
             .setPopupThemeId(R.style.DarkTheme_PopupOverlay)
             .setFullscreenThemeId(R.style.DarkTheme_FullScreen)
+            .setSettingsThemeId(R.style.DarkTheme_Settings)
             .setPreferenceHeaderConverter(headers -> {
                 for (final Header header : headers) {
                     header.iconRes = convertIcon(header.iconRes);

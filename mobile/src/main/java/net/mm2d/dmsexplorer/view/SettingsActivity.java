@@ -24,9 +24,13 @@ import android.support.v7.preference.Preference.OnPreferenceChangeListener;
 import android.support.v7.preference.PreferenceFragmentCompat;
 import android.support.v7.preference.PreferenceManager;
 import android.support.v7.preference.SwitchPreferenceCompat;
+import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.text.format.DateFormat;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
 
 import net.mm2d.android.util.LaunchUtils;
 import net.mm2d.dmsexplorer.BuildConfig;
@@ -40,6 +44,7 @@ import net.mm2d.dmsexplorer.settings.Key;
 import net.mm2d.dmsexplorer.settings.Orientation;
 import net.mm2d.dmsexplorer.settings.Settings;
 import net.mm2d.dmsexplorer.util.AttrUtils;
+import net.mm2d.dmsexplorer.util.ViewLayoutUtils;
 import net.mm2d.dmsexplorer.view.eventrouter.EventNotifier;
 import net.mm2d.dmsexplorer.view.eventrouter.EventObserver;
 import net.mm2d.dmsexplorer.view.eventrouter.EventRouter;
@@ -91,7 +96,7 @@ public class SettingsActivity extends PreferenceActivityCompat {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        setTheme(Settings.get().getThemeParams().getThemeId());
+        setTheme(Settings.get().getThemeParams().getSettingsThemeId());
         super.onCreate(savedInstanceState);
         final ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
@@ -144,7 +149,20 @@ public class SettingsActivity extends PreferenceActivityCompat {
         Repository.get().getOpenUriModel().openUri(context, url);
     }
 
-    public static class PlaybackPreferenceFragment extends PreferenceFragmentCompat {
+    private static abstract class PreferenceFragmentBase extends PreferenceFragmentCompat {
+        @Override
+        public View onCreateView(
+                final LayoutInflater inflater,
+                final ViewGroup container,
+                final Bundle savedInstanceState) {
+            final View view = super.onCreateView(inflater, container, savedInstanceState);
+            getListView().setOverScrollMode(RecyclerView.OVER_SCROLL_NEVER);
+            ViewLayoutUtils.setPaddingBottom(container, 0);
+            return view;
+        }
+    }
+
+    public static class PlaybackPreferenceFragment extends PreferenceFragmentBase {
         @Override
         public void onCreatePreferences(
                 final Bundle savedInstanceState,
@@ -153,7 +171,7 @@ public class SettingsActivity extends PreferenceActivityCompat {
         }
     }
 
-    public static class FunctionPreferenceFragment extends PreferenceFragmentCompat {
+    public static class FunctionPreferenceFragment extends PreferenceFragmentBase {
         @Override
         public void onCreatePreferences(
                 final Bundle savedInstanceState,
@@ -181,7 +199,7 @@ public class SettingsActivity extends PreferenceActivityCompat {
         }
     }
 
-    public static class ViewPreferenceFragment extends PreferenceFragmentCompat {
+    public static class ViewPreferenceFragment extends PreferenceFragmentBase {
         private boolean mSetFromCode;
 
         @Override
@@ -214,7 +232,7 @@ public class SettingsActivity extends PreferenceActivityCompat {
         }
     }
 
-    public static class ExpertPreferenceFragment extends PreferenceFragmentCompat {
+    public static class ExpertPreferenceFragment extends PreferenceFragmentBase {
         private static final String[] ORIENTATION_KEYS = new String[]{
                 Key.ORIENTATION_BROWSE.name(),
                 Key.ORIENTATION_MOVIE.name(),
@@ -270,7 +288,7 @@ public class SettingsActivity extends PreferenceActivityCompat {
         }
     }
 
-    public static class InformationPreferenceFragment extends PreferenceFragmentCompat {
+    public static class InformationPreferenceFragment extends PreferenceFragmentBase {
         @Override
         public void onCreatePreferences(
                 final Bundle savedInstanceState,

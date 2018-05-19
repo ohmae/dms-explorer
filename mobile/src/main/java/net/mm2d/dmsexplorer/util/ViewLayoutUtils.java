@@ -8,6 +8,7 @@
 package net.mm2d.dmsexplorer.util;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Px;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 import android.view.ViewGroup.MarginLayoutParams;
@@ -22,7 +23,7 @@ public class ViewLayoutUtils {
 
     public static void setLayoutMarginRight(
             @NonNull final View view,
-            final int margin) {
+            @Px final int margin) {
         final LayoutParams params = view.getLayoutParams();
         if (!(params instanceof MarginLayoutParams)) {
             return;
@@ -30,5 +31,11 @@ public class ViewLayoutUtils {
         final MarginLayoutParams marginParams = (MarginLayoutParams) params;
         marginParams.rightMargin = margin;
         view.setLayoutParams(params);
+    }
+
+    public static void setPaddingBottom(
+            @NonNull final View view,
+            @Px final int padding) {
+        view.setPadding(view.getPaddingLeft(), view.getPaddingTop(), view.getPaddingRight(), padding);
     }
 }

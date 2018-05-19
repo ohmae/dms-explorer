@@ -73,7 +73,7 @@
         <activity
             android:name=".view.SettingsActivity"
             android:label="@string/title_activity_settings"
-            android:theme="@style/AppTheme"
+            android:theme="@style/AppTheme.Settings"
             >
         </activity>
         <activity
