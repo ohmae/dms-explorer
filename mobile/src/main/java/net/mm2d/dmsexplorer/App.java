@@ -11,15 +11,17 @@ import android.app.Application;
 import android.os.StrictMode;
 import android.os.StrictMode.ThreadPolicy;
 import android.os.StrictMode.VmPolicy;
+import android.support.annotation.NonNull;
 
 import net.mm2d.dmsexplorer.domain.AppRepository;
 import net.mm2d.dmsexplorer.log.EventLogger;
 import net.mm2d.dmsexplorer.settings.Settings;
 import net.mm2d.dmsexplorer.util.update.UpdateChecker;
 import net.mm2d.dmsexplorer.view.eventrouter.EventRouter;
-import net.mm2d.log.AndroidLogInitializer;
 import net.mm2d.log.Log;
+import net.mm2d.log.android.AndroidLogInitializer;
 
+import io.reactivex.exceptions.OnErrorNotImplementedException;
 import io.reactivex.exceptions.UndeliverableException;
 import io.reactivex.plugins.RxJavaPlugins;
 
@@ -32,15 +34,25 @@ public class App extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        Log.setInitializer(AndroidLogInitializer.get());
+        Log.setInitializer(AndroidLogInitializer.getSingleThread());
         Log.initialize(BuildConfig.DEBUG, true);
         setStrictMode();
-        RxJavaPlugins.setErrorHandler(e -> Log.w(e instanceof UndeliverableException ? e.getCause() : e));
+        RxJavaPlugins.setErrorHandler(this::logError);
         Settings.initialize(this);
         EventRouter.initialize(this);
         EventLogger.initialize(this);
         Repository.set(new AppRepository(this));
         new UpdateChecker().check();
+    }
+
+    private void logError(@NonNull final Throwable e) {
+        if (e instanceof UndeliverableException) {
+            Log.w(null, "UndeliverableException:", e.getCause());
+        } else if (e instanceof OnErrorNotImplementedException) {
+            Log.w(null, "OnErrorNotImplementedException:", e.getCause());
+        } else {
+            Log.w(e);
+        }
     }
 
     private void setStrictMode() {
@@ -49,7 +61,6 @@ public class App extends Application {
                     .detectAll()
                     .penaltyLog()
                     .penaltyDropBox()
-                    .penaltyDialog()
                     .build());
             StrictMode.setVmPolicy(new VmPolicy.Builder()
                     .detectAll()
