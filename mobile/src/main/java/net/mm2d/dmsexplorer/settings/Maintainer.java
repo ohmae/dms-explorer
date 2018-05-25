@@ -77,11 +77,11 @@ class Maintainer {
         storage.writeBoolean(Key.DO_NOT_SHOW_PHOTO_UI_ON_TOUCH, false, overwrite);
         storage.writeBoolean(Key.DO_NOT_SHOW_TITLE_IN_PHOTO_UI, false, overwrite);
         storage.writeBoolean(Key.IS_PHOTO_UI_BACKGROUND_TRANSPARENT, false, overwrite);
-        storage.writeString(Key.ORIENTATION_BROWSE, "UNSPECIFIED", overwrite);
-        storage.writeString(Key.ORIENTATION_MOVIE, "UNSPECIFIED", overwrite);
-        storage.writeString(Key.ORIENTATION_MUSIC, "UNSPECIFIED", overwrite);
-        storage.writeString(Key.ORIENTATION_PHOTO, "UNSPECIFIED", overwrite);
-        storage.writeString(Key.ORIENTATION_DMC, "UNSPECIFIED", overwrite);
+        storage.writeString(Key.ORIENTATION_BROWSE, Orientation.UNSPECIFIED.name(), overwrite);
+        storage.writeString(Key.ORIENTATION_MOVIE, Orientation.UNSPECIFIED.name(), overwrite);
+        storage.writeString(Key.ORIENTATION_MUSIC, Orientation.UNSPECIFIED.name(), overwrite);
+        storage.writeString(Key.ORIENTATION_PHOTO, Orientation.UNSPECIFIED.name(), overwrite);
+        storage.writeString(Key.ORIENTATION_DMC, Orientation.UNSPECIFIED.name(), overwrite);
 
         // RepeatMode
         storage.writeString(Key.REPEAT_MODE_MOVIE, RepeatMode.PLAY_ONCE.name(), overwrite);
