@@ -35,7 +35,7 @@ class Maintainer {
     /**
      * 起動時に一度だけ呼び出され、SharedPreferencesのメンテナンスを行う。
      *
-     * @param storage SharedPreferences
+     * @param storage SettingsStorage
      */
     static void maintain(@NonNull final SettingsStorage storage) {
         final int currentVersion = getSettingsVersion(storage);
@@ -46,6 +46,51 @@ class Maintainer {
             migrateFrom0(storage);
         }
         storage.writeInt(Key.SETTINGS_VERSION, SETTINGS_VERSION);
+        writeDefaultValue(storage, false);
+    }
+
+    /**
+     * デフォルト値の書き込みを行う
+     *
+     * @param storage SettingsStorage
+     */
+    private static void writeDefaultValue(
+            @NonNull final SettingsStorage storage,
+            final boolean overwrite) {
+        // Playback
+        storage.writeBoolean(Key.PLAY_MOVIE_MYSELF, true, overwrite);
+        storage.writeBoolean(Key.PLAY_MUSIC_MYSELF, true, overwrite);
+        storage.writeBoolean(Key.PLAY_PHOTO_MYSELF, true, overwrite);
+        // Function
+        storage.writeBoolean(Key.USE_CUSTOM_TABS, true, overwrite);
+        storage.writeBoolean(Key.SHOULD_SHOW_DEVICE_DETAIL_ON_TAP, true, overwrite);
+        storage.writeBoolean(Key.SHOULD_SHOW_CONTENT_DETAIL_ON_TAP, true, overwrite);
+        storage.writeBoolean(Key.DELETE_FUNCTION_ENABLED, false, overwrite);
+        // View
+        storage.writeBoolean(Key.DARK_THEME, false, overwrite);
+        // Expert
+        storage.writeBoolean(Key.DO_NOT_SHOW_MOVIE_UI_ON_START, false, overwrite);
+        storage.writeBoolean(Key.DO_NOT_SHOW_MOVIE_UI_ON_TOUCH, false, overwrite);
+        storage.writeBoolean(Key.DO_NOT_SHOW_TITLE_IN_MOVIE_UI, false, overwrite);
+        storage.writeBoolean(Key.IS_MOVIE_UI_BACKGROUND_TRANSPARENT, false, overwrite);
+        storage.writeBoolean(Key.DO_NOT_SHOW_PHOTO_UI_ON_START, false, overwrite);
+        storage.writeBoolean(Key.DO_NOT_SHOW_PHOTO_UI_ON_TOUCH, false, overwrite);
+        storage.writeBoolean(Key.DO_NOT_SHOW_TITLE_IN_PHOTO_UI, false, overwrite);
+        storage.writeBoolean(Key.IS_PHOTO_UI_BACKGROUND_TRANSPARENT, false, overwrite);
+        storage.writeString(Key.ORIENTATION_BROWSE, "UNSPECIFIED", overwrite);
+        storage.writeString(Key.ORIENTATION_MOVIE, "UNSPECIFIED", overwrite);
+        storage.writeString(Key.ORIENTATION_MUSIC, "UNSPECIFIED", overwrite);
+        storage.writeString(Key.ORIENTATION_PHOTO, "UNSPECIFIED", overwrite);
+        storage.writeString(Key.ORIENTATION_DMC, "UNSPECIFIED", overwrite);
+
+        // RepeatMode
+        storage.writeString(Key.REPEAT_MODE_MOVIE, RepeatMode.PLAY_ONCE.name(), overwrite);
+        storage.writeString(Key.REPEAT_MODE_MUSIC, RepeatMode.PLAY_ONCE.name(), overwrite);
+        storage.writeBoolean(Key.REPEAT_INTRODUCED, false, overwrite);
+        // Update
+        storage.writeLong(Key.UPDATE_FETCH_TIME, 0, overwrite);
+        storage.writeBoolean(Key.UPDATE_AVAILABLE, false, overwrite);
+        storage.writeString(Key.UPDATE_JSON, "", overwrite);
     }
 
     /**

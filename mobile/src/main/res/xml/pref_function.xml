@@ -5,6 +5,7 @@
         android:title="@string/pref_category_link"
         >
 
+        <!--suppress AndroidElementNotAllowed -->
         <SwitchPreferenceCompat
             android:defaultValue="true"
             android:key="USE_CUSTOM_TABS"
@@ -18,6 +19,7 @@
         android:title="@string/pref_category_tap_and_long_tap_operation"
         >
 
+        <!--suppress AndroidElementNotAllowed -->
         <SwitchPreferenceCompat
             android:defaultValue="true"
             android:key="SHOULD_SHOW_DEVICE_DETAIL_ON_TAP"
@@ -26,6 +28,7 @@
             android:summaryOff="@string/pref_message_device_detail_on_tap_off"
             />
 
+        <!--suppress AndroidElementNotAllowed -->
         <SwitchPreferenceCompat
             android:defaultValue="true"
             android:key="SHOULD_SHOW_CONTENT_DETAIL_ON_TAP"
@@ -38,6 +41,7 @@
     <PreferenceCategory
         android:title="@string/pref_category_delete">
 
+        <!--suppress AndroidElementNotAllowed -->
         <SwitchPreferenceCompat
             android:defaultValue="false"
             android:key="DELETE_FUNCTION_ENABLED"

@@ -92,6 +92,23 @@ class SettingsStorage {
     }
 
     /**
+     * boolean値を書き込む。
+     *
+     * @param key       Key
+     * @param value     書き込む値
+     * @param overwrite true:値を上書きする、false:値がない場合のみ書き込む
+     */
+    void writeBoolean(
+            @NonNull final Key key,
+            final boolean value,
+            final boolean overwrite) {
+        if (!overwrite && contains(key)) {
+            return;
+        }
+        writeBoolean(key, value);
+    }
+
+    /**
      * boolean値を読み出す。
      *
      * @param key          Key
@@ -116,6 +133,23 @@ class SettingsStorage {
         mPreferences.edit()
                 .putInt(key.name(), value)
                 .apply();
+    }
+
+    /**
+     * int値を書き込む。
+     *
+     * @param key       Key
+     * @param value     書き込む値
+     * @param overwrite true:値を上書きする、false:値がない場合のみ書き込む
+     */
+    void writeInt(
+            @NonNull final Key key,
+            final int value,
+            final boolean overwrite) {
+        if (!overwrite && contains(key)) {
+            return;
+        }
+        writeInt(key, value);
     }
 
     /**
@@ -146,6 +180,23 @@ class SettingsStorage {
     }
 
     /**
+     * long値を書き込む。
+     *
+     * @param key       Key
+     * @param value     書き込む値
+     * @param overwrite true:値を上書きする、false:値がない場合のみ書き込む
+     */
+    void writeLong(
+            @NonNull final Key key,
+            final long value,
+            final boolean overwrite) {
+        if (!overwrite && contains(key)) {
+            return;
+        }
+        writeLong(key, value);
+    }
+
+    /**
      * long値を読み出す。
      *
      * @param key          Key
@@ -170,6 +221,23 @@ class SettingsStorage {
         mPreferences.edit()
                 .putString(key.name(), value)
                 .apply();
+    }
+
+    /**
+     * String値を書き込む。
+     *
+     * @param key       Key
+     * @param value     書き込む値
+     * @param overwrite true:値を上書きする、false:値がない場合のみ書き込む
+     */
+    void writeString(
+            @NonNull final Key key,
+            @NonNull final String value,
+            final boolean overwrite) {
+        if (!overwrite && contains(key)) {
+            return;
+        }
+        writeString(key, value);
     }
 
     /**

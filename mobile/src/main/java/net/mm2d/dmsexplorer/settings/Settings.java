@@ -7,6 +7,7 @@
 
 package net.mm2d.dmsexplorer.settings;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Looper;
 import android.support.annotation.NonNull;
@@ -19,6 +20,7 @@ import net.mm2d.dmsexplorer.settings.theme.Theme;
 import net.mm2d.dmsexplorer.settings.theme.ThemeParams;
 import net.mm2d.log.Log;
 
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -49,9 +51,11 @@ public class Settings {
                     Log.e(null, "!!!!!!!!!! BLOCK !!!!!!!!!!", new Throwable());
                 }
                 try {
-                    sCondition.await();
+                    if (!sCondition.await(1, TimeUnit.SECONDS)) {
+                        throw new IllegalStateException("Settings initialization timeout");
+                    }
                 } catch (InterruptedException e) {
-                    e.printStackTrace();
+                    Log.w(e);
                 }
             }
             return sSettings;
@@ -65,20 +69,23 @@ public class Settings {
      *
      * @param context コンテキスト
      */
+    @SuppressLint("CheckResult")
     public static void initialize(@NonNull final Context context) {
-        Completable.fromAction(() -> {
-            final SettingsStorage storage = new SettingsStorage(context);
-            Maintainer.maintain(storage);
-            sLock.lock();
-            try {
-                sSettings = new Settings(storage);
-                sCondition.signalAll();
-            } finally {
-                sLock.unlock();
-            }
-        })
+        Completable.fromAction(() -> initializeInner(context))
                 .subscribeOn(Schedulers.io())
                 .subscribe();
+    }
+
+    private static void initializeInner(@NonNull final Context context) {
+        final SettingsStorage storage = new SettingsStorage(context);
+        Maintainer.maintain(storage);
+        sLock.lock();
+        try {
+            sSettings = new Settings(storage);
+            sCondition.signalAll();
+        } finally {
+            sLock.unlock();
+        }
     }
 
     @NonNull

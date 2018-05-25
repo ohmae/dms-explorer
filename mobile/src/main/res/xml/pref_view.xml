@@ -4,6 +4,7 @@
     <PreferenceCategory
         android:title="@string/pref_category_theme"
         >
+        <!--suppress AndroidElementNotAllowed -->
         <SwitchPreferenceCompat
             android:defaultValue="false"
             android:key="DARK_THEME"
