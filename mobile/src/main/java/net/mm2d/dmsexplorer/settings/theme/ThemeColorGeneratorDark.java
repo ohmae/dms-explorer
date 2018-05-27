@@ -40,7 +40,7 @@ class ThemeColorGeneratorDark implements ThemeColorGenerator {
         final char c = TextUtils.isEmpty(title) ? ' ' : title.charAt(0);
         return Color.HSVToColor(new float[]{
                 (59 * c) % 360,
-                124f / 255f,
+                224f / 255f,
                 48f / 255f,
         });
     }

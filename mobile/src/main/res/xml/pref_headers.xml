@@ -1,34 +1,34 @@
 <preference-headers
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <header
-        android:fragment="net.mm2d.dmsexplorer.view.SettingsActivity$PlaybackPreferenceFragment"
-        android:icon="@drawable/ic_play_settings"
-        android:title="@string/pref_header_playback"
+        app:fragment="net.mm2d.dmsexplorer.view.SettingsActivity$PlaybackPreferenceFragment"
+        app:icon="@drawable/ic_play_settings_black"
+        app:title="@string/pref_header_playback"
         />
 
     <header
-        android:fragment="net.mm2d.dmsexplorer.view.SettingsActivity$FunctionPreferenceFragment"
-        android:icon="@drawable/ic_function_settings"
-        android:title="@string/pref_header_function"
+        app:fragment="net.mm2d.dmsexplorer.view.SettingsActivity$FunctionPreferenceFragment"
+        app:icon="@drawable/ic_function_settings_black"
+        app:title="@string/pref_header_function"
         />
 
     <header
-        android:fragment="net.mm2d.dmsexplorer.view.SettingsActivity$ViewPreferenceFragment"
-        android:icon="@drawable/ic_view_settings"
-        android:title="@string/pref_header_view"
+        app:fragment="net.mm2d.dmsexplorer.view.SettingsActivity$ViewPreferenceFragment"
+        app:icon="@drawable/ic_view_settings_black"
+        app:title="@string/pref_header_view"
         />
 
     <header
-        android:fragment="net.mm2d.dmsexplorer.view.SettingsActivity$ExpertPreferenceFragment"
-        android:icon="@drawable/ic_expert_settings"
-        android:title="@string/pref_header_expert"
+        app:fragment="net.mm2d.dmsexplorer.view.SettingsActivity$ExpertPreferenceFragment"
+        app:icon="@drawable/ic_expert_settings_black"
+        app:title="@string/pref_header_expert"
         />
 
     <header
-        android:fragment="net.mm2d.dmsexplorer.view.SettingsActivity$InformationPreferenceFragment"
-        android:icon="@drawable/ic_info_settings"
-        android:title="@string/pref_header_information"
+        app:fragment="net.mm2d.dmsexplorer.view.SettingsActivity$InformationPreferenceFragment"
+        app:icon="@drawable/ic_info_settings_black"
+        app:title="@string/pref_header_information"
         />
 
 </preference-headers>

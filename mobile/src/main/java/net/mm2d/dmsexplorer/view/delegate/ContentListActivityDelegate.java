@@ -81,7 +81,7 @@ public abstract class ContentListActivityDelegate implements CdsSelectListener, 
         }
         final ContentListActivityBinding binding = getBinding();
 
-        binding.toolbar.setPopupTheme(new Settings(activity).getThemeParams().getPopupThemeId());
+        binding.toolbar.setPopupTheme(Settings.get().getThemeParams().getPopupThemeId());
         binding.setModel(mModel);
         activity.setSupportActionBar(mBinding.toolbar);
         activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);

@@ -7,7 +7,7 @@
 
 package net.mm2d.dmsexplorer.util.update;
 
-import android.content.Context;
+import android.annotation.SuppressLint;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.VisibleForTesting;
@@ -16,7 +16,6 @@ import android.text.TextUtils;
 import net.mm2d.dmsexplorer.BuildConfig;
 import net.mm2d.dmsexplorer.Const;
 import net.mm2d.dmsexplorer.settings.Settings;
-import net.mm2d.dmsexplorer.view.eventrouter.EventNotifier;
 import net.mm2d.dmsexplorer.view.eventrouter.EventRouter;
 
 import org.json.JSONException;
@@ -40,37 +39,19 @@ import okhttp3.ResponseBody;
 public class UpdateChecker {
     private static final long FETCH_INTERVAL = TimeUnit.HOURS.toMillis(23);
 
-    private final Context mContext;
-    private final Settings mSettings;
     private final int mCurrentVersion;
-    private final EventNotifier mUpdateAvailabilityNotifier;
 
-    public UpdateChecker(@NonNull final Context context) {
-        this(context, new Settings(context), BuildConfig.VERSION_CODE);
+    public UpdateChecker() {
+        this(BuildConfig.VERSION_CODE);
     }
 
     @VisibleForTesting
-    UpdateChecker(
-            final Context context,
-            final Settings settings,
-            final int version) {
-        mContext = context;
-        mSettings = settings;
+    UpdateChecker(final int version) {
         mCurrentVersion = version;
-        mUpdateAvailabilityNotifier = EventRouter.createUpdateAvailabilityNotifier(context);
     }
 
+    @SuppressLint("CheckResult")
     public void check() {
-        if (mSettings.isUpdateAvailable() && !isUpdateAvailable(mSettings.getUpdateJson())) {
-            mSettings.setUpdateAvailable(false);
-        }
-        if (System.currentTimeMillis() - mSettings.getUpdateFetchTime() < FETCH_INTERVAL) {
-            return;
-        }
-        fetchAndCheck();
-    }
-
-    private void fetchAndCheck() {
         createFetcher()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -80,6 +61,11 @@ public class UpdateChecker {
     @NonNull
     private Single<String> createFetcher() {
         return Single.create(emitter -> {
+            final Settings settings = Settings.get();
+            makeConsistent(settings);
+            if (!hasEnoughInterval(settings)) {
+                return;
+            }
             final Request request = new Builder()
                     .url(Const.URL_UPDATE_JSON)
                     .get()
@@ -95,32 +81,45 @@ public class UpdateChecker {
         });
     }
 
+    private void makeConsistent(@NonNull final Settings settings) {
+        if (settings.isUpdateAvailable() && !isUpdateAvailable(settings.getUpdateJson())) {
+            settings.setUpdateAvailable(false);
+        }
+    }
+
+    private boolean hasEnoughInterval(@NonNull final Settings settings) {
+        return System.currentTimeMillis() - settings.getUpdateFetchTime() > FETCH_INTERVAL;
+    }
+
     private void checkAndNotify(@NonNull final String json) {
-        final boolean before = mSettings.isUpdateAvailable();
+        final Settings settings = Settings.get();
+        final boolean before = settings.isUpdateAvailable();
         try {
-            checkAndSave(json);
+            checkAndSave(settings, json);
         } catch (final JSONException ignored) {
             return;
         }
-        if (mSettings.isUpdateAvailable() == before) {
+        if (settings.isUpdateAvailable() == before) {
             return;
         }
-        mUpdateAvailabilityNotifier.send();
+        EventRouter.createUpdateAvailabilityNotifier().send();
     }
 
-    private void checkAndSave(@NonNull final String json) throws JSONException {
+    private void checkAndSave(
+            @NonNull final Settings settings,
+            @NonNull final String json) throws JSONException {
         if (TextUtils.isEmpty(json)) {
             return;
         }
-        mSettings.setUpdateFetchTime();
+        settings.setUpdateFetchTime();
         final JSONObject jsonObject = new JSONObject(json);
         final String normalizedJson = jsonObject.toString();
-        if (normalizedJson.equals(mSettings.getUpdateJson())) {
+        if (normalizedJson.equals(settings.getUpdateJson())) {
             return;
         }
         final UpdateInfo info = new UpdateInfo(jsonObject);
-        mSettings.setUpdateAvailable(isUpdateAvailable(info));
-        mSettings.setUpdateJson(normalizedJson);
+        settings.setUpdateAvailable(isUpdateAvailable(info));
+        settings.setUpdateJson(normalizedJson);
     }
 
     @VisibleForTesting

@@ -4,7 +4,7 @@
     <PreferenceCategory
         android:title="@string/pref_category_theme"
         >
-        <SwitchPreference
+        <SwitchPreferenceCompat
             android:defaultValue="false"
             android:key="DARK_THEME"
             android:summary="@string/pref_message_dark_theme"

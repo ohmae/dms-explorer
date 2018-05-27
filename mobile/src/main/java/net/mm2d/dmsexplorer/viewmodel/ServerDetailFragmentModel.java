@@ -61,7 +61,7 @@ public class ServerDetailFragmentModel {
         final Bitmap iconBitmap = createIconBitmap(server.getIcon());
         icon = createIconDrawable(context, server, iconBitmap);
 
-        new Settings(context)
+        Settings.get()
                 .getThemeParams()
                 .getServerColorExtractor()
                 .invoke(server, iconBitmap);
@@ -86,7 +86,7 @@ public class ServerDetailFragmentModel {
         if (icon != null) {
             return new BitmapDrawable(context.getResources(), icon);
         }
-        final ThemeColorGenerator generator = new Settings(context)
+        final ThemeColorGenerator generator = Settings.get()
                 .getThemeParams()
                 .getThemeColorGenerator();
         final Drawable drawable = DrawableUtils.get(context, R.drawable.ic_circle);

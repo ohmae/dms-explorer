@@ -20,10 +20,10 @@ import net.mm2d.android.upnp.cds.MediaServer;
 import net.mm2d.android.util.AribUtils;
 import net.mm2d.android.util.DrawableUtils;
 import net.mm2d.dmsexplorer.R;
-import net.mm2d.dmsexplorer.settings.theme.ThemeParams;
 import net.mm2d.dmsexplorer.settings.Settings;
 import net.mm2d.dmsexplorer.settings.theme.ServerColorExtractor;
 import net.mm2d.dmsexplorer.settings.theme.ThemeColorGenerator;
+import net.mm2d.dmsexplorer.settings.theme.ThemeParams;
 import net.mm2d.upnp.Icon;
 
 /**
@@ -51,7 +51,7 @@ public class ServerItemModel {
         final Icon icon = server.getIcon();
         title = name;
         description = makeDescription(server);
-        final ThemeParams params = new Settings(context).getThemeParams();
+        final ThemeParams params = Settings.get().getThemeParams();
         final ThemeColorGenerator generator = params.getThemeColorGenerator();
         final ServerColorExtractor extractor = params.getServerColorExtractor();
         if (icon == null) {

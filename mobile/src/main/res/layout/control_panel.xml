@@ -2,6 +2,7 @@
 <layout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     >
 
     <data>
@@ -140,6 +141,7 @@
             android:text="@{model.scrubText}"
             android:textColor="@color/textScrub"
             android:textSize="@dimen/text_size_scrub"
+            tools:ignore="SpUsage"
             />
     </RelativeLayout>
 </layout>

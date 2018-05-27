@@ -52,7 +52,7 @@ public class ContentDetailActivity extends BaseActivity implements OnDeleteListe
 
     @Override
     protected void onCreate(@Nullable final Bundle savedInstanceState) {
-        mSettings = new Settings(this);
+        mSettings = Settings.get();
         setTheme(mSettings.getThemeParams().getNoActionBarThemeId());
         super.onCreate(savedInstanceState);
         setContentView(R.layout.content_detail_activity);

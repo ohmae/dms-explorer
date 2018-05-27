@@ -2,7 +2,8 @@
 <merge
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    >
 
     <TextView
         android:id="@+id/title"
@@ -17,7 +18,8 @@
         android:layout_marginStart="@dimen/introduction_title_margin_horizontal"
         android:layout_marginTop="@dimen/introduction_title_margin_top"
         android:textColor="@color/textIntroductory"
-        android:textSize="@dimen/text_size_introduction_title"/>
+        android:textSize="@dimen/text_size_introduction_title"
+        />
 
     <TextView
         android:id="@+id/subtitle"
@@ -30,6 +32,7 @@
         android:layout_marginStart="@dimen/introduction_title_margin_horizontal"
         android:layout_marginTop="@dimen/introduction_subtitle_margin_top"
         android:textColor="@color/textIntroductory"
-        android:textSize="@dimen/text_size_introduction_subtitle"/>
+        android:textSize="@dimen/text_size_introduction_subtitle"
+        />
 
 </merge>

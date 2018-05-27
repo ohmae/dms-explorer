@@ -14,18 +14,19 @@ import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
-import android.preference.ListPreference;
-import android.preference.Preference;
-import android.preference.Preference.OnPreferenceChangeListener;
-import android.preference.PreferenceFragment;
-import android.preference.PreferenceManager;
-import android.preference.SwitchPreference;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.preference.ListPreference;
+import android.support.v7.preference.Preference;
+import android.support.v7.preference.Preference.OnPreferenceChangeListener;
+import android.support.v7.preference.PreferenceFragmentCompat;
+import android.support.v7.preference.PreferenceManager;
+import android.support.v7.preference.SwitchPreferenceCompat;
 import android.text.TextUtils;
 import android.text.format.DateFormat;
+import android.view.MenuItem;
 
 import net.mm2d.android.util.LaunchUtils;
 import net.mm2d.dmsexplorer.BuildConfig;
@@ -39,10 +40,12 @@ import net.mm2d.dmsexplorer.settings.Key;
 import net.mm2d.dmsexplorer.settings.Orientation;
 import net.mm2d.dmsexplorer.settings.Settings;
 import net.mm2d.dmsexplorer.util.AttrUtils;
-import net.mm2d.dmsexplorer.view.base.AppCompatPreferenceActivity;
+import net.mm2d.dmsexplorer.view.base.PreferenceFragmentBase;
 import net.mm2d.dmsexplorer.view.eventrouter.EventNotifier;
 import net.mm2d.dmsexplorer.view.eventrouter.EventObserver;
 import net.mm2d.dmsexplorer.view.eventrouter.EventRouter;
+import net.mm2d.preference.Header;
+import net.mm2d.preference.PreferenceActivityCompat;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,7 +55,7 @@ import java.util.List;
  *
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
  */
-public class SettingsActivity extends AppCompatPreferenceActivity {
+public class SettingsActivity extends PreferenceActivityCompat {
     /**
      * このActivityを起動するためのIntentを作成する。
      *
@@ -79,8 +82,17 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
     private EventObserver mFinishObserver;
 
     @Override
+    public void onBuildHeaders(@NonNull final List<Header> target) {
+        loadHeadersFromResource(R.xml.pref_headers, target);
+        Settings.get()
+                .getThemeParams()
+                .getPreferenceHeaderConverter()
+                .convert(target);
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
-        setTheme(new Settings(this).getThemeParams().getThemeId());
+        setTheme(Settings.get().getThemeParams().getSettingsThemeId());
         super.onCreate(savedInstanceState);
         final ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
@@ -89,7 +101,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         Repository.get().getThemeModel().setThemeColor(this,
                 AttrUtils.resolveColor(this, R.attr.colorPrimary, Color.BLACK),
                 ContextCompat.getColor(this, R.color.defaultStatusBar));
-        mFinishObserver = EventRouter.createFinishObserver(this);
+        mFinishObserver = EventRouter.createFinishObserver();
         mFinishObserver.register(this::finish);
     }
 
@@ -105,22 +117,22 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
     }
 
     @Override
-    public void onBuildHeaders(final List<Header> target) {
-        loadHeadersFromResource(R.xml.pref_headers, target);
-        new Settings(this)
-                .getThemeParams()
-                .getPreferenceHeaderConverter()
-                .convert(target);
-    }
-
-    @Override
-    protected boolean isValidFragment(String fragmentName) {
-        return PreferenceFragment.class.getName().equals(fragmentName)
+    public boolean isValidFragment(String fragmentName) {
+        return PreferenceFragmentCompat.class.getName().equals(fragmentName)
                 || PlaybackPreferenceFragment.class.getName().equals(fragmentName)
                 || FunctionPreferenceFragment.class.getName().equals(fragmentName)
                 || ViewPreferenceFragment.class.getName().equals(fragmentName)
                 || ExpertPreferenceFragment.class.getName().equals(fragmentName)
                 || InformationPreferenceFragment.class.getName().equals(fragmentName);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            onBackPressed();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private static boolean canUseChromeCustomTabs() {
@@ -133,24 +145,26 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         Repository.get().getOpenUriModel().openUri(context, url);
     }
 
-    public static class PlaybackPreferenceFragment extends PreferenceFragment {
+    public static class PlaybackPreferenceFragment extends PreferenceFragmentBase {
         @Override
-        public void onCreate(Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
+        public void onCreatePreferences(
+                final Bundle savedInstanceState,
+                final String rootKey) {
             addPreferencesFromResource(R.xml.pref_playback);
         }
     }
 
-    public static class FunctionPreferenceFragment extends PreferenceFragment {
+    public static class FunctionPreferenceFragment extends PreferenceFragmentBase {
         @Override
-        public void onCreate(Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
+        public void onCreatePreferences(
+                final Bundle savedInstanceState,
+                final String rootKey) {
             addPreferencesFromResource(R.xml.pref_function);
             setUpCustomTabs();
         }
 
         private void setUpCustomTabs() {
-            final SwitchPreference customTabs = (SwitchPreference) findPreference(Key.USE_CUSTOM_TABS.name());
+            final SwitchPreferenceCompat customTabs = (SwitchPreferenceCompat) findPreference(Key.USE_CUSTOM_TABS.name());
             customTabs.setOnPreferenceChangeListener((preference, newValue) -> {
                 final OpenUriModel model = Repository.get().getOpenUriModel();
                 if ((newValue instanceof Boolean) && (model instanceof OpenUriCustomTabsModel)) {
@@ -168,22 +182,22 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         }
     }
 
-    public static class ViewPreferenceFragment extends PreferenceFragment {
-        private EventNotifier mFinishNotifier;
+    public static class ViewPreferenceFragment extends PreferenceFragmentBase {
         private boolean mSetFromCode;
 
         @Override
-        public void onCreate(Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
+        public void onCreatePreferences(
+                final Bundle savedInstanceState,
+                final String rootKey) {
             final Context context = getActivity();
-            mFinishNotifier = EventRouter.createFinishNotifier(context);
+            final EventNotifier finishNotifier = EventRouter.createFinishNotifier();
             addPreferencesFromResource(R.xml.pref_view);
             findPreference(Key.DARK_THEME.name()).setOnPreferenceChangeListener((preference, newValue) -> {
                 if (mSetFromCode) {
                     mSetFromCode = false;
                     return true;
                 }
-                final SwitchPreference switchPreference = (SwitchPreference) preference;
+                final SwitchPreferenceCompat switchPreference = (SwitchPreferenceCompat) preference;
                 final boolean checked = switchPreference.isChecked();
                 new AlertDialog.Builder(context)
                         .setTitle(R.string.dialog_title_change_theme)
@@ -191,7 +205,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                         .setPositiveButton(R.string.ok, (dialog, which) -> {
                             mSetFromCode = true;
                             switchPreference.setChecked(!checked);
-                            mFinishNotifier.send();
+                            finishNotifier.send();
                             new Handler().postDelayed(() -> ServerListActivity.start(context), 500);
                         })
                         .setNegativeButton(R.string.cancel, null)
@@ -201,7 +215,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         }
     }
 
-    public static class ExpertPreferenceFragment extends PreferenceFragment {
+    public static class ExpertPreferenceFragment extends PreferenceFragmentBase {
         private static final String[] ORIENTATION_KEYS = new String[]{
                 Key.ORIENTATION_BROWSE.name(),
                 Key.ORIENTATION_MOVIE.name(),
@@ -212,10 +226,10 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         private EventNotifier mOrientationSettingsNotifier;
 
         @Override
-        public void onCreate(Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
-            final Context context = getActivity();
-            mOrientationSettingsNotifier = EventRouter.createOrientationSettingsNotifier(context);
+        public void onCreatePreferences(
+                final Bundle savedInstanceState,
+                final String rootKey) {
+            mOrientationSettingsNotifier = EventRouter.createOrientationSettingsNotifier();
             final SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
             addPreferencesFromResource(R.xml.pref_expert);
             final List<ListPreference> preferences = new ArrayList<>();
@@ -257,10 +271,11 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         }
     }
 
-    public static class InformationPreferenceFragment extends PreferenceFragment {
+    public static class InformationPreferenceFragment extends PreferenceFragmentBase {
         @Override
-        public void onCreate(Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
+        public void onCreatePreferences(
+                final Bundle savedInstanceState,
+                final String rootKey) {
             addPreferencesFromResource(R.xml.pref_information);
             findPreference(Key.PLAY_STORE.name()).setOnPreferenceClickListener(preference -> {
                 final Context context = preference.getContext();
@@ -272,7 +287,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                 openUrl(getActivity(), Const.URL_GITHUB_PROJECT);
                 return true;
             });
-            final Settings settings = new Settings(getActivity());
+            final Settings settings = Settings.get();
             findPreference(Key.LICENSE.name()).setOnPreferenceClickListener(preference -> {
                 final String query = settings.getThemeParams().getHtmlQuery();
                 WebViewActivity.start(getActivity(),

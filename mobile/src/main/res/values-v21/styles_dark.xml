@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <style name="DarkTheme" parent="DarkThemeBase">
+        <item name="dialogTheme">@style/DarkDialog</item>
+        <item name="android:dialogTheme">@style/DarkDialog</item>
+        <item name="alertDialogTheme">@style/DarkDialog.Alert</item>
+        <item name="android:alertDialogTheme">@style/DarkDialog.Alert</item>
+        <item name="android:navigationBarColor">@color/bgDark</item>
+    </style>
+
     <style name="DarkTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>

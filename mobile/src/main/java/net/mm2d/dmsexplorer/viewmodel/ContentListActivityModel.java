@@ -109,7 +109,7 @@ public class ContentListActivityModel extends BaseObservable implements ExploreL
             final boolean twoPane) {
         progressBackground = AttrUtils.resolveColor(context, R.attr.themeProgressBackground, Color.BLACK);
         distanceToTriggerSync = context.getResources().getDimensionPixelOffset(R.dimen.distance_to_trigger_sync);
-        mSettings = new Settings(context);
+        mSettings = Settings.get();
         mTwoPane = twoPane;
         final MediaServerModel model = repository.getMediaServerModel();
         if (model == null) {

@@ -38,10 +38,10 @@ class LocalBroadcastObserver implements EventObserver {
     };
 
     LocalBroadcastObserver(
-            @NonNull final Context context,
+            @NonNull final LocalBroadcastManager broadcastManager,
             @NonNull final String action) {
+        mBroadcastManager = broadcastManager;
         mAction = action;
-        mBroadcastManager = LocalBroadcastManager.getInstance(context);
     }
 
     @Override

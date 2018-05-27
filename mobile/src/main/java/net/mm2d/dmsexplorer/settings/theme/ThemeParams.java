@@ -7,9 +7,10 @@
 
 package net.mm2d.dmsexplorer.settings.theme;
 
-import android.preference.PreferenceActivity.Header;
 import android.support.annotation.NonNull;
 import android.support.annotation.StyleRes;
+
+import net.mm2d.preference.Header;
 
 import java.util.List;
 
@@ -31,6 +32,8 @@ public class ThemeParams {
         private int mListThemeId;
         @StyleRes
         private int mFullscreenThemeId;
+        @StyleRes
+        private int mSettingsThemeId;
         @StyleRes
         private int mPopupThemeId;
         private PreferenceHeaderConverter mPreferenceHeaderConverter;
@@ -59,6 +62,11 @@ public class ThemeParams {
 
         public Builder setFullscreenThemeId(@StyleRes final int id) {
             mFullscreenThemeId = id;
+            return this;
+        }
+
+        public Builder setSettingsThemeId(@StyleRes final int id) {
+            mSettingsThemeId = id;
             return this;
         }
 
@@ -104,6 +112,8 @@ public class ThemeParams {
     @StyleRes
     private final int mFullscreenThemeId;
     @StyleRes
+    private final int mSettingsThemeId;
+    @StyleRes
     private final int mPopupThemeId;
     @NonNull
     private final PreferenceHeaderConverter mPreferenceHeaderConverter;
@@ -118,6 +128,7 @@ public class ThemeParams {
         mNoActionBarThemeId = builder.mNoActionBarThemeId;
         mListThemeId = builder.mListThemeId;
         mFullscreenThemeId = builder.mFullscreenThemeId;
+        mSettingsThemeId = builder.mSettingsThemeId;
         mPopupThemeId = builder.mPopupThemeId;
         mPreferenceHeaderConverter = builder.mPreferenceHeaderConverter;
         mThemeColorGenerator = builder.mThemeColorGenerator;
@@ -147,6 +158,11 @@ public class ThemeParams {
     @StyleRes
     public int getFullscreenThemeId() {
         return mFullscreenThemeId;
+    }
+
+    @StyleRes
+    public int getSettingsThemeId() {
+        return mSettingsThemeId;
     }
 
     @StyleRes

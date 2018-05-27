@@ -22,7 +22,7 @@
         android:resizeableActivity="true"
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme"
+        android:theme="@style/DarkTheme"
         tools:ignore="GoogleAppIndexingWarning"
         >
         <activity
@@ -41,7 +41,7 @@
             android:name=".view.ServerDetailActivity"
             android:launchMode="singleTop"
             android:parentActivityName=".view.ServerListActivity"
-            android:theme="@style/AppTheme.NoActionBar"
+            android:theme="@style/DarkTheme.NoActionBar"
             >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -52,7 +52,7 @@
             android:name=".view.ContentListActivity"
             android:launchMode="singleTop"
             android:parentActivityName=".view.ServerListActivity"
-            android:theme="@style/AppTheme.List"
+            android:theme="@style/DarkTheme.List"
             >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -63,7 +63,7 @@
             android:name=".view.ContentDetailActivity"
             android:launchMode="singleTop"
             android:parentActivityName=".view.ContentListActivity"
-            android:theme="@style/AppTheme.NoActionBar"
+            android:theme="@style/DarkTheme.NoActionBar"
             >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -73,7 +73,7 @@
         <activity
             android:name=".view.SettingsActivity"
             android:label="@string/title_activity_settings"
-            android:theme="@style/AppTheme"
+            android:theme="@style/AppTheme.Settings"
             >
         </activity>
         <activity
@@ -82,7 +82,7 @@
             android:launchMode="singleTask"
             android:parentActivityName=".view.ContentListActivity"
             android:supportsPictureInPicture="true"
-            android:theme="@style/AppTheme.NoActionBar.FullScreen"
+            android:theme="@style/DarkTheme.FullScreen"
             >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -94,7 +94,7 @@
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:launchMode="singleTask"
             android:parentActivityName=".view.ContentListActivity"
-            android:theme="@style/AppTheme.NoActionBar.FullScreen"
+            android:theme="@style/DarkTheme.FullScreen"
             >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -106,7 +106,7 @@
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:launchMode="singleTask"
             android:parentActivityName=".view.ContentListActivity"
-            android:theme="@style/AppTheme.NoActionBar"
+            android:theme="@style/DarkTheme.NoActionBar"
             >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -118,7 +118,7 @@
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:launchMode="singleTop"
             android:parentActivityName=".view.ContentListActivity"
-            android:theme="@style/AppTheme.NoActionBar.Dark"
+            android:theme="@style/DarkTheme.NoActionBar.Dark"
             >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -129,7 +129,7 @@
             android:name=".view.WebViewActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:launchMode="singleTop"
-            android:theme="@style/AppTheme.NoActionBar"
+            android:theme="@style/DarkTheme.NoActionBar"
             >
         </activity>
 

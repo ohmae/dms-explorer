@@ -132,6 +132,7 @@ public abstract class PropertyAdapter extends Adapter<ViewHolder> {
         return mList.get(position).getType() != Type.DESCRIPTION ? 0 : 1;
     }
 
+    @NonNull
     @Override
     public ViewHolder onCreateViewHolder(
             @NonNull final ViewGroup parent,

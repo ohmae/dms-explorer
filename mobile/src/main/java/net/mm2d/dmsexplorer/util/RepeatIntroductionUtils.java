@@ -29,7 +29,7 @@ public class RepeatIntroductionUtils {
     public static boolean show(
             final Activity activity,
             final View view) {
-        final Settings settings = new Settings(activity);
+        final Settings settings = Settings.get();
         if (settings.isRepeatIntroduced()) {
             return false;
         }

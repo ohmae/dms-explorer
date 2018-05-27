@@ -62,7 +62,7 @@ public class MovieActivityModel extends BaseObservable
     public final int background;
 
     @NonNull
-    private String mTitle;
+    private String mTitle = "";
     @NonNull
     private ControlPanelModel mControlPanelModel;
     private int mRightNavigationSize;
@@ -106,7 +106,7 @@ public class MovieActivityModel extends BaseObservable
         if (mServerModel == null) {
             throw new IllegalStateException();
         }
-        mSettings = new Settings(activity);
+        mSettings = Settings.get();
         mRepeatMode = mSettings.getRepeatModeMovie();
         mRepeatIconId = mRepeatMode.getIconId();
 

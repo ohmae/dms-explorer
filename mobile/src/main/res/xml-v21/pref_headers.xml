@@ -1,0 +1,34 @@
+<preference-headers
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <header
+        app:fragment="net.mm2d.dmsexplorer.view.SettingsActivity$PlaybackPreferenceFragment"
+        app:icon="@drawable/ic_play_settings_light"
+        app:title="@string/pref_header_playback"
+        />
+
+    <header
+        app:fragment="net.mm2d.dmsexplorer.view.SettingsActivity$FunctionPreferenceFragment"
+        app:icon="@drawable/ic_function_settings_light"
+        app:title="@string/pref_header_function"
+        />
+
+    <header
+        app:fragment="net.mm2d.dmsexplorer.view.SettingsActivity$ViewPreferenceFragment"
+        app:icon="@drawable/ic_view_settings_light"
+        app:title="@string/pref_header_view"
+        />
+
+    <header
+        app:fragment="net.mm2d.dmsexplorer.view.SettingsActivity$ExpertPreferenceFragment"
+        app:icon="@drawable/ic_expert_settings_light"
+        app:title="@string/pref_header_expert"
+        />
+
+    <header
+        app:fragment="net.mm2d.dmsexplorer.view.SettingsActivity$InformationPreferenceFragment"
+        app:icon="@drawable/ic_info_settings_light"
+        app:title="@string/pref_header_information"
+        />
+
+</preference-headers>

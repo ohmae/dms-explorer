@@ -3,6 +3,9 @@
 -keepattributes SourceFile,LineNumberTable
 -keep public class * extends java.lang.Exception
 
+# call from preference-header
+-keep public class * extends net.mm2d.dmsexplorer.view.base.PreferenceFragmentBase
+
 # for OkHttp3
 -dontwarn okhttp3.**
 -dontwarn okio.**

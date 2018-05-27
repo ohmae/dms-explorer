@@ -6,7 +6,7 @@ apply plugin: 'jacoco-android'
 def applicationName = "DmsExplorer"
 def versionMajor = 0
 def versionMinor = 7
-def versionPatch = 34
+def versionPatch = 37
 
 android {
     compileSdkVersion 27
@@ -51,9 +51,6 @@ android {
             outputFileName = "${applicationName}-${versionName}.apk"
         }
     }
-    lintOptions {
-        abortOnError false
-    }
     testOptions {
         unitTests.all {
             jacoco {
@@ -82,6 +79,7 @@ dependencies {
     implementation 'net.mm2d:log:0.0.2'
     implementation 'net.mm2d:log-android:0.0.2'
     implementation 'net.mm2d:mmupnp:1.6.0'
+    implementation 'net.mm2d:preference:0.0.2'
     implementation 'net.opacapp:multiline-collapsingtoolbar:1.6.0'
     implementation 'com.squareup.okhttp3:okhttp:3.10.0'
     implementation 'io.reactivex.rxjava2:rxjava:2.1.10'

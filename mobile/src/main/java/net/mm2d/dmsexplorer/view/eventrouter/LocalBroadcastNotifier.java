@@ -7,7 +7,6 @@
 
 package net.mm2d.dmsexplorer.view.eventrouter;
 
-import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v4.content.LocalBroadcastManager;
@@ -22,10 +21,10 @@ class LocalBroadcastNotifier implements EventNotifier {
     private final LocalBroadcastManager mBroadcastManager;
 
     LocalBroadcastNotifier(
-            @NonNull final Context context,
+            @NonNull final LocalBroadcastManager broadcastManager,
             @NonNull final String action) {
+        mBroadcastManager = broadcastManager;
         mAction = action;
-        mBroadcastManager = LocalBroadcastManager.getInstance(context);
     }
 
     @Override

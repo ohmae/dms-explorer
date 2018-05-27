@@ -57,7 +57,7 @@ public class WebViewActivity extends BaseActivity {
     @SuppressLint("SetJavaScriptEnabled")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        setTheme(new Settings(this).getThemeParams().getNoActionBarThemeId());
+        setTheme(Settings.get().getThemeParams().getNoActionBarThemeId());
         super.onCreate(savedInstanceState);
         final WebViewActivityBinding binding = DataBindingUtil.setContentView(this, R.layout.web_view_activity);
         final Intent intent = getIntent();

@@ -30,7 +30,7 @@ public class MusicActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        mSettings = new Settings(this);
+        mSettings = Settings.get();
         setTheme(mSettings.getThemeParams().getNoActionBarThemeId());
         super.onCreate(savedInstanceState);
         final Repository repository = Repository.get();

@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="DarkTheme" parent="Theme.AppCompat">
+    <style name="DarkThemeBase" parent="Theme.AppCompat">
         <item name="themeTextColor">@color/textMainDark</item>
         <item name="themeSubTextColor">@color/textWeakDark</item>
         <item name="themeLinkColor">@color/textLinkDark</item>
         <item name="themePropertyTitleColor">@color/textHighlightDark</item>
         <item name="themeFragmentBackground">@color/bgFragmentDark</item>
-        <item name="themeListBackground">@color/bgListDark</item>
         <item name="themeCardBackground">@color/bgCardDark</item>
         <item name="themeFabDisable">@color/fabDisableDark</item>
         <item name="themeToolbarBackgroundDefault">@color/toolbarBackgroundDefaultDark</item>
@@ -18,6 +17,24 @@
         <item name="colorAccent">@color/accentDark</item>
         <item name="android:windowBackground">@color/bgDark</item>
         <item name="android:colorBackground">@color/bgDark</item>
+        <item name="android:textColorPrimaryInverse">?android:attr/textColorPrimary</item>
+    </style>
+
+    <style name="DarkTheme" parent="DarkThemeBase">
+        <item name="dialogTheme">@style/DarkDialog</item>
+        <item name="alertDialogTheme">@style/DarkDialog.Alert</item>
+    </style>
+
+    <style name="DarkTheme.Settings">
+        <item name="preferenceTheme">@style/PreferenceCompatTheme</item>
+    </style>
+
+    <style name="DarkDialog" parent="ThemeOverlay.AppCompat.Dialog">
+        <item name="android:background">@color/bgDialogDark</item>
+    </style>
+
+    <style name="DarkDialog.Alert" parent="ThemeOverlay.AppCompat.Dialog.Alert">
+        <item name="android:background">@color/bgDialogDark</item>
     </style>
 
     <style name="DarkTheme.NoActionBar">
@@ -37,7 +54,7 @@
         <item name="android:colorBackground">@android:color/black</item>
     </style>
 
-    <style name="DarkTheme.NoActionBar.FullScreen">
+    <style name="DarkTheme.FullScreen">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <item name="android:windowBackground">@android:color/black</item>

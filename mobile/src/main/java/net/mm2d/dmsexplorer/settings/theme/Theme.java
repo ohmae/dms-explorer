@@ -7,12 +7,12 @@
 
 package net.mm2d.dmsexplorer.settings.theme;
 
-import android.preference.PreferenceActivity.Header;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 
 import net.mm2d.dmsexplorer.R;
 import net.mm2d.dmsexplorer.settings.theme.ThemeParams.Builder;
+import net.mm2d.preference.Header;
 
 /**
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
@@ -24,7 +24,8 @@ public enum Theme {
             .setNoActionBarThemeId(R.style.AppTheme_NoActionBar)
             .setListThemeId(R.style.AppTheme_List)
             .setPopupThemeId(R.style.AppTheme_PopupOverlay)
-            .setFullscreenThemeId(R.style.AppTheme_NoActionBar_FullScreen)
+            .setFullscreenThemeId(R.style.AppTheme_FullScreen)
+            .setSettingsThemeId(R.style.AppTheme_Settings)
             .setPreferenceHeaderConverter(headers -> {
             })
             .setThemeColorGenerator(new ThemeColorGeneratorDefault())
@@ -36,7 +37,8 @@ public enum Theme {
             .setNoActionBarThemeId(R.style.DarkTheme_NoActionBar)
             .setListThemeId(R.style.DarkTheme_List)
             .setPopupThemeId(R.style.DarkTheme_PopupOverlay)
-            .setFullscreenThemeId(R.style.DarkTheme_NoActionBar_FullScreen)
+            .setFullscreenThemeId(R.style.DarkTheme_FullScreen)
+            .setSettingsThemeId(R.style.DarkTheme_Settings)
             .setPreferenceHeaderConverter(headers -> {
                 for (final Header header : headers) {
                     header.iconRes = convertIcon(header.iconRes);
@@ -49,15 +51,26 @@ public enum Theme {
     @DrawableRes
     private static int convertIcon(@DrawableRes final int iconRes) {
         switch (iconRes) {
-            case R.drawable.ic_play_settings:
+            case R.drawable.ic_play_settings_light:
+                return R.drawable.ic_play_settings_dark;
+            case R.drawable.ic_function_settings_light:
+                return R.drawable.ic_function_settings_dark;
+            case R.drawable.ic_view_settings_light:
+                return R.drawable.ic_view_settings_dark;
+            case R.drawable.ic_expert_settings_light:
+                return R.drawable.ic_expert_settings_dark;
+            case R.drawable.ic_info_settings_light:
+                return R.drawable.ic_info_settings_dark;
+            // for 4.x
+            case R.drawable.ic_play_settings_black:
                 return R.drawable.ic_play_settings_white;
-            case R.drawable.ic_function_settings:
+            case R.drawable.ic_function_settings_black:
                 return R.drawable.ic_function_settings_white;
-            case R.drawable.ic_view_settings:
+            case R.drawable.ic_view_settings_black:
                 return R.drawable.ic_view_settings_white;
-            case R.drawable.ic_expert_settings:
+            case R.drawable.ic_expert_settings_black:
                 return R.drawable.ic_expert_settings_white;
-            case R.drawable.ic_info_settings:
+            case R.drawable.ic_info_settings_black:
                 return R.drawable.ic_info_settings_white;
         }
         return iconRes;
