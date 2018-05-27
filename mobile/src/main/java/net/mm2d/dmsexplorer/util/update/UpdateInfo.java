@@ -7,78 +7,51 @@
 
 package net.mm2d.dmsexplorer.util.update;
 
-import android.support.annotation.NonNull;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.Arrays;
+import com.google.gson.annotations.SerializedName;
 
 /**
- * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
+ * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
  */
-class UpdateInfo {
-    private final int mVersionCode;
-    @NonNull
-    private final String mVersionName;
-    @NonNull
-    private final int[] mTargetInclude;
-    @NonNull
-    private final int[] mTargetExclude;
+public class UpdateInfo {
+    @SerializedName("mobile")
+    private final Mobile mMobile;
 
-    UpdateInfo(@NonNull final JSONObject json) throws JSONException {
-        final JSONObject mobile = json.getJSONObject("mobile");
-        mVersionCode = mobile.getInt("versionCode");
-        mVersionName = mobile.getString("versionName");
-        final JSONArray include = mobile.getJSONArray("targetInclude");
-        mTargetInclude = new int[include.length()];
-        for (int i = 0; i < include.length(); i++) {
-            mTargetInclude[i] = include.getInt(i);
-        }
-        final JSONArray exclude = mobile.getJSONArray("targetExclude");
-        mTargetExclude = new int[exclude.length()];
-        for (int i = 0; i < exclude.length(); i++) {
-            mTargetExclude[i] = exclude.getInt(i);
-        }
+    public UpdateInfo(Mobile mobile) {
+        mMobile = mobile;
     }
 
-    int getVersionCode() {
-        return mVersionCode;
+    public boolean isValid() {
+        return mMobile != null
+                && mMobile.versionName != null
+                && mMobile.versionCode != 0
+                && mMobile.targetInclude != null
+                && mMobile.targetExclude != null;
     }
 
-    @NonNull
-    String getVersionName() {
-        return mVersionName;
+    public int getVersionCode() {
+        return mMobile.versionCode;
     }
 
-    @NonNull
-    int[] getTargetInclude() {
-        return mTargetInclude;
+    public String getVersionName() {
+        return mMobile.versionName;
     }
 
-    @NonNull
-    int[] getTargetExclude() {
-        return mTargetExclude;
+    public int[] getTargetInclude() {
+        return mMobile.targetInclude;
     }
 
-    @Override
-    public int hashCode() {
-        return System.identityHashCode(this);
+    public int[] getTargetExclude() {
+        return mMobile.targetExclude;
     }
 
-    @Override
-    public boolean equals(final Object obj) {
-        if (obj == this) {
-            return true;
-        }
-        if (!(obj instanceof UpdateInfo)) {
-            return false;
-        }
-        final UpdateInfo info = (UpdateInfo) obj;
-        return mVersionCode == info.mVersionCode
-                && mVersionName.equals(info.mVersionName)
-                && Arrays.equals(mTargetInclude, info.mTargetInclude)
-                && Arrays.equals(mTargetExclude, info.mTargetExclude);
+    private static class Mobile {
+        @SerializedName("versionName")
+        private String versionName;
+        @SerializedName("versionCode")
+        private int versionCode;
+        @SerializedName("targetInclude")
+        private int[] targetInclude;
+        @SerializedName("targetExclude")
+        private int[] targetExclude;
     }
 }

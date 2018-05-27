@@ -13,25 +13,22 @@ import android.support.annotation.Nullable;
 import android.support.annotation.VisibleForTesting;
 import android.text.TextUtils;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
+
 import net.mm2d.dmsexplorer.BuildConfig;
 import net.mm2d.dmsexplorer.Const;
 import net.mm2d.dmsexplorer.settings.Settings;
+import net.mm2d.dmsexplorer.util.OkHttpClientHolder;
 import net.mm2d.dmsexplorer.view.eventrouter.EventRouter;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Single;
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Request.Builder;
-import okhttp3.Response;
-import okhttp3.ResponseBody;
+import retrofit2.Retrofit;
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
@@ -40,6 +37,7 @@ public class UpdateChecker {
     private static final long FETCH_INTERVAL = TimeUnit.HOURS.toMillis(23);
 
     private final int mCurrentVersion;
+    private final Gson mGson = new Gson();
 
     public UpdateChecker() {
         this(BuildConfig.VERSION_CODE);
@@ -52,33 +50,32 @@ public class UpdateChecker {
 
     @SuppressLint("CheckResult")
     public void check() {
+        Single.fromCallable(Settings::get)
+                .subscribeOn(Schedulers.io())
+                .subscribe(this::execute);
+    }
+
+    @SuppressLint("CheckResult")
+    private void execute(final Settings settings) {
+        makeConsistent(settings);
+        if (!hasEnoughInterval(settings)) {
+            return;
+        }
         createFetcher()
                 .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(this::checkAndNotify);
     }
 
     @NonNull
-    private Single<String> createFetcher() {
-        return Single.create(emitter -> {
-            final Settings settings = Settings.get();
-            makeConsistent(settings);
-            if (!hasEnoughInterval(settings)) {
-                return;
-            }
-            final Request request = new Builder()
-                    .url(Const.URL_UPDATE_JSON)
-                    .get()
-                    .build();
-            final OkHttpClient client = new OkHttpClient();
-            final Response response = client.newCall(request).execute();
-            final ResponseBody body = response.body();
-            if (response.isSuccessful() && body != null) {
-                emitter.onSuccess(body.string());
-                return;
-            }
-            emitter.onError(new IOException());
-        });
+    private Single<UpdateInfo> createFetcher() {
+        return new Retrofit.Builder()
+                .baseUrl(Const.URL_UPDATE_BASE)
+                .addConverterFactory(GsonConverterFactory.create())
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .client(OkHttpClientHolder.get())
+                .build()
+                .create(UpdateService.class)
+                .get();
     }
 
     private void makeConsistent(@NonNull final Settings settings) {
@@ -91,14 +88,10 @@ public class UpdateChecker {
         return System.currentTimeMillis() - settings.getUpdateFetchTime() > FETCH_INTERVAL;
     }
 
-    private void checkAndNotify(@NonNull final String json) {
+    private void checkAndNotify(@NonNull final UpdateInfo info) {
         final Settings settings = Settings.get();
         final boolean before = settings.isUpdateAvailable();
-        try {
-            checkAndSave(settings, json);
-        } catch (final JSONException ignored) {
-            return;
-        }
+        checkAndSave(settings, info);
         if (settings.isUpdateAvailable() == before) {
             return;
         }
@@ -107,17 +100,12 @@ public class UpdateChecker {
 
     private void checkAndSave(
             @NonNull final Settings settings,
-            @NonNull final String json) throws JSONException {
-        if (TextUtils.isEmpty(json)) {
-            return;
-        }
+            @NonNull final UpdateInfo info) {
         settings.setUpdateFetchTime();
-        final JSONObject jsonObject = new JSONObject(json);
-        final String normalizedJson = jsonObject.toString();
+        final String normalizedJson = mGson.toJson(info);
         if (normalizedJson.equals(settings.getUpdateJson())) {
             return;
         }
-        final UpdateInfo info = new UpdateInfo(jsonObject);
         settings.setUpdateAvailable(isUpdateAvailable(info));
         settings.setUpdateJson(normalizedJson);
     }
@@ -128,16 +116,16 @@ public class UpdateChecker {
             return false;
         }
         try {
-            final JSONObject jsonObject = new JSONObject(json);
-            final UpdateInfo info = new UpdateInfo(jsonObject);
+            final UpdateInfo info = mGson.fromJson(json, UpdateInfo.class);
             return isUpdateAvailable(info);
-        } catch (final JSONException ignored) {
+        } catch (final JsonSyntaxException ignored) {
         }
         return false;
     }
 
     private boolean isUpdateAvailable(@NonNull final UpdateInfo info) {
-        return mCurrentVersion < info.getVersionCode()
+        return info.isValid()
+                && mCurrentVersion < info.getVersionCode()
                 && isInclude(info.getTargetInclude())
                 && !isExclude(info.getTargetExclude());
     }

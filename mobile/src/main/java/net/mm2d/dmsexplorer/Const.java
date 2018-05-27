@@ -26,6 +26,8 @@ public class Const {
     public static final String SHARE_ELEMENT_NAME_DEVICE_ICON = "SHARE_ELEMENT_NAME_DEVICE_ICON";
 
     public static final String URL_UPDATE_JSON = "https://ohmae.github.io/DmsExplorer/json/update.json";
+    public static final String URL_UPDATE_BASE = "https://ohmae.github.io/DmsExplorer/";
+    public static final String URL_UPDATE_PATH = "json/update.json";
     public static final String URL_GITHUB_PROJECT = "https://github.com/ohmae/DmsExplorer";
     public static final String URL_OPEN_SOURCE_LICENSE = "file:///android_asset/license.html";
 

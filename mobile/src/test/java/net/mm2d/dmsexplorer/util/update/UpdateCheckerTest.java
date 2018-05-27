@@ -7,10 +7,19 @@
 
 package net.mm2d.dmsexplorer.util.update;
 
+import com.google.gson.Gson;
+
+import net.mm2d.dmsexplorer.Const;
+import net.mm2d.dmsexplorer.util.OkHttpClientHolder;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
+
+import retrofit2.Retrofit;
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
@@ -191,5 +200,28 @@ public class UpdateCheckerTest {
         final int version = 711;
         final String json = "{\"mobile\":{\"versionName\":\"0.7.16\",\"versionCode\":716,\"targetInclude\":[700,714],\"targetExclude\":[711,712]}}";
         assertThat(new UpdateChecker(version).isUpdateAvailable(json), is(false));
+    }
+
+    @Test
+    public void gson() throws Exception {
+        final String json = "{\"mobile\":{\"versionName\":\"0.7.16\",\"versionCode\":716,\"targetInclude\":[700,714],\"targetExclude\":[711,712]}}";
+        UpdateInfo update = new Gson().fromJson(json, UpdateInfo.class);
+        assertThat(update.getVersionCode(), is(716));
+        assertThat(update.getVersionName(), is("0.7.16"));
+        assertThat(update.getTargetInclude(), is(new int[]{700, 714}));
+        assertThat(update.getTargetExclude(), is(new int[]{711, 712}));
+    }
+
+    @Test
+    public void retrofit() throws Exception {
+        final Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(Const.URL_UPDATE_BASE)
+                .addConverterFactory(GsonConverterFactory.create())
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .client(OkHttpClientHolder.get())
+                .build();
+        UpdateService service = retrofit.create(UpdateService.class);
+        UpdateInfo info = service.get().blockingGet();
+        assertThat(info.isValid(), is(true));
     }
 }
