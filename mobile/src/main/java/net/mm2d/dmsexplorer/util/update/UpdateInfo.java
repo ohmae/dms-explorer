@@ -13,6 +13,17 @@ import com.google.gson.annotations.SerializedName;
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
  */
 public class UpdateInfo {
+    private static class Mobile {
+        @SerializedName("versionName")
+        private String versionName;
+        @SerializedName("versionCode")
+        private int versionCode;
+        @SerializedName("targetInclude")
+        private int[] targetInclude;
+        @SerializedName("targetExclude")
+        private int[] targetExclude;
+    }
+
     @SerializedName("mobile")
     private final Mobile mMobile;
 
@@ -42,16 +53,5 @@ public class UpdateInfo {
 
     public int[] getTargetExclude() {
         return mMobile.targetExclude;
-    }
-
-    private static class Mobile {
-        @SerializedName("versionName")
-        private String versionName;
-        @SerializedName("versionCode")
-        private int versionCode;
-        @SerializedName("targetInclude")
-        private int[] targetInclude;
-        @SerializedName("targetExclude")
-        private int[] targetExclude;
     }
 }
