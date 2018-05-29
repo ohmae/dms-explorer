@@ -18,6 +18,9 @@
 -keepclasseswithmembers class * {
     @com.squareup.moshi.* <methods>;
 }
+-keepclasseswithmembers class * {
+    @retrofit2.http.* <methods>;
+}
 -keep @com.squareup.moshi.JsonQualifier interface *
 -keepclassmembers class kotlin.Metadata {
     public <methods>;
@@ -27,6 +30,8 @@
     <fields>;
 }
 -keepnames @com.squareup.moshi.JsonClass class *
+
+-keepclassmembers class net.mm2d.dmsexplorer.util.update.model.** { *; }
 
 # for Retrofit2
 # Platform calls Class.forName on types which do not exist on Android to determine platform.

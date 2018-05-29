@@ -5,7 +5,7 @@
  * http://opensource.org/licenses/MIT
  */
 
-package net.mm2d.dmsexplorer.util.update
+package net.mm2d.dmsexplorer.util.update.model
 
 import com.squareup.moshi.Json
 
@@ -16,6 +16,9 @@ internal data class UpdateInfo(
         @Json(name = "mobile")
         private val mobile: Mobile
 ) {
+    val isValid: Boolean
+        get() = (mobile.versionCode != 0)
+
     val versionCode: Int
         get() = mobile.versionCode
 

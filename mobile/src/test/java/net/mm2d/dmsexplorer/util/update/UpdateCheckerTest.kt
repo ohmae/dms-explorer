@@ -8,8 +8,10 @@
 package net.mm2d.dmsexplorer.util.update
 
 import com.squareup.moshi.Moshi
+import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import net.mm2d.dmsexplorer.Const
 import net.mm2d.dmsexplorer.util.OkHttpClientHolder
+import net.mm2d.dmsexplorer.util.update.model.UpdateInfo
 import org.hamcrest.Matchers.`is`
 import org.junit.Assert.assertThat
 import org.junit.Test
@@ -227,7 +229,7 @@ class UpdateCheckerTest {
     @Throws(Exception::class)
     fun moshi() {
         val json = "{\"mobile\":{\"versionName\":\"0.7.16\",\"versionCode\":716,\"targetInclude\":[700,714],\"targetExclude\":[711,712]}}"
-        val moshi = Moshi.Builder().build()
+        val moshi = Moshi.Builder().add(KotlinJsonAdapterFactory()).build()
         val jsonAdapter = moshi.adapter(UpdateInfo::class.java)
         val update = jsonAdapter.fromJson(json)
         assertThat(update!!.versionCode, `is`(716))
@@ -239,13 +241,15 @@ class UpdateCheckerTest {
     @Test
     @Throws(Exception::class)
     fun retrofit() {
+        val moshi = Moshi.Builder().add(KotlinJsonAdapterFactory()).build()
         val retrofit = Retrofit.Builder()
                 .baseUrl(Const.URL_UPDATE_BASE)
-                .addConverterFactory(MoshiConverterFactory.create())
+                .addConverterFactory(MoshiConverterFactory.create(moshi))
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .client(OkHttpClientHolder.get())
                 .build()
         val service = retrofit.create(UpdateService::class.java)
         val info = service.get().blockingGet()
+        assertThat(info.versionCode, `is`(737))
     }
 }

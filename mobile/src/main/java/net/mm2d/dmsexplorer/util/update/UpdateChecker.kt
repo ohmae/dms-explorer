@@ -18,6 +18,7 @@ import net.mm2d.dmsexplorer.BuildConfig
 import net.mm2d.dmsexplorer.Const
 import net.mm2d.dmsexplorer.settings.Settings
 import net.mm2d.dmsexplorer.util.OkHttpClientHolder
+import net.mm2d.dmsexplorer.util.update.model.UpdateInfo
 import net.mm2d.dmsexplorer.view.eventrouter.EventRouter
 import net.mm2d.log.Log
 import retrofit2.Retrofit
@@ -85,6 +86,9 @@ class UpdateChecker(
     }
 
     private fun checkAndNotify(info: UpdateInfo) {
+        if (!info.isValid) {
+            return
+        }
         val settings = Settings.get()
         val before = settings.isUpdateAvailable
         checkAndSave(settings, info)

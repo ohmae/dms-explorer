@@ -9,6 +9,7 @@ package net.mm2d.dmsexplorer.util.update
 
 import io.reactivex.Single
 import net.mm2d.dmsexplorer.Const
+import net.mm2d.dmsexplorer.util.update.model.UpdateInfo
 import retrofit2.http.GET
 
 /**
