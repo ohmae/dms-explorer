@@ -13,22 +13,24 @@ import android.support.annotation.Nullable;
 import android.support.annotation.VisibleForTesting;
 import android.text.TextUtils;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonSyntaxException;
+import com.squareup.moshi.JsonAdapter;
+import com.squareup.moshi.Moshi;
 
 import net.mm2d.dmsexplorer.BuildConfig;
 import net.mm2d.dmsexplorer.Const;
 import net.mm2d.dmsexplorer.settings.Settings;
 import net.mm2d.dmsexplorer.util.OkHttpClientHolder;
 import net.mm2d.dmsexplorer.view.eventrouter.EventRouter;
+import net.mm2d.log.Log;
 
+import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Single;
 import io.reactivex.schedulers.Schedulers;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
-import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.converter.moshi.MoshiConverterFactory;
 
 /**
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
@@ -37,7 +39,7 @@ public class UpdateChecker {
     private static final long FETCH_INTERVAL = TimeUnit.HOURS.toMillis(23);
 
     private final int mCurrentVersion;
-    private final Gson mGson = new Gson();
+    private final JsonAdapter<UpdateInfo> mAdapter = new Moshi.Builder().build().adapter(UpdateInfo.class);
 
     public UpdateChecker() {
         this(BuildConfig.VERSION_CODE);
@@ -70,7 +72,7 @@ public class UpdateChecker {
     private Single<UpdateInfo> createFetcher() {
         return new Retrofit.Builder()
                 .baseUrl(Const.URL_UPDATE_BASE)
-                .addConverterFactory(GsonConverterFactory.create())
+                .addConverterFactory(MoshiConverterFactory.create())
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .client(OkHttpClientHolder.get())
                 .build()
@@ -102,7 +104,7 @@ public class UpdateChecker {
             @NonNull final Settings settings,
             @NonNull final UpdateInfo info) {
         settings.setUpdateFetchTime();
-        final String normalizedJson = mGson.toJson(info);
+        final String normalizedJson = mAdapter.toJson(info);
         if (normalizedJson.equals(settings.getUpdateJson())) {
             return;
         }
@@ -116,9 +118,10 @@ public class UpdateChecker {
             return false;
         }
         try {
-            final UpdateInfo info = mGson.fromJson(json, UpdateInfo.class);
-            return isUpdateAvailable(info);
-        } catch (final JsonSyntaxException ignored) {
+            final UpdateInfo info = mAdapter.fromJson(json);
+            return info != null && isUpdateAvailable(info);
+        } catch (IOException e) {
+            Log.w(e);
         }
         return false;
     }

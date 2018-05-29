@@ -7,7 +7,8 @@
 
 package net.mm2d.dmsexplorer.util.update;
 
-import com.google.gson.Gson;
+import com.squareup.moshi.JsonAdapter;
+import com.squareup.moshi.Moshi;
 
 import net.mm2d.dmsexplorer.Const;
 import net.mm2d.dmsexplorer.util.OkHttpClientHolder;
@@ -19,7 +20,7 @@ import org.robolectric.annotation.Config;
 
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
-import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.converter.moshi.MoshiConverterFactory;
 
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
@@ -205,7 +206,9 @@ public class UpdateCheckerTest {
     @Test
     public void gson() throws Exception {
         final String json = "{\"mobile\":{\"versionName\":\"0.7.16\",\"versionCode\":716,\"targetInclude\":[700,714],\"targetExclude\":[711,712]}}";
-        UpdateInfo update = new Gson().fromJson(json, UpdateInfo.class);
+        final Moshi moshi = new Moshi.Builder().build();
+        final JsonAdapter<UpdateInfo> jsonAdapter = moshi.adapter(UpdateInfo.class);
+        UpdateInfo update = jsonAdapter.fromJson(json);
         assertThat(update.getVersionCode(), is(716));
         assertThat(update.getVersionName(), is("0.7.16"));
         assertThat(update.getTargetInclude(), is(new int[]{700, 714}));
@@ -216,7 +219,7 @@ public class UpdateCheckerTest {
     public void retrofit() throws Exception {
         final Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(Const.URL_UPDATE_BASE)
-                .addConverterFactory(GsonConverterFactory.create())
+                .addConverterFactory(MoshiConverterFactory.create())
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .client(OkHttpClientHolder.get())
                 .build();

@@ -7,51 +7,47 @@
 
 package net.mm2d.dmsexplorer.util.update;
 
-import com.google.gson.annotations.SerializedName;
+import com.squareup.moshi.Json;
 
 /**
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
  */
 public class UpdateInfo {
     private static class Mobile {
-        @SerializedName("versionName")
+        @Json(name = "versionName")
         private String versionName;
-        @SerializedName("versionCode")
+        @Json(name = "versionCode")
         private int versionCode;
-        @SerializedName("targetInclude")
+        @Json(name = "targetInclude")
         private int[] targetInclude;
-        @SerializedName("targetExclude")
+        @Json(name = "targetExclude")
         private int[] targetExclude;
     }
 
-    @SerializedName("mobile")
-    private final Mobile mMobile;
-
-    public UpdateInfo(Mobile mobile) {
-        mMobile = mobile;
-    }
+    @Json(name = "mobile")
+    private Mobile mobile;
 
     public boolean isValid() {
-        return mMobile != null
-                && mMobile.versionName != null
-                && mMobile.versionCode != 0
-                && mMobile.targetInclude != null
-                && mMobile.targetExclude != null;
+        return mobile != null
+                && mobile.versionName != null
+                && mobile.versionCode != 0
+                && mobile.targetInclude != null
+                && mobile.targetExclude != null;
     }
 
     public int getVersionCode() {
-        return mMobile.versionCode;
+        return mobile.versionCode;
     }
 
     public String getVersionName() {
-        return mMobile.versionName;
+        return mobile.versionName;
     }
 
     public int[] getTargetInclude() {
-        return mMobile.targetInclude;
+        return mobile.targetInclude;
     }
 
     public int[] getTargetExclude() {
-        return mMobile.targetExclude;
+        return mobile.targetExclude;
     }
 }
