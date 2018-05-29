@@ -5,17 +5,16 @@
  * http://opensource.org/licenses/MIT
  */
 
-package net.mm2d.dmsexplorer.util.update;
+package net.mm2d.dmsexplorer.util.update
 
-import net.mm2d.dmsexplorer.Const;
-
-import io.reactivex.Single;
-import retrofit2.http.GET;
+import io.reactivex.Single
+import net.mm2d.dmsexplorer.Const
+import retrofit2.http.GET
 
 /**
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
  */
-interface UpdateService {
+internal interface UpdateService {
     @GET(Const.URL_UPDATE_PATH)
-    Single<UpdateInfo> get();
+    fun get(): Single<UpdateInfo>
 }

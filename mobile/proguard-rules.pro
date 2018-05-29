@@ -19,6 +19,14 @@
     @com.squareup.moshi.* <methods>;
 }
 -keep @com.squareup.moshi.JsonQualifier interface *
+-keepclassmembers class kotlin.Metadata {
+    public <methods>;
+}
+-keep class **JsonAdapter {
+    <init>(...);
+    <fields>;
+}
+-keepnames @com.squareup.moshi.JsonClass class *
 
 # for Retrofit2
 # Platform calls Class.forName on types which do not exist on Android to determine platform.
