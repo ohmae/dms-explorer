@@ -18,20 +18,8 @@
 -keepclasseswithmembers class * {
     @com.squareup.moshi.* <methods>;
 }
--keepclasseswithmembers class * {
-    @retrofit2.http.* <methods>;
-}
--keep @com.squareup.moshi.JsonQualifier interface *
--keepclassmembers class kotlin.Metadata {
-    public <methods>;
-}
--keep class **JsonAdapter {
-    <init>(...);
-    <fields>;
-}
--keepnames @com.squareup.moshi.JsonClass class *
-
--keepclassmembers class net.mm2d.dmsexplorer.util.update.model.** { *; }
+-keep class kotlin.reflect.jvm.internal.impl.builtins.** { *; }
+-keep class net.mm2d.dmsexplorer.util.update.model.** { *; }
 
 # for Retrofit2
 # Platform calls Class.forName on types which do not exist on Android to determine platform.
@@ -42,3 +30,7 @@
 -keepattributes Signature
 # Retain declared checked exceptions for use by a Proxy instance.
 -keepattributes Exceptions
+
+-keepclasseswithmembers class * {
+    @retrofit2.http.* <methods>;
+}
