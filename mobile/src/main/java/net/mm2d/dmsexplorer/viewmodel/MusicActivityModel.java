@@ -36,6 +36,7 @@ import net.mm2d.dmsexplorer.viewmodel.ControlPanelModel.SkipControlListener;
 import net.mm2d.dmsexplorer.viewmodel.helper.MuteAlertHelper;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
@@ -135,6 +136,7 @@ public class MusicActivityModel extends BaseObservable
             return;
         }
         Downloader.create(uri.toString())
+                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(this::setImageBinary);
     }
