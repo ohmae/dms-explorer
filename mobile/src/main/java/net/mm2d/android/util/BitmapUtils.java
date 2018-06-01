@@ -24,10 +24,6 @@ import java.io.IOException;
  */
 
 public class BitmapUtils {
-    private BitmapUtils() {
-        throw new AssertionError();
-    }
-
     /**
      * 画像データを指定された表示枠に必要最小限の大きさにダウンサンプリングしてBitmapを作成する。
      *

@@ -21,10 +21,6 @@ import java.lang.reflect.InvocationTargetException;
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
  */
 public class DisplaySizeUtils {
-    private DisplaySizeUtils() {
-        throw new AssertionError();
-    }
-
     /**
      * SystemUIを除いたディスプレイサイズを返す。
      *
