@@ -17,7 +17,9 @@ internal data class UpdateInfo(
         private val mobile: Mobile
 ) {
     val isValid: Boolean
-        get() = (mobile.versionCode != 0)
+        get() = mobile.versionName.isNotEmpty()
+                && mobile.versionCode != 0
+                && mobile.targetInclude.isNotEmpty()
 
     val versionCode: Int
         get() = mobile.versionCode
@@ -41,4 +43,8 @@ internal data class UpdateInfo(
             @Json(name = "targetExclude")
             internal val targetExclude: List<Int>
     )
+
+    companion object {
+        val EMPTY = UpdateInfo(Mobile("", 0, listOf(0), emptyList()))
+    }
 }

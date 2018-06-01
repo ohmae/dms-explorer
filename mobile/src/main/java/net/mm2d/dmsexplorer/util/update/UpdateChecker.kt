@@ -7,7 +7,6 @@
 
 package net.mm2d.dmsexplorer.util.update
 
-import android.annotation.SuppressLint
 import android.support.annotation.VisibleForTesting
 import com.squareup.moshi.JsonDataException
 import com.squareup.moshi.Moshi
@@ -41,38 +40,30 @@ class UpdateChecker(
     private val jsonAdapter by lazy {
         moshi.adapter(UpdateInfo::class.java)
     }
-
-    @SuppressLint("CheckResult")
-    fun check() {
-        Single.fromCallable<Settings> { Settings.get() }
-                .subscribeOn(Schedulers.io())
-                .subscribe { it -> execute(it) }
-    }
-
-    @SuppressLint("CheckResult")
-    private fun execute(settings: Settings) {
-        makeConsistent(settings)
-        if (!hasEnoughInterval(settings)) {
-            return
-        }
-        createFetcher()
-                .subscribeOn(Schedulers.io())
-                .subscribe { it -> checkAndNotify(it) }
-    }
-
-    private fun createFetcher(): Single<UpdateInfo> {
-        return createRetrofit()
-                .create(UpdateService::class.java)
-                .get()
-    }
-
-    private fun createRetrofit(): Retrofit {
-        return Retrofit.Builder()
+    private val retrofit: Retrofit by lazy {
+        Retrofit.Builder()
                 .baseUrl(Const.URL_UPDATE_BASE)
                 .addConverterFactory(MoshiConverterFactory.create(moshi))
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .client(OkHttpClientHolder.get())
                 .build()
+    }
+
+    fun check() {
+        Single.fromCallable { Settings.get() }
+                .subscribeOn(Schedulers.io())
+                .flatMap { checkIfNeed(it) }
+                .subscribe { it -> checkAndNotify(it) }
+    }
+
+    private fun checkIfNeed(settings: Settings): Single<UpdateInfo> {
+        makeConsistent(settings)
+        if (!hasEnoughInterval(settings)) {
+            return Single.just(UpdateInfo.EMPTY)
+        }
+        return retrofit
+                .create(UpdateService::class.java)
+                .get()
     }
 
     private fun makeConsistent(settings: Settings) {
