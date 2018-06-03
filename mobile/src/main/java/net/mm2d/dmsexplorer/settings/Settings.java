@@ -9,6 +9,7 @@ package net.mm2d.dmsexplorer.settings;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.os.Bundle;
 import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -20,6 +21,9 @@ import net.mm2d.dmsexplorer.settings.theme.Theme;
 import net.mm2d.dmsexplorer.settings.theme.ThemeParams;
 import net.mm2d.log.Log;
 
+import java.lang.reflect.Type;
+import java.util.Arrays;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
@@ -415,5 +419,56 @@ public class Settings {
         final Theme theme = mStorage.readBoolean(Key.DARK_THEME)
                 ? Theme.DARK : Theme.DEFAULT;
         return theme.getParams();
+    }
+
+    public long getLogSendTime() {
+        return mStorage.readLong(Key.LOG_SEND_TIME);
+    }
+
+    public void setLogSendTime(final long time) {
+        mStorage.writeLong(Key.LOG_SEND_TIME, time);
+    }
+
+    @NonNull
+    public Bundle getDump() {
+        final List<Key> keys = Arrays.asList(
+                Key.PLAY_MOVIE_MYSELF,
+                Key.PLAY_MUSIC_MYSELF,
+                Key.PLAY_PHOTO_MYSELF,
+                Key.USE_CUSTOM_TABS,
+                Key.SHOULD_SHOW_DEVICE_DETAIL_ON_TAP,
+                Key.SHOULD_SHOW_CONTENT_DETAIL_ON_TAP,
+                Key.DELETE_FUNCTION_ENABLED,
+                Key.DARK_THEME,
+                Key.DO_NOT_SHOW_MOVIE_UI_ON_START,
+                Key.DO_NOT_SHOW_MOVIE_UI_ON_TOUCH,
+                Key.DO_NOT_SHOW_TITLE_IN_MOVIE_UI,
+                Key.IS_MOVIE_UI_BACKGROUND_TRANSPARENT,
+                Key.DO_NOT_SHOW_PHOTO_UI_ON_START,
+                Key.DO_NOT_SHOW_PHOTO_UI_ON_TOUCH,
+                Key.DO_NOT_SHOW_TITLE_IN_PHOTO_UI,
+                Key.IS_PHOTO_UI_BACKGROUND_TRANSPARENT,
+                Key.ORIENTATION_BROWSE,
+                Key.ORIENTATION_MOVIE,
+                Key.ORIENTATION_MUSIC,
+                Key.ORIENTATION_PHOTO,
+                Key.ORIENTATION_DMC,
+                Key.REPEAT_MODE_MOVIE,
+                Key.REPEAT_MODE_MUSIC
+        );
+        final Bundle bundle = new Bundle();
+        for (final Key key : keys) {
+            final Type type = key.getValueType();
+            if (type == Boolean.class) {
+                bundle.putString(key.name(), mStorage.readBoolean(key) ? "on" : "off");
+            } else if (type == Integer.class) {
+                bundle.putString(key.name(), String.valueOf(mStorage.readInt(key)));
+            } else if (type == Long.class) {
+                bundle.putString(key.name(), String.valueOf(mStorage.readLong(key)));
+            } else if (type == String.class) {
+                bundle.putString(key.name(), mStorage.readString(key));
+            }
+        }
+        return bundle;
     }
 }

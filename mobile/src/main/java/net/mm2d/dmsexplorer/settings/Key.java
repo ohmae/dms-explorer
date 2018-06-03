@@ -74,6 +74,8 @@ public enum Key {
     UPDATE_AVAILABLE(Boolean.class, false),
     UPDATE_JSON(String.class, ""),
 
+    LOG_SEND_TIME(Long.class, 0L),
+
     // OldKeys
     @Deprecated
     LAUNCH_APP_MOVIE(),

@@ -227,7 +227,7 @@ class UpdateCheckerTest {
 
     @Test
     @Throws(Exception::class)
-    fun moshi() {
+    fun moshi_fromJson() {
         val json = "{\"mobile\":{\"versionName\":\"0.7.16\",\"versionCode\":716,\"targetInclude\":[700,714],\"targetExclude\":[711,712]}}"
         val moshi = Moshi.Builder().add(KotlinJsonAdapterFactory()).build()
         val jsonAdapter = moshi.adapter(UpdateInfo::class.java)
@@ -236,6 +236,17 @@ class UpdateCheckerTest {
         assertThat(update.versionName, `is`("0.7.16"))
         assertThat(update.targetInclude, `is`(Arrays.asList(700, 714)))
         assertThat(update.targetExclude, `is`(Arrays.asList(711, 712)))
+    }
+
+    @Test
+    @Throws(Exception::class)
+    fun moshi_toJson() {
+        val json = "{\"mobile\":{\"versionName\":\"0.7.16\",\"versionCode\":716,\"targetInclude\":[700,714],\"targetExclude\":[711,712]}}"
+        val moshi = Moshi.Builder().add(KotlinJsonAdapterFactory()).build()
+        val jsonAdapter = moshi.adapter(UpdateInfo::class.java)
+        val update = jsonAdapter.fromJson(json)
+        val result = jsonAdapter.toJson(update)
+        assertThat(result, `is`(json))
     }
 
     @Test

@@ -41,6 +41,7 @@ public class App extends Application {
         Settings.initialize(this);
         EventRouter.initialize(this);
         EventLogger.initialize(this);
+        EventLogger.sendDailyLog();
         Repository.set(new AppRepository(this));
         new UpdateChecker().check();
     }
