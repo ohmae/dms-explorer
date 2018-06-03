@@ -7,75 +7,77 @@
 
 package net.mm2d.android.util
 
+import android.util.SparseArray
+
 /**
  * ARIB特有の処理を行うユーティリティクラス。
  *
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
  */
 object AribUtils {
-    private val map: Map<Int, String> = mapOf(
-            // 四角で囲んだ文字、フォントが無いため文字列で置換
-            0xE0F8 to "[HV]",
-            0xE0F9 to "[SD]",
-            0xE0FA to "[P]",
-            0xE0FB to "[W]",
-            0xE0FC to "[MV]",
-            0xE0FD to "[手]",
-            0xE0FE to "[字]",
-            0xE0FF to "[双]",
-            0xE180 to "[デ]",
-            0xE181 to "[S]",
-            0xE182 to "[二]",
-            0xE183 to "[多]",
-            0xE184 to "[解]",
-            0xE185 to "[SS]",
-            0xE186 to "[B]",
-            0xE187 to "[N]",
-            0xE188 to "■",
-            0xE189 to "●",
-            0xE18A to "[天]",
-            0xE18B to "[交]",
-            0xE18C to "[映]",
-            0xE18D to "[無]",
-            0xE18E to "[料]",
-            0xE18F to "[鍵]",
-            0xE190 to "[前]",
-            0xE191 to "[後]",
-            0xE192 to "[再]",
-            0xE193 to "[新]",
-            0xE194 to "[初]",
-            0xE195 to "[終]",
-            0xE196 to "[生]",
-            0xE197 to "[販]",
-            0xE198 to "[声]",
-            0xE199 to "[吹]",
-            0xE19A to "[PPV]",
-            0xE19B to "[秘]",
-            0xE19C to "[ほか]",
-            // かつて外字に割り当てられていたがUnicodeに追加されたもの、Unicodeに置換
-            0xE080 to "㐂",
-            0xE082 to "㔟",
-            0xE083 to "詹",
-            0xE085 to "﨑",
-            0xE086 to "㟢",
-            0xE08F to "㻚",
-            0xE090 to "䂓",
-            0xE094 to "䉤",
-            0xE2F0 to "⁉",
-            0xE2FF to "㉑",
-            0xE380 to "㉒",
-            0xE381 to "㉓",
-            0xE382 to "㉔",
-            0xE39D to "㉕",
-            0xE39E to "㉖",
-            0xE39F to "㉗",
-            0xE3A0 to "㉘",
-            0xE3A1 to "㉙",
-            0xE3A2 to "㉚",
-            0xE3A3 to "⓫",
-            0xE3A4 to "⓬",
-            0xE3A5 to "㉛"
-    )
+    private val array = SparseArray<String>().apply {
+        // 四角で囲んだ文字、フォントが無いため文字列で置換
+        put(0xE0F8, "[HV]")
+        put(0xE0F9, "[SD]")
+        put(0xE0FA, "[P]")
+        put(0xE0FB, "[W]")
+        put(0xE0FC, "[MV]")
+        put(0xE0FD, "[手]")
+        put(0xE0FE, "[字]")
+        put(0xE0FF, "[双]")
+        put(0xE180, "[デ]")
+        put(0xE181, "[S]")
+        put(0xE182, "[二]")
+        put(0xE183, "[多]")
+        put(0xE184, "[解]")
+        put(0xE185, "[SS]")
+        put(0xE186, "[B]")
+        put(0xE187, "[N]")
+        put(0xE188, "■")
+        put(0xE189, "●")
+        put(0xE18A, "[天]")
+        put(0xE18B, "[交]")
+        put(0xE18C, "[映]")
+        put(0xE18D, "[無]")
+        put(0xE18E, "[料]")
+        put(0xE18F, "[鍵]")
+        put(0xE190, "[前]")
+        put(0xE191, "[後]")
+        put(0xE192, "[再]")
+        put(0xE193, "[新]")
+        put(0xE194, "[初]")
+        put(0xE195, "[終]")
+        put(0xE196, "[生]")
+        put(0xE197, "[販]")
+        put(0xE198, "[声]")
+        put(0xE199, "[吹]")
+        put(0xE19A, "[PPV]")
+        put(0xE19B, "[秘]")
+        put(0xE19C, "[ほか]")
+        // かつて外字に割り当てられていたがUnicodeに追加されたもの、Unicodeに置換
+        put(0xE080, "㐂")
+        put(0xE082, "㔟")
+        put(0xE083, "詹")
+        put(0xE085, "﨑")
+        put(0xE086, "㟢")
+        put(0xE08F, "㻚")
+        put(0xE090, "䂓")
+        put(0xE094, "䉤")
+        put(0xE2F0, "⁉")
+        put(0xE2FF, "㉑")
+        put(0xE380, "㉒")
+        put(0xE381, "㉓")
+        put(0xE382, "㉔")
+        put(0xE39D, "㉕")
+        put(0xE39E, "㉖")
+        put(0xE39F, "㉗")
+        put(0xE3A0, "㉘")
+        put(0xE3A1, "㉙")
+        put(0xE3A2, "㉚")
+        put(0xE3A3, "⓫")
+        put(0xE3A4, "⓬")
+        put(0xE3A5, "㉛")
+    }
 
     /**
      * 文字列に含まれるARIB外字を通常のフォントでも表示できる文字コードに変換する。
@@ -87,7 +89,7 @@ object AribUtils {
     fun toDisplayableString(string: String): String {
         val sb = StringBuilder()
         string.toCharArray().forEach {
-            sb.append(map.getOrDefault(it.toInt(), it.toString()))
+            sb.append(array.get(it.toInt(), it.toString()))
         }
         return sb.toString()
     }
