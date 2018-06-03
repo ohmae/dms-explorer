@@ -12,6 +12,7 @@ import com.squareup.moshi.Json
 /**
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
  */
+@Suppress("MemberVisibilityCanBePrivate")
 internal data class UpdateInfo(
         @Json(name = "mobile")
         internal val mobile: Mobile
