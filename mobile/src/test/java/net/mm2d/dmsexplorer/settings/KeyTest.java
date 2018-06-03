@@ -32,7 +32,7 @@ public class KeyTest {
 
     @Test(expected = NullPointerException.class)
     public void getDefaultInteger_表示用Key() throws Exception {
-        Key.VERSION_NUMBER.getDefaultInteger();
+        Key.VERSION_NUMBER.getDefaultInt();
     }
 
     @Test(expected = NullPointerException.class)
@@ -57,7 +57,7 @@ public class KeyTest {
 
     @Test(expected = ClassCastException.class)
     public void getDefaultInteger_Boolean用Key() throws Exception {
-        Key.PLAY_MOVIE_MYSELF.getDefaultInteger();
+        Key.PLAY_MOVIE_MYSELF.getDefaultInt();
     }
 
     @Test(expected = ClassCastException.class)
@@ -82,7 +82,7 @@ public class KeyTest {
 
     @Test
     public void getDefaultInteger_Integer用Key() throws Exception {
-        Key.SETTINGS_VERSION.getDefaultInteger();
+        Key.SETTINGS_VERSION.getDefaultInt();
     }
 
     @Test(expected = ClassCastException.class)
@@ -107,7 +107,7 @@ public class KeyTest {
 
     @Test(expected = ClassCastException.class)
     public void getDefaultInteger_Long用Key() throws Exception {
-        Key.UPDATE_FETCH_TIME.getDefaultInteger();
+        Key.UPDATE_FETCH_TIME.getDefaultInt();
     }
 
     @Test
@@ -132,7 +132,7 @@ public class KeyTest {
 
     @Test(expected = ClassCastException.class)
     public void getDefaultInteger_String用Key() throws Exception {
-        Key.REPEAT_MODE_MOVIE.getDefaultInteger();
+        Key.REPEAT_MODE_MOVIE.getDefaultInt();
     }
 
     @Test(expected = ClassCastException.class)

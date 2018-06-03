@@ -119,7 +119,7 @@ public enum Key {
         return (boolean) mDefaultValue;
     }
 
-    int getDefaultInteger() {
+    int getDefaultInt() {
         return (int) mDefaultValue;
     }
 

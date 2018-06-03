@@ -135,7 +135,7 @@ class SettingsStorage {
         if (key.getValueType() != Integer.class) {
             throw new IllegalArgumentException(key.name() + " is not key for int");
         }
-        return mPreferences.getInt(key.name(), key.getDefaultInteger());
+        return mPreferences.getInt(key.name(), key.getDefaultInt());
     }
 
     /**
@@ -217,7 +217,7 @@ class SettingsStorage {
         if (type == Boolean.class) {
             writeBoolean(key, key.getDefaultBoolean());
         } else if (type == Integer.class) {
-            writeInt(key, key.getDefaultInteger());
+            writeInt(key, key.getDefaultInt());
         } else if (type == Long.class) {
             writeLong(key, key.getDefaultLong());
         } else if (type == String.class) {
