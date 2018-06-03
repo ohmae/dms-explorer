@@ -14,7 +14,7 @@ import com.squareup.moshi.Json
  */
 internal data class UpdateInfo(
         @Json(name = "mobile")
-        private val mobile: Mobile
+        internal val mobile: Mobile
 ) {
     val isValid: Boolean
         get() = mobile.versionName.isNotEmpty()

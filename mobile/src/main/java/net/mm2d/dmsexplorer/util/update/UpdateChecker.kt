@@ -8,7 +8,6 @@
 package net.mm2d.dmsexplorer.util.update
 
 import android.support.annotation.VisibleForTesting
-import com.squareup.moshi.JsonDataException
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import io.reactivex.Single
@@ -23,7 +22,6 @@ import net.mm2d.log.Log
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.moshi.MoshiConverterFactory
-import java.io.IOException
 import java.util.concurrent.TimeUnit
 
 /**
@@ -109,8 +107,7 @@ class UpdateChecker(
         try {
             val info = jsonAdapter.fromJson(json)
             return info != null && isUpdateAvailable(info)
-        } catch (e: JsonDataException) {
-        } catch (e: IOException) {
+        } catch (e: Exception) {
             Log.w(e)
         }
 
