@@ -25,7 +25,15 @@ object EventLogger {
     private var sender: Sender? = null
     private val ONE_DAY = TimeUnit.DAYS.toMillis(1)
     private val DATE_POINT = TimeUnit.HOURS.toMillis(4)
-    private val DAILY_LOG_DELAY = TimeUnit.SECONDS.toMillis(5)
+    private val DAILY_LOG_DELAY = TimeUnit.SECONDS.toMillis(3)
+    private const val EVENT_DAILY = "daily"
+    private const val EVENT_SELECT_SERVER = "select_server"
+    private const val EVENT_SELECT_RENDERER = "select_renderer"
+    private const val VALUE_DLNA = "dlna"
+    private const val VALUE_DLNA_DTCP = "dlna-dtcp"
+    private const val VALUE_DMR = "dmr"
+    private const val VALUE_MYSELF = "myself"
+    private const val VALUE_OTHER = "other"
 
     @JvmStatic
     fun initialize(context: Context) {
@@ -51,7 +59,7 @@ object EventLogger {
             return
         }
         settings.logSendTime = current
-        sender?.logEvent(Event.APP_OPEN, settings.dump)
+        sender?.logEvent(EVENT_DAILY, settings.dump)
     }
 
     @JvmStatic
@@ -61,7 +69,7 @@ object EventLogger {
         val bundle = Bundle()
         bundle.putString(Param.ITEM_NAME, server.friendlyName)
         bundle.putString(Param.ITEM_BRAND, server.manufacture)
-        sender?.logEvent("select_server", bundle)
+        sender?.logEvent(EVENT_SELECT_SERVER, bundle)
     }
 
     @JvmStatic
@@ -71,7 +79,7 @@ object EventLogger {
         val bundle = Bundle()
         bundle.putString(Param.ITEM_NAME, renderer.friendlyName)
         bundle.putString(Param.ITEM_BRAND, renderer.manufacture)
-        sender?.logEvent("select_renderer", bundle)
+        sender?.logEvent(EVENT_SELECT_RENDERER, bundle)
     }
 
     @JvmStatic
@@ -82,8 +90,8 @@ object EventLogger {
         val bundle = Bundle()
         bundle.putString(Param.ITEM_VARIANT, cdsObject.getValue(CdsObject.RES_PROTOCOL_INFO))
         bundle.putString(Param.CONTENT_TYPE, getTypeString(entity.type))
-        bundle.putString(Param.ORIGIN, if (cdsObject.hasProtectedResource()) "dlna-dtcp" else "dlna")
-        bundle.putString(Param.DESTINATION, "dmr")
+        bundle.putString(Param.ORIGIN, if (cdsObject.hasProtectedResource()) VALUE_DLNA_DTCP else VALUE_DLNA)
+        bundle.putString(Param.DESTINATION, VALUE_DMR)
         sender?.logEvent(Event.SELECT_CONTENT, bundle)
     }
 
@@ -95,8 +103,8 @@ object EventLogger {
         val bundle = Bundle()
         bundle.putString(Param.ITEM_VARIANT, cdsObject.getValue(CdsObject.RES_PROTOCOL_INFO))
         bundle.putString(Param.CONTENT_TYPE, getTypeString(entity.type))
-        bundle.putString(Param.ORIGIN, "dlna")
-        bundle.putString(Param.DESTINATION, if (playMyself) "myself" else "other")
+        bundle.putString(Param.ORIGIN, VALUE_DLNA)
+        bundle.putString(Param.DESTINATION, if (playMyself) VALUE_MYSELF else VALUE_OTHER)
         sender?.logEvent(Event.SELECT_CONTENT, bundle)
     }
 
