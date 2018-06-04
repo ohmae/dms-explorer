@@ -2,7 +2,7 @@
 <resources>
     <string name="app_name">DMS Explorer</string>
     <string name="title_device_select">Device Select</string>
-    <string name="no_available_network">There is no available network connection.</string>
+    <string name="no_available_network">Please connect to the local network</string>
     <string name="toast_not_support_drm">This app does not support playback of DRM content.</string>
     <string name="toast_command_error">Error occurred</string>
     <string name="toast_download_error">Error occurred</string>

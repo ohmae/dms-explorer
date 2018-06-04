@@ -10,8 +10,9 @@ package net.mm2d.dmsexplorer.settings;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v7.preference.PreferenceManager;
+
+import java.lang.reflect.Type;
 
 /**
  * SharedPreferencesへのアクセスをカプセル化するクラス。
@@ -86,6 +87,9 @@ class SettingsStorage {
     void writeBoolean(
             @NonNull final Key key,
             final boolean value) {
+        if (key.getValueType() != Boolean.class) {
+            throw new IllegalArgumentException(key.name() + " is not key for boolean");
+        }
         mPreferences.edit()
                 .putBoolean(key.name(), value)
                 .apply();
@@ -94,14 +98,14 @@ class SettingsStorage {
     /**
      * boolean値を読み出す。
      *
-     * @param key          Key
-     * @param defaultValue デフォルト値
+     * @param key Key
      * @return 読み出したboolean値
      */
-    boolean readBoolean(
-            @NonNull final Key key,
-            final boolean defaultValue) {
-        return mPreferences.getBoolean(key.name(), defaultValue);
+    boolean readBoolean(@NonNull final Key key) {
+        if (key.getValueType() != Boolean.class) {
+            throw new IllegalArgumentException(key.name() + " is not key for boolean");
+        }
+        return mPreferences.getBoolean(key.name(), key.getDefaultBoolean());
     }
 
     /**
@@ -113,6 +117,9 @@ class SettingsStorage {
     void writeInt(
             @NonNull final Key key,
             final int value) {
+        if (key.getValueType() != Integer.class) {
+            throw new IllegalArgumentException(key.name() + " is not key for int");
+        }
         mPreferences.edit()
                 .putInt(key.name(), value)
                 .apply();
@@ -121,14 +128,14 @@ class SettingsStorage {
     /**
      * int値を読み出す。
      *
-     * @param key          Key
-     * @param defaultValue デフォルト値
+     * @param key Key
      * @return 読み出したint値
      */
-    int readInt(
-            @NonNull final Key key,
-            final int defaultValue) {
-        return mPreferences.getInt(key.name(), defaultValue);
+    int readInt(@NonNull final Key key) {
+        if (key.getValueType() != Integer.class) {
+            throw new IllegalArgumentException(key.name() + " is not key for int");
+        }
+        return mPreferences.getInt(key.name(), key.getDefaultInt());
     }
 
     /**
@@ -140,6 +147,9 @@ class SettingsStorage {
     void writeLong(
             @NonNull final Key key,
             final long value) {
+        if (key.getValueType() != Long.class) {
+            throw new IllegalArgumentException(key.name() + " is not key for long");
+        }
         mPreferences.edit()
                 .putLong(key.name(), value)
                 .apply();
@@ -148,14 +158,14 @@ class SettingsStorage {
     /**
      * long値を読み出す。
      *
-     * @param key          Key
-     * @param defaultValue デフォルト値
+     * @param key Key
      * @return 読み出したlong値
      */
-    long readLong(
-            @NonNull final Key key,
-            final long defaultValue) {
-        return mPreferences.getLong(key.name(), defaultValue);
+    long readLong(@NonNull final Key key) {
+        if (key.getValueType() != Long.class) {
+            throw new IllegalArgumentException(key.name() + " is not key for long");
+        }
+        return mPreferences.getLong(key.name(), key.getDefaultLong());
     }
 
     /**
@@ -167,6 +177,9 @@ class SettingsStorage {
     void writeString(
             @NonNull final Key key,
             @NonNull final String value) {
+        if (key.getValueType() != String.class) {
+            throw new IllegalArgumentException(key.name() + " is not key for String");
+        }
         mPreferences.edit()
                 .putString(key.name(), value)
                 .apply();
@@ -175,13 +188,40 @@ class SettingsStorage {
     /**
      * String値を読み出す。
      *
-     * @param key          Key
-     * @param defaultValue デフォルト値
+     * @param key Key
      * @return 読み出したString値
      */
-    String readString(
+    String readString(@NonNull final Key key) {
+        if (key.getValueType() != String.class) {
+            throw new IllegalArgumentException(key.name() + " is not key for String");
+        }
+        return mPreferences.getString(key.name(), key.getDefaultString());
+    }
+
+    /**
+     * デフォルト値を書き込む。
+     *
+     * @param key       Key
+     * @param overwrite true:値を上書きする、false:値がない場合のみ書き込む
+     */
+    void writeDefault(
             @NonNull final Key key,
-            @Nullable final String defaultValue) {
-        return mPreferences.getString(key.name(), defaultValue);
+            final boolean overwrite) {
+        final Type type = key.getValueType();
+        if (type == null) {
+            throw new IllegalArgumentException(key.name() + " is not key for read/write");
+        }
+        if (!overwrite && contains(key)) {
+            return;
+        }
+        if (type == Boolean.class) {
+            writeBoolean(key, key.getDefaultBoolean());
+        } else if (type == Integer.class) {
+            writeInt(key, key.getDefaultInt());
+        } else if (type == Long.class) {
+            writeLong(key, key.getDefaultLong());
+        } else if (type == String.class) {
+            writeString(key, key.getDefaultString());
+        }
     }
 }

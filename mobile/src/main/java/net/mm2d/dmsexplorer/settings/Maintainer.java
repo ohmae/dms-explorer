@@ -22,63 +22,50 @@ import android.support.annotation.NonNull;
  */
 class Maintainer {
     /**
-     * SharedPreferencesのバージョン。
+     * 設定データフォーマットのバージョン
      *
      * <table>
-     * <tr><th>SETTINGS_VERSION</th><th>VersionName</th></tr>
-     * <tr><td>0</td><td>0.6.20-</td></tr>
-     * <tr><td>1</td><td>0.7.0-</td></tr>
+     * <tr><th>SETTINGS_VERSION</th><th>VersionName</th><th>状態</th></tr>
+     * <tr><td>0</td><td>0.6.20-</td><td>サポート終了 v0.7.38</td></tr>
+     * <tr><td>1</td><td>0.7.0-</td><td>現在</td></tr>
      * </table>
+     *
+     * <p>設定フォーマットを変更した場合は、
+     * 旧バージョンからのマイグレーション処理を記述し、設定を持ち越せるようにする。
+     * マイグレーションを打ち切った場合は、
+     * 設定バージョンが現在のものでなければクリアを行い初期設定で起動するようにする。
      */
     private static final int SETTINGS_VERSION = 1;
 
     /**
      * 起動時に一度だけ呼び出され、SharedPreferencesのメンテナンスを行う。
      *
-     * @param storage SharedPreferences
+     * @param storage SettingsStorage
      */
     static void maintain(@NonNull final SettingsStorage storage) {
-        final int currentVersion = getSettingsVersion(storage);
+        final int currentVersion = storage.readInt(Key.SETTINGS_VERSION);
         if (currentVersion == SETTINGS_VERSION) {
             return;
         }
-        if (currentVersion == 0) {
-            migrateFrom0(storage);
-        }
-        storage.writeInt(Key.SETTINGS_VERSION, SETTINGS_VERSION);
-    }
-
-    /**
-     * SharedPreferencesのバージョンを取得する。
-     *
-     * @param storage SharedPreferences
-     * @return バージョン
-     */
-    @SuppressWarnings("deprecation")
-    private static int getSettingsVersion(@NonNull final SettingsStorage storage) {
-        if (storage.contains(Key.LAUNCH_APP_MOVIE)) {
-            // バージョン番号を割り振る前の設定値が含まれている
-            return 0;
-        }
-        return storage.readInt(Key.SETTINGS_VERSION, -1);
-    }
-
-    /**
-     * 設定バージョン0からのマイグレーションを行う。
-     *
-     * @param storage SharedPreferences
-     */
-    @SuppressWarnings("deprecation")
-    private static void migrateFrom0(@NonNull final SettingsStorage storage) {
-        final boolean launchMovie = storage.readBoolean(Key.LAUNCH_APP_MOVIE, true);
-        final boolean launchMusic = storage.readBoolean(Key.LAUNCH_APP_MUSIC, true);
-        final boolean launchPhoto = storage.readBoolean(Key.LAUNCH_APP_PHOTO, true);
-        final boolean auto = storage.readBoolean(Key.MUSIC_AUTO_PLAY, false);
-        final RepeatMode repeatMode = auto ? RepeatMode.SEQUENTIAL : RepeatMode.PLAY_ONCE;
         storage.clear();
-        storage.writeBoolean(Key.PLAY_MOVIE_MYSELF, launchMovie);
-        storage.writeBoolean(Key.PLAY_MUSIC_MYSELF, launchMusic);
-        storage.writeBoolean(Key.PLAY_PHOTO_MYSELF, launchPhoto);
-        storage.writeString(Key.REPEAT_MODE_MUSIC, repeatMode.name());
+        storage.writeInt(Key.SETTINGS_VERSION, SETTINGS_VERSION);
+        writeDefaultValue(storage, false);
+    }
+
+    /**
+     * デフォルト値の書き込みを行う
+     *
+     * @param storage   SettingsStorage
+     * @param overwrite true:値を上書きする、false:値がない場合のみ書き込む
+     */
+    private static void writeDefaultValue(
+            @NonNull final SettingsStorage storage,
+            final boolean overwrite) {
+        for (final Key key : Key.values()) {
+            if (key.getValueType() == null) {
+                continue;
+            }
+            storage.writeDefault(key, overwrite);
+        }
     }
 }

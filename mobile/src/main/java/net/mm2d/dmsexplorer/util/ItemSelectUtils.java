@@ -35,10 +35,6 @@ import net.mm2d.dmsexplorer.view.dialog.SelectResourceDialog;
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
  */
 public class ItemSelectUtils {
-    private ItemSelectUtils() {
-        throw new AssertionError();
-    }
-
     public static void play(@NonNull final FragmentActivity activity) {
         final PlaybackTargetModel targetModel = Repository.get().getPlaybackTargetModel();
         final int resCount = targetModel.getResCount();

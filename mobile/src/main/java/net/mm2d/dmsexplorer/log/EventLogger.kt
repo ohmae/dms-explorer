@@ -9,20 +9,49 @@ package net.mm2d.dmsexplorer.log
 
 import android.content.Context
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import net.mm2d.android.upnp.cds.CdsObject
 import net.mm2d.dmsexplorer.Repository
 import net.mm2d.dmsexplorer.domain.entity.ContentType
+import net.mm2d.dmsexplorer.settings.Settings
 import java.util.*
+import java.util.concurrent.TimeUnit
 
 /**
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
  */
 object EventLogger {
     private var sender: Sender? = null
+    private val ONE_DAY = TimeUnit.DAYS.toMillis(1)
+    private val DATE_POINT = TimeUnit.HOURS.toMillis(4)
+    private val DAILY_LOG_DELAY = TimeUnit.SECONDS.toMillis(5)
 
     @JvmStatic
     fun initialize(context: Context) {
         sender = SenderFactory.create(context)
+    }
+
+    private fun calculateDateForLog(time: Long): Long {
+        return (time + TimeZone.getDefault().rawOffset - DATE_POINT) / ONE_DAY
+    }
+
+    @JvmStatic
+    fun sendDailyLog() {
+        Handler(Looper.getMainLooper()).postDelayed({
+            sendDailyLogIfNeed()
+        }, DAILY_LOG_DELAY)
+    }
+
+    private fun sendDailyLogIfNeed() {
+        val settings = Settings.get()
+        val sendTime = settings.logSendTime
+        val current = System.currentTimeMillis()
+        if (calculateDateForLog(sendTime) == calculateDateForLog(current)) {
+            return
+        }
+        settings.logSendTime = current
+        sender?.logEvent(Event.APP_OPEN, settings.dump)
     }
 
     @JvmStatic

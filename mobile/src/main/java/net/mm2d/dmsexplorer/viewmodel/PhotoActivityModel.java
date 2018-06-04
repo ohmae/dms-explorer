@@ -31,6 +31,7 @@ import net.mm2d.dmsexplorer.util.Downloader;
 import net.mm2d.dmsexplorer.view.base.BaseActivity;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
@@ -70,6 +71,7 @@ public class PhotoActivityModel extends BaseObservable {
             throw new IllegalStateException();
         }
         Downloader.create(uri.toString())
+                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(data -> {
                     final PlaybackTargetModel model = repository.getPlaybackTargetModel();

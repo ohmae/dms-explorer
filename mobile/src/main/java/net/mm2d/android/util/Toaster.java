@@ -9,10 +9,6 @@ import android.widget.Toast;
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
  */
 public class Toaster {
-    private Toaster() {
-        throw new AssertionError();
-    }
-
     @Nullable
     public static Toast show(
             @Nullable final Context context,

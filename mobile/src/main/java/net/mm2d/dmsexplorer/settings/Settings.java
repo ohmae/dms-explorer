@@ -7,7 +7,9 @@
 
 package net.mm2d.dmsexplorer.settings;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.os.Bundle;
 import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -19,6 +21,10 @@ import net.mm2d.dmsexplorer.settings.theme.Theme;
 import net.mm2d.dmsexplorer.settings.theme.ThemeParams;
 import net.mm2d.log.Log;
 
+import java.lang.reflect.Type;
+import java.util.Arrays;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -49,9 +55,11 @@ public class Settings {
                     Log.e(null, "!!!!!!!!!! BLOCK !!!!!!!!!!", new Throwable());
                 }
                 try {
-                    sCondition.await();
+                    if (!sCondition.await(1, TimeUnit.SECONDS)) {
+                        throw new IllegalStateException("Settings initialization timeout");
+                    }
                 } catch (InterruptedException e) {
-                    e.printStackTrace();
+                    Log.w(e);
                 }
             }
             return sSettings;
@@ -65,20 +73,23 @@ public class Settings {
      *
      * @param context コンテキスト
      */
+    @SuppressLint("CheckResult")
     public static void initialize(@NonNull final Context context) {
-        Completable.fromAction(() -> {
-            final SettingsStorage storage = new SettingsStorage(context);
-            Maintainer.maintain(storage);
-            sLock.lock();
-            try {
-                sSettings = new Settings(storage);
-                sCondition.signalAll();
-            } finally {
-                sLock.unlock();
-            }
-        })
+        Completable.fromAction(() -> initializeInner(context))
                 .subscribeOn(Schedulers.io())
                 .subscribe();
+    }
+
+    private static void initializeInner(@NonNull final Context context) {
+        final SettingsStorage storage = new SettingsStorage(context);
+        Maintainer.maintain(storage);
+        sLock.lock();
+        try {
+            sSettings = new Settings(storage);
+            sCondition.signalAll();
+        } finally {
+            sLock.unlock();
+        }
     }
 
     @NonNull
@@ -117,7 +128,7 @@ public class Settings {
      * @return アプリで行う場合true
      */
     public boolean isPlayMovieMyself() {
-        return mStorage.readBoolean(Key.PLAY_MOVIE_MYSELF, true);
+        return mStorage.readBoolean(Key.PLAY_MOVIE_MYSELF);
     }
 
     /**
@@ -126,7 +137,7 @@ public class Settings {
      * @return アプリで行う場合true
      */
     public boolean isPlayMusicMyself() {
-        return mStorage.readBoolean(Key.PLAY_MUSIC_MYSELF, true);
+        return mStorage.readBoolean(Key.PLAY_MUSIC_MYSELF);
     }
 
     /**
@@ -135,7 +146,7 @@ public class Settings {
      * @return アプリで行う場合true
      */
     public boolean isPlayPhotoMyself() {
-        return mStorage.readBoolean(Key.PLAY_PHOTO_MYSELF, true);
+        return mStorage.readBoolean(Key.PLAY_PHOTO_MYSELF);
     }
 
     /**
@@ -145,7 +156,7 @@ public class Settings {
      */
     @NonNull
     public RepeatMode getRepeatModeMovie() {
-        return RepeatMode.of(mStorage.readString(Key.REPEAT_MODE_MOVIE, ""));
+        return RepeatMode.of(mStorage.readString(Key.REPEAT_MODE_MOVIE));
     }
 
     /**
@@ -164,7 +175,7 @@ public class Settings {
      */
     @NonNull
     public RepeatMode getRepeatModeMusic() {
-        return RepeatMode.of(mStorage.readString(Key.REPEAT_MODE_MUSIC, ""));
+        return RepeatMode.of(mStorage.readString(Key.REPEAT_MODE_MUSIC));
     }
 
     /**
@@ -182,7 +193,7 @@ public class Settings {
      * @return 表示した場合true
      */
     public boolean isRepeatIntroduced() {
-        return mStorage.readBoolean(Key.REPEAT_INTRODUCED, false);
+        return mStorage.readBoolean(Key.REPEAT_INTRODUCED);
     }
 
     /**
@@ -198,7 +209,7 @@ public class Settings {
      * @return 使用する場合true
      */
     public boolean useCustomTabs() {
-        return mStorage.readBoolean(Key.USE_CUSTOM_TABS, true);
+        return mStorage.readBoolean(Key.USE_CUSTOM_TABS);
     }
 
     /**
@@ -207,7 +218,7 @@ public class Settings {
      * @return シングルタップで詳細を表示する場合true
      */
     public boolean shouldShowDeviceDetailOnTap() {
-        return mStorage.readBoolean(Key.SHOULD_SHOW_DEVICE_DETAIL_ON_TAP, true);
+        return mStorage.readBoolean(Key.SHOULD_SHOW_DEVICE_DETAIL_ON_TAP);
     }
 
     /**
@@ -216,7 +227,7 @@ public class Settings {
      * @return シングルタップで詳細を表示する場合true
      */
     public boolean shouldShowContentDetailOnTap() {
-        return mStorage.readBoolean(Key.SHOULD_SHOW_CONTENT_DETAIL_ON_TAP, true);
+        return mStorage.readBoolean(Key.SHOULD_SHOW_CONTENT_DETAIL_ON_TAP);
     }
 
     /**
@@ -225,7 +236,7 @@ public class Settings {
      * @return 削除機能が有効なときtrue
      */
     public boolean isDeleteFunctionEnabled() {
-        return mStorage.readBoolean(Key.DELETE_FUNCTION_ENABLED, false);
+        return mStorage.readBoolean(Key.DELETE_FUNCTION_ENABLED);
     }
 
     /**
@@ -234,7 +245,7 @@ public class Settings {
      * @return アップデートファイルを取得した時刻
      */
     public long getUpdateFetchTime() {
-        return mStorage.readLong(Key.UPDATE_FETCH_TIME, 0);
+        return mStorage.readLong(Key.UPDATE_FETCH_TIME);
     }
 
     /**
@@ -250,7 +261,7 @@ public class Settings {
      * @return アップデートが利用できるときtrue
      */
     public boolean isUpdateAvailable() {
-        return mStorage.readBoolean(Key.UPDATE_AVAILABLE, false);
+        return mStorage.readBoolean(Key.UPDATE_AVAILABLE);
     }
 
     /**
@@ -269,7 +280,7 @@ public class Settings {
      */
     @NonNull
     public String getUpdateJson() {
-        return mStorage.readString(Key.UPDATE_JSON, "");
+        return mStorage.readString(Key.UPDATE_JSON);
     }
 
     /**
@@ -288,7 +299,7 @@ public class Settings {
      */
     @NonNull
     public Orientation getBrowseOrientation() {
-        return Orientation.of(mStorage.readString(Key.ORIENTATION_BROWSE, ""));
+        return Orientation.of(mStorage.readString(Key.ORIENTATION_BROWSE));
     }
 
     /**
@@ -298,7 +309,7 @@ public class Settings {
      */
     @NonNull
     public Orientation getMovieOrientation() {
-        return Orientation.of(mStorage.readString(Key.ORIENTATION_MOVIE, ""));
+        return Orientation.of(mStorage.readString(Key.ORIENTATION_MOVIE));
     }
 
     /**
@@ -308,7 +319,7 @@ public class Settings {
      */
     @NonNull
     public Orientation getMusicOrientation() {
-        return Orientation.of(mStorage.readString(Key.ORIENTATION_MUSIC, ""));
+        return Orientation.of(mStorage.readString(Key.ORIENTATION_MUSIC));
     }
 
     /**
@@ -318,7 +329,7 @@ public class Settings {
      */
     @NonNull
     public Orientation getPhotoOrientation() {
-        return Orientation.of(mStorage.readString(Key.ORIENTATION_PHOTO, ""));
+        return Orientation.of(mStorage.readString(Key.ORIENTATION_PHOTO));
     }
 
     /**
@@ -328,7 +339,7 @@ public class Settings {
      */
     @NonNull
     public Orientation getDmcOrientation() {
-        return Orientation.of(mStorage.readString(Key.ORIENTATION_DMC, ""));
+        return Orientation.of(mStorage.readString(Key.ORIENTATION_DMC));
     }
 
     /**
@@ -337,7 +348,7 @@ public class Settings {
      * @return 動画再生の最初にUIを表示するときtrue
      */
     public boolean shouldShowMovieUiOnStart() {
-        return !mStorage.readBoolean(Key.DO_NOT_SHOW_MOVIE_UI_ON_START, false);
+        return !mStorage.readBoolean(Key.DO_NOT_SHOW_MOVIE_UI_ON_START);
     }
 
     /**
@@ -346,7 +357,7 @@ public class Settings {
      * @return タッチしたときに動画UIを表示するときtrue
      */
     public boolean shouldShowMovieUiOnTouch() {
-        return !mStorage.readBoolean(Key.DO_NOT_SHOW_MOVIE_UI_ON_TOUCH, false);
+        return !mStorage.readBoolean(Key.DO_NOT_SHOW_MOVIE_UI_ON_TOUCH);
     }
 
     /**
@@ -355,7 +366,7 @@ public class Settings {
      * @return 動画UIでコンテンツタイトルを表示するときtrue
      */
     public boolean shouldShowTitleInMovieUi() {
-        return !mStorage.readBoolean(Key.DO_NOT_SHOW_TITLE_IN_MOVIE_UI, false);
+        return !mStorage.readBoolean(Key.DO_NOT_SHOW_TITLE_IN_MOVIE_UI);
     }
 
     /**
@@ -364,7 +375,7 @@ public class Settings {
      * @return 動画UIの背景を透明にするときtrue
      */
     public boolean isMovieUiBackgroundTransparent() {
-        return mStorage.readBoolean(Key.IS_MOVIE_UI_BACKGROUND_TRANSPARENT, false);
+        return mStorage.readBoolean(Key.IS_MOVIE_UI_BACKGROUND_TRANSPARENT);
     }
 
     /**
@@ -373,7 +384,7 @@ public class Settings {
      * @return 静止画再生の最初にUIを表示するときtrue
      */
     public boolean shouldShowPhotoUiOnStart() {
-        return !mStorage.readBoolean(Key.DO_NOT_SHOW_PHOTO_UI_ON_START, false);
+        return !mStorage.readBoolean(Key.DO_NOT_SHOW_PHOTO_UI_ON_START);
     }
 
     /**
@@ -382,7 +393,7 @@ public class Settings {
      * @return タッチしたときに静止画UIを表示するときtrue
      */
     public boolean shouldShowPhotoUiOnTouch() {
-        return !mStorage.readBoolean(Key.DO_NOT_SHOW_PHOTO_UI_ON_TOUCH, false);
+        return !mStorage.readBoolean(Key.DO_NOT_SHOW_PHOTO_UI_ON_TOUCH);
     }
 
     /**
@@ -391,7 +402,7 @@ public class Settings {
      * @return 静止画UIでコンテンツタイトルを表示するときtrue
      */
     public boolean shouldShowTitleInPhotoUi() {
-        return !mStorage.readBoolean(Key.DO_NOT_SHOW_TITLE_IN_PHOTO_UI, false);
+        return !mStorage.readBoolean(Key.DO_NOT_SHOW_TITLE_IN_PHOTO_UI);
     }
 
     /**
@@ -400,13 +411,64 @@ public class Settings {
      * @return 静止画UIの背景を透明にするときtrue
      */
     public boolean isPhotoUiBackgroundTransparent() {
-        return mStorage.readBoolean(Key.IS_PHOTO_UI_BACKGROUND_TRANSPARENT, false);
+        return mStorage.readBoolean(Key.IS_PHOTO_UI_BACKGROUND_TRANSPARENT);
     }
 
     @NonNull
     public ThemeParams getThemeParams() {
-        final Theme theme = mStorage.readBoolean(Key.DARK_THEME, false)
+        final Theme theme = mStorage.readBoolean(Key.DARK_THEME)
                 ? Theme.DARK : Theme.DEFAULT;
         return theme.getParams();
+    }
+
+    public long getLogSendTime() {
+        return mStorage.readLong(Key.LOG_SEND_TIME);
+    }
+
+    public void setLogSendTime(final long time) {
+        mStorage.writeLong(Key.LOG_SEND_TIME, time);
+    }
+
+    @NonNull
+    public Bundle getDump() {
+        final List<Key> keys = Arrays.asList(
+                Key.PLAY_MOVIE_MYSELF,
+                Key.PLAY_MUSIC_MYSELF,
+                Key.PLAY_PHOTO_MYSELF,
+                Key.USE_CUSTOM_TABS,
+                Key.SHOULD_SHOW_DEVICE_DETAIL_ON_TAP,
+                Key.SHOULD_SHOW_CONTENT_DETAIL_ON_TAP,
+                Key.DELETE_FUNCTION_ENABLED,
+                Key.DARK_THEME,
+                Key.DO_NOT_SHOW_MOVIE_UI_ON_START,
+                Key.DO_NOT_SHOW_MOVIE_UI_ON_TOUCH,
+                Key.DO_NOT_SHOW_TITLE_IN_MOVIE_UI,
+                Key.IS_MOVIE_UI_BACKGROUND_TRANSPARENT,
+                Key.DO_NOT_SHOW_PHOTO_UI_ON_START,
+                Key.DO_NOT_SHOW_PHOTO_UI_ON_TOUCH,
+                Key.DO_NOT_SHOW_TITLE_IN_PHOTO_UI,
+                Key.IS_PHOTO_UI_BACKGROUND_TRANSPARENT,
+                Key.ORIENTATION_BROWSE,
+                Key.ORIENTATION_MOVIE,
+                Key.ORIENTATION_MUSIC,
+                Key.ORIENTATION_PHOTO,
+                Key.ORIENTATION_DMC,
+                Key.REPEAT_MODE_MOVIE,
+                Key.REPEAT_MODE_MUSIC
+        );
+        final Bundle bundle = new Bundle();
+        for (final Key key : keys) {
+            final Type type = key.getValueType();
+            if (type == Boolean.class) {
+                bundle.putString(key.name(), mStorage.readBoolean(key) ? "on" : "off");
+            } else if (type == Integer.class) {
+                bundle.putString(key.name(), String.valueOf(mStorage.readInt(key)));
+            } else if (type == Long.class) {
+                bundle.putString(key.name(), String.valueOf(mStorage.readLong(key)));
+            } else if (type == String.class) {
+                bundle.putString(key.name(), mStorage.readString(key));
+            }
+        }
+        return bundle;
     }
 }

@@ -17,10 +17,6 @@ import android.view.ViewTreeObserver.OnGlobalLayoutListener;
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
  */
 public class ViewUtils {
-    private ViewUtils() {
-        throw new AssertionError();
-    }
-
     /**
      * Viewにサイズが割り当てられた後に実行する。
      *

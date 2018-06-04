@@ -7,6 +7,11 @@
 
 package net.mm2d.dmsexplorer.settings;
 
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+
+import java.lang.reflect.Type;
+
 /**
  * SharedPreferences用のKeyの定義。
  *
@@ -25,58 +30,110 @@ package net.mm2d.dmsexplorer.settings;
  */
 public enum Key {
     // 表示用
-    VERSION_NUMBER,
-    PLAY_STORE,
-    COPYRIGHT,
-    LICENSE,
-    SOURCE_CODE,
+    VERSION_NUMBER(),
+    PLAY_STORE(),
+    COPYRIGHT(),
+    LICENSE(),
+    SOURCE_CODE(),
     // 設定バージョン
-    SETTINGS_VERSION,
+    SETTINGS_VERSION(Integer.class, -1),
     // PreferenceActivity用
-    PLAY_MOVIE_MYSELF,
-    PLAY_MUSIC_MYSELF,
-    PLAY_PHOTO_MYSELF,
+    PLAY_MOVIE_MYSELF(Boolean.class, true),
+    PLAY_MUSIC_MYSELF(Boolean.class, true),
+    PLAY_PHOTO_MYSELF(Boolean.class, true),
 
-    USE_CUSTOM_TABS,
-    SHOULD_SHOW_DEVICE_DETAIL_ON_TAP,
-    SHOULD_SHOW_CONTENT_DETAIL_ON_TAP,
+    USE_CUSTOM_TABS(Boolean.class, true),
+    SHOULD_SHOW_DEVICE_DETAIL_ON_TAP(Boolean.class, true),
+    SHOULD_SHOW_CONTENT_DETAIL_ON_TAP(Boolean.class, true),
+    DELETE_FUNCTION_ENABLED(Boolean.class, false),
 
-    REPEAT_MODE_MOVIE,
-    REPEAT_MODE_MUSIC,
-    REPEAT_INTRODUCED,
+    DARK_THEME(Boolean.class, false),
 
-    DELETE_FUNCTION_ENABLED,
+    DO_NOT_SHOW_MOVIE_UI_ON_START(Boolean.class, false),
+    DO_NOT_SHOW_MOVIE_UI_ON_TOUCH(Boolean.class, false),
+    DO_NOT_SHOW_TITLE_IN_MOVIE_UI(Boolean.class, false),
+    IS_MOVIE_UI_BACKGROUND_TRANSPARENT(Boolean.class, false),
 
-    UPDATE_FETCH_TIME,
-    UPDATE_AVAILABLE,
-    UPDATE_JSON,
+    DO_NOT_SHOW_PHOTO_UI_ON_START(Boolean.class, false),
+    DO_NOT_SHOW_PHOTO_UI_ON_TOUCH(Boolean.class, false),
+    DO_NOT_SHOW_TITLE_IN_PHOTO_UI(Boolean.class, false),
+    IS_PHOTO_UI_BACKGROUND_TRANSPARENT(Boolean.class, false),
 
-    DO_NOT_SHOW_MOVIE_UI_ON_START,
-    DO_NOT_SHOW_MOVIE_UI_ON_TOUCH,
-    DO_NOT_SHOW_TITLE_IN_MOVIE_UI,
-    IS_MOVIE_UI_BACKGROUND_TRANSPARENT,
+    ORIENTATION_COLLECTIVE(),
+    ORIENTATION_BROWSE(String.class, Orientation.UNSPECIFIED.name()),
+    ORIENTATION_MOVIE(String.class, Orientation.UNSPECIFIED.name()),
+    ORIENTATION_MUSIC(String.class, Orientation.UNSPECIFIED.name()),
+    ORIENTATION_PHOTO(String.class, Orientation.UNSPECIFIED.name()),
+    ORIENTATION_DMC(String.class, Orientation.UNSPECIFIED.name()),
 
-    DO_NOT_SHOW_PHOTO_UI_ON_START,
-    DO_NOT_SHOW_PHOTO_UI_ON_TOUCH,
-    DO_NOT_SHOW_TITLE_IN_PHOTO_UI,
-    IS_PHOTO_UI_BACKGROUND_TRANSPARENT,
+    REPEAT_MODE_MOVIE(String.class, RepeatMode.PLAY_ONCE.name()),
+    REPEAT_MODE_MUSIC(String.class, RepeatMode.PLAY_ONCE.name()),
+    REPEAT_INTRODUCED(Boolean.class, false),
 
-    ORIENTATION_COLLECTIVE,
-    ORIENTATION_BROWSE,
-    ORIENTATION_MOVIE,
-    ORIENTATION_MUSIC,
-    ORIENTATION_PHOTO,
-    ORIENTATION_DMC,
+    UPDATE_FETCH_TIME(Long.class, 0L),
+    UPDATE_AVAILABLE(Boolean.class, false),
+    UPDATE_JSON(String.class, ""),
 
-    DARK_THEME,
+    LOG_SEND_TIME(Long.class, 0L),
 
     // OldKeys
     @Deprecated
-    LAUNCH_APP_MOVIE,
+    LAUNCH_APP_MOVIE(),
     @Deprecated
-    LAUNCH_APP_MUSIC,
+    LAUNCH_APP_MUSIC(),
     @Deprecated
-    LAUNCH_APP_PHOTO,
+    LAUNCH_APP_PHOTO(),
     @Deprecated
-    MUSIC_AUTO_PLAY,
+    MUSIC_AUTO_PLAY(),;
+    private final Type mType;
+    private final Object mDefaultValue;
+
+    /**
+     * 値の読み書きに使用しないKeyの初期化
+     */
+    Key() {
+        mType = null;
+        mDefaultValue = null;
+    }
+
+    /**
+     * 値の読み書きに使用するKeyの初期化
+     *
+     * @param type         値の型
+     * @param defaultValue デフォルト値
+     */
+    Key(
+            @NonNull final Type type,
+            @NonNull final Object defaultValue) {
+        if (type != defaultValue.getClass()) {
+            throw new IllegalArgumentException();
+        }
+        mType = type;
+        mDefaultValue = defaultValue;
+    }
+
+    @Nullable
+    Type getValueType() {
+        return mType;
+    }
+
+    boolean getDefaultBoolean() {
+        return (boolean) mDefaultValue;
+    }
+
+    int getDefaultInt() {
+        return (int) mDefaultValue;
+    }
+
+    long getDefaultLong() {
+        return (long) mDefaultValue;
+    }
+
+    @NonNull
+    String getDefaultString() {
+        if (mDefaultValue == null) {
+            throw new NullPointerException("Default value is not set");
+        }
+        return (String) mDefaultValue;
+    }
 }
