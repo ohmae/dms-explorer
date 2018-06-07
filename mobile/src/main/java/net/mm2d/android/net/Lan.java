@@ -39,8 +39,8 @@ public abstract class Lan {
      * @return true:エミュレータである。false:それ以外
      */
     private static boolean isEmulator() {
-        return Build.UNKNOWN.equals(Build.BOARD)
-                && Build.UNKNOWN.equals(Build.BOOTLOADER);
+        return Build.UNKNOWN.equals(Build.BOOTLOADER)
+                && Build.MODEL.contains("Android SDK");
     }
 
     /**
