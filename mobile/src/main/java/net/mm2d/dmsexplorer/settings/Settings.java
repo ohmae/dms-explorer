@@ -21,7 +21,6 @@ import net.mm2d.dmsexplorer.settings.theme.Theme;
 import net.mm2d.dmsexplorer.settings.theme.ThemeParams;
 import net.mm2d.log.Log;
 
-import java.lang.reflect.Type;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -127,7 +126,7 @@ public class Settings {
      *
      * @return アプリで行う場合true
      */
-    public boolean isPlayMovieMyself() {
+    private boolean isPlayMovieMyself() {
         return mStorage.readBoolean(Key.PLAY_MOVIE_MYSELF);
     }
 
@@ -136,7 +135,7 @@ public class Settings {
      *
      * @return アプリで行う場合true
      */
-    public boolean isPlayMusicMyself() {
+    private boolean isPlayMusicMyself() {
         return mStorage.readBoolean(Key.PLAY_MUSIC_MYSELF);
     }
 
@@ -145,7 +144,7 @@ public class Settings {
      *
      * @return アプリで行う場合true
      */
-    public boolean isPlayPhotoMyself() {
+    private boolean isPlayPhotoMyself() {
         return mStorage.readBoolean(Key.PLAY_PHOTO_MYSELF);
     }
 
@@ -458,14 +457,13 @@ public class Settings {
         );
         final Bundle bundle = new Bundle();
         for (final Key key : keys) {
-            final Type type = key.getValueType();
-            if (type == Boolean.class) {
+            if (key.isBooleanKey()) {
                 bundle.putString(key.name(), mStorage.readBoolean(key) ? "on" : "off");
-            } else if (type == Integer.class) {
+            } else if (key.isIntKey()) {
                 bundle.putString(key.name(), String.valueOf(mStorage.readInt(key)));
-            } else if (type == Long.class) {
+            } else if (key.isLongKey()) {
                 bundle.putString(key.name(), String.valueOf(mStorage.readLong(key)));
-            } else if (type == String.class) {
+            } else if (key.isStringKey()) {
                 bundle.putString(key.name(), mStorage.readString(key));
             }
         }

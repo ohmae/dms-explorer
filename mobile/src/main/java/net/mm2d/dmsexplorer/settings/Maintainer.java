@@ -62,9 +62,6 @@ class Maintainer {
             @NonNull final SettingsStorage storage,
             final boolean overwrite) {
         for (final Key key : Key.values()) {
-            if (key.getValueType() == null) {
-                continue;
-            }
             storage.writeDefault(key, overwrite);
         }
     }

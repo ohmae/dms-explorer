@@ -22,7 +22,7 @@ import static org.junit.Assert.assertThat;
 public class KeyTest {
     @Test
     public void getValueType_表示用Key() throws Exception {
-        assertThat(Key.VERSION_NUMBER.getValueType(), is(nullValue()));
+        assertThat(Key.VERSION_NUMBER.isReadWriteKey(), is(false));
     }
 
     @Test(expected = NullPointerException.class)
@@ -47,7 +47,7 @@ public class KeyTest {
 
     @Test
     public void getValueType_Boolean用Key() throws Exception {
-        assertThat((Key.PLAY_MOVIE_MYSELF.getValueType() == Boolean.class), is(true));
+        assertThat((Key.PLAY_MOVIE_MYSELF.isBooleanKey()), is(true));
     }
 
     @Test
@@ -72,7 +72,7 @@ public class KeyTest {
 
     @Test
     public void getValueType_Integer用Key() throws Exception {
-        assertThat((Key.SETTINGS_VERSION.getValueType() == Integer.class), is(true));
+        assertThat((Key.SETTINGS_VERSION.isIntKey()), is(true));
     }
 
     @Test(expected = ClassCastException.class)
@@ -97,7 +97,7 @@ public class KeyTest {
 
     @Test
     public void getValueType_Long用Key() throws Exception {
-        assertThat((Key.UPDATE_FETCH_TIME.getValueType() == Long.class), is(true));
+        assertThat((Key.UPDATE_FETCH_TIME.isLongKey()), is(true));
     }
 
     @Test(expected = ClassCastException.class)
@@ -122,7 +122,7 @@ public class KeyTest {
 
     @Test
     public void getValueType_String用Key() throws Exception {
-        assertThat((Key.REPEAT_MODE_MOVIE.getValueType() == String.class), is(true));
+        assertThat((Key.REPEAT_MODE_MOVIE.isStringKey()), is(true));
     }
 
     @Test(expected = ClassCastException.class)
