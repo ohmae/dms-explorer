@@ -165,13 +165,11 @@ public enum Key {
      *
      * @param type         値の型
      * @param defaultValue デフォルト値
+     * @param <T>          値の型
      */
-    Key(
-            @NonNull final Class<?> type,
-            @NonNull final Object defaultValue) {
-        if (!type.isInstance(defaultValue)) {
-            throw new IllegalArgumentException();
-        }
+    <T> Key(
+            @NonNull final Class<T> type,
+            @NonNull final T defaultValue) {
         mType = type;
         mDefaultValue = defaultValue;
     }
