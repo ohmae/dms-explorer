@@ -42,6 +42,10 @@ public enum Key {
     SETTINGS_VERSION(
             Integer.class, -1
     ),
+    // アプリバージョン
+    APP_VERSION(
+            Integer.class, -1
+    ),
     // PreferenceActivity用
     PLAY_MOVIE_MYSELF(
             Boolean.class, true
