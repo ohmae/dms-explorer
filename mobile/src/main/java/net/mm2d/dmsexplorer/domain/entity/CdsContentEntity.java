@@ -91,7 +91,7 @@ public class CdsContentEntity implements ContentEntity {
             default:
                 break;
         }
-        if (stringJoiner.length() != 0) {
+        if (stringJoiner.isNotEmpty()) {
             return stringJoiner.toString();
         }
         return "";
