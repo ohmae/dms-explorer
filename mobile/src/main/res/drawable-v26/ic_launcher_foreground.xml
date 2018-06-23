@@ -20,13 +20,13 @@
         >
         <aapt:attr name="android:fillColor">
             <gradient
+                android:endColor="#00000000"
                 android:endX="54"
                 android:endY="90"
+                android:startColor="#33000000"
                 android:startX="54"
                 android:startY="54"
                 android:type="linear"
-                android:startColor="#33000000"
-                android:endColor="#00000000"
                 />
         </aapt:attr>
     </path>
