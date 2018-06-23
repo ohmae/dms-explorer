@@ -9,7 +9,6 @@ package net.mm2d.dmsexplorer.util
 
 import android.graphics.Color
 import android.support.annotation.ColorInt
-import kotlin.math.roundToInt
 
 /**
  * テーマとしての色を決定するメソッドを持つクラス。
@@ -24,9 +23,9 @@ object ColorUtils {
     @ColorInt
     fun getDarkerColor(@ColorInt color: Int, ratio: Float = DARKER_RATIO): Int {
         val a = Color.alpha(color)
-        val r = (Color.red(color) * ratio).roundToInt()
-        val g = (Color.green(color) * ratio).roundToInt()
-        val b = (Color.blue(color) * ratio).roundToInt()
+        val r = (Color.red(color) * ratio + 0.5f).toInt()
+        val g = (Color.green(color) * ratio + 0.5f).toInt()
+        val b = (Color.blue(color) * ratio + 0.5f).toInt()
         return Color.argb(a, r, g, b)
     }
 }

@@ -261,6 +261,6 @@ class UpdateCheckerTest {
                 .build()
         val service = retrofit.create(UpdateService::class.java)
         val info = service.get().blockingGet()
-        assertThat(info.versionCode, `is`(737))
+        assertThat(info.isValid, `is`(true))
     }
 }

@@ -9,6 +9,8 @@ package net.mm2d.dmsexplorer.settings;
 
 import android.support.annotation.NonNull;
 
+import net.mm2d.dmsexplorer.BuildConfig;
+
 /**
  * 設定値のメンテナー。
  *
@@ -44,12 +46,29 @@ class Maintainer {
      */
     static void maintain(@NonNull final SettingsStorage storage) {
         final int currentVersion = storage.readInt(Key.SETTINGS_VERSION);
-        if (currentVersion == SETTINGS_VERSION) {
+        if (currentVersion != SETTINGS_VERSION) {
+            storage.clear();
+            storage.writeInt(Key.SETTINGS_VERSION, SETTINGS_VERSION);
+            storage.writeInt(Key.APP_VERSION, BuildConfig.VERSION_CODE);
+            writeDefaultValue(storage, false);
             return;
         }
-        storage.clear();
+        final int version = storage.readInt(Key.APP_VERSION);
+        if (version != BuildConfig.VERSION_CODE) {
+            storage.writeInt(Key.APP_VERSION, BuildConfig.VERSION_CODE);
+            writeDefaultValue(storage, false);
+        }
+    }
+
+    /**
+     * 設定値をすべてデフォルト値にもどす
+     *
+     * @param storage SettingsStorage
+     */
+    static void reset(@NonNull final SettingsStorage storage) {
+        writeDefaultValue(storage, true);
         storage.writeInt(Key.SETTINGS_VERSION, SETTINGS_VERSION);
-        writeDefaultValue(storage, false);
+        storage.writeInt(Key.APP_VERSION, BuildConfig.VERSION_CODE);
     }
 
     /**
@@ -62,9 +81,6 @@ class Maintainer {
             @NonNull final SettingsStorage storage,
             final boolean overwrite) {
         for (final Key key : Key.values()) {
-            if (key.getValueType() == null) {
-                continue;
-            }
             storage.writeDefault(key, overwrite);
         }
     }

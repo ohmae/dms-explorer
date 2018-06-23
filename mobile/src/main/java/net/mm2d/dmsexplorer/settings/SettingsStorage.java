@@ -12,8 +12,6 @@ import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.v7.preference.PreferenceManager;
 
-import java.lang.reflect.Type;
-
 /**
  * SharedPreferencesへのアクセスをカプセル化するクラス。
  *
@@ -87,7 +85,7 @@ class SettingsStorage {
     void writeBoolean(
             @NonNull final Key key,
             final boolean value) {
-        if (key.getValueType() != Boolean.class) {
+        if (!key.isBooleanKey()) {
             throw new IllegalArgumentException(key.name() + " is not key for boolean");
         }
         mPreferences.edit()
@@ -102,7 +100,7 @@ class SettingsStorage {
      * @return 読み出したboolean値
      */
     boolean readBoolean(@NonNull final Key key) {
-        if (key.getValueType() != Boolean.class) {
+        if (!key.isBooleanKey()) {
             throw new IllegalArgumentException(key.name() + " is not key for boolean");
         }
         return mPreferences.getBoolean(key.name(), key.getDefaultBoolean());
@@ -117,7 +115,7 @@ class SettingsStorage {
     void writeInt(
             @NonNull final Key key,
             final int value) {
-        if (key.getValueType() != Integer.class) {
+        if (!key.isIntKey()) {
             throw new IllegalArgumentException(key.name() + " is not key for int");
         }
         mPreferences.edit()
@@ -132,7 +130,7 @@ class SettingsStorage {
      * @return 読み出したint値
      */
     int readInt(@NonNull final Key key) {
-        if (key.getValueType() != Integer.class) {
+        if (!key.isIntKey()) {
             throw new IllegalArgumentException(key.name() + " is not key for int");
         }
         return mPreferences.getInt(key.name(), key.getDefaultInt());
@@ -147,7 +145,7 @@ class SettingsStorage {
     void writeLong(
             @NonNull final Key key,
             final long value) {
-        if (key.getValueType() != Long.class) {
+        if (!key.isLongKey()) {
             throw new IllegalArgumentException(key.name() + " is not key for long");
         }
         mPreferences.edit()
@@ -162,7 +160,7 @@ class SettingsStorage {
      * @return 読み出したlong値
      */
     long readLong(@NonNull final Key key) {
-        if (key.getValueType() != Long.class) {
+        if (!key.isLongKey()) {
             throw new IllegalArgumentException(key.name() + " is not key for long");
         }
         return mPreferences.getLong(key.name(), key.getDefaultLong());
@@ -177,7 +175,7 @@ class SettingsStorage {
     void writeString(
             @NonNull final Key key,
             @NonNull final String value) {
-        if (key.getValueType() != String.class) {
+        if (!key.isStringKey()) {
             throw new IllegalArgumentException(key.name() + " is not key for String");
         }
         mPreferences.edit()
@@ -191,8 +189,9 @@ class SettingsStorage {
      * @param key Key
      * @return 読み出したString値
      */
+    @NonNull
     String readString(@NonNull final Key key) {
-        if (key.getValueType() != String.class) {
+        if (!key.isStringKey()) {
             throw new IllegalArgumentException(key.name() + " is not key for String");
         }
         return mPreferences.getString(key.name(), key.getDefaultString());
@@ -207,20 +206,19 @@ class SettingsStorage {
     void writeDefault(
             @NonNull final Key key,
             final boolean overwrite) {
-        final Type type = key.getValueType();
-        if (type == null) {
-            throw new IllegalArgumentException(key.name() + " is not key for read/write");
+        if (!key.isReadWriteKey()) {
+            return;
         }
         if (!overwrite && contains(key)) {
             return;
         }
-        if (type == Boolean.class) {
+        if (key.isBooleanKey()) {
             writeBoolean(key, key.getDefaultBoolean());
-        } else if (type == Integer.class) {
+        } else if (key.isIntKey()) {
             writeInt(key, key.getDefaultInt());
-        } else if (type == Long.class) {
+        } else if (key.isLongKey()) {
             writeLong(key, key.getDefaultLong());
-        } else if (type == String.class) {
+        } else if (key.isStringKey()) {
             writeString(key, key.getDefaultString());
         }
     }
