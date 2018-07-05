@@ -86,20 +86,20 @@ public class MrControlPoint implements ControlPointWrapper {
     }
 
     private void discoverDevice(@NonNull final Device device) {
-        Device realDevice = device;
-        for (Device subDevice : device.getDeviceList()) {
-            if (subDevice.getDeviceType().startsWith(Avt.MR_DEVICE_TYPE)) {
-                realDevice = subDevice;
-                break;
-            }
-        }
-        if (!realDevice.getDeviceType().startsWith(Avt.MR_DEVICE_TYPE)
-                || realDevice.findServiceById(Avt.AVT_SERVICE_ID) == null) {
+        if (device.getDeviceType().startsWith(Avt.MR_DEVICE_TYPE)
+                && device.findServiceById(Avt.AVT_SERVICE_ID) != null) {
+            discoverMrDevice(device);
             return;
         }
+        for (final Device embeddedDevice : device.getDeviceList()) {
+            discoverDevice(embeddedDevice);
+        }
+    }
+
+    private void discoverMrDevice(@NonNull final Device device) {
         final MediaRenderer renderer;
         try {
-            renderer = createMediaRenderer(realDevice);
+            renderer = createMediaRenderer(device);
         } catch (final IllegalArgumentException ignored) {
             return;
         }
