@@ -160,12 +160,19 @@ public class MsControlPoint implements ControlPointWrapper {
     }
 
     private void discoverDevice(@NonNull final Device device) {
-        if (!device.getDeviceType().startsWith(Cds.MS_DEVICE_TYPE)) {
+        Device realDevice = device;
+        for (Device subDevice : device.getDeviceList()) {
+            if (subDevice.getDeviceType().startsWith(Cds.MS_DEVICE_TYPE)) {
+                realDevice = subDevice;
+                break;
+            }
+        }
+        if (!realDevice.getDeviceType().startsWith(Cds.MS_DEVICE_TYPE)) {
             return;
         }
         final MediaServer server;
         try {
-            server = createMediaServer(device);
+            server = createMediaServer(realDevice);
         } catch (final IllegalArgumentException ignored) {
             return;
         }
