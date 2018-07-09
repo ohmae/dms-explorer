@@ -13,6 +13,7 @@ import android.support.annotation.Nullable;
 import net.mm2d.android.upnp.avt.MrControlPoint;
 import net.mm2d.android.upnp.cds.MsControlPoint;
 import net.mm2d.upnp.ControlPoint;
+import net.mm2d.upnp.ControlPointFactory;
 import net.mm2d.upnp.IconFilter;
 
 import java.net.NetworkInterface;
@@ -110,7 +111,7 @@ public class AvControlPointManager {
             terminate();
         }
         mInitialized.set(true);
-        mControlPoint = new ControlPoint(interfaces);
+        mControlPoint = ControlPointFactory.create(interfaces);
         mControlPoint.setIconFilter(ICON_FILTER);
 
         mMsControlPoint.initialize(mControlPoint);
