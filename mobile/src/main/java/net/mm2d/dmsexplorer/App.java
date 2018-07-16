@@ -13,6 +13,7 @@ import android.os.StrictMode.ThreadPolicy;
 import android.os.StrictMode.VmPolicy;
 import android.support.annotation.NonNull;
 
+import net.mm2d.dmsexplorer.debug.DebugData;
 import net.mm2d.dmsexplorer.domain.AppRepository;
 import net.mm2d.dmsexplorer.log.EventLogger;
 import net.mm2d.dmsexplorer.settings.Settings;
@@ -42,6 +43,7 @@ public class App extends Application {
         EventRouter.initialize(this);
         EventLogger.initialize(this);
         EventLogger.sendDailyLog();
+        DebugData.initialize(this);
         Repository.set(new AppRepository(this));
         new UpdateChecker().check();
     }

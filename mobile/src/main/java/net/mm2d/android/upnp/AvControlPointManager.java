@@ -92,6 +92,13 @@ public class AvControlPointManager {
         mControlPoint.search();
     }
 
+    public void addPinnedDevice(@NonNull final String location) {
+        if (!mInitialized.get()) {
+            throw new IllegalStateException("ControlPoint is not initialized");
+        }
+        mControlPoint.addPinnedDevice(location);
+    }
+
     /**
      * 初期化が完了しているか。
      *
