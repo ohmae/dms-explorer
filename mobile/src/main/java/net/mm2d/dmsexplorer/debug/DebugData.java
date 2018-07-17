@@ -3,6 +3,7 @@ package net.mm2d.dmsexplorer.debug;
 import android.content.Context;
 import android.support.annotation.NonNull;
 
+import net.mm2d.android.util.RuntimeEnvironment;
 import net.mm2d.dmsexplorer.BuildConfig;
 import net.mm2d.log.Log;
 
@@ -25,7 +26,7 @@ public class DebugData {
     private static List<String> sPinnedDeviceLocationList = Collections.emptyList();
 
     public static void initialize(@NonNull final Context context) {
-        if (!BuildConfig.DEBUG) {
+        if (!BuildConfig.DEBUG || !RuntimeEnvironment.isEmulator()) {
             return;
         }
         try {

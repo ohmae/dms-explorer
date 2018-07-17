@@ -39,11 +39,11 @@ public class App extends Application {
         Log.initialize(BuildConfig.DEBUG, true);
         setStrictMode();
         RxJavaPlugins.setErrorHandler(this::logError);
+        DebugData.initialize(this);
         Settings.initialize(this);
         EventRouter.initialize(this);
         EventLogger.initialize(this);
         EventLogger.sendDailyLog();
-        DebugData.initialize(this);
         Repository.set(new AppRepository(this));
         new UpdateChecker().check();
     }
