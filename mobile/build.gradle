@@ -18,7 +18,7 @@ android {
         targetSdkVersion 27
         versionCode versionMajor * 10000 + versionMinor * 100 + versionPatch
         versionName "${versionMajor}.${versionMinor}.${versionPatch}"
-        resConfigs "en", "ja"
+        resConfigs "en", "ja", "ru"
         vectorDrawables.useSupportLibrary = true
         buildConfigField "long", "BUILD_TIME", "${System.currentTimeMillis()}L"
     }
