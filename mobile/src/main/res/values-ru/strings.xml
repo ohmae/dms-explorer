@@ -97,23 +97,23 @@
 
     <string name="pref_category_movie_ui">Настройка пользовательского интерфейса "Кино".</string>
     <string name="pref_title_movie_ui_do_not_show_on_start">Не показывать пользовательский интерфейс при запуске.</string>
-    <string name="pref_message_movie_ui_do_not_show_on_start">Если установлено значение ON, не будет показываться интерфейс при запуске воспроизведения.</string>
+    <string name="pref_message_movie_ui_do_not_show_on_start">Если установлено значение ВКЛ, не будет показываться интерфейс при запуске воспроизведения.</string>
     <string name="pref_title_movie_ui_do_not_show_on_touch">Не показывать пользовательский интерфейс при касании.</string>
-    <string name="pref_message_movie_ui_do_not_show_on_touch">Когда установлено значение ON, пользовательский интерфейс не будет отображается простым касанием. Проведите пальцем внутрь сверху экрана.</string>
+    <string name="pref_message_movie_ui_do_not_show_on_touch">Когда установлено значение ВКЛ, пользовательский интерфейс не будет отображается простым касанием. Проведите пальцем внутрь сверху экрана.</string>
     <string name="pref_title_movie_ui_do_not_show_title">Не показывать название содержимого.</string>
-    <string name="pref_message_movie_ui_do_not_show_title">Когда установлено значение ON, не будет показываться имя содержимого в ActionBar.</string>
+    <string name="pref_message_movie_ui_do_not_show_title">Когда установлено значение ВКЛ, не будет показываться имя содержимого в ActionBar.</string>
     <string name="pref_title_movie_ui_transparent">Сделать фон панели пользовательского интерфейса прозрачным.</string>
-    <string name="pref_message_movie_ui_transparent">Когда установлено значение ON, фон панели пользовательского интерфейса будет полностью прозрачным.</string>
+    <string name="pref_message_movie_ui_transparent">Когда установлено значение ВКЛ, фон панели пользовательского интерфейса будет полностью прозрачным.</string>
 
     <string name="pref_category_photo_ui">Настройка пользовательского интерфейса "Фото".</string>
     <string name="pref_title_photo_ui_do_not_show_on_start">Не показывать пользовательский интерфейс при запуске.</string>
-    <string name="pref_message_photo_ui_do_not_show_on_start">Если установлено значение ON, интерфейс при запуске воспроизведения не будет показываться.</string>
+    <string name="pref_message_photo_ui_do_not_show_on_start">Если установлено значение ВКЛ, интерфейс при запуске воспроизведения не будет показываться.</string>
     <string name="pref_title_photo_ui_do_not_show_on_touch">Не показывать пользовательский интерфейс при касании.</string>
-    <string name="pref_message_photo_ui_do_not_show_on_touch">Когда установлено значение ON, пользовательский интерфейс не отображается простым касанием. Проведите пальцем внутрь сверху экрана.</string>
+    <string name="pref_message_photo_ui_do_not_show_on_touch">Когда установлено значение ВКЛ, пользовательский интерфейс не отображается простым касанием. Проведите пальцем внутрь сверху экрана.</string>
     <string name="pref_title_photo_ui_do_not_show_title">Не показывать название содержимого.</string>
-    <string name="pref_message_photo_ui_do_not_show_title">Когда установлено значение ON, имя содержимого в ActionBar не будет показываться.</string>
+    <string name="pref_message_photo_ui_do_not_show_title">Когда установлено значение ВКЛ, имя содержимого в ActionBar не будет показываться.</string>
     <string name="pref_title_photo_ui_transparent">Сделать фон панели пользовательского интерфейса прозрачным.</string>
-    <string name="pref_message_photo_ui_transparent">Когда установлено значение ON, фон панели пользовательского интерфейса будет полностью прозрачным.</string>
+    <string name="pref_message_photo_ui_transparent">Когда установлено значение ВКЛ, фон панели пользовательского интерфейса будет полностью прозрачным.</string>
 
     <string name="pref_header_information">Информация</string>
     <string name="pref_title_play_store">Google Play</string>
