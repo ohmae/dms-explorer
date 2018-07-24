@@ -110,6 +110,11 @@ public class CdsFormatter {
     }
 
     @Nullable
+    public static String makeUpnpLongDescription(@NonNull final CdsObject object) {
+        return object.getValue(CdsObject.UPNP_LONG_DESCRIPTION);
+    }
+
+    @Nullable
     private static String joinTagValue(
             @NonNull final CdsObject object,
             @NonNull final String tagName,

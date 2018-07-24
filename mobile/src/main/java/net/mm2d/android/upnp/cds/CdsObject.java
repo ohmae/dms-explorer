@@ -150,6 +150,15 @@ public class CdsObject implements Parcelable {
      */
     public static final String DC_DESCRIPTION = "dc:description";
     /**
+     * "upnp:longDescription".
+     *
+     * <p>The upnp:longDescription property contains a few lines of description of the content item
+     * (longer than the dc:description property).
+     *
+     * <p>Namespace: UPnP / Type: string
+     */
+    public static final String UPNP_LONG_DESCRIPTION = "upnp:longDescription";
+    /**
      * "object.item.imageItem".
      *
      * <p>upnp:class value.
