@@ -92,6 +92,11 @@ public class ContentListActivity extends BaseActivity implements OnDeleteListene
     }
 
     @Override
+    public void navigateUpTo() {
+        onBackPressed();
+    }
+
+    @Override
     public void onDelete() {
         mDelegate.onDelete();
     }
