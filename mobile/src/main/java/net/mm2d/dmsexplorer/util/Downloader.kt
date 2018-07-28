@@ -19,14 +19,14 @@ import java.net.URL
 object Downloader {
     @JvmStatic
     fun create(url: String): Single<ByteArray> {
-        return Single.create({ emitter ->
+        return Single.create { emitter ->
             val binary = download(url)
             if (binary != null && binary.isNotEmpty()) {
                 emitter.onSuccess(binary)
             } else {
                 emitter.onError(IOException())
             }
-        })
+        }
     }
 
     private fun download(url: String): ByteArray? {

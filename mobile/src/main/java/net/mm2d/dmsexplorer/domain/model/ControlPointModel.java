@@ -23,8 +23,11 @@ import net.mm2d.android.upnp.avt.MrControlPoint;
 import net.mm2d.android.upnp.cds.MediaServer;
 import net.mm2d.android.upnp.cds.MsControlPoint;
 import net.mm2d.android.upnp.cds.MsControlPoint.MsDiscoveryListener;
+import net.mm2d.android.util.RuntimeEnvironment;
 import net.mm2d.android.util.Toaster;
+import net.mm2d.dmsexplorer.BuildConfig;
 import net.mm2d.dmsexplorer.R;
+import net.mm2d.dmsexplorer.debug.DebugData;
 
 import java.net.NetworkInterface;
 import java.util.Collection;
@@ -101,15 +104,25 @@ public class ControlPointModel {
         public void run() {
             try {
                 while (!mShutdownRequest) {
-                    synchronized (mAvControlPointManager) {
-                        if (mAvControlPointManager.isInitialized()) {
-                            mAvControlPointManager.search();
-                        }
-                    }
+                    search();
                     Thread.sleep(SEARCH_INTERVAL);
                 }
             } catch (final InterruptedException ignored) {
             }
+        }
+    }
+
+    private void search() {
+        synchronized (mAvControlPointManager) {
+            if (!mAvControlPointManager.isInitialized()) {
+                return;
+            }
+            if (BuildConfig.DEBUG && RuntimeEnvironment.isEmulator()) {
+                for (final String location : DebugData.getPinnedDeviceLocationList()) {
+                    mAvControlPointManager.addPinnedDevice(location);
+                }
+            }
+            mAvControlPointManager.search();
         }
     }
 

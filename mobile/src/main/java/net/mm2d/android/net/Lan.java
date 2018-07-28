@@ -8,8 +8,9 @@
 package net.mm2d.android.net;
 
 import android.content.Context;
-import android.os.Build;
 import android.support.annotation.NonNull;
+
+import net.mm2d.android.util.RuntimeEnvironment;
 
 import java.net.NetworkInterface;
 import java.util.Collection;
@@ -28,19 +29,9 @@ public abstract class Lan {
      */
     @NonNull
     public static Lan createInstance(Context context) {
-        return isEmulator()
+        return RuntimeEnvironment.isEmulator()
                 ? new EmulatorLan()
                 : new AndroidLan(context);
-    }
-
-    /**
-     * 現在の実行状態がエミュレータか否かを判定する。
-     *
-     * @return true:エミュレータである。false:それ以外
-     */
-    private static boolean isEmulator() {
-        return Build.UNKNOWN.equals(Build.BOOTLOADER)
-                && Build.MODEL.contains("Android SDK");
     }
 
     /**

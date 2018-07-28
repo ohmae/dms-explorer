@@ -86,10 +86,17 @@ public class MrControlPoint implements ControlPointWrapper {
     }
 
     private void discoverDevice(@NonNull final Device device) {
-        if (!device.getDeviceType().startsWith(Avt.MR_DEVICE_TYPE)
-                || device.findServiceById(Avt.AVT_SERVICE_ID) == null) {
+        if (device.getDeviceType().startsWith(Avt.MR_DEVICE_TYPE)
+                && device.findServiceById(Avt.AVT_SERVICE_ID) != null) {
+            discoverMrDevice(device);
             return;
         }
+        for (final Device embeddedDevice : device.getDeviceList()) {
+            discoverDevice(embeddedDevice);
+        }
+    }
+
+    private void discoverMrDevice(@NonNull final Device device) {
         final MediaRenderer renderer;
         try {
             renderer = createMediaRenderer(device);

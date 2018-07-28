@@ -77,6 +77,14 @@ public class MovieActivity extends BaseActivity implements OnChangeContentListen
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        if (mModel != null) {
+            mModel.adjustPanel(this);
+        }
+    }
+
+    @Override
     protected void onDestroy() {
         super.onDestroy();
         if (mModel != null) {

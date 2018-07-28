@@ -64,6 +64,9 @@ class ContentPropertyAdapter extends PropertyAdapter {
             for (final Pair<String, String> pair : longDescriptions) {
                 adapter.addEntry(pair.first, pair.second, Type.DESCRIPTION);
             }
+        } else {
+            adapter.addEntry(context.getString(R.string.prop_long_description),
+                    CdsFormatter.makeUpnpLongDescription(object));
         }
 
         adapter.addEntry(CdsObject.UPNP_CLASS + ":",
