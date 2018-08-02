@@ -259,8 +259,8 @@ public class MediaRenderer extends DeviceWrapper {
             try {
                 final Map<String, String> result = action.invoke(argument);
                 emitter.onSuccess(result);
-            } catch (final IOException ignored) {
-                emitter.onError(ignored);
+            } catch (final IOException e) {
+                emitter.onError(e);
             }
         }).subscribeOn(Schedulers.io());
     }

@@ -119,6 +119,6 @@ public class PlaybackTargetModel {
             }
             itemList.add(sb.toString());
         }
-        return itemList.toArray(new String[itemList.size()]);
+        return itemList.toArray(new String[0]);
     }
 }
