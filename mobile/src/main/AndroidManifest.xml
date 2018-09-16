@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          xmlns:tools="http://schemas.android.com/tools"
-          package="net.mm2d.dmsexplorer">
+<manifest
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="net.mm2d.dmsexplorer"
+    >
 
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
@@ -26,18 +28,24 @@
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning"
         >
-        <activity
-            android:name=".view.ServerListActivity"
+        <activity-alias
+            android:name=".StartActivity"
             android:label="${app_name}"
-            android:launchMode="singleTop"
-            android:theme="@style/DarkTheme.List"
+            android:targetActivity=".view.ServerListActivity"
             >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
-        </activity>
+        </activity-alias>
+
+        <activity
+            android:name=".view.ServerListActivity"
+            android:label="${app_name}"
+            android:launchMode="singleTop"
+            android:theme="@style/DarkTheme.List"
+            />
         <activity
             android:name=".view.ServerDetailActivity"
             android:launchMode="singleTop"
