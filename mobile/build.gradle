@@ -72,7 +72,7 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation 'net.mm2d:log:0.0.3'
     implementation 'net.mm2d:log-android:0.0.3'
-    implementation 'net.mm2d:mmupnp:2.0.0-alpha5'
+    implementation 'net.mm2d:mmupnp:2.0.0-alpha6'
     implementation 'net.mm2d:preference:0.0.3'
     implementation 'net.opacapp:multiline-collapsingtoolbar:27.1.1'
     implementation 'com.squareup.okhttp3:okhttp:3.10.0'
