@@ -118,6 +118,8 @@
     <string name="pref_header_information">Информация</string>
     <string name="pref_title_play_store">Google Play</string>
     <string name="pref_message_play_store">Ожидание оценки, комментариев и запросов</string>
+    <string name="pref_title_privacy_policy">политика конфиденциальности</string>
+    <string name="pref_message_privacy_policy">Показать политику конфиденциальности</string>
     <string name="pref_title_copyright">Автор</string>
     <string name="pref_message_copyright">© 2016 大前良介 (OHMAE Ryosuke)</string>
     <string name="pref_title_version_number">Версия</string>

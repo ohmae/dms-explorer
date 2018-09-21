@@ -118,6 +118,8 @@
     <string name="pref_header_information">情報</string>
     <string name="pref_title_play_store">Google Playストア</string>
     <string name="pref_message_play_store">評価、ご意見、ご要望をお待ちしております</string>
+    <string name="pref_title_privacy_policy">プライバシーポリシー</string>
+    <string name="pref_message_privacy_policy">プライバシーポリシーを表示します</string>
     <string name="pref_title_copyright">作者</string>
     <string name="pref_message_copyright">© 2016 大前良介 (OHMAE Ryosuke)</string>
     <string name="pref_title_version_number">バージョン</string>

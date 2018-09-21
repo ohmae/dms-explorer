@@ -118,6 +118,8 @@
     <string name="pref_header_information">Information</string>
     <string name="pref_title_play_store">Google Play Store</string>
     <string name="pref_message_play_store">Waiting for evaluation, comments and requests</string>
+    <string name="pref_title_privacy_policy">Privacy policy</string>
+    <string name="pref_message_privacy_policy">Show privacy policy</string>
     <string name="pref_title_copyright">Author</string>
     <string name="pref_message_copyright">© 2016 大前良介 (OHMAE Ryosuke)</string>
     <string name="pref_title_version_number">Version</string>

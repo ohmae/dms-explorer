@@ -287,6 +287,10 @@ public class SettingsActivity extends PreferenceActivityCompat {
                 openUrl(getActivity(), Const.URL_GITHUB_PROJECT);
                 return true;
             });
+            findPreference(Key.PRIVACY_POLICY.name()).setOnPreferenceClickListener(preference -> {
+                openUrl(getActivity(), Const.URL_PRIVACY_POLICY);
+                return true;
+            });
             final Settings settings = Settings.get();
             findPreference(Key.LICENSE.name()).setOnPreferenceClickListener(preference -> {
                 final String query = settings.getThemeParams().getHtmlQuery();
