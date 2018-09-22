@@ -28,6 +28,7 @@ public class Const {
     public static final String URL_UPDATE_BASE = "https://ohmae.github.io/DmsExplorer/";
     public static final String URL_UPDATE_PATH = "json/update.json";
     public static final String URL_GITHUB_PROJECT = "https://github.com/ohmae/DmsExplorer";
+    public static final String URL_PRIVACY_POLICY = "https://github.com/ohmae/DmsExplorer/blob/develop/PRIVACY-POLICY.md";
     public static final String URL_OPEN_SOURCE_LICENSE = "file:///android_asset/license.html";
 
     public static final int REQUEST_CODE_ACTION_PLAY = 1;

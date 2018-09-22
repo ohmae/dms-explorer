@@ -60,8 +60,8 @@ public class ImageViewBindingAdapter {
                 } else {
                     emitter.onError(new IllegalStateException());
                 }
-            } catch (final OutOfMemoryError ignored) {
-                emitter.onError(ignored);
+            } catch (final OutOfMemoryError e) {
+                emitter.onError(e);
             }
         });
     }

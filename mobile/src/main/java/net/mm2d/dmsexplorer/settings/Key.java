@@ -35,6 +35,7 @@ public enum Key {
     // 表示用
     VERSION_NUMBER,
     PLAY_STORE,
+    PRIVACY_POLICY,
     COPYRIGHT,
     LICENSE,
     SOURCE_CODE,
