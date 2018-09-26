@@ -15,8 +15,10 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.AppBarLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
+import android.view.MotionEvent;
 import android.view.View;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
@@ -54,7 +56,7 @@ public class WebViewActivity extends BaseActivity {
         context.startActivity(makeIntent(context, title, url));
     }
 
-    @SuppressLint("SetJavaScriptEnabled")
+    @SuppressLint({"SetJavaScriptEnabled", "ClickableViewAccessibility"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setTheme(Settings.get().getThemeParams().getNoActionBarThemeId());
@@ -113,5 +115,15 @@ public class WebViewActivity extends BaseActivity {
             }
         });
         webView.loadUrl(intent.getStringExtra(KEY_URL));
+        webView.setOnTouchListener((v, event) -> {
+            if (event.getAction() == MotionEvent.ACTION_UP) {
+                settleAppBar(binding.appBar);
+            }
+            return false;
+        });
+    }
+
+    private void settleAppBar(@NonNull final AppBarLayout appBar) {
+        appBar.setExpanded(appBar.getHeight() / 2f + appBar.getY() > 0f);
     }
 }
