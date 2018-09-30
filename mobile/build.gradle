@@ -9,13 +9,13 @@ def versionMinor = 7
 def versionPatch = 44
 
 android {
-    compileSdkVersion 27
-    buildToolsVersion '27.0.3'
+    compileSdkVersion 28
+    buildToolsVersion '28.0.3'
 
     defaultConfig {
         applicationId "net.mm2d.dmsexplorer"
         minSdkVersion 16
-        targetSdkVersion 27
+        targetSdkVersion 28
         versionCode versionMajor * 10000 + versionMinor * 100 + versionPatch
         versionName "${versionMajor}.${versionMinor}.${versionPatch}"
         resConfigs "en", "ja", "ru"
@@ -61,18 +61,18 @@ android {
 }
 
 dependencies {
-    implementation 'com.android.support:support-v4:27.1.1'
-    implementation 'com.android.support:appcompat-v7:27.1.1'
-    implementation 'com.android.support:cardview-v7:27.1.1'
-    implementation 'com.android.support:palette-v7:27.1.1'
-    implementation 'com.android.support:recyclerview-v7:27.1.1'
-    implementation 'com.android.support:design:27.1.1'
-    implementation 'com.android.support:customtabs:27.1.1'
-    implementation 'com.android.support:exifinterface:27.1.1'
+    implementation 'com.android.support:support-v4:28.0.0'
+    implementation 'com.android.support:appcompat-v7:28.0.0'
+    implementation 'com.android.support:cardview-v7:28.0.0'
+    implementation 'com.android.support:palette-v7:28.0.0'
+    implementation 'com.android.support:recyclerview-v7:28.0.0'
+    implementation 'com.android.support:design:28.0.0'
+    implementation 'com.android.support:customtabs:28.0.0'
+    implementation 'com.android.support:exifinterface:28.0.0'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation 'net.mm2d:log:0.0.3'
     implementation 'net.mm2d:log-android:0.0.3'
-    implementation 'net.mm2d:mmupnp:2.0.0-alpha6'
+    implementation 'net.mm2d:mmupnp:2.0.0-alpha7'
     implementation 'net.mm2d:preference:0.0.3'
     implementation 'net.opacapp:multiline-collapsingtoolbar:27.1.1'
     implementation 'com.squareup.okhttp3:okhttp:3.10.0'
