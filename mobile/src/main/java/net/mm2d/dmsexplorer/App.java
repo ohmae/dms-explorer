@@ -7,11 +7,11 @@
 
 package net.mm2d.dmsexplorer;
 
-import android.app.Application;
 import android.os.StrictMode;
 import android.os.StrictMode.ThreadPolicy;
 import android.os.StrictMode.VmPolicy;
 import android.support.annotation.NonNull;
+import android.support.multidex.MultiDexApplication;
 
 import net.mm2d.dmsexplorer.debug.DebugData;
 import net.mm2d.dmsexplorer.domain.AppRepository;
@@ -31,7 +31,7 @@ import io.reactivex.plugins.RxJavaPlugins;
  *
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
  */
-public class App extends Application {
+public class App extends MultiDexApplication {
     @Override
     public void onCreate() {
         super.onCreate();
