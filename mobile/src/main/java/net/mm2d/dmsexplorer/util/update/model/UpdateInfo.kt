@@ -8,11 +8,13 @@
 package net.mm2d.dmsexplorer.util.update.model
 
 import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
 
 /**
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
  */
 @Suppress("MemberVisibilityCanBePrivate")
+@JsonClass(generateAdapter = true)
 internal data class UpdateInfo(
         @Json(name = "mobile")
         internal val mobile: Mobile
@@ -34,6 +36,7 @@ internal data class UpdateInfo(
     val targetExclude: List<Int>
         get() = mobile.targetExclude
 
+    @JsonClass(generateAdapter = true)
     internal data class Mobile(
             @Json(name = "versionName")
             internal val versionName: String,

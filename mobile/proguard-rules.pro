@@ -2,35 +2,52 @@
 -keepattributes *Annotation*
 -keepattributes SourceFile,LineNumberTable
 -keep public class * extends java.lang.Exception
+-printmapping mapping.txt
+-keep class com.crashlytics.** { *; }
+-dontwarn com.crashlytics.**
 
 # call from preference-header
 -keep public class * extends net.mm2d.dmsexplorer.view.base.PreferenceFragmentBase
 
 # for OkHttp3
--dontwarn okhttp3.**
--dontwarn okio.**
+# JSR 305 annotations are for embedding nullability information.
 -dontwarn javax.annotation.**
--dontwarn org.conscrypt.**
 # A resource is loaded with a relative path so the package of this class must be preserved.
 -keepnames class okhttp3.internal.publicsuffix.PublicSuffixDatabase
+# Animal Sniffer compileOnly dependency to ensure APIs are compatible with older versions of Java.
+-dontwarn org.codehaus.mojo.animal_sniffer.*
+# OkHttp platform used only on JVM and when Conscrypt dependency is available.
+-dontwarn okhttp3.internal.platform.ConscryptPlatform
 
 # for Moshi
 -keepclasseswithmembers class * {
     @com.squareup.moshi.* <methods>;
 }
--keep class kotlin.reflect.jvm.internal.impl.builtins.** { *; }
--keep class net.mm2d.dmsexplorer.util.update.model.** { *; }
+-keep @com.squareup.moshi.JsonQualifier interface *
+# Enum field names are used by the integrated EnumJsonAdapter.
+# Annotate enums with @JsonClass(generateAdapter = false) to use them with Moshi.
+-keepclassmembers @com.squareup.moshi.JsonClass class * extends java.lang.Enum {
+    <fields>;
+}
+# The name of @JsonClass types is used to look up the generated adapter.
+-keepnames @com.squareup.moshi.JsonClass class *
+# Retain generated JsonAdapters if annotated type is retained.
+-if @com.squareup.moshi.JsonClass class *
+-keep class <1>JsonAdapter {
+    <init>(...);
+    <fields>;
+}
 
 # for Retrofit2
-# Platform calls Class.forName on types which do not exist on Android to determine platform.
--dontnote retrofit2.Platform
-# Platform used when running on Java 8 VMs. Will not be used at runtime.
--dontwarn retrofit2.Platform$Java8
-# Retain generic type information for use by reflection by converters and adapters.
--keepattributes Signature
-# Retain declared checked exceptions for use by a Proxy instance.
--keepattributes Exceptions
-
--keepclasseswithmembers class * {
+# Retrofit does reflection on generic parameters and InnerClass is required to use Signature.
+-keepattributes Signature, InnerClasses
+# Retain service method parameters when optimizing.
+-keepclassmembers,allowshrinking,allowobfuscation interface * {
     @retrofit2.http.* <methods>;
 }
+# Ignore annotation used for build tooling.
+-dontwarn org.codehaus.mojo.animal_sniffer.IgnoreJRERequirement
+# Guarded by a NoClassDefFoundError try/catch and only used when on the classpath.
+-dontwarn kotlin.Unit
+# Top-level functions that can only be used by Kotlin.
+-dontwarn retrofit2.-KotlinExtensions
