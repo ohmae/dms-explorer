@@ -30,7 +30,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="#333333"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            app:layout_behavior="net.mm2d.dmsexplorer.view.view.NestedScrollingWebView$Behavior"
             />
 
         <ProgressBar
