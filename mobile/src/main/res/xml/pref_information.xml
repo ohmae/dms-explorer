@@ -33,6 +33,7 @@
 
     <Preference
         android:key="LICENSE"
+        android:summary="@string/pref_message_license"
         android:title="@string/pref_title_license"
         />
 

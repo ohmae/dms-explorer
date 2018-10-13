@@ -123,7 +123,8 @@
     <string name="pref_title_copyright">作者</string>
     <string name="pref_message_copyright">© 2016 大前良介 (OHMAE Ryosuke)</string>
     <string name="pref_title_version_number">バージョン</string>
-    <string name="pref_title_license">オープンソース ライセンス</string>
+    <string name="pref_title_license">オープンソースライセンス</string>
+    <string name="pref_message_license">本アプリで利用しているOSSのライセンスを表示します</string>
     <string name="pref_title_source_code">ソースコード</string>
     <string name="pref_message_source_code">本アプリのソースコードはMITライセンスで公開しています</string>
     <string name="repeat_introduction_title">連続再生設定</string>

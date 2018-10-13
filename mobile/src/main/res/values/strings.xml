@@ -124,6 +124,7 @@
     <string name="pref_message_copyright">© 2016 大前良介 (OHMAE Ryosuke)</string>
     <string name="pref_title_version_number">Version</string>
     <string name="pref_title_license">Open Source Licenses</string>
+    <string name="pref_message_license">Show license of OSS used in this app</string>
     <string name="pref_title_source_code">Source code</string>
     <string name="pref_message_source_code">Source code of this app is published under the MIT license</string>
     <string name="repeat_introduction_title">Repeat setting</string>

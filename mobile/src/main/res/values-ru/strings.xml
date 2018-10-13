@@ -123,7 +123,8 @@
     <string name="pref_title_copyright">Автор</string>
     <string name="pref_message_copyright">© 2016 大前良介 (OHMAE Ryosuke)</string>
     <string name="pref_title_version_number">Версия</string>
-    <string name="pref_title_license">Открыть лицензию исходного кода</string>
+    <string name="pref_title_license">Лицензия на Open Source</string>
+    <string name="pref_message_license">Показать лицензию OSS, используемую в этом приложении</string>
     <string name="pref_title_source_code">Исходный код</string>
     <string name="pref_message_source_code">Исходный код этого приложения публикуется под лицензией MIT</string>
     <string name="repeat_introduction_title">Повторить настройку</string>
