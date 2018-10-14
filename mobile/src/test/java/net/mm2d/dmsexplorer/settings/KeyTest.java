@@ -10,6 +10,7 @@ package net.mm2d.dmsexplorer.settings;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
+import org.robolectric.annotation.Config;
 
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
@@ -19,6 +20,7 @@ import static org.junit.Assert.*;
  */
 @SuppressWarnings({"NonAsciiCharacters", "ResultOfMethodCallIgnored"})
 @RunWith(RobolectricTestRunner.class)
+@Config(manifest = Config.NONE)
 public class KeyTest {
     @Test
     public void getValueType_表示用Key() throws Exception {
