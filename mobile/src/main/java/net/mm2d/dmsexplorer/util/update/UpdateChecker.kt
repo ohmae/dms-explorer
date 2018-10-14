@@ -9,13 +9,13 @@ package net.mm2d.dmsexplorer.util.update
 
 import android.support.annotation.VisibleForTesting
 import com.squareup.moshi.Moshi
-import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
 import net.mm2d.dmsexplorer.BuildConfig
 import net.mm2d.dmsexplorer.Const
 import net.mm2d.dmsexplorer.settings.Settings
 import net.mm2d.dmsexplorer.util.OkHttpClientHolder
+import net.mm2d.dmsexplorer.util.update.model.EMPTY_UPDATE_INFO
 import net.mm2d.dmsexplorer.util.update.model.UpdateInfo
 import net.mm2d.dmsexplorer.view.eventrouter.EventRouter
 import net.mm2d.log.Log
@@ -31,9 +31,7 @@ class UpdateChecker(
         private val currentVersion: Int = BuildConfig.VERSION_CODE
 ) {
     private val moshi by lazy {
-        Moshi.Builder()
-                .add(KotlinJsonAdapterFactory())
-                .build()
+        Moshi.Builder().build()
     }
     private val jsonAdapter by lazy {
         moshi.adapter(UpdateInfo::class.java)
@@ -57,7 +55,7 @@ class UpdateChecker(
     private fun checkIfNeed(settings: Settings): Single<UpdateInfo> {
         makeConsistent(settings)
         if (!hasEnoughInterval(settings)) {
-            return Single.just(UpdateInfo.EMPTY)
+            return Single.just(EMPTY_UPDATE_INFO)
         }
         return retrofit
                 .create(UpdateService::class.java)
