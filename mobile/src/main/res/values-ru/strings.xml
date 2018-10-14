@@ -56,7 +56,7 @@
     <string name="pref_header_function">Функция</string>
     <string name="pref_category_link">Ссылка</string>
     <string name="pref_title_open_url">Открыть URL-адрес</string>
-    <string name="pref_message_open_url_on">Использовать Chrome</string>
+    <string name="pref_message_open_url_on">использовать Custom Tabs</string>
     <string name="pref_message_open_url_off">Запустить браузер</string>
     <string name="pref_category_tap_and_long_tap_operation">Операции нажатия и зажатия</string>
     <string name="pref_title_device_detail_on_tap">Выбор устройства</string>
