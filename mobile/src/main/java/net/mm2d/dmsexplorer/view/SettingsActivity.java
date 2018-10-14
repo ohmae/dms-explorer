@@ -33,7 +33,7 @@ import net.mm2d.dmsexplorer.BuildConfig;
 import net.mm2d.dmsexplorer.Const;
 import net.mm2d.dmsexplorer.R;
 import net.mm2d.dmsexplorer.Repository;
-import net.mm2d.dmsexplorer.domain.model.CustomTabsHelper;
+import net.mm2d.dmsexplorer.domain.tabs.CustomTabsHelper;
 import net.mm2d.dmsexplorer.domain.model.OpenUriCustomTabsModel;
 import net.mm2d.dmsexplorer.domain.model.OpenUriModel;
 import net.mm2d.dmsexplorer.settings.Key;
