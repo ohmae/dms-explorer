@@ -12,6 +12,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
+import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
@@ -49,7 +50,8 @@ public class OpenUriUtils {
     @NonNull
     private static Set<String> getBrowserPackagesInner(@NonNull final Context context) {
         final PackageManager pm = context.getPackageManager();
-        final List<ResolveInfo> activities = pm.queryIntentActivities(makeBrowserTestIntent(), 0);
+        final int flags = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ? PackageManager.MATCH_ALL : 0;
+        final List<ResolveInfo> activities = pm.queryIntentActivities(makeBrowserTestIntent(), flags);
         if (activities.isEmpty()) {
             return Collections.emptySet();
         }
