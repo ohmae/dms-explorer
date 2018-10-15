@@ -34,8 +34,6 @@ import net.mm2d.dmsexplorer.Const;
 import net.mm2d.dmsexplorer.R;
 import net.mm2d.dmsexplorer.Repository;
 import net.mm2d.dmsexplorer.domain.tabs.CustomTabsHelper;
-import net.mm2d.dmsexplorer.domain.model.OpenUriCustomTabsModel;
-import net.mm2d.dmsexplorer.domain.model.OpenUriModel;
 import net.mm2d.dmsexplorer.settings.Key;
 import net.mm2d.dmsexplorer.settings.Orientation;
 import net.mm2d.dmsexplorer.settings.Settings;
@@ -166,9 +164,8 @@ public class SettingsActivity extends PreferenceActivityCompat {
         private void setUpCustomTabs() {
             final SwitchPreferenceCompat customTabs = (SwitchPreferenceCompat) findPreference(Key.USE_CUSTOM_TABS.name());
             customTabs.setOnPreferenceChangeListener((preference, newValue) -> {
-                final OpenUriModel model = Repository.get().getOpenUriModel();
-                if ((newValue instanceof Boolean) && (model instanceof OpenUriCustomTabsModel)) {
-                    ((OpenUriCustomTabsModel) model).setUseCustomTabs((Boolean) newValue);
+                if (newValue instanceof Boolean) {
+                    Repository.get().getOpenUriModel().setUseCustomTabs((Boolean) newValue);
                 }
                 return true;
             });

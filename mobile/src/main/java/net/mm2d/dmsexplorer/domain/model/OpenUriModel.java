@@ -10,6 +10,8 @@ package net.mm2d.dmsexplorer.domain.model;
 import android.content.Context;
 import android.support.annotation.NonNull;
 
+import java.util.List;
+
 /**
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
  */
@@ -17,4 +19,10 @@ public interface OpenUriModel {
     void openUri(
             @NonNull Context context,
             @NonNull String uri);
+
+    void setUseCustomTabs(boolean use);
+
+    void mayLaunchUrl(@NonNull String url);
+
+    void mayLaunchUrl(@NonNull List<String> urls);
 }

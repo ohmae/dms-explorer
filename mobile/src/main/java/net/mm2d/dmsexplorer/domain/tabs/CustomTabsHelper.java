@@ -12,10 +12,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.net.Uri;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.customtabs.CustomTabsCallback;
 import android.support.customtabs.CustomTabsClient;
+import android.support.customtabs.CustomTabsService;
 import android.support.customtabs.CustomTabsServiceConnection;
 import android.support.customtabs.CustomTabsSession;
 
@@ -53,7 +56,9 @@ public class CustomTabsHelper extends CustomTabsServiceConnection {
     @Nullable
     private static String sPackageNameToBind;
 
-    public static void addKeepAliveExtra(Context context, Intent intent) {
+    public static void addKeepAliveExtra(
+            Context context,
+            Intent intent) {
         Intent keepAliveIntent = new Intent().setClassName(
                 context.getPackageName(), KeepAliveService.class.getCanonicalName());
         intent.putExtra(EXTRA_CUSTOM_TABS_KEEP_ALIVE, keepAliveIntent);
@@ -107,15 +112,13 @@ public class CustomTabsHelper extends CustomTabsServiceConnection {
     private final Context mContext;
     private boolean mBound;
     @Nullable
-    private CustomTabsClient mClient;
-    @Nullable
     private CustomTabsSession mSession;
 
     public CustomTabsHelper(@NonNull final Context context) {
         mContext = context;
     }
 
-    public void bind() {
+    void bind() {
         if (mBound) {
             return;
         }
@@ -132,17 +135,34 @@ public class CustomTabsHelper extends CustomTabsServiceConnection {
         }
         mContext.unbindService(this);
         mBound = false;
-        mClient = null;
         mSession = null;
+    }
+
+    public void mayLaunchUrl(@NonNull final String url) {
+        if (mSession != null) {
+            mSession.mayLaunchUrl(Uri.parse(url), null, null);
+        }
+    }
+
+    public void mayLaunchUrl(@NonNull final List<String> urls) {
+        if (mSession == null || urls.isEmpty()) {
+            return;
+        }
+        if (urls.size() == 1) {
+            mSession.mayLaunchUrl(Uri.parse(urls.get(0)), null, null);
+            return;
+        }
+        final List<Bundle> otherLikelyBundles = new ArrayList<>();
+        for (int i = 1; i < urls.size(); i++) {
+            final Bundle bundle = new Bundle();
+            bundle.putParcelable(CustomTabsService.KEY_URL, Uri.parse(urls.get(i)));
+            otherLikelyBundles.add(bundle);
+        }
+        mSession.mayLaunchUrl(Uri.parse(urls.get(0)), null, otherLikelyBundles);
     }
 
     @Nullable
     public CustomTabsSession getSession() {
-        if (mClient == null) {
-            mSession = null;
-        } else if (mSession == null) {
-            mSession = mClient.newSession(new CustomTabsCallback());
-        }
         return mSession;
     }
 
@@ -150,12 +170,12 @@ public class CustomTabsHelper extends CustomTabsServiceConnection {
     public void onCustomTabsServiceConnected(
             final ComponentName name,
             final CustomTabsClient client) {
-        mClient = client;
+        client.warmup(0);
+        mSession = client.newSession(new CustomTabsCallback());
     }
 
     @Override
     public void onServiceDisconnected(final ComponentName name) {
-        mClient = null;
         mSession = null;
     }
 }
