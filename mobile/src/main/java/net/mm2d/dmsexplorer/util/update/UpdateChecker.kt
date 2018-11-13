@@ -28,7 +28,7 @@ import java.util.concurrent.TimeUnit
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
  */
 class UpdateChecker(
-        private val currentVersion: Int = BuildConfig.VERSION_CODE
+    private val currentVersion: Int = BuildConfig.VERSION_CODE
 ) {
     private val moshi by lazy {
         Moshi.Builder().build()
@@ -38,18 +38,18 @@ class UpdateChecker(
     }
     private val retrofit: Retrofit by lazy {
         Retrofit.Builder()
-                .baseUrl(Const.URL_UPDATE_BASE)
-                .addConverterFactory(MoshiConverterFactory.create(moshi))
-                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .client(OkHttpClientHolder.get())
-                .build()
+            .baseUrl(Const.URL_UPDATE_BASE)
+            .addConverterFactory(MoshiConverterFactory.create(moshi))
+            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+            .client(OkHttpClientHolder.get())
+            .build()
     }
 
     fun check() {
         Single.fromCallable { Settings.get() }
-                .subscribeOn(Schedulers.io())
-                .flatMap { checkIfNeed(it) }
-                .subscribe { it -> checkAndNotify(it) }
+            .subscribeOn(Schedulers.io())
+            .flatMap { checkIfNeed(it) }
+            .subscribe { it -> checkAndNotify(it) }
     }
 
     private fun checkIfNeed(settings: Settings): Single<UpdateInfo> {
@@ -58,8 +58,8 @@ class UpdateChecker(
             return Single.just(EMPTY_UPDATE_INFO)
         }
         return retrofit
-                .create(UpdateService::class.java)
-                .get()
+            .create(UpdateService::class.java)
+            .get()
     }
 
     private fun makeConsistent(settings: Settings) {
@@ -86,8 +86,9 @@ class UpdateChecker(
     }
 
     private fun checkAndSave(
-            settings: Settings,
-            info: UpdateInfo) {
+        settings: Settings,
+        info: UpdateInfo
+    ) {
         settings.setUpdateFetchTime()
         val normalizedJson = jsonAdapter.toJson(info)
         if (normalizedJson == settings.updateJson) {

@@ -16,7 +16,8 @@ import net.mm2d.preference.Header
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
  */
 enum class Theme(val params: ThemeParams) {
-    DEFAULT(ThemeParams(
+    DEFAULT(
+        ThemeParams(
             htmlQuery = "t=default",
             noActionBarThemeId = R.style.AppTheme_NoActionBar,
             listThemeId = R.style.AppTheme_List,
@@ -29,8 +30,10 @@ enum class Theme(val params: ThemeParams) {
             },
             themeColorGenerator = ThemeColorGeneratorDefault(),
             serverColorExtractor = ServerColorExtractorDefault()
-    )),
-    DARK(ThemeParams(
+        )
+    ),
+    DARK(
+        ThemeParams(
             htmlQuery = "t=dark",
             noActionBarThemeId = R.style.DarkTheme_NoActionBar,
             listThemeId = R.style.DarkTheme_List,
@@ -46,7 +49,8 @@ enum class Theme(val params: ThemeParams) {
             },
             themeColorGenerator = ThemeColorGeneratorDark(),
             serverColorExtractor = ServerColorExtractorDark()
-    ))
+        )
+    )
 
 }
 
@@ -58,7 +62,7 @@ private fun convertIcon(@DrawableRes iconRes: Int): Int {
         R.drawable.ic_view_settings_light -> R.drawable.ic_view_settings_dark
         R.drawable.ic_expert_settings_light -> R.drawable.ic_expert_settings_dark
         R.drawable.ic_info_settings_light -> R.drawable.ic_info_settings_dark
-    // for 4.x
+        // for 4.x
         R.drawable.ic_play_settings_black -> R.drawable.ic_play_settings_white
         R.drawable.ic_function_settings_black -> R.drawable.ic_function_settings_white
         R.drawable.ic_view_settings_black -> R.drawable.ic_view_settings_white

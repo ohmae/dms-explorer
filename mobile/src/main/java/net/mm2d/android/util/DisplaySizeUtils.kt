@@ -71,7 +71,8 @@ object DisplaySizeUtils {
     @JvmStatic
     fun getNavigationBarArea(activity: Activity): Point {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT // KitKat未満はアプリエリアと重複しない
-                || isInMultiWindowMode(activity)) {
+            || isInMultiWindowMode(activity)
+        ) {
             return Point(0, 0)
         }
         val p1 = getSize(activity)

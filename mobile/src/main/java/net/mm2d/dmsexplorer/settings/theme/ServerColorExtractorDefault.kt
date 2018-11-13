@@ -31,7 +31,7 @@ internal class ServerColorExtractorDefault : ServerColorExtractor {
             extractFromPalette(server, null)
         } else {
             Palette.Builder(icon)
-                    .generate { palette -> extractFromPalette(server, palette) }
+                .generate { palette -> extractFromPalette(server, palette) }
         }
     }
 

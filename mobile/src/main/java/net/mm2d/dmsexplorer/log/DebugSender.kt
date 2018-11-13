@@ -18,8 +18,9 @@ import net.mm2d.log.Log
 internal class DebugSender : Sender {
 
     override fun logEvent(
-            @Size(min = 1L, max = 40L) name: String,
-            params: Bundle?) {
+        @Size(min = 1L, max = 40L) name: String,
+        params: Bundle?
+    ) {
         Log.i("\nname: " + name + "\nparams: " + dumpBundle(params))
     }
 

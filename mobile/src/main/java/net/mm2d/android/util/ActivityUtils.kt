@@ -18,7 +18,7 @@ object ActivityUtils {
     @JvmStatic
     fun makeScaleUpAnimationBundle(v: View): Bundle? {
         return ActivityOptionsCompat
-                .makeScaleUpAnimation(v, 0, 0, v.width, v.height)
-                .toBundle()
+            .makeScaleUpAnimation(v, 0, 0, v.width, v.height)
+            .toBundle()
     }
 }

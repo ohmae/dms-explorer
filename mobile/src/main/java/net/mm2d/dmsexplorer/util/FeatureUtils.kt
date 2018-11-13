@@ -17,6 +17,6 @@ object FeatureUtils {
     @JvmStatic
     fun hasTouchScreen(context: Context): Boolean {
         return context.packageManager
-                .hasSystemFeature(PackageManager.FEATURE_TOUCHSCREEN)
+            .hasSystemFeature(PackageManager.FEATURE_TOUCHSCREEN)
     }
 }

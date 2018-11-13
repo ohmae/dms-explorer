@@ -45,7 +45,8 @@ object BitmapUtils {
             val options = BitmapFactory.Options()
             options.inJustDecodeBounds = true
             BitmapFactory.decodeByteArray(data, 0, data.size, options)
-            options.inSampleSize = calcSampleSize(options.outWidth, options.outHeight, width, height)
+            options.inSampleSize =
+                    calcSampleSize(options.outWidth, options.outHeight, width, height)
             options.inJustDecodeBounds = false
             BitmapFactory.decodeByteArray(data, 0, data.size, options)
         } catch (ignored: Exception) {
@@ -62,7 +63,12 @@ object BitmapUtils {
      * @param targetHeight 取得したい枠の幅
      * @return ダウンサンプル数
      */
-    private fun calcSampleSize(sourceWidth: Int, sourceHeight: Int, targetWidth: Int, targetHeight: Int): Int {
+    private fun calcSampleSize(
+        sourceWidth: Int,
+        sourceHeight: Int,
+        targetWidth: Int,
+        targetHeight: Int
+    ): Int {
         if (targetWidth == 0 || targetHeight == 0) {
             return 1 // Avoid zero division
         }
@@ -96,7 +102,10 @@ object BitmapUtils {
         val exif: ExifInterface
         try {
             exif = ExifInterface(ByteArrayInputStream(data))
-            return exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_UNDEFINED)
+            return exif.getAttributeInt(
+                ExifInterface.TAG_ORIENTATION,
+                ExifInterface.ORIENTATION_UNDEFINED
+            )
         } catch (ignored: IOException) {
         }
         return ExifInterface.ORIENTATION_UNDEFINED

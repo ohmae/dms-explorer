@@ -18,8 +18,6 @@ import net.mm2d.dmsexplorer.Repository;
 import net.mm2d.dmsexplorer.domain.entity.ContentEntity;
 import net.mm2d.dmsexplorer.domain.formatter.CdsFormatter;
 import net.mm2d.dmsexplorer.domain.model.ControlPointModel;
-import net.mm2d.dmsexplorer.domain.tabs.CustomTabsBinder;
-import net.mm2d.dmsexplorer.domain.tabs.CustomTabsHelper;
 import net.mm2d.dmsexplorer.domain.model.MediaRendererModel;
 import net.mm2d.dmsexplorer.domain.model.MediaServerModel;
 import net.mm2d.dmsexplorer.domain.model.OpenUriCustomTabsModel;
@@ -27,6 +25,8 @@ import net.mm2d.dmsexplorer.domain.model.OpenUriModel;
 import net.mm2d.dmsexplorer.domain.model.PlaybackTargetModel;
 import net.mm2d.dmsexplorer.domain.model.ThemeModel;
 import net.mm2d.dmsexplorer.domain.model.ThemeModelImpl;
+import net.mm2d.dmsexplorer.domain.tabs.CustomTabsBinder;
+import net.mm2d.dmsexplorer.domain.tabs.CustomTabsHelper;
 import net.mm2d.dmsexplorer.settings.Settings;
 
 import io.reactivex.Completable;

@@ -90,7 +90,10 @@ object EventLogger {
         val bundle = Bundle()
         bundle.putString(Param.ITEM_VARIANT, cdsObject.getValue(CdsObject.RES_PROTOCOL_INFO))
         bundle.putString(Param.CONTENT_TYPE, getTypeString(entity.type))
-        bundle.putString(Param.ORIGIN, if (cdsObject.hasProtectedResource()) VALUE_DLNA_DTCP else VALUE_DLNA)
+        bundle.putString(
+            Param.ORIGIN,
+            if (cdsObject.hasProtectedResource()) VALUE_DLNA_DTCP else VALUE_DLNA
+        )
         bundle.putString(Param.DESTINATION, VALUE_DMR)
         sender?.logEvent(Event.SELECT_CONTENT, bundle)
     }

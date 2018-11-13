@@ -16,15 +16,15 @@ import android.support.v7.graphics.Palette.Swatch
 internal object PaletteUtils {
     fun selectLightSwatch(palette: Palette): Swatch? {
         return palette.vibrantSwatch
-                ?: palette.mutedSwatch
-                ?: palette.dominantSwatch
+            ?: palette.mutedSwatch
+            ?: palette.dominantSwatch
     }
 
     fun selectDarkSwatch(palette: Palette): Swatch? {
         return palette.darkVibrantSwatch
-                ?: palette.darkMutedSwatch
-                ?: palette.vibrantSwatch
-                ?: palette.mutedSwatch
-                ?: palette.dominantSwatch
+            ?: palette.darkMutedSwatch
+            ?: palette.vibrantSwatch
+            ?: palette.mutedSwatch
+            ?: palette.dominantSwatch
     }
 }
