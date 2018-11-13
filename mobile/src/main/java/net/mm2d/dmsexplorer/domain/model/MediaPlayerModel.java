@@ -11,13 +11,14 @@ import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnPreparedListener;
 import android.os.Handler;
 import android.os.Looper;
-import android.support.annotation.CallSuper;
-import android.support.annotation.NonNull;
 
 import net.mm2d.dmsexplorer.domain.model.control.MediaControl;
 import net.mm2d.log.Log;
 
 import java.util.concurrent.TimeUnit;
+
+import androidx.annotation.CallSuper;
+import androidx.annotation.NonNull;
 
 /**
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>

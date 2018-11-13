@@ -9,14 +9,15 @@ package net.mm2d.dmsexplorer.domain.model;
 
 import android.app.Activity;
 import android.os.Build;
-import android.support.annotation.ColorInt;
-import android.support.annotation.NonNull;
 
 import net.mm2d.android.util.ActivityLifecycleCallbacksAdapter;
 import net.mm2d.dmsexplorer.util.ColorUtils;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import androidx.annotation.ColorInt;
+import androidx.annotation.NonNull;
 
 /**
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>

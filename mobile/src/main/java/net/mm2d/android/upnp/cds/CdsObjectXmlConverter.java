@@ -7,8 +7,6 @@
 
 package net.mm2d.android.upnp.cds;
 
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
 import net.mm2d.util.XmlUtils;
@@ -27,6 +25,9 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 /**
  * AVTransport#SetAVTransportURIのCurrentURIMetaDataとして送信するXMLを作成するクラス。

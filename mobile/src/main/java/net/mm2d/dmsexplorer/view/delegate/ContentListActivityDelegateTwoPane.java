@@ -7,14 +7,11 @@
 
 package net.mm2d.dmsexplorer.view.delegate;
 
-import android.support.annotation.NonNull;
-import android.support.design.widget.Snackbar;
-import android.support.transition.Slide;
-import android.support.transition.Transition;
-import android.support.v4.app.Fragment;
 import android.view.Gravity;
 import android.view.View;
 import android.view.animation.DecelerateInterpolator;
+
+import com.google.android.material.snackbar.Snackbar;
 
 import net.mm2d.dmsexplorer.R;
 import net.mm2d.dmsexplorer.databinding.ContentListActivityBinding;
@@ -23,6 +20,11 @@ import net.mm2d.dmsexplorer.util.ItemSelectUtils;
 import net.mm2d.dmsexplorer.view.ContentDetailFragment;
 import net.mm2d.dmsexplorer.view.base.BaseActivity;
 import net.mm2d.dmsexplorer.viewmodel.ContentListActivityModel;
+
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.transition.Slide;
+import androidx.transition.Transition;
 
 /**
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>

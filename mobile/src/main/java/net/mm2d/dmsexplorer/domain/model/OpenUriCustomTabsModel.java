@@ -12,8 +12,6 @@ import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.graphics.Color;
 import android.net.Uri;
-import android.support.annotation.NonNull;
-import android.support.customtabs.CustomTabsIntent;
 import android.text.TextUtils;
 import android.webkit.URLUtil;
 
@@ -23,6 +21,9 @@ import net.mm2d.dmsexplorer.domain.tabs.CustomTabsHelper;
 import net.mm2d.dmsexplorer.domain.tabs.OpenUriUtils;
 
 import java.util.List;
+
+import androidx.annotation.NonNull;
+import androidx.browser.customtabs.CustomTabsIntent;
 
 /**
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>

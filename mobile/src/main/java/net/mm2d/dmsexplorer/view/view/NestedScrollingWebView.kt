@@ -9,17 +9,16 @@ package net.mm2d.dmsexplorer.view.view
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.support.design.widget.AppBarLayout
-import android.support.design.widget.CoordinatorLayout
-import android.support.v4.view.NestedScrollingChild
-import android.support.v4.view.NestedScrollingChildHelper
-import android.support.v4.view.ViewCompat
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewConfiguration
 import android.view.ViewGroup
 import android.webkit.WebView
+import androidx.core.view.NestedScrollingChild
+import androidx.core.view.NestedScrollingChildHelper
+import androidx.core.view.ViewCompat
+import com.google.android.material.appbar.AppBarLayout
 
 /**
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
@@ -46,7 +45,8 @@ class NestedScrollingWebView
 
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
-        behavior = (layoutParams as? CoordinatorLayout.LayoutParams)?.behavior as? Behavior
+        behavior =
+                (layoutParams as? androidx.coordinatorlayout.widget.CoordinatorLayout.LayoutParams)?.behavior as? Behavior
         val p = parent as? ViewGroup ?: return
         for (i in 0 until p.childCount) {
             val child = p.getChildAt(i)
@@ -162,7 +162,7 @@ class NestedScrollingWebView
         private var prevBottom = 0
 
         override fun onDependentViewChanged(
-            parent: CoordinatorLayout,
+            parent: androidx.coordinatorlayout.widget.CoordinatorLayout,
             child: View,
             dependency: View
         ): Boolean {

@@ -8,7 +8,7 @@
 package net.mm2d.dmsexplorer.log
 
 import android.os.Bundle
-import android.support.annotation.Size
+import androidx.annotation.Size
 
 /**
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)

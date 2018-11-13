@@ -8,7 +8,6 @@
 package net.mm2d.dmsexplorer.view.adapter;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
 import android.util.Pair;
 
 import net.mm2d.android.upnp.cds.CdsObject;
@@ -18,6 +17,8 @@ import net.mm2d.dmsexplorer.domain.entity.ContentEntity;
 import net.mm2d.dmsexplorer.domain.formatter.CdsFormatter;
 
 import java.util.List;
+
+import androidx.annotation.NonNull;
 
 /**
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>

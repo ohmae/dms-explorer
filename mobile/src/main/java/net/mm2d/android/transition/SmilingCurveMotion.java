@@ -10,10 +10,11 @@ package net.mm2d.android.transition;
 import android.content.Context;
 import android.graphics.Path;
 import android.os.Build;
-import android.support.annotation.NonNull;
-import android.support.annotation.RequiresApi;
 import android.transition.PathMotion;
 import android.util.AttributeSet;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 
 /**
  * マテリアルデザインにある下に凸な曲線のモーションを実現する。

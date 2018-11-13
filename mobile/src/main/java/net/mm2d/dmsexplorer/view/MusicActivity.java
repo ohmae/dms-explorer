@@ -7,7 +7,6 @@
 
 package net.mm2d.dmsexplorer.view;
 
-import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 
 import net.mm2d.dmsexplorer.R;
@@ -17,6 +16,8 @@ import net.mm2d.dmsexplorer.settings.Settings;
 import net.mm2d.dmsexplorer.util.RepeatIntroductionUtils;
 import net.mm2d.dmsexplorer.view.base.BaseActivity;
 import net.mm2d.dmsexplorer.viewmodel.MusicActivityModel;
+
+import androidx.databinding.DataBindingUtil;
 
 /**
  * 音楽再生のActivity。

@@ -10,7 +10,7 @@ package net.mm2d.android.util
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Matrix
-import android.support.media.ExifInterface
+import androidx.exifinterface.media.ExifInterface
 
 import java.io.ByteArrayInputStream
 import java.io.IOException
@@ -99,42 +99,42 @@ object BitmapUtils {
     }
 
     private fun extractOrientation(data: ByteArray): Int {
-        val exif: ExifInterface
+        val exif: androidx.exifinterface.media.ExifInterface
         try {
-            exif = ExifInterface(ByteArrayInputStream(data))
+            exif = androidx.exifinterface.media.ExifInterface(ByteArrayInputStream(data))
             return exif.getAttributeInt(
-                ExifInterface.TAG_ORIENTATION,
-                ExifInterface.ORIENTATION_UNDEFINED
+                androidx.exifinterface.media.ExifInterface.TAG_ORIENTATION,
+                androidx.exifinterface.media.ExifInterface.ORIENTATION_UNDEFINED
             )
         } catch (ignored: IOException) {
         }
-        return ExifInterface.ORIENTATION_UNDEFINED
+        return androidx.exifinterface.media.ExifInterface.ORIENTATION_UNDEFINED
     }
 
     private fun decode(data: ByteArray, width: Int, height: Int, orientation: Int): Bitmap? {
         val base = decodeBase(data, width, height, orientation) ?: return null
         val matrix = Matrix()
         when (orientation) {
-            ExifInterface.ORIENTATION_FLIP_HORIZONTAL ->
+            androidx.exifinterface.media.ExifInterface.ORIENTATION_FLIP_HORIZONTAL ->
                 matrix.postScale(-1f, 1f)
-            ExifInterface.ORIENTATION_FLIP_VERTICAL ->
+            androidx.exifinterface.media.ExifInterface.ORIENTATION_FLIP_VERTICAL ->
                 matrix.postScale(1f, -1f)
-            ExifInterface.ORIENTATION_ROTATE_90 ->
+            androidx.exifinterface.media.ExifInterface.ORIENTATION_ROTATE_90 ->
                 matrix.postRotate(90f)
-            ExifInterface.ORIENTATION_ROTATE_180 ->
+            androidx.exifinterface.media.ExifInterface.ORIENTATION_ROTATE_180 ->
                 matrix.postRotate(180f)
-            ExifInterface.ORIENTATION_ROTATE_270 ->
+            androidx.exifinterface.media.ExifInterface.ORIENTATION_ROTATE_270 ->
                 matrix.postRotate(270f)
-            ExifInterface.ORIENTATION_TRANSPOSE -> {
+            androidx.exifinterface.media.ExifInterface.ORIENTATION_TRANSPOSE -> {
                 matrix.postRotate(90f)
                 matrix.postScale(-1f, 1f)
             }
-            ExifInterface.ORIENTATION_TRANSVERSE -> {
+            androidx.exifinterface.media.ExifInterface.ORIENTATION_TRANSVERSE -> {
                 matrix.postRotate(270f)
                 matrix.postScale(-1f, 1f)
             }
-            ExifInterface.ORIENTATION_UNDEFINED,
-            ExifInterface.ORIENTATION_NORMAL ->
+            androidx.exifinterface.media.ExifInterface.ORIENTATION_UNDEFINED,
+            androidx.exifinterface.media.ExifInterface.ORIENTATION_NORMAL ->
                 return base
             else ->
                 return base
@@ -144,16 +144,16 @@ object BitmapUtils {
 
     private fun decodeBase(binary: ByteArray, width: Int, height: Int, orientation: Int): Bitmap? {
         return when (orientation) {
-            ExifInterface.ORIENTATION_TRANSPOSE,
-            ExifInterface.ORIENTATION_ROTATE_90,
-            ExifInterface.ORIENTATION_TRANSVERSE,
-            ExifInterface.ORIENTATION_ROTATE_270 ->
+            androidx.exifinterface.media.ExifInterface.ORIENTATION_TRANSPOSE,
+            androidx.exifinterface.media.ExifInterface.ORIENTATION_ROTATE_90,
+            androidx.exifinterface.media.ExifInterface.ORIENTATION_TRANSVERSE,
+            androidx.exifinterface.media.ExifInterface.ORIENTATION_ROTATE_270 ->
                 decode(binary, height, width)
-            ExifInterface.ORIENTATION_UNDEFINED,
-            ExifInterface.ORIENTATION_NORMAL,
-            ExifInterface.ORIENTATION_FLIP_HORIZONTAL,
-            ExifInterface.ORIENTATION_ROTATE_180,
-            ExifInterface.ORIENTATION_FLIP_VERTICAL ->
+            androidx.exifinterface.media.ExifInterface.ORIENTATION_UNDEFINED,
+            androidx.exifinterface.media.ExifInterface.ORIENTATION_NORMAL,
+            androidx.exifinterface.media.ExifInterface.ORIENTATION_FLIP_HORIZONTAL,
+            androidx.exifinterface.media.ExifInterface.ORIENTATION_ROTATE_180,
+            androidx.exifinterface.media.ExifInterface.ORIENTATION_FLIP_VERTICAL ->
                 decode(binary, width, height)
             else ->
                 decode(binary, width, height)

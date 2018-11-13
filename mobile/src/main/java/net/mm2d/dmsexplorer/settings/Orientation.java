@@ -10,14 +10,15 @@ package net.mm2d.dmsexplorer.settings;
 import android.app.Activity;
 import android.content.Context;
 import android.content.pm.ActivityInfo;
-import android.support.annotation.NonNull;
-import android.support.annotation.StringRes;
-import android.support.v4.util.ArrayMap;
 
 import net.mm2d.dmsexplorer.R;
 import net.mm2d.log.Log;
 
 import java.util.Map;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.StringRes;
+import androidx.collection.ArrayMap;
 
 /**
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>

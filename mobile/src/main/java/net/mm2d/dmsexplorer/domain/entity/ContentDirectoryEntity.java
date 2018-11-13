@@ -7,9 +7,6 @@
 
 package net.mm2d.dmsexplorer.domain.entity;
 
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-
 import net.mm2d.android.upnp.cds.CdsObject;
 import net.mm2d.dmsexplorer.domain.model.ExploreListener;
 import net.mm2d.dmsexplorer.domain.model.ExploreListenerAdapter;
@@ -18,6 +15,8 @@ import net.mm2d.log.Log;
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import io.reactivex.Observable;
 import io.reactivex.disposables.Disposable;
 

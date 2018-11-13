@@ -8,7 +8,7 @@
 package net.mm2d.dmsexplorer.log
 
 import android.os.Bundle
-import android.support.annotation.Size
+import androidx.annotation.Size
 
 import net.mm2d.log.Log
 

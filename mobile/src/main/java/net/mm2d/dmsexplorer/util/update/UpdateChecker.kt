@@ -7,7 +7,7 @@
 
 package net.mm2d.dmsexplorer.util.update
 
-import android.support.annotation.VisibleForTesting
+import androidx.annotation.VisibleForTesting
 import com.squareup.moshi.Moshi
 import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers

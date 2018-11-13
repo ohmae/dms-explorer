@@ -9,8 +9,6 @@ package net.mm2d.android.upnp.cds;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
@@ -20,6 +18,9 @@ import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Map.Entry;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 /**
  * シンプルなXMLのタグ情報を表現するクラス

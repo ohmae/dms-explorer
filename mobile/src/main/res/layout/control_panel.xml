@@ -60,7 +60,7 @@
                 android:textSize="@dimen/text_size_counter"
                 />
 
-            <android.support.v4.widget.Space
+            <androidx.legacy.widget.Space
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:layout_weight="1"
@@ -111,7 +111,7 @@
                 app:srcCompat="@drawable/ic_skip_next"
                 />
 
-            <android.support.v4.widget.Space
+            <androidx.legacy.widget.Space
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:layout_weight="1"

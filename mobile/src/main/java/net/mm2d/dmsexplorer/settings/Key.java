@@ -7,8 +7,8 @@
 
 package net.mm2d.dmsexplorer.settings;
 
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 /**
  * SharedPreferences用のKeyの定義。

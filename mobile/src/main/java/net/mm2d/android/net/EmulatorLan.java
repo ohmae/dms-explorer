@@ -7,12 +7,12 @@
 
 package net.mm2d.android.net;
 
-import android.support.annotation.NonNull;
-
 import net.mm2d.util.NetworkUtils;
 
 import java.net.NetworkInterface;
 import java.util.Collection;
+
+import androidx.annotation.NonNull;
 
 /**
  * エミュレーター環境でのLAN接続情報を扱うクラス。

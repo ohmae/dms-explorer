@@ -7,11 +7,11 @@
 
 package net.mm2d.dmsexplorer.viewmodel;
 
-import android.databinding.BaseObservable;
-import android.databinding.Bindable;
-import android.support.annotation.ColorInt;
-
 import net.mm2d.dmsexplorer.BR;
+
+import androidx.annotation.ColorInt;
+import androidx.databinding.BaseObservable;
+import androidx.databinding.Bindable;
 
 /**
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>

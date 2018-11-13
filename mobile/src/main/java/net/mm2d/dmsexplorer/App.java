@@ -10,8 +10,6 @@ package net.mm2d.dmsexplorer;
 import android.os.StrictMode;
 import android.os.StrictMode.ThreadPolicy;
 import android.os.StrictMode.VmPolicy;
-import android.support.annotation.NonNull;
-import android.support.multidex.MultiDexApplication;
 
 import net.mm2d.dmsexplorer.debug.DebugData;
 import net.mm2d.dmsexplorer.domain.AppRepository;
@@ -22,6 +20,8 @@ import net.mm2d.dmsexplorer.view.eventrouter.EventRouter;
 import net.mm2d.log.Log;
 import net.mm2d.log.android.AndroidLogInitializer;
 
+import androidx.annotation.NonNull;
+import androidx.multidex.MultiDexApplication;
 import io.reactivex.exceptions.OnErrorNotImplementedException;
 import io.reactivex.exceptions.UndeliverableException;
 import io.reactivex.plugins.RxJavaPlugins;

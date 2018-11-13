@@ -7,7 +7,7 @@
 
 package net.mm2d.dmsexplorer.settings.theme
 
-import android.support.annotation.ColorInt
+import androidx.annotation.ColorInt
 
 /**
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)

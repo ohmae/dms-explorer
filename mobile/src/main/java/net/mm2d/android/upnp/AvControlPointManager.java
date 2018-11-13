@@ -7,9 +7,6 @@
 
 package net.mm2d.android.upnp;
 
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-
 import net.mm2d.android.upnp.avt.MrControlPoint;
 import net.mm2d.android.upnp.cds.MsControlPoint;
 import net.mm2d.upnp.ControlPoint;
@@ -19,6 +16,9 @@ import net.mm2d.upnp.IconFilter;
 import java.net.NetworkInterface;
 import java.util.Collection;
 import java.util.concurrent.atomic.AtomicBoolean;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 /**
  * UPnP AVのControlPoint機能を管理する。

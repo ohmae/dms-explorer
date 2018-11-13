@@ -7,7 +7,7 @@
 
 package net.mm2d.dmsexplorer.settings.theme
 
-import android.support.annotation.DrawableRes
+import androidx.annotation.DrawableRes
 import net.mm2d.dmsexplorer.R
 import net.mm2d.dmsexplorer.settings.theme.ThemeParams.PreferenceHeaderConverter
 import net.mm2d.preference.Header

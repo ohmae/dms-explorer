@@ -11,9 +11,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.FragmentActivity;
 
 import net.mm2d.android.util.Toaster;
 import net.mm2d.dmsexplorer.R;
@@ -28,6 +25,10 @@ import net.mm2d.dmsexplorer.view.MusicActivity;
 import net.mm2d.dmsexplorer.view.PhotoActivity;
 import net.mm2d.dmsexplorer.view.dialog.SelectRendererDialog;
 import net.mm2d.dmsexplorer.view.dialog.SelectResourceDialog;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.FragmentActivity;
 
 /**
  * Item選択後の処理をまとめるクラス。

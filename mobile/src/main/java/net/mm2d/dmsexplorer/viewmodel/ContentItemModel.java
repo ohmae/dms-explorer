@@ -9,9 +9,6 @@ package net.mm2d.dmsexplorer.viewmodel;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
-import android.support.annotation.DrawableRes;
-import android.support.annotation.NonNull;
-import android.support.v4.graphics.drawable.DrawableCompat;
 import android.text.TextUtils;
 
 import net.mm2d.android.util.AribUtils;
@@ -20,6 +17,10 @@ import net.mm2d.dmsexplorer.R;
 import net.mm2d.dmsexplorer.domain.entity.ContentEntity;
 import net.mm2d.dmsexplorer.settings.Settings;
 import net.mm2d.dmsexplorer.settings.theme.ThemeColorGenerator;
+
+import androidx.annotation.DrawableRes;
+import androidx.annotation.NonNull;
+import androidx.core.graphics.drawable.DrawableCompat;
 
 /**
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>

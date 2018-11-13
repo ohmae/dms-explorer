@@ -9,10 +9,11 @@ package net.mm2d.dmsexplorer.viewmodel.helper;
 
 import android.content.Context;
 import android.media.AudioManager;
-import android.support.annotation.NonNull;
 
 import net.mm2d.android.util.Toaster;
 import net.mm2d.dmsexplorer.R;
+
+import androidx.annotation.NonNull;
 
 /**
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>

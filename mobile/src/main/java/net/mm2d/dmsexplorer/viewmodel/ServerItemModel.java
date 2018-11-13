@@ -11,9 +11,6 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.graphics.drawable.DrawableCompat;
 import android.text.TextUtils;
 
 import net.mm2d.android.upnp.cds.MediaServer;
@@ -25,6 +22,10 @@ import net.mm2d.dmsexplorer.settings.theme.ServerColorExtractor;
 import net.mm2d.dmsexplorer.settings.theme.ThemeColorGenerator;
 import net.mm2d.dmsexplorer.settings.theme.ThemeParams;
 import net.mm2d.upnp.Icon;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.graphics.drawable.DrawableCompat;
 
 /**
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>

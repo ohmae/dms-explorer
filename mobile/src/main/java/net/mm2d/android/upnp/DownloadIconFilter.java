@@ -7,14 +7,14 @@
 
 package net.mm2d.android.upnp;
 
-import android.support.annotation.NonNull;
-
 import net.mm2d.upnp.Icon;
 import net.mm2d.upnp.IconFilter;
 
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+
+import androidx.annotation.NonNull;
 
 
 /**

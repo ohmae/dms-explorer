@@ -8,7 +8,7 @@
 package net.mm2d.dmsexplorer.util
 
 import android.graphics.Color
-import android.support.annotation.ColorInt
+import androidx.annotation.ColorInt
 
 /**
  * テーマとしての色を決定するメソッドを持つクラス。

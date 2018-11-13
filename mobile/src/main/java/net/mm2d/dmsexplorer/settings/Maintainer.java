@@ -7,9 +7,9 @@
 
 package net.mm2d.dmsexplorer.settings;
 
-import android.support.annotation.NonNull;
-
 import net.mm2d.dmsexplorer.BuildConfig;
+
+import androidx.annotation.NonNull;
 
 /**
  * 設定値のメンテナー。

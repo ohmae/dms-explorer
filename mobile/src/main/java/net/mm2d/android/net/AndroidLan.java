@@ -10,7 +10,6 @@ package net.mm2d.android.net;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.support.annotation.NonNull;
 
 import net.mm2d.util.NetworkUtils;
 
@@ -23,6 +22,8 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+
+import androidx.annotation.NonNull;
 
 /**
  * 実機環境でのLAN接続情報を扱うクラス。

@@ -8,10 +8,7 @@
 package net.mm2d.dmsexplorer.viewmodel.adapter;
 
 import android.content.Context;
-import android.databinding.BindingAdapter;
 import android.graphics.Bitmap;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.widget.ImageView;
 
 import net.mm2d.android.util.BitmapUtils;
@@ -19,6 +16,9 @@ import net.mm2d.android.util.Toaster;
 import net.mm2d.android.util.ViewUtils;
 import net.mm2d.dmsexplorer.R;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.databinding.BindingAdapter;
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;

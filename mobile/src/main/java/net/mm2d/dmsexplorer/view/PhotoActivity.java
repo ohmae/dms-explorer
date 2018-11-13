@@ -8,10 +8,7 @@
 package net.mm2d.dmsexplorer.view;
 
 import android.content.res.Configuration;
-import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.v4.view.ViewPager;
-import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -26,6 +23,10 @@ import net.mm2d.dmsexplorer.util.FullscreenHelper;
 import net.mm2d.dmsexplorer.view.base.BaseActivity;
 import net.mm2d.dmsexplorer.view.view.ViewPagerAdapter;
 import net.mm2d.dmsexplorer.viewmodel.PhotoActivityModel;
+
+import androidx.databinding.DataBindingUtil;
+import androidx.viewpager.widget.ViewPager;
+import androidx.viewpager.widget.ViewPager.OnPageChangeListener;
 
 /**
  * 静止画表示のActivity。

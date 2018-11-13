@@ -8,12 +8,13 @@
 package net.mm2d.android.net;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
 
 import net.mm2d.android.util.RuntimeEnvironment;
 
 import java.net.NetworkInterface;
 import java.util.Collection;
+
+import androidx.annotation.NonNull;
 
 /**
  * LANの接続情報を取得するクラス。

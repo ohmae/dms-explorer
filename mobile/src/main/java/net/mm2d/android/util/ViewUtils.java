@@ -7,9 +7,10 @@
 
 package net.mm2d.android.util;
 
-import android.support.annotation.NonNull;
 import android.view.View;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
+
+import androidx.annotation.NonNull;
 
 /**
  * Viewに関連する共通処理をまとめたユーティリティクラス。

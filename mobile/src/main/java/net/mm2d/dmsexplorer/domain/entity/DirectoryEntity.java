@@ -7,9 +7,9 @@
 
 package net.mm2d.dmsexplorer.domain.entity;
 
-import android.support.annotation.Nullable;
-
 import java.util.List;
+
+import androidx.annotation.Nullable;
 
 /**
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>

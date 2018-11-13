@@ -7,12 +7,7 @@
 
 package net.mm2d.dmsexplorer.view.delegate;
 
-import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.annotation.CallSuper;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v7.widget.RecyclerView;
 import android.view.KeyEvent;
 import android.view.View;
 
@@ -25,6 +20,12 @@ import net.mm2d.dmsexplorer.view.base.BaseActivity;
 import net.mm2d.dmsexplorer.view.dialog.DeleteDialog.OnDeleteListener;
 import net.mm2d.dmsexplorer.viewmodel.ContentListActivityModel;
 import net.mm2d.dmsexplorer.viewmodel.ContentListActivityModel.CdsSelectListener;
+
+import androidx.annotation.CallSuper;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.databinding.DataBindingUtil;
+import androidx.recyclerview.widget.RecyclerView;
 
 /**
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>

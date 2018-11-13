@@ -18,11 +18,6 @@ import android.content.IntentFilter;
 import android.graphics.Rect;
 import android.graphics.drawable.Icon;
 import android.os.Build;
-import android.support.annotation.DrawableRes;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
-import android.support.annotation.StringRes;
 import android.text.TextUtils;
 import android.util.Rational;
 import android.view.View;
@@ -35,6 +30,12 @@ import net.mm2d.log.Log;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+
+import androidx.annotation.DrawableRes;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
+import androidx.annotation.StringRes;
 
 /**
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>

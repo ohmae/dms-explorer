@@ -1,7 +1,6 @@
 package net.mm2d.dmsexplorer.debug;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
 
 import net.mm2d.android.util.RuntimeEnvironment;
 import net.mm2d.dmsexplorer.BuildConfig;
@@ -17,6 +16,7 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
+import androidx.annotation.NonNull;
 import okio.Okio;
 
 /**

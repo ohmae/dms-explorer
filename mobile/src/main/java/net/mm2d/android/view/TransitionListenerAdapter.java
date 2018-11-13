@@ -8,8 +8,9 @@
 package net.mm2d.android.view;
 
 import android.os.Build;
-import android.support.annotation.RequiresApi;
 import android.transition.Transition;
+
+import androidx.annotation.RequiresApi;
 
 /**
  * Transition.TransitionListenerの空実装。

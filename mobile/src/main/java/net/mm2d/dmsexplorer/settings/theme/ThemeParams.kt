@@ -7,7 +7,7 @@
 
 package net.mm2d.dmsexplorer.settings.theme
 
-import android.support.annotation.StyleRes
+import androidx.annotation.StyleRes
 
 import net.mm2d.preference.Header
 
