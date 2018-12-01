@@ -1,40 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    >
 
     <Preference
         android:key="VERSION_NUMBER"
         android:title="@string/pref_title_version_number"
+        app:iconSpaceReserved="false"
         />
 
     <Preference
         android:key="PLAY_STORE"
         android:summary="@string/pref_message_play_store"
         android:title="@string/pref_title_play_store"
+        app:iconSpaceReserved="false"
         />
 
     <Preference
         android:key="PRIVACY_POLICY"
         android:summary="@string/pref_message_privacy_policy"
         android:title="@string/pref_title_privacy_policy"
+        app:iconSpaceReserved="false"
         />
 
     <Preference
         android:key="COPYRIGHT"
         android:summary="@string/pref_message_copyright"
         android:title="@string/pref_title_copyright"
+        app:iconSpaceReserved="false"
         />
 
     <Preference
         android:key="SOURCE_CODE"
         android:summary="@string/pref_message_source_code"
         android:title="@string/pref_title_source_code"
+        app:iconSpaceReserved="false"
         />
 
     <Preference
         android:key="LICENSE"
         android:summary="@string/pref_message_license"
         android:title="@string/pref_title_license"
+        app:iconSpaceReserved="false"
         />
 
 </PreferenceScreen>

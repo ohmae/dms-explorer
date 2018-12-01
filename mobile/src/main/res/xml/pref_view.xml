@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    >
 
     <PreferenceCategory
         android:title="@string/pref_category_theme"
@@ -10,6 +13,7 @@
             android:key="DARK_THEME"
             android:summary="@string/pref_message_dark_theme"
             android:title="@string/pref_title_dark_theme"
+            app:iconSpaceReserved="false"
             />
     </PreferenceCategory>
 

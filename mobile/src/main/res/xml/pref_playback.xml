@@ -1,5 +1,7 @@
 <PreferenceScreen
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    >
 
     <PreferenceCategory
         android:title="@string/pref_category_movie"
@@ -11,6 +13,7 @@
             android:summaryOff="@string/pref_message_launch_app_off"
             android:summaryOn="@string/pref_message_launch_app_on"
             android:title="@string/pref_title_launch_app_movie"
+            app:iconSpaceReserved="false"
             />
     </PreferenceCategory>
 
@@ -24,6 +27,7 @@
             android:summaryOff="@string/pref_message_launch_app_off"
             android:summaryOn="@string/pref_message_launch_app_on"
             android:title="@string/pref_title_launch_app_music"
+            app:iconSpaceReserved="false"
             />
     </PreferenceCategory>
 
@@ -37,6 +41,7 @@
             android:summaryOff="@string/pref_message_launch_app_off"
             android:summaryOn="@string/pref_message_launch_app_on"
             android:title="@string/pref_title_launch_app_photo"
+            app:iconSpaceReserved="false"
             />
     </PreferenceCategory>
 
