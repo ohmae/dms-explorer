@@ -18,7 +18,7 @@ import net.mm2d.android.upnp.avt.TransportState;
 import net.mm2d.android.upnp.cds.CdsObject;
 import net.mm2d.android.upnp.cds.chapter.ChapterFetcherFactory;
 import net.mm2d.dmsexplorer.domain.entity.ContentEntity;
-import net.mm2d.log.Log;
+import net.mm2d.log.Logger;
 
 import java.util.Collections;
 import java.util.List;
@@ -128,7 +128,7 @@ public class MediaRendererModel implements PlayerModel {
         mStoppingCount = 0;
         mHandler.postDelayed(mGetPositionTask, 1000);
         ChapterFetcherFactory.create(object)
-                .subscribe(this::setChapterList, Log::w);
+                .subscribe(this::setChapterList, Logger::w);
         mStarted = true;
     }
 

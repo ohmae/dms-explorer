@@ -10,7 +10,7 @@ package net.mm2d.android.upnp.cds;
 import android.text.TextUtils;
 
 import net.mm2d.android.upnp.DeviceWrapper;
-import net.mm2d.log.Log;
+import net.mm2d.log.Logger;
 import net.mm2d.upnp.Action;
 import net.mm2d.upnp.Device;
 import net.mm2d.upnp.Service;
@@ -101,7 +101,7 @@ public class MediaServer extends DeviceWrapper {
             final Map<String, String> result = mDestroyObject.invoke(Collections.singletonMap(OBJECT_ID, objectId));
             final String errorDescription = result.get(Action.ERROR_DESCRIPTION_KEY);
             if (!TextUtils.isEmpty(errorDescription)) {
-                Log.e(errorDescription);
+                Logger.e(errorDescription);
             }
             emitter.onSuccess(TextParseUtils.parseIntSafely(result.get(Action.ERROR_CODE_KEY), NO_ERROR));
         }).subscribeOn(Schedulers.io());

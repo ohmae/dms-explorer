@@ -13,7 +13,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.text.TextUtils;
 
-import net.mm2d.log.Log;
+import net.mm2d.log.Logger;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -45,7 +45,7 @@ public class LaunchUtils {
             intent.addCategory(Intent.CATEGORY_BROWSABLE);
             context.startActivity(intent);
         } catch (final ActivityNotFoundException e) {
-            Log.w(e);
+            Logger.w(e);
             return false;
         }
         return true;

@@ -9,7 +9,7 @@ package net.mm2d.android.upnp.cds;
 
 import android.text.TextUtils;
 
-import net.mm2d.log.Log;
+import net.mm2d.log.Logger;
 import net.mm2d.util.XmlUtils;
 
 import org.w3c.dom.Document;
@@ -63,7 +63,7 @@ final class CdsObjectFactory {
                 }
             }
         } catch (ParserConfigurationException | SAXException | IOException e) {
-            Log.w(e);
+            Logger.w(e);
         }
         return list;
     }
@@ -93,7 +93,7 @@ final class CdsObjectFactory {
                 return createCdsObject(udn, (Element) node, rootTag);
             }
         } catch (ParserConfigurationException | SAXException | IOException e) {
-            Log.w(e);
+            Logger.w(e);
         }
         return null;
     }
@@ -118,7 +118,7 @@ final class CdsObjectFactory {
         try {
             return new CdsObject(udn, element, rootTag);
         } catch (final IllegalArgumentException e) {
-            Log.w(e);
+            Logger.w(e);
         }
         return null;
     }

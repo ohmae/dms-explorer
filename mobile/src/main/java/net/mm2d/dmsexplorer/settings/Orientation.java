@@ -12,7 +12,7 @@ import android.content.Context;
 import android.content.pm.ActivityInfo;
 
 import net.mm2d.dmsexplorer.R;
-import net.mm2d.log.Log;
+import net.mm2d.log.Logger;
 
 import java.util.Map;
 
@@ -72,7 +72,7 @@ public enum Orientation {
         try {
             activity.setRequestedOrientation(mValue);
         } catch (final Exception e) {
-            Log.d(e);
+            Logger.d(e);
         }
     }
 

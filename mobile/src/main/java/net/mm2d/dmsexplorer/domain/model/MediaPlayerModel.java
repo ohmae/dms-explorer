@@ -13,7 +13,7 @@ import android.os.Handler;
 import android.os.Looper;
 
 import net.mm2d.dmsexplorer.domain.model.control.MediaControl;
-import net.mm2d.log.Log;
+import net.mm2d.log.Logger;
 
 import java.util.concurrent.TimeUnit;
 
@@ -199,15 +199,14 @@ public abstract class MediaPlayerModel implements PlayerModel, OnPreparedListene
     private void logError(
             final int what,
             final int extra) {
-        Log.e("onError:w" + what + " " + getErrorWhatString(what)
+        Logger.e("onError:w" + what + " " + getErrorWhatString(what)
                 + " e" + extra + " " + getErrorExtraString(extra));
     }
 
     private void logInfo(
             final int what,
             final int extra) {
-        Log.d("onInfo:w:" + what + " " + getInfoWhatString(what)
-                + " e:" + extra);
+        Logger.d(() -> "onInfo:w:" + what + " " + getInfoWhatString(what) + " e:" + extra);
     }
 
     @NonNull

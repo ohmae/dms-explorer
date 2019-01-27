@@ -7,6 +7,7 @@
 
 package net.mm2d.dmsexplorer.util.update
 
+import android.annotation.SuppressLint
 import androidx.annotation.VisibleForTesting
 import com.squareup.moshi.Moshi
 import io.reactivex.Single
@@ -18,7 +19,7 @@ import net.mm2d.dmsexplorer.util.OkHttpClientHolder
 import net.mm2d.dmsexplorer.util.update.model.EMPTY_UPDATE_INFO
 import net.mm2d.dmsexplorer.util.update.model.UpdateInfo
 import net.mm2d.dmsexplorer.view.eventrouter.EventRouter
-import net.mm2d.log.Log
+import net.mm2d.log.Logger
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.moshi.MoshiConverterFactory
@@ -45,6 +46,7 @@ class UpdateChecker(
             .build()
     }
 
+    @SuppressLint("CheckResult")
     fun check() {
         Single.fromCallable { Settings.get() }
             .subscribeOn(Schedulers.io())
@@ -107,7 +109,7 @@ class UpdateChecker(
             val info = jsonAdapter.fromJson(json)
             return info != null && isUpdateAvailable(info)
         } catch (e: Exception) {
-            Log.w(e)
+            Logger.w(e)
         }
 
         return false

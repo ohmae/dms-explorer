@@ -17,8 +17,8 @@ import net.mm2d.dmsexplorer.log.EventLogger;
 import net.mm2d.dmsexplorer.settings.Settings;
 import net.mm2d.dmsexplorer.util.update.UpdateChecker;
 import net.mm2d.dmsexplorer.view.eventrouter.EventRouter;
-import net.mm2d.log.Log;
-import net.mm2d.log.android.AndroidLogInitializer;
+import net.mm2d.log.Logger;
+import net.mm2d.log.android.AndroidSenders;
 
 import androidx.annotation.NonNull;
 import androidx.multidex.MultiDexApplication;
@@ -35,8 +35,12 @@ public class App extends MultiDexApplication {
     @Override
     public void onCreate() {
         super.onCreate();
-        Log.setInitializer(AndroidLogInitializer.getSingleThread());
-        Log.initialize(BuildConfig.DEBUG, true);
+        if (BuildConfig.DEBUG) {
+            Logger.setLogLevel(Logger.VERBOSE);
+            Logger.setSender(AndroidSenders.create());
+            AndroidSenders.appendCaller(true);
+            AndroidSenders.appendThread(true);
+        }
         setStrictMode();
         RxJavaPlugins.setErrorHandler(this::logError);
         DebugData.initialize(this);
@@ -50,26 +54,17 @@ public class App extends MultiDexApplication {
 
     private void logError(@NonNull final Throwable e) {
         if (e instanceof UndeliverableException) {
-            Log.w(null, "UndeliverableException:", e.getCause());
+            Logger.w("UndeliverableException:", e.getCause());
         } else if (e instanceof OnErrorNotImplementedException) {
-            Log.w(null, "OnErrorNotImplementedException:", e.getCause());
+            Logger.w("OnErrorNotImplementedException:", e.getCause());
         } else {
-            Log.w(e);
+            Logger.w(e);
         }
     }
 
     private void setStrictMode() {
         if (BuildConfig.DEBUG) {
-            StrictMode.setThreadPolicy(new ThreadPolicy.Builder()
-                    .detectAll()
-                    .penaltyLog()
-                    .penaltyDropBox()
-                    .build());
-            StrictMode.setVmPolicy(new VmPolicy.Builder()
-                    .detectAll()
-                    .penaltyLog()
-                    .penaltyDropBox()
-                    .build());
+            StrictMode.enableDefaults();
         } else {
             StrictMode.setThreadPolicy(ThreadPolicy.LAX);
             StrictMode.setVmPolicy(VmPolicy.LAX);

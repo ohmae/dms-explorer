@@ -17,7 +17,7 @@ import android.os.PowerManager;
 
 import net.mm2d.dmsexplorer.domain.entity.ContentEntity;
 import net.mm2d.dmsexplorer.domain.model.control.MediaPlayerControl;
-import net.mm2d.log.Log;
+import net.mm2d.log.Logger;
 
 import java.io.IOException;
 
@@ -58,7 +58,7 @@ public class MusicPlayerModel extends MediaPlayerModel {
             mMediaPlayer.setDataSource(mContext, uri);
             mMediaPlayer.prepareAsync();
         } catch (final IOException e) {
-            Log.w(e);
+            Logger.w(e);
         }
     }
 

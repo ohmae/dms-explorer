@@ -96,7 +96,7 @@ public class AvControlPointManager {
         if (!mInitialized.get()) {
             throw new IllegalStateException("ControlPoint is not initialized");
         }
-        mControlPoint.addPinnedDevice(location);
+        mControlPoint.tryAddPinnedDevice(location);
     }
 
     /**

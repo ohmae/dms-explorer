@@ -25,7 +25,7 @@ import android.view.View;
 import net.mm2d.dmsexplorer.Const;
 import net.mm2d.dmsexplorer.R;
 import net.mm2d.dmsexplorer.viewmodel.ControlPanelModel;
-import net.mm2d.log.Log;
+import net.mm2d.log.Logger;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -116,7 +116,7 @@ class MovieActivityPipHelperOreo implements MovieActivityPipHelper {
         try {
             mActivity.enterPictureInPictureMode(builder.build());
         } catch (final Exception e) {
-            Log.w(e);
+            Logger.w(e);
         }
     }
 
