@@ -9,7 +9,6 @@ package net.mm2d.android.net
 
 import android.content.Context
 import android.net.ConnectivityManager
-import androidx.annotation.NonNull
 import net.mm2d.util.NetworkUtils
 import java.net.Inet4Address
 import java.net.NetworkInterface
@@ -39,12 +38,12 @@ internal class AndroidLan(context: Context) : Lan() {
                 || ni.type == ConnectivityManager.TYPE_ETHERNET)
     }
 
-    private fun isUsableInterface(@NonNull netIf: NetworkInterface): Boolean {
+    private fun isUsableInterface(netIf: NetworkInterface): Boolean {
         try {
             if (!netIf.isUp || !netIf.supportsMulticast() || netIf.isLoopback) {
                 return false
             }
-            return netIf.interfaceAddresses.find { it.address is Inet4Address } == null
+            return netIf.interfaceAddresses.any { it.address is Inet4Address }
         } catch (ignored: SocketException) {
         }
         return false
