@@ -40,7 +40,7 @@ abstract class Lan {
          */
         @JvmStatic
         fun createInstance(context: Context): Lan {
-            return if (RuntimeEnvironment.isEmulator())
+            return if (RuntimeEnvironment.isEmulator)
                 EmulatorLan()
             else
                 AndroidLan(context)
