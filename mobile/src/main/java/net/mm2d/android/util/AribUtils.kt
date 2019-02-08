@@ -87,10 +87,10 @@ object AribUtils {
      */
     @JvmStatic
     fun toDisplayableString(string: String): String {
-        val sb = StringBuilder()
-        string.toCharArray().forEach {
-            sb.append(array.get(it.toInt(), it.toString()))
-        }
-        return sb.toString()
+        return StringBuilder().also { sb ->
+            string.toCharArray().forEach {
+                sb.append(array.get(it.toInt(), it.toString()))
+            }
+        }.toString()
     }
 }
