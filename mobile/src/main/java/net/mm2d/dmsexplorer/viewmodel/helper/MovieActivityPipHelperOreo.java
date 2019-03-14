@@ -8,6 +8,7 @@
 package net.mm2d.dmsexplorer.viewmodel.helper;
 
 import android.app.Activity;
+import android.app.AppOpsManager;
 import android.app.PendingIntent;
 import android.app.PictureInPictureParams;
 import android.app.RemoteAction;
@@ -17,6 +18,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Rect;
 import android.graphics.drawable.Icon;
+import android.net.Uri;
 import android.os.Build;
 import android.text.TextUtils;
 import android.util.Rational;
@@ -42,6 +44,8 @@ import androidx.annotation.StringRes;
  */
 @RequiresApi(api = Build.VERSION_CODES.O)
 class MovieActivityPipHelperOreo implements MovieActivityPipHelper {
+    private static final String ACTION_PICTURE_IN_PICTURE_SETTINGS
+            = "android.settings.PICTURE_IN_PICTURE_SETTINGS";
     @NonNull
     private final Activity mActivity;
     @Nullable
@@ -103,6 +107,12 @@ class MovieActivityPipHelperOreo implements MovieActivityPipHelper {
 
     @Override
     public void enterPictureInPictureMode(@NonNull final View contentView) {
+        if (!isPictureInPictureAllowed()) {
+            final Intent intent = new Intent(ACTION_PICTURE_IN_PICTURE_SETTINGS);
+            intent.setData(Uri.parse("package:" + mActivity.getPackageName()));
+            mActivity.startActivity(intent);
+            return;
+        }
         final PictureInPictureParams.Builder builder = new PictureInPictureParams.Builder();
         final List<RemoteAction> actions = makeActions(mControlPanelModel.isPlaying());
         if (!actions.isEmpty()) {
@@ -117,6 +127,21 @@ class MovieActivityPipHelperOreo implements MovieActivityPipHelper {
             mActivity.enterPictureInPictureMode(builder.build());
         } catch (final Exception e) {
             Logger.w(e);
+        }
+    }
+
+    private boolean isPictureInPictureAllowed() {
+        final AppOpsManager appOps = (AppOpsManager) mActivity.getSystemService(Context.APP_OPS_SERVICE);
+        if (appOps == null) {
+            return false;
+        }
+        final int uid = android.os.Process.myUid();
+        final String packageName = mActivity.getPackageName();
+        try {
+            return appOps.checkOpNoThrow(AppOpsManager.OPSTR_PICTURE_IN_PICTURE, uid, packageName)
+                    == AppOpsManager.MODE_ALLOWED;
+        } catch (final Exception ignored) {
+            return false;
         }
     }
 
