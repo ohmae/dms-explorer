@@ -23,6 +23,7 @@ android {
         multiDexEnabled true
         vectorDrawables.useSupportLibrary = true
         buildConfigField "long", "BUILD_TIME", "${System.currentTimeMillis()}L"
+        archivesBaseName = "${applicationName}-${versionName}"
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
