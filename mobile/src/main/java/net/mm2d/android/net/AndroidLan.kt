@@ -9,6 +9,8 @@ package net.mm2d.android.net
 
 import android.content.Context
 import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
+import android.os.Build
 import net.mm2d.upnp.util.NetworkUtils
 import java.net.Inet4Address
 import java.net.NetworkInterface
@@ -32,6 +34,15 @@ internal class AndroidLan(context: Context) : Lan() {
     }
 
     override fun hasAvailableInterface(): Boolean {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            val network = connectivityManager.activeNetwork ?: return false
+            val capabilities = connectivityManager.getNetworkCapabilities(network) ?: return false
+            return capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) ||
+                    capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET) ||
+                    capabilities.hasTransport(NetworkCapabilities.TRANSPORT_VPN) ||
+                    (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O &&
+                            capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI_AWARE))
+        }
         val ni = connectivityManager.activeNetworkInfo ?: return false
         return ni.isConnected
                 && (ni.type == ConnectivityManager.TYPE_WIFI
