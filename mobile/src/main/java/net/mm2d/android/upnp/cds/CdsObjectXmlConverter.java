@@ -9,7 +9,7 @@ package net.mm2d.android.upnp.cds;
 
 import android.text.TextUtils;
 
-import net.mm2d.util.XmlUtils;
+import net.mm2d.upnp.util.XmlUtils;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;

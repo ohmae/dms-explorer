@@ -9,7 +9,7 @@ package net.mm2d.android.net
 
 import android.content.Context
 import android.net.ConnectivityManager
-import net.mm2d.util.NetworkUtils
+import net.mm2d.upnp.util.NetworkUtils
 import java.net.Inet4Address
 import java.net.NetworkInterface
 import java.net.SocketException

@@ -7,7 +7,7 @@
 
 package net.mm2d.android.net
 
-import net.mm2d.util.NetworkUtils
+import net.mm2d.upnp.util.NetworkUtils
 import java.net.NetworkInterface
 
 /**

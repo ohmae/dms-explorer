@@ -11,7 +11,7 @@ import android.text.TextUtils;
 
 import net.mm2d.android.upnp.cds.CdsObject;
 import net.mm2d.upnp.HttpClient;
-import net.mm2d.util.XmlUtils;
+import net.mm2d.upnp.util.XmlUtils;
 
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;

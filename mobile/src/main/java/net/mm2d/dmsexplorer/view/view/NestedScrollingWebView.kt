@@ -46,7 +46,7 @@ class NestedScrollingWebView
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
         behavior =
-                (layoutParams as? androidx.coordinatorlayout.widget.CoordinatorLayout.LayoutParams)?.behavior as? Behavior
+            (layoutParams as? androidx.coordinatorlayout.widget.CoordinatorLayout.LayoutParams)?.behavior as? Behavior
         val p = parent as? ViewGroup ?: return
         for (i in 0 until p.childCount) {
             val child = p.getChildAt(i)

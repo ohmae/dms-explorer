@@ -57,7 +57,8 @@ public enum RepeatMode {
             3,
             R.drawable.ic_repeat_one,
             R.string.toast_repeat_repeat_one
-    ),;
+    ),
+    ;
     private final int mOrder;
     private final int mIconId;
     private final int mMessageId;

@@ -43,7 +43,8 @@ public enum Orientation {
     REVERSE_LANDSCAPE(
             ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE,
             R.string.orientation_reverse_landscape
-    ),;
+    ),
+    ;
     private static final Map<String, Orientation> sMap = new ArrayMap<>(values().length);
 
     static {

@@ -15,7 +15,8 @@ public enum ContentType {
     MUSIC(true, true),
     PHOTO(true, false),
     CONTAINER(false, false),
-    UNKNOWN(false, false),;
+    UNKNOWN(false, false),
+    ;
     private final boolean mPlayable;
     private final boolean mHasDuration;
 

@@ -14,7 +14,7 @@ import net.mm2d.log.Logger;
 import net.mm2d.upnp.Action;
 import net.mm2d.upnp.Device;
 import net.mm2d.upnp.Service;
-import net.mm2d.util.TextParseUtils;
+import net.mm2d.upnp.util.TextParseUtils;
 
 import java.util.Collections;
 import java.util.List;
@@ -22,7 +22,6 @@ import java.util.Map;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import io.reactivex.Completable;
 import io.reactivex.Observable;
 import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.Single;
@@ -75,18 +74,14 @@ public class MediaServer extends DeviceWrapper {
      * CDSサービスを購読する。
      */
     public void subscribe() {
-        Completable.create(emitter -> mCdsService.subscribe(true))
-                .subscribeOn(Schedulers.io())
-                .subscribe();
+        mCdsService.subscribe(true, null);
     }
 
     /**
      * CDSサービスの購読を中止する。
      */
     public void unsubscribe() {
-        Completable.create(emitter -> mCdsService.unsubscribe())
-                .subscribeOn(Schedulers.io())
-                .subscribe();
+        mCdsService.unsubscribe(null);
     }
 
     public boolean hasDestroyObject() {
@@ -98,7 +93,7 @@ public class MediaServer extends DeviceWrapper {
             return Single.never();
         }
         return Single.create((SingleOnSubscribe<Integer>) emitter -> {
-            final Map<String, String> result = mDestroyObject.invoke(Collections.singletonMap(OBJECT_ID, objectId));
+            final Map<String, String> result = mDestroyObject.invokeSync(Collections.singletonMap(OBJECT_ID, objectId));
             final String errorDescription = result.get(Action.ERROR_DESCRIPTION_KEY);
             if (!TextUtils.isEmpty(errorDescription)) {
                 Logger.e(errorDescription);
@@ -180,7 +175,7 @@ public class MediaServer extends DeviceWrapper {
             while (!emitter.isDisposed()) {
                 argument.setStartIndex(start)
                         .setRequestCount(Math.min(request - start, REQUEST_MAX));
-                final BrowseResponse response = new BrowseResponse(mBrowse.invoke(argument.get()));
+                final BrowseResponse response = new BrowseResponse(mBrowse.invokeSync(argument.get()));
                 final int number = response.getNumberReturned();
                 final int total = response.getTotalMatches();
                 if (number == 0 || total == 0) {
@@ -233,7 +228,7 @@ public class MediaServer extends DeviceWrapper {
                 .setStartIndex(0)
                 .setRequestCount(0);
         return Single.create((SingleOnSubscribe<CdsObject>) emitter -> {
-            final BrowseResponse response = new BrowseResponse(mBrowse.invoke(argument.get()));
+            final BrowseResponse response = new BrowseResponse(mBrowse.invokeSync(argument.get()));
             final CdsObject result = CdsObjectFactory.parseMetadata(getUdn(), response.getResult());
             if (result == null || response.getNumberReturned() < 0 || response.getTotalMatches() < 0) {
                 emitter.onError(new IllegalStateException());

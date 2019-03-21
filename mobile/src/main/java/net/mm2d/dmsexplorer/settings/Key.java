@@ -150,7 +150,8 @@ public enum Key {
     @Deprecated
     LAUNCH_APP_PHOTO,
     @Deprecated
-    MUSIC_AUTO_PLAY,;
+    MUSIC_AUTO_PLAY,
+    ;
 
     @Nullable
     private final Class<?> mType;

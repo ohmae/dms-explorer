@@ -28,7 +28,6 @@ import java.util.concurrent.TimeUnit;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import io.reactivex.Completable;
 import io.reactivex.Single;
 import io.reactivex.SingleOnSubscribe;
 import io.reactivex.schedulers.Schedulers;
@@ -160,18 +159,14 @@ public class MediaRenderer extends DeviceWrapper {
      * AVTransportサービスを購読する。
      */
     public void subscribe() {
-        Completable.create(emitter -> mAvTransport.subscribe(true))
-                .subscribeOn(Schedulers.io())
-                .subscribe();
+        mAvTransport.subscribe(true, null);
     }
 
     /**
      * AVTransportサービスの購読を中止する。
      */
     public void unsubscribe() {
-        Completable.create(emitter -> mAvTransport.unsubscribe())
-                .subscribeOn(Schedulers.io())
-                .subscribe();
+        mAvTransport.unsubscribe(null);
     }
 
     @NonNull
@@ -257,7 +252,7 @@ public class MediaRenderer extends DeviceWrapper {
             @NonNull final Map<String, String> argument) {
         return Single.create((SingleOnSubscribe<Map<String, String>>) emitter -> {
             try {
-                final Map<String, String> result = action.invoke(argument);
+                final Map<String, String> result = action.invokeSync(argument);
                 emitter.onSuccess(result);
             } catch (final IOException e) {
                 emitter.onError(e);
