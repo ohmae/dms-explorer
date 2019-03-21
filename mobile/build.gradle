@@ -78,8 +78,8 @@ dependencies {
     implementation 'androidx.multidex:multidex:2.0.1'
     implementation 'androidx.core:core-ktx:1.0.1'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    implementation 'net.mm2d:log:0.2.0'
-    implementation 'net.mm2d:log-android:0.2.0'
+    implementation 'net.mm2d:log:0.3.0'
+    implementation 'net.mm2d:log-android:0.3.0'
     implementation 'net.mm2d:mmupnp:2.0.0-alpha11'
     implementation 'net.mm2d:preference:0.1.0'
     implementation 'net.opacapp:multiline-collapsingtoolbar:27.1.1'
