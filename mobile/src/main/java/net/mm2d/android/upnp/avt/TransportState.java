@@ -7,10 +7,10 @@
 
 package net.mm2d.android.upnp.avt;
 
-import android.support.annotation.NonNull;
-import android.support.v4.util.ArrayMap;
-
 import java.util.Map;
+
+import androidx.annotation.NonNull;
+import androidx.collection.ArrayMap;
 
 /**
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>

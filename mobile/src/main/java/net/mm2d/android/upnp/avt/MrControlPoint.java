@@ -7,9 +7,6 @@
 
 package net.mm2d.android.upnp.avt;
 
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-
 import net.mm2d.android.upnp.ControlPointWrapper;
 import net.mm2d.upnp.ControlPoint;
 import net.mm2d.upnp.ControlPoint.DiscoveryListener;
@@ -23,6 +20,9 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 /**
  * MediaRenderer用のControlPointインターフェース

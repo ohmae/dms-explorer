@@ -7,12 +7,12 @@
 
 package net.mm2d.android.upnp;
 
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-
 import net.mm2d.upnp.ControlPoint;
 
 import java.util.List;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 /**
  * 特定のDeviceTypeに特化したControlPointに共通で保持させるインターフェース。

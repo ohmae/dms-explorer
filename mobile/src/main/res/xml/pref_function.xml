@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    >
 
     <PreferenceCategory
         android:title="@string/pref_category_link"
@@ -9,9 +12,10 @@
         <SwitchPreferenceCompat
             android:defaultValue="true"
             android:key="USE_CUSTOM_TABS"
-            android:title="@string/pref_title_open_url"
-            android:summaryOn="@string/pref_message_open_url_on"
             android:summaryOff="@string/pref_message_open_url_off"
+            android:summaryOn="@string/pref_message_open_url_on"
+            android:title="@string/pref_title_open_url"
+            app:iconSpaceReserved="false"
             />
     </PreferenceCategory>
 
@@ -23,18 +27,20 @@
         <SwitchPreferenceCompat
             android:defaultValue="true"
             android:key="SHOULD_SHOW_DEVICE_DETAIL_ON_TAP"
-            android:title="@string/pref_title_device_detail_on_tap"
-            android:summaryOn="@string/pref_message_device_detail_on_tap_on"
             android:summaryOff="@string/pref_message_device_detail_on_tap_off"
+            android:summaryOn="@string/pref_message_device_detail_on_tap_on"
+            android:title="@string/pref_title_device_detail_on_tap"
+            app:iconSpaceReserved="false"
             />
 
         <!--suppress AndroidElementNotAllowed -->
         <SwitchPreferenceCompat
             android:defaultValue="true"
             android:key="SHOULD_SHOW_CONTENT_DETAIL_ON_TAP"
-            android:title="@string/pref_title_content_detail_on_tap"
-            android:summaryOn="@string/pref_message_content_detail_on_tap_on"
             android:summaryOff="@string/pref_message_content_detail_on_tap_off"
+            android:summaryOn="@string/pref_message_content_detail_on_tap_on"
+            android:title="@string/pref_title_content_detail_on_tap"
+            app:iconSpaceReserved="false"
             />
     </PreferenceCategory>
 
@@ -45,9 +51,10 @@
         <SwitchPreferenceCompat
             android:defaultValue="false"
             android:key="DELETE_FUNCTION_ENABLED"
-            android:title="@string/pref_title_delete"
-            android:summaryOn="@string/pref_message_delete_on"
             android:summaryOff="@string/pref_message_delete_off"
+            android:summaryOn="@string/pref_message_delete_on"
+            android:title="@string/pref_title_delete"
+            app:iconSpaceReserved="false"
             />
     </PreferenceCategory>
 </PreferenceScreen>

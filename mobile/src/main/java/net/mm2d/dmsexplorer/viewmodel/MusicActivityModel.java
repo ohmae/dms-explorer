@@ -7,13 +7,7 @@
 
 package net.mm2d.dmsexplorer.viewmodel;
 
-import android.databinding.BaseObservable;
-import android.databinding.Bindable;
 import android.net.Uri;
-import android.support.annotation.DrawableRes;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.ActivityCompat;
 import android.widget.Toast;
 
 import net.mm2d.android.util.AribUtils;
@@ -35,6 +29,12 @@ import net.mm2d.dmsexplorer.viewmodel.ControlPanelModel.OnCompletionListener;
 import net.mm2d.dmsexplorer.viewmodel.ControlPanelModel.SkipControlListener;
 import net.mm2d.dmsexplorer.viewmodel.helper.MuteAlertHelper;
 
+import androidx.annotation.DrawableRes;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
+import androidx.databinding.BaseObservable;
+import androidx.databinding.Bindable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 

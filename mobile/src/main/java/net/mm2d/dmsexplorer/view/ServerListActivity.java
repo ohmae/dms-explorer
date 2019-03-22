@@ -11,9 +11,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.content.ContextCompat;
 
 import net.mm2d.dmsexplorer.R;
 import net.mm2d.dmsexplorer.Repository;
@@ -22,6 +19,10 @@ import net.mm2d.dmsexplorer.settings.Settings;
 import net.mm2d.dmsexplorer.util.AttrUtils;
 import net.mm2d.dmsexplorer.view.base.BaseActivity;
 import net.mm2d.dmsexplorer.view.delegate.ServerListActivityDelegate;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 
 /**
  * MediaServerのサーチ、選択を行うActivity。

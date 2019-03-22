@@ -10,12 +10,8 @@ package net.mm2d.dmsexplorer.view;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
-import android.databinding.DataBindingUtil;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
 import android.transition.Transition;
 import android.view.View;
 import android.view.ViewAnimationUtils;
@@ -28,6 +24,11 @@ import net.mm2d.dmsexplorer.databinding.ServerDetailFragmentBinding;
 import net.mm2d.dmsexplorer.settings.Settings;
 import net.mm2d.dmsexplorer.view.base.BaseActivity;
 import net.mm2d.dmsexplorer.viewmodel.ServerDetailFragmentModel;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
+import androidx.databinding.DataBindingUtil;
 
 
 /**

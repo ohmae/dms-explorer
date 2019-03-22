@@ -7,13 +7,11 @@
 
 package net.mm2d.android.upnp.cds.chapter;
 
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
 import net.mm2d.android.upnp.cds.CdsObject;
 import net.mm2d.upnp.HttpClient;
-import net.mm2d.util.XmlUtils;
+import net.mm2d.upnp.util.XmlUtils;
 
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -28,6 +26,8 @@ import java.util.concurrent.TimeUnit;
 
 import javax.xml.parsers.ParserConfigurationException;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import io.reactivex.Single;
 import io.reactivex.SingleOnSubscribe;
 import io.reactivex.schedulers.Schedulers;

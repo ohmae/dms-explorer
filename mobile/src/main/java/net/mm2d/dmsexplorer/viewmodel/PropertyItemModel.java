@@ -7,12 +7,13 @@
 
 package net.mm2d.dmsexplorer.viewmodel;
 
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.View.OnClickListener;
 
 import net.mm2d.dmsexplorer.view.adapter.PropertyAdapter.Type;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 /**
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>

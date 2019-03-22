@@ -11,15 +11,13 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Looper;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
 import net.mm2d.dmsexplorer.BuildConfig;
 import net.mm2d.dmsexplorer.domain.entity.ContentType;
 import net.mm2d.dmsexplorer.settings.theme.Theme;
 import net.mm2d.dmsexplorer.settings.theme.ThemeParams;
-import net.mm2d.log.Log;
+import net.mm2d.log.Logger;
 
 import java.util.Arrays;
 import java.util.List;
@@ -28,6 +26,8 @@ import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import io.reactivex.Completable;
 import io.reactivex.schedulers.Schedulers;
 
@@ -51,14 +51,14 @@ public class Settings {
         try {
             while (sSettings == null) {
                 if (BuildConfig.DEBUG && Thread.currentThread() == sMainThread) {
-                    Log.e(null, "!!!!!!!!!! BLOCK !!!!!!!!!!", new Throwable());
+                    Logger.e("!!!!!!!!!! BLOCK !!!!!!!!!!");
                 }
                 try {
                     if (!sCondition.await(1, TimeUnit.SECONDS)) {
                         throw new IllegalStateException("Settings initialization timeout");
                     }
                 } catch (InterruptedException e) {
-                    Log.w(e);
+                    Logger.w(e);
                 }
             }
             return sSettings;

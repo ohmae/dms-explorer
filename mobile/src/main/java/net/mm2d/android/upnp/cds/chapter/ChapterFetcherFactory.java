@@ -7,12 +7,11 @@
 
 package net.mm2d.android.upnp.cds.chapter;
 
-import android.support.annotation.NonNull;
-
 import net.mm2d.android.upnp.cds.CdsObject;
 
 import java.util.List;
 
+import androidx.annotation.NonNull;
 import io.reactivex.Single;
 
 /**

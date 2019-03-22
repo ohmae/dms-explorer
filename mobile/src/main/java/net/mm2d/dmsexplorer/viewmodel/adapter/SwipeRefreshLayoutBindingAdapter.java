@@ -7,10 +7,10 @@
 
 package net.mm2d.dmsexplorer.viewmodel.adapter;
 
-import android.databinding.BindingAdapter;
-import android.support.annotation.ColorRes;
-import android.support.annotation.NonNull;
-import android.support.v4.widget.SwipeRefreshLayout;
+import androidx.annotation.ColorRes;
+import androidx.annotation.NonNull;
+import androidx.databinding.BindingAdapter;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 /**
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>

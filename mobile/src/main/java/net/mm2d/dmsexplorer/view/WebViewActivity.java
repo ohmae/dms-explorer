@@ -10,18 +10,17 @@ package net.mm2d.dmsexplorer.view;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-import android.databinding.DataBindingUtil;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.ActionBar;
+import android.view.MotionEvent;
 import android.view.View;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+
+import com.google.android.material.appbar.AppBarLayout;
 
 import net.mm2d.dmsexplorer.R;
 import net.mm2d.dmsexplorer.Repository;
@@ -29,6 +28,11 @@ import net.mm2d.dmsexplorer.databinding.WebViewActivityBinding;
 import net.mm2d.dmsexplorer.settings.Settings;
 import net.mm2d.dmsexplorer.util.AttrUtils;
 import net.mm2d.dmsexplorer.view.base.BaseActivity;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
+import androidx.core.content.ContextCompat;
+import androidx.databinding.DataBindingUtil;
 
 /**
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
@@ -54,7 +58,7 @@ public class WebViewActivity extends BaseActivity {
         context.startActivity(makeIntent(context, title, url));
     }
 
-    @SuppressLint("SetJavaScriptEnabled")
+    @SuppressLint({"SetJavaScriptEnabled", "ClickableViewAccessibility"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setTheme(Settings.get().getThemeParams().getNoActionBarThemeId());
@@ -113,5 +117,15 @@ public class WebViewActivity extends BaseActivity {
             }
         });
         webView.loadUrl(intent.getStringExtra(KEY_URL));
+        webView.setOnTouchListener((v, event) -> {
+            if (event.getAction() == MotionEvent.ACTION_UP) {
+                settleAppBar(binding.appBar);
+            }
+            return false;
+        });
+    }
+
+    private void settleAppBar(@NonNull final AppBarLayout appBar) {
+        appBar.setExpanded(appBar.getHeight() / 2f + appBar.getY() > 0f);
     }
 }

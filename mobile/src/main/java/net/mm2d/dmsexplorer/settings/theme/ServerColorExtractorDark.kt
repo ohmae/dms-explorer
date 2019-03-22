@@ -8,7 +8,6 @@
 package net.mm2d.dmsexplorer.settings.theme
 
 import android.graphics.Bitmap
-import android.support.v7.graphics.Palette
 import net.mm2d.android.upnp.cds.MediaServer
 import net.mm2d.dmsexplorer.Const
 import net.mm2d.dmsexplorer.util.ColorUtils
@@ -31,17 +30,20 @@ internal class ServerColorExtractorDark : ServerColorExtractor {
         if (icon == null) {
             extractFromPalette(server, null)
         } else {
-            Palette.Builder(icon)
-                    .generate { palette -> extractFromPalette(server, palette) }
+            androidx.palette.graphics.Palette.Builder(icon)
+                .generate { palette -> extractFromPalette(server, palette) }
         }
     }
 
     private fun extract(server: MediaServer, icon: Bitmap?) {
-        val palette = icon?.let { Palette.Builder(it).generate() }
+        val palette = icon?.let { androidx.palette.graphics.Palette.Builder(it).generate() }
         extractFromPalette(server, palette)
     }
 
-    private fun extractFromPalette(server: MediaServer, palette: Palette?) {
+    private fun extractFromPalette(
+        server: MediaServer,
+        palette: androidx.palette.graphics.Palette?
+    ) {
         val friendlyName = server.friendlyName
         var expandedColor = GENERATOR.getExpandedToolbarColor(friendlyName)
         var collapsedColor = GENERATOR.getControlColor(friendlyName)

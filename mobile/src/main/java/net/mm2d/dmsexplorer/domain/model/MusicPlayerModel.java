@@ -14,14 +14,15 @@ import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Build;
 import android.os.PowerManager;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 
 import net.mm2d.dmsexplorer.domain.entity.ContentEntity;
 import net.mm2d.dmsexplorer.domain.model.control.MediaPlayerControl;
-import net.mm2d.log.Log;
+import net.mm2d.log.Logger;
 
 import java.io.IOException;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 /**
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
@@ -57,7 +58,7 @@ public class MusicPlayerModel extends MediaPlayerModel {
             mMediaPlayer.setDataSource(mContext, uri);
             mMediaPlayer.prepareAsync();
         } catch (final IOException e) {
-            Log.w(e);
+            Logger.w(e);
         }
     }
 

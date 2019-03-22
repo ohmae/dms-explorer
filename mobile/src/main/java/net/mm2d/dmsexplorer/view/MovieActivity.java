@@ -9,7 +9,6 @@ package net.mm2d.dmsexplorer.view;
 
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
@@ -26,6 +25,8 @@ import net.mm2d.dmsexplorer.viewmodel.MovieActivityModel;
 import net.mm2d.dmsexplorer.viewmodel.MovieActivityModel.OnChangeContentListener;
 
 import java.util.concurrent.TimeUnit;
+
+import androidx.databinding.DataBindingUtil;
 
 /**
  * 動画再生のActivity。

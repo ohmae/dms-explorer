@@ -8,9 +8,8 @@
 package net.mm2d.dmsexplorer.log
 
 import android.os.Bundle
-import android.support.annotation.Size
-
-import net.mm2d.log.Log
+import androidx.annotation.Size
+import net.mm2d.log.Logger
 
 /**
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
@@ -18,9 +17,10 @@ import net.mm2d.log.Log
 internal class DebugSender : Sender {
 
     override fun logEvent(
-            @Size(min = 1L, max = 40L) name: String,
-            params: Bundle?) {
-        Log.i("\nname: " + name + "\nparams: " + dumpBundle(params))
+        @Size(min = 1L, max = 40L) name: String,
+        params: Bundle?
+    ) {
+        Logger.i("\nname: " + name + "\nparams: " + dumpBundle(params))
     }
 
     private fun dumpBundle(params: Bundle?): String {

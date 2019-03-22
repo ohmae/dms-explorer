@@ -8,17 +8,9 @@
 package net.mm2d.dmsexplorer.viewmodel;
 
 import android.app.Activity;
-import android.databinding.BaseObservable;
-import android.databinding.Bindable;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.net.Uri;
-import android.support.annotation.ColorInt;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.content.ContextCompat;
-
-import com.android.databinding.library.baseAdapters.BR;
 
 import net.mm2d.android.util.AribUtils;
 import net.mm2d.android.util.DisplaySizeUtils;
@@ -30,6 +22,13 @@ import net.mm2d.dmsexplorer.settings.Settings;
 import net.mm2d.dmsexplorer.util.Downloader;
 import net.mm2d.dmsexplorer.view.base.BaseActivity;
 
+import androidx.annotation.ColorInt;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
+import androidx.databinding.BaseObservable;
+import androidx.databinding.Bindable;
+import androidx.databinding.library.baseAdapters.BR;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 

@@ -7,9 +7,9 @@
 
 package net.mm2d.dmsexplorer.util
 
-import android.support.annotation.Px
 import android.view.View
 import android.view.ViewGroup.MarginLayoutParams
+import androidx.annotation.Px
 
 /**
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
@@ -28,10 +28,11 @@ object ViewLayoutUtils {
     }
 
     private fun View.updatePadding(
-            @Px left: Int = paddingLeft,
-            @Px top: Int = paddingTop,
-            @Px right: Int = paddingRight,
-            @Px bottom: Int = paddingBottom) {
+        @Px left: Int = paddingLeft,
+        @Px top: Int = paddingTop,
+        @Px right: Int = paddingRight,
+        @Px bottom: Int = paddingBottom
+    ) {
         setPadding(left, top, right, bottom)
     }
 }

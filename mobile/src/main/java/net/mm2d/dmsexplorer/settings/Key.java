@@ -7,8 +7,8 @@
 
 package net.mm2d.dmsexplorer.settings;
 
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 /**
  * SharedPreferences用のKeyの定義。
@@ -150,7 +150,8 @@ public enum Key {
     @Deprecated
     LAUNCH_APP_PHOTO,
     @Deprecated
-    MUSIC_AUTO_PLAY,;
+    MUSIC_AUTO_PLAY,
+    ;
 
     @Nullable
     private final Class<?> mType;

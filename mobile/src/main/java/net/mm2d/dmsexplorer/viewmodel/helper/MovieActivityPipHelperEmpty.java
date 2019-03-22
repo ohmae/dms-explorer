@@ -7,11 +7,12 @@
 
 package net.mm2d.dmsexplorer.viewmodel.helper;
 
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.view.View;
 
 import net.mm2d.dmsexplorer.viewmodel.ControlPanelModel;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 /**
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>

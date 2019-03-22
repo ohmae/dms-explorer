@@ -56,7 +56,7 @@
     <string name="pref_header_function">機能</string>
     <string name="pref_category_link">リンク</string>
     <string name="pref_title_open_url">リンクを開く動作</string>
-    <string name="pref_message_open_url_on">Chrome custom tabsを使用します</string>
+    <string name="pref_message_open_url_on">Custom Tabsを使用します</string>
     <string name="pref_message_open_url_off">ブラウザアプリを起動します</string>
     <string name="pref_category_tap_and_long_tap_operation">タップとロングタップの動作</string>
     <string name="pref_title_device_detail_on_tap">機器選択</string>
@@ -123,7 +123,8 @@
     <string name="pref_title_copyright">作者</string>
     <string name="pref_message_copyright">© 2016 大前良介 (OHMAE Ryosuke)</string>
     <string name="pref_title_version_number">バージョン</string>
-    <string name="pref_title_license">オープンソース ライセンス</string>
+    <string name="pref_title_license">オープンソースライセンス</string>
+    <string name="pref_message_license">本アプリで利用しているOSSのライセンスを表示します</string>
     <string name="pref_title_source_code">ソースコード</string>
     <string name="pref_message_source_code">本アプリのソースコードはMITライセンスで公開しています</string>
     <string name="repeat_introduction_title">連続再生設定</string>

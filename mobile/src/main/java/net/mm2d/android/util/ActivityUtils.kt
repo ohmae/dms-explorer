@@ -8,8 +8,8 @@
 package net.mm2d.android.util
 
 import android.os.Bundle
-import android.support.v4.app.ActivityOptionsCompat
 import android.view.View
+import androidx.core.app.ActivityOptionsCompat
 
 /**
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
@@ -18,7 +18,7 @@ object ActivityUtils {
     @JvmStatic
     fun makeScaleUpAnimationBundle(v: View): Bundle? {
         return ActivityOptionsCompat
-                .makeScaleUpAnimation(v, 0, 0, v.width, v.height)
-                .toBundle()
+            .makeScaleUpAnimation(v, 0, 0, v.width, v.height)
+            .toBundle()
     }
 }

@@ -8,19 +8,9 @@
 package net.mm2d.dmsexplorer.viewmodel;
 
 import android.content.Context;
-import android.databinding.BaseObservable;
-import android.databinding.Bindable;
-import android.databinding.DataBindingUtil;
 import android.graphics.Color;
 import android.os.Handler;
 import android.os.Looper;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView.Adapter;
-import android.support.v7.widget.RecyclerView.ItemAnimator;
-import android.support.v7.widget.RecyclerView.LayoutManager;
 import android.view.View;
 
 import net.mm2d.android.upnp.cds.MediaServer;
@@ -35,6 +25,17 @@ import net.mm2d.dmsexplorer.util.AttrUtils;
 import net.mm2d.dmsexplorer.util.FeatureUtils;
 import net.mm2d.dmsexplorer.view.adapter.ServerListAdapter;
 import net.mm2d.dmsexplorer.view.animator.CustomItemAnimator;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.databinding.BaseObservable;
+import androidx.databinding.Bindable;
+import androidx.databinding.DataBindingUtil;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView.Adapter;
+import androidx.recyclerview.widget.RecyclerView.ItemAnimator;
+import androidx.recyclerview.widget.RecyclerView.LayoutManager;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout.OnRefreshListener;
 
 /**
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>

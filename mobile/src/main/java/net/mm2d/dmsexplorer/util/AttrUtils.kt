@@ -8,9 +8,9 @@
 package net.mm2d.dmsexplorer.util
 
 import android.content.Context
-import android.support.annotation.AttrRes
-import android.support.annotation.ColorInt
-import android.support.annotation.StyleRes
+import androidx.annotation.AttrRes
+import androidx.annotation.ColorInt
+import androidx.annotation.StyleRes
 
 /**
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)

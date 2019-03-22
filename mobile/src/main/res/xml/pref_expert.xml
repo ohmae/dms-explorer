@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    >
 
     <PreferenceCategory
         android:title="@string/pref_title_for_expert"
@@ -7,6 +10,7 @@
         <Preference
             android:selectable="false"
             android:summary="@string/pref_message_for_expert"
+            app:iconSpaceReserved="false"
             />
     </PreferenceCategory>
 
@@ -18,24 +22,28 @@
             android:key="DO_NOT_SHOW_MOVIE_UI_ON_START"
             android:summary="@string/pref_message_movie_ui_do_not_show_on_start"
             android:title="@string/pref_title_movie_ui_do_not_show_on_start"
+            app:iconSpaceReserved="false"
             />
         <SwitchPreferenceCompat
             android:defaultValue="false"
             android:key="DO_NOT_SHOW_MOVIE_UI_ON_TOUCH"
             android:summary="@string/pref_message_movie_ui_do_not_show_on_touch"
             android:title="@string/pref_title_movie_ui_do_not_show_on_touch"
+            app:iconSpaceReserved="false"
             />
         <SwitchPreferenceCompat
             android:defaultValue="false"
             android:key="DO_NOT_SHOW_TITLE_IN_MOVIE_UI"
             android:summary="@string/pref_message_movie_ui_do_not_show_title"
             android:title="@string/pref_title_movie_ui_do_not_show_title"
+            app:iconSpaceReserved="false"
             />
         <SwitchPreferenceCompat
             android:defaultValue="false"
             android:key="IS_MOVIE_UI_BACKGROUND_TRANSPARENT"
             android:summary="@string/pref_message_movie_ui_transparent"
             android:title="@string/pref_title_movie_ui_transparent"
+            app:iconSpaceReserved="false"
             />
     </PreferenceCategory>
 
@@ -47,24 +55,28 @@
             android:key="DO_NOT_SHOW_PHOTO_UI_ON_START"
             android:summary="@string/pref_message_photo_ui_do_not_show_on_start"
             android:title="@string/pref_title_photo_ui_do_not_show_on_start"
+            app:iconSpaceReserved="false"
             />
         <SwitchPreferenceCompat
             android:defaultValue="false"
             android:key="DO_NOT_SHOW_PHOTO_UI_ON_TOUCH"
             android:summary="@string/pref_message_photo_ui_do_not_show_on_touch"
             android:title="@string/pref_title_photo_ui_do_not_show_on_touch"
+            app:iconSpaceReserved="false"
             />
         <SwitchPreferenceCompat
             android:defaultValue="false"
             android:key="DO_NOT_SHOW_TITLE_IN_PHOTO_UI"
             android:summary="@string/pref_message_photo_ui_do_not_show_title"
             android:title="@string/pref_title_photo_ui_do_not_show_title"
+            app:iconSpaceReserved="false"
             />
         <SwitchPreferenceCompat
             android:defaultValue="false"
             android:key="IS_PHOTO_UI_BACKGROUND_TRANSPARENT"
             android:summary="@string/pref_message_photo_ui_transparent"
             android:title="@string/pref_title_photo_ui_transparent"
+            app:iconSpaceReserved="false"
             />
     </PreferenceCategory>
     <PreferenceCategory
@@ -74,12 +86,14 @@
             android:selectable="false"
             android:summary="@string/pref_message_category_orientation"
             android:title="@string/pref_title_category_orientation"
+            app:iconSpaceReserved="false"
             />
         <ListPreference
             android:entries="@array/orientation_entries"
             android:entryValues="@array/orientation_values"
             android:key="ORIENTATION_COLLECTIVE"
             android:title="@string/pref_title_orientation_collective"
+            app:iconSpaceReserved="false"
             />
         <ListPreference
             android:defaultValue="UNSPECIFIED"
@@ -87,6 +101,7 @@
             android:entryValues="@array/orientation_values"
             android:key="ORIENTATION_BROWSE"
             android:title="@string/pref_title_orientation_browse"
+            app:iconSpaceReserved="false"
             />
         <ListPreference
             android:defaultValue="UNSPECIFIED"
@@ -94,6 +109,7 @@
             android:entryValues="@array/orientation_values"
             android:key="ORIENTATION_MOVIE"
             android:title="@string/pref_title_orientation_movie"
+            app:iconSpaceReserved="false"
             />
         <ListPreference
             android:defaultValue="UNSPECIFIED"
@@ -101,6 +117,7 @@
             android:entryValues="@array/orientation_values"
             android:key="ORIENTATION_MUSIC"
             android:title="@string/pref_title_orientation_music"
+            app:iconSpaceReserved="false"
             />
         <ListPreference
             android:defaultValue="UNSPECIFIED"
@@ -108,6 +125,7 @@
             android:entryValues="@array/orientation_values"
             android:key="ORIENTATION_PHOTO"
             android:title="@string/pref_title_orientation_photo"
+            app:iconSpaceReserved="false"
             />
         <ListPreference
             android:defaultValue="UNSPECIFIED"
@@ -115,6 +133,7 @@
             android:entryValues="@array/orientation_values"
             android:key="ORIENTATION_DMC"
             android:title="@string/pref_title_orientation_dmc"
+            app:iconSpaceReserved="false"
             />
     </PreferenceCategory>
 

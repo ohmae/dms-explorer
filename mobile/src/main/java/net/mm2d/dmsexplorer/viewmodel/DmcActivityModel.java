@@ -8,14 +8,9 @@
 package net.mm2d.dmsexplorer.viewmodel;
 
 import android.app.Activity;
-import android.databinding.BaseObservable;
-import android.databinding.Bindable;
 import android.net.Uri;
 import android.os.Handler;
 import android.os.Looper;
-import android.support.annotation.DrawableRes;
-import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
 
 import net.mm2d.android.util.AribUtils;
 import net.mm2d.android.util.Toaster;
@@ -35,6 +30,12 @@ import net.mm2d.dmsexplorer.view.view.ScrubBar.ScrubBarListener;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
+
+import androidx.annotation.DrawableRes;
+import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
+import androidx.databinding.BaseObservable;
+import androidx.databinding.Bindable;
 
 /**
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>

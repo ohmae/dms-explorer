@@ -1,11 +1,10 @@
 package net.mm2d.dmsexplorer.debug;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
 
 import net.mm2d.android.util.RuntimeEnvironment;
 import net.mm2d.dmsexplorer.BuildConfig;
-import net.mm2d.log.Log;
+import net.mm2d.log.Logger;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -17,6 +16,7 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
+import androidx.annotation.NonNull;
 import okio.Okio;
 
 /**
@@ -37,7 +37,7 @@ public class DebugData {
             for (final Iterator<String> i = object.keys(); i.hasNext(); ) {
                 list.add(object.getString(i.next()));
             }
-            Log.e(list.toString());
+            Logger.e(list::toString);
             sPinnedDeviceLocationList = list;
         } catch (final IOException ignored) {
         } catch (final JSONException ignored) {

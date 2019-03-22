@@ -7,11 +7,12 @@
 
 package net.mm2d.dmsexplorer.viewmodel.adapter;
 
-import android.databinding.BindingAdapter;
-import android.support.annotation.NonNull;
 import android.view.View;
 
 import net.mm2d.dmsexplorer.util.ViewLayoutUtils;
+
+import androidx.annotation.NonNull;
+import androidx.databinding.BindingAdapter;
 
 /**
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>

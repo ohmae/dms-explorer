@@ -8,13 +8,14 @@
 package net.mm2d.android.upnp;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 
 import net.mm2d.upnp.Device;
 import net.mm2d.upnp.Icon;
 
 import java.util.List;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 /**
  * 特定のDeviceTypeへのインターフェースを備えるDeviceWrapperの共通の親。

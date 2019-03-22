@@ -8,21 +8,11 @@
 package net.mm2d.dmsexplorer.viewmodel;
 
 import android.app.Activity;
-import android.databinding.BaseObservable;
-import android.databinding.Bindable;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.net.Uri;
-import android.support.annotation.ColorInt;
-import android.support.annotation.DrawableRes;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.widget.Toast;
 import android.widget.VideoView;
-
-import com.android.databinding.library.baseAdapters.BR;
 
 import net.mm2d.android.util.AribUtils;
 import net.mm2d.android.util.DisplaySizeUtils;
@@ -42,6 +32,16 @@ import net.mm2d.dmsexplorer.viewmodel.ControlPanelModel.SkipControlListener;
 import net.mm2d.dmsexplorer.viewmodel.helper.MovieActivityPipHelper;
 import net.mm2d.dmsexplorer.viewmodel.helper.MuteAlertHelper;
 import net.mm2d.dmsexplorer.viewmodel.helper.PipHelpers;
+
+import androidx.annotation.ColorInt;
+import androidx.annotation.DrawableRes;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.databinding.BaseObservable;
+import androidx.databinding.Bindable;
+import androidx.databinding.library.baseAdapters.BR;
 
 /**
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>

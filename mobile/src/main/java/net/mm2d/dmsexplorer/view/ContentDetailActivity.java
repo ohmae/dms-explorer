@@ -9,10 +9,7 @@ package net.mm2d.dmsexplorer.view;
 
 import android.content.Context;
 import android.content.Intent;
-import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 
 import net.mm2d.dmsexplorer.R;
 import net.mm2d.dmsexplorer.Repository;
@@ -23,6 +20,10 @@ import net.mm2d.dmsexplorer.settings.Settings;
 import net.mm2d.dmsexplorer.view.base.BaseActivity;
 import net.mm2d.dmsexplorer.view.dialog.DeleteDialog.OnDeleteListener;
 import net.mm2d.dmsexplorer.viewmodel.ContentDetailFragmentModel;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.databinding.DataBindingUtil;
 
 /**
  * CDSアイテムの詳細情報を表示するActivity。

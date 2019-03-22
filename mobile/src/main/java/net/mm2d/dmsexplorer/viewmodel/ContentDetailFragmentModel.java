@@ -7,13 +7,10 @@
 
 package net.mm2d.dmsexplorer.viewmodel;
 
-import android.databinding.BaseObservable;
-import android.databinding.Bindable;
 import android.graphics.Color;
-import android.support.annotation.NonNull;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.FragmentActivity;
 import android.view.View;
+
+import com.google.android.material.snackbar.Snackbar;
 
 import net.mm2d.android.upnp.avt.MediaRenderer;
 import net.mm2d.android.upnp.avt.MrControlPoint;
@@ -30,6 +27,11 @@ import net.mm2d.dmsexplorer.util.AttrUtils;
 import net.mm2d.dmsexplorer.util.ItemSelectUtils;
 import net.mm2d.dmsexplorer.view.adapter.PropertyAdapter;
 import net.mm2d.dmsexplorer.view.dialog.DeleteDialog;
+
+import androidx.annotation.NonNull;
+import androidx.databinding.BaseObservable;
+import androidx.databinding.Bindable;
+import androidx.fragment.app.FragmentActivity;
 
 /**
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>

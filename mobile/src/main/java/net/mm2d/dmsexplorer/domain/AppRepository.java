@@ -9,8 +9,6 @@ package net.mm2d.dmsexplorer.domain;
 
 import android.app.Application;
 import android.content.Context;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 
 import net.mm2d.android.upnp.avt.MediaRenderer;
 import net.mm2d.android.upnp.cds.MediaServer;
@@ -18,8 +16,6 @@ import net.mm2d.dmsexplorer.Repository;
 import net.mm2d.dmsexplorer.domain.entity.ContentEntity;
 import net.mm2d.dmsexplorer.domain.formatter.CdsFormatter;
 import net.mm2d.dmsexplorer.domain.model.ControlPointModel;
-import net.mm2d.dmsexplorer.domain.model.CustomTabsBinder;
-import net.mm2d.dmsexplorer.domain.model.CustomTabsHelper;
 import net.mm2d.dmsexplorer.domain.model.MediaRendererModel;
 import net.mm2d.dmsexplorer.domain.model.MediaServerModel;
 import net.mm2d.dmsexplorer.domain.model.OpenUriCustomTabsModel;
@@ -27,8 +23,12 @@ import net.mm2d.dmsexplorer.domain.model.OpenUriModel;
 import net.mm2d.dmsexplorer.domain.model.PlaybackTargetModel;
 import net.mm2d.dmsexplorer.domain.model.ThemeModel;
 import net.mm2d.dmsexplorer.domain.model.ThemeModelImpl;
+import net.mm2d.dmsexplorer.domain.tabs.CustomTabsBinder;
+import net.mm2d.dmsexplorer.domain.tabs.CustomTabsHelper;
 import net.mm2d.dmsexplorer.settings.Settings;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import io.reactivex.Completable;
 import io.reactivex.schedulers.Schedulers;
 

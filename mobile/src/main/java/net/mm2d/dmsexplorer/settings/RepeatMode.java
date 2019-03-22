@@ -7,15 +7,16 @@
 
 package net.mm2d.dmsexplorer.settings;
 
-import android.support.annotation.DrawableRes;
-import android.support.annotation.NonNull;
-import android.support.annotation.StringRes;
-import android.support.v4.util.ArrayMap;
 import android.util.SparseArray;
 
 import net.mm2d.dmsexplorer.R;
 
 import java.util.Map;
+
+import androidx.annotation.DrawableRes;
+import androidx.annotation.NonNull;
+import androidx.annotation.StringRes;
+import androidx.collection.ArrayMap;
 
 /**
  * 連続再生モードを表現するenum。
@@ -56,7 +57,8 @@ public enum RepeatMode {
             3,
             R.drawable.ic_repeat_one,
             R.string.toast_repeat_repeat_one
-    ),;
+    ),
+    ;
     private final int mOrder;
     private final int mIconId;
     private final int mMessageId;

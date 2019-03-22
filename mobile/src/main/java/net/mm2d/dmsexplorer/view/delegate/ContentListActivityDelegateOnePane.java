@@ -8,9 +8,9 @@
 package net.mm2d.dmsexplorer.view.delegate;
 
 import android.content.Intent;
-import android.support.annotation.NonNull;
-import android.support.design.widget.Snackbar;
 import android.view.View;
+
+import com.google.android.material.snackbar.Snackbar;
 
 import net.mm2d.android.util.ActivityUtils;
 import net.mm2d.dmsexplorer.R;
@@ -19,6 +19,8 @@ import net.mm2d.dmsexplorer.domain.entity.ContentEntity;
 import net.mm2d.dmsexplorer.util.ItemSelectUtils;
 import net.mm2d.dmsexplorer.view.ContentDetailActivity;
 import net.mm2d.dmsexplorer.view.base.BaseActivity;
+
+import androidx.annotation.NonNull;
 
 /**
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
