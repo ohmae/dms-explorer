@@ -10,7 +10,7 @@ android:
 
 before_install:
   - chmod +x gradlew
-  - yes | sdkmanager "platforms;android-27"
+  - yes | sdkmanager "platforms;android-28"
 
 script:
   - ./gradlew mobile:check
