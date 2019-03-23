@@ -7,6 +7,9 @@
 
 package net.mm2d.android.upnp;
 
+import android.os.Handler;
+import android.os.Looper;
+
 import net.mm2d.android.upnp.avt.MrControlPoint;
 import net.mm2d.android.upnp.cds.MsControlPoint;
 import net.mm2d.upnp.ControlPoint;
@@ -119,7 +122,11 @@ public class AvControlPointManager {
             terminate();
         }
         mInitialized.set(true);
-        mControlPoint = ControlPointFactory.create(new Params().setInterfaces(interfaces));
+        final Handler handler = new Handler(Looper.getMainLooper());
+        final Params params = new Params()
+                .setInterfaces(interfaces)
+                .setCallbackHandler(handler::post);
+        mControlPoint = ControlPointFactory.create(params);
         mControlPoint.setIconFilter(ICON_FILTER);
 
         mMsControlPoint.initialize(mControlPoint);
