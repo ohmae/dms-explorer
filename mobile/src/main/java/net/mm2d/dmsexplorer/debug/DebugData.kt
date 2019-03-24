@@ -4,10 +4,11 @@ import android.content.Context
 import net.mm2d.android.util.RuntimeEnvironment
 import net.mm2d.dmsexplorer.BuildConfig
 import net.mm2d.log.Logger
-import okio.Okio
+import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
 import java.io.IOException
+import java.nio.charset.Charset
 import java.util.*
 
 /**
@@ -21,13 +22,12 @@ object DebugData {
             return
         }
         try {
-            val inputStream = context.assets.open("locations.json")
-            val json = Okio.buffer(Okio.source(inputStream)).readUtf8()
-            val jsonObject = JSONObject(json)
+            val data = context.assets.open("locations.json").readBytes()
+            val jsonArray = JSONArray(data.toString(Charset.forName("utf-8")))
             val list = ArrayList<String>()
-            val i = jsonObject.keys()
-            while (i.hasNext()) {
-                list.add(jsonObject.getString(i.next()))
+            for (i in 0 until jsonArray.length()) {
+                val jsonObject = jsonArray[i] as JSONObject
+                list.add(jsonObject.getString("location"))
             }
             Logger.e { list.toString() }
             pinnedDeviceLocationList = list

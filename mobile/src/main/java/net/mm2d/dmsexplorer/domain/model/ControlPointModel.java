@@ -127,7 +127,6 @@ public class ControlPointModel {
         }
     }
 
-
     public ControlPointModel(
             @NonNull final Context context,
             @NonNull final SelectMediaServerObserver serverObserver,
