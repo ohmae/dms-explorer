@@ -9,7 +9,6 @@ package net.mm2d.dmsexplorer.util.update
 
 import com.google.common.truth.Truth.assertThat
 import com.squareup.moshi.Moshi
-import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import net.mm2d.dmsexplorer.Const
 import net.mm2d.dmsexplorer.util.OkHttpClientHolder
 import net.mm2d.dmsexplorer.util.update.model.UpdateInfo
@@ -76,6 +75,44 @@ class UpdateCheckerTest {
   }
 }""".trimIndent()
         assertThat(UpdateChecker(version).isUpdateAvailable(json)).isTrue()
+    }
+
+    @Config(sdk = [21])
+    @Test
+    fun isUpdateAvailable_minSdkVersion以上() {
+        val version = 715
+        val json = """
+{
+  "mobile": {
+    "versionName": "0.7.16",
+    "versionCode": 716,
+    "targetInclude": [
+      0
+    ],
+    "targetExclude": [],
+    "minSdkVersion": 21
+  }
+}""".trimIndent()
+        assertThat(UpdateChecker(version).isUpdateAvailable(json)).isTrue()
+    }
+
+    @Config(sdk = [21])
+    @Test
+    fun isUpdateAvailable_minSdkVersion未満() {
+        val version = 715
+        val json = """
+{
+  "mobile": {
+    "versionName": "0.7.16",
+    "versionCode": 716,
+    "targetInclude": [
+      0
+    ],
+    "targetExclude": [],
+    "minSdkVersion": 22
+  }
+}""".trimIndent()
+        assertThat(UpdateChecker(version).isUpdateAvailable(json)).isFalse()
     }
 
     @Test
@@ -515,29 +552,45 @@ class UpdateCheckerTest {
     ]
   }
 }""".trimIndent()
-        val moshi = Moshi.Builder().add(KotlinJsonAdapterFactory()).build()
+        val moshi = Moshi.Builder().build()
         val jsonAdapter = moshi.adapter(UpdateInfo::class.java)
-        val update = jsonAdapter.fromJson(json)
-        assertThat(update!!.versionCode).isEqualTo(716)
-        assertThat(update.versionName).isEqualTo("0.7.16")
-        assertThat(update.targetInclude).isEqualTo(Arrays.asList(700, 714))
-        assertThat(update.targetExclude).isEqualTo(Arrays.asList(711, 712))
+        val update = jsonAdapter.fromJson(json) ?: throw IllegalStateException()
+        val mobile = update.mobile
+        assertThat(mobile.versionCode).isEqualTo(716)
+        assertThat(mobile.versionName).isEqualTo("0.7.16")
+        assertThat(mobile.targetInclude).isEqualTo(Arrays.asList(700, 714))
+        assertThat(mobile.targetExclude).isEqualTo(Arrays.asList(711, 712))
     }
 
     @Test
     fun moshi_toJson() {
-        val json =
-            """{"mobile":{"versionName":"0.7.16","versionCode":716,"targetInclude":[700,714],"targetExclude":[711,712]}}"""
-        val moshi = Moshi.Builder().add(KotlinJsonAdapterFactory()).build()
+        val json = """
+{
+  "mobile": {
+    "versionName": "0.7.16",
+    "versionCode": 716,
+    "targetInclude": [
+      700,
+      714
+    ],
+    "targetExclude": [
+      711,
+      712
+    ]
+  }
+}""".trimIndent()
+        val moshi = Moshi.Builder().build()
         val jsonAdapter = moshi.adapter(UpdateInfo::class.java)
         val update = jsonAdapter.fromJson(json)
         val result = jsonAdapter.toJson(update)
-        assertThat(result).isEqualTo(json)
+        val update2 = jsonAdapter.fromJson(result)
+
+        assertThat(update).isEqualTo(update2)
     }
 
     @Test
     fun retrofit() {
-        val moshi = Moshi.Builder().add(KotlinJsonAdapterFactory()).build()
+        val moshi = Moshi.Builder().build()
         val retrofit = Retrofit.Builder()
             .baseUrl(Const.URL_UPDATE_BASE)
             .addConverterFactory(MoshiConverterFactory.create(moshi))
