@@ -80,7 +80,7 @@ dependencies {
     implementation 'net.mm2d:log:0.3.0'
     implementation 'net.mm2d:log-android:0.3.0'
     implementation 'net.mm2d:mmupnp:2.0.0-rc1'
-    implementation 'net.mm2d:preference:0.1.0'
+    implementation 'net.mm2d:preference:0.1.2'
     implementation 'net.opacapp:multiline-collapsingtoolbar:27.1.1'
     implementation 'com.squareup.okhttp3:okhttp:3.12.0'
     implementation 'com.squareup.retrofit2:retrofit:2.4.0'
