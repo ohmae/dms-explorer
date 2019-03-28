@@ -7,13 +7,11 @@
 
 package net.mm2d.dmsexplorer.util.update
 
+import com.google.common.truth.Truth.assertThat
 import com.squareup.moshi.Moshi
-import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import net.mm2d.dmsexplorer.Const
 import net.mm2d.dmsexplorer.util.OkHttpClientHolder
 import net.mm2d.dmsexplorer.util.update.model.UpdateInfo
-import org.hamcrest.Matchers.`is`
-import org.junit.Assert.assertThat
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
@@ -31,228 +29,568 @@ import java.util.*
 @Config(manifest = Config.NONE)
 class UpdateCheckerTest {
     @Test
-    @Throws(Exception::class)
-    fun isUpdateAvailable_異常な入力ならfalse() {
+    fun isUpdateAvailable_異常な入力ならfalse_必須フィールドがない() {
         val version = 715
-        val json1 = """{"mobile":{"versionCode":716,"targetInclude":[0],"targetExclude":[]}}"""
-        assertThat(UpdateChecker(version).isUpdateAvailable(json1), `is`(false))
-        val json2 = """{"mobile":{"versionName":"0.7.16","versionCode":716,"targetInclude":[0],"targetExclude":[]}"""
-        assertThat(UpdateChecker(version).isUpdateAvailable(json2), `is`(false))
+        val json = """
+{
+  "mobile": {
+    "versionCode": 716,
+    "targetInclude": [
+      0
+    ],
+    "targetExclude": []
+  }
+}""".trimIndent()
+        assertThat(UpdateChecker(version).isUpdateAvailable(json)).isFalse()
     }
 
     @Test
-    @Throws(Exception::class)
+    fun isUpdateAvailable_異常な入力ならfalse_フォーマットエラー() {
+        val version = 715
+        val json = """
+{
+  "mobile": {
+    "versionName": "0.7.16",
+    "versionCode": 716,
+    "targetInclude": [
+      0
+    ],
+    "targetExclude": []
+  }""".trimIndent()
+        assertThat(UpdateChecker(version).isUpdateAvailable(json)).isFalse()
+    }
+
+    @Test
     fun isUpdateAvailable_targetが1つで対象_バージョンが低ければtrue() {
         val version = 715
-        val json = """{"mobile":{"versionName":"0.7.16","versionCode":716,"targetInclude":[0],"targetExclude":[]}}"""
-        assertThat(UpdateChecker(version).isUpdateAvailable(json), `is`(true))
+        val json = """
+{
+  "mobile": {
+    "versionName": "0.7.16",
+    "versionCode": 716,
+    "targetInclude": [
+      0
+    ],
+    "targetExclude": []
+  }
+}""".trimIndent()
+        assertThat(UpdateChecker(version).isUpdateAvailable(json)).isTrue()
+    }
+
+    @Config(sdk = [21])
+    @Test
+    fun isUpdateAvailable_minSdkVersion以上() {
+        val version = 715
+        val json = """
+{
+  "mobile": {
+    "versionName": "0.7.16",
+    "versionCode": 716,
+    "targetInclude": [
+      0
+    ],
+    "targetExclude": [],
+    "minSdkVersion": 21
+  }
+}""".trimIndent()
+        assertThat(UpdateChecker(version).isUpdateAvailable(json)).isTrue()
+    }
+
+    @Config(sdk = [21])
+    @Test
+    fun isUpdateAvailable_minSdkVersion未満() {
+        val version = 715
+        val json = """
+{
+  "mobile": {
+    "versionName": "0.7.16",
+    "versionCode": 716,
+    "targetInclude": [
+      0
+    ],
+    "targetExclude": [],
+    "minSdkVersion": 22
+  }
+}""".trimIndent()
+        assertThat(UpdateChecker(version).isUpdateAvailable(json)).isFalse()
     }
 
     @Test
-    @Throws(Exception::class)
+    fun isUpdateAvailable_余計なフィールドがあってもtrueとなる条件がそろっていればtrue() {
+        val version = 715
+        val json = """
+{
+  "mobile": {
+    "versionName": "0.7.16",
+    "versionCode": 716,
+    "targetInclude": [
+      0
+    ],
+    "targetExclude": [],
+    "someField": "none"
+  }
+}""".trimIndent()
+        assertThat(UpdateChecker(version).isUpdateAvailable(json)).isTrue()
+    }
+
+    @Test
     fun isUpdateAvailable_targetが1つで対象_バージョンが等しければfalse() {
         val version = 716
-        val json = """{"mobile":{"versionName":"0.7.16","versionCode":716,"targetInclude":[0],"targetExclude":[]}}"""
-        assertThat(UpdateChecker(version).isUpdateAvailable(json), `is`(false))
+        val json = """
+{
+  "mobile": {
+    "versionName": "0.7.16",
+    "versionCode": 716,
+    "targetInclude": [
+      0
+    ],
+    "targetExclude": []
+  }
+}""".trimIndent()
+        assertThat(UpdateChecker(version).isUpdateAvailable(json)).isFalse()
     }
 
     @Test
-    @Throws(Exception::class)
     fun isUpdateAvailable_targetが1つで対象_バージョンが高ければfalse() {
         val version = 717
-        val json = """{"mobile":{"versionName":"0.7.16","versionCode":716,"targetInclude":[0],"targetExclude":[]}}"""
-        assertThat(UpdateChecker(version).isUpdateAvailable(json), `is`(false))
+        val json = """
+{
+  "mobile": {
+    "versionName": "0.7.16",
+    "versionCode": 716,
+    "targetInclude": [
+      0
+    ],
+    "targetExclude": []
+  }
+}""".trimIndent()
+        assertThat(UpdateChecker(version).isUpdateAvailable(json)).isFalse()
     }
 
     @Test
-    @Throws(Exception::class)
     fun isUpdateAvailable_targetに記載がなければfalse() {
         val version = 715
-        val json = """{"mobile":{"versionName":"0.7.16","versionCode":716,"targetInclude":[],"targetExclude":[]}}"""
-        assertThat(UpdateChecker(version).isUpdateAvailable(json), `is`(false))
+        val json = """
+{
+  "mobile": {
+    "versionName": "0.7.16",
+    "versionCode": 716,
+    "targetInclude": [],
+    "targetExclude": []
+  }
+}""".trimIndent()
+        assertThat(UpdateChecker(version).isUpdateAvailable(json)).isFalse()
     }
 
     @Test
-    @Throws(Exception::class)
     fun isUpdateAvailable_1つで対象ならtrue() {
         val version = 710
-        val json = """{"mobile":{"versionName":"0.7.16","versionCode":716,"targetInclude":[710],"targetExclude":[]}}"""
-        assertThat(UpdateChecker(version).isUpdateAvailable(json), `is`(true))
+        val json = """
+{
+  "mobile": {
+    "versionName": "0.7.16",
+    "versionCode": 716,
+    "targetInclude": [
+      710
+    ],
+    "targetExclude": []
+  }
+}""".trimIndent()
+        assertThat(UpdateChecker(version).isUpdateAvailable(json)).isTrue()
     }
 
     @Test
-    @Throws(Exception::class)
     fun isUpdateAvailable_1つで対象外ならfalse() {
         val version = 710
-        val json = """{"mobile":{"versionName":"0.7.16","versionCode":716,"targetInclude":[711],"targetExclude":[]}}"""
-        assertThat(UpdateChecker(version).isUpdateAvailable(json), `is`(false))
+        val json = """
+{
+  "mobile": {
+    "versionName": "0.7.16",
+    "versionCode": 716,
+    "targetInclude": [
+      711
+    ],
+    "targetExclude": []
+  }
+}""".trimIndent()
+        assertThat(UpdateChecker(version).isUpdateAvailable(json)).isFalse()
     }
 
     @Test
-    @Throws(Exception::class)
     fun isUpdateAvailable_2つで対象ならtrue1() {
         val version = 710
-        val json = """{"mobile":{"versionName":"0.7.16","versionCode":716,"targetInclude":[710,714],"targetExclude":[]}}"""
-        assertThat(UpdateChecker(version).isUpdateAvailable(json), `is`(true))
+        val json = """
+{
+  "mobile": {
+    "versionName": "0.7.16",
+    "versionCode": 716,
+    "targetInclude": [
+      710, 714
+    ],
+    "targetExclude": []
+  }
+}""".trimIndent()
+        assertThat(UpdateChecker(version).isUpdateAvailable(json)).isTrue()
     }
 
     @Test
-    @Throws(Exception::class)
     fun isUpdateAvailable_2つで対象ならtrue2() {
         val version = 714
-        val json = """{"mobile":{"versionName":"0.7.16","versionCode":716,"targetInclude":[710,714],"targetExclude":[]}}"""
-        assertThat(UpdateChecker(version).isUpdateAvailable(json), `is`(true))
+        val json = """
+{
+  "mobile": {
+    "versionName": "0.7.16",
+    "versionCode": 716,
+    "targetInclude": [
+      710, 714
+    ],
+    "targetExclude": []
+  }
+}""".trimIndent()
+        assertThat(UpdateChecker(version).isUpdateAvailable(json)).isTrue()
     }
 
     @Test
-    @Throws(Exception::class)
     fun isUpdateAvailable_2つで対象ならtrue3() {
         val version = 712
-        val json = """{"mobile":{"versionName":"0.7.16","versionCode":716,"targetInclude":[710,714],"targetExclude":[]}}"""
-        assertThat(UpdateChecker(version).isUpdateAvailable(json), `is`(true))
+        val json = """
+{
+  "mobile": {
+    "versionName": "0.7.16",
+    "versionCode": 716,
+    "targetInclude": [
+      710, 714
+    ],
+    "targetExclude": []
+  }
+}""".trimIndent()
+        assertThat(UpdateChecker(version).isUpdateAvailable(json)).isTrue()
     }
 
     @Test
-    @Throws(Exception::class)
     fun isUpdateAvailable_2つで対象外ならfalse1() {
         val version = 709
-        val json = """{"mobile":{"versionName":"0.7.16","versionCode":716,"targetInclude":[710,714],"targetExclude":[]}}"""
-        assertThat(UpdateChecker(version).isUpdateAvailable(json), `is`(false))
+        val json = """
+{
+  "mobile": {
+    "versionName": "0.7.16",
+    "versionCode": 716,
+    "targetInclude": [
+      710, 714
+    ],
+    "targetExclude": []
+  }
+}""".trimIndent()
+        assertThat(UpdateChecker(version).isUpdateAvailable(json)).isFalse()
     }
 
     @Test
-    @Throws(Exception::class)
     fun isUpdateAvailable_2つで対象外ならfalse2() {
         val version = 715
-        val json = """{"mobile":{"versionName":"0.7.16","versionCode":716,"targetInclude":[710,714],"targetExclude":[]}}"""
-        assertThat(UpdateChecker(version).isUpdateAvailable(json), `is`(false))
+        val json = """
+{
+  "mobile": {
+    "versionName": "0.7.16",
+    "versionCode": 716,
+    "targetInclude": [
+      710, 714
+    ],
+    "targetExclude": []
+  }
+}""".trimIndent()
+        assertThat(UpdateChecker(version).isUpdateAvailable(json)).isFalse()
     }
 
     @Test
-    @Throws(Exception::class)
     fun isUpdateAvailable_3つで対象ならtrue1() {
         val version = 700
-        val json = """{"mobile":{"versionName":"0.7.16","versionCode":716,"targetInclude":[700,710,712],"targetExclude":[]}}"""
-        assertThat(UpdateChecker(version).isUpdateAvailable(json), `is`(true))
+        val json = """
+{
+  "mobile": {
+    "versionName": "0.7.16",
+    "versionCode": 716,
+    "targetInclude": [
+      700,710,712
+    ],
+    "targetExclude": []
+  }
+}""".trimIndent()
+        assertThat(UpdateChecker(version).isUpdateAvailable(json)).isTrue()
     }
 
     @Test
-    @Throws(Exception::class)
     fun isUpdateAvailable_3つで対象ならtrue2() {
         val version = 710
-        val json = """{"mobile":{"versionName":"0.7.16","versionCode":716,"targetInclude":[700,710,712],"targetExclude":[]}}"""
-        assertThat(UpdateChecker(version).isUpdateAvailable(json), `is`(true))
+        val json = """
+{
+  "mobile": {
+    "versionName": "0.7.16",
+    "versionCode": 716,
+    "targetInclude": [
+      700,710,712
+    ],
+    "targetExclude": []
+  }
+}""".trimIndent()
+        assertThat(UpdateChecker(version).isUpdateAvailable(json)).isTrue()
     }
 
     @Test
-    @Throws(Exception::class)
     fun isUpdateAvailable_3つで対象ならtrue3() {
         val version = 712
-        val json = """{"mobile":{"versionName":"0.7.16","versionCode":716,"targetInclude":[700,710,712],"targetExclude":[]}}"""
-        assertThat(UpdateChecker(version).isUpdateAvailable(json), `is`(true))
+        val json = """
+{
+  "mobile": {
+    "versionName": "0.7.16",
+    "versionCode": 716,
+    "targetInclude": [
+      700,710,712
+    ],
+    "targetExclude": []
+  }
+}""".trimIndent()
+        assertThat(UpdateChecker(version).isUpdateAvailable(json)).isTrue()
     }
 
     @Test
-    @Throws(Exception::class)
     fun isUpdateAvailable_3つで対象ならtrue4() {
         val version = 705
-        val json = """{"mobile":{"versionName":"0.7.16","versionCode":716,"targetInclude":[700,710,712],"targetExclude":[]}}"""
-        assertThat(UpdateChecker(version).isUpdateAvailable(json), `is`(true))
+        val json = """
+{
+  "mobile": {
+    "versionName": "0.7.16",
+    "versionCode": 716,
+    "targetInclude": [
+      700,710,712
+    ],
+    "targetExclude": []
+  }
+}""".trimIndent()
+        assertThat(UpdateChecker(version).isUpdateAvailable(json)).isTrue()
     }
 
     @Test
-    @Throws(Exception::class)
     fun isUpdateAvailable_3つで対象ならtrue5() {
         val version = 714
-        val json = """{"mobile":{"versionName":"0.7.16","versionCode":716,"targetInclude":[700,710,712],"targetExclude":[]}}"""
-        assertThat(UpdateChecker(version).isUpdateAvailable(json), `is`(true))
+        val json = """
+{
+  "mobile": {
+    "versionName": "0.7.16",
+    "versionCode": 716,
+    "targetInclude": [
+      700,710,712
+    ],
+    "targetExclude": []
+  }
+}""".trimIndent()
+        assertThat(UpdateChecker(version).isUpdateAvailable(json)).isTrue()
     }
 
     @Test
-    @Throws(Exception::class)
     fun isUpdateAvailable_3つで対象外ならfalse1() {
         val version = 600
-        val json = """{"mobile":{"versionName":"0.7.16","versionCode":716,"targetInclude":[700,710,712],"targetExclude":[]}}"""
-        assertThat(UpdateChecker(version).isUpdateAvailable(json), `is`(false))
+        val json = """
+{
+  "mobile": {
+    "versionName": "0.7.16",
+    "versionCode": 716,
+    "targetInclude": [
+      700,710,712
+    ],
+    "targetExclude": []
+  }
+}""".trimIndent()
+        assertThat(UpdateChecker(version).isUpdateAvailable(json)).isFalse()
     }
 
     @Test
-    @Throws(Exception::class)
     fun isUpdateAvailable_3つで対象外ならfalse2() {
         val version = 711
-        val json = """{"mobile":{"versionName":"0.7.16","versionCode":716,"targetInclude":[700,710,712],"targetExclude":[]}}"""
-        assertThat(UpdateChecker(version).isUpdateAvailable(json), `is`(false))
+        val json = """
+{
+  "mobile": {
+    "versionName": "0.7.16",
+    "versionCode": 716,
+    "targetInclude": [
+      700,710,712
+    ],
+    "targetExclude": []
+  }
+}""".trimIndent()
+        assertThat(UpdateChecker(version).isUpdateAvailable(json)).isFalse()
     }
 
     @Test
-    @Throws(Exception::class)
     fun isUpdateAvailable_対象で除外リストに該当しないならtrue1() {
         val version = 711
-        val json = """{"mobile":{"versionName":"0.7.16","versionCode":716,"targetInclude":[0,714],"targetExclude":[710]}}"""
-        assertThat(UpdateChecker(version).isUpdateAvailable(json), `is`(true))
+        val json = """
+{
+  "mobile": {
+    "versionName": "0.7.16",
+    "versionCode": 716,
+    "targetInclude": [
+      0, 714
+    ],
+    "targetExclude": [
+      710
+    ]
+  }
+}""".trimIndent()
+        assertThat(UpdateChecker(version).isUpdateAvailable(json)).isTrue()
     }
 
 
     @Test
-    @Throws(Exception::class)
     fun isUpdateAvailable_対象で除外リストに該当しないならtrue2() {
         val version = 711
-        val json = """{"mobile":{"versionName":"0.7.16","versionCode":716,"targetInclude":[0,714],"targetExclude":[710,712]}}"""
-        assertThat(UpdateChecker(version).isUpdateAvailable(json), `is`(true))
+        val json = """
+{
+  "mobile": {
+    "versionName": "0.7.16",
+    "versionCode": 716,
+    "targetInclude": [
+      0, 714
+    ],
+    "targetExclude": [
+      710
+    ]
+  }
+}""".trimIndent()
+        assertThat(UpdateChecker(version).isUpdateAvailable(json)).isTrue()
     }
 
     @Test
-    @Throws(Exception::class)
     fun isUpdateAvailable_対象だが除外ならfalse1() {
         val version = 711
-        val json = """{"mobile":{"versionName":"0.7.16","versionCode":716,"targetInclude":[700,714],"targetExclude":[711]}}"""
-        assertThat(UpdateChecker(version).isUpdateAvailable(json), `is`(false))
+        val json = """
+{
+  "mobile": {
+    "versionName": "0.7.16",
+    "versionCode": 716,
+    "targetInclude": [
+      0, 714
+    ],
+    "targetExclude": [
+      711
+    ]
+  }
+}""".trimIndent()
+        assertThat(UpdateChecker(version).isUpdateAvailable(json)).isFalse()
     }
 
     @Test
-    @Throws(Exception::class)
     fun isUpdateAvailable_対象だが除外ならfalse2() {
         val version = 711
-        val json = """{"mobile":{"versionName":"0.7.16","versionCode":716,"targetInclude":[700,714],"targetExclude":[700,711]}}"""
-        assertThat(UpdateChecker(version).isUpdateAvailable(json), `is`(false))
+        val json = """
+{
+  "mobile": {
+    "versionName": "0.7.16",
+    "versionCode": 716,
+    "targetInclude": [
+      0, 714
+    ],
+    "targetExclude": [
+      700, 711
+    ]
+  }
+}""".trimIndent()
+        assertThat(UpdateChecker(version).isUpdateAvailable(json)).isFalse()
     }
 
     @Test
-    @Throws(Exception::class)
     fun isUpdateAvailable_対象だが除外ならfalse3() {
         val version = 711
-        val json = """{"mobile":{"versionName":"0.7.16","versionCode":716,"targetInclude":[700,714],"targetExclude":[711,712]}}"""
-        assertThat(UpdateChecker(version).isUpdateAvailable(json), `is`(false))
+        val json = """
+{
+  "mobile": {
+    "versionName": "0.7.16",
+    "versionCode": 716,
+    "targetInclude": [
+      0, 714
+    ],
+    "targetExclude": [
+      711,712
+    ]
+  }
+}""".trimIndent()
+        assertThat(UpdateChecker(version).isUpdateAvailable(json)).isFalse()
     }
 
     @Test
-    @Throws(Exception::class)
+    fun isUpdateAvailable_対象であり除外外ならtrue() {
+        val version = 711
+        val json = """
+{
+  "mobile": {
+    "versionName": "0.7.16",
+    "versionCode": 716,
+    "targetInclude": [
+      0, 714
+    ],
+    "targetExclude": [
+      710,712
+    ]
+  }
+}""".trimIndent()
+        assertThat(UpdateChecker(version).isUpdateAvailable(json)).isTrue()
+    }
+
+    @Test
     fun moshi_fromJson() {
-        val json = """{"mobile":{"versionName":"0.7.16","versionCode":716,"targetInclude":[700,714],"targetExclude":[711,712]}}"""
-        val moshi = Moshi.Builder().add(KotlinJsonAdapterFactory()).build()
+        val json = """
+{
+  "mobile": {
+    "versionName": "0.7.16",
+    "versionCode": 716,
+    "targetInclude": [
+      700,
+      714
+    ],
+    "targetExclude": [
+      711,
+      712
+    ]
+  }
+}""".trimIndent()
+        val moshi = Moshi.Builder().build()
         val jsonAdapter = moshi.adapter(UpdateInfo::class.java)
-        val update = jsonAdapter.fromJson(json)
-        assertThat(update!!.versionCode, `is`(716))
-        assertThat(update.versionName, `is`("0.7.16"))
-        assertThat(update.targetInclude, `is`(Arrays.asList(700, 714)))
-        assertThat(update.targetExclude, `is`(Arrays.asList(711, 712)))
+        val update = jsonAdapter.fromJson(json) ?: throw IllegalStateException()
+        val mobile = update.mobile
+        assertThat(mobile.versionCode).isEqualTo(716)
+        assertThat(mobile.versionName).isEqualTo("0.7.16")
+        assertThat(mobile.targetInclude).isEqualTo(Arrays.asList(700, 714))
+        assertThat(mobile.targetExclude).isEqualTo(Arrays.asList(711, 712))
     }
 
     @Test
-    @Throws(Exception::class)
     fun moshi_toJson() {
-        val json = """{"mobile":{"versionName":"0.7.16","versionCode":716,"targetInclude":[700,714],"targetExclude":[711,712]}}"""
-        val moshi = Moshi.Builder().add(KotlinJsonAdapterFactory()).build()
+        val json = """
+{
+  "mobile": {
+    "versionName": "0.7.16",
+    "versionCode": 716,
+    "targetInclude": [
+      700,
+      714
+    ],
+    "targetExclude": [
+      711,
+      712
+    ]
+  }
+}""".trimIndent()
+        val moshi = Moshi.Builder().build()
         val jsonAdapter = moshi.adapter(UpdateInfo::class.java)
         val update = jsonAdapter.fromJson(json)
         val result = jsonAdapter.toJson(update)
-        assertThat(result, `is`(json))
+        val update2 = jsonAdapter.fromJson(result)
+
+        assertThat(update).isEqualTo(update2)
     }
 
     @Test
-    @Throws(Exception::class)
     fun retrofit() {
-        val moshi = Moshi.Builder().add(KotlinJsonAdapterFactory()).build()
+        val moshi = Moshi.Builder().build()
         val retrofit = Retrofit.Builder()
             .baseUrl(Const.URL_UPDATE_BASE)
             .addConverterFactory(MoshiConverterFactory.create(moshi))
@@ -261,6 +599,6 @@ class UpdateCheckerTest {
             .build()
         val service = retrofit.create(UpdateService::class.java)
         val info = service.get().blockingGet()
-        assertThat(info.isValid, `is`(true))
+        assertThat(info.isValid).isTrue()
     }
 }

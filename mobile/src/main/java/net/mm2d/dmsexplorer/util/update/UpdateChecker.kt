@@ -8,6 +8,7 @@
 package net.mm2d.dmsexplorer.util.update
 
 import android.annotation.SuppressLint
+import android.os.Build
 import androidx.annotation.VisibleForTesting
 import com.squareup.moshi.Moshi
 import io.reactivex.Single
@@ -16,7 +17,6 @@ import net.mm2d.dmsexplorer.BuildConfig
 import net.mm2d.dmsexplorer.Const
 import net.mm2d.dmsexplorer.settings.Settings
 import net.mm2d.dmsexplorer.util.OkHttpClientHolder
-import net.mm2d.dmsexplorer.util.update.model.EMPTY_UPDATE_INFO
 import net.mm2d.dmsexplorer.util.update.model.UpdateInfo
 import net.mm2d.dmsexplorer.view.eventrouter.EventRouter
 import net.mm2d.log.Logger
@@ -57,7 +57,7 @@ class UpdateChecker(
     private fun checkIfNeed(settings: Settings): Single<UpdateInfo> {
         makeConsistent(settings)
         if (!hasEnoughInterval(settings)) {
-            return Single.just(EMPTY_UPDATE_INFO)
+            return Single.just(UpdateInfo.EMPTY_UPDATE_INFO)
         }
         return retrofit
             .create(UpdateService::class.java)
@@ -96,7 +96,7 @@ class UpdateChecker(
         if (normalizedJson == settings.updateJson) {
             return
         }
-        settings.isUpdateAvailable = isUpdateAvailable(info)
+        settings.isUpdateAvailable = isUpdateAvailable(info.mobile)
         settings.setUpdateJson(normalizedJson)
     }
 
@@ -106,17 +106,18 @@ class UpdateChecker(
             return false
         }
         try {
-            val info = jsonAdapter.fromJson(json)
-            return info != null && isUpdateAvailable(info)
+            return jsonAdapter.fromJson(json)?.let {
+                it.isValid && isUpdateAvailable(it.mobile)
+            } ?: false
         } catch (e: Exception) {
             Logger.w(e)
         }
-
         return false
     }
 
-    private fun isUpdateAvailable(info: UpdateInfo): Boolean {
-        return currentVersion < info.versionCode
+    private fun isUpdateAvailable(info: UpdateInfo.Mobile): Boolean {
+        return Build.VERSION.SDK_INT >= info.minSdkVersion
+                && currentVersion < info.versionCode
                 && isInclude(info.targetInclude)
                 && !isExclude(info.targetExclude)
     }

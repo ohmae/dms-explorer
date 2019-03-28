@@ -1,11 +1,12 @@
 {
   "mobile": {
-    "versionName": "0.7.46",
-    "versionCode": 746,
+    "versionName": "0.7.47",
+    "versionCode": 747,
     "targetInclude": [
       0
     ],
     "targetExclude": [
-    ]
+    ],
+    "minSdkVersion": 16
   }
 }

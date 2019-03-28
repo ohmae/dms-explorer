@@ -42,8 +42,8 @@ public class CdsFormatter {
     }
 
     @NonNull
-    public static List<Pair<String, String>> parseLongDescription(@NonNull final CdsObject object) {
-        final List<Tag> tagList = makeLongDescription(object);
+    public static List<Pair<String, String>> parseLongDescription(@NonNull final CdsObject cdsObject) {
+        final List<Tag> tagList = makeLongDescription(cdsObject);
         if (tagList == null) {
             return Collections.emptyList();
         }
@@ -91,8 +91,8 @@ public class CdsFormatter {
     }
 
     @Nullable
-    private static List<Tag> makeLongDescription(@NonNull final CdsObject object) {
-        final List<Tag> tagList = object.getTagList(CdsObject.ARIB_LONG_DESCRIPTION);
+    private static List<Tag> makeLongDescription(@NonNull final CdsObject cdsObject) {
+        final List<Tag> tagList = cdsObject.getTagList(CdsObject.ARIB_LONG_DESCRIPTION);
         if (tagList == null) {
             return null;
         }
@@ -100,7 +100,7 @@ public class CdsFormatter {
         if (size <= 2) {
             return tagList;
         }
-        final String av = object.getRootTag().getAttribute("xmlns:av");
+        final String av = cdsObject.getRootTag().getAttribute("xmlns:av");
         if (!TextUtils.equals(av, "urn:schemas-sony-com:av")) {
             return tagList;
         }
@@ -111,16 +111,16 @@ public class CdsFormatter {
     }
 
     @Nullable
-    public static String makeUpnpLongDescription(@NonNull final CdsObject object) {
-        return object.getValue(CdsObject.UPNP_LONG_DESCRIPTION);
+    public static String makeUpnpLongDescription(@NonNull final CdsObject cdsObject) {
+        return cdsObject.getValue(CdsObject.UPNP_LONG_DESCRIPTION);
     }
 
     @Nullable
     private static String joinTagValue(
-            @NonNull final CdsObject object,
+            @NonNull final CdsObject cdsObject,
             @NonNull final String tagName,
             final char delimiter) {
-        final List<Tag> tagList = object.getTagList(tagName);
+        final List<Tag> tagList = cdsObject.getTagList(tagName);
         if (tagList == null) {
             return null;
         }
@@ -136,9 +136,9 @@ public class CdsFormatter {
 
     @Nullable
     private static String joinMembers(
-            @NonNull final CdsObject object,
+            @NonNull final CdsObject cdsObject,
             @NonNull final String tagName) {
-        final List<Tag> tagList = object.getTagList(tagName);
+        final List<Tag> tagList = cdsObject.getTagList(tagName);
         if (tagList == null) {
             return null;
         }
@@ -158,13 +158,13 @@ public class CdsFormatter {
     }
 
     @Nullable
-    public static String makeChannel(@NonNull final CdsObject object) {
+    public static String makeChannel(@NonNull final CdsObject cdsObject) {
         final StringBuilder sb = new StringBuilder();
-        final String network = getNetworkString(object);
+        final String network = getNetworkString(cdsObject);
         if (network != null) {
             sb.append(network);
         }
-        final String channelNr = object.getValue(CdsObject.UPNP_CHANNEL_NR);
+        final String channelNr = cdsObject.getValue(CdsObject.UPNP_CHANNEL_NR);
         if (channelNr != null) {
             if (sb.length() == 0) {
                 sb.append(channelNr);
@@ -177,7 +177,7 @@ public class CdsFormatter {
                 }
             }
         }
-        final String name = object.getValue(CdsObject.UPNP_CHANNEL_NAME);
+        final String name = cdsObject.getValue(CdsObject.UPNP_CHANNEL_NAME);
         if (name != null) {
             if (sb.length() != 0) {
                 sb.append("   ");
@@ -188,8 +188,8 @@ public class CdsFormatter {
     }
 
     @Nullable
-    private static String getNetworkString(@NonNull final CdsObject object) {
-        final String net = object.getValue(CdsObject.ARIB_OBJECT_TYPE);
+    private static String getNetworkString(@NonNull final CdsObject cdsObject) {
+        final String net = cdsObject.getValue(CdsObject.ARIB_OBJECT_TYPE);
         if (net == null) {
             return null;
         }
@@ -206,8 +206,8 @@ public class CdsFormatter {
     }
 
     @Nullable
-    public static String makeDate(@NonNull final CdsObject object) {
-        final String str = object.getValue(CdsObject.DC_DATE);
+    public static String makeDate(@NonNull final CdsObject cdsObject) {
+        final String str = cdsObject.getValue(CdsObject.DC_DATE);
         final Date date = CdsObject.parseDate(str);
         if (date == null) {
             return null;
@@ -219,9 +219,9 @@ public class CdsFormatter {
     }
 
     @Nullable
-    public static String makeSchedule(@NonNull final CdsObject object) {
-        final Date start = object.getDateValue(CdsObject.UPNP_SCHEDULED_START_TIME);
-        final Date end = object.getDateValue(CdsObject.UPNP_SCHEDULED_END_TIME);
+    public static String makeSchedule(@NonNull final CdsObject cdsObject) {
+        final Date start = cdsObject.getDateValue(CdsObject.UPNP_SCHEDULED_START_TIME);
+        final Date end = cdsObject.getDateValue(CdsObject.UPNP_SCHEDULED_END_TIME);
         if (start == null || end == null) {
             return null;
         }
@@ -236,51 +236,51 @@ public class CdsFormatter {
     }
 
     @Nullable
-    public static String makeScheduleOrDate(@NonNull final CdsObject object) {
-        final String schedule = makeSchedule(object);
+    public static String makeScheduleOrDate(@NonNull final CdsObject cdsObject) {
+        final String schedule = makeSchedule(cdsObject);
         if (schedule != null) {
             return schedule;
         }
-        return makeDate(object);
+        return makeDate(cdsObject);
     }
 
     @Nullable
-    public static String makeGenre(@NonNull final CdsObject object) {
-        return object.getValue(CdsObject.UPNP_GENRE);
+    public static String makeGenre(@NonNull final CdsObject cdsObject) {
+        return cdsObject.getValue(CdsObject.UPNP_GENRE);
     }
 
     @Nullable
-    public static String makeAlbum(@NonNull final CdsObject object) {
-        return object.getValue(CdsObject.UPNP_ALBUM);
+    public static String makeAlbum(@NonNull final CdsObject cdsObject) {
+        return cdsObject.getValue(CdsObject.UPNP_ALBUM);
     }
 
     @Nullable
-    public static String makeArtists(@NonNull final CdsObject object) {
-        return joinMembers(object, CdsObject.UPNP_ARTIST);
+    public static String makeArtists(@NonNull final CdsObject cdsObject) {
+        return joinMembers(cdsObject, CdsObject.UPNP_ARTIST);
     }
 
     @Nullable
-    public static String makeArtistsSimple(@NonNull final CdsObject object) {
-        return joinTagValue(object, CdsObject.UPNP_ARTIST, ' ');
+    public static String makeArtistsSimple(@NonNull final CdsObject cdsObject) {
+        return joinTagValue(cdsObject, CdsObject.UPNP_ARTIST, ' ');
     }
 
     @Nullable
-    public static String makeActors(@NonNull final CdsObject object) {
-        return joinMembers(object, CdsObject.UPNP_ACTOR);
+    public static String makeActors(@NonNull final CdsObject cdsObject) {
+        return joinMembers(cdsObject, CdsObject.UPNP_ACTOR);
     }
 
     @Nullable
-    public static String makeAuthors(@NonNull final CdsObject object) {
-        return joinMembers(object, CdsObject.UPNP_AUTHOR);
+    public static String makeAuthors(@NonNull final CdsObject cdsObject) {
+        return joinMembers(cdsObject, CdsObject.UPNP_AUTHOR);
     }
 
     @Nullable
-    public static String makeCreator(@NonNull final CdsObject object) {
-        return object.getValue(CdsObject.DC_CREATOR);
+    public static String makeCreator(@NonNull final CdsObject cdsObject) {
+        return cdsObject.getValue(CdsObject.DC_CREATOR);
     }
 
     @Nullable
-    public static String makeDescription(@NonNull final CdsObject object) {
-        return joinTagValue(object, CdsObject.DC_DESCRIPTION, '\n');
+    public static String makeDescription(@NonNull final CdsObject cdsObject) {
+        return joinTagValue(cdsObject, CdsObject.DC_DESCRIPTION, '\n');
     }
 }
