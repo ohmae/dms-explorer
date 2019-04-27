@@ -7,7 +7,7 @@
 
 package net.mm2d.android.upnp.cds;
 
-import net.mm2d.upnp.util.TextParseUtils;
+import net.mm2d.android.util.TextParseUtils;
 
 import java.util.Map;
 

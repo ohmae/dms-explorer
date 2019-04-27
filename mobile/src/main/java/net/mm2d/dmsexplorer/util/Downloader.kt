@@ -32,8 +32,8 @@ object Downloader {
     private fun download(url: String): ByteArray? {
         try {
             val response = HttpClient(false).download(URL(url))
-            if (response.status == Http.Status.HTTP_OK) {
-                return response.bodyBinary
+            if (response.getStatus() == Http.Status.HTTP_OK) {
+                return response.getBodyBinary()
             }
         } catch (ignored: IOException) {
         } catch (ignored: OutOfMemoryError) {

@@ -252,7 +252,7 @@ public class MediaRenderer extends DeviceWrapper {
             @NonNull final Map<String, String> argument) {
         return Single.create((SingleOnSubscribe<Map<String, String>>) emitter -> {
             try {
-                final Map<String, String> result = action.invokeSync(argument);
+                final Map<String, String> result = action.invokeSync(argument, false);
                 emitter.onSuccess(result);
             } catch (final IOException e) {
                 emitter.onError(e);

@@ -10,11 +10,11 @@ package net.mm2d.android.upnp.cds;
 import android.text.TextUtils;
 
 import net.mm2d.android.upnp.DeviceWrapper;
+import net.mm2d.android.util.TextParseUtils;
 import net.mm2d.log.Logger;
 import net.mm2d.upnp.Action;
 import net.mm2d.upnp.Device;
 import net.mm2d.upnp.Service;
-import net.mm2d.upnp.util.TextParseUtils;
 
 import java.util.Collections;
 import java.util.List;
@@ -93,7 +93,7 @@ public class MediaServer extends DeviceWrapper {
             return Single.never();
         }
         return Single.create((SingleOnSubscribe<Integer>) emitter -> {
-            final Map<String, String> result = mDestroyObject.invokeSync(Collections.singletonMap(OBJECT_ID, objectId));
+            final Map<String, String> result = mDestroyObject.invokeSync(Collections.singletonMap(OBJECT_ID, objectId), false);
             final String errorDescription = result.get(Action.ERROR_DESCRIPTION_KEY);
             if (!TextUtils.isEmpty(errorDescription)) {
                 Logger.e(errorDescription);
@@ -175,7 +175,7 @@ public class MediaServer extends DeviceWrapper {
             while (!emitter.isDisposed()) {
                 argument.setStartIndex(start)
                         .setRequestCount(Math.min(request - start, REQUEST_MAX));
-                final BrowseResponse response = new BrowseResponse(mBrowse.invokeSync(argument.get()));
+                final BrowseResponse response = new BrowseResponse(mBrowse.invokeSync(argument.get(), false));
                 final int number = response.getNumberReturned();
                 final int total = response.getTotalMatches();
                 if (number == 0 || total == 0) {
@@ -228,7 +228,7 @@ public class MediaServer extends DeviceWrapper {
                 .setStartIndex(0)
                 .setRequestCount(0);
         return Single.create((SingleOnSubscribe<CdsObject>) emitter -> {
-            final BrowseResponse response = new BrowseResponse(mBrowse.invokeSync(argument.get()));
+            final BrowseResponse response = new BrowseResponse(mBrowse.invokeSync(argument.get(), false));
             final CdsObject result = CdsObjectFactory.parseMetadata(getUdn(), response.getResult());
             if (result == null || response.getNumberReturned() < 0 || response.getTotalMatches() < 0) {
                 emitter.onError(new IllegalStateException());

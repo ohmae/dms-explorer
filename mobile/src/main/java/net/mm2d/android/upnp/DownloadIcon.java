@@ -8,11 +8,8 @@
 package net.mm2d.android.upnp;
 
 import net.mm2d.upnp.Icon;
-import net.mm2d.upnp.IconFilter;
 
-import java.util.Collections;
 import java.util.Comparator;
-import java.util.List;
 
 import androidx.annotation.NonNull;
 
@@ -20,7 +17,7 @@ import androidx.annotation.NonNull;
 /**
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
  */
-class DownloadIconFilter implements IconFilter {
+class DownloadIcon {
     private static final String MIME_JPG = "image/jpeg";
     private static final String MIME_PNG = "image/png";
 
@@ -50,11 +47,5 @@ class DownloadIconFilter implements IconFilter {
         return width * height * depth + (png ? 1 : 0);
     }
 
-    private static final Comparator<Icon> ICON_COMPARATOR = (i1, i2) -> calcScore(i1) - calcScore(i2);
-
-    @NonNull
-    @Override
-    public List<Icon> filter(final @NonNull List<Icon> list) {
-        return Collections.singletonList(Collections.max(list, ICON_COMPARATOR));
-    }
+    static final Comparator<Icon> COMPARATOR = (i1, i2) -> calcScore(i1) - calcScore(i2);
 }

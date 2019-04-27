@@ -14,11 +14,11 @@ import net.mm2d.android.upnp.avt.MrControlPoint;
 import net.mm2d.android.upnp.cds.MsControlPoint;
 import net.mm2d.upnp.ControlPoint;
 import net.mm2d.upnp.ControlPointFactory;
-import net.mm2d.upnp.ControlPointFactory.Params;
 import net.mm2d.upnp.IconFilter;
 
 import java.net.NetworkInterface;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import androidx.annotation.NonNull;
@@ -34,7 +34,8 @@ import androidx.annotation.Nullable;
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
  */
 public class AvControlPointManager {
-    private static final IconFilter ICON_FILTER = new DownloadIconFilter();
+    private static final IconFilter ICON_FILTER = list ->
+            Collections.singletonList(Collections.max(list, DownloadIcon.COMPARATOR));
 
     @NonNull
     private final AtomicBoolean mInitialized = new AtomicBoolean();
@@ -93,7 +94,7 @@ public class AvControlPointManager {
         if (!mInitialized.get()) {
             throw new IllegalStateException("ControlPoint is not initialized");
         }
-        mControlPoint.search();
+        mControlPoint.search(null);
     }
 
     public void addPinnedDevice(@NonNull final String location) {
@@ -123,10 +124,10 @@ public class AvControlPointManager {
         }
         mInitialized.set(true);
         final Handler handler = new Handler(Looper.getMainLooper());
-        final Params params = new Params()
+        mControlPoint = ControlPointFactory.builder()
                 .setInterfaces(interfaces)
-                .setCallbackHandler(handler::post);
-        mControlPoint = ControlPointFactory.create(params);
+                .setCallbackHandler(handler::post)
+                .build();
         mControlPoint.setIconFilter(ICON_FILTER);
 
         mMsControlPoint.initialize(mControlPoint);
