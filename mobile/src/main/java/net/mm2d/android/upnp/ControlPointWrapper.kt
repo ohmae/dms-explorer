@@ -5,35 +5,29 @@
  * http://opensource.org/licenses/MIT
  */
 
-package net.mm2d.android.upnp;
+package net.mm2d.android.upnp
 
-import net.mm2d.upnp.ControlPoint;
-
-import java.util.List;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
+import net.mm2d.upnp.ControlPoint
 
 /**
  * 特定のDeviceTypeに特化したControlPointに共通で保持させるインターフェース。
  *
- * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
+ * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
  */
-public interface ControlPointWrapper {
+interface ControlPointWrapper {
     /**
      * 保持している対応デバイスの個数を返す。
      *
      * @return 対応デバイスの個数
      */
-    int getDeviceListSize();
+    val deviceListSize: Int
 
     /**
      * 対応デバイスのリストを返す。
      *
      * @return 対応デバイスのリスト。
      */
-    @NonNull
-    List<? extends DeviceWrapper> getDeviceList();
+    val deviceList: List<DeviceWrapper>
 
     /**
      * 指定UDNに対応した対応デバイスを返す。
@@ -41,20 +35,19 @@ public interface ControlPointWrapper {
      * @param udn UDN
      * @return 対応デバイス、見つからない場合null
      */
-    @Nullable
-    DeviceWrapper getDevice(@Nullable String udn);
+    fun getDevice(udn: String?): DeviceWrapper?
 
     /**
      * 初期化する。
      *
      * @param controlPoint ControlPoint
      */
-    void initialize(@NonNull ControlPoint controlPoint);
+    fun initialize(controlPoint: ControlPoint)
 
     /**
      * 終了する。
      *
      * @param controlPoint ControlPoint
      */
-    void terminate(@NonNull ControlPoint controlPoint);
+    fun terminate(controlPoint: ControlPoint)
 }

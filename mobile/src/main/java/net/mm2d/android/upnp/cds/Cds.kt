@@ -5,28 +5,28 @@
  * http://opensource.org/licenses/MIT
  */
 
-package net.mm2d.android.upnp.cds;
+package net.mm2d.android.upnp.cds
 
 /**
  * 内部で使用する定数を定義する。
  *
- * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
+ * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
  */
-final class Cds {
+internal object Cds {
     /**
      * MediaServerのデバイスタイプ。
      */
-    static final String MS_DEVICE_TYPE = "urn:schemas-upnp-org:device:MediaServer";
+    const val MS_DEVICE_TYPE = "urn:schemas-upnp-org:device:MediaServer"
     /**
      * ContentDirectoryのサービスID。
      */
-    static final String CDS_SERVICE_ID = "urn:upnp-org:serviceId:ContentDirectory";
+    const val CDS_SERVICE_ID = "urn:upnp-org:serviceId:ContentDirectory"
     /**
      * ContainerUpdateIDsのタイプ名。
      */
-    static final String CONTAINER_UPDATE_IDS = "ContainerUpdateIDs";
+    const val CONTAINER_UPDATE_IDS = "ContainerUpdateIDs"
     /**
      * SystemUpdateIDのタイプ名。
      */
-    static final String SYSTEM_UPDATE_ID = "SystemUpdateID";
+    const val SYSTEM_UPDATE_ID = "SystemUpdateID"
 }

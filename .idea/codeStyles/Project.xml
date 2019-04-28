@@ -62,6 +62,7 @@
       <option name="JD_P_AT_EMPTY_LINES" value="false" />
     </JavaCodeStyleSettings>
     <JetCodeStyleSettings>
+      <option name="IMPORT_NESTED_CLASSES" value="true" />
       <option name="CODE_STYLE_DEFAULTS" value="KOTLIN_OFFICIAL" />
     </JetCodeStyleSettings>
     <XML>
