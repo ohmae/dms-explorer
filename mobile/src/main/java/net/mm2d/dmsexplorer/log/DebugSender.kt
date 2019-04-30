@@ -20,7 +20,7 @@ internal class DebugSender : Sender {
         @Size(min = 1L, max = 40L) name: String,
         params: Bundle?
     ) {
-        Logger.i("\nname: " + name + "\nparams: " + dumpBundle(params))
+        Logger.i { "\nname: " + name + "\nparams: " + dumpBundle(params) }
     }
 
     private fun dumpBundle(params: Bundle?): String {

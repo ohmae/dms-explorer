@@ -51,9 +51,9 @@ class App : MultiDexApplication() {
     private fun logError(e: Throwable) {
         when (e) {
             is UndeliverableException
-            -> Logger.w("UndeliverableException:", e.cause)
+            -> Logger.w(e.cause, "UndeliverableException:")
             is OnErrorNotImplementedException
-            -> Logger.w("OnErrorNotImplementedException:", e.cause)
+            -> Logger.w(e.cause, "OnErrorNotImplementedException:")
             else
             -> Logger.w(e)
         }

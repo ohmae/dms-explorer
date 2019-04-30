@@ -199,7 +199,7 @@ public abstract class MediaPlayerModel implements PlayerModel, OnPreparedListene
     private void logError(
             final int what,
             final int extra) {
-        Logger.e("onError:w" + what + " " + getErrorWhatString(what)
+        Logger.e(() -> "onError:w" + what + " " + getErrorWhatString(what)
                 + " e" + extra + " " + getErrorExtraString(extra));
     }
 

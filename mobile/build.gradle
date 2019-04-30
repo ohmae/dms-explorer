@@ -80,9 +80,9 @@ dependencies {
     implementation 'androidx.core:core-ktx:1.0.1'
     implementation 'com.google.android.material:material:1.0.0'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    implementation 'net.mm2d:log:0.8.0'
-    implementation 'net.mm2d:log-android:0.8.0'
-    implementation 'net.mm2d:mmupnp:3.0.0-beta1'
+    implementation 'net.mm2d:log:0.8.1'
+    implementation 'net.mm2d:log-android:0.8.1'
+    implementation 'net.mm2d:mmupnp:3.0.0-beta2'
     implementation 'net.mm2d:preference:0.1.2'
     implementation 'net.opacapp:multiline-collapsingtoolbar:27.1.1'
     implementation 'com.squareup.okhttp3:okhttp:3.12.2'
