@@ -7,7 +7,6 @@
 
 package net.mm2d.android.upnp.cds
 
-import android.text.TextUtils
 import net.mm2d.upnp.util.XmlUtils
 import org.w3c.dom.Document
 import org.w3c.dom.Element
@@ -41,20 +40,18 @@ object CdsObjectXmlConverter {
             document.appendChild(didl)
             val item = makeItemElement(document, cdsObject)
             didl.appendChild(item)
-            for ((key, value) in cdsObject.tagMap.rawMap) {
-                if (TextUtils.isEmpty(key)) {
-                    continue
+            cdsObject.tagMap.rawMap
+                .filter { it.key.isNotEmpty() }
+                .forEach {
+                    it.value.forEach { tag ->
+                        item.appendChild(makeElement(document, it.key, tag))
+                    }
                 }
-                for (tag in value) {
-                    item.appendChild(makeElement(document, key, tag))
-                }
-            }
             return formatXmlString(document)
         } catch (ignored: ParserConfigurationException) {
         } catch (ignored: TransformerException) {
         } catch (ignored: IllegalArgumentException) {
         }
-
         return null
     }
 
@@ -65,22 +62,22 @@ object CdsObjectXmlConverter {
     ): Element {
         val element = document.createElement(tagName)
         val value = tag.value
-        if (!TextUtils.isEmpty(value)) {
+        if (value.isNotEmpty()) {
             element.textContent = value
         }
-        for ((key, value1) in tag.attributes) {
-            element.setAttribute(key, value1)
+        tag.attributes.forEach {
+            element.setAttribute(it.key, it.value)
         }
         return element
     }
 
     private fun makeRootElement(
         document: Document,
-        `object`: CdsObject
+        cdsObject: CdsObject
     ): Element {
         val element = document.createElement(CdsObject.DIDL_LITE)
-        for ((key, value) in `object`.rootTag.attributes) {
-            element.setAttribute(key, value)
+        cdsObject.rootTag.attributes.forEach {
+            element.setAttribute(it.key, it.value)
         }
         return element
     }
@@ -102,11 +99,10 @@ object CdsObjectXmlConverter {
      */
     @Throws(TransformerException::class)
     private fun formatXmlString(document: Document): String {
-        val tf = TransformerFactory.newInstance()
-        val transformer = tf.newTransformer()
-        transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes")
-        val sw = StringWriter()
-        transformer.transform(DOMSource(document), StreamResult(sw))
-        return sw.toString()
+        return StringWriter().let {
+            val transformer = TransformerFactory.newInstance().newTransformer()
+            transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes")
+            transformer.transform(DOMSource(document), StreamResult(it))
+        }.toString()
     }
 }

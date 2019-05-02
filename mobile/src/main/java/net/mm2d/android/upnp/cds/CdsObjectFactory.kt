@@ -10,9 +10,9 @@ package net.mm2d.android.upnp.cds
 import android.text.TextUtils
 import net.mm2d.log.Logger
 import net.mm2d.upnp.util.XmlUtils
+import net.mm2d.upnp.util.forEachElement
 import org.w3c.dom.Document
 import org.w3c.dom.Element
-import org.w3c.dom.Node
 import org.xml.sax.SAXException
 import java.io.IOException
 import java.util.*
@@ -37,24 +37,18 @@ internal object CdsObjectFactory {
         udn: String,
         xml: String?
     ): List<CdsObject> {
-        val list = ArrayList<CdsObject>()
-        if (TextUtils.isEmpty(xml)) {
-            return list
+        if (xml.isNullOrEmpty()) {
+            return emptyList()
         }
+        val list = ArrayList<CdsObject>()
         try {
-            val document = XmlUtils.newDocument(false, xml!!)
+            val document = XmlUtils.newDocument(false, xml)
             val rootTag = createRootTag(document)
-            var node: Node? = document.documentElement.firstChild
-            while (node != null) {
-                if (node.nodeType != Node.ELEMENT_NODE) {
-                    node = node.nextSibling
-                    continue
-                }
-                val cdsObject = createCdsObject(udn, (node as Element?)!!, rootTag)
+            document.documentElement.firstChild.forEachElement {
+                val cdsObject = createCdsObject(udn, it, rootTag)
                 if (cdsObject != null) {
                     list.add(cdsObject)
                 }
-                node = node.nextSibling
             }
         } catch (e: ParserConfigurationException) {
             Logger.w(e)
@@ -84,14 +78,8 @@ internal object CdsObjectFactory {
         try {
             val document = XmlUtils.newDocument(false, xml!!)
             val rootTag = createRootTag(document)
-            var node: Node? = document.documentElement.firstChild
-            while (node != null) {
-                if (node.nodeType != Node.ELEMENT_NODE) {
-                    node = node.nextSibling
-                    continue
-                }
-                return createCdsObject(udn, (node as Element?)!!, rootTag)
-                node = node.nextSibling
+            document.documentElement.firstChild?.forEachElement {
+                return createCdsObject(udn, it, rootTag)
             }
         } catch (e: ParserConfigurationException) {
             Logger.w(e)
@@ -100,7 +88,6 @@ internal object CdsObjectFactory {
         } catch (e: IOException) {
             Logger.w(e)
         }
-
         return null
     }
 
@@ -126,7 +113,6 @@ internal object CdsObjectFactory {
         } catch (e: IllegalArgumentException) {
             Logger.w(e)
         }
-
         return null
     }
 }
