@@ -23,50 +23,52 @@ import java.util.*
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
  */
 class CdsObject : Parcelable {
-    val isItem: Boolean
-    val rootTag: Tag
-    internal val tagMap: TagMap
+    /**
+     * MediaServerのUDN
+     */
     val udn: String
-    val objectId: String
-    val parentId: String
-    val title: String
-    val upnpClass: String
-    @ContentType
-    @get:ContentType
-    val type: Int
+    /**
+     * アイテムであるか否か
+     */
+    val isItem: Boolean
+    /**
+     * コンテナであるか否か
+     */
     val isContainer: Boolean
         get() = !isItem
-    val resourceCount: Int
-        get() {
-            val list = getTagList(RES)
-            return list?.size ?: 0
-        }
-
-    // オブジェクト種別の定義
-    @IntDef(TYPE_UNKNOWN, TYPE_VIDEO, TYPE_AUDIO, TYPE_IMAGE, TYPE_CONTAINER)
-    @Retention(AnnotationRetention.SOURCE)
-    annotation class ContentType
-
-    private class Param(map: TagMap) {
-        internal val mObjectId: String
-        internal val mParentId: String
-        internal val mTitle: String
-        internal val mUpnpClass: String
-
-        init {
-            val objectId = map.getValue(ID)
-            val parentId = map.getValue(PARENT_ID)
-            val title = map.getValue(DC_TITLE)
-            val upnpClass = map.getValue(UPNP_CLASS)
-            if (objectId == null || parentId == null || title == null || upnpClass == null) {
-                throw IllegalArgumentException("Malformed item")
-            }
-            mObjectId = objectId
-            mParentId = parentId
-            mTitle = title
-            mUpnpClass = upnpClass
-        }
-    }
+    /**
+     * Typeの値
+     */
+    @get:ContentType
+    val type: Int
+    /**
+     * \@idの値
+     */
+    val objectId: String
+    /**
+     * \@parentIDの値
+     */
+    val parentId: String
+    /**
+     * upnp:classの値
+     */
+    val upnpClass: String
+    /**
+     * dc:titleの値
+     */
+    val title: String
+    /**
+     * ルートタグ情報
+     *
+     * CdsObjectXmlFormatter/CdsFormatterから利用
+     */
+    val rootTag: Tag
+    /**
+     * Tagを格納したマップそのもの
+     *
+     * CdsObjectXmlFormatterから利用
+     */
+    internal val tagMap: TagMap
 
     /**
      * elementをもとにインスタンス作成
@@ -84,11 +86,10 @@ class CdsObject : Parcelable {
         isItem = isItem(element.tagName)
         this.rootTag = rootTag
         tagMap = parseElement(element)
-        val param = Param(tagMap)
-        objectId = param.mObjectId
-        parentId = param.mParentId
-        title = param.mTitle
-        upnpClass = param.mUpnpClass
+        objectId = tagMap.getValue(ID) ?: throw IllegalArgumentException("Malformed item")
+        parentId = tagMap.getValue(PARENT_ID) ?: throw IllegalArgumentException("Malformed item")
+        title = tagMap.getValue(DC_TITLE) ?: throw IllegalArgumentException("Malformed item")
+        upnpClass = tagMap.getValue(UPNP_CLASS) ?: throw IllegalArgumentException("Malformed item")
         type = getType(isItem, upnpClass)
     }
 
@@ -231,7 +232,6 @@ class CdsObject : Parcelable {
     /**
      * XPATH風の指定で示された値をInt値として返す。
      *
-     *
      * [.getValue] の結果を [.parseIntSafely] に渡すことと等価
      *
      * @param xpath        パラメータの位置を表現するXPATH風の指定
@@ -251,7 +251,6 @@ class CdsObject : Parcelable {
     /**
      * XPATH風の指定で示された値をDateとして返す。
      *
-     *
      * [.getValue] の結果を [.parseDate] に渡すことと等価
      *
      * @param xpath パラメータの位置を表現するXPATH風の指定
@@ -265,7 +264,6 @@ class CdsObject : Parcelable {
     /**
      * XPATH風の指定で示された値をDateとして返す。
      *
-     *
      * [.getValue] の結果を [.parseDate] に渡すことと等価
      *
      * @param xpath パラメータの位置を表現するXPATH風の指定
@@ -278,6 +276,15 @@ class CdsObject : Parcelable {
         index: Int
     ): Date? {
         return parseDate(getValue(xpath, index))
+    }
+
+    /**
+     * リソースの数
+     *
+     * @return リソースの数
+     */
+    fun getResourceCount(): Int {
+        return getTagList(RES)?.size ?: 0
     }
 
     /**
@@ -345,11 +352,10 @@ class CdsObject : Parcelable {
         isItem = parcel.readByte().toInt() != 0
         rootTag = parcel.readParcelable(Tag::class.java.classLoader)!!
         tagMap = parcel.readParcelable(TagMap::class.java.classLoader)!!
-        val param = Param(tagMap)
-        objectId = param.mObjectId
-        parentId = param.mParentId
-        title = param.mTitle
-        upnpClass = param.mUpnpClass
+        objectId = tagMap.getValue(ID)!!
+        parentId = tagMap.getValue(PARENT_ID)!!
+        title = tagMap.getValue(DC_TITLE)!!
+        upnpClass = tagMap.getValue(UPNP_CLASS)!!
         type = getType(isItem, upnpClass)
     }
 
@@ -368,6 +374,11 @@ class CdsObject : Parcelable {
     }
 
     companion object {
+        // オブジェクト種別の定義
+        @IntDef(TYPE_UNKNOWN, TYPE_VIDEO, TYPE_AUDIO, TYPE_IMAGE, TYPE_CONTAINER)
+        @Retention(AnnotationRetention.SOURCE)
+        annotation class ContentType
+
         // XML関係の定義
         const val DIDL_LITE = "DIDL-Lite"
         /**
@@ -1200,8 +1211,8 @@ class CdsObject : Parcelable {
          */
         @JvmField
         val CREATOR: Parcelable.Creator<CdsObject> = object : Parcelable.Creator<CdsObject> {
-            override fun createFromParcel(`in`: Parcel): CdsObject {
-                return CdsObject(`in`)
+            override fun createFromParcel(parcel: Parcel): CdsObject {
+                return CdsObject(parcel)
             }
 
             override fun newArray(size: Int): Array<CdsObject?> {
