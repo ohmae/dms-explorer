@@ -9,7 +9,7 @@ package net.mm2d.android.upnp.cds
 
 import android.os.Parcel
 import android.os.Parcelable
-import android.text.TextUtils
+import android.os.Parcelable.Creator
 import androidx.collection.ArrayMap
 import java.util.*
 
@@ -149,7 +149,7 @@ internal class TagMap : Parcelable {
         index: Int = 0
     ): String? {
         val tag = getTag(tagName, index) ?: return null
-        return if (TextUtils.isEmpty(attrName)) {
+        return if (attrName.isNullOrEmpty()) {
             tag.value
         } else tag.getAttribute(attrName)
     }
@@ -179,9 +179,7 @@ internal class TagMap : Parcelable {
      * @return Tagインスタンスリスト
      */
     fun getTagList(tagName: String?): List<Tag>? {
-        return if (tagName == null) {
-            map[""]
-        } else map[tagName]
+        return map[tagName ?: ""]
     }
 
     override fun toString(): String {
@@ -217,29 +215,19 @@ internal class TagMap : Parcelable {
     }
 
     override fun equals(o: Any?): Boolean {
-        if (this === o) {
-            return true
-        }
-        if (o !is TagMap) {
-            return false
-        }
+        if (this === o) return true
+        if (o !is TagMap) return false
         val obj = o as TagMap?
         return map == obj!!.map
     }
 
-    companion object {
-        /**
-         * Parcelableのためのフィールド
-         */
-        @JvmField
-        val CREATOR: Parcelable.Creator<TagMap> = object : Parcelable.Creator<TagMap> {
-            override fun createFromParcel(`in`: Parcel): TagMap {
-                return TagMap(`in`)
-            }
+    companion object CREATOR : Creator<TagMap> {
+        override fun createFromParcel(parcel: Parcel): TagMap {
+            return TagMap(parcel)
+        }
 
-            override fun newArray(size: Int): Array<TagMap?> {
-                return arrayOfNulls(size)
-            }
+        override fun newArray(size: Int): Array<TagMap?> {
+            return arrayOfNulls(size)
         }
     }
 }

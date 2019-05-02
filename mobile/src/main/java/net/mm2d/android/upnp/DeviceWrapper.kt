@@ -26,15 +26,13 @@ abstract class DeviceWrapper(
     /**
      * このクラスがwrapしているDeviceのインスタンスを返す。
      *
-     * **取扱い注意！**
-     *
      * protectedであるが、内部実装を理解したサブクラスから参照される想定であり、
      * 直接Deviceをサブクラス以外から参照しないこと。
      * Deviceの各プロパティへは用意されたアクセッサを利用する。
      *
      * @return Device
      */
-    protected val device: Device
+    private val device: Device
 ) {
     private val arguments = Bundle()
     private var iconSearched: Boolean = false

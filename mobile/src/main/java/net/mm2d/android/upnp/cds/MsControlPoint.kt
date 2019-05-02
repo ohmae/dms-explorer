@@ -131,10 +131,8 @@ class MsControlPoint : ControlPointWrapper {
             return
         }
         val ids = ArrayList<String>()
-        var i = 0
-        while (i < values.size) {
+        for (i in 0 until values.size step 2) {
             ids.add(values[i])
-            i += 2
         }
         containerUpdateIdsListener!!.onContainerUpdateIds(server, ids)
     }
