@@ -9,6 +9,7 @@ package net.mm2d.android.upnp.cds
 
 import android.os.Parcel
 import android.os.Parcelable
+import android.os.Parcelable.Creator
 import org.w3c.dom.Element
 import java.util.*
 
@@ -24,6 +25,8 @@ import java.util.*
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
  */
 class Tag : Parcelable {
+    private val _attribute: MutableMap<String, String>
+
     /**
      * タグ名を返す。
      *
@@ -36,17 +39,13 @@ class Tag : Parcelable {
      * @return タグの値
      */
     val value: String
-    private val mAttribute: MutableMap<String, String>
-
     /**
      * 属性値を格納したMapを返す。
      *
-     * @return 属性値を格納したUnmodifiable Map
+     * @return 属性値を格納したMap
      */
     val attributes: Map<String, String>
-        get() = if (mAttribute.isEmpty()) {
-            emptyMap()
-        } else Collections.unmodifiableMap(mAttribute)
+        get() = _attribute
 
     /**
      * インスタンス作成。
@@ -77,13 +76,13 @@ class Tag : Parcelable {
         val attributes = element.attributes
         val size = attributes.length
         if (size == 0) {
-            mAttribute = mutableMapOf()
+            _attribute = mutableMapOf()
             return
         }
-        mAttribute = LinkedHashMap(size)
+        _attribute = LinkedHashMap(size)
         for (i in 0 until size) {
             val attr = attributes.item(i)
-            mAttribute[attr.nodeName] = attr.nodeValue
+            _attribute[attr.nodeName] = attr.nodeValue
         }
     }
 
@@ -94,18 +93,18 @@ class Tag : Parcelable {
      * @return 属性値、見つからない場合null
      */
     fun getAttribute(name: String?): String? {
-        return mAttribute[name]
+        return _attribute[name]
     }
 
     override fun toString(): String {
         val sb = StringBuilder()
         sb.append(value)
-        for ((key, value1) in mAttribute) {
+        _attribute.forEach {
             sb.append("\n")
             sb.append("@")
-            sb.append(key)
+            sb.append(it.key)
             sb.append(" => ")
-            sb.append(value1)
+            sb.append(it.value)
         }
         return sb.toString()
     }
@@ -119,15 +118,11 @@ class Tag : Parcelable {
         name = parcel.readString()!!
         value = parcel.readString()!!
         val size = parcel.readInt()
-        if (size == 0) {
-            mAttribute = mutableMapOf()
-        } else {
-            mAttribute = LinkedHashMap(size)
-            for (i in 0 until size) {
-                val name = parcel.readString()
-                val value = parcel.readString()
-                mAttribute[name!!] = value!!
-            }
+        _attribute = LinkedHashMap(size)
+        for (i in 0 until size) {
+            val name = parcel.readString()!!
+            val value = parcel.readString()!!
+            _attribute[name] = value
         }
     }
 
@@ -137,10 +132,10 @@ class Tag : Parcelable {
     ) {
         dest.writeString(name)
         dest.writeString(value)
-        dest.writeInt(mAttribute.size)
-        for ((key, value1) in mAttribute) {
-            dest.writeString(key)
-            dest.writeString(value1)
+        dest.writeInt(_attribute.size)
+        _attribute.forEach {
+            dest.writeString(it.key)
+            dest.writeString(it.value)
         }
     }
 
@@ -148,20 +143,13 @@ class Tag : Parcelable {
         return 0
     }
 
-    companion object {
+    companion object CREATOR : Creator<Tag> {
+        override fun createFromParcel(parcel: Parcel): Tag {
+            return Tag(parcel)
+        }
 
-        /**
-         * Parcelableのためのフィールド
-         */
-        @JvmField
-        val CREATOR: Parcelable.Creator<Tag> = object : Parcelable.Creator<Tag> {
-            override fun createFromParcel(`in`: Parcel): Tag {
-                return Tag(`in`)
-            }
-
-            override fun newArray(size: Int): Array<Tag?> {
-                return arrayOfNulls(size)
-            }
+        override fun newArray(size: Int): Array<Tag?> {
+            return arrayOfNulls(size)
         }
     }
 }
