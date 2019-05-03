@@ -38,8 +38,8 @@ import net.mm2d.dmsexplorer.view.animator.CustomItemAnimator
 class ServerListActivityModel(
     context: Context,
     repository: Repository,
-    private val mServerSelectListener: ServerSelectListener,
-    private val mTwoPane: Boolean
+    private val serverSelectListener: ServerSelectListener,
+    private val twoPane: Boolean
 ) : BaseObservable() {
     val refreshColors =
         intArrayOf(R.color.progress1, R.color.progress2, R.color.progress3, R.color.progress4)
@@ -131,13 +131,13 @@ class ServerListActivityModel(
         serverListAdapter.setSelectedServer(server)
         controlPointModel.selectedMediaServer = server
         if (settings.shouldShowDeviceDetailOnTap()) {
-            if (mTwoPane && alreadySelected) {
-                mServerSelectListener.onExecute(v)
+            if (twoPane && alreadySelected) {
+                serverSelectListener.onExecute(v)
             } else {
-                mServerSelectListener.onSelect(v)
+                serverSelectListener.onSelect(v)
             }
         } else {
-            mServerSelectListener.onExecute(v)
+            serverSelectListener.onExecute(v)
         }
     }
 
@@ -149,9 +149,9 @@ class ServerListActivityModel(
         controlPointModel.selectedMediaServer = server
 
         if (settings.shouldShowDeviceDetailOnTap()) {
-            mServerSelectListener.onExecute(v)
+            serverSelectListener.onExecute(v)
         } else {
-            mServerSelectListener.onSelect(v)
+            serverSelectListener.onSelect(v)
         }
     }
 
@@ -180,7 +180,7 @@ class ServerListActivityModel(
             serverListAdapter.notifyDataSetChanged()
         }
         if (server == controlPointModel.selectedMediaServer) {
-            mServerSelectListener.onLostSelection()
+            serverSelectListener.onLostSelection()
             serverListAdapter.clearSelectedServer()
             controlPointModel.clearSelectedServer()
         }
