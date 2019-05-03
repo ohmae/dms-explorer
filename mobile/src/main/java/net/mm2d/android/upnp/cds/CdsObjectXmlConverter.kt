@@ -99,7 +99,7 @@ object CdsObjectXmlConverter {
      */
     @Throws(TransformerException::class)
     private fun formatXmlString(document: Document): String {
-        return StringWriter().let {
+        return StringWriter().also {
             val transformer = TransformerFactory.newInstance().newTransformer()
             transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes")
             transformer.transform(DOMSource(document), StreamResult(it))
