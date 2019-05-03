@@ -89,7 +89,7 @@ public abstract class ContentListActivityDelegate implements CdsSelectListener, 
         if (savedInstanceState != null) {
             restoreScroll(savedInstanceState);
         }
-        repository.getThemeModel().setThemeColor(getActivity(), mModel.toolbarBackground, 0);
+        repository.getThemeModel().setThemeColor(getActivity(), mModel.getToolbarBackground(), 0);
     }
 
     @CallSuper

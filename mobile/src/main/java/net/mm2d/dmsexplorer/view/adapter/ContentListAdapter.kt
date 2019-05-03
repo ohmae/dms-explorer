@@ -29,8 +29,8 @@ import java.util.*
 class ContentListAdapter(context: Context) : RecyclerView.Adapter<ContentListAdapter.ViewHolder>() {
     private val inflater: LayoutInflater = LayoutInflater.from(context)
     private val list = ArrayList<ContentEntity>()
-    private var clickListener: OnItemClickListener = ON_ITEM_CLICK_LISTENER
-    private var longClickListener: OnItemLongClickListener = ON_ITEM_LONG_CLICK_LISTENER
+    private var clickListener: ((View, ContentEntity) -> Unit)? = null
+    private var longClickListener: ((View, ContentEntity) -> Unit)? = null
     private var selectedEntity: ContentEntity? = null
     private val hasTouchScreen: Boolean = FeatureUtils.hasTouchScreen(context)
     private val translationZ: Float =
@@ -56,12 +56,12 @@ class ContentListAdapter(context: Context) : RecyclerView.Adapter<ContentListAda
         return list.size
     }
 
-    fun setOnItemClickListener(listener: OnItemClickListener?) {
-        clickListener = listener ?: ON_ITEM_CLICK_LISTENER
+    fun setOnItemClickListener(listener: ((View, ContentEntity) -> Unit)?) {
+        clickListener = listener
     }
 
-    fun setOnItemLongClickListener(listener: OnItemLongClickListener?) {
-        longClickListener = listener ?: ON_ITEM_LONG_CLICK_LISTENER
+    fun setOnItemLongClickListener(listener: ((View, ContentEntity) -> Unit)?) {
+        longClickListener = listener
     }
 
     fun clear() {
@@ -119,14 +119,6 @@ class ContentListAdapter(context: Context) : RecyclerView.Adapter<ContentListAda
         setSelectedEntity(null)
     }
 
-    interface OnItemClickListener {
-        fun onItemClick(v: View, entity: ContentEntity)
-    }
-
-    interface OnItemLongClickListener {
-        fun onItemLongClick(v: View, entity: ContentEntity)
-    }
-
     inner class ViewHolder(
         private val binding: ContentListItemBinding
     ) : RecyclerView.ViewHolder(binding.root) {
@@ -150,11 +142,15 @@ class ContentListAdapter(context: Context) : RecyclerView.Adapter<ContentListAda
         }
 
         private fun onClick(v: View) {
-            clickListener.onItemClick(v, contentEntity!!)
+            contentEntity?.let {
+                clickListener?.invoke(v, it)
+            }
         }
 
         private fun onLongClick(v: View): Boolean {
-            longClickListener.onItemLongClick(v, contentEntity!!)
+            contentEntity?.let {
+                longClickListener?.invoke(v, it)
+            }
             return true
         }
 
@@ -177,13 +173,5 @@ class ContentListAdapter(context: Context) : RecyclerView.Adapter<ContentListAda
 
     companion object {
         private const val FOCUS_SCALE = 1.1f
-        private val ON_ITEM_CLICK_LISTENER = object : OnItemClickListener {
-            override fun onItemClick(v: View, entity: ContentEntity) {
-            }
-        }
-        private val ON_ITEM_LONG_CLICK_LISTENER = object : OnItemLongClickListener {
-            override fun onItemLongClick(v: View, entity: ContentEntity) {
-            }
-        }
     }
 }
