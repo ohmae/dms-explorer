@@ -73,7 +73,7 @@ public class ServerDetailActivity extends BaseActivity {
 
         final ServerDetailFragmentModel model = mBinding.getModel();
         if (model != null) {
-            Repository.get().getThemeModel().setThemeColor(this, model.collapsedColor, 0);
+            Repository.get().getThemeModel().setThemeColor(this, model.getCollapsedColor(), 0);
         }
 
         prepareTransition(savedInstanceState != null);
