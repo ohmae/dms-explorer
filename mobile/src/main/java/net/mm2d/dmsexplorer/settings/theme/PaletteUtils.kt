@@ -7,13 +7,14 @@
 
 package net.mm2d.dmsexplorer.settings.theme
 
+import android.graphics.Bitmap
 import androidx.palette.graphics.Palette
 import androidx.palette.graphics.Palette.Swatch
 
 /**
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
  */
-internal object PaletteUtils {
+object PaletteUtils {
     fun selectLightSwatch(palette: Palette): Swatch? {
         return palette.vibrantSwatch
             ?: palette.mutedSwatch
@@ -27,4 +28,12 @@ internal object PaletteUtils {
             ?: palette.mutedSwatch
             ?: palette.dominantSwatch
     }
+}
+
+fun Bitmap.generatePalette(): Palette {
+    return Palette.Builder(this).generate()
+}
+
+fun Bitmap.generatePalette(listener: (Palette?) -> Unit) {
+    Palette.Builder(this).generate(listener)
 }

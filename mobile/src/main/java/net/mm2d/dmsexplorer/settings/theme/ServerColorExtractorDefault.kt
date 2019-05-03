@@ -27,17 +27,12 @@ internal class ServerColorExtractorDefault : ServerColorExtractor {
         if (server.getBooleanTag(Const.KEY_HAS_TOOLBAR_COLOR, false)) {
             return
         }
-        if (icon == null) {
-            extractFromPalette(server, null)
-        } else {
-            Palette.Builder(icon)
-                .generate { palette -> extractFromPalette(server, palette) }
-        }
+        icon?.generatePalette { extractFromPalette(server, it) }
+            ?: extractFromPalette(server, null)
     }
 
     private fun extract(server: MediaServer, icon: Bitmap?) {
-        val palette = icon?.let { Palette.Builder(it).generate() }
-        extractFromPalette(server, palette)
+        extractFromPalette(server, icon?.generatePalette())
     }
 
     private fun extractFromPalette(

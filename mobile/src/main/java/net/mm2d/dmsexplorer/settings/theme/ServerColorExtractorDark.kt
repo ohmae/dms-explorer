@@ -28,16 +28,12 @@ internal class ServerColorExtractorDark : ServerColorExtractor {
         if (server.getBooleanTag(Const.KEY_HAS_TOOLBAR_COLOR, false)) {
             return
         }
-        if (icon == null) {
-            extractFromPalette(server, null)
-        } else {
-            androidx.palette.graphics.Palette.Builder(icon)
-                .generate { palette -> extractFromPalette(server, palette) }
-        }
+        icon?.generatePalette { extractFromPalette(server, it) }
+            ?: extractFromPalette(server, null)
     }
 
     private fun extract(server: MediaServer, icon: Bitmap?) {
-        val palette = icon?.let { Palette.Builder(it).generate() }
+        val palette = icon?.generatePalette()
         extractFromPalette(server, palette)
     }
 
