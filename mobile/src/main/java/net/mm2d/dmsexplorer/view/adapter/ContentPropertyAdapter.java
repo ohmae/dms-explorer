@@ -8,7 +8,6 @@
 package net.mm2d.dmsexplorer.view.adapter;
 
 import android.content.Context;
-import android.util.Pair;
 
 import net.mm2d.android.upnp.cds.CdsObject;
 import net.mm2d.android.util.AribUtils;
@@ -19,6 +18,7 @@ import net.mm2d.dmsexplorer.domain.formatter.CdsFormatter;
 import java.util.List;
 
 import androidx.annotation.NonNull;
+import kotlin.Pair;
 
 /**
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
@@ -63,7 +63,7 @@ class ContentPropertyAdapter extends PropertyAdapter {
         if (longDescriptions.size() != 0) {
             adapter.addTitleEntry(context.getString(R.string.prop_long_description));
             for (final Pair<String, String> pair : longDescriptions) {
-                adapter.addEntry(pair.first, pair.second, Type.DESCRIPTION);
+                adapter.addEntry(pair.getFirst(), pair.getSecond(), Type.DESCRIPTION);
             }
         } else {
             adapter.addEntry(context.getString(R.string.prop_long_description),
