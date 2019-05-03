@@ -72,7 +72,7 @@ public class ContentDetailActivity extends BaseActivity implements OnDeleteListe
 
         final ContentDetailFragmentModel model = binding.getModel();
         if (model != null) {
-            repository.getThemeModel().setThemeColor(this, model.collapsedColor, 0);
+            repository.getThemeModel().setThemeColor(this, model.getCollapsedColor(), 0);
         }
     }
 
