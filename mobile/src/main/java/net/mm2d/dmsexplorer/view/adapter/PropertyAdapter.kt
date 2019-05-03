@@ -32,22 +32,11 @@ import java.util.regex.Pattern
  *
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
  */
-abstract class PropertyAdapter(protected val context: Context) : Adapter<ViewHolder>() {
+abstract class PropertyAdapter(
+    protected val context: Context
+) : Adapter<ViewHolder>() {
     private val list: MutableList<Entry> = ArrayList()
     private val inflater: LayoutInflater = LayoutInflater.from(context)
-
-    enum class Type {
-        TITLE,
-        TEXT,
-        LINK,
-        DESCRIPTION
-    }
-
-    class Entry(
-        val name: String,
-        val value: String,
-        val type: Type
-    )
 
     @JvmOverloads
     fun addEntry(
@@ -55,7 +44,7 @@ abstract class PropertyAdapter(protected val context: Context) : Adapter<ViewHol
         value: String?,
         type: Type = Type.TEXT
     ) {
-        if (value == null || value.isEmpty()) {
+        if (value.isNullOrEmpty()) {
             return
         }
         list.add(Entry(name, value, type))
@@ -89,6 +78,19 @@ abstract class PropertyAdapter(protected val context: Context) : Adapter<ViewHol
     override fun getItemCount(): Int {
         return list.size
     }
+
+    enum class Type {
+        TITLE,
+        TEXT,
+        LINK,
+        DESCRIPTION
+    }
+
+    class Entry(
+        val name: String,
+        val value: String,
+        val type: Type
+    )
 
     class ViewHolder(
         private val context: Context,

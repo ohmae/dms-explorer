@@ -38,20 +38,6 @@ class ServerListAdapter(
     private val translationZ: Float =
         context.resources.getDimension(R.dimen.list_item_focus_elevation)
 
-    interface OnItemClickListener {
-        fun onItemClick(
-            v: View,
-            server: MediaServer
-        )
-    }
-
-    interface OnItemLongClickListener {
-        fun onItemLongClick(
-            v: View,
-            server: MediaServer
-        )
-    }
-
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
@@ -126,6 +112,14 @@ class ServerListAdapter(
 
     fun clearSelectedServer() {
         setSelectedServer(null)
+    }
+
+    interface OnItemClickListener {
+        fun onItemClick(v: View, server: MediaServer)
+    }
+
+    interface OnItemLongClickListener {
+        fun onItemLongClick(v: View, server: MediaServer)
     }
 
     inner class ViewHolder(
