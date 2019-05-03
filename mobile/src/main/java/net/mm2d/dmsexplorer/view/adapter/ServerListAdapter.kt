@@ -31,12 +31,12 @@ class ServerListAdapter(
 ) : RecyclerView.Adapter<ServerListAdapter.ViewHolder>() {
     private val inflater: LayoutInflater = LayoutInflater.from(context)
     private val list: MutableList<MediaServer> = servers?.let { ArrayList(it) } ?: ArrayList()
-    private var clickListener: OnItemClickListener = ON_ITEM_CLICK_LISTENER
-    private var longClickListener: OnItemLongClickListener = ON_ITEM_LONG_CLICK_LISTENER
+    private var clickListener: ((View, MediaServer) -> Unit)? = null
+    private var longClickListener: ((View, MediaServer) -> Unit)? = null
     private var selectedServer: MediaServer? = null
     private val hasTouchScreen: Boolean = FeatureUtils.hasTouchScreen(context)
-    private val translationZ: Float =
-        context.resources.getDimension(R.dimen.list_item_focus_elevation)
+    private val translationZ: Float = context.resources
+        .getDimension(R.dimen.list_item_focus_elevation)
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -62,12 +62,12 @@ class ServerListAdapter(
         return list.indexOf(server)
     }
 
-    fun setOnItemClickListener(listener: OnItemClickListener?) {
-        clickListener = listener ?: ON_ITEM_CLICK_LISTENER
+    fun setOnItemClickListener(listener: ((View, MediaServer) -> Unit)?) {
+        clickListener = listener
     }
 
-    fun setOnItemLongClickListener(listener: OnItemLongClickListener?) {
-        longClickListener = listener ?: ON_ITEM_LONG_CLICK_LISTENER
+    fun setOnItemLongClickListener(listener: ((View, MediaServer) -> Unit)?) {
+        longClickListener = listener
     }
 
     fun clear() {
@@ -114,14 +114,6 @@ class ServerListAdapter(
         setSelectedServer(null)
     }
 
-    interface OnItemClickListener {
-        fun onItemClick(v: View, server: MediaServer)
-    }
-
-    interface OnItemLongClickListener {
-        fun onItemLongClick(v: View, server: MediaServer)
-    }
-
     inner class ViewHolder(
         private val binding: ServerListItemBinding
     ) : RecyclerView.ViewHolder(binding.root) {
@@ -146,13 +138,13 @@ class ServerListAdapter(
 
         private fun onClick(v: View) {
             mediaServer?.let {
-                clickListener.onItemClick(v, it)
+                clickListener?.invoke(v, it)
             }
         }
 
         private fun onLongClick(v: View): Boolean {
             mediaServer?.let {
-                longClickListener.onItemLongClick(v, it)
+                longClickListener?.invoke(v, it)
             }
             return true
         }
@@ -176,13 +168,5 @@ class ServerListAdapter(
 
     companion object {
         private const val FOCUS_SCALE = 1.1f
-        private val ON_ITEM_CLICK_LISTENER = object : OnItemClickListener {
-            override fun onItemClick(v: View, server: MediaServer) {
-            }
-        }
-        private val ON_ITEM_LONG_CLICK_LISTENER = object : OnItemLongClickListener {
-            override fun onItemLongClick(v: View, server: MediaServer) {
-            }
-        }
     }
 }
