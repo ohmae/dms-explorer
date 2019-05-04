@@ -59,9 +59,10 @@ class PhotoActivity : BaseActivity() {
         setTheme(settings.themeParams.fullscreenThemeId)
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.photo_activity)
-        fullscreenHelper = FullscreenHelper.Builder(binding.getRoot())
-            .setTopView(binding.toolbar)
-            .build()
+        fullscreenHelper = FullscreenHelper(
+            rootView = binding.getRoot(),
+            topView = binding.toolbar
+        )
         repository = Repository.get()
         serverModel = repository.mediaServerModel
         try {

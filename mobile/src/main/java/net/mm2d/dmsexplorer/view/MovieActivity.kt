@@ -39,10 +39,11 @@ class MovieActivity : BaseActivity() {
         setTheme(settings.themeParams.fullscreenThemeId)
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.movie_activity)
-        fullscreenHelper = FullscreenHelper.Builder(binding.getRoot())
-            .setTopView(binding.toolbar)
-            .setBottomView(binding.controlPanel.root)
-            .build()
+        fullscreenHelper = FullscreenHelper(
+            rootView = binding.getRoot(),
+            topView = binding.toolbar,
+            bottomView = binding.controlPanel.root
+        )
         val repository = Repository.get()
         try {
             model = MovieActivityModel(this, binding.videoView, repository)
