@@ -61,10 +61,10 @@ class DeleteDialog : DialogFragment() {
             )
             .setNegativeButton(R.string.cancel, null)
             .setPositiveButton(R.string.ok) { _, _ ->
-                model.delete(entity, {
+                model.delete(entity, Runnable {
                     Toaster.show(applicationContext, R.string.toast_delete_succeed)
                     onDeleteListener?.onDelete()
-                }, {
+                }, Runnable {
                     Toaster.show(applicationContext, R.string.toast_delete_error)
                 })
             }.create()

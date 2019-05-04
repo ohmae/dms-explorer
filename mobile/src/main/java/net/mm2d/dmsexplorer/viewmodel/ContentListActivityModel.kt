@@ -136,7 +136,7 @@ class ContentListActivityModel(
             return
         }
         val selected = entity == mediaServerModel.selectedEntity
-        mediaServerModel.selectedEntity = entity
+        mediaServerModel.setSelectedEntity(entity)
         contentListAdapter.setSelectedEntity(entity)
         if (settings.shouldShowContentDetailOnTap()) {
             if (twoPane && selected) {
@@ -158,7 +158,7 @@ class ContentListActivityModel(
             return
         }
         val selected = entity == mediaServerModel.selectedEntity
-        mediaServerModel.selectedEntity = entity
+        mediaServerModel.setSelectedEntity(entity)
         contentListAdapter.setSelectedEntity(entity)
 
         if (settings.shouldShowContentDetailOnTap()) {
