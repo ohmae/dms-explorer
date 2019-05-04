@@ -30,8 +30,6 @@ import net.mm2d.dmsexplorer.log.EventLogger
 import net.mm2d.dmsexplorer.settings.RepeatMode
 import net.mm2d.dmsexplorer.settings.Settings
 import net.mm2d.dmsexplorer.view.base.BaseActivity
-import net.mm2d.dmsexplorer.viewmodel.ControlPanelModel.OnCompletionListener
-import net.mm2d.dmsexplorer.viewmodel.ControlPanelModel.SkipControlListener
 import net.mm2d.dmsexplorer.viewmodel.helper.MovieActivityPipHelper
 import net.mm2d.dmsexplorer.viewmodel.helper.MuteAlertHelper
 import net.mm2d.dmsexplorer.viewmodel.helper.PipHelpers
@@ -43,7 +41,7 @@ class MovieActivityModel(
     private val activity: BaseActivity,
     private val videoView: VideoView,
     private val repository: Repository
-) : BaseObservable(), OnCompletionListener, SkipControlListener {
+) : BaseObservable() {
     private val serverModel: MediaServerModel = repository.mediaServerModel
     private val settings: Settings = Settings.get()
     private var onChangeContentListener: (() -> Unit)? = null
@@ -115,8 +113,8 @@ class MovieActivityModel(
         val playerModel = MoviePlayerModel(activity, videoView)
         controlPanelModel = ControlPanelModel(activity, playerModel)
         controlPanelModel.setRepeatMode(repeatMode)
-        controlPanelModel.setOnCompletionListener(this)
-        controlPanelModel.setSkipControlListener(this)
+        controlPanelModel.setOnCompletionListener(this::onCompletion)
+        controlPanelModel.setSkipControlListener(this::onNext, this::onPrevious)
         movieActivityPipHelper.setControlPanelModel(controlPanelModel)
         playerModel.setUri(targetModel.uri, null)
         title = if (settings.shouldShowTitleInMovieUi())
@@ -167,7 +165,7 @@ class MovieActivityModel(
         toast = Toaster.show(activity, repeatMode.messageId)
     }
 
-    override fun onCompletion() {
+    private fun onCompletion() {
         controlPanelModel.terminate()
         if (isTooShortPlayTime || controlPanelModel.hasError() || !selectNext()) {
             finishAfterTransition()
@@ -178,7 +176,7 @@ class MovieActivityModel(
         EventLogger.sendPlayContent(true)
     }
 
-    override fun next() {
+    private fun onNext() {
         controlPanelModel.terminate()
         if (!selectNext()) {
             finishAfterTransition()
@@ -189,7 +187,7 @@ class MovieActivityModel(
         EventLogger.sendPlayContent(true)
     }
 
-    override fun previous() {
+    private fun onPrevious() {
         controlPanelModel.terminate()
         if (!selectPrevious()) {
             finishAfterTransition()

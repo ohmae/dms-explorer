@@ -28,8 +28,6 @@ import net.mm2d.dmsexplorer.settings.Settings
 import net.mm2d.dmsexplorer.util.Downloader
 import net.mm2d.dmsexplorer.view.adapter.PropertyAdapter
 import net.mm2d.dmsexplorer.view.base.BaseActivity
-import net.mm2d.dmsexplorer.viewmodel.ControlPanelModel.OnCompletionListener
-import net.mm2d.dmsexplorer.viewmodel.ControlPanelModel.SkipControlListener
 import net.mm2d.dmsexplorer.viewmodel.helper.MuteAlertHelper
 
 /**
@@ -38,7 +36,7 @@ import net.mm2d.dmsexplorer.viewmodel.helper.MuteAlertHelper
 class MusicActivityModel(
     private val mActivity: BaseActivity,
     private val mRepository: Repository
-) : BaseObservable(), OnCompletionListener, SkipControlListener {
+) : BaseObservable() {
     private val serverModel: MediaServerModel = mRepository.mediaServerModel
     private val settings: Settings = Settings.get()
     private var repeatMode: RepeatMode = settings.repeatModeMusic
@@ -102,8 +100,8 @@ class MusicActivityModel(
         val playerModel = MusicPlayerModel(mActivity)
         controlPanelModel = ControlPanelModel(mActivity, playerModel).also {
             it.setRepeatMode(repeatMode)
-            it.setOnCompletionListener(this)
-            it.setSkipControlListener(this)
+            it.setOnCompletionListener(this::onCompletion)
+            it.setSkipControlListener(this::onNext, this::onPrevious)
         }
         playerModel.setUri(targetModel.uri, null)
 
@@ -161,7 +159,7 @@ class MusicActivityModel(
         toast = Toaster.show(mActivity, repeatMode.messageId)
     }
 
-    override fun onCompletion() {
+    private fun onCompletion() {
         controlPanelModel.terminate()
         if (isTooShortPlayTime || controlPanelModel.hasError() || !selectNext()) {
             finishAfterTransition()
@@ -171,7 +169,7 @@ class MusicActivityModel(
         EventLogger.sendPlayContent(true)
     }
 
-    override fun next() {
+    private fun onNext() {
         controlPanelModel.terminate()
         if (!selectNext()) {
             finishAfterTransition()
@@ -181,7 +179,7 @@ class MusicActivityModel(
         EventLogger.sendPlayContent(true)
     }
 
-    override fun previous() {
+    private fun onPrevious() {
         controlPanelModel.terminate()
         if (!selectPrevious()) {
             finishAfterTransition()
