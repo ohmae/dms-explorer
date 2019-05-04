@@ -131,7 +131,7 @@ class DmcActivityModel(
         rendererModel.setStatusListener(this)
         val entity = targetModel.contentEntity
         title = AribUtils.toDisplayableString(entity.name)
-        hasDuration = entity.type.hasDuration()
+        hasDuration = entity.type.hasDuration
         isPlayControlEnabled = hasDuration && rendererModel.canPause()
         val serverModel = repository.mediaServerModel
         subtitle = (rendererModel.name

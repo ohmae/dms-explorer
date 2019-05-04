@@ -105,7 +105,7 @@ class MediaRendererModel(
     ) {
         mediaRenderer.clearAVTransportURI()
             .subscribe()
-        val `object` = entity!!.getObject() as CdsObject
+        val `object` = entity!!.cdsObject as CdsObject
         mediaRenderer.setAVTransportURI(`object`, uri.toString())
             .flatMap { mediaRenderer.play() }
             .observeOn(AndroidSchedulers.mainThread())

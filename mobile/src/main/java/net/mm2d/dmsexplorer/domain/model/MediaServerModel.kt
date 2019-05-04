@@ -78,7 +78,7 @@ class MediaServerModel(
         val doNothing = Runnable { }
         val onSuccess = successCallback ?: doNothing
         val onError = errorCallback ?: doNothing
-        val id = (entity.getObject() as CdsObject).objectId
+        val id = (entity.cdsObject as CdsObject).objectId
         mediaServer.destroyObject(id)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({ integer ->

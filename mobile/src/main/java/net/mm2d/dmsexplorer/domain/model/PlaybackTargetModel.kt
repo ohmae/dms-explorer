@@ -18,7 +18,7 @@ import net.mm2d.dmsexplorer.domain.entity.ContentEntity
 class PlaybackTargetModel(
     val contentEntity: ContentEntity
 ) {
-    private val cdsObject: CdsObject = contentEntity.getObject() as CdsObject
+    private val cdsObject: CdsObject = contentEntity.cdsObject as CdsObject
     private var targetRes: Tag? = cdsObject.getTag(CdsObject.RES)
     var uri: Uri = Uri.EMPTY
         private set
