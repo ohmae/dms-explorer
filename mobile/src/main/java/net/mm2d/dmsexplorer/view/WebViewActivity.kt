@@ -91,7 +91,7 @@ class WebViewActivity : BaseActivity() {
             ): Boolean {
                 Repository.get()
                     .openUriModel
-                    .openUri(this@WebViewActivity, url?: return true)
+                    .openUri(this@WebViewActivity, url ?: return true)
                 return true
             }
         }
