@@ -102,7 +102,7 @@ public class ItemSelectUtils {
 
     public static void sendSelectedRenderer(@NonNull final Context context) {
         try {
-            context.startActivity(DmcActivity.makeIntent(context));
+            context.startActivity(DmcActivity.Companion.makeIntent(context));
             EventLogger.sendSendContent();
         } catch (final Exception ignored) {
             Toaster.show(context, R.string.toast_launch_error);
