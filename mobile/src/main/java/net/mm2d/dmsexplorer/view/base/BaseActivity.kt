@@ -16,7 +16,6 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NavUtils
 import androidx.core.app.TaskStackBuilder
-import net.mm2d.dmsexplorer.view.eventrouter.Callback
 import net.mm2d.dmsexplorer.view.eventrouter.EventObserver
 import net.mm2d.dmsexplorer.view.eventrouter.EventRouter
 import java.util.concurrent.atomic.AtomicBoolean
@@ -43,18 +42,10 @@ abstract class BaseActivity @JvmOverloads constructor(
             BaseOptionsMenuDelegate(this)
         delegate.onCreate(savedInstanceState)
         finishObserver = EventRouter.createFinishObserver().also {
-            it.register(object : Callback {
-                override fun onReceive() {
-                    finish()
-                }
-            })
+            it.register { finish() }
         }
         orientationSettingsObserver = EventRouter.createOrientationSettingsObserver().also {
-            it.register(object : Callback {
-                override fun onReceive() {
-                    updateOrientationSettings()
-                }
-            })
+            it.register { updateOrientationSettings() }
         }
     }
 

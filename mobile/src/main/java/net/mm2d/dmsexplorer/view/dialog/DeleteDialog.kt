@@ -37,7 +37,7 @@ class DeleteDialog : DialogFragment() {
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        val context = activity !!
+        val context = activity!!
         val builder = AlertDialog.Builder(context)
         val model = Repository.get().mediaServerModel
         if (model == null) {

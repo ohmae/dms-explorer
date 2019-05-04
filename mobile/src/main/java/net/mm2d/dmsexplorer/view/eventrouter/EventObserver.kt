@@ -11,7 +11,7 @@ package net.mm2d.dmsexplorer.view.eventrouter
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
  */
 interface EventObserver {
-    fun register(callback: Callback?)
+    fun register(callback: () -> Unit)
 
     fun unregister()
 }

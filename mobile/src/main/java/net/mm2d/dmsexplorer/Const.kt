@@ -28,7 +28,8 @@ object Const {
     const val URL_UPDATE_BASE = "https://ohmae.github.io/DmsExplorer/"
     const val URL_UPDATE_PATH = "json/update.json"
     const val URL_GITHUB_PROJECT = "https://github.com/ohmae/DmsExplorer"
-    const val URL_PRIVACY_POLICY = "https://github.com/ohmae/DmsExplorer/blob/develop/PRIVACY-POLICY.md"
+    const val URL_PRIVACY_POLICY =
+        "https://github.com/ohmae/DmsExplorer/blob/develop/PRIVACY-POLICY.md"
     const val URL_OPEN_SOURCE_LICENSE = "file:///android_asset/license.html"
 
     const val REQUEST_CODE_ACTION_PLAY = 1

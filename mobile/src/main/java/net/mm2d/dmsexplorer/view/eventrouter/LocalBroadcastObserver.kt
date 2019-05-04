@@ -21,20 +21,20 @@ internal open class LocalBroadcastObserver(
     private val action: String,
     private val callbackOnRegister: Boolean = false
 ) : EventObserver {
-    private var callback: Callback? = null
+    private var callback: (() -> Unit)? = null
 
     private val broadcastReceiver = object : BroadcastReceiver() {
         override fun onReceive(
             context: Context,
             intent: Intent
         ) {
-            callback?.onReceive()
+            callback?.invoke()
         }
     }
 
-    override fun register(callback: Callback?) {
+    override fun register(callback: () -> Unit) {
         if (callbackOnRegister) {
-            callback?.onReceive()
+            callback.invoke()
         }
         this.callback = callback
         broadcastManager.registerReceiver(broadcastReceiver, IntentFilter(action))

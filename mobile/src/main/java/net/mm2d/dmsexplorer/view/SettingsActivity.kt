@@ -32,7 +32,6 @@ import net.mm2d.dmsexplorer.settings.Orientation
 import net.mm2d.dmsexplorer.settings.Settings
 import net.mm2d.dmsexplorer.util.AttrUtils
 import net.mm2d.dmsexplorer.view.base.PreferenceFragmentBase
-import net.mm2d.dmsexplorer.view.eventrouter.Callback
 import net.mm2d.dmsexplorer.view.eventrouter.EventNotifier
 import net.mm2d.dmsexplorer.view.eventrouter.EventObserver
 import net.mm2d.dmsexplorer.view.eventrouter.EventRouter
@@ -66,11 +65,7 @@ class SettingsActivity : PreferenceActivityCompat() {
             ContextCompat.getColor(this, R.color.defaultStatusBar)
         )
         finishObserver = EventRouter.createFinishObserver().also {
-            it.register(object : Callback {
-                override fun onReceive() {
-                    finish()
-                }
-            })
+            it.register { finish() }
         }
     }
 

@@ -42,7 +42,7 @@ class DmcActivityModel(
     private val targetModel: PlaybackTargetModel = repository.playbackTargetModel
     private val rendererModel: PlayerModel = repository.mediaRendererModel
     private var tracking: Boolean = false
-    private val trackingCancelTask: Runnable = Runnable{ tracking = false }
+    private val trackingCancelTask: Runnable = Runnable { tracking = false }
     val title: String
     val subtitle: String
     val propertyAdapter: PropertyAdapter
@@ -118,7 +118,7 @@ class DmcActivityModel(
     var isChapterInfoEnabled: Boolean = false
         private set
     @get:Bindable
-    var playButtonResId: Int  = R.drawable.ic_play
+    var playButtonResId: Int = R.drawable.ic_play
         private set(resId) {
             field = resId
             notifyPropertyChanged(BR.playButtonResId)

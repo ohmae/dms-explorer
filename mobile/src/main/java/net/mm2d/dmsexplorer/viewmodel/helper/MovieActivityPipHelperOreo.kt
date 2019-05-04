@@ -48,9 +48,11 @@ internal class MovieActivityPipHelperOreo(
             when (action) {
                 Const.ACTION_PLAY -> {
                     model.onClickPlayPause()
-                    activity.setPictureInPictureParams(PictureInPictureParams.Builder()
-                        .setActions(makeActions(model.isPlaying))
-                        .build())
+                    activity.setPictureInPictureParams(
+                        PictureInPictureParams.Builder()
+                            .setActions(makeActions(model.isPlaying))
+                            .build()
+                    )
                 }
                 Const.ACTION_NEXT -> model.onClickNext()
                 Const.ACTION_PREV -> model.onClickPrevious()

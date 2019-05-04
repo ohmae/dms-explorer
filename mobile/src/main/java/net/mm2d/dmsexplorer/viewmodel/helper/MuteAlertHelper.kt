@@ -19,7 +19,8 @@ import net.mm2d.dmsexplorer.R
 class MuteAlertHelper(
     private val context: Context
 ) {
-    private val audioManager: AudioManager = context.getSystemService(Context.AUDIO_SERVICE) as AudioManager
+    private val audioManager: AudioManager =
+        context.getSystemService(Context.AUDIO_SERVICE) as AudioManager
 
     fun alertIfMuted() {
         if (audioManager.getStreamVolume(AudioManager.STREAM_MUSIC) == 0) {

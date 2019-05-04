@@ -10,12 +10,10 @@ package net.mm2d.dmsexplorer.view.base
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-
 import net.mm2d.dmsexplorer.R
 import net.mm2d.dmsexplorer.settings.Settings
 import net.mm2d.dmsexplorer.view.SettingsActivity
 import net.mm2d.dmsexplorer.view.dialog.UpdateDialog
-import net.mm2d.dmsexplorer.view.eventrouter.Callback
 import net.mm2d.dmsexplorer.view.eventrouter.EventObserver
 import net.mm2d.dmsexplorer.view.eventrouter.EventRouter
 
@@ -26,14 +24,11 @@ internal class MainOptionsMenuDelegate(
     private val activity: BaseActivity
 ) : OptionsMenuDelegate {
     private val settings: Settings = Settings.get()
-    private val updateAvailabilityObserver: EventObserver = EventRouter.createUpdateAvailabilityObserver()
+    private val updateAvailabilityObserver: EventObserver =
+        EventRouter.createUpdateAvailabilityObserver()
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        updateAvailabilityObserver.register(object: Callback {
-            override fun onReceive() {
-                activity.invalidateOptionsMenu()
-            }
-        })
+        updateAvailabilityObserver.register { activity.invalidateOptionsMenu() }
     }
 
     override fun onDestroy() {

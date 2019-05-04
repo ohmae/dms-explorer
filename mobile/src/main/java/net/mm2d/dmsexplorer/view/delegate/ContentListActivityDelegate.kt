@@ -53,7 +53,7 @@ abstract class ContentListActivityDelegate internal constructor(
 
     @CallSuper
     fun onSaveInstanceState(outState: Bundle) {
-        model?: return
+        model ?: return
         saveScroll(outState)
     }
 

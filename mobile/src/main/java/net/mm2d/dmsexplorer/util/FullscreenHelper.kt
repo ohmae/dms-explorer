@@ -140,6 +140,7 @@ class FullscreenHelper(
         private val NAVIGATION_INTERVAL = TimeUnit.SECONDS.toMillis(3)
         private val SYSTEM_UI_VISIBLE: Int
         private val SYSTEM_UI_INVISIBLE: Int
+
         init {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
                 SYSTEM_UI_VISIBLE =
