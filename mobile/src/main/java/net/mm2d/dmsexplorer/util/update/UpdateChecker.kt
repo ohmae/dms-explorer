@@ -12,6 +12,7 @@ import android.os.Build
 import androidx.annotation.VisibleForTesting
 import com.squareup.moshi.Moshi
 import io.reactivex.Single
+import io.reactivex.functions.Consumer
 import io.reactivex.schedulers.Schedulers
 import net.mm2d.dmsexplorer.BuildConfig
 import net.mm2d.dmsexplorer.Const
@@ -51,7 +52,7 @@ class UpdateChecker(
         Single.fromCallable { Settings.get() }
             .subscribeOn(Schedulers.io())
             .flatMap { checkIfNeed(it) }
-            .subscribe { it -> checkAndNotify(it) }
+            .subscribe(Consumer { checkAndNotify(it) })
     }
 
     private fun checkIfNeed(settings: Settings): Single<UpdateInfo> {

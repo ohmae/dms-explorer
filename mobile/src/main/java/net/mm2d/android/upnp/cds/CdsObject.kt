@@ -293,7 +293,7 @@ class CdsObject : Parcelable {
      * @return リソースを持っている場合true
      */
     fun hasResource(): Boolean {
-        val tagList = getTagList(CdsObject.RES)
+        val tagList = getTagList(RES)
         return !(tagList == null || tagList.isEmpty())
     }
 
@@ -303,9 +303,9 @@ class CdsObject : Parcelable {
      * @return 著作権保護されたリソースを持っている場合true
      */
     fun hasProtectedResource(): Boolean {
-        val tagList = getTagList(CdsObject.RES) ?: return false
+        val tagList = getTagList(RES) ?: return false
         for (tag in tagList) {
-            val protocolInfo = tag.getAttribute(CdsObject.PROTOCOL_INFO)
+            val protocolInfo = tag.getAttribute(PROTOCOL_INFO)
             val mimeType = extractMimeTypeFromProtocolInfo(protocolInfo)
             if (!TextUtils.isEmpty(mimeType) && mimeType == "application/x-dtcp1") {
                 return true

@@ -250,8 +250,8 @@ class ScrubBar @JvmOverloads constructor(
         val w = (trackWidth + paddingLeft.toFloat() + paddingRight.toFloat()).toInt()
         val h = (trackWidth + paddingTop.toFloat() + paddingBottom.toFloat()).toInt()
         setMeasuredDimension(
-            View.resolveSizeAndState(w, widthMeasureSpec, 0),
-            View.resolveSizeAndState(h, heightMeasureSpec, 0)
+            resolveSizeAndState(w, widthMeasureSpec, 0),
+            resolveSizeAndState(h, heightMeasureSpec, 0)
         )
     }
 
