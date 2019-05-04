@@ -28,8 +28,8 @@ class RendererListAdapter(
 ) : RecyclerView.Adapter<RendererListAdapter.ViewHolder>() {
     private val inflater: LayoutInflater = LayoutInflater.from(context)
     private val list: MutableList<MediaRenderer> = renderers?.let { ArrayList(it) } ?: ArrayList()
-    private var clickListener: OnItemClickListener = ON_ITEM_CLICK_LISTENER
-    private var longClickListener: OnItemLongClickListener = ON_ITEM_LONG_CLICK_LISTENER
+    private var clickListener: ((View, MediaRenderer) -> Unit)? = null
+    private var longClickListener: ((View, MediaRenderer) -> Unit)? = null
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -60,12 +60,12 @@ class RendererListAdapter(
         return list.indexOf(renderer)
     }
 
-    fun setOnItemClickListener(listener: OnItemClickListener?) {
-        clickListener = listener ?: ON_ITEM_CLICK_LISTENER
+    fun setOnItemClickListener(listener: ((View, MediaRenderer) -> Unit)?) {
+        clickListener = listener
     }
 
-    fun setOnItemLongClickListener(listener: OnItemLongClickListener?) {
-        longClickListener = listener ?: ON_ITEM_LONG_CLICK_LISTENER
+    fun setOnItemLongClickListener(listener: ((View, MediaRenderer) -> Unit)?) {
+        longClickListener = listener
     }
 
     fun clear() {
@@ -89,14 +89,6 @@ class RendererListAdapter(
         return position
     }
 
-    interface OnItemClickListener {
-        fun onItemClick(v: View, renderer: MediaRenderer)
-    }
-
-    interface OnItemLongClickListener {
-        fun onItemLongClick(v: View, renderer: MediaRenderer)
-    }
-
     inner class ViewHolder(
         private val binding: RendererListItemBinding
     ) : RecyclerView.ViewHolder(binding.root) {
@@ -114,23 +106,12 @@ class RendererListAdapter(
         }
 
         private fun onClick(v: View) {
-            clickListener.onItemClick(v, mediaRenderer!!)
+            mediaRenderer?.let { clickListener?.invoke(v, it) }
         }
 
         private fun onLongClick(v: View): Boolean {
-            longClickListener.onItemLongClick(v, mediaRenderer!!)
+            mediaRenderer?.let { longClickListener?.invoke(v, it) }
             return true
-        }
-    }
-
-    companion object {
-        private val ON_ITEM_CLICK_LISTENER = object : OnItemClickListener {
-            override fun onItemClick(v: View, renderer: MediaRenderer) {
-            }
-        }
-        private val ON_ITEM_LONG_CLICK_LISTENER = object : OnItemLongClickListener {
-            override fun onItemLongClick(v: View, renderer: MediaRenderer) {
-            }
         }
     }
 }
