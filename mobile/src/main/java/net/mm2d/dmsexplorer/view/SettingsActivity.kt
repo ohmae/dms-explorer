@@ -278,7 +278,7 @@ class SettingsActivity : PreferenceActivityCompat() {
         }
 
         private fun canUseChromeCustomTabs(): Boolean {
-            return !CustomTabsHelper.getPackageNameToBind().isNullOrEmpty()
+            return !CustomTabsHelper.packageNameToBind.isNullOrEmpty()
         }
 
         private fun openUrl(
