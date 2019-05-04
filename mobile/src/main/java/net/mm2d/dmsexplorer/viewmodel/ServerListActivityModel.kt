@@ -69,9 +69,7 @@ class ServerListActivityModel(
 
     interface ServerSelectListener {
         fun onSelect(v: View)
-
         fun onLostSelection()
-
         fun onExecute(v: View)
     }
 
@@ -123,10 +121,7 @@ class ServerListActivityModel(
         return controlPointModel.selectedMediaServer != null
     }
 
-    private fun onItemClick(
-        v: View,
-        server: MediaServer
-    ) {
+    private fun onItemClick(v: View, server: MediaServer) {
         val alreadySelected = controlPointModel.isSelectedMediaServer(server)
         serverListAdapter.setSelectedServer(server)
         controlPointModel.selectedMediaServer = server
@@ -141,13 +136,9 @@ class ServerListActivityModel(
         }
     }
 
-    private fun onItemLongClick(
-        v: View,
-        server: MediaServer
-    ) {
+    private fun onItemLongClick(v: View, server: MediaServer) {
         serverListAdapter.setSelectedServer(server)
         controlPointModel.selectedMediaServer = server
-
         if (settings.shouldShowDeviceDetailOnTap()) {
             serverSelectListener.onExecute(v)
         } else {

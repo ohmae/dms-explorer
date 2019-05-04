@@ -25,7 +25,7 @@ import java.util.*
 class MediaServerModel(
     context: Context,
     val mediaServer: MediaServer,
-    private val playbackTargetObserver: PlaybackTargetObserver
+    private val playbackTargetObserver: (ContentEntity?) -> Unit
 ) : ExploreListener {
     private val handler = Handler(Looper.getMainLooper())
     private val historyStack = LinkedList<ContentDirectoryEntity>()
@@ -151,7 +151,7 @@ class MediaServerModel(
     }
 
     private fun updatePlaybackTarget() {
-        playbackTargetObserver.update(selectedEntity)
+        playbackTargetObserver.invoke(selectedEntity)
     }
 
     fun selectPreviousEntity(@ScanMode scanMode: Int): Boolean {
@@ -292,10 +292,6 @@ class MediaServerModel(
 
     override fun onComplete() {
         exploreListener.onComplete()
-    }
-
-    interface PlaybackTargetObserver {
-        fun update(entity: ContentEntity?)
     }
 
     @Retention(AnnotationRetention.SOURCE)
