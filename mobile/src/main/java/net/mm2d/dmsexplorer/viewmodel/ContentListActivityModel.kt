@@ -42,8 +42,10 @@ class ContentListActivityModel(
 ) : BaseObservable(), ExploreListener {
     val refreshColors =
         intArrayOf(R.color.progress1, R.color.progress2, R.color.progress3, R.color.progress4)
-    val progressBackground: Int
-    val distanceToTriggerSync: Int
+    val progressBackground: Int =
+        AttrUtils.resolveColor(context, R.attr.themeProgressBackground, Color.BLACK)
+    val distanceToTriggerSync: Int =
+        context.resources.getDimensionPixelOffset(R.dimen.distance_to_trigger_sync)
     val onRefreshListener: OnRefreshListener
     val itemAnimator: ItemAnimator
     val cdsListLayoutManager: LayoutManager
@@ -69,7 +71,7 @@ class ContentListActivityModel(
 
     private val handler = Handler(Looper.getMainLooper())
     private val mediaServerModel: MediaServerModel
-    private val settings: Settings
+    private val settings: Settings = Settings.get()
     private var updateList: Runnable = Runnable { }
     private var updateTime: Long = 0
     private var timerResetLatch: Boolean = false
@@ -105,17 +107,13 @@ class ContentListActivityModel(
     }
 
     init {
-        progressBackground =
-            AttrUtils.resolveColor(context, R.attr.themeProgressBackground, Color.BLACK)
-        distanceToTriggerSync =
-            context.resources.getDimensionPixelOffset(R.dimen.distance_to_trigger_sync)
-        settings = Settings.get()
         val model = repository.mediaServerModel ?: throw IllegalStateException()
         mediaServerModel = model
         mediaServerModel.setExploreListener(this)
-        contentListAdapter = ContentListAdapter(context)
-        contentListAdapter.setOnItemClickListener(::onItemClick)
-        contentListAdapter.setOnItemLongClickListener(::onItemLongClick)
+        contentListAdapter = ContentListAdapter(context).also {
+            it.setOnItemClickListener(::onItemClick)
+            it.setOnItemLongClickListener(::onItemLongClick)
+        }
 
         focusable = !FeatureUtils.hasTouchScreen(context)
         cdsListLayoutManager = LinearLayoutManager(context)

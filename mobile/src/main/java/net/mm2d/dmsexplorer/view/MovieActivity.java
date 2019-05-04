@@ -22,18 +22,18 @@ import net.mm2d.dmsexplorer.util.RepeatIntroductionUtils;
 import net.mm2d.dmsexplorer.view.base.BaseActivity;
 import net.mm2d.dmsexplorer.viewmodel.ControlPanelModel;
 import net.mm2d.dmsexplorer.viewmodel.MovieActivityModel;
-import net.mm2d.dmsexplorer.viewmodel.MovieActivityModel.OnChangeContentListener;
 
 import java.util.concurrent.TimeUnit;
 
 import androidx.databinding.DataBindingUtil;
+import kotlin.Unit;
 
 /**
  * 動画再生のActivity。
  *
  * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
  */
-public class MovieActivity extends BaseActivity implements OnChangeContentListener {
+public class MovieActivity extends BaseActivity {
     private static final String KEY_POSITION = "KEY_POSITION";
     private static final long TIMEOUT_DELAY = TimeUnit.SECONDS.toMillis(1);
     private Settings mSettings;
@@ -58,7 +58,10 @@ public class MovieActivity extends BaseActivity implements OnChangeContentListen
             finish();
             return;
         }
-        mModel.setOnChangeContentListener(this);
+        mModel.setOnChangeContentListener(() -> {
+            onChangeContent();
+            return Unit.INSTANCE;
+        });
         mBinding.setModel(mModel);
         mModel.adjustPanel(this);
         if (RepeatIntroductionUtils.show(this, mBinding.repeatButton)) {
@@ -168,7 +171,6 @@ public class MovieActivity extends BaseActivity implements OnChangeContentListen
         }
     }
 
-    @Override
     public void onChangeContent() {
         if (mSettings.shouldShowMovieUiOnStart()) {
             mFullscreenHelper.showNavigation();
