@@ -207,7 +207,7 @@ class DmcActivityModel(
     }
 
     private fun setChapterInfoEnabled() {
-        isChapterInfoEnabled = duration != 0 && !chapterList.isEmpty()
+        isChapterInfoEnabled = duration != 0 && chapterList.isNotEmpty()
         notifyPropertyChanged(BR.chapterInfoEnabled)
     }
 

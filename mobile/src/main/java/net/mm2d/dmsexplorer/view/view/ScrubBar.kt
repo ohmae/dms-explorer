@@ -7,6 +7,7 @@
 
 package net.mm2d.dmsexplorer.view.view
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Color
@@ -178,7 +179,7 @@ class ScrubBar @JvmOverloads constructor(
         var max: Int = 0
         var chapterList: List<Int> = emptyList()
 
-        internal constructor(superState: Parcelable) : super(superState) {}
+        internal constructor(superState: Parcelable) : super(superState)
 
         private constructor(parcel: Parcel) : super(parcel) {
             progress = parcel.readInt()
@@ -293,6 +294,7 @@ class ScrubBar @JvmOverloads constructor(
         }
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     override fun onTouchEvent(event: MotionEvent): Boolean {
         if (!isEnabled) {
             return false

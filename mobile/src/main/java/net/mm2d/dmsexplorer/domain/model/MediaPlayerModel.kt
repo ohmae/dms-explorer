@@ -173,10 +173,10 @@ abstract class MediaPlayerModel(
     }
 
     private fun getErrorWhatString(what: Int): String {
-        when (what) {
-            MEDIA_ERROR_SERVER_DIED -> return "MEDIA_ERROR_SERVER_DIED"
-            MEDIA_ERROR_UNKNOWN -> return "MEDIA_ERROR_UNKNOWN"
-            else -> return ""
+        return when (what) {
+            MEDIA_ERROR_SERVER_DIED -> "MEDIA_ERROR_SERVER_DIED"
+            MEDIA_ERROR_UNKNOWN -> "MEDIA_ERROR_UNKNOWN"
+            else -> ""
         }
     }
 

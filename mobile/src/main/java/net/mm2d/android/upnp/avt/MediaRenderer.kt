@@ -243,7 +243,7 @@ class MediaRenderer internal constructor(
          * @param count 変換する文字列
          * @return 変換したミリ秒時間
          */
-        fun parseCount(count: String?): Int {
+        private fun parseCount(count: String?): Int {
             if (count.isNullOrEmpty() || count == NOT_IMPLEMENTED) {
                 return -1
             }

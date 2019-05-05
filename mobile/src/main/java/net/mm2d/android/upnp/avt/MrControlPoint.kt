@@ -76,7 +76,7 @@ class MrControlPoint : ControlPointWrapper {
      * @param device Device
      * @return MediaRenderer
      */
-    protected fun createMediaRenderer(device: Device): MediaRenderer {
+    private fun createMediaRenderer(device: Device): MediaRenderer {
         return MediaRenderer(this, device)
     }
 

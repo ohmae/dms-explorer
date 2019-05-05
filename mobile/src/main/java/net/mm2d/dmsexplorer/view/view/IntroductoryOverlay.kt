@@ -185,6 +185,7 @@ class IntroductoryOverlay private constructor(
         }
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     override fun onTouchEvent(event: MotionEvent): Boolean {
         if (animator?.isRunning == false && event.action == MotionEvent.ACTION_UP) {
             dismiss()

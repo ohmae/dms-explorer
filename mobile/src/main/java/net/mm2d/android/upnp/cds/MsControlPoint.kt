@@ -153,7 +153,7 @@ class MsControlPoint : ControlPointWrapper {
      * @param device Device
      * @return MediaServer
      */
-    protected fun createMediaServer(device: Device): MediaServer {
+    private fun createMediaServer(device: Device): MediaServer {
         return MediaServer(device)
     }
 
