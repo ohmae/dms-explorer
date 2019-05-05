@@ -98,7 +98,7 @@ class UpdateChecker(
             return
         }
         settings.isUpdateAvailable = isUpdateAvailable(info.mobile)
-        settings.setUpdateJson(normalizedJson)
+        settings.updateJson = normalizedJson
     }
 
     @VisibleForTesting
