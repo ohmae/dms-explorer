@@ -39,7 +39,7 @@ class ContentDetailActivity : BaseActivity(true), OnDeleteListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.content_detail_activity)
         val repository = Repository.get()
-        mediaServerModel = repository.mediaServerModel
+        mediaServerModel = repository.mediaServerModel!!
         val binding: ContentDetailFragmentBinding? =
             DataBindingUtil.findBinding(findViewById<View>(R.id.cds_detail_fragment))
         if (binding == null) {

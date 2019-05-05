@@ -26,13 +26,20 @@ import net.mm2d.dmsexplorer.settings.Settings
  */
 class AppRepository(application: Application) : Repository() {
     private val context: Context = application
-    private val controlPointModel: ControlPointModel =
+    override val controlPointModel: ControlPointModel =
         ControlPointModel(context, this::updateMediaServer, this::updateMediaRenderer)
-    private val themeModel: ThemeModelImpl = ThemeModelImpl()
-    private val openUriModel: OpenUriCustomTabsModel
-    private var mediaServerModel: MediaServerModel? = null
-    private var mediaRendererModel: MediaRendererModel? = null
-    private var playbackTargetModel: PlaybackTargetModel? = null
+    override val themeModel: ThemeModelImpl = ThemeModelImpl()
+    override val openUriModel: OpenUriCustomTabsModel
+        get() {
+            field.setUseCustomTabs(Settings.get().useCustomTabs())
+            return field
+        }
+    override var mediaServerModel: MediaServerModel? = null
+        private set
+    override var mediaRendererModel: MediaRendererModel? = null
+        private set
+    override var playbackTargetModel: PlaybackTargetModel? = null
+        private set
 
     init {
         Completable.fromAction { CdsFormatter.initialize(application) }
@@ -72,30 +79,5 @@ class AppRepository(application: Application) : Repository() {
 
     private fun updatePlaybackTarget(entity: ContentEntity?) {
         playbackTargetModel = if (entity != null) PlaybackTargetModel(entity) else null
-    }
-
-    override fun getThemeModel(): ThemeModel {
-        return themeModel
-    }
-
-    override fun getOpenUriModel(): OpenUriModel {
-        openUriModel.setUseCustomTabs(Settings.get().useCustomTabs())
-        return openUriModel
-    }
-
-    override fun getControlPointModel(): ControlPointModel {
-        return controlPointModel
-    }
-
-    override fun getMediaServerModel(): MediaServerModel? {
-        return mediaServerModel
-    }
-
-    override fun getMediaRendererModel(): MediaRendererModel? {
-        return mediaRendererModel
-    }
-
-    override fun getPlaybackTargetModel(): PlaybackTargetModel? {
-        return playbackTargetModel
     }
 }

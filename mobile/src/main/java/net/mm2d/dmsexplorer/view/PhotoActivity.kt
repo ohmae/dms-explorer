@@ -64,7 +64,7 @@ class PhotoActivity : BaseActivity() {
             topView = binding.toolbar
         )
         repository = Repository.get()
-        serverModel = repository.mediaServerModel
+        serverModel = repository.mediaServerModel!!
         try {
             model = PhotoActivityModel(this, repository)
         } catch (ignored: IllegalStateException) {

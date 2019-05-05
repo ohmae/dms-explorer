@@ -34,7 +34,7 @@ class PhotoActivityModel(
     private val activity: BaseActivity,
     repository: Repository
 ) : BaseObservable() {
-    private val targetModel: PlaybackTargetModel = repository.playbackTargetModel
+    private val targetModel: PlaybackTargetModel = repository.playbackTargetModel!!
 
     val title: String
     @ColorInt

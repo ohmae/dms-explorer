@@ -10,7 +10,7 @@ package net.mm2d.dmsexplorer.domain.entity
 /**
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
  */
-enum class ContentType private constructor(
+enum class ContentType(
     val isPlayable: Boolean,
     val hasDuration: Boolean
 ) {

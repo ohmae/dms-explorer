@@ -37,7 +37,7 @@ class MusicActivityModel(
     private val mActivity: BaseActivity,
     private val mRepository: Repository
 ) : BaseObservable() {
-    private val serverModel: MediaServerModel = mRepository.mediaServerModel
+    private val serverModel: MediaServerModel = mRepository.mediaServerModel!!
     private val settings: Settings = Settings.get()
     private var repeatMode: RepeatMode = settings.repeatModeMusic
     private var toast: Toast? = null

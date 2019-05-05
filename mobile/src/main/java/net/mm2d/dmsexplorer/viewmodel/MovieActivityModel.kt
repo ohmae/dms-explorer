@@ -42,7 +42,7 @@ class MovieActivityModel(
     private val videoView: VideoView,
     private val repository: Repository
 ) : BaseObservable() {
-    private val serverModel: MediaServerModel = repository.mediaServerModel
+    private val serverModel: MediaServerModel = repository.mediaServerModel!!
     private val settings: Settings = Settings.get()
     private var onChangeContentListener: (() -> Unit)? = null
     private var repeatMode: RepeatMode = settings.repeatModeMovie

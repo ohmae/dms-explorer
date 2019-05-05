@@ -32,7 +32,7 @@ import net.mm2d.dmsexplorer.view.dialog.SelectResourceDialog
  */
 object ItemSelectUtils {
     fun play(activity: FragmentActivity) {
-        val targetModel = Repository.get().playbackTargetModel
+        val targetModel = Repository.get().playbackTargetModel ?: return
         when (targetModel.resCount) {
             0 -> Unit
             1 -> play(activity, 0)

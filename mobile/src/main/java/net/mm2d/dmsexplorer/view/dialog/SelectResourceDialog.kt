@@ -25,7 +25,8 @@ import net.mm2d.dmsexplorer.util.ItemSelectUtils
 class SelectResourceDialog : DialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val activity = activity!!
-        val choices = Repository.get().playbackTargetModel.createResChoices()
+        val choices = Repository.get().playbackTargetModel?.createResChoices()
+            ?: return AlertDialog.Builder(activity).create()
         return AlertDialog.Builder(activity)
             .setTitle(R.string.dialog_title_select_resource)
             .setItems(choices) { _, which -> ItemSelectUtils.play(activity, which) }
