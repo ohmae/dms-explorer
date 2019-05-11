@@ -28,7 +28,7 @@ class MsControlPoint : ControlPointWrapper {
         { lostDevice(it) }
     )
 
-    private val notifyEventListener = notifyEventListener { service, seq, variable, value ->
+    private val notifyEventListener = notifyEventListener { service, _, variable, value ->
         val udn = service.device.udn
         val server = getDevice(udn)
         if (server == null || service.serviceId != Cds.CDS_SERVICE_ID) {

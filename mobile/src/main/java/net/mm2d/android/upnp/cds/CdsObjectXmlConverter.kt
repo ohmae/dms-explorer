@@ -40,7 +40,7 @@ object CdsObjectXmlConverter {
             document.appendChild(didl)
             val item = makeItemElement(document, cdsObject)
             didl.appendChild(item)
-            cdsObject.tagMap.rawMap
+            (cdsObject as CdsObjectImpl).tagMap.map
                 .filter { it.key.isNotEmpty() }
                 .forEach {
                     it.value.forEach { tag ->

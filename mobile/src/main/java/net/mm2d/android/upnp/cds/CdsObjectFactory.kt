@@ -92,7 +92,7 @@ internal object CdsObjectFactory {
     }
 
     private fun createRootTag(doc: Document): Tag {
-        return Tag(doc.documentElement, true)
+        return Tag.create(doc.documentElement, true)
     }
 
     /**
@@ -109,7 +109,7 @@ internal object CdsObjectFactory {
         rootTag: Tag
     ): CdsObject? {
         try {
-            return CdsObject(udn, element, rootTag)
+            return CdsObjectImpl.create(udn, element, rootTag)
         } catch (e: IllegalArgumentException) {
             Logger.w(e)
         }

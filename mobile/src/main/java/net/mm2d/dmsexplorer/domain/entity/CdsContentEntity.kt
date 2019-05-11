@@ -4,6 +4,7 @@ import android.net.Uri
 import android.text.TextUtils
 
 import net.mm2d.android.upnp.cds.CdsObject
+import net.mm2d.android.upnp.cds.PropertyParser
 import net.mm2d.android.upnp.cds.Tag
 import net.mm2d.dmsexplorer.domain.formatter.CdsFormatter
 import net.mm2d.dmsexplorer.util.StringJoiner
@@ -91,7 +92,7 @@ class CdsContentEntity(
         }
         uri = Uri.parse(selectedRes.value)
         val protocolInfo = selectedRes.getAttribute(CdsObject.PROTOCOL_INFO)
-        mimeType = CdsObject.extractMimeTypeFromProtocolInfo(protocolInfo)
+        mimeType = PropertyParser.extractMimeTypeFromProtocolInfo(protocolInfo)
     }
 
     override fun hasResource(): Boolean {

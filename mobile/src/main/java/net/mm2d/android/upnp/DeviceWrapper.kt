@@ -281,15 +281,14 @@ abstract class DeviceWrapper(
         return arguments.getString(name)
     }
 
-    override fun equals(o: Any?): Boolean {
-        if (o === this) {
+    override fun equals(other: Any?): Boolean {
+        if (other === this) {
             return true
         }
-        if (o !is DeviceWrapper) {
+        if (other !is DeviceWrapper) {
             return false
         }
-        val m = o as DeviceWrapper?
-        return device == m!!.device
+        return device == other.device
     }
 
     override fun hashCode(): Int {

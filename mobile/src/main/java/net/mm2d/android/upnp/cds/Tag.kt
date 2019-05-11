@@ -11,6 +11,7 @@ import android.os.Parcel
 import android.os.Parcelable
 import android.os.Parcelable.Creator
 import org.w3c.dom.Element
+import org.w3c.dom.NamedNodeMap
 import java.util.*
 
 /**
@@ -24,68 +25,11 @@ import java.util.*
  *
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
  */
-class Tag : Parcelable {
-    private val _attribute: MutableMap<String, String>
-
-    /**
-     * タグ名を返す。
-     *
-     * @return タグ名
-     */
-    val name: String
-    /**
-     * タグの値を返す。
-     *
-     * @return タグの値
-     */
-    val value: String
-    /**
-     * 属性値を格納したMapを返す。
-     *
-     * @return 属性値を格納したMap
-     */
+class Tag(
+    val name: String,
+    val value: String,
     val attributes: Map<String, String>
-        get() = _attribute
-
-    /**
-     * インスタンス作成。
-     *
-     * パッケージ外でのインスタンス化禁止
-     *
-     * @param element タグ情報
-     * @param root    タグがitem/containerのときtrue
-     */
-    @JvmOverloads
-    internal constructor(
-        element: Element,
-        root: Boolean = false
-    ) : this(element, if (root) "" else element.textContent)
-
-    /**
-     * インスタンス作成。
-     *
-     * @param element タグ情報
-     * @param value   タグの値
-     */
-    private constructor(
-        element: Element,
-        value: String
-    ) {
-        name = element.tagName
-        this.value = value
-        val attributes = element.attributes
-        val size = attributes.length
-        if (size == 0) {
-            _attribute = mutableMapOf()
-            return
-        }
-        _attribute = LinkedHashMap(size)
-        for (i in 0 until size) {
-            val attr = attributes.item(i)
-            _attribute[attr.nodeName] = attr.nodeValue
-        }
-    }
-
+) : Parcelable {
     /**
      * 属性値を返す。
      *
@@ -93,63 +37,78 @@ class Tag : Parcelable {
      * @return 属性値、見つからない場合null
      */
     fun getAttribute(name: String?): String? {
-        return _attribute[name]
+        return attributes[name]
     }
 
     override fun toString(): String {
         val sb = StringBuilder()
         sb.append(value)
-        _attribute.forEach {
-            sb.append("\n")
-            sb.append("@")
-            sb.append(it.key)
-            sb.append(" => ")
-            sb.append(it.value)
+        attributes.forEach {
+            sb.append("\n@${it.key} => ${it.value}")
         }
         return sb.toString()
     }
 
-    /**
-     * Parcelable用のコンストラクタ。
-     *
-     * @param parcel Parcel
-     */
-    private constructor(parcel: Parcel) {
-        name = parcel.readString()!!
-        value = parcel.readString()!!
-        val size = parcel.readInt()
-        _attribute = LinkedHashMap(size)
-        for (i in 0 until size) {
-            val name = parcel.readString()!!
-            val value = parcel.readString()!!
-            _attribute[name] = value
-        }
-    }
-
-    override fun writeToParcel(
-        dest: Parcel,
-        flags: Int
-    ) {
+    override fun writeToParcel(dest: Parcel, flags: Int) {
         dest.writeString(name)
         dest.writeString(value)
-        dest.writeInt(_attribute.size)
-        _attribute.forEach {
+        dest.writeInt(attributes.size)
+        attributes.forEach {
             dest.writeString(it.key)
             dest.writeString(it.value)
         }
     }
 
-    override fun describeContents(): Int {
-        return 0
-    }
+    override fun describeContents(): Int = 0
 
     companion object CREATOR : Creator<Tag> {
-        override fun createFromParcel(parcel: Parcel): Tag {
-            return Tag(parcel)
+        val EMPTY = Tag("", "", emptyMap())
+        override fun createFromParcel(parcel: Parcel): Tag = create(parcel)
+        override fun newArray(size: Int): Array<Tag?> = arrayOfNulls(size)
+
+        private fun create(parcel: Parcel): Tag {
+            val name = parcel.readString()!!
+            val value = parcel.readString()!!
+            val size = parcel.readInt()
+            val map = LinkedHashMap<String, String>(size)
+            for (i in 0 until size) {
+                map[parcel.readString()!!] = parcel.readString()!!
+            }
+            return Tag(name, value, map)
         }
 
-        override fun newArray(size: Int): Array<Tag?> {
-            return arrayOfNulls(size)
+        /**
+         * インスタンス作成。
+         *
+         * パッケージ外でのインスタンス化禁止
+         *
+         * @param element タグ情報
+         * @param root    タグがitem/containerのときtrue
+         */
+        @JvmOverloads
+        fun create(element: Element, root: Boolean = false): Tag =
+            create(element, if (root) "" else element.textContent)
+
+        /**
+         * インスタンス作成。
+         *
+         * @param element タグ情報
+         * @param value   タグの値
+         */
+        private fun create(element: Element, value: String): Tag =
+            Tag(element.tagName, value, createAttributeMap(element.attributes))
+
+        private fun createAttributeMap(attributes: NamedNodeMap): Map<String, String> {
+            val size = attributes.length
+            if (size == 0) {
+                return mutableMapOf()
+            }
+            val map = LinkedHashMap<String, String>(size)
+            for (i in 0 until size) {
+                val attr = attributes.item(i)
+                map[attr.nodeName] = attr.nodeValue
+            }
+            return map
         }
     }
 }

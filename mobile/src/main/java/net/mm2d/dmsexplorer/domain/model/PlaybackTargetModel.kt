@@ -9,6 +9,7 @@ package net.mm2d.dmsexplorer.domain.model
 
 import android.net.Uri
 import net.mm2d.android.upnp.cds.CdsObject
+import net.mm2d.android.upnp.cds.PropertyParser
 import net.mm2d.android.upnp.cds.Tag
 import net.mm2d.dmsexplorer.domain.entity.ContentEntity
 
@@ -45,7 +46,7 @@ class PlaybackTargetModel(
         } else {
             uri = Uri.parse(targetRes!!.value)
             val protocolInfo = targetRes!!.getAttribute(CdsObject.PROTOCOL_INFO)
-            mimeType = CdsObject.extractMimeTypeFromProtocolInfo(protocolInfo)
+            mimeType = PropertyParser.extractMimeTypeFromProtocolInfo(protocolInfo)
         }
     }
 
@@ -54,10 +55,10 @@ class PlaybackTargetModel(
         return tagList.map {tag ->
             val protocolInfo = tag.getAttribute(CdsObject.PROTOCOL_INFO)
             val sb = StringBuilder()
-            CdsObject.extractProtocolFromProtocolInfo(protocolInfo)?.let {
+            PropertyParser.extractProtocolFromProtocolInfo(protocolInfo)?.let {
                 sb.append(it)
             }
-            CdsObject.extractMimeTypeFromProtocolInfo(protocolInfo)?.let {
+            PropertyParser.extractMimeTypeFromProtocolInfo(protocolInfo)?.let {
                 if (sb.isNotEmpty()) {
                     sb.append(" ")
                 }

@@ -7,14 +7,8 @@
 
 package net.mm2d.android.upnp.cds
 
-import android.os.Parcel
 import android.os.Parcelable
-import android.text.TextUtils
 import androidx.annotation.IntDef
-import org.w3c.dom.Element
-import org.w3c.dom.Node
-import java.text.ParseException
-import java.text.SimpleDateFormat
 import java.util.*
 
 /**
@@ -22,7 +16,7 @@ import java.util.*
  *
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
  */
-class CdsObject : Parcelable {
+interface CdsObject : Parcelable {
     /**
      * MediaServerのUDN
      */
@@ -63,54 +57,6 @@ class CdsObject : Parcelable {
      * CdsObjectXmlFormatter/CdsFormatterから利用
      */
     val rootTag: Tag
-    /**
-     * Tagを格納したマップそのもの
-     *
-     * CdsObjectXmlFormatterから利用
-     */
-    internal val tagMap: TagMap
-
-    /**
-     * elementをもとにインスタンス作成
-     *
-     * @param udn     MediaServerのUDN
-     * @param element objectを示すelement
-     * @param rootTag DIDL-Liteノードの情報
-     */
-    internal constructor(
-        udn: String,
-        element: Element,
-        rootTag: Tag
-    ) {
-        this.udn = udn
-        isItem = isItem(element.tagName)
-        this.rootTag = rootTag
-        tagMap = parseElement(element)
-        objectId = tagMap.getValue(ID) ?: throw IllegalArgumentException("Malformed item")
-        parentId = tagMap.getValue(PARENT_ID) ?: throw IllegalArgumentException("Malformed item")
-        title = tagMap.getValue(DC_TITLE) ?: throw IllegalArgumentException("Malformed item")
-        upnpClass = tagMap.getValue(UPNP_CLASS) ?: throw IllegalArgumentException("Malformed item")
-        type = getType(isItem, upnpClass)
-    }
-
-    /**
-     * XPATH風の指定で示された値を返す。
-     *
-     * XPATHはitemもしくはcontainerをルートとして指定する。
-     * 名前空間はシンボルをそのまま記述する。
-     * 例えば'item@id'及び'container@id'はともに'@id'を指定する。
-     * 'item/dc:title'であれば'dc:title'を指定する。
-     *
-     * 複数同一のタグがあった場合は最初に現れた要素の値を返す。
-     * [.getValue]で第二引数に0を指定するのと等価
-     *
-     * @param xpath パラメータの位置を表現するXPATH風の指定
-     * @return 指定された値。見つからない場合はnull
-     * @see .getValue
-     */
-    fun getValue(xpath: String): String? {
-        return tagMap.getValue(xpath)
-    }
 
     /**
      * XPATH風の指定で示された値を返す。
@@ -132,30 +78,7 @@ class CdsObject : Parcelable {
      * @param index インデックス値
      * @return 指定された値。見つからない場合はnull
      */
-    fun getValue(
-        xpath: String,
-        index: Int
-    ): String? {
-        return tagMap.getValue(xpath, index)
-    }
-
-    /**
-     * タグ名と属性名を指定して値を取り出す。
-     *
-     * 複数の同一タグがある場合は最初に現れたタグの情報を返す。
-     * [.getValue]の第三引数に0を指定したものと等価。
-     *
-     * @param tagName  タグ名
-     * @param attrName 属性名、タグの値を取得するときはnullを指定する。
-     * @return 指定された値。見つからない場合はnull
-     * @see .getValue
-     */
-    fun getValue(
-        tagName: String?,
-        attrName: String?
-    ): String? {
-        return tagMap.getValue(tagName, attrName)
-    }
+    fun getValue(xpath: String, index: Int = 0): String?
 
     /**
      * タグ名と属性名を指定して値を取り出す。
@@ -168,25 +91,7 @@ class CdsObject : Parcelable {
      * @param index    インデックス値
      * @return 指定された値。見つからない場合はnull
      */
-    fun getValue(
-        tagName: String?,
-        attrName: String?,
-        index: Int
-    ): String? {
-        return tagMap.getValue(tagName, attrName, index)
-    }
-
-    /**
-     * 指定したタグ名のTagインスタンスを返す。
-     *
-     * 複数同一タグが存在した場合は最初に現れたタグ。
-     *
-     * @param tagName タグ名、ルート要素を指定する場合はnullもしくは空文字列
-     * @return Tagインスタンス、見つからない場合はnull
-     */
-    fun getTag(tagName: String?): Tag? {
-        return tagMap.getTag(tagName)
-    }
+    fun getValue(tagName: String?, attrName: String?, index: Int = 0): String?
 
     /**
      * 指定したタグ名、インデックスのTagインスタンスを返す。
@@ -195,12 +100,7 @@ class CdsObject : Parcelable {
      * @param index   インデックス値
      * @return Tagインスタンス、見つからない場合はnull
      */
-    fun getTag(
-        tagName: String?,
-        index: Int
-    ): Tag? {
-        return tagMap.getTag(tagName, index)
-    }
+    fun getTag(tagName: String?, index: Int = 0): Tag?
 
     /**
      * 指定したタグ名のTagインスタンスリストを返す。
@@ -208,9 +108,7 @@ class CdsObject : Parcelable {
      * @param tagName タグ名、ルート要素を指定する場合はnullもしくは空文字列
      * @return Tagインスタンスリスト
      */
-    fun getTagList(tagName: String?): List<Tag>? {
-        return tagMap.getTagList(tagName)
-    }
+    fun getTagList(tagName: String?): List<Tag>?
 
     /**
      * XPATH風の指定で示された値をInt値として返す。
@@ -219,47 +117,11 @@ class CdsObject : Parcelable {
      *
      * @param xpath        パラメータの位置を表現するXPATH風の指定
      * @param defaultValue 値が見つからない場合、Int値にパースできない値だった場合のデフォルト値
-     * @return 指定された値
-     * @see .getValue
-     */
-    fun getIntValue(
-        xpath: String,
-        defaultValue: Int
-    ): Int {
-        return getValue(xpath)?.toIntOrNull() ?: defaultValue
-    }
-
-    /**
-     * XPATH風の指定で示された値をInt値として返す。
-     *
-     * [.getValue] の結果を [.parseIntSafely] に渡すことと等価
-     *
-     * @param xpath        パラメータの位置を表現するXPATH風の指定
      * @param index        インデックス値
-     * @param defaultValue 値が見つからない場合、Int値にパースできない値だった場合のデフォルト値
      * @return 指定された値
      * @see .getValue
      */
-    fun getIntValue(
-        xpath: String,
-        index: Int,
-        defaultValue: Int
-    ): Int {
-        return getValue(xpath, index)?.toIntOrNull() ?: defaultValue
-    }
-
-    /**
-     * XPATH風の指定で示された値をDateとして返す。
-     *
-     * [.getValue] の結果を [.parseDate] に渡すことと等価
-     *
-     * @param xpath パラメータの位置を表現するXPATH風の指定
-     * @return 指定された値。値が見つからない場合、パースできない値の場合null
-     * @see .getValue
-     */
-    fun getDateValue(xpath: String): Date? {
-        return parseDate(getValue(xpath))
-    }
+    fun getIntValue(xpath: String, defaultValue: Int, index: Int = 0): Int
 
     /**
      * XPATH風の指定で示された値をDateとして返す。
@@ -271,107 +133,35 @@ class CdsObject : Parcelable {
      * @return 指定された値。値が見つからない場合、パースできない値の場合null
      * @see .getValue
      */
-    fun getDateValue(
-        xpath: String,
-        index: Int
-    ): Date? {
-        return parseDate(getValue(xpath, index))
-    }
+    fun getDateValue(xpath: String, index: Int = 0): Date?
 
     /**
      * リソースの数
      *
      * @return リソースの数
      */
-    fun getResourceCount(): Int {
-        return getTagList(RES)?.size ?: 0
-    }
+    fun getResourceCount(): Int
 
     /**
      * リソースを持っているか否かを返す。
      *
      * @return リソースを持っている場合true
      */
-    fun hasResource(): Boolean {
-        val tagList = getTagList(RES)
-        return !(tagList == null || tagList.isEmpty())
-    }
+    fun hasResource(): Boolean
 
     /**
      * 著作権保護されたリソースを持っているか否かを返す。
      *
      * @return 著作権保護されたリソースを持っている場合true
      */
-    fun hasProtectedResource(): Boolean {
-        val tagList = getTagList(RES) ?: return false
-        for (tag in tagList) {
-            val protocolInfo = tag.getAttribute(PROTOCOL_INFO)
-            val mimeType = extractMimeTypeFromProtocolInfo(protocolInfo)
-            if (!TextUtils.isEmpty(mimeType) && mimeType == "application/x-dtcp1") {
-                return true
-            }
-        }
-        return false
-    }
-
-    override fun toString(): String {
-        return title
-    }
+    fun hasProtectedResource(): Boolean
 
     /**
      * 全情報をダンプした文字列を返す。
      *
      * @return ダンプ文字列
      */
-    fun toDumpString(): String {
-        return tagMap.toString()
-    }
-
-    override fun hashCode(): Int {
-        return tagMap.hashCode()
-    }
-
-    override fun equals(o: Any?): Boolean {
-        if (this === o) {
-            return true
-        }
-        if (o !is CdsObject) {
-            return false
-        }
-        val obj = o as CdsObject?
-        return objectId == obj!!.objectId && udn == obj.udn
-    }
-
-    /**
-     * Parcelable用のコンストラクタ。
-     *
-     * @param parcel Parcel
-     */
-    private constructor(parcel: Parcel) {
-        udn = parcel.readString()!!
-        isItem = parcel.readByte().toInt() != 0
-        rootTag = parcel.readParcelable(Tag::class.java.classLoader)!!
-        tagMap = parcel.readParcelable(TagMap::class.java.classLoader)!!
-        objectId = tagMap.getValue(ID)!!
-        parentId = tagMap.getValue(PARENT_ID)!!
-        title = tagMap.getValue(DC_TITLE)!!
-        upnpClass = tagMap.getValue(UPNP_CLASS)!!
-        type = getType(isItem, upnpClass)
-    }
-
-    override fun writeToParcel(
-        dest: Parcel,
-        flags: Int
-    ) {
-        dest.writeString(udn)
-        dest.writeByte((if (isItem) 1 else 0).toByte())
-        dest.writeParcelable(rootTag, flags)
-        dest.writeParcelable(tagMap, flags)
-    }
-
-    override fun describeContents(): Int {
-        return 0
-    }
+    fun toDumpString(): String
 
     companion object {
         // オブジェクト種別の定義
@@ -1068,156 +858,5 @@ class CdsObject : Parcelable {
          * コンテナ
          */
         const val TYPE_CONTAINER = 4
-
-        private fun isItem(tagName: String): Boolean {
-            return when (tagName) {
-                ITEM -> true
-                CONTAINER -> false
-                else -> throw IllegalArgumentException()
-            }
-        }
-
-        /**
-         * 子要素の情報をパースし、格納する。
-         *
-         * @param element objectを示すelement
-         */
-        private fun parseElement(element: Element): TagMap {
-            val map = TagMap()
-            map.putTag("", Tag(element, true))
-            var node: Node? = element.firstChild
-            while (node != null) {
-                if (node.nodeType != Node.ELEMENT_NODE) {
-                    node = node.nextSibling
-                    continue
-                }
-                map.putTag(node.nodeName, Tag((node as Element?)!!))
-                node = node.nextSibling
-            }
-            return map
-        }
-
-        @ContentType
-        private fun getType(
-            isItem: Boolean,
-            upnpClass: String
-        ): Int {
-            if (!isItem) {
-                return TYPE_CONTAINER
-            } else if (upnpClass.startsWith(IMAGE_ITEM)) {
-                return TYPE_IMAGE
-            } else if (upnpClass.startsWith(AUDIO_ITEM)) {
-                return TYPE_AUDIO
-            } else if (upnpClass.startsWith(VIDEO_ITEM)) {
-                return TYPE_VIDEO
-            }
-            return TYPE_UNKNOWN
-        }
-
-        private val FORMAT_D = SimpleDateFormat("yyyy-MM-dd", Locale.JAPAN)
-        private val FORMAT_T = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.JAPAN)
-        private val FORMAT_Z = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ", Locale.JAPAN)
-
-        @Throws(ParseException::class)
-        private fun parseD(value: String): Date {
-            synchronized(FORMAT_D) {
-                return FORMAT_D.parse(value)
-            }
-        }
-
-        @Throws(ParseException::class)
-        private fun parseT(value: String): Date {
-            synchronized(FORMAT_T) {
-                return FORMAT_T.parse(value)
-            }
-        }
-
-        @Throws(ParseException::class)
-        private fun parseZ(value: String): Date {
-            synchronized(FORMAT_Z) {
-                return FORMAT_Z.parse(value)
-            }
-        }
-
-        /**
-         * 与えられた文字列をパースしてDateとして戻す。
-         *
-         * CDSで使用される日付フォーマットにはいくつかバリエーションがあるが、
-         * 該当するフォーマットでパースを行う。
-         *
-         * @param value パースする文字列
-         * @return パース結果、パースできない場合null
-         */
-        @JvmStatic
-        fun parseDate(value: String?): Date? {
-            if (value.isNullOrEmpty()) {
-                return null
-            }
-            try {
-                if (value.length <= 10) {
-                    return parseD(value)
-                }
-                if (value.length <= 19) {
-                    return parseT(value)
-                }
-                return if (value.lastIndexOf(':') == 22) {
-                    parseZ(value.substring(0, 22) + value.substring(23))
-                } else parseZ(value)
-            } catch (e: ParseException) {
-                return null
-            }
-        }
-
-        /**
-         * protocolInfoの文字列からMimeTypeの文字列を抽出する。
-         *
-         * @param protocolInfo protocolInfo
-         * @return MimeTypeの文字列。抽出に失敗した場合null
-         */
-        @JvmStatic
-        fun extractMimeTypeFromProtocolInfo(protocolInfo: String?): String? {
-            if (protocolInfo.isNullOrEmpty()) {
-                return null
-            }
-            val protocols = protocolInfo.split(';')
-            if (protocols.isEmpty()) {
-                return null
-            }
-            val sections = protocols[0].split(':')
-            return if (sections.size < 3) null else sections[2]
-        }
-
-        /**
-         * protocolInfoの文字列からProtocolの文字列を抽出する。
-         *
-         * @param protocolInfo protocolInfo
-         * @return Protocolの文字列。抽出に失敗した場合null
-         */
-        @JvmStatic
-        fun extractProtocolFromProtocolInfo(protocolInfo: String?): String? {
-            if (protocolInfo.isNullOrEmpty()) {
-                return null
-            }
-            val protocols = protocolInfo.split(';')
-            if (protocols.isEmpty()) {
-                return null
-            }
-            val sections = protocols[0].split(':')
-            return if (sections.size < 3) null else sections[0]
-        }
-
-        /**
-         * Parcelableのためのフィールド
-         */
-        @JvmField
-        val CREATOR: Parcelable.Creator<CdsObject> = object : Parcelable.Creator<CdsObject> {
-            override fun createFromParcel(parcel: Parcel): CdsObject {
-                return CdsObject(parcel)
-            }
-
-            override fun newArray(size: Int): Array<CdsObject?> {
-                return arrayOfNulls(size)
-            }
-        }
     }
 }

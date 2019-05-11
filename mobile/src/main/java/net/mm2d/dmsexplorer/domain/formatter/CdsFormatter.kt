@@ -10,6 +10,7 @@ package net.mm2d.dmsexplorer.domain.formatter
 import android.content.Context
 import android.text.format.DateFormat
 import net.mm2d.android.upnp.cds.CdsObject
+import net.mm2d.android.upnp.cds.PropertyParser
 import net.mm2d.android.upnp.cds.Tag
 import net.mm2d.android.util.toDisplayableString
 import net.mm2d.dmsexplorer.R
@@ -137,7 +138,7 @@ object CdsFormatter {
     @JvmStatic
     fun makeDate(cdsObject: CdsObject): String? {
         val str = cdsObject.getValue(CdsObject.DC_DATE) ?: return null
-        val date = CdsObject.parseDate(str) ?: return null
+        val date = PropertyParser.parseDate(str) ?: return null
         return if (str.length <= 10) {
             DateFormat.format("yyyy/MM/dd (E)", date).toString()
         } else DateFormat.format("yyyy/M/d (E) kk:mm:ss", date).toString()

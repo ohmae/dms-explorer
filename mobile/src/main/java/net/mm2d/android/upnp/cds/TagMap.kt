@@ -21,82 +21,9 @@ import java.util.*
  *
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
  */
-internal class TagMap : Parcelable {
-    /**
-     * XMLのタグ情報。
-     *
-     * タグ名をKeyとして、TagのListを保持する。
-     * 同一のタグが複数ある場合はListに出現順に格納する。
-     */
-    private val map: MutableMap<String, MutableList<Tag>>
-
-    val rawMap: Map<String, List<Tag>>
-        get() = map
-
-    /**
-     * インスタンス作成。
-     */
-    constructor() {
-        map = ArrayMap()
-    }
-
-    /**
-     * Parcelable用のコンストラクタ。
-     *
-     * @param parcel Parcel
-     */
-    private constructor(parcel: Parcel) {
-        val size = parcel.readInt()
-        map = ArrayMap(size)
-        val classLoader = Tag::class.java.classLoader
-        for (i in 0 until size) {
-            val name = parcel.readString()!!
-            val length = parcel.readInt()
-            val list = ArrayList<Tag>(length)
-            for (j in 0 until length) {
-                val tag = parcel.readParcelable<Tag>(classLoader)!!
-                list.add(tag)
-            }
-            map[name] = list
-        }
-    }
-
-    override fun writeToParcel(
-        dest: Parcel,
-        flags: Int
-    ) {
-        dest.writeInt(map.size)
-        for ((key, list) in map) {
-            dest.writeString(key)
-            dest.writeInt(list.size)
-            for (tag in list) {
-                dest.writeParcelable(tag, flags)
-            }
-        }
-    }
-
-    override fun describeContents(): Int {
-        return 0
-    }
-
-    /**
-     * タグ情報を格納する。
-     *
-     * @param name タグ名
-     * @param tag  格納するタグ情報
-     */
-    fun putTag(
-        name: String,
-        tag: Tag
-    ) {
-        var tags: MutableList<Tag>? = map[name]
-        if (tags == null) {
-            tags = ArrayList(1)
-            map[name] = tags
-        }
-        tags.add(tag)
-    }
-
+internal class TagMap(
+    val map: Map<String, List<Tag>>
+) : Parcelable {
     /**
      * XPATH風の指定で示された値を返す。
      *
@@ -118,10 +45,7 @@ internal class TagMap : Parcelable {
      * @return 指定された値。見つからない場合はnull
      */
     @JvmOverloads
-    fun getValue(
-        xpath: String,
-        index: Int = 0
-    ): String? {
+    fun getValue(xpath: String, index: Int = 0): String? {
         val pos = xpath.indexOf('@')
         if (pos < 0) {
             return getValue(xpath, null, index)
@@ -143,11 +67,7 @@ internal class TagMap : Parcelable {
      * @return 指定された値。見つからない場合はnull
      */
     @JvmOverloads
-    fun getValue(
-        tagName: String?,
-        attrName: String?,
-        index: Int = 0
-    ): String? {
+    fun getValue(tagName: String?, attrName: String?, index: Int = 0): String? {
         val tag = getTag(tagName, index) ?: return null
         return if (attrName.isNullOrEmpty()) {
             tag.value
@@ -162,14 +82,9 @@ internal class TagMap : Parcelable {
      * @return Tagインスタンス、見つからない場合はnull
      */
     @JvmOverloads
-    fun getTag(
-        tagName: String?,
-        index: Int = 0
-    ): Tag? {
-        val list = getTagList(tagName)
-        return if (list == null || list.size <= index) {
-            null
-        } else list[index]
+    fun getTag(tagName: String?, index: Int = 0): Tag? {
+        val list = getTagList(tagName) ?: return null
+        return if (index < list.size) list[index] else null
     }
 
     /**
@@ -184,26 +99,19 @@ internal class TagMap : Parcelable {
 
     override fun toString(): String {
         val sb = StringBuilder()
-        for ((key, tags) in map) {
-            for (i in tags.indices) {
-                val tag = tags[i]
-                sb.append(key)
-                if (tags.size == 1) {
+        map.forEach { entry ->
+            for (i in entry.value.indices) {
+                val tag = entry.value[i]
+                sb.append(entry.key)
+                if (entry.value.size == 1) {
                     sb.append(" => ")
                 } else {
-                    sb.append("[")
-                    sb.append(i.toString())
-                    sb.append("] => ")
+                    sb.append("[$i] => ")
                 }
                 sb.append(tag.value)
                 sb.append("\n")
-                val attrs = tag.attributes
-                for ((key1, value) in attrs) {
-                    sb.append("      @")
-                    sb.append(key1)
-                    sb.append(" => ")
-                    sb.append(value)
-                    sb.append("\n")
+                tag.attributes.forEach {
+                    sb.append("      @${it.key} => ${it.value}\n")
                 }
             }
         }
@@ -214,20 +122,52 @@ internal class TagMap : Parcelable {
         return map.hashCode()
     }
 
-    override fun equals(o: Any?): Boolean {
-        if (this === o) return true
-        if (o !is TagMap) return false
-        val obj = o as TagMap?
-        return map == obj!!.map
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other !is TagMap) return false
+        return map == other.map
     }
+
+    override fun writeToParcel(
+        dest: Parcel,
+        flags: Int
+    ) {
+        dest.writeInt(map.size)
+        for ((key, list) in map) {
+            dest.writeString(key)
+            dest.writeInt(list.size)
+            for (tag in list) {
+                dest.writeParcelable(tag, flags)
+            }
+        }
+    }
+
+    override fun describeContents(): Int = 0
 
     companion object CREATOR : Creator<TagMap> {
         override fun createFromParcel(parcel: Parcel): TagMap {
-            return TagMap(parcel)
+            return create(parcel)
         }
 
         override fun newArray(size: Int): Array<TagMap?> {
             return arrayOfNulls(size)
+        }
+
+        private fun create(parcel: Parcel): TagMap {
+            val size = parcel.readInt()
+            val map = ArrayMap<String, List<Tag>>(size)
+            val classLoader = Tag::class.java.classLoader
+            for (i in 0 until size) {
+                val name = parcel.readString()!!
+                val length = parcel.readInt()
+                val list = ArrayList<Tag>(length)
+                for (j in 0 until length) {
+                    val tag = parcel.readParcelable<Tag>(classLoader)!!
+                    list.add(tag)
+                }
+                map[name] = list
+            }
+            return TagMap(map)
         }
     }
 }
