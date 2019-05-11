@@ -29,19 +29,7 @@ import java.util.concurrent.atomic.AtomicBoolean
  */
 class AvControlPointManager {
     private val initialized = AtomicBoolean()
-    /**
-     * ラップしているControlPointのインスタンスを返す。
-     *
-     * 取扱い注意！
-     * このクラスが提供していない機能を利用する場合に必要となるため、
-     * 取得インターフェースを用意しているが、
-     * 外部で直接操作することを想定していないため、
-     * 利用する場合は必ずこのクラスの実装を理解した上で使用すること。
-     *
-     * @return ControlPoint
-     */
-    var controlPoint: ControlPoint? = null
-        private set
+    private var controlPoint: ControlPoint? = null
     /**
      * MsControlPointのインスタンスを返す。
      *
