@@ -10,8 +10,8 @@ package net.mm2d.android.upnp.cds
 import android.os.Parcel
 import android.os.Parcelable
 import android.os.Parcelable.Creator
+import net.mm2d.upnp.util.asIterable
 import org.w3c.dom.Element
-import org.w3c.dom.NamedNodeMap
 import java.util.*
 
 /**
@@ -95,20 +95,10 @@ class Tag(
          * @param element タグ情報
          * @param value   タグの値
          */
-        private fun create(element: Element, value: String): Tag =
-            Tag(element.tagName, value, createAttributeMap(element.attributes))
-
-        private fun createAttributeMap(attributes: NamedNodeMap): Map<String, String> {
-            val size = attributes.length
-            if (size == 0) {
-                return mutableMapOf()
-            }
-            val map = LinkedHashMap<String, String>(size)
-            for (i in 0 until size) {
-                val attr = attributes.item(i)
-                map[attr.nodeName] = attr.nodeValue
-            }
-            return map
-        }
+        private fun create(element: Element, value: String): Tag = Tag(
+            element.tagName,
+            value,
+            element.attributes.asIterable().map { it.nodeName to it.nodeValue }.toMap()
+        )
     }
 }
