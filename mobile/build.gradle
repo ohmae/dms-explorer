@@ -37,13 +37,11 @@ android {
             debuggable true
             applicationIdSuffix = ".debug"
             versionNameSuffix = "d"
-            manifestPlaceholders = [app_name: "Dubug"]
         }
         release {
             shrinkResources true
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            manifestPlaceholders = [app_name: "@string/app_name"]
         }
     }
     applicationVariants.all { variant ->
@@ -83,7 +81,7 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
     implementation 'net.mm2d:log:0.8.1'
     implementation 'net.mm2d:log-android:0.8.1'
-    implementation 'net.mm2d:mmupnp:3.0.0-rc1'
+    implementation 'net.mm2d:mmupnp:3.0.0-rc2'
     implementation 'net.mm2d:preference:0.1.2'
     implementation 'net.opacapp:multiline-collapsingtoolbar:27.1.1'
     implementation 'com.squareup.okhttp3:okhttp:3.12.3'
