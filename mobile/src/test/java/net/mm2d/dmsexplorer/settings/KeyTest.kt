@@ -25,22 +25,22 @@ class KeyTest {
         assertThat(Key.VERSION_NUMBER.isReadWriteKey).isFalse()
     }
 
-    @Test(expected = NullPointerException::class)
+    @Test(expected = TypeCastException::class)
     fun getDefaultBoolean_表示用Key() {
         Key.VERSION_NUMBER.defaultBoolean
     }
 
-    @Test(expected = NullPointerException::class)
+    @Test(expected = TypeCastException::class)
     fun getDefaultInteger_表示用Key() {
         Key.VERSION_NUMBER.defaultInt
     }
 
-    @Test(expected = NullPointerException::class)
+    @Test(expected = TypeCastException::class)
     fun getDefaultLong_表示用Key() {
         Key.VERSION_NUMBER.defaultLong
     }
 
-    @Test(expected = NullPointerException::class)
+    @Test(expected = TypeCastException::class)
     fun getDefaultString_表示用Key() {
         Key.VERSION_NUMBER.defaultString
     }
