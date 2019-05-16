@@ -8,6 +8,7 @@
 package net.mm2d.dmsexplorer.settings.theme
 
 import android.graphics.Bitmap
+import androidx.palette.graphics.Palette
 import net.mm2d.android.upnp.cds.MediaServer
 import net.mm2d.dmsexplorer.Const
 import net.mm2d.dmsexplorer.util.ColorUtils
@@ -27,22 +28,18 @@ internal class ServerColorExtractorDark : ServerColorExtractor {
         if (server.getBooleanTag(Const.KEY_HAS_TOOLBAR_COLOR, false)) {
             return
         }
-        if (icon == null) {
-            extractFromPalette(server, null)
-        } else {
-            androidx.palette.graphics.Palette.Builder(icon)
-                .generate { palette -> extractFromPalette(server, palette) }
-        }
+        icon?.generatePalette { extractFromPalette(server, it) }
+            ?: extractFromPalette(server, null)
     }
 
     private fun extract(server: MediaServer, icon: Bitmap?) {
-        val palette = icon?.let { androidx.palette.graphics.Palette.Builder(it).generate() }
+        val palette = icon?.generatePalette()
         extractFromPalette(server, palette)
     }
 
     private fun extractFromPalette(
         server: MediaServer,
-        palette: androidx.palette.graphics.Palette?
+        palette: Palette?
     ) {
         val friendlyName = server.friendlyName
         var expandedColor = GENERATOR.getExpandedToolbarColor(friendlyName)

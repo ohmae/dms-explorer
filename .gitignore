@@ -9,8 +9,11 @@
 /.idea/gradle.xml
 /.idea/workspace.xml
 /.idea/libraries
+/.idea/navEditor.xml
+/.idea/assetWizardSettings.xml
 /build
 /captures
+.externalNativeBuild
 .DS_Store
 .DS_Store?
 ._*

@@ -3,11 +3,12 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'jacoco-android'
+apply plugin: 'com.github.ben-manes.versions'
 
 def applicationName = "DmsExplorer"
 def versionMajor = 0
 def versionMinor = 7
-def versionPatch = 47
+def versionPatch = 48
 
 android {
     compileSdkVersion 28
@@ -36,13 +37,11 @@ android {
             debuggable true
             applicationIdSuffix = ".debug"
             versionNameSuffix = "d"
-            manifestPlaceholders = [app_name: "Dubug"]
         }
         release {
             shrinkResources true
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            manifestPlaceholders = [app_name: "@string/app_name"]
         }
     }
     applicationVariants.all { variant ->
@@ -62,6 +61,7 @@ android {
                 includeNoLocationClasses = true
             }
         }
+        unitTests.includeAndroidResources = true
     }
 }
 
@@ -71,33 +71,34 @@ dependencies {
     implementation 'androidx.cardview:cardview:1.0.0'
     implementation 'androidx.palette:palette:1.0.0'
     implementation 'androidx.recyclerview:recyclerview:1.0.0'
-    implementation 'com.google.android.material:material:1.0.0'
+    implementation 'androidx.preference:preference:1.0.0'
     implementation 'androidx.browser:browser:1.0.0'
     implementation 'androidx.exifinterface:exifinterface:1.0.0'
     implementation 'androidx.multidex:multidex:2.0.1'
-    implementation 'androidx.core:core-ktx:1.0.1'
+    implementation 'androidx.core:core-ktx:1.0.2'
+    implementation 'com.google.android.material:material:1.0.0'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    implementation 'net.mm2d:log:0.3.0'
-    implementation 'net.mm2d:log-android:0.3.0'
-    implementation 'net.mm2d:mmupnp:2.0.0-rc1'
+    implementation "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
+    implementation 'net.mm2d:log:0.8.1'
+    implementation 'net.mm2d:log-android:0.8.1'
+    implementation 'net.mm2d:mmupnp:3.0.0-rc2'
     implementation 'net.mm2d:preference:0.1.2'
     implementation 'net.opacapp:multiline-collapsingtoolbar:27.1.1'
-    implementation 'com.squareup.okhttp3:okhttp:3.12.0'
-    implementation 'com.squareup.retrofit2:retrofit:2.4.0'
-    implementation 'com.squareup.retrofit2:adapter-rxjava2:2.4.0'
-    implementation 'com.squareup.retrofit2:converter-moshi:2.4.0'
-    implementation 'com.squareup.moshi:moshi:1.7.0'
-    implementation 'com.squareup.moshi:moshi-kotlin:1.7.0'
-    kapt 'com.squareup.moshi:moshi-kotlin-codegen:1.7.0'
-    implementation 'io.reactivex.rxjava2:rxjava:2.2.6'
-    implementation 'io.reactivex.rxjava2:rxandroid:2.1.0'
+    implementation 'com.squareup.okhttp3:okhttp:3.12.3'
+    implementation 'com.squareup.retrofit2:retrofit:2.5.0'
+    implementation 'com.squareup.retrofit2:adapter-rxjava2:2.5.0'
+    implementation 'com.squareup.retrofit2:converter-moshi:2.5.0'
+    implementation 'com.squareup.moshi:moshi:1.8.0'
+    implementation 'com.squareup.moshi:moshi-kotlin:1.8.0'
+    kapt 'com.squareup.moshi:moshi-kotlin-codegen:1.8.0'
+    implementation 'io.reactivex.rxjava2:rxjava:2.2.8'
+    implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
     implementation 'io.reactivex.rxjava2:rxkotlin:2.3.0'
 
     testImplementation 'junit:junit:4.12'
-    testImplementation "io.mockk:mockk:1.9.1"
-    testImplementation "com.google.truth:truth:0.43"
-    testRuntimeOnly "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
-    testImplementation 'org.robolectric:robolectric:3.8'
+    testImplementation "io.mockk:mockk:1.9.3"
+    testImplementation "com.google.truth:truth:0.44"
+    testImplementation 'org.robolectric:robolectric:4.2.1'
 }
 
 jacocoAndroidUnitTestReport {
@@ -105,3 +106,15 @@ jacocoAndroidUnitTestReport {
     xml.enabled true
 }
 
+dependencyUpdates.resolutionStrategy {
+    componentSelection { rules ->
+        rules.all { ComponentSelection selection ->
+            boolean rejected = ['alpha', 'beta', 'rc', 'cr', 'm', 'preview', 'b', 'ea'].any { qualifier ->
+                selection.candidate.version ==~ /(?i).*[.-]${qualifier}[.\d-+]*/
+            }
+            if (rejected) {
+                selection.reject('Release candidate')
+            }
+        }
+    }
+}

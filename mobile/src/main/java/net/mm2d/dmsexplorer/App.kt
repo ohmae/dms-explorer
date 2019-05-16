@@ -7,6 +7,8 @@
 
 package net.mm2d.dmsexplorer
 
+import android.os.Build.VERSION
+import android.os.Build.VERSION_CODES
 import android.os.StrictMode
 import android.os.StrictMode.ThreadPolicy
 import android.os.StrictMode.VmPolicy
@@ -51,9 +53,9 @@ class App : MultiDexApplication() {
     private fun logError(e: Throwable) {
         when (e) {
             is UndeliverableException
-            -> Logger.w("UndeliverableException:", e.cause)
+            -> Logger.w(e.cause, "UndeliverableException:")
             is OnErrorNotImplementedException
-            -> Logger.w("OnErrorNotImplementedException:", e.cause)
+            -> Logger.w(e.cause, "OnErrorNotImplementedException:")
             else
             -> Logger.w(e)
         }
@@ -62,6 +64,18 @@ class App : MultiDexApplication() {
     private fun setStrictMode() {
         if (BuildConfig.DEBUG) {
             StrictMode.enableDefaults()
+            val vmPolicyBuilder = VmPolicy.Builder()
+                .detectLeakedSqlLiteObjects()
+                .detectActivityLeaks()
+                .detectLeakedClosableObjects()
+                .detectLeakedRegistrationObjects()
+            if (VERSION.SDK_INT >= VERSION_CODES.JELLY_BEAN_MR2) {
+                vmPolicyBuilder.detectFileUriExposure()
+            }
+            if (VERSION.SDK_INT >= VERSION_CODES.O) {
+                vmPolicyBuilder.detectContentUriWithoutPermission()
+            }
+            StrictMode.setVmPolicy(vmPolicyBuilder.build())
         } else {
             StrictMode.setThreadPolicy(ThreadPolicy.LAX)
             StrictMode.setVmPolicy(VmPolicy.LAX)
