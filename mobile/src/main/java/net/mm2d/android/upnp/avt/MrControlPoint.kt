@@ -48,7 +48,7 @@ class MrControlPoint : ControlPointWrapper {
      */
     override val deviceList: List<MediaRenderer>
         get() = synchronized(mediaRendererMap) {
-            return ArrayList(mediaRendererMap.values)
+            mediaRendererMap.values.toList()
         }
 
     /**

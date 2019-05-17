@@ -11,7 +11,6 @@ import android.os.Parcel
 import android.os.Parcelable
 import android.os.Parcelable.Creator
 import androidx.collection.ArrayMap
-import java.util.*
 
 /**
  * シンプルなXML情報を表現するクラス。
@@ -135,10 +134,7 @@ internal class TagMap(
         dest.writeInt(map.size)
         for ((key, list) in map) {
             dest.writeString(key)
-            dest.writeInt(list.size)
-            for (tag in list) {
-                dest.writeParcelable(tag, flags)
-            }
+            dest.writeTypedList(list)
         }
     }
 
@@ -156,16 +152,9 @@ internal class TagMap(
         private fun create(parcel: Parcel): TagMap {
             val size = parcel.readInt()
             val map = ArrayMap<String, List<Tag>>(size)
-            val classLoader = Tag::class.java.classLoader
             for (i in 0 until size) {
                 val name = parcel.readString()!!
-                val length = parcel.readInt()
-                val list = ArrayList<Tag>(length)
-                for (j in 0 until length) {
-                    val tag = parcel.readParcelable<Tag>(classLoader)!!
-                    list.add(tag)
-                }
-                map[name] = list
+                map[name] = parcel.createTypedArrayList(Tag.CREATOR)!!
             }
             return TagMap(map)
         }

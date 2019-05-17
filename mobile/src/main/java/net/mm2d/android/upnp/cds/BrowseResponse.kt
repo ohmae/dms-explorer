@@ -10,7 +10,9 @@ package net.mm2d.android.upnp.cds
 /**
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
  */
-internal class BrowseResponse(private val response: Map<String, String>) {
+internal class BrowseResponse(
+    private val response: Map<String, String>
+) {
 
     val numberReturned: Int
         get() = response[NUMBER_RETURNED]?.toIntOrNull() ?: -1

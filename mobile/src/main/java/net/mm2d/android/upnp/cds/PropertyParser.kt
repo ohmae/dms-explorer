@@ -21,22 +21,22 @@ object PropertyParser {
 
     @Throws(ParseException::class)
     private fun parseD(value: String): Date {
-        synchronized(FORMAT_D) {
-            return FORMAT_D.parse(value)
+        return synchronized(FORMAT_D) {
+            FORMAT_D.parse(value)
         }
     }
 
     @Throws(ParseException::class)
     private fun parseT(value: String): Date {
-        synchronized(FORMAT_T) {
-            return FORMAT_T.parse(value)
+        return synchronized(FORMAT_T) {
+            FORMAT_T.parse(value)
         }
     }
 
     @Throws(ParseException::class)
     private fun parseZ(value: String): Date {
-        synchronized(FORMAT_Z) {
-            return FORMAT_Z.parse(value)
+        return synchronized(FORMAT_Z) {
+            FORMAT_Z.parse(value)
         }
     }
 

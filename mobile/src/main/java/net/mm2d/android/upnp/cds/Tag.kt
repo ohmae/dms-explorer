@@ -72,7 +72,8 @@ class Tag(
             val size = parcel.readInt()
             val map = LinkedHashMap<String, String>(size)
             for (i in 0 until size) {
-                map[parcel.readString()!!] = parcel.readString()!!
+                val key = parcel.readString()!!
+                map[key] = parcel.readString()!!
             }
             return Tag(name, value, map)
         }

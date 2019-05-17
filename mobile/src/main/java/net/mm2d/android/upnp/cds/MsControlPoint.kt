@@ -65,7 +65,7 @@ class MsControlPoint : ControlPointWrapper {
      */
     override val deviceList: List<MediaServer>
         get() = synchronized(mediaServerMap) {
-            return ArrayList(mediaServerMap.values)
+            mediaServerMap.values.toList()
         }
 
     /**
