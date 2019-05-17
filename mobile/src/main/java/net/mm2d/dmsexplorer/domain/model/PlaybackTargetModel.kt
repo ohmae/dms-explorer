@@ -44,8 +44,8 @@ class PlaybackTargetModel(
             uri = Uri.EMPTY
             mimeType = null
         } else {
-            uri = Uri.parse(targetRes!!.value)
-            val protocolInfo = targetRes!!.getAttribute(CdsObject.PROTOCOL_INFO)
+            uri = Uri.parse(targetRes?.value)
+            val protocolInfo = targetRes?.getAttribute(CdsObject.PROTOCOL_INFO)
             mimeType = PropertyParser.extractMimeTypeFromProtocolInfo(protocolInfo)
         }
     }

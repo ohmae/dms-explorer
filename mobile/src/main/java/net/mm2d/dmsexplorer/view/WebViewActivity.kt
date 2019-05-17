@@ -41,9 +41,8 @@ class WebViewActivity : BaseActivity() {
             .setContentView<WebViewActivityBinding>(this, R.layout.web_view_activity)
         val intent = intent
         setSupportActionBar(binding.toolbar)
-        val actionBar = supportActionBar!!
-        actionBar.setDisplayHomeAsUpEnabled(true)
-        actionBar.title = intent.getStringExtra(KEY_TITLE)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.title = intent.getStringExtra(KEY_TITLE)
 
         Repository.get().themeModel.setThemeColor(
             this,

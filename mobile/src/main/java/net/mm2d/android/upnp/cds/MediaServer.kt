@@ -76,7 +76,7 @@ internal constructor(device: Device) : DeviceWrapper(device) {
                 destroyObject.invokeSync(Collections.singletonMap(OBJECT_ID, objectId), false)
             val errorDescription = result[Action.ERROR_DESCRIPTION_KEY]
             if (!TextUtils.isEmpty(errorDescription)) {
-                Logger.e(errorDescription!!)
+                Logger.e { errorDescription }
             }
             emitter.onSuccess(
                 TextParseUtils.parseIntSafely(

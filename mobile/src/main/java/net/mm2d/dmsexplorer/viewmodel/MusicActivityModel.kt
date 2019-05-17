@@ -153,9 +153,7 @@ class MusicActivityModel(
     }
 
     private fun showRepeatToast() {
-        if (toast != null) {
-            toast!!.cancel()
-        }
+        toast?.cancel()
         toast = Toaster.show(activity, repeatMode.messageId)
     }
 

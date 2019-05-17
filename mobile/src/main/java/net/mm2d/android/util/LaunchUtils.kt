@@ -54,6 +54,6 @@ object LaunchUtils {
      */
     @JvmStatic
     fun openGooglePlay(context: Context, packageName: String?): Boolean {
-        return openUri(context, "market://details?id=" + packageName!!)
+        return openUri(context, "market://details?id=$packageName")
     }
 }

@@ -105,14 +105,14 @@ class MediaRendererModel(
     ) {
         mediaRenderer.clearAVTransportURI()
             .subscribe()
-        val `object` = entity!!.cdsObject as CdsObject
-        mediaRenderer.setAVTransportURI(`object`, uri.toString())
+        val cdsObject = entity?.cdsObject as CdsObject
+        mediaRenderer.setAVTransportURI(cdsObject, uri.toString())
             .flatMap { mediaRenderer.play() }
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({ }, { onError() })
         stoppingCount = 0
         handler.postDelayed(getPositionTask, 1000)
-        ChapterFetcherFactory.create(`object`)
+        ChapterFetcherFactory.create(cdsObject)
             .subscribe({ setChapterList(it) }, { Logger.w(it) })
         started = true
     }

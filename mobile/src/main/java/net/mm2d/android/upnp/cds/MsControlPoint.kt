@@ -123,28 +123,24 @@ class MsControlPoint : ControlPointWrapper {
         server: MediaServer,
         value: String
     ) {
-        if (containerUpdateIdsListener == null) {
-            return
+        containerUpdateIdsListener?.let {
+            val values = value.split(',')
+            if (values.isEmpty() || values.size % 2 != 0) {
+                return
+            }
+            val ids = ArrayList<String>()
+            for (i in 0 until values.size step 2) {
+                ids.add(values[i])
+            }
+            it.onContainerUpdateIds(server, ids)
         }
-        val values = value.split(',')
-        if (values.isEmpty() || values.size % 2 != 0) {
-            return
-        }
-        val ids = ArrayList<String>()
-        for (i in 0 until values.size step 2) {
-            ids.add(values[i])
-        }
-        containerUpdateIdsListener!!.onContainerUpdateIds(server, ids)
     }
 
     private fun onNotifySystemUpdateId(
         server: MediaServer,
         value: String
     ) {
-        if (systemUpdateIdListener == null) {
-            return
-        }
-        systemUpdateIdListener!!.onSystemUpdateId(server, value)
+        systemUpdateIdListener?.onSystemUpdateId(server, value)
     }
 
     /**
@@ -176,16 +172,12 @@ class MsControlPoint : ControlPointWrapper {
         }
 
         mediaServerMap[server.udn] = server
-        if (msDiscoveryListener != null) {
-            msDiscoveryListener!!.onDiscover(server)
-        }
+        msDiscoveryListener?.onDiscover(server)
     }
 
     private fun lostDevice(device: Device) {
         val server = mediaServerMap.remove(device.udn) ?: return
-        if (msDiscoveryListener != null) {
-            msDiscoveryListener!!.onLost(server)
-        }
+        msDiscoveryListener?.onLost(server)
     }
 
     /**

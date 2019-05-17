@@ -50,7 +50,7 @@ class ContentDetailActivity : BaseActivity(true), OnDeleteListener {
         binding.cdsDetailToolbar.popupTheme = settings.themeParams.popupThemeId
         contentEntity = selectedEntity
         setSupportActionBar(binding.cdsDetailToolbar)
-        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         val model = binding.model
         if (model != null) {

@@ -107,13 +107,13 @@ class ServerListActivityModel(
     }
 
     fun findSharedView(): View? {
-        val server = controlPointModel.selectedMediaServer
-        val position = serverListAdapter.indexOf(server!!)
+        val server = controlPointModel.selectedMediaServer ?: return null
+        val position = serverListAdapter.indexOf(server)
         if (position < 0) {
             return null
         }
-        val listItem = serverListLayoutManager.findViewByPosition(position)
-        val binding = DataBindingUtil.findBinding<ServerListItemBinding>(listItem!!)
+        val listItem = serverListLayoutManager.findViewByPosition(position) ?: return null
+        val binding = DataBindingUtil.findBinding<ServerListItemBinding>(listItem)
         return binding?.accent
     }
 

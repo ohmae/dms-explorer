@@ -221,8 +221,8 @@ class ScrubBar @JvmOverloads constructor(
     }
 
     override fun onSaveInstanceState(): Parcelable? {
-        val superState = super.onSaveInstanceState()
-        val ss = SavedState(superState!!)
+        val superState = super.onSaveInstanceState() ?: return null
+        val ss = SavedState(superState)
         ss.progress = _progress
         ss.max = max
         ss.chapterList = _chapterList
