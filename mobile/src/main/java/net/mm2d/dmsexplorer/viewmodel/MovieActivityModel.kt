@@ -42,7 +42,7 @@ class MovieActivityModel(
     private val videoView: VideoView,
     private val repository: Repository
 ) : BaseObservable() {
-    private val serverModel: MediaServerModel = repository.mediaServerModel!!
+    private val serverModel: MediaServerModel? = repository.mediaServerModel
     private val settings: Settings = Settings.get()
     private var onChangeContentListener: (() -> Unit)? = null
     private var repeatMode: RepeatMode = settings.repeatModeMovie
@@ -208,8 +208,10 @@ class MovieActivityModel(
     private fun selectNext(): Boolean {
         return when (repeatMode) {
             RepeatMode.PLAY_ONCE -> false
-            RepeatMode.SEQUENTIAL -> serverModel.selectNextEntity(MediaServerModel.SCAN_MODE_SEQUENTIAL)
-            RepeatMode.REPEAT_ALL -> serverModel.selectNextEntity(MediaServerModel.SCAN_MODE_LOOP)
+            RepeatMode.SEQUENTIAL ->
+                serverModel?.selectNextEntity(MediaServerModel.SCAN_MODE_SEQUENTIAL) ?: false
+            RepeatMode.REPEAT_ALL ->
+                serverModel?.selectNextEntity(MediaServerModel.SCAN_MODE_LOOP) ?: false
             RepeatMode.REPEAT_ONE -> false
         }
     }
@@ -217,8 +219,10 @@ class MovieActivityModel(
     private fun selectPrevious(): Boolean {
         return when (repeatMode) {
             RepeatMode.PLAY_ONCE -> false
-            RepeatMode.SEQUENTIAL -> serverModel.selectPreviousEntity(MediaServerModel.SCAN_MODE_SEQUENTIAL)
-            RepeatMode.REPEAT_ALL -> serverModel.selectPreviousEntity(MediaServerModel.SCAN_MODE_LOOP)
+            RepeatMode.SEQUENTIAL ->
+                serverModel?.selectPreviousEntity(MediaServerModel.SCAN_MODE_SEQUENTIAL) ?: false
+            RepeatMode.REPEAT_ALL ->
+                serverModel?.selectPreviousEntity(MediaServerModel.SCAN_MODE_LOOP) ?: false
             RepeatMode.REPEAT_ONE -> false
         }
     }

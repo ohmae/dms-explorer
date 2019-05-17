@@ -34,14 +34,14 @@ import net.mm2d.dmsexplorer.viewmodel.helper.MuteAlertHelper
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
  */
 class MusicActivityModel(
-    private val mActivity: BaseActivity,
-    private val mRepository: Repository
+    private val activity: BaseActivity,
+    private val repository: Repository
 ) : BaseObservable() {
-    private val serverModel: MediaServerModel = mRepository.mediaServerModel!!
+    private val serverModel: MediaServerModel? = repository.mediaServerModel
     private val settings: Settings = Settings.get()
     private var repeatMode: RepeatMode = settings.repeatModeMusic
     private var toast: Toast? = null
-    private val muteAlertHelper: MuteAlertHelper = MuteAlertHelper(mActivity)
+    private val muteAlertHelper: MuteAlertHelper = MuteAlertHelper(activity)
     private var playStartTime: Long = 0
     private var finishing: Boolean = false
     val controlPanelParam: ControlPanelParam = ControlPanelParam()
@@ -82,7 +82,7 @@ class MusicActivityModel(
         }
 
     init {
-        val targetModel = mRepository.playbackTargetModel
+        val targetModel = repository.playbackTargetModel
         if (targetModel == null || targetModel.uri === Uri.EMPTY) {
             throw IllegalStateException()
         }
@@ -90,15 +90,15 @@ class MusicActivityModel(
     }
 
     private fun updateTargetModel() {
-        val targetModel = mRepository.playbackTargetModel
+        val targetModel = repository.playbackTargetModel
         if (targetModel == null || targetModel.uri === Uri.EMPTY) {
             finishAfterTransition()
             return
         }
         playStartTime = System.currentTimeMillis()
         muteAlertHelper.alertIfMuted()
-        val playerModel = MusicPlayerModel(mActivity)
-        controlPanelModel = ControlPanelModel(mActivity, playerModel).also {
+        val playerModel = MusicPlayerModel(activity)
+        controlPanelModel = ControlPanelModel(activity, playerModel).also {
             it.setRepeatMode(repeatMode)
             it.setOnCompletionListener(this::onCompletion)
             it.setSkipControlListener(this::onNext, this::onPrevious)
@@ -110,8 +110,8 @@ class MusicActivityModel(
             .themeParams
             .themeColorGenerator
         controlColor = generator.getControlColor(title)
-        propertyAdapter = PropertyAdapter.ofContent(mActivity, targetModel.contentEntity)
-        mRepository.themeModel.setThemeColor(mActivity, controlColor, 0)
+        propertyAdapter = PropertyAdapter.ofContent(activity, targetModel.contentEntity)
+        repository.themeModel.setThemeColor(activity, controlColor, 0)
 
         notifyPropertyChanged(BR.title)
         notifyPropertyChanged(BR.controlColor)
@@ -156,7 +156,7 @@ class MusicActivityModel(
         if (toast != null) {
             toast!!.cancel()
         }
-        toast = Toaster.show(mActivity, repeatMode.messageId)
+        toast = Toaster.show(activity, repeatMode.messageId)
     }
 
     private fun onCompletion() {
@@ -192,15 +192,17 @@ class MusicActivityModel(
     private fun finishAfterTransition() {
         if (!finishing) {
             finishing = true
-            ActivityCompat.finishAfterTransition(mActivity)
+            ActivityCompat.finishAfterTransition(activity)
         }
     }
 
     private fun selectNext(): Boolean {
         return when (repeatMode) {
             RepeatMode.PLAY_ONCE -> false
-            RepeatMode.SEQUENTIAL -> serverModel.selectNextEntity(MediaServerModel.SCAN_MODE_SEQUENTIAL)
-            RepeatMode.REPEAT_ALL -> serverModel.selectNextEntity(MediaServerModel.SCAN_MODE_LOOP)
+            RepeatMode.SEQUENTIAL ->
+                serverModel?.selectNextEntity(MediaServerModel.SCAN_MODE_SEQUENTIAL) ?: false
+            RepeatMode.REPEAT_ALL ->
+                serverModel?.selectNextEntity(MediaServerModel.SCAN_MODE_LOOP) ?: false
             RepeatMode.REPEAT_ONE -> false
         }
     }
@@ -208,8 +210,10 @@ class MusicActivityModel(
     private fun selectPrevious(): Boolean {
         return when (repeatMode) {
             RepeatMode.PLAY_ONCE -> false
-            RepeatMode.SEQUENTIAL -> serverModel.selectPreviousEntity(MediaServerModel.SCAN_MODE_SEQUENTIAL)
-            RepeatMode.REPEAT_ALL -> serverModel.selectPreviousEntity(MediaServerModel.SCAN_MODE_LOOP)
+            RepeatMode.SEQUENTIAL ->
+                serverModel?.selectPreviousEntity(MediaServerModel.SCAN_MODE_SEQUENTIAL) ?: false
+            RepeatMode.REPEAT_ALL ->
+                serverModel?.selectPreviousEntity(MediaServerModel.SCAN_MODE_LOOP) ?: false
             RepeatMode.REPEAT_ONE -> false
         }
     }
