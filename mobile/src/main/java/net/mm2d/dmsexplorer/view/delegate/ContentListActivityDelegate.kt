@@ -90,10 +90,7 @@ abstract class ContentListActivityDelegate internal constructor(
         return model?.onBackPressed() == true
     }
 
-    fun onKeyLongPress(
-        keyCode: Int,
-        event: KeyEvent
-    ): Boolean {
+    fun onKeyLongPress(keyCode: Int, event: KeyEvent): Boolean {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
             model?.terminate()
             return true

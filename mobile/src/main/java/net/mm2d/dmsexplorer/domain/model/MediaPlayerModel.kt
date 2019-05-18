@@ -62,7 +62,6 @@ abstract class MediaPlayerModel(
                 handler.postDelayed(this, sleep.toLong())
             } catch (ignored: IllegalStateException) {
             }
-
         }
     }
 
@@ -158,17 +157,11 @@ abstract class MediaPlayerModel(
         isPlaying = isPlaying
     }
 
-    private fun logError(
-        what: Int,
-        extra: Int
-    ) {
+    private fun logError(what: Int, extra: Int) {
         Logger.e { "onError:w $what ${getErrorWhatString(what)} e $extra ${getErrorExtraString(extra)}" }
     }
 
-    private fun logInfo(
-        what: Int,
-        extra: Int
-    ) {
+    private fun logInfo(what: Int, extra: Int) {
         Logger.d { "onInfo:w $what ${getInfoWhatString(what)} e $extra" }
     }
 

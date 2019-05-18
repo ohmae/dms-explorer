@@ -30,10 +30,7 @@ internal class ContentListActivityDelegateTwoPane(
     private var fragment: Fragment? = null
     override val isTwoPane: Boolean = true
 
-    override fun onSelect(
-        v: View,
-        entity: ContentEntity
-    ) {
+    override fun onSelect(v: View, entity: ContentEntity) {
         setDetailFragment(true)
     }
 
@@ -41,11 +38,7 @@ internal class ContentListActivityDelegateTwoPane(
         removeDetailFragment()
     }
 
-    override fun onExecute(
-        v: View,
-        entity: ContentEntity,
-        selected: Boolean
-    ) {
+    override fun onExecute(v: View, entity: ContentEntity, selected: Boolean) {
         if (entity.isProtected) {
             if (!selected) {
                 setDetailFragment(true)

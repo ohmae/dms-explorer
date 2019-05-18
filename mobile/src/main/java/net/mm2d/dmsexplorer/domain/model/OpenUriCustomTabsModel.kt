@@ -32,10 +32,7 @@ class OpenUriCustomTabsModel(
         useCustomTabs = use
     }
 
-    override fun openUri(
-        context: Context,
-        uri: String
-    ) {
+    override fun openUri(context: Context, uri: String) {
         if (!useCustomTabs || !URLUtil.isNetworkUrl(uri)
             || OpenUriUtils.hasDefaultAppOtherThanBrowser(context, uri)
         ) {
@@ -55,10 +52,7 @@ class OpenUriCustomTabsModel(
         helper.mayLaunchUrl(urls)
     }
 
-    private fun openUriOnCustomTabs(
-        context: Context,
-        uri: String
-    ): Boolean {
+    private fun openUriOnCustomTabs(context: Context, uri: String): Boolean {
         val packageNameToBind = CustomTabsHelper.packageNameToBind
         if (packageNameToBind.isNullOrEmpty()) {
             return false
@@ -76,7 +70,6 @@ class OpenUriCustomTabsModel(
         } catch (ignored: ActivityNotFoundException) {
             return false
         }
-
         return true
     }
 

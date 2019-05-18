@@ -39,11 +39,7 @@ abstract class PropertyAdapter(
     private val inflater: LayoutInflater = LayoutInflater.from(context)
 
     @JvmOverloads
-    fun addEntry(
-        name: String,
-        value: String?,
-        type: Type = Type.TEXT
-    ) {
+    fun addEntry(name: String, value: String?, type: Type = Type.TEXT) {
         if (value.isNullOrEmpty()) {
             return
         }
@@ -58,20 +54,14 @@ abstract class PropertyAdapter(
         return if (list[position].type != Type.DESCRIPTION) 0 else 1
     }
 
-    override fun onCreateViewHolder(
-        parent: ViewGroup,
-        viewType: Int
-    ): ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(
             context, inflater,
             DataBindingUtil.inflate(inflater, R.layout.property_list_item, parent, false)
         )
     }
 
-    override fun onBindViewHolder(
-        holder: ViewHolder,
-        position: Int
-    ) {
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.applyItem(list[position])
     }
 
@@ -116,10 +106,7 @@ abstract class PropertyAdapter(
             return makeDescription(layout, entry.value)
         }
 
-        private fun makeDescription(
-            parent: ViewGroup,
-            text: String
-        ): String {
+        private fun makeDescription(parent: ViewGroup, text: String): String {
             var firstNormalText = ""
             val matcher = URL_PATTERN.matcher(text)
             var lastEnd = 0
@@ -150,19 +137,13 @@ abstract class PropertyAdapter(
             return firstNormalText
         }
 
-        private fun addNormalText(
-            parent: ViewGroup,
-            text: String
-        ) {
+        private fun addNormalText(parent: ViewGroup, text: String) {
             val normal = inflater.inflate(R.layout.normal_text_view, parent, false) as TextView
             normal.text = text
             parent.addView(normal)
         }
 
-        private fun addLinkText(
-            parent: ViewGroup,
-            text: String
-        ) {
+        private fun addLinkText(parent: ViewGroup, text: String) {
             val link = inflater.inflate(R.layout.link_text_view, parent, false) as TextView
             link.text = text
             link.paintFlags = link.paintFlags or Paint.UNDERLINE_TEXT_FLAG
@@ -181,18 +162,12 @@ abstract class PropertyAdapter(
 
     companion object {
         @JvmStatic
-        fun ofServer(
-            context: Context,
-            server: MediaServer
-        ): PropertyAdapter {
+        fun ofServer(context: Context, server: MediaServer): PropertyAdapter {
             return ServerPropertyAdapter(context, server)
         }
 
         @JvmStatic
-        fun ofContent(
-            context: Context,
-            entity: ContentEntity
-        ): PropertyAdapter {
+        fun ofContent(context: Context, entity: ContentEntity): PropertyAdapter {
             return ContentPropertyAdapter(context, entity)
         }
 

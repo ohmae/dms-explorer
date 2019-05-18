@@ -24,10 +24,7 @@ internal open class LocalBroadcastObserver(
     private var callback: (() -> Unit)? = null
 
     private val broadcastReceiver = object : BroadcastReceiver() {
-        override fun onReceive(
-            context: Context,
-            intent: Intent
-        ) {
+        override fun onReceive(context: Context, intent: Intent) {
             callback?.invoke()
         }
     }

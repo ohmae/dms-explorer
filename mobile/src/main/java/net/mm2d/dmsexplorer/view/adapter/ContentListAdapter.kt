@@ -36,19 +36,13 @@ class ContentListAdapter(context: Context) : RecyclerView.Adapter<ContentListAda
     private val translationZ: Float =
         context.resources.getDimension(R.dimen.list_item_focus_elevation)
 
-    override fun onCreateViewHolder(
-        parent: ViewGroup,
-        viewType: Int
-    ): ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(
             DataBindingUtil.inflate(inflater, R.layout.content_list_item, parent, false)
         )
     }
 
-    override fun onBindViewHolder(
-        holder: ViewHolder,
-        position: Int
-    ) {
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.applyItem(list[position])
     }
 
@@ -154,10 +148,7 @@ class ContentListAdapter(context: Context) : RecyclerView.Adapter<ContentListAda
             return true
         }
 
-        private fun onFocusChange(
-            v: View,
-            focus: Boolean
-        ) {
+        private fun onFocusChange(v: View, focus: Boolean) {
             if (focus) {
                 v.scaleX = FOCUS_SCALE
                 v.scaleY = FOCUS_SCALE
