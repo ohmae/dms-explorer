@@ -7,7 +7,6 @@
 
 package net.mm2d.android.upnp.cds
 
-import android.text.TextUtils
 import net.mm2d.log.Logger
 import net.mm2d.upnp.util.XmlUtils
 import net.mm2d.upnp.util.forEachElement
@@ -72,11 +71,11 @@ internal object CdsObjectFactory {
         udn: String,
         xml: String?
     ): CdsObject? {
-        if (TextUtils.isEmpty(xml)) {
+        if (xml.isNullOrEmpty()) {
             return null
         }
         try {
-            val document = XmlUtils.newDocument(false, xml!!)
+            val document = XmlUtils.newDocument(false, xml)
             val rootTag = createRootTag(document)
             document.documentElement.firstChild?.forEachElement {
                 return createCdsObject(udn, it, rootTag)

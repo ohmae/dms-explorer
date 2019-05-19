@@ -36,11 +36,7 @@ internal class ContentListActivityDelegateOnePane(
 
     override fun onLostSelection() {}
 
-    override fun onExecute(
-        v: View,
-        entity: ContentEntity,
-        selected: Boolean
-    ) {
+    override fun onExecute(v: View, entity: ContentEntity, selected: Boolean) {
         if (entity.isProtected) {
             Snackbar.make(v, R.string.toast_not_support_drm, Snackbar.LENGTH_LONG).show()
             return

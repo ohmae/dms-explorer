@@ -40,10 +40,7 @@ object ItemSelectUtils {
         }
     }
 
-    fun play(
-        activity: Activity,
-        index: Int
-    ) {
+    fun play(activity: Activity, index: Int) {
         val targetModel = Repository.get().playbackTargetModel ?: return
         targetModel.setResIndex(index)
         if (targetModel.uri === Uri.EMPTY) {

@@ -83,7 +83,7 @@ class AvControlPointManager {
         initialized.set(true)
         controlPoint = ControlPointFactory.builder()
             .setInterfaces(interfaces)
-            .setCallbackHandler { r: Runnable -> handler.post(r) }
+            .setCallbackHandler { handler.post(it) }
             .build()
             .also { cp ->
                 cp.setIconFilter(ICON_FILTER)

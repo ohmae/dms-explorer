@@ -69,10 +69,8 @@ class ContentDirectoryEntity private constructor(
     }
 
     fun clearState() {
-        if (disposable != null) {
-            disposable!!.dispose()
-            disposable = null
-        }
+        disposable?.dispose()
+        disposable = null
         _selectedEntity = null
         isInProgress = true
         list.clear()

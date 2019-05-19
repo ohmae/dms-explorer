@@ -15,9 +15,6 @@ buildscript {
 
 allprojects {
     repositories {
-        maven {
-            url 'https://ohmae.github.com/mmupnp/maven'
-        }
         google()
         jcenter()
     }

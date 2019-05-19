@@ -30,20 +30,13 @@ class ViewPagerAdapter : PagerAdapter() {
         viewList.clear()
     }
 
-    override fun instantiateItem(
-        container: ViewGroup,
-        position: Int
-    ): Any {
+    override fun instantiateItem(container: ViewGroup, position: Int): Any {
         return viewList[position].also {
             container.addView(it)
         }
     }
 
-    override fun destroyItem(
-        container: ViewGroup,
-        position: Int,
-        any: Any
-    ) {
+    override fun destroyItem(container: ViewGroup, position: Int, any: Any) {
         container.removeView(any as View)
     }
 
@@ -51,10 +44,7 @@ class ViewPagerAdapter : PagerAdapter() {
         return viewList.size
     }
 
-    override fun isViewFromObject(
-        view: View,
-        any: Any
-    ): Boolean {
+    override fun isViewFromObject(view: View, any: Any): Boolean {
         return view === any
     }
 }

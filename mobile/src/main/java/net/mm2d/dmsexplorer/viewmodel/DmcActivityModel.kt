@@ -39,8 +39,10 @@ class DmcActivityModel(
     repository: Repository
 ) : BaseObservable(), StatusListener {
     private val handler = Handler(Looper.getMainLooper())
-    private val targetModel: PlaybackTargetModel = repository.playbackTargetModel!!
-    private val rendererModel: PlayerModel = repository.mediaRendererModel!!
+    private val targetModel: PlaybackTargetModel = repository.playbackTargetModel
+        ?: throw IllegalStateException()
+    private val rendererModel: PlayerModel = repository.mediaRendererModel
+        ?: throw IllegalStateException()
     private var tracking: Boolean = false
     private val trackingCancelTask: Runnable = Runnable { tracking = false }
     val title: String
@@ -133,7 +135,8 @@ class DmcActivityModel(
         title = AribUtils.toDisplayableString(entity.name)
         hasDuration = entity.type.hasDuration
         isPlayControlEnabled = hasDuration && rendererModel.canPause()
-        val serverModel = repository.mediaServerModel!!
+        val serverModel = repository.mediaServerModel
+            ?: throw IllegalStateException()
         subtitle = (rendererModel.name
                 + "  ←  "
                 + serverModel.mediaServer.friendlyName)

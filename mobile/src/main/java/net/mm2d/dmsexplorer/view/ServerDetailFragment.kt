@@ -30,13 +30,13 @@ class ServerDetailFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val activity = activity
+        val activity = activity!!
         val binding: ServerDetailFragmentBinding = DataBindingUtil
             .inflate(inflater, R.layout.server_detail_fragment, container, false)
         try {
-            binding.model = ServerDetailFragmentModel(activity!!, Repository.get())
+            binding.model = ServerDetailFragmentModel(activity, Repository.get())
         } catch (ignored: IllegalStateException) {
-            activity!!.finish()
+            activity.finish()
             return binding.root
         }
 

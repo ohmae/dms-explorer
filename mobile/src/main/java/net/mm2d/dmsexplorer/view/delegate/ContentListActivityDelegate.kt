@@ -37,18 +37,19 @@ abstract class ContentListActivityDelegate internal constructor(
     fun onCreate(savedInstanceState: Bundle?) {
         val activity = activity
         val repository = Repository.get()
-        try {
-            model = ContentListActivityModel(activity, repository, this, isTwoPane)
+        val model = try {
+            ContentListActivityModel(activity, repository, this, isTwoPane)
         } catch (ignored: IllegalStateException) {
             activity.finish()
             return
         }
+        this.model = model
         binding.toolbar.popupTheme = Settings.get().themeParams.popupThemeId
         binding.model = model
         activity.setSupportActionBar(binding.toolbar)
         activity.supportActionBar?.setDisplayHomeAsUpEnabled(true)
         savedInstanceState?.let { restoreScroll(it) }
-        repository.themeModel.setThemeColor(activity, model!!.toolbarBackground, 0)
+        repository.themeModel.setThemeColor(activity, model.toolbarBackground, 0)
     }
 
     @CallSuper
@@ -89,10 +90,7 @@ abstract class ContentListActivityDelegate internal constructor(
         return model?.onBackPressed() == true
     }
 
-    fun onKeyLongPress(
-        keyCode: Int,
-        event: KeyEvent
-    ): Boolean {
+    fun onKeyLongPress(keyCode: Int, event: KeyEvent): Boolean {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
             model?.terminate()
             return true

@@ -18,12 +18,21 @@ import androidx.annotation.StyleRes
 object AttrUtils {
     @JvmStatic
     @ColorInt
-    fun resolveColor(context: Context, @AttrRes attr: Int, @ColorInt defaultColor: Int): Int {
+    fun resolveColor(
+        context: Context,
+        @AttrRes attr: Int,
+        @ColorInt defaultColor: Int
+    ): Int {
         return resolveColor(context, 0, attr, defaultColor)
     }
 
     @ColorInt
-    private fun resolveColor(context: Context, @StyleRes style: Int, @AttrRes attr: Int, @ColorInt defaultColor: Int): Int {
+    private fun resolveColor(
+        context: Context,
+        @StyleRes style: Int,
+        @AttrRes attr: Int,
+        @ColorInt defaultColor: Int
+    ): Int {
         val a = context.obtainStyledAttributes(style, intArrayOf(attr))
         try {
             return a.getColor(0, defaultColor)

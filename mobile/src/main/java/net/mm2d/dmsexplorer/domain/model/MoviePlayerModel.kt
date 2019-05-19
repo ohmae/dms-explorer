@@ -23,16 +23,16 @@ import net.mm2d.dmsexplorer.domain.model.control.VideoViewControl
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
  */
 class MoviePlayerModel(
-    private val mContext: Context,
-    private val mVideoView: VideoView
-) : MediaPlayerModel(VideoViewControl(mVideoView)) {
+    private val context: Context,
+    private val videoView: VideoView
+) : MediaPlayerModel(VideoViewControl(videoView)) {
     override val name: String = "Movie Player"
     override fun setUri(uri: Uri, entity: ContentEntity?) {
-        mVideoView.setVideoURI(uri)
+        videoView.setVideoURI(uri)
     }
 
     override fun preparePlaying(mediaPlayer: MediaPlayer) {
-        mediaPlayer.setWakeMode(mContext, PowerManager.PARTIAL_WAKE_LOCK)
+        mediaPlayer.setWakeMode(context, PowerManager.PARTIAL_WAKE_LOCK)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             mediaPlayer.setAudioAttributes(
                 AudioAttributes.Builder()

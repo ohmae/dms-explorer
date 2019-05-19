@@ -22,10 +22,7 @@ import java.util.concurrent.TimeUnit
 object RepeatIntroductionUtils {
     val TIMEOUT = TimeUnit.SECONDS.toMillis(8)
 
-    fun show(
-        activity: Activity,
-        view: View
-    ): Boolean {
+    fun show(activity: Activity, view: View): Boolean {
         val settings = Settings.get()
         if (settings.isRepeatIntroduced) {
             return false

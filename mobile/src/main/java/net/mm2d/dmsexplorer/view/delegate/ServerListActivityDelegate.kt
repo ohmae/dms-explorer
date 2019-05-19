@@ -41,7 +41,7 @@ abstract class ServerListActivityDelegate internal constructor(
         binding.toolbar.popupTheme = Settings.get().themeParams.popupThemeId
         binding.model = ServerListActivityModel(activity, Repository.get(), this, isTwoPane)
         activity.setSupportActionBar(binding.toolbar)
-        activity.supportActionBar!!.setTitle(R.string.title_device_select)
+        activity.supportActionBar?.setTitle(R.string.title_device_select)
         if (savedInstanceState != null) {
             restoreScroll(savedInstanceState)
         }

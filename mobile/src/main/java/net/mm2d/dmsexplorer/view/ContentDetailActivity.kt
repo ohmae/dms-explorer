@@ -39,17 +39,18 @@ class ContentDetailActivity : BaseActivity(true), OnDeleteListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.content_detail_activity)
         val repository = Repository.get()
-        mediaServerModel = repository.mediaServerModel!!
+        val serverModel = repository.mediaServerModel
         val binding: ContentDetailFragmentBinding? =
             DataBindingUtil.findBinding(findViewById<View>(R.id.cds_detail_fragment))
-        if (binding == null) {
+        if (binding == null || serverModel == null) {
             finish()
             return
         }
+        mediaServerModel = serverModel
         binding.cdsDetailToolbar.popupTheme = settings.themeParams.popupThemeId
         contentEntity = selectedEntity
         setSupportActionBar(binding.cdsDetailToolbar)
-        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         val model = binding.model
         if (model != null) {

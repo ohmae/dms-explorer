@@ -32,7 +32,8 @@ import net.mm2d.dmsexplorer.view.adapter.RendererListAdapter
 class SelectRendererDialog : DialogFragment() {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        val builder = AlertDialog.Builder(activity!!)
+        val activity = activity!!
+        val builder = AlertDialog.Builder(activity)
         val model = Repository.get().controlPointModel
         val cp = model.mrControlPoint
         val rendererList = cp.deviceList
@@ -40,11 +41,11 @@ class SelectRendererDialog : DialogFragment() {
             dismiss()
             return builder.create()
         }
-        val adapter = RendererListAdapter(activity!!, rendererList)
+        val adapter = RendererListAdapter(activity, rendererList)
         adapter.setOnItemClickListener { _, renderer ->
             model.setSelectedMediaRenderer(renderer)
             EventLogger.sendSelectRenderer()
-            ItemSelectUtils.sendSelectedRenderer(activity!!)
+            ItemSelectUtils.sendSelectedRenderer(activity)
             dismiss()
         }
         val inflater = LayoutInflater.from(activity)
@@ -55,7 +56,7 @@ class SelectRendererDialog : DialogFragment() {
         binding.recyclerView.layoutManager = LinearLayoutManager(activity)
         binding.recyclerView.addItemDecoration(
             DividerItemDecoration(
-                activity!!,
+                activity,
                 DividerItemDecoration.VERTICAL
             )
         )

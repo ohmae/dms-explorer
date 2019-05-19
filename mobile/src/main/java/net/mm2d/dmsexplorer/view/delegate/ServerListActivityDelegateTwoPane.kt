@@ -51,15 +51,16 @@ internal class ServerListActivityDelegateTwoPane(
     }
 
     private fun setDetailFragment(animate: Boolean) {
-        fragment = ServerDetailFragment.newInstance()
+        val fragment = ServerDetailFragment.newInstance()
+        this.fragment = fragment
         if (animate) {
             val transition = Slide(Gravity.BOTTOM)
                 .setDuration(150L)
                 .setInterpolator(DecelerateInterpolator())
-            fragment?.enterTransition = transition
+            fragment.enterTransition = transition
         }
         activity.supportFragmentManager.beginTransaction()
-            .replace(R.id.server_detail_container, fragment!!)
+            .replace(R.id.server_detail_container, fragment)
             .commitAllowingStateLoss()
     }
 
