@@ -45,29 +45,34 @@ class CustomTabsHelper(
     }
 
     fun mayLaunchUrl(urls: List<String>) {
-        val session = session
-        if (session == null || urls.isEmpty()) {
+        val session = session ?: return
+        if (urls.isEmpty()) {
             return
         }
-        if (urls.size == 1) {
-            session.mayLaunchUrl(Uri.parse(urls[0]), null, null)
-            return
+        try {
+            if (urls.size == 1) {
+                session.mayLaunchUrl(Uri.parse(urls[0]), null, null)
+                return
+            }
+            val otherLikelyBundles = urls.subList(1, urls.size).map {
+                Bundle().apply { putParcelable(CustomTabsService.KEY_URL, Uri.parse(it)) }
+            }
+            session.mayLaunchUrl(Uri.parse(urls[0]), null, otherLikelyBundles)
+        } catch (ignored: Exception) {
+            unbind()
         }
-        val otherLikelyBundles = ArrayList<Bundle>()
-        for (i in 1 until urls.size) {
-            val bundle = Bundle()
-            bundle.putParcelable(CustomTabsService.KEY_URL, Uri.parse(urls[i]))
-            otherLikelyBundles.add(bundle)
-        }
-        session.mayLaunchUrl(Uri.parse(urls[0]), null, otherLikelyBundles)
     }
 
     override fun onCustomTabsServiceConnected(
         name: ComponentName,
         client: CustomTabsClient
     ) {
-        client.warmup(0)
-        session = client.newSession(CustomTabsCallback())
+        try {
+            client.warmup(0)
+            session = client.newSession(CustomTabsCallback())
+        } catch (ignored: Exception) {
+            unbind()
+        }
     }
 
     override fun onServiceDisconnected(name: ComponentName) {
