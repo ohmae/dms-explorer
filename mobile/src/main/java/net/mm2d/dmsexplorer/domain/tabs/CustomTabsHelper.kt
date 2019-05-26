@@ -83,7 +83,8 @@ class CustomTabsHelper(
         )
         private const val ACTION_CUSTOM_TABS_CONNECTION =
             "android.support.customtabs.action.CustomTabsService"
-        private const val EXTRA_CUSTOM_TABS_KEEP_ALIVE = "android.support.customtabs.extra.KEEP_ALIVE"
+        private const val EXTRA_CUSTOM_TABS_KEEP_ALIVE =
+            "android.support.customtabs.extra.KEEP_ALIVE"
 
         @JvmStatic
         var packageNameToBind: String? = null

@@ -12,8 +12,6 @@ import android.graphics.Point
 import android.os.Build
 import android.view.Display
 
-import java.lang.reflect.InvocationTargetException
-
 /**
  * ディスプレイサイズを取得するユーティリティクラス。
  *
@@ -44,22 +42,9 @@ object DisplaySizeUtils {
      */
     @JvmStatic
     fun getRealSize(activity: Activity): Point {
-        val display = activity.windowManager.defaultDisplay
-        val point = Point()
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-            display.getRealSize(point)
-            return point
+        return Point().also {
+            activity.windowManager.defaultDisplay.getRealSize(it)
         }
-        try {
-            val width = Display::class.java.getMethod("getRawWidth").invoke(display) as Int
-            val height = Display::class.java.getMethod("getRawHeight").invoke(display) as Int
-            point.set(width, height)
-        } catch (ignored: IllegalAccessException) {
-        } catch (ignored: InvocationTargetException) {
-        } catch (ignored: NoSuchMethodException) {
-        }
-
-        return point
     }
 
     /**
@@ -70,9 +55,7 @@ object DisplaySizeUtils {
      */
     @JvmStatic
     fun getNavigationBarArea(activity: Activity): Point {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT // KitKat未満はアプリエリアと重複しない
-            || isInMultiWindowMode(activity)
-        ) {
+        if (isInMultiWindowMode(activity)) {
             return Point(0, 0)
         }
         val p1 = getSize(activity)

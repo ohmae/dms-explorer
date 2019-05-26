@@ -9,6 +9,7 @@
 /.idea/gradle.xml
 /.idea/workspace.xml
 /.idea/libraries
+/.idea/modules.xml
 /.idea/navEditor.xml
 /.idea/assetWizardSettings.xml
 /build

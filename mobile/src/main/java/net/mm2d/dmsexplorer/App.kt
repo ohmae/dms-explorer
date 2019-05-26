@@ -7,12 +7,12 @@
 
 package net.mm2d.dmsexplorer
 
+import android.app.Application
 import android.os.Build.VERSION
 import android.os.Build.VERSION_CODES
 import android.os.StrictMode
 import android.os.StrictMode.ThreadPolicy
 import android.os.StrictMode.VmPolicy
-import androidx.multidex.MultiDexApplication
 import io.reactivex.exceptions.OnErrorNotImplementedException
 import io.reactivex.exceptions.UndeliverableException
 import io.reactivex.plugins.RxJavaPlugins
@@ -30,7 +30,7 @@ import net.mm2d.log.android.AndroidSenders
  *
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
  */
-class App : MultiDexApplication() {
+class App : Application() {
     override fun onCreate() {
         super.onCreate()
         if (BuildConfig.DEBUG) {
@@ -69,9 +69,7 @@ class App : MultiDexApplication() {
                 .detectActivityLeaks()
                 .detectLeakedClosableObjects()
                 .detectLeakedRegistrationObjects()
-            if (VERSION.SDK_INT >= VERSION_CODES.JELLY_BEAN_MR2) {
-                vmPolicyBuilder.detectFileUriExposure()
-            }
+                .detectFileUriExposure()
             if (VERSION.SDK_INT >= VERSION_CODES.O) {
                 vmPolicyBuilder.detectContentUriWithoutPermission()
             }

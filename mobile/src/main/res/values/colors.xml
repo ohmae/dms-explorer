@@ -25,11 +25,8 @@
     <color name="bgListDark">#1c1c1c</color>
     <color name="bgListItem">#00000000</color>
     <color name="bgListItemRipple">#40000000</color>
-    <color name="bgListItemPressed">#20000000</color>
     <color name="bgListItemSelected">#2000a0ff</color>
-    <color name="bgListItemSelectedPressed">#10ffffff</color>
     <color name="bgListItemSelectedRipple">#20ffffff</color>
-    <color name="bgLinkText">#330080ff</color>
     <color name="bgLinkTextRipple">#660080ff</color>
     <color name="bgProgress">#fafafa</color>
     <color name="bgProgressDark">#333333</color>

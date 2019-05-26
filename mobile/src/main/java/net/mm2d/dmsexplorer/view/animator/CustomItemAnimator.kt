@@ -125,7 +125,7 @@ class CustomItemAnimator(context: Context) : SimpleItemAnimator() {
             val changes = ArrayList(pendingChanges)
             changesList.add(changes)
             pendingChanges.clear()
-            val changer = Runnable{
+            val changer = Runnable {
                 for (change in changes) {
                     animateChangeImpl(change)
                 }

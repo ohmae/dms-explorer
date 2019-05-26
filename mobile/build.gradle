@@ -16,12 +16,11 @@ android {
 
     defaultConfig {
         applicationId "net.mm2d.dmsexplorer"
-        minSdkVersion 16
+        minSdkVersion 21
         targetSdkVersion 28
         versionCode versionMajor * 10000 + versionMinor * 100 + versionPatch
         versionName "${versionMajor}.${versionMinor}.${versionPatch}"
         resConfigs "en", "ja", "ru"
-        multiDexEnabled true
         vectorDrawables.useSupportLibrary = true
         archivesBaseName = "${applicationName}-${versionName}"
     }
@@ -74,7 +73,6 @@ dependencies {
     implementation 'androidx.preference:preference:1.0.0'
     implementation 'androidx.browser:browser:1.0.0'
     implementation 'androidx.exifinterface:exifinterface:1.0.0'
-    implementation 'androidx.multidex:multidex:2.0.1'
     implementation 'androidx.core:core-ktx:1.0.2'
     implementation 'com.google.android.material:material:1.0.0'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
@@ -84,7 +82,7 @@ dependencies {
     implementation 'net.mm2d:mmupnp:3.0.0'
     implementation 'net.mm2d:preference:0.1.2'
     implementation 'net.opacapp:multiline-collapsingtoolbar:27.1.1'
-    implementation 'com.squareup.okhttp3:okhttp:3.12.3'
+    implementation 'com.squareup.okhttp3:okhttp:3.14.2'
     implementation 'com.squareup.retrofit2:retrofit:2.5.0'
     implementation 'com.squareup.retrofit2:adapter-rxjava2:2.5.0'
     implementation 'com.squareup.retrofit2:converter-moshi:2.5.0'

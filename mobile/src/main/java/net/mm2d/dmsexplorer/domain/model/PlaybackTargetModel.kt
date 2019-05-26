@@ -52,7 +52,7 @@ class PlaybackTargetModel(
 
     fun createResChoices(): Array<String> {
         val tagList = cdsObject.getTagList(CdsObject.RES) ?: return emptyArray()
-        return tagList.map {tag ->
+        return tagList.map { tag ->
             val protocolInfo = tag.getAttribute(CdsObject.PROTOCOL_INFO)
             val sb = StringBuilder()
             PropertyParser.extractProtocolFromProtocolInfo(protocolInfo)?.let {

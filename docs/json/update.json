@@ -7,6 +7,6 @@
     ],
     "targetExclude": [
     ],
-    "minSdkVersion": 16
+    "minSdkVersion": 21
   }
 }

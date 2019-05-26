@@ -99,7 +99,6 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom|end"
                 android:layout_marginBottom="@dimen/fab_margin"
-                android:layout_marginLeft="@dimen/fab_margin"
                 android:layout_marginStart="@dimen/fab_margin"
                 android:onClick="@{model::onClickSend}"
                 app:rippleColor="@color/fabRipple"

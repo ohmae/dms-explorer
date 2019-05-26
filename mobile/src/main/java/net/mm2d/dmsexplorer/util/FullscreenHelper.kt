@@ -7,15 +7,12 @@
 
 package net.mm2d.dmsexplorer.util
 
-import android.os.Build
 import android.os.Handler
 import android.os.Looper
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
-
 import net.mm2d.dmsexplorer.R
-
 import java.util.concurrent.TimeUnit
 
 /**
@@ -138,25 +135,13 @@ class FullscreenHelper(
 
     companion object {
         private val NAVIGATION_INTERVAL = TimeUnit.SECONDS.toMillis(3)
-        private val SYSTEM_UI_VISIBLE: Int
-        private val SYSTEM_UI_INVISIBLE: Int
+        private const val SYSTEM_UI_VISIBLE: Int = (View.SYSTEM_UI_FLAG_LOW_PROFILE
+                or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN)
+        private const val SYSTEM_UI_INVISIBLE: Int = (View.SYSTEM_UI_FLAG_FULLSCREEN
+                or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                or View.SYSTEM_UI_FLAG_IMMERSIVE
+                or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION)
 
-        init {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                SYSTEM_UI_VISIBLE =
-                    View.SYSTEM_UI_FLAG_LOW_PROFILE or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                SYSTEM_UI_INVISIBLE = (View.SYSTEM_UI_FLAG_FULLSCREEN
-                        or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                        or View.SYSTEM_UI_FLAG_IMMERSIVE
-                        or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                        or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION)
-            } else {
-                SYSTEM_UI_VISIBLE = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                SYSTEM_UI_INVISIBLE = (View.SYSTEM_UI_FLAG_FULLSCREEN
-                        or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                        or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                        or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION)
-            }
-        }
     }
 }

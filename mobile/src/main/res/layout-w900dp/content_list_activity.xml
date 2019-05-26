@@ -52,16 +52,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
                 android:layout_toEndOf="@+id/swipe_refresh_layout"
-                android:layout_toRightOf="@+id/swipe_refresh_layout"
                 />
 
             <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
                 android:id="@+id/swipe_refresh_layout"
                 android:layout_width="@dimen/item_width"
                 android:layout_height="match_parent"
-                android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
                 android:clipChildren="false"
                 app:colorSchemeResources="@{model.refreshColors}"
@@ -79,8 +76,6 @@
                     android:clipToPadding="false"
                     android:itemAnimator="@{model.itemAnimator}"
                     android:paddingEnd="0dp"
-                    android:paddingLeft="@{model.focusable ? @dimen/list_scale_padding : @dimen/list_non_scale_padding}"
-                    android:paddingRight="0dp"
                     android:paddingStart="@{model.focusable ? @dimen/list_scale_padding : @dimen/list_non_scale_padding}"
                     android:splitMotionEvents="false"
                     app:adapter="@{model.contentListAdapter}"

@@ -42,7 +42,6 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_marginEnd="@dimen/toolbar_button_margin"
-                android:layout_marginRight="@dimen/toolbar_button_margin"
                 android:background="@drawable/bg_tool_button"
                 android:focusable="true"
                 android:onClick="@{() -> model.onClickBack()}"

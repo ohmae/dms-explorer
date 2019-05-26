@@ -55,9 +55,6 @@ class ServerDetailActivity : BaseActivity(true) {
     }
 
     private fun prepareTransition(hasState: Boolean) {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-            return
-        }
         binding.toolbarIcon.transitionName = Const.SHARE_ELEMENT_NAME_DEVICE_ICON
         if (hasState) {
             return

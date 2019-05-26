@@ -8,7 +8,6 @@
 package net.mm2d.dmsexplorer.domain.model.control
 
 import android.media.MediaPlayer.*
-import android.os.Build
 import android.widget.VideoView
 
 /**
@@ -74,9 +73,7 @@ class VideoViewControl(
     }
 
     override fun setOnInfoListener(listener: OnInfoListener?) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-            videoView.setOnInfoListener(listener)
-        }
+        videoView.setOnInfoListener(listener)
     }
 
     override fun setOnCompletionListener(listener: OnCompletionListener?) {

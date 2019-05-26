@@ -52,9 +52,6 @@ internal class ServerListActivityDelegateOnePane(
     }
 
     private fun setSharedElementCallback() {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-            return
-        }
         activity.setExitSharedElementCallback(object : SharedElementCallback() {
             override fun onMapSharedElements(
                 names: List<String>,
@@ -83,9 +80,6 @@ internal class ServerListActivityDelegateOnePane(
     }
 
     private fun execAfterTransitionOnce(task: Runnable) {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-            return
-        }
         activity.window.sharedElementExitTransition
             .addListener(object : TransitionListenerAdapter() {
                 @RequiresApi(api = Build.VERSION_CODES.KITKAT)
