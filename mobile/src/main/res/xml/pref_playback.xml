@@ -6,8 +6,7 @@
     <PreferenceCategory
         android:title="@string/pref_category_movie"
         >
-        <!--suppress AndroidElementNotAllowed -->
-        <SwitchPreferenceCompat
+        <SwitchPreference
             android:defaultValue="true"
             android:key="PLAY_MOVIE_MYSELF"
             android:summaryOff="@string/pref_message_launch_app_off"
@@ -20,8 +19,7 @@
     <PreferenceCategory
         android:title="@string/pref_category_music"
         >
-        <!--suppress AndroidElementNotAllowed -->
-        <SwitchPreferenceCompat
+        <SwitchPreference
             android:defaultValue="true"
             android:key="PLAY_MUSIC_MYSELF"
             android:summaryOff="@string/pref_message_launch_app_off"
@@ -34,8 +32,7 @@
     <PreferenceCategory
         android:title="@string/pref_category_photo"
         >
-        <!--suppress AndroidElementNotAllowed -->
-        <SwitchPreferenceCompat
+        <SwitchPreference
             android:defaultValue="true"
             android:key="PLAY_PHOTO_MYSELF"
             android:summaryOff="@string/pref_message_launch_app_off"

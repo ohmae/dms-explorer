@@ -8,8 +8,7 @@
         android:title="@string/pref_category_link"
         >
 
-        <!--suppress AndroidElementNotAllowed -->
-        <SwitchPreferenceCompat
+        <SwitchPreference
             android:defaultValue="true"
             android:key="USE_CUSTOM_TABS"
             android:summaryOff="@string/pref_message_open_url_off"
@@ -23,8 +22,7 @@
         android:title="@string/pref_category_tap_and_long_tap_operation"
         >
 
-        <!--suppress AndroidElementNotAllowed -->
-        <SwitchPreferenceCompat
+        <SwitchPreference
             android:defaultValue="true"
             android:key="SHOULD_SHOW_DEVICE_DETAIL_ON_TAP"
             android:summaryOff="@string/pref_message_device_detail_on_tap_off"
@@ -33,8 +31,7 @@
             app:iconSpaceReserved="false"
             />
 
-        <!--suppress AndroidElementNotAllowed -->
-        <SwitchPreferenceCompat
+        <SwitchPreference
             android:defaultValue="true"
             android:key="SHOULD_SHOW_CONTENT_DETAIL_ON_TAP"
             android:summaryOff="@string/pref_message_content_detail_on_tap_off"
@@ -47,8 +44,7 @@
     <PreferenceCategory
         android:title="@string/pref_category_delete">
 
-        <!--suppress AndroidElementNotAllowed -->
-        <SwitchPreferenceCompat
+        <SwitchPreference
             android:defaultValue="false"
             android:key="DELETE_FUNCTION_ENABLED"
             android:summaryOff="@string/pref_message_delete_off"

@@ -20,7 +20,7 @@ import androidx.preference.ListPreference
 import androidx.preference.Preference.OnPreferenceChangeListener
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceManager
-import androidx.preference.SwitchPreferenceCompat
+import androidx.preference.SwitchPreference
 import net.mm2d.android.util.LaunchUtils
 import net.mm2d.dmsexplorer.BuildConfig
 import net.mm2d.dmsexplorer.Const
@@ -108,7 +108,7 @@ class SettingsActivity : PreferenceActivityCompat() {
         }
 
         private fun setUpCustomTabs() {
-            val customTabs = findPreference(Key.USE_CUSTOM_TABS.name) as SwitchPreferenceCompat
+            val customTabs = findPreference(Key.USE_CUSTOM_TABS.name) as SwitchPreference
             customTabs.setOnPreferenceChangeListener { _, newValue ->
                 if (newValue is Boolean) {
                     Repository.get().openUriModel.setUseCustomTabs(newValue)
@@ -137,7 +137,7 @@ class SettingsActivity : PreferenceActivityCompat() {
                     setFromCode = false
                     return@setOnPreferenceChangeListener true
                 }
-                val switchPreference = preference as SwitchPreferenceCompat
+                val switchPreference = preference as SwitchPreference
                 val checked = switchPreference.isChecked
                 AlertDialog.Builder(context!!)
                     .setTitle(R.string.dialog_title_change_theme)
