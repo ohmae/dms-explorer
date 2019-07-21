@@ -13,17 +13,21 @@ import android.os.Build.VERSION_CODES
 import android.os.StrictMode
 import android.os.StrictMode.ThreadPolicy
 import android.os.StrictMode.VmPolicy
+import android.util.Log
 import io.reactivex.exceptions.OnErrorNotImplementedException
 import io.reactivex.exceptions.UndeliverableException
 import io.reactivex.plugins.RxJavaPlugins
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import net.mm2d.dmsexplorer.debug.DebugData
 import net.mm2d.dmsexplorer.domain.AppRepository
 import net.mm2d.dmsexplorer.log.EventLogger
 import net.mm2d.dmsexplorer.settings.Settings
 import net.mm2d.dmsexplorer.util.update.UpdateChecker
 import net.mm2d.dmsexplorer.view.eventrouter.EventRouter
+import net.mm2d.log.DefaultSender
 import net.mm2d.log.Logger
-import net.mm2d.log.android.AndroidSenders
 
 /**
  * Log出力変更のための継承。
@@ -33,13 +37,8 @@ import net.mm2d.log.android.AndroidSenders
 class App : Application() {
     override fun onCreate() {
         super.onCreate()
-        if (BuildConfig.DEBUG) {
-            Logger.setLogLevel(Logger.VERBOSE)
-            Logger.setSender(AndroidSenders.create())
-            AndroidSenders.appendCaller(true)
-            AndroidSenders.appendThread(true)
-        }
-        setStrictMode()
+        setUpLogger()
+        setUpStrictMode()
         RxJavaPlugins.setErrorHandler { logError(it) }
         DebugData.initialize(this)
         Settings.initialize(this)
@@ -61,7 +60,21 @@ class App : Application() {
         }
     }
 
-    private fun setStrictMode() {
+    private fun setUpLogger() {
+        if (BuildConfig.DEBUG) {
+            Logger.setLogLevel(Logger.DEBUG)
+            Logger.setSender(DefaultSender.create { level, tag, message ->
+                GlobalScope.launch(Dispatchers.Main) {
+                    message.split("\n").forEach {
+                        Log.println(level, tag, it)
+                    }
+                }
+            })
+            DefaultSender.appendThread(true)
+        }
+    }
+
+    private fun setUpStrictMode() {
         if (BuildConfig.DEBUG) {
             StrictMode.enableDefaults()
             val vmPolicyBuilder = VmPolicy.Builder()

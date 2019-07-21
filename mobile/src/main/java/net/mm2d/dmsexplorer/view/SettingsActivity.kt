@@ -47,7 +47,7 @@ import java.util.*
 class SettingsActivity : PreferenceActivityCompat() {
     private lateinit var finishObserver: EventObserver
 
-    override fun onBuildHeaders(target: List<Header>) {
+    override fun onBuildHeaders(target: MutableList<Header>) {
         loadHeadersFromResource(R.xml.pref_headers, target)
         Settings.get()
             .themeParams
