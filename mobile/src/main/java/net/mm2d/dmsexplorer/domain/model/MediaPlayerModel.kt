@@ -12,7 +12,6 @@ import android.media.MediaPlayer.*
 import android.os.Handler
 import android.os.Looper
 import androidx.annotation.CallSuper
-import androidx.core.math.MathUtils
 import net.mm2d.dmsexplorer.domain.model.PlayerModel.StatusListener
 import net.mm2d.dmsexplorer.domain.model.control.MediaControl
 import net.mm2d.log.Logger
@@ -57,7 +56,7 @@ abstract class MediaPlayerModel(
                     }
                     sleep = 1001 - position % 1000
                 }
-                sleep = MathUtils.clamp(sleep, 100, 1000)
+                sleep = sleep.coerceIn(100, 1000)
                 handler.removeCallbacks(this)
                 handler.postDelayed(this, sleep.toLong())
             } catch (ignored: IllegalStateException) {

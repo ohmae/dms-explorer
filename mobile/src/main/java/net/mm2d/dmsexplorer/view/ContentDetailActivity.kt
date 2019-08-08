@@ -10,7 +10,6 @@ package net.mm2d.dmsexplorer.view
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.view.View
 import androidx.databinding.DataBindingUtil
 import net.mm2d.dmsexplorer.R
 import net.mm2d.dmsexplorer.Repository
@@ -41,7 +40,7 @@ class ContentDetailActivity : BaseActivity(true), OnDeleteListener {
         val repository = Repository.get()
         val serverModel = repository.mediaServerModel
         val binding: ContentDetailFragmentBinding? =
-            DataBindingUtil.findBinding(findViewById<View>(R.id.cds_detail_fragment))
+            DataBindingUtil.findBinding(findViewById(R.id.cds_detail_fragment))
         if (binding == null || serverModel == null) {
             finish()
             return

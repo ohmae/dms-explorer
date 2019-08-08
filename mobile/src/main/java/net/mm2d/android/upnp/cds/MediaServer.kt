@@ -7,14 +7,12 @@
 
 package net.mm2d.android.upnp.cds
 
-import android.text.TextUtils
 import io.reactivex.Observable
 import io.reactivex.ObservableEmitter
 import io.reactivex.Single
 import io.reactivex.SingleEmitter
 import io.reactivex.schedulers.Schedulers
 import net.mm2d.android.upnp.DeviceWrapper
-import net.mm2d.android.util.TextParseUtils
 import net.mm2d.log.Logger
 import net.mm2d.upnp.Action
 import net.mm2d.upnp.Device
@@ -75,15 +73,10 @@ internal constructor(device: Device) : DeviceWrapper(device) {
             val result =
                 destroyObject.invokeSync(Collections.singletonMap(OBJECT_ID, objectId), false)
             val errorDescription = result[Action.ERROR_DESCRIPTION_KEY]
-            if (!TextUtils.isEmpty(errorDescription)) {
+            if (!errorDescription.isNullOrEmpty()) {
                 Logger.e { errorDescription }
             }
-            emitter.onSuccess(
-                TextParseUtils.parseIntSafely(
-                    result[Action.ERROR_CODE_KEY],
-                    NO_ERROR
-                )
-            )
+            emitter.onSuccess(result[Action.ERROR_CODE_KEY]?.toIntOrNull() ?: NO_ERROR)
         }.subscribeOn(Schedulers.io())
     }
 
@@ -131,7 +124,7 @@ internal constructor(device: Device) : DeviceWrapper(device) {
             var start = startingIndex
             while (!emitter.isDisposed) {
                 argument.setStartIndex(start)
-                    .setRequestCount(Math.min(request - start, REQUEST_MAX))
+                    .setRequestCount(minOf(request - start, REQUEST_MAX))
                 val response = BrowseResponse(browse.invokeSync(argument.get(), false))
                 val number = response.numberReturned
                 val total = response.totalMatches

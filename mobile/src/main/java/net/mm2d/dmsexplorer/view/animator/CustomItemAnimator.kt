@@ -149,7 +149,7 @@ class CustomItemAnimator(context: Context) : SimpleItemAnimator() {
                 additions.sortWith(Comparator { o1, o2 -> o1.adapterPosition - o2.adapterPosition })
                 for (holder in additions) {
                     animateAddImpl(holder, delay)
-                    delay = Math.min(delay + ADDING_ANIMATION_DELAY, ADDING_ANIMATION_DELAY_MAX)
+                    delay = minOf(delay + ADDING_ANIMATION_DELAY, ADDING_ANIMATION_DELAY_MAX)
                 }
                 additions.clear()
                 additionsList.remove(additions)
@@ -158,7 +158,7 @@ class CustomItemAnimator(context: Context) : SimpleItemAnimator() {
                 val removeDuration = if (removalsPending) removeDuration else 0
                 val moveDuration = if (movesPending) moveDuration else 0
                 val changeDuration = if (changesPending) changeDuration else 0
-                val totalDelay = removeDuration + Math.max(moveDuration, changeDuration)
+                val totalDelay = removeDuration + maxOf(moveDuration, changeDuration)
                 val view = additions[0].itemView
                 ViewCompat.postOnAnimationDelayed(view, adder, totalDelay)
             } else {

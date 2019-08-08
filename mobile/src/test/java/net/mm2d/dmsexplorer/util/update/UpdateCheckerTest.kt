@@ -19,7 +19,6 @@ import org.robolectric.annotation.Config
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.moshi.MoshiConverterFactory
-import java.util.*
 
 /**
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
@@ -558,8 +557,8 @@ class UpdateCheckerTest {
         val mobile = update.mobile
         assertThat(mobile.versionCode).isEqualTo(716)
         assertThat(mobile.versionName).isEqualTo("0.7.16")
-        assertThat(mobile.targetInclude).isEqualTo(Arrays.asList(700, 714))
-        assertThat(mobile.targetExclude).isEqualTo(Arrays.asList(711, 712))
+        assertThat(mobile.targetInclude).isEqualTo(listOf(700, 714))
+        assertThat(mobile.targetExclude).isEqualTo(listOf(711, 712))
     }
 
     @Test

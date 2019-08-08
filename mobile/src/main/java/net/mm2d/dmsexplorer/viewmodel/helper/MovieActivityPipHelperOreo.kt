@@ -25,7 +25,6 @@ import net.mm2d.dmsexplorer.Const
 import net.mm2d.dmsexplorer.R
 import net.mm2d.dmsexplorer.viewmodel.ControlPanelModel
 import net.mm2d.log.Logger
-import java.util.*
 
 /**
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
@@ -125,11 +124,7 @@ internal class MovieActivityPipHelperOreo(
             return null
         }
         return if (max >= 3) {
-            Arrays.asList(
-                makePreviousAction(),
-                makePlayAction(isPlaying),
-                makeNextAction()
-            )
+            listOf(makePreviousAction(), makePlayAction(isPlaying), makeNextAction())
         } else listOf(makePlayAction(isPlaying))
     }
 

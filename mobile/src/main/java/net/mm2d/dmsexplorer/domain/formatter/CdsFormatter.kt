@@ -46,7 +46,7 @@ object CdsFormatter {
                 continue
             }
             val bytes = value.toByteArray()
-            val nameSection = String(bytes, 0, Math.min(24, bytes.size))
+            val nameSection = String(bytes, 0, minOf(24, bytes.size))
             val name = nameSection.trim { it <= ' ' }
             if (pair == null || pair.first != name) {
                 pair = Pair(name, StringBuilder())

@@ -19,6 +19,7 @@ import androidx.core.view.NestedScrollingChild
 import androidx.core.view.NestedScrollingChildHelper
 import androidx.core.view.ViewCompat
 import com.google.android.material.appbar.AppBarLayout
+import kotlin.math.abs
 
 /**
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
@@ -80,7 +81,7 @@ class NestedScrollingWebView
             dispatchNestedScroll(0, consumed[1], 0, dy - consumed[1], null)
             return
         }
-        if (Math.abs(startY - event.rawY) > touchSlop) {
+        if (abs(startY - event.rawY) > touchSlop) {
             scrolling = true
             startNestedScroll(ViewCompat.SCROLL_AXIS_VERTICAL)
         }

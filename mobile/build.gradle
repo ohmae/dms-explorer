@@ -79,8 +79,7 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.2.2"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.2.2"
-    implementation 'net.mm2d:log:0.8.4'
-    implementation 'net.mm2d:mmupnp:3.0.4'
+    implementation 'net.mm2d:mmupnp:3.0.5'
     implementation 'net.mm2d:preference:0.2.0'
     implementation 'net.opacapp:multiline-collapsingtoolbar:27.1.1'
     implementation 'com.squareup.okhttp3:okhttp:4.0.1'

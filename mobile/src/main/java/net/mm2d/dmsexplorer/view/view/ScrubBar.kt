@@ -23,8 +23,8 @@ import android.view.View
 import androidx.annotation.ColorInt
 import androidx.annotation.Dimension
 import androidx.annotation.IntDef
-import androidx.core.math.MathUtils.clamp
 import java.util.*
+import kotlin.math.abs
 import kotlin.math.max
 import kotlin.math.min
 
@@ -337,8 +337,8 @@ class ScrubBar @JvmOverloads constructor(
         val progressDiff = getProgressByDistance(dx)
         setProgressInternal(progressDiff + baseProgress, true)
 
-        val distance = Math.abs((event.y - startY).toInt())
-        val rank = clamp(distance / scrubUnitLength, 0, RANK_MAX)
+        val distance = abs((event.y - startY).toInt())
+        val rank = (distance / scrubUnitLength).coerceIn(0, RANK_MAX)
         if (accuracyRank != rank) {
             accuracyRank = rank
             baseProgress = _progress
@@ -371,8 +371,7 @@ class ScrubBar @JvmOverloads constructor(
         progress: Int,
         fromUser: Boolean
     ) {
-        var progress = progress
-        progress = clamp(progress, 0, max)
+        val progress = progress.coerceIn(0, max)
         if (progress == _progress) {
             return
         }

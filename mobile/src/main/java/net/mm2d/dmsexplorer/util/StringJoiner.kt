@@ -7,8 +7,6 @@
 
 package net.mm2d.dmsexplorer.util
 
-import android.text.TextUtils
-
 /**
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
  */
@@ -17,7 +15,7 @@ class StringJoiner {
 
     @JvmOverloads
     fun join(string: String?, delimiter: Char = '\n') {
-        if (TextUtils.isEmpty(string)) {
+        if (string.isNullOrEmpty()) {
             return
         }
         if (builder.isNotEmpty()) {
@@ -27,7 +25,7 @@ class StringJoiner {
     }
 
     fun join(string: String?, delimiter: String) {
-        if (TextUtils.isEmpty(string)) {
+        if (string.isNullOrEmpty()) {
             return
         }
         if (builder.isNotEmpty()) {

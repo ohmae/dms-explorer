@@ -1,8 +1,6 @@
 package net.mm2d.dmsexplorer.domain.entity
 
 import android.net.Uri
-import android.text.TextUtils
-
 import net.mm2d.android.upnp.cds.CdsObject
 import net.mm2d.android.upnp.cds.PropertyParser
 import net.mm2d.android.upnp.cds.Tag
@@ -52,7 +50,7 @@ class CdsContentEntity(
     override val artUri: Uri
         get() {
             val uri = cdsObject.getValue(CdsObject.UPNP_ALBUM_ART_URI)
-            return if (TextUtils.isEmpty(uri)) {
+            return if (uri.isNullOrEmpty()) {
                 Uri.EMPTY
             } else Uri.parse(uri)
         }
