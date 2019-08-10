@@ -72,17 +72,14 @@ abstract class BaseActivity @JvmOverloads constructor(
         }
     }
 
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        return delegate.onCreateOptionsMenu(menu) || super.onCreateOptionsMenu(menu)
-    }
+    override fun onCreateOptionsMenu(menu: Menu): Boolean =
+        delegate.onCreateOptionsMenu(menu) || super.onCreateOptionsMenu(menu)
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return delegate.onOptionsItemSelected(item) || super.onOptionsItemSelected(item)
-    }
+    override fun onOptionsItemSelected(item: MenuItem): Boolean =
+        delegate.onOptionsItemSelected(item) || super.onOptionsItemSelected(item)
 
-    override fun onPrepareOptionsMenu(menu: Menu): Boolean {
-        return delegate.onPrepareOptionsMenu(menu) || super.onPrepareOptionsMenu(menu)
-    }
+    override fun onPrepareOptionsMenu(menu: Menu): Boolean =
+        delegate.onPrepareOptionsMenu(menu) || super.onPrepareOptionsMenu(menu)
 
     override fun onBackPressed() {
         try {

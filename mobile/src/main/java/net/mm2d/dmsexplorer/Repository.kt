@@ -23,9 +23,7 @@ abstract class Repository {
     companion object {
         private lateinit var instance: Repository
 
-        fun get(): Repository {
-            return instance
-        }
+        fun get(): Repository = instance
 
         internal fun set(instance: Repository) {
             this.instance = instance

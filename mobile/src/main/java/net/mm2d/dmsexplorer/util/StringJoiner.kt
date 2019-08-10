@@ -13,7 +13,6 @@ package net.mm2d.dmsexplorer.util
 class StringJoiner {
     private val builder = StringBuilder()
 
-    @JvmOverloads
     fun join(string: String?, delimiter: Char = '\n') {
         if (string.isNullOrEmpty()) {
             return
@@ -34,11 +33,7 @@ class StringJoiner {
         builder.append(string)
     }
 
-    fun isNotEmpty(): Boolean {
-        return builder.isNotEmpty()
-    }
+    fun isNotEmpty(): Boolean = builder.isNotEmpty()
 
-    override fun toString(): String {
-        return builder.toString()
-    }
+    override fun toString(): String = builder.toString()
 }

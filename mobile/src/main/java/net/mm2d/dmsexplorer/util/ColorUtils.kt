@@ -18,8 +18,6 @@ import androidx.annotation.ColorInt
 object ColorUtils {
     private const val DARKER_RATIO = 0.7f
 
-    @JvmStatic
-    @JvmOverloads
     @ColorInt
     fun getDarkerColor(@ColorInt color: Int, ratio: Float = DARKER_RATIO): Int {
         val a = Color.alpha(color)

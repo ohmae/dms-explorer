@@ -71,9 +71,7 @@ class DeleteDialog : DialogFragment() {
     }
 
     companion object {
-        private fun newInstance(): DeleteDialog {
-            return DeleteDialog()
-        }
+        private fun newInstance(): DeleteDialog = DeleteDialog()
 
         fun show(activity: FragmentActivity) {
             if (activity.lifecycle.currentState != Lifecycle.State.RESUMED) {

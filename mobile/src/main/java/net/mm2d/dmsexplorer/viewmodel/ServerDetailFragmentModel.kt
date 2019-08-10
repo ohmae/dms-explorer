@@ -72,7 +72,7 @@ class ServerDetailFragmentModel(
         val generator = Settings.get()
             .themeParams
             .themeColorGenerator
-        return DrawableUtils.get(context, R.drawable.ic_circle)!!.also {
+        return DrawableUtils.getOrThrow(context, R.drawable.ic_circle).also {
             it.mutate()
             DrawableCompat.setTint(it, generator.getIconColor(server.friendlyName))
         }

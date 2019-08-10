@@ -42,8 +42,8 @@ import kotlin.math.sqrt
 class IntroductoryOverlay private constructor(
     private val activity: Activity,
     private val view: View,
-    titleText: String?,
-    subtitleText: String?,
+    titleText: String,
+    subtitleText: String,
     @ColorInt
     overlayColor: Int,
     @ColorInt
@@ -206,13 +206,12 @@ class IntroductoryOverlay private constructor(
         private var timeout: Long = 0
 
         fun build(): IntroductoryOverlay {
-            val view = view ?: throw IllegalStateException("View can't be null")
-            if (titleText == null) {
-                throw IllegalStateException("TitleText can't be null")
-            }
-            if (subtitleText == null) {
-                throw IllegalStateException("SubtitleText can't be null")
-            }
+            val view = view
+                ?: throw IllegalStateException("View can't be null")
+            val titleText = titleText
+                ?: throw IllegalStateException("TitleText can't be null")
+            val subtitleText = subtitleText
+                ?: throw IllegalStateException("SubtitleText can't be null")
             return IntroductoryOverlay(
                 activity,
                 view,
@@ -224,44 +223,36 @@ class IntroductoryOverlay private constructor(
             )
         }
 
-        fun setView(view: View): Builder {
+        fun setView(view: View): Builder = apply {
             this.view = view
-            return this
         }
 
-        fun setTimeout(timeout: Long): Builder {
+        fun setTimeout(timeout: Long): Builder = apply {
             this.timeout = timeout
-            return this
         }
 
-        fun setOverlayColor(@ColorRes colorId: Int): Builder {
+        fun setOverlayColor(@ColorRes colorId: Int): Builder = apply {
             overlayColor = ContextCompat.getColor(activity, colorId)
-            return this
         }
 
-        fun setDimmerColor(@ColorRes colorId: Int): Builder {
+        fun setDimmerColor(@ColorRes colorId: Int): Builder = apply {
             dimmerColor = ContextCompat.getColor(activity, colorId)
-            return this
         }
 
-        fun setTitleText(@StringRes stringId: Int): Builder {
+        fun setTitleText(@StringRes stringId: Int): Builder = apply {
             titleText = activity.getString(stringId)
-            return this
         }
 
-        fun setTitleText(text: String): Builder {
+        fun setTitleText(text: String): Builder = apply {
             titleText = text
-            return this
         }
 
-        fun setSubtitleText(@StringRes stringId: Int): Builder {
+        fun setSubtitleText(@StringRes stringId: Int): Builder = apply {
             subtitleText = activity.getString(stringId)
-            return this
         }
 
-        fun setSubtitleText(text: String): Builder {
+        fun setSubtitleText(text: String): Builder = apply {
             subtitleText = text
-            return this
         }
     }
 
@@ -277,12 +268,10 @@ class IntroductoryOverlay private constructor(
             }
         }
 
-        private fun makeErasePaint(): Paint {
-            return Paint().also {
-                it.color = Color.BLACK
-                it.xfermode = PorterDuffXfermode(PorterDuff.Mode.CLEAR)
-                it.isAntiAlias = true
-            }
+        private fun makeErasePaint(): Paint = Paint().also {
+            it.color = Color.BLACK
+            it.xfermode = PorterDuffXfermode(PorterDuff.Mode.CLEAR)
+            it.isAntiAlias = true
         }
 
         private fun calcHoleRadius(viewRect: Rect): Float {

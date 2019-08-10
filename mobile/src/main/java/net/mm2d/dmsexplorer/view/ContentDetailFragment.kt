@@ -67,8 +67,6 @@ class ContentDetailFragment : Fragment() {
          *
          * @return インスタンス。
          */
-        fun newInstance(): ContentDetailFragment {
-            return ContentDetailFragment()
-        }
+        fun newInstance(): ContentDetailFragment = ContentDetailFragment()
     }
 }

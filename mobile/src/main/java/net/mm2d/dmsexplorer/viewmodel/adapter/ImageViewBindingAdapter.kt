@@ -40,7 +40,7 @@ object ImageViewBindingAdapter {
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
                 { bitmap -> setImageBitmap(imageView, bitmap) },
-                { throwable -> showToast(imageView.context) }
+                { showToast(imageView.context) }
             )
     }
 

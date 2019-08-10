@@ -194,26 +194,22 @@ class MusicActivityModel(
         }
     }
 
-    private fun selectNext(): Boolean {
-        return when (repeatMode) {
-            RepeatMode.PLAY_ONCE -> false
-            RepeatMode.SEQUENTIAL ->
-                serverModel?.selectNextEntity(MediaServerModel.SCAN_MODE_SEQUENTIAL) ?: false
-            RepeatMode.REPEAT_ALL ->
-                serverModel?.selectNextEntity(MediaServerModel.SCAN_MODE_LOOP) ?: false
-            RepeatMode.REPEAT_ONE -> false
-        }
+    private fun selectNext(): Boolean = when (repeatMode) {
+        RepeatMode.PLAY_ONCE -> false
+        RepeatMode.SEQUENTIAL ->
+            serverModel?.selectNextEntity(MediaServerModel.SCAN_MODE_SEQUENTIAL) ?: false
+        RepeatMode.REPEAT_ALL ->
+            serverModel?.selectNextEntity(MediaServerModel.SCAN_MODE_LOOP) ?: false
+        RepeatMode.REPEAT_ONE -> false
     }
 
-    private fun selectPrevious(): Boolean {
-        return when (repeatMode) {
-            RepeatMode.PLAY_ONCE -> false
-            RepeatMode.SEQUENTIAL ->
-                serverModel?.selectPreviousEntity(MediaServerModel.SCAN_MODE_SEQUENTIAL) ?: false
-            RepeatMode.REPEAT_ALL ->
-                serverModel?.selectPreviousEntity(MediaServerModel.SCAN_MODE_LOOP) ?: false
-            RepeatMode.REPEAT_ONE -> false
-        }
+    private fun selectPrevious(): Boolean = when (repeatMode) {
+        RepeatMode.PLAY_ONCE -> false
+        RepeatMode.SEQUENTIAL ->
+            serverModel?.selectPreviousEntity(MediaServerModel.SCAN_MODE_SEQUENTIAL) ?: false
+        RepeatMode.REPEAT_ALL ->
+            serverModel?.selectPreviousEntity(MediaServerModel.SCAN_MODE_LOOP) ?: false
+        RepeatMode.REPEAT_ONE -> false
     }
 
     companion object {

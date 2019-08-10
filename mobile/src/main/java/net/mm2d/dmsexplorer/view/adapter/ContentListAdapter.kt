@@ -46,9 +46,7 @@ class ContentListAdapter(context: Context) : RecyclerView.Adapter<ContentListAda
         holder.applyItem(list[position])
     }
 
-    override fun getItemCount(): Int {
-        return list.size
-    }
+    override fun getItemCount(): Int = list.size
 
     fun setOnItemClickListener(listener: ((View, ContentEntity) -> Unit)?) {
         clickListener = listener
@@ -79,13 +77,9 @@ class ContentListAdapter(context: Context) : RecyclerView.Adapter<ContentListAda
         return position
     }
 
-    fun indexOf(entity: ContentEntity): Int {
-        return list.indexOf(entity)
-    }
+    fun indexOf(entity: ContentEntity): Int = list.indexOf(entity)
 
-    fun getSelectedEntity(): ContentEntity? {
-        return selectedEntity
-    }
+    fun getSelectedEntity(): ContentEntity? = selectedEntity
 
     fun setSelectedEntity(entity: ContentEntity?): Boolean {
         if (selectedEntity != null && selectedEntity == entity) {

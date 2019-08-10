@@ -15,8 +15,6 @@ import android.content.pm.PackageManager
  */
 object FeatureUtils {
     @JvmStatic
-    fun hasTouchScreen(context: Context): Boolean {
-        return context.packageManager
-            .hasSystemFeature(PackageManager.FEATURE_TOUCHSCREEN)
-    }
+    fun hasTouchScreen(context: Context): Boolean = context.packageManager
+        .hasSystemFeature(PackageManager.FEATURE_TOUCHSCREEN)
 }

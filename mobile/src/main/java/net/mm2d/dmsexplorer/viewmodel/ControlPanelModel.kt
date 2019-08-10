@@ -262,9 +262,7 @@ class ControlPanelModel internal constructor(
     override fun onInfo(
         what: Int,
         extra: Int
-    ): Boolean {
-        return false
-    }
+    ): Boolean = false
 
     override fun onCompletion() {
         if (!error && repeatMode == RepeatMode.REPEAT_ONE) {
@@ -274,16 +272,14 @@ class ControlPanelModel internal constructor(
         onCompletionListener?.invoke()
     }
 
-    fun hasError(): Boolean {
-        return error
-    }
+    fun hasError(): Boolean = error
 
     companion object {
-        private fun makeTimeText(millisecond: Int): String {
-            val second = (millisecond / 1000 % 60).toLong()
-            val minute = (millisecond / 60000 % 60).toLong()
-            val hour = (millisecond / 3600000).toLong()
-            return String.format(Locale.US, "%01d:%02d:%02d", hour, minute, second)
-        }
+        private fun makeTimeText(millisecond: Int): String = String.format(
+            Locale.US, "%01d:%02d:%02d",
+            (millisecond / 3600000).toLong(),
+            (millisecond / 60000 % 60).toLong(),
+            (millisecond / 1000 % 60).toLong()
+        )
     }
 }

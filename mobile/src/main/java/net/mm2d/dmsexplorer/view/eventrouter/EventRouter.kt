@@ -20,38 +20,25 @@ object EventRouter {
 
     private lateinit var localBroadcastManager: LocalBroadcastManager
 
-    @JvmStatic
     fun initialize(context: Context) {
         localBroadcastManager = LocalBroadcastManager.getInstance(context)
     }
 
-    @JvmStatic
-    fun createFinishNotifier(): EventNotifier {
-        return LocalBroadcastNotifier(localBroadcastManager, ACTION_FINISH)
-    }
+    fun createFinishNotifier(): EventNotifier =
+        LocalBroadcastNotifier(localBroadcastManager, ACTION_FINISH)
 
-    @JvmStatic
-    fun createFinishObserver(): EventObserver {
-        return LocalBroadcastObserver(localBroadcastManager, ACTION_FINISH)
-    }
+    fun createFinishObserver(): EventObserver =
+        LocalBroadcastObserver(localBroadcastManager, ACTION_FINISH)
 
-    @JvmStatic
-    fun createOrientationSettingsNotifier(): EventNotifier {
-        return LocalBroadcastNotifier(localBroadcastManager, ACTION_ORIENTATION_SETTINGS)
-    }
+    fun createOrientationSettingsNotifier(): EventNotifier =
+        LocalBroadcastNotifier(localBroadcastManager, ACTION_ORIENTATION_SETTINGS)
 
-    @JvmStatic
-    fun createOrientationSettingsObserver(): EventObserver {
-        return LocalBroadcastObserver(localBroadcastManager, ACTION_ORIENTATION_SETTINGS, true)
-    }
+    fun createOrientationSettingsObserver(): EventObserver =
+        LocalBroadcastObserver(localBroadcastManager, ACTION_ORIENTATION_SETTINGS, true)
 
-    @JvmStatic
-    fun createUpdateAvailabilityNotifier(): EventNotifier {
-        return LocalBroadcastNotifier(localBroadcastManager, ACTION_UPDATE_AVAILABILITY)
-    }
+    fun createUpdateAvailabilityNotifier(): EventNotifier =
+        LocalBroadcastNotifier(localBroadcastManager, ACTION_UPDATE_AVAILABILITY)
 
-    @JvmStatic
-    fun createUpdateAvailabilityObserver(): EventObserver {
-        return LocalBroadcastObserver(localBroadcastManager, ACTION_UPDATE_AVAILABILITY)
-    }
+    fun createUpdateAvailabilityObserver(): EventObserver =
+        LocalBroadcastObserver(localBroadcastManager, ACTION_UPDATE_AVAILABILITY)
 }

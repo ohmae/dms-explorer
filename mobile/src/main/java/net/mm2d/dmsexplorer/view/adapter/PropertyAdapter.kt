@@ -50,24 +50,19 @@ abstract class PropertyAdapter(
         list.add(Entry(name, "", Type.TITLE))
     }
 
-    override fun getItemViewType(position: Int): Int {
-        return if (list[position].type != Type.DESCRIPTION) 0 else 1
-    }
+    override fun getItemViewType(position: Int): Int =
+        if (list[position].type != Type.DESCRIPTION) 0 else 1
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return ViewHolder(
-            context, inflater,
-            DataBindingUtil.inflate(inflater, R.layout.property_list_item, parent, false)
-        )
-    }
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder = ViewHolder(
+        context, inflater,
+        DataBindingUtil.inflate(inflater, R.layout.property_list_item, parent, false)
+    )
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.applyItem(list[position])
     }
 
-    override fun getItemCount(): Int {
-        return list.size
-    }
+    override fun getItemCount(): Int = list.size
 
     enum class Type {
         TITLE,
@@ -162,19 +157,15 @@ abstract class PropertyAdapter(
 
     companion object {
         @JvmStatic
-        fun ofServer(context: Context, server: MediaServer): PropertyAdapter {
-            return ServerPropertyAdapter(context, server)
-        }
+        fun ofServer(context: Context, server: MediaServer): PropertyAdapter =
+            ServerPropertyAdapter(context, server)
 
         @JvmStatic
-        fun ofContent(context: Context, entity: ContentEntity): PropertyAdapter {
-            return ContentPropertyAdapter(context, entity)
-        }
+        fun ofContent(context: Context, entity: ContentEntity): PropertyAdapter =
+            ContentPropertyAdapter(context, entity)
 
         private val URL_PATTERN = Pattern.compile("https?://[\\w/:%#$&?()~.=+\\-]+")
 
-        private fun isSpace(c: Char): Boolean {
-            return c <= '\u0020' || c == '\u00A0' || c == '\u3000'
-        }
+        private fun isSpace(c: Char): Boolean = c <= '\u0020' || c == '\u00A0' || c == '\u3000'
     }
 }

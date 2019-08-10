@@ -97,8 +97,7 @@ class ServerDetailActivity : BaseActivity(true) {
          * @param context コンテキスト
          * @return このActivityを起動するためのIntent
          */
-        fun makeIntent(context: Context): Intent {
-            return Intent(context, ServerDetailActivity::class.java)
-        }
+        fun makeIntent(context: Context): Intent =
+            Intent(context, ServerDetailActivity::class.java)
     }
 }

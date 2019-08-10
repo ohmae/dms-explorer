@@ -46,13 +46,9 @@ class RendererListAdapter(
         holder.applyItem(list[position])
     }
 
-    override fun getItemCount(): Int {
-        return list.size
-    }
+    override fun getItemCount(): Int = list.size
 
-    fun indexOf(renderer: MediaRenderer): Int {
-        return list.indexOf(renderer)
-    }
+    fun indexOf(renderer: MediaRenderer): Int = list.indexOf(renderer)
 
     fun setOnItemClickListener(listener: ((View, MediaRenderer) -> Unit)?) {
         clickListener = listener

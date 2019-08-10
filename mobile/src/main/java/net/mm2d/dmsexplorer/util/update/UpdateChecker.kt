@@ -71,9 +71,8 @@ class UpdateChecker(
         }
     }
 
-    private fun hasEnoughInterval(settings: Settings): Boolean {
-        return System.currentTimeMillis() - settings.updateFetchTime > FETCH_INTERVAL
-    }
+    private fun hasEnoughInterval(settings: Settings): Boolean =
+        System.currentTimeMillis() - settings.updateFetchTime > FETCH_INTERVAL
 
     private fun checkAndNotify(info: UpdateInfo) {
         if (!info.isValid) {

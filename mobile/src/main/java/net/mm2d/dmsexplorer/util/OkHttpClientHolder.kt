@@ -25,8 +25,5 @@ object OkHttpClientHolder {
         interceptors += interceptor
     }
 
-    @JvmStatic
-    fun get(): OkHttpClient {
-        return client
-    }
+    fun get(): OkHttpClient = client
 }

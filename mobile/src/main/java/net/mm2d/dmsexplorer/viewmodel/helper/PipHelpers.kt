@@ -20,9 +20,8 @@ object PipHelpers {
     val isSupported: Boolean = Build.VERSION.SDK_INT >= Build.VERSION_CODES.O
 
     @JvmStatic
-    fun getMovieHelper(activity: Activity): MovieActivityPipHelper {
-        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+    fun getMovieHelper(activity: Activity): MovieActivityPipHelper =
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             MovieActivityPipHelperOreo(activity)
         } else MOCK
-    }
 }

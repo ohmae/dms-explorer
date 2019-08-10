@@ -67,11 +67,8 @@ class SelectRendererDialog : DialogFragment() {
     }
 
     companion object {
-        private fun newInstance(): SelectRendererDialog {
-            return SelectRendererDialog()
-        }
+        private fun newInstance(): SelectRendererDialog = SelectRendererDialog()
 
-        @JvmStatic
         fun show(activity: FragmentActivity) {
             if (activity.lifecycle.currentState != Lifecycle.State.RESUMED) {
                 return

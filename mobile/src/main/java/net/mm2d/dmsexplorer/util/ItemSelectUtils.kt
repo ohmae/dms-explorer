@@ -65,13 +65,11 @@ object ItemSelectUtils {
         }
     }
 
-    private fun getPlayerClass(type: ContentType): Class<*>? {
-        return when (type) {
-            ContentType.MOVIE -> MovieActivity::class.java
-            ContentType.MUSIC -> MusicActivity::class.java
-            ContentType.PHOTO -> PhotoActivity::class.java
-            else -> null
-        }
+    private fun getPlayerClass(type: ContentType): Class<*>? = when (type) {
+        ContentType.MOVIE -> MovieActivity::class.java
+        ContentType.MUSIC -> MusicActivity::class.java
+        ContentType.PHOTO -> PhotoActivity::class.java
+        else -> null
     }
 
     fun send(activity: FragmentActivity) {

@@ -85,8 +85,6 @@ class ContentListActivity : BaseActivity(true), OnDeleteListener {
          * @param context コンテキスト
          * @return このActivityを起動するためのIntent
          */
-        fun makeIntent(context: Context): Intent {
-            return Intent(context, ContentListActivity::class.java)
-        }
+        fun makeIntent(context: Context): Intent = Intent(context, ContentListActivity::class.java)
     }
 }

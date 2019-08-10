@@ -57,15 +57,12 @@ class RendererItemModel(
         val sb = StringBuilder()
         val manufacture = renderer.manufacture
         if (!manufacture.isNullOrEmpty()) {
-            sb.append(manufacture)
-            sb.append('\n')
+            sb.append(manufacture).append('\n')
         }
-        sb.append("IP: ")
-        sb.append(renderer.ipAddress)
+        sb.append("IP: ").append(renderer.ipAddress)
         val serial = renderer.serialNumber
         if (!serial.isNullOrEmpty()) {
-            sb.append("  Serial: ")
-            sb.append(serial)
+            sb.append("  Serial: ").append(serial)
         }
         return sb.toString()
     }

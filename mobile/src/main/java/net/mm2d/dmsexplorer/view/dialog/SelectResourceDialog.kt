@@ -41,11 +41,8 @@ class SelectResourceDialog : DialogFragment() {
          *
          * @return インスタンス。
          */
-        private fun newInstance(): SelectResourceDialog {
-            return SelectResourceDialog()
-        }
+        private fun newInstance(): SelectResourceDialog = SelectResourceDialog()
 
-        @JvmStatic
         fun show(activity: FragmentActivity) {
             if (activity.lifecycle.currentState != Lifecycle.State.RESUMED) {
                 return

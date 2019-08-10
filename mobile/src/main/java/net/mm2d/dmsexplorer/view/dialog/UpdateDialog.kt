@@ -38,11 +38,8 @@ class UpdateDialog : DialogFragment() {
     }
 
     companion object {
-        private fun newInstance(): UpdateDialog {
-            return UpdateDialog()
-        }
+        private fun newInstance(): UpdateDialog = UpdateDialog()
 
-        @JvmStatic
         fun show(activity: FragmentActivity) {
             if (activity.lifecycle.currentState != Lifecycle.State.RESUMED) {
                 return

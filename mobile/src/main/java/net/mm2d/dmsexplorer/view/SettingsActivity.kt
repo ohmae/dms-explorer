@@ -74,18 +74,15 @@ class SettingsActivity : PreferenceActivityCompat() {
         finishObserver.unregister()
     }
 
-    override fun onIsMultiPane(): Boolean {
-        return isXLargeTablet(this)
-    }
+    override fun onIsMultiPane(): Boolean = isXLargeTablet(this)
 
-    override fun isValidFragment(fragmentName: String?): Boolean {
-        return (PreferenceFragmentCompat::class.java.name == fragmentName
+    override fun isValidFragment(fragmentName: String?): Boolean =
+        (PreferenceFragmentCompat::class.java.name == fragmentName
                 || PlaybackPreferenceFragment::class.java.name == fragmentName
                 || FunctionPreferenceFragment::class.java.name == fragmentName
                 || ViewPreferenceFragment::class.java.name == fragmentName
                 || ExpertPreferenceFragment::class.java.name == fragmentName
                 || InformationPreferenceFragment::class.java.name == fragmentName)
-    }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == android.R.id.home) {
@@ -258,13 +255,11 @@ class SettingsActivity : PreferenceActivityCompat() {
             context.startActivity(makeIntent(context))
         }
 
-        private fun isXLargeTablet(context: Context): Boolean {
-            return context.resources.configuration.screenLayout and Configuration.SCREENLAYOUT_SIZE_MASK >= Configuration.SCREENLAYOUT_SIZE_LARGE
-        }
+        private fun isXLargeTablet(context: Context): Boolean =
+            context.resources.configuration.screenLayout and Configuration.SCREENLAYOUT_SIZE_MASK >= Configuration.SCREENLAYOUT_SIZE_LARGE
 
-        private fun canUseChromeCustomTabs(): Boolean {
-            return !CustomTabsHelper.packageNameToBind.isNullOrEmpty()
-        }
+        private fun canUseChromeCustomTabs(): Boolean =
+            !CustomTabsHelper.packageNameToBind.isNullOrEmpty()
 
         private fun openUrl(context: Context, url: String) {
             Repository.get().openUriModel.openUri(context, url)
