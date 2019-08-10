@@ -20,39 +20,32 @@ internal class BrowseArgument {
         setBrowseDirectChildren()
     }
 
-    fun setObjectId(objectId: String): BrowseArgument {
+    fun setObjectId(objectId: String): BrowseArgument = apply {
         argument[OBJECT_ID] = objectId
-        return this
     }
 
-    fun setBrowseDirectChildren(): BrowseArgument {
+    fun setBrowseDirectChildren(): BrowseArgument = apply {
         argument[BROWSE_FLAG] = BROWSE_DIRECT_CHILDREN
-        return this
     }
 
-    fun setBrowseMetadata(): BrowseArgument {
+    fun setBrowseMetadata(): BrowseArgument = apply {
         argument[BROWSE_FLAG] = BROWSE_METADATA
-        return this
     }
 
-    fun setFilter(filter: String?): BrowseArgument {
+    fun setFilter(filter: String?): BrowseArgument = apply {
         argument[FILTER] = filter
-        return this
     }
 
-    fun setSortCriteria(sortCriteria: String?): BrowseArgument {
+    fun setSortCriteria(sortCriteria: String?): BrowseArgument = apply {
         argument[SORT_CRITERIA] = sortCriteria
-        return this
     }
 
-    fun setStartIndex(startIndex: Int): BrowseArgument {
+    fun setStartIndex(startIndex: Int): BrowseArgument = apply {
         argument[START_INDEX] = startIndex.toString()
-        return this
     }
 
-    fun setRequestCount(requestCount: Int): BrowseArgument {
+    fun setRequestCount(requestCount: Int): BrowseArgument = apply {
         argument[REQUESTED_COUNT] = requestCount.toString()
-        return this
     }
 
     fun get(): Map<String, String?> {

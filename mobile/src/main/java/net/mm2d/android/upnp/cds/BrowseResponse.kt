@@ -13,7 +13,6 @@ package net.mm2d.android.upnp.cds
 internal class BrowseResponse(
     private val response: Map<String, String>
 ) {
-
     val numberReturned: Int
         get() = response[NUMBER_RETURNED]?.toIntOrNull() ?: -1
 

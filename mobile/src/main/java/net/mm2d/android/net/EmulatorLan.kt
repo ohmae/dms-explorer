@@ -23,7 +23,5 @@ internal class EmulatorLan : Lan() {
     override fun getAvailableInterfaces(): Collection<NetworkInterface> =
         NetworkUtils.getAvailableInet4Interfaces()
 
-    override fun hasAvailableInterface(): Boolean {
-        return true
-    }
+    override fun hasAvailableInterface(): Boolean = true
 }

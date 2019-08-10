@@ -36,8 +36,5 @@ object DebugData {
         }
     }
 
-    @JvmStatic
-    fun getPinnedDeviceLocationList(): List<String> {
-        return pinnedDeviceLocationList
-    }
+    fun getPinnedDeviceLocationList(): List<String> = pinnedDeviceLocationList
 }

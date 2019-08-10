@@ -13,6 +13,7 @@ import android.os.Handler
 import android.os.Looper
 import androidx.annotation.IntDef
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import net.mm2d.android.upnp.cds.CdsObject
 import net.mm2d.android.upnp.cds.MediaServer
 import net.mm2d.dmsexplorer.domain.entity.ContentDirectoryEntity
@@ -80,6 +81,7 @@ class MediaServerModel(
         val onError = errorCallback ?: doNothing
         val id = (entity.cdsObject as CdsObject).objectId
         mediaServer.destroyObject(id)
+            .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({ integer ->
                 if (integer == MediaServer.NO_ERROR) {
@@ -267,9 +269,8 @@ class MediaServerModel(
         return null
     }
 
-    private fun isValidEntity(current: ContentEntity, target: ContentEntity): Boolean {
-        return (target.type == current.type && target.hasResource() && !target.isProtected)
-    }
+    private fun isValidEntity(current: ContentEntity, target: ContentEntity): Boolean =
+        target.type == current.type && target.hasResource() && !target.isProtected
 
     private fun makePath(): String {
         val sb = StringBuilder()

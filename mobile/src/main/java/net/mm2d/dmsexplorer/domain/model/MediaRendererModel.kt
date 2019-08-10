@@ -15,6 +15,7 @@ import android.os.Handler
 import android.os.Looper
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.functions.Consumer
+import io.reactivex.schedulers.Schedulers
 import net.mm2d.android.upnp.avt.MediaRenderer
 import net.mm2d.android.upnp.avt.TransportState
 import net.mm2d.android.upnp.cds.CdsObject
@@ -67,9 +68,11 @@ class MediaRendererModel(
         wifiLock.acquire()
         getPositionTask = Runnable {
             mediaRenderer.getPositionInfo()
+                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(Consumer<Map<String, String>> { onGetPositionInfo(it) })
             mediaRenderer.getTransportInfo()
+                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(Consumer<Map<String, String>> { onGetTransportInfo(it) })
         }
@@ -88,8 +91,12 @@ class MediaRendererModel(
         }
         statusListener = STATUS_LISTENER
         handler.removeCallbacks(getPositionTask)
-        mediaRenderer.stop().subscribe()
-        mediaRenderer.clearAVTransportURI().subscribe()
+        mediaRenderer.stop()
+            .subscribeOn(Schedulers.io())
+            .subscribe()
+        mediaRenderer.clearAVTransportURI()
+            .subscribeOn(Schedulers.io())
+            .subscribe()
         mediaRenderer.unsubscribe()
         started = false
     }
@@ -104,9 +111,11 @@ class MediaRendererModel(
         entity: ContentEntity?
     ) {
         mediaRenderer.clearAVTransportURI()
+            .subscribeOn(Schedulers.io())
             .subscribe()
         val cdsObject = entity?.cdsObject as CdsObject
         mediaRenderer.setAVTransportURI(cdsObject, uri.toString())
+            .subscribeOn(Schedulers.io())
             .flatMap { mediaRenderer.play() }
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({ }, { onError() })
@@ -124,6 +133,7 @@ class MediaRendererModel(
     @SuppressLint("CheckResult")
     override fun play() {
         mediaRenderer.play()
+            .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({ }, { onError() })
     }
@@ -131,6 +141,7 @@ class MediaRendererModel(
     @SuppressLint("CheckResult")
     override fun pause() {
         mediaRenderer.pause()
+            .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({ }, { onError() })
     }
@@ -138,6 +149,7 @@ class MediaRendererModel(
     @SuppressLint("CheckResult")
     override fun seekTo(position: Int) {
         mediaRenderer.seek(position.toLong())
+            .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({ }, { onError() })
         stoppingCount = 0
@@ -153,6 +165,7 @@ class MediaRendererModel(
         val chapter = currentChapter + 1
         if (chapter < chapterList.size) {
             mediaRenderer.seek(chapterList[chapter].toLong())
+                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ }, { onError() })
             return true
@@ -171,6 +184,7 @@ class MediaRendererModel(
         }
         if (chapter >= 0) {
             mediaRenderer.seek(chapterList[chapter].toLong())
+                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ }, { onError() })
             return true

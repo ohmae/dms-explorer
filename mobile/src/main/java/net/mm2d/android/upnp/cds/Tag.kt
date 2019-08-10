@@ -36,9 +36,7 @@ class Tag(
      * @param name 属性名
      * @return 属性値、見つからない場合null
      */
-    fun getAttribute(name: String?): String? {
-        return attributes[name]
-    }
+    fun getAttribute(name: String?): String? = attributes[name]
 
     override fun toString(): String {
         val sb = StringBuilder()

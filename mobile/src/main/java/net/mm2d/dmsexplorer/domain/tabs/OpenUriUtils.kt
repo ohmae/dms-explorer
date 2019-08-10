@@ -79,9 +79,7 @@ object OpenUriUtils {
         return intent
     }
 
-    private fun makeBrowserTestIntent(): Intent {
-        return makeBrowseIntent("http://www.example.com/")
-    }
+    private fun makeBrowserTestIntent(): Intent = makeBrowseIntent("http://www.example.com/")
 
     @JvmStatic
     fun hasDefaultAppOtherThanBrowser(

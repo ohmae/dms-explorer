@@ -70,15 +70,13 @@ class CdsContentEntity(
         updateUri()
     }
 
-    private fun getType(o: CdsObject): ContentType {
-        return when (o.type) {
-            CdsObject.TYPE_VIDEO -> ContentType.MOVIE
-            CdsObject.TYPE_AUDIO -> ContentType.MUSIC
-            CdsObject.TYPE_IMAGE -> ContentType.PHOTO
-            CdsObject.TYPE_CONTAINER -> ContentType.CONTAINER
-            CdsObject.TYPE_UNKNOWN -> ContentType.UNKNOWN
-            else -> ContentType.UNKNOWN
-        }
+    private fun getType(o: CdsObject): ContentType = when (o.type) {
+        CdsObject.TYPE_VIDEO -> ContentType.MOVIE
+        CdsObject.TYPE_AUDIO -> ContentType.MUSIC
+        CdsObject.TYPE_IMAGE -> ContentType.PHOTO
+        CdsObject.TYPE_CONTAINER -> ContentType.CONTAINER
+        CdsObject.TYPE_UNKNOWN -> ContentType.UNKNOWN
+        else -> ContentType.UNKNOWN
     }
 
     private fun updateUri() {
@@ -93,13 +91,10 @@ class CdsContentEntity(
         mimeType = PropertyParser.extractMimeTypeFromProtocolInfo(protocolInfo)
     }
 
-    override fun hasResource(): Boolean {
-        return resourceCount != 0
-    }
+    override fun hasResource(): Boolean = resourceCount != 0
 
-    override fun canDelete(): Boolean {
-        return cdsObject.getIntValue(CdsObject.RESTRICTED, -1) == 0
-    }
+    override fun canDelete(): Boolean =
+        cdsObject.getIntValue(CdsObject.RESTRICTED, -1) == 0
 
     override fun selectResource(index: Int) {
         if (index < 0 || index >= resourceCount) {

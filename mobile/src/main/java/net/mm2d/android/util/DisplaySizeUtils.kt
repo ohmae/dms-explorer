@@ -25,7 +25,6 @@ object DisplaySizeUtils {
      * @return ディスプレイサイズ
      * @see Display.getSize
      */
-    @JvmStatic
     fun getSize(activity: Activity): Point {
         val display = activity.windowManager.defaultDisplay
         val point = Point()
@@ -40,11 +39,8 @@ object DisplaySizeUtils {
      * @return ディスプレイサイズ
      * @see Display.getRealSize
      */
-    @JvmStatic
-    fun getRealSize(activity: Activity): Point {
-        return Point().also {
-            activity.windowManager.defaultDisplay.getRealSize(it)
-        }
+    fun getRealSize(activity: Activity): Point = Point().also {
+        activity.windowManager.defaultDisplay.getRealSize(it)
     }
 
     /**
@@ -63,7 +59,6 @@ object DisplaySizeUtils {
         return Point(p2.x - p1.x, p2.y - p1.y)
     }
 
-    private fun isInMultiWindowMode(activity: Activity): Boolean {
-        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.N && activity.isInMultiWindowMode
-    }
+    private fun isInMultiWindowMode(activity: Activity): Boolean =
+        Build.VERSION.SDK_INT >= Build.VERSION_CODES.N && activity.isInMultiWindowMode
 }

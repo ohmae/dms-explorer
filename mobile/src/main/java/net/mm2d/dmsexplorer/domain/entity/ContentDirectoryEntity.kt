@@ -9,6 +9,7 @@ package net.mm2d.dmsexplorer.domain.entity
 
 import io.reactivex.Observable
 import io.reactivex.disposables.Disposable
+import io.reactivex.schedulers.Schedulers
 import net.mm2d.android.upnp.cds.CdsObject
 import net.mm2d.dmsexplorer.domain.model.ExploreListener
 import net.mm2d.dmsexplorer.domain.model.ExploreListenerAdapter
@@ -80,6 +81,7 @@ class ContentDirectoryEntity private constructor(
     fun startBrowse(observable: Observable<CdsObject>) {
         entryListener.onStart()
         disposable = observable
+            .subscribeOn(Schedulers.io())
             .subscribe({ cdsObject ->
                 list.add(CdsContentEntity(cdsObject))
                 entryListener.onUpdate(list)

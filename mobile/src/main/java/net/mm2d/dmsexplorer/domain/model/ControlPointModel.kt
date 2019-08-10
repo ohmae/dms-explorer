@@ -117,9 +117,8 @@ class ControlPointModel(
         selectedMediaServer = null
     }
 
-    fun isSelectedMediaServer(server: MediaServer): Boolean {
-        return selectedMediaServer != null && selectedMediaServer == server
-    }
+    fun isSelectedMediaServer(server: MediaServer): Boolean =
+        selectedMediaServer != null && selectedMediaServer == server
 
     fun setSelectedMediaRenderer(server: MediaRenderer?) {
         selectedMediaRenderer?.unsubscribe()

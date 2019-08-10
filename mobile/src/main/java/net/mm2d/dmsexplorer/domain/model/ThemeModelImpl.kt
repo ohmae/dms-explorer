@@ -33,9 +33,7 @@ class ThemeModelImpl : ActivityLifecycleCallbacksAdapter(), ThemeModel {
         map[activity.javaClass.name] = toolbarColor
     }
 
-    override fun getToolbarColor(activity: Activity): Int {
-        return map[activity.javaClass.name] ?: 0
-    }
+    override fun getToolbarColor(activity: Activity): Int = map[activity.javaClass.name] ?: 0
 
     override fun onActivityDestroyed(activity: Activity) {
         map.remove(activity.javaClass.name)

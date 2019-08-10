@@ -8,8 +8,6 @@
 package net.mm2d.android.upnp.avt
 
 import io.reactivex.Single
-import io.reactivex.SingleEmitter
-import io.reactivex.schedulers.Schedulers
 import net.mm2d.android.upnp.DeviceWrapper
 import net.mm2d.android.upnp.cds.CdsObject
 import net.mm2d.android.upnp.cds.CdsObjectXmlConverter
@@ -91,15 +89,13 @@ class MediaRenderer internal constructor(
         )
     }
 
-    fun clearAVTransportURI(): Single<Map<String, String>> {
-        return invoke(
-            setAvTransportUri, mapOf(
-                INSTANCE_ID to "0",
-                CURRENT_URI to null,
-                CURRENT_URI_META_DATA to null
-            )
+    fun clearAVTransportURI(): Single<Map<String, String>> = invoke(
+        setAvTransportUri, mapOf(
+            INSTANCE_ID to "0",
+            CURRENT_URI to null,
+            CURRENT_URI_META_DATA to null
         )
-    }
+    )
 
     fun play(): Single<Map<String, String>> {
         val argument = HashMap<String, String>()
@@ -108,15 +104,12 @@ class MediaRenderer internal constructor(
         return invoke(play, argument)
     }
 
-    fun stop(): Single<Map<String, String>> {
-        return invoke(stop, Collections.singletonMap(INSTANCE_ID, "0"))
-    }
+    fun stop(): Single<Map<String, String>> =
+        invoke(stop, Collections.singletonMap(INSTANCE_ID, "0"))
 
-    fun pause(): Single<Map<String, String>> {
-        return if (pause == null) {
-            Single.error(IllegalStateException("pause is not supported"))
-        } else invoke(pause, Collections.singletonMap(INSTANCE_ID, "0"))
-    }
+    fun pause(): Single<Map<String, String>> = if (pause == null) {
+        Single.error(IllegalStateException("pause is not supported"))
+    } else invoke(pause, Collections.singletonMap(INSTANCE_ID, "0"))
 
     fun seek(time: Long): Single<Map<String, String>> {
         val unitArg = seek.findArgument(UNIT)
@@ -138,15 +131,13 @@ class MediaRenderer internal constructor(
     private operator fun invoke(
         action: Action,
         argument: Map<String, String?>
-    ): Single<Map<String, String>> {
-        return Single.create { emitter: SingleEmitter<Map<String, String>> ->
-            try {
-                val result = action.invokeSync(argument, false)
-                emitter.onSuccess(result)
-            } catch (e: IOException) {
-                emitter.onError(e)
-            }
-        }.subscribeOn(Schedulers.io())
+    ): Single<Map<String, String>> = Single.create { emitter ->
+        try {
+            val result = action.invokeSync(argument, false)
+            emitter.onSuccess(result)
+        } catch (e: IOException) {
+            emitter.onError(e)
+        }
     }
 
     companion object {
@@ -206,30 +197,21 @@ class MediaRenderer internal constructor(
         private fun findService(
             device: Device,
             id: String
-        ): Service {
-            return device.findServiceById(id)
-                ?: throw IllegalArgumentException("Device doesn't have $id")
-        }
+        ): Service = device.findServiceById(id)
+            ?: throw IllegalArgumentException("Device doesn't have $id")
 
         private fun findAction(
             service: Service,
             name: String
-        ): Action {
-            return service.findAction(name)
-                ?: throw IllegalArgumentException("Service doesn't have $name")
-        }
+        ): Action = service.findAction(name)
+            ?: throw IllegalArgumentException("Service doesn't have $name")
 
-        @JvmStatic
-        fun getCurrentTransportState(result: Map<String, String>): TransportState {
-            return TransportState.of(result[CURRENT_TRANSPORT_STATE])
-        }
+        fun getCurrentTransportState(result: Map<String, String>): TransportState =
+            TransportState.of(result[CURRENT_TRANSPORT_STATE])
 
-        @JvmStatic
-        fun getDuration(result: Map<String, String>): Int {
-            return parseCount(result[TRACK_DURATION])
-        }
+        fun getDuration(result: Map<String, String>): Int =
+            parseCount(result[TRACK_DURATION])
 
-        @JvmStatic
         fun getProgress(result: Map<String, String>): Int {
             val progress = parseCount(result[REL_TIME])
             return if (progress >= 0) {

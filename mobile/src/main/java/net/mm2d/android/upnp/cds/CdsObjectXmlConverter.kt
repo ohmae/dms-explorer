@@ -98,11 +98,9 @@ object CdsObjectXmlConverter {
      * @throws TransformerException 変換処理に問題が発生した場合
      */
     @Throws(TransformerException::class)
-    private fun formatXmlString(document: Document): String {
-        return StringWriter().also {
-            val transformer = TransformerFactory.newInstance().newTransformer()
-            transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes")
-            transformer.transform(DOMSource(document), StreamResult(it))
-        }.toString()
-    }
+    private fun formatXmlString(document: Document): String = StringWriter().also {
+        val transformer = TransformerFactory.newInstance().newTransformer()
+        transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes")
+        transformer.transform(DOMSource(document), StreamResult(it))
+    }.toString()
 }

@@ -16,11 +16,9 @@ import android.os.IBinder
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
  */
 class KeepAliveService : Service() {
-    override fun onBind(intent: Intent): IBinder? {
-        return sBinder
-    }
+    override fun onBind(intent: Intent): IBinder? = binder
 
     companion object {
-        private val sBinder = Binder()
+        private val binder = Binder()
     }
 }

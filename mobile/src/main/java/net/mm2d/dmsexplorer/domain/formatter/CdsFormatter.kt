@@ -24,18 +24,15 @@ object CdsFormatter {
     private lateinit var BS: String
     private lateinit var CS: String
 
-    @JvmStatic
     fun initialize(context: Context) {
         TB = context.getString(R.string.network_tb)
         BS = context.getString(R.string.network_bs)
         CS = context.getString(R.string.network_cs)
     }
 
-    @JvmStatic
-    fun parseLongDescription(cdsObject: CdsObject): List<Pair<String, String>> {
-        return convertLongDescription(makeLongDescription(cdsObject))
+    fun parseLongDescription(cdsObject: CdsObject): List<Pair<String, String>> =
+        convertLongDescription(makeLongDescription(cdsObject))
             .map { it.first.toDisplayableString() to it.second.toDisplayableString() }
-    }
 
     private fun convertLongDescription(tagList: List<Tag>): List<Pair<String, StringBuilder>> {
         val list = ArrayList<Pair<String, StringBuilder>>()
@@ -77,32 +74,25 @@ object CdsFormatter {
         return list
     }
 
-    @JvmStatic
-    fun makeUpnpLongDescription(cdsObject: CdsObject): String? {
-        return cdsObject.getValue(CdsObject.UPNP_LONG_DESCRIPTION)
-    }
+    fun makeUpnpLongDescription(cdsObject: CdsObject): String? =
+        cdsObject.getValue(CdsObject.UPNP_LONG_DESCRIPTION)
 
     private fun joinTagValue(
         cdsObject: CdsObject,
         tagName: String,
         delimiter: String
-    ): String? {
-        return cdsObject.getTagList(tagName)
-            ?.joinToString(delimiter) { it.value }
-            ?.toDisplayableString()
-    }
+    ): String? = cdsObject.getTagList(tagName)
+        ?.joinToString(delimiter) { it.value }
+        ?.toDisplayableString()
 
     private fun joinMembers(
         cdsObject: CdsObject,
         tagName: String
-    ): String? {
-        return cdsObject.getTagList(tagName)
-            ?.joinToString("\n") {
-                it.value + (it.getAttribute("role")?.let { role -> " : $role" } ?: "")
-            }
-    }
+    ): String? = cdsObject.getTagList(tagName)
+        ?.joinToString("\n") {
+            it.value + (it.getAttribute("role")?.let { role -> " : $role" } ?: "")
+        }
 
-    @JvmStatic
     fun makeChannel(cdsObject: CdsObject): String? {
         val sb = StringBuilder()
         getNetworkString(cdsObject)?.let {
@@ -126,16 +116,14 @@ object CdsFormatter {
         return if (sb.isEmpty()) null else sb.toString()
     }
 
-    private fun getNetworkString(cdsObject: CdsObject): String? {
-        return when (cdsObject.getValue(CdsObject.ARIB_OBJECT_TYPE) ?: return null) {
+    private fun getNetworkString(cdsObject: CdsObject): String? =
+        when (cdsObject.getValue(CdsObject.ARIB_OBJECT_TYPE)) {
             "ARIB_TB" -> TB
             "ARIB_BS" -> BS
             "ARIB_CS" -> CS
             else -> null
         }
-    }
 
-    @JvmStatic
     fun makeDate(cdsObject: CdsObject): String? {
         val str = cdsObject.getValue(CdsObject.DC_DATE) ?: return null
         val date = PropertyParser.parseDate(str) ?: return null
@@ -144,7 +132,6 @@ object CdsFormatter {
         } else DateFormat.format("yyyy/M/d (E) kk:mm:ss", date).toString()
     }
 
-    @JvmStatic
     fun makeSchedule(cdsObject: CdsObject): String? {
         val start = cdsObject.getDateValue(CdsObject.UPNP_SCHEDULED_START_TIME) ?: return null
         val end = cdsObject.getDateValue(CdsObject.UPNP_SCHEDULED_END_TIME) ?: return null
@@ -157,49 +144,30 @@ object CdsFormatter {
         return "$startString ～ $endString"
     }
 
-    @JvmStatic
-    fun makeScheduleOrDate(cdsObject: CdsObject): String? {
-        val schedule = makeSchedule(cdsObject)
-        return schedule ?: makeDate(cdsObject)
-    }
+    fun makeScheduleOrDate(cdsObject: CdsObject): String? =
+        makeSchedule(cdsObject) ?: makeDate(cdsObject)
 
-    @JvmStatic
-    fun makeGenre(cdsObject: CdsObject): String? {
-        return cdsObject.getValue(CdsObject.UPNP_GENRE)
-    }
+    fun makeGenre(cdsObject: CdsObject): String? =
+        cdsObject.getValue(CdsObject.UPNP_GENRE)
 
-    @JvmStatic
-    fun makeAlbum(cdsObject: CdsObject): String? {
-        return cdsObject.getValue(CdsObject.UPNP_ALBUM)
-    }
+    fun makeAlbum(cdsObject: CdsObject): String? =
+        cdsObject.getValue(CdsObject.UPNP_ALBUM)
 
-    @JvmStatic
-    fun makeArtists(cdsObject: CdsObject): String? {
-        return joinMembers(cdsObject, CdsObject.UPNP_ARTIST)
-    }
+    fun makeArtists(cdsObject: CdsObject): String? =
+        joinMembers(cdsObject, CdsObject.UPNP_ARTIST)
 
-    @JvmStatic
-    fun makeArtistsSimple(cdsObject: CdsObject): String? {
-        return joinTagValue(cdsObject, CdsObject.UPNP_ARTIST, " ")
-    }
+    fun makeArtistsSimple(cdsObject: CdsObject): String? =
+        joinTagValue(cdsObject, CdsObject.UPNP_ARTIST, " ")
 
-    @JvmStatic
-    fun makeActors(cdsObject: CdsObject): String? {
-        return joinMembers(cdsObject, CdsObject.UPNP_ACTOR)
-    }
+    fun makeActors(cdsObject: CdsObject): String? =
+        joinMembers(cdsObject, CdsObject.UPNP_ACTOR)
 
-    @JvmStatic
-    fun makeAuthors(cdsObject: CdsObject): String? {
-        return joinMembers(cdsObject, CdsObject.UPNP_AUTHOR)
-    }
+    fun makeAuthors(cdsObject: CdsObject): String? =
+        joinMembers(cdsObject, CdsObject.UPNP_AUTHOR)
 
-    @JvmStatic
-    fun makeCreator(cdsObject: CdsObject): String? {
-        return cdsObject.getValue(CdsObject.DC_CREATOR)
-    }
+    fun makeCreator(cdsObject: CdsObject): String? =
+        cdsObject.getValue(CdsObject.DC_CREATOR)
 
-    @JvmStatic
-    fun makeDescription(cdsObject: CdsObject): String? {
-        return joinTagValue(cdsObject, CdsObject.DC_DESCRIPTION, "\n")
-    }
+    fun makeDescription(cdsObject: CdsObject): String? =
+        joinTagValue(cdsObject, CdsObject.DC_DESCRIPTION, "\n")
 }

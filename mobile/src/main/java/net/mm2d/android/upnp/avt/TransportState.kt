@@ -25,8 +25,6 @@ enum class TransportState {
             .map { it.name to it }
             .toMap()
 
-        fun of(value: String?): TransportState {
-            return MAP[value] ?: OTHER
-        }
+        fun of(value: String?): TransportState = MAP[value] ?: OTHER
     }
 }

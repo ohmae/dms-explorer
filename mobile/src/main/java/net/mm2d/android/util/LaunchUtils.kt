@@ -29,7 +29,6 @@ object LaunchUtils {
      * @param uri     URI
      * @return 起動ができた場合true、何らかの理由で起動できない場合false
      */
-    @JvmStatic
     fun openUri(context: Context, uri: String?): Boolean {
         if (uri.isNullOrEmpty()) return false
         try {
@@ -52,8 +51,6 @@ object LaunchUtils {
      * @param packageName 開くアプリのパッケージ名
      * @return 起動ができた場合true、何らかの理由で起動できない場合false
      */
-    @JvmStatic
-    fun openGooglePlay(context: Context, packageName: String?): Boolean {
-        return openUri(context, "market://details?id=$packageName")
-    }
+    fun openGooglePlay(context: Context, packageName: String?): Boolean =
+        openUri(context, "market://details?id=$packageName")
 }

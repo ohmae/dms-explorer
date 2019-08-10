@@ -38,7 +38,6 @@ class SmilingCurveMotion(context: Context, attrs: AttributeSet) : PathMotion(con
         }
     }
 
-    private fun centerInRatio(v1: Float, v2: Float, r1: Float, r2: Float): Float {
-        return (v1 * r1 + v2 * r2) / (r1 + r2)
-    }
+    private fun centerInRatio(v1: Float, v2: Float, r1: Float, r2: Float): Float =
+        (v1 * r1 + v2 * r2) / (r1 + r2)
 }

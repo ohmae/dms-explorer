@@ -16,7 +16,6 @@ import net.mm2d.android.upnp.cds.CdsObject
 object ChapterFetcherFactory {
     private val FACTORIES = arrayOf(SonyFetcherFactory(), PanasonicFetcherFactory())
 
-    @JvmStatic
     fun create(cdsObject: CdsObject): Single<List<Int>> {
         FACTORIES.forEach { factory ->
             factory.create(cdsObject)?.let {

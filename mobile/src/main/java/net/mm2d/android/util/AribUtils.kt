@@ -15,10 +15,7 @@ import android.util.SparseArray
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
  */
 object AribUtils {
-    @JvmStatic
-    fun toDisplayableString(string: String): String {
-        return string.toDisplayableString()
-    }
+    fun toDisplayableString(string: String): String = string.toDisplayableString()
 }
 
 private val array = SparseArray<String>().apply {
@@ -91,14 +88,10 @@ private val array = SparseArray<String>().apply {
  * @receiver 変換する文字列
  * @return 変換後の文字列
  */
-fun String.toDisplayableString(): String {
-    return StringBuilder().also { sb ->
-        toCharArray().forEach {
-            sb.append(array.get(it.toInt(), it.toString()))
-        }
-    }.toString()
-}
+fun String.toDisplayableString(): String = StringBuilder().also { sb ->
+    toCharArray().forEach {
+        sb.append(array.get(it.toInt(), it.toString()))
+    }
+}.toString()
 
-fun StringBuilder.toDisplayableString(): String {
-    return toString().toDisplayableString()
-}
+fun StringBuilder.toDisplayableString(): String = toString().toDisplayableString()

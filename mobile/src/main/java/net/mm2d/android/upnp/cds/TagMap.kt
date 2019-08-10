@@ -43,7 +43,6 @@ internal class TagMap(
      * @param index インデックス値
      * @return 指定された値。見つからない場合はnull
      */
-    @JvmOverloads
     fun getValue(xpath: String, index: Int = 0): String? {
         val pos = xpath.indexOf('@')
         if (pos < 0) {
@@ -65,7 +64,6 @@ internal class TagMap(
      * @param index    インデックス値
      * @return 指定された値。見つからない場合はnull
      */
-    @JvmOverloads
     fun getValue(tagName: String?, attrName: String?, index: Int = 0): String? {
         val tag = getTag(tagName, index) ?: return null
         return if (attrName.isNullOrEmpty()) {
@@ -80,7 +78,6 @@ internal class TagMap(
      * @param index   インデックス値
      * @return Tagインスタンス、見つからない場合はnull
      */
-    @JvmOverloads
     fun getTag(tagName: String?, index: Int = 0): Tag? {
         val list = getTagList(tagName) ?: return null
         return if (index < list.size) list[index] else null
@@ -92,9 +89,7 @@ internal class TagMap(
      * @param tagName タグ名、ルート要素を指定する場合はnullもしくは空文字列
      * @return Tagインスタンスリスト
      */
-    fun getTagList(tagName: String?): List<Tag>? {
-        return map[tagName ?: ""]
-    }
+    fun getTagList(tagName: String?): List<Tag>? = map[tagName ?: ""]
 
     override fun toString(): String {
         val sb = StringBuilder()
@@ -117,9 +112,7 @@ internal class TagMap(
         return sb.toString()
     }
 
-    override fun hashCode(): Int {
-        return map.hashCode()
-    }
+    override fun hashCode(): Int = map.hashCode()
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
@@ -127,10 +120,7 @@ internal class TagMap(
         return map == other.map
     }
 
-    override fun writeToParcel(
-        dest: Parcel,
-        flags: Int
-    ) {
+    override fun writeToParcel(dest: Parcel, flags: Int) {
         dest.writeInt(map.size)
         for ((key, list) in map) {
             dest.writeString(key)
@@ -141,13 +131,8 @@ internal class TagMap(
     override fun describeContents(): Int = 0
 
     companion object CREATOR : Creator<TagMap> {
-        override fun createFromParcel(parcel: Parcel): TagMap {
-            return create(parcel)
-        }
-
-        override fun newArray(size: Int): Array<TagMap?> {
-            return arrayOfNulls(size)
-        }
+        override fun createFromParcel(parcel: Parcel): TagMap = create(parcel)
+        override fun newArray(size: Int): Array<TagMap?> = arrayOfNulls(size)
 
         private fun create(parcel: Parcel): TagMap {
             val size = parcel.readInt()

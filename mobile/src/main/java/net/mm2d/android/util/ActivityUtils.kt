@@ -16,9 +16,7 @@ import androidx.core.app.ActivityOptionsCompat
  */
 object ActivityUtils {
     @JvmStatic
-    fun makeScaleUpAnimationBundle(v: View): Bundle? {
-        return ActivityOptionsCompat
-            .makeScaleUpAnimation(v, 0, 0, v.width, v.height)
-            .toBundle()
-    }
+    fun makeScaleUpAnimationBundle(v: View): Bundle? = ActivityOptionsCompat
+        .makeScaleUpAnimation(v, 0, 0, v.width, v.height)
+        .toBundle()
 }

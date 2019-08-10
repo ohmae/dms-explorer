@@ -25,7 +25,6 @@ object ViewUtils {
      * @param view     対象のView
      * @param runnable 実行する処理
      */
-    @JvmStatic
     fun execAfterAllocateSize(view: View, runnable: Runnable) {
         if (view.width == 0 || view.height == 0) {
             execOnLayout(view, runnable)
@@ -43,7 +42,6 @@ object ViewUtils {
      * @param view     ViewTreeObserverの取得元View
      * @param runnable 実行する処理
      */
-    @JvmStatic
     fun execOnLayout(view: View, runnable: Runnable) {
         view.viewTreeObserver.addOnGlobalLayoutListener(object : OnGlobalLayoutListener {
             override fun onGlobalLayout() {

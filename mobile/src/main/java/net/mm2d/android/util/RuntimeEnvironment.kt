@@ -18,7 +18,6 @@ object RuntimeEnvironment {
      *
      * @return true:エミュレータである。false:それ以外
      */
-    @JvmStatic
     val isEmulator: Boolean by lazy {
         Build.UNKNOWN == Build.BOOTLOADER && Build.MODEL.contains("Android SDK")
     }

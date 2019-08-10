@@ -90,9 +90,8 @@ internal object CdsObjectFactory {
         return null
     }
 
-    private fun createRootTag(doc: Document): Tag {
-        return Tag.create(doc.documentElement, true)
-    }
+    private fun createRootTag(doc: Document): Tag =
+        Tag.create(doc.documentElement, true)
 
     /**
      * CdsObjectのインスタンスを作成する。
@@ -106,12 +105,10 @@ internal object CdsObjectFactory {
         udn: String,
         element: Element,
         rootTag: Tag
-    ): CdsObject? {
-        try {
-            return CdsObjectImpl.create(udn, element, rootTag)
-        } catch (e: IllegalArgumentException) {
-            Logger.w(e)
-        }
-        return null
+    ): CdsObject? = try {
+        CdsObjectImpl.create(udn, element, rootTag)
+    } catch (e: IllegalArgumentException) {
+        Logger.w(e)
+        null
     }
 }

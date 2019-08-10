@@ -137,9 +137,8 @@ class MrControlPoint : ControlPointWrapper {
      * @param udn UDN
      * @return MediaRenderer、見つからない場合null
      */
-    override fun getDevice(udn: String?): MediaRenderer? {
-        return mediaRendererMap[udn]
-    }
+    override fun getDevice(udn: String?): MediaRenderer? =
+        mediaRendererMap[udn]
 
     /**
      * 初期化する。

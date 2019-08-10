@@ -39,19 +39,16 @@ object BitmapUtils {
      * @param height 表示枠の高さ
      * @return Bitmap
      */
-    @JvmStatic
-    fun decode(data: ByteArray, width: Int, height: Int): Bitmap? {
-        return try {
-            val options = BitmapFactory.Options().also {
-                it.inJustDecodeBounds = true
-                BitmapFactory.decodeByteArray(data, 0, data.size, it)
-                it.inSampleSize = calcSampleSize(it.outWidth, it.outHeight, width, height)
-                it.inJustDecodeBounds = false
-            }
-            BitmapFactory.decodeByteArray(data, 0, data.size, options)
-        } catch (ignored: Exception) {
-            null
+    fun decode(data: ByteArray, width: Int, height: Int): Bitmap? = try {
+        val options = BitmapFactory.Options().also {
+            it.inJustDecodeBounds = true
+            BitmapFactory.decodeByteArray(data, 0, data.size, it)
+            it.inSampleSize = calcSampleSize(it.outWidth, it.outHeight, width, height)
+            it.inJustDecodeBounds = false
         }
+        BitmapFactory.decodeByteArray(data, 0, data.size, options)
+    } catch (ignored: Exception) {
+        null
     }
 
     /**
@@ -96,20 +93,16 @@ object BitmapUtils {
      * @return Bitmap
      * @see .decode
      */
-    @JvmStatic
-    fun decodeWithOrientation(data: ByteArray, width: Int, height: Int): Bitmap? {
-        return decode(data, width, height, extractOrientation(data))
-    }
+    fun decodeWithOrientation(data: ByteArray, width: Int, height: Int): Bitmap? =
+        decode(data, width, height, extractOrientation(data))
 
-    private fun extractOrientation(data: ByteArray): Int {
-        try {
-            return ExifInterface(ByteArrayInputStream(data)).getAttributeInt(
-                ExifInterface.TAG_ORIENTATION,
-                ExifInterface.ORIENTATION_UNDEFINED
-            )
-        } catch (ignored: IOException) {
-        }
-        return ExifInterface.ORIENTATION_UNDEFINED
+    private fun extractOrientation(data: ByteArray): Int = try {
+        ExifInterface(ByteArrayInputStream(data)).getAttributeInt(
+            ExifInterface.TAG_ORIENTATION,
+            ExifInterface.ORIENTATION_UNDEFINED
+        )
+    } catch (ignored: IOException) {
+        ExifInterface.ORIENTATION_UNDEFINED
     }
 
     private fun decode(data: ByteArray, width: Int, height: Int, orientation: Int): Bitmap? {
@@ -143,8 +136,8 @@ object BitmapUtils {
         return Bitmap.createBitmap(base, 0, 0, base.width, base.height, matrix, true)
     }
 
-    private fun decodeBase(binary: ByteArray, width: Int, height: Int, orientation: Int): Bitmap? {
-        return when (orientation) {
+    private fun decodeBase(binary: ByteArray, width: Int, height: Int, orientation: Int): Bitmap? =
+        when (orientation) {
             ExifInterface.ORIENTATION_TRANSPOSE,
             ExifInterface.ORIENTATION_ROTATE_90,
             ExifInterface.ORIENTATION_TRANSVERSE,
@@ -159,5 +152,4 @@ object BitmapUtils {
             else ->
                 decode(binary, width, height)
         }
-    }
 }

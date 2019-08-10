@@ -35,16 +35,13 @@ object EventLogger {
     private const val VALUE_MYSELF = "myself"
     private const val VALUE_OTHER = "other"
 
-    @JvmStatic
     fun initialize(context: Context) {
         sender = SenderFactory.create(context)
     }
 
-    private fun calculateDateForLog(time: Long): Long {
-        return (time + TimeZone.getDefault().rawOffset - DATE_POINT) / ONE_DAY
-    }
+    private fun calculateDateForLog(time: Long): Long =
+        (time + TimeZone.getDefault().rawOffset - DATE_POINT) / ONE_DAY
 
-    @JvmStatic
     fun sendDailyLog() {
         Handler(Looper.getMainLooper()).postDelayed({
             sendDailyLogIfNeed()
@@ -62,7 +59,6 @@ object EventLogger {
         sender?.logEvent(EVENT_DAILY, settings.dump)
     }
 
-    @JvmStatic
     fun sendSelectServer() {
         val serverModel = Repository.get().mediaServerModel ?: return
         val server = serverModel.mediaServer
@@ -72,7 +68,6 @@ object EventLogger {
         sender?.logEvent(EVENT_SELECT_SERVER, bundle)
     }
 
-    @JvmStatic
     fun sendSelectRenderer() {
         val rendererModel = Repository.get().mediaRendererModel ?: return
         val renderer = rendererModel.mediaRenderer
@@ -82,7 +77,6 @@ object EventLogger {
         sender?.logEvent(EVENT_SELECT_RENDERER, bundle)
     }
 
-    @JvmStatic
     fun sendSendContent() {
         val targetModel = Repository.get().playbackTargetModel ?: return
         val entity = targetModel.contentEntity
@@ -98,7 +92,6 @@ object EventLogger {
         sender?.logEvent(Event.SELECT_CONTENT, bundle)
     }
 
-    @JvmStatic
     fun sendPlayContent(playMyself: Boolean) {
         val targetModel = Repository.get().playbackTargetModel ?: return
         val entity = targetModel.contentEntity
@@ -111,8 +104,5 @@ object EventLogger {
         sender?.logEvent(Event.SELECT_CONTENT, bundle)
     }
 
-    @JvmStatic
-    private fun getTypeString(type: ContentType): String {
-        return type.name.toLowerCase(Locale.ENGLISH)
-    }
+    private fun getTypeString(type: ContentType): String = type.name.toLowerCase(Locale.ENGLISH)
 }

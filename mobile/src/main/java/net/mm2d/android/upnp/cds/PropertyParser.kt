@@ -20,24 +20,18 @@ object PropertyParser {
     private val FORMAT_Z = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ", Locale.JAPAN)
 
     @Throws(ParseException::class)
-    private fun parseD(value: String): Date {
-        return synchronized(FORMAT_D) {
-            FORMAT_D.parse(value)
-        }
+    private fun parseD(value: String): Date? = synchronized(FORMAT_D) {
+        FORMAT_D.parse(value)
     }
 
     @Throws(ParseException::class)
-    private fun parseT(value: String): Date {
-        return synchronized(FORMAT_T) {
-            FORMAT_T.parse(value)
-        }
+    private fun parseT(value: String): Date? = synchronized(FORMAT_T) {
+        FORMAT_T.parse(value)
     }
 
     @Throws(ParseException::class)
-    private fun parseZ(value: String): Date {
-        return synchronized(FORMAT_Z) {
-            FORMAT_Z.parse(value)
-        }
+    private fun parseZ(value: String): Date? = synchronized(FORMAT_Z) {
+        FORMAT_Z.parse(value)
     }
 
     /**
@@ -49,21 +43,23 @@ object PropertyParser {
      * @param value パースする文字列
      * @return パース結果、パースできない場合null
      */
-    @JvmStatic
     fun parseDate(value: String?): Date? {
         if (value.isNullOrEmpty()) {
             return null
         }
-        try {
-            if (value.length <= 10)
-                return parseD(value)
-            if (value.length <= 19)
-                return parseT(value)
-            if (value.lastIndexOf(':') == 22)
-                return parseZ(value.substring(0, 22) + value.substring(23))
-            return parseZ(value)
+        return try {
+            when {
+                value.length <= 10 ->
+                    parseD(value)
+                value.length <= 19 ->
+                    parseT(value)
+                value.lastIndexOf(':') == 22 ->
+                    parseZ(value.substring(0, 22) + value.substring(23))
+                else ->
+                    parseZ(value)
+            }
         } catch (e: ParseException) {
-            return null
+            null
         }
     }
 
@@ -73,7 +69,6 @@ object PropertyParser {
      * @param protocolInfo protocolInfo
      * @return MimeTypeの文字列。抽出に失敗した場合null
      */
-    @JvmStatic
     fun extractMimeTypeFromProtocolInfo(protocolInfo: String?): String? {
         if (protocolInfo.isNullOrEmpty()) {
             return null
@@ -92,7 +87,6 @@ object PropertyParser {
      * @param protocolInfo protocolInfo
      * @return Protocolの文字列。抽出に失敗した場合null
      */
-    @JvmStatic
     fun extractProtocolFromProtocolInfo(protocolInfo: String?): String? {
         if (protocolInfo.isNullOrEmpty()) {
             return null

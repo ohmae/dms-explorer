@@ -30,9 +30,7 @@ object PaletteUtils {
     }
 }
 
-fun Bitmap.generatePalette(): Palette {
-    return Palette.Builder(this).generate()
-}
+fun Bitmap.generatePalette(): Palette = Palette.Builder(this).generate()
 
 fun Bitmap.generatePalette(listener: (Palette?) -> Unit) {
     Palette.Builder(this).generate(listener)

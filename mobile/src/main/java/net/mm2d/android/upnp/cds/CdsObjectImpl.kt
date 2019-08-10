@@ -41,44 +41,36 @@ internal class CdsObjectImpl(
         ?: throw IllegalArgumentException("Malformed item")
     override val type: Int = getType(isItem, upnpClass)
 
-    override fun getValue(xpath: String, index: Int): String? {
-        return tagMap.getValue(xpath, index)
-    }
+    override fun getValue(xpath: String, index: Int): String? =
+        tagMap.getValue(xpath, index)
 
-    override fun getValue(tagName: String?, attrName: String?, index: Int): String? {
-        return tagMap.getValue(tagName, attrName, index)
-    }
+    override fun getValue(tagName: String?, attrName: String?, index: Int): String? =
+        tagMap.getValue(tagName, attrName, index)
 
-    override fun getTag(tagName: String?, index: Int): Tag? {
-        return tagMap.getTag(tagName, index)
-    }
+    override fun getTag(tagName: String?, index: Int): Tag? =
+        tagMap.getTag(tagName, index)
 
-    override fun getTagList(tagName: String?): List<Tag>? {
-        return tagMap.getTagList(tagName)
-    }
+    override fun getTagList(tagName: String?): List<Tag>? =
+        tagMap.getTagList(tagName)
 
-    override fun getIntValue(xpath: String, defaultValue: Int, index: Int): Int {
-        return getValue(xpath, index)?.toIntOrNull() ?: defaultValue
-    }
+    override fun getIntValue(xpath: String, defaultValue: Int, index: Int): Int =
+        getValue(xpath, index)?.toIntOrNull() ?: defaultValue
 
-    override fun getDateValue(xpath: String, index: Int): Date? {
-        return PropertyParser.parseDate(getValue(xpath, index))
-    }
+    override fun getDateValue(xpath: String, index: Int): Date? =
+        PropertyParser.parseDate(getValue(xpath, index))
 
-    override fun getResourceCount(): Int {
-        return getTagList(CdsObject.RES)?.size ?: 0
-    }
+    override fun getResourceCount(): Int =
+        getTagList(CdsObject.RES)?.size ?: 0
 
     override fun hasResource(): Boolean =
         getTagList(CdsObject.RES)?.isNotEmpty() ?: false
 
-    override fun hasProtectedResource(): Boolean {
-        return getTagList(CdsObject.RES)?.find {
+    override fun hasProtectedResource(): Boolean =
+        getTagList(CdsObject.RES)?.find {
             PropertyParser.extractMimeTypeFromProtocolInfo(
                 it.getAttribute(CdsObject.PROTOCOL_INFO)
             ) == "application/x-dtcp1"
         } != null
-    }
 
     override fun toString(): String = title
     override fun toDumpString(): String = tagMap.toString()
@@ -100,13 +92,9 @@ internal class CdsObjectImpl(
     override fun describeContents(): Int = 0
 
     companion object CREATOR : Creator<CdsObjectImpl> {
-        override fun createFromParcel(parcel: Parcel): CdsObjectImpl {
-            return create(parcel)
-        }
+        override fun createFromParcel(parcel: Parcel): CdsObjectImpl = create(parcel)
 
-        override fun newArray(size: Int): Array<CdsObjectImpl?> {
-            return arrayOfNulls(size)
-        }
+        override fun newArray(size: Int): Array<CdsObjectImpl?> = arrayOfNulls(size)
 
         /**
          * elementをもとにインスタンス作成

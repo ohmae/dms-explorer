@@ -69,13 +69,11 @@ class AppRepository(application: Application) : Repository() {
         }
     }
 
-    private fun createMediaServerModel(server: MediaServer): MediaServerModel {
-        return MediaServerModel(context, server, this::updatePlaybackTarget)
-    }
+    private fun createMediaServerModel(server: MediaServer): MediaServerModel =
+        MediaServerModel(context, server, this::updatePlaybackTarget)
 
-    private fun createMediaRendererModel(renderer: MediaRenderer): MediaRendererModel {
-        return MediaRendererModel(context, renderer)
-    }
+    private fun createMediaRendererModel(renderer: MediaRenderer): MediaRendererModel =
+        MediaRendererModel(context, renderer)
 
     private fun updatePlaybackTarget(entity: ContentEntity?) {
         playbackTargetModel = if (entity != null) PlaybackTargetModel(entity) else null
