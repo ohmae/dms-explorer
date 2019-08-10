@@ -91,11 +91,9 @@ class CustomTabsHelper(
         private const val EXTRA_CUSTOM_TABS_KEEP_ALIVE =
             "android.support.customtabs.extra.KEEP_ALIVE"
 
-        @JvmStatic
         var packageNameToBind: String? = null
             private set
 
-        @JvmStatic
         fun addKeepAliveExtra(
             context: Context,
             intent: Intent

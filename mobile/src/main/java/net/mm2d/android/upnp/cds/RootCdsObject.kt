@@ -42,7 +42,9 @@ class RootCdsObject(
     }
 
     companion object CREATOR : Creator<RootCdsObject> {
-        override fun createFromParcel(parcel: Parcel): RootCdsObject = RootCdsObject(parcel.readString()!!)
+        override fun createFromParcel(parcel: Parcel): RootCdsObject =
+            RootCdsObject(parcel.readString()!!)
+
         override fun newArray(size: Int): Array<RootCdsObject?> = arrayOfNulls(size)
     }
 }

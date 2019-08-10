@@ -246,11 +246,8 @@ class SettingsActivity : PreferenceActivityCompat() {
          * @param context コンテキスト
          * @return このActivityを起動するためのIntent
          */
-        fun makeIntent(context: Context): Intent {
-            return Intent(context, SettingsActivity::class.java)
-        }
+        fun makeIntent(context: Context): Intent = Intent(context, SettingsActivity::class.java)
 
-        @JvmStatic
         fun start(context: Context) {
             context.startActivity(makeIntent(context))
         }

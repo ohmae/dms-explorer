@@ -61,11 +61,20 @@ internal class MovieActivityPipHelperOreo(
 
     private fun isPictureInPictureAllowed(): Boolean {
         val appOps = activity.getSystemService(Context.APP_OPS_SERVICE) as AppOpsManager
-        val uid = android.os.Process.myUid()
-        val packageName = activity.packageName
         return try {
-            appOps.checkOpNoThrow(AppOpsManager.OPSTR_PICTURE_IN_PICTURE, uid, packageName) ==
-                    AppOpsManager.MODE_ALLOWED
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                appOps.unsafeCheckOpNoThrow(
+                    AppOpsManager.OPSTR_PICTURE_IN_PICTURE,
+                    android.os.Process.myUid(),
+                    activity.packageName
+                )
+            } else {
+                appOps.checkOpNoThrow(
+                    AppOpsManager.OPSTR_PICTURE_IN_PICTURE,
+                    android.os.Process.myUid(),
+                    activity.packageName
+                )
+            } == AppOpsManager.MODE_ALLOWED
         } catch (ignored: Exception) {
             false
         }

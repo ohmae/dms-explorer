@@ -38,7 +38,6 @@ abstract class Lan {
          * @param context コンテキスト
          * @return インスタンス
          */
-        @JvmStatic
         fun createInstance(context: Context): Lan {
             return if (RuntimeEnvironment.isEmulator)
                 EmulatorLan()

@@ -49,7 +49,6 @@ object DisplaySizeUtils {
      * @param activity Activity
      * @return NavigationBarのエリア
      */
-    @JvmStatic
     fun getNavigationBarArea(activity: Activity): Point {
         if (isInMultiWindowMode(activity)) {
             return Point(0, 0)

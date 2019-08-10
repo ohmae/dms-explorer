@@ -84,7 +84,6 @@ class Tag(
          * @param element タグ情報
          * @param root    タグがitem/containerのときtrue
          */
-        @JvmOverloads
         fun create(element: Element, root: Boolean = false): Tag =
             create(element, if (root) "" else element.textContent)
 

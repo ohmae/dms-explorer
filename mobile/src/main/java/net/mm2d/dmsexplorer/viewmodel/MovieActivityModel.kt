@@ -53,7 +53,7 @@ class MovieActivityModel(
     private var finishing: Boolean = false
 
     val controlPanelParam: ControlPanelParam
-    val canUsePictureInPicture = PipHelpers.isSupported
+    val canUsePictureInPicture = PipHelpers.isSupported(activity)
     @ColorInt
     val background: Int
     val currentProgress: Int

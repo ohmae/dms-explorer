@@ -51,7 +51,6 @@ class FullscreenHelper(
         posted = true
     }
 
-    @JvmOverloads
     fun showNavigation(interval: Long = NAVIGATION_INTERVAL): Boolean {
         if (isInPictureInPictureMode) {
             return false

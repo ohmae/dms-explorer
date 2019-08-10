@@ -8,6 +8,8 @@
 package net.mm2d.dmsexplorer.viewmodel.helper
 
 import android.app.Activity
+import android.content.Context
+import android.content.pm.PackageManager
 import android.os.Build
 
 /**
@@ -16,10 +18,9 @@ import android.os.Build
 object PipHelpers {
     private val MOCK = MovieActivityPipHelperEmpty()
 
-    val isSupported: Boolean = Build.VERSION.SDK_INT >= Build.VERSION_CODES.O
+    fun isSupported(context: Context): Boolean = Build.VERSION.SDK_INT >= Build.VERSION_CODES.O &&
+            context.packageManager.hasSystemFeature(PackageManager.FEATURE_PICTURE_IN_PICTURE)
 
     fun getMovieHelper(activity: Activity): MovieActivityPipHelper =
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            MovieActivityPipHelperOreo(activity)
-        } else MOCK
+        if (isSupported(activity)) MovieActivityPipHelperOreo(activity) else MOCK
 }

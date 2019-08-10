@@ -17,15 +17,12 @@ import java.net.URL
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
  */
 object Downloader {
-    @JvmStatic
-    fun create(url: String): Single<ByteArray> {
-        return Single.create { emitter ->
-            val binary = download(url)
-            if (binary != null && binary.isNotEmpty()) {
-                emitter.onSuccess(binary)
-            } else {
-                emitter.onError(IOException())
-            }
+    fun create(url: String): Single<ByteArray> = Single.create { emitter ->
+        val binary = download(url)
+        if (binary != null && binary.isNotEmpty()) {
+            emitter.onSuccess(binary)
+        } else {
+            emitter.onError(IOException())
         }
     }
 

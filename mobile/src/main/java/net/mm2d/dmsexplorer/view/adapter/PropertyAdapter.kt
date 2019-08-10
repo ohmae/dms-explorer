@@ -38,7 +38,6 @@ abstract class PropertyAdapter(
     private val list: MutableList<Entry> = ArrayList()
     private val inflater: LayoutInflater = LayoutInflater.from(context)
 
-    @JvmOverloads
     fun addEntry(name: String, value: String?, type: Type = Type.TEXT) {
         if (value.isNullOrEmpty()) {
             return
@@ -156,11 +155,9 @@ abstract class PropertyAdapter(
     }
 
     companion object {
-        @JvmStatic
         fun ofServer(context: Context, server: MediaServer): PropertyAdapter =
             ServerPropertyAdapter(context, server)
 
-        @JvmStatic
         fun ofContent(context: Context, entity: ContentEntity): PropertyAdapter =
             ContentPropertyAdapter(context, entity)
 
