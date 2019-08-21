@@ -82,7 +82,7 @@ dependencies {
     implementation 'net.mm2d:mmupnp:3.0.5'
     implementation 'net.mm2d:preference:0.2.0'
     implementation 'net.opacapp:multiline-collapsingtoolbar:27.1.1'
-    implementation 'com.squareup.okhttp3:okhttp:4.0.1'
+    implementation 'com.squareup.okhttp3:okhttp:4.1.0'
     implementation 'com.squareup.retrofit2:retrofit:2.6.1'
     implementation 'com.squareup.retrofit2:adapter-rxjava2:2.6.1'
     implementation 'com.squareup.retrofit2:converter-moshi:2.6.1'
