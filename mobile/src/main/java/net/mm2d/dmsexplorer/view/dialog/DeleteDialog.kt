@@ -29,7 +29,7 @@ class DeleteDialog : DialogFragment() {
         fun onDelete()
     }
 
-    override fun onAttach(context: Context?) {
+    override fun onAttach(context: Context) {
         super.onAttach(context)
         if (context is OnDeleteListener) {
             onDeleteListener = context
