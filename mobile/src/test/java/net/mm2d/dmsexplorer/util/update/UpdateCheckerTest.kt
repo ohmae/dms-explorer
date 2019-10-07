@@ -25,7 +25,7 @@ import retrofit2.converter.moshi.MoshiConverterFactory
  */
 @Suppress("TestFunctionName", "NonAsciiCharacters")
 @RunWith(RobolectricTestRunner::class)
-@Config(manifest = Config.NONE)
+@Config(manifest = Config.NONE, sdk = [28])
 class UpdateCheckerTest {
     @Test
     fun isUpdateAvailable_異常な入力ならfalse_必須フィールドがない() {

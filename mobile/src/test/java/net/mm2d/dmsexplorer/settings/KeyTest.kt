@@ -18,7 +18,7 @@ import org.robolectric.annotation.Config
  */
 @Suppress("TestFunctionName", "NonAsciiCharacters")
 @RunWith(RobolectricTestRunner::class)
-@Config(manifest = Config.NONE)
+@Config(manifest = Config.NONE, sdk = [28])
 class KeyTest {
     @Test
     fun getValueType_表示用Key() {
