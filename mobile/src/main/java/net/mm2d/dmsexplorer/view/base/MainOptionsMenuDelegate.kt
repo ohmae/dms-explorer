@@ -36,7 +36,7 @@ internal class MainOptionsMenuDelegate(
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        activity.menuInflater.inflate(R.menu.menu_main, menu)
+        activity.menuInflater.inflate(R.menu.main, menu)
         menu.findItem(R.id.action_update).isVisible = settings.isUpdateAvailable
         return true
     }
