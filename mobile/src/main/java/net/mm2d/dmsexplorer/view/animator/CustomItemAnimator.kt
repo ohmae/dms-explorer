@@ -218,6 +218,7 @@ class CustomItemAnimator(context: Context) : SimpleItemAnimator() {
 
                 override fun onAnimationCancel(animator: Animator) {
                     view.alpha = 1f
+                    view.translationY = 0f
                 }
 
                 override fun onAnimationEnd(animator: Animator) {
