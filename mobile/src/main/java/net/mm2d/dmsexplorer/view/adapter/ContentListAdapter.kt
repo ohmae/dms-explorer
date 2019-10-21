@@ -60,6 +60,8 @@ class ContentListAdapter(context: Context) : RecyclerView.Adapter<ContentListAda
         list.clear()
     }
 
+    fun getList(): List<ContentEntity> = list
+
     fun addAll(entities: Collection<ContentEntity>) {
         list.addAll(entities)
     }

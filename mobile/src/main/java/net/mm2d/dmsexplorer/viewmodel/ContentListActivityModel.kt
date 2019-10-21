@@ -14,6 +14,7 @@ import android.os.Looper
 import android.view.View
 import androidx.databinding.BaseObservable
 import androidx.databinding.Bindable
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView.ItemAnimator
 import androidx.recyclerview.widget.RecyclerView.LayoutManager
@@ -72,9 +73,6 @@ class ContentListActivityModel(
     private val handler = Handler(Looper.getMainLooper())
     private val mediaServerModel: MediaServerModel
     private val settings: Settings = Settings.get()
-    private var updateList: Runnable = Runnable { }
-    private var updateTime: Long = 0
-    private var timerResetLatch: Boolean = false
 
     val isItemSelected: Boolean
         get() {
@@ -203,56 +201,30 @@ class ContentListActivityModel(
         subtitle = "[$size] ${mediaServerModel.path}"
     }
 
-    private fun calculateDelay(
-        before: Int,
-        after: Int
-    ): Long {
-        if (before > after) {
-            return 0
-        }
-        val diff = System.currentTimeMillis() - updateTime
-        if (before == 0) {
-            return if (after < FIRST_COUNT && diff < FIRST_INTERVAL) {
-                FIRST_INTERVAL - diff
-            } else 0
-        }
-        return if (after - before < SECOND_COUNT && diff < SECOND_INTERVAL) {
-            SECOND_INTERVAL - diff
-        } else 0
-    }
-
     private fun updateList(list: List<ContentEntity>) {
-        val beforeSize = contentListAdapter.itemCount
-        val afterSize = list.size
-        if (beforeSize == afterSize) {
-            return
-        }
-        if (timerResetLatch && beforeSize == 0 && afterSize == 1) {
-            updateTime = System.currentTimeMillis()
-        }
-        timerResetLatch = afterSize == 0
-        handler.removeCallbacks(updateList)
-        val delay = calculateDelay(beforeSize, afterSize)
-        if (delay > 0) {
-            updateList = Runnable { updateList(list) }
-            handler.postDelayed(updateList, delay)
-            return
-        }
-        updateTime = System.currentTimeMillis()
         val entity = mediaServerModel.selectedEntity
+        val oldList = contentListAdapter.getList()
+        val diff = DiffUtil.calculateDiff(DiffCallback(oldList, list), true)
         contentListAdapter.clear()
         contentListAdapter.addAll(list)
         contentListAdapter.setSelectedEntity(entity)
-        if (beforeSize < afterSize) {
-            contentListAdapter.notifyItemRangeInserted(beforeSize, afterSize - beforeSize)
-        } else {
-            contentListAdapter.notifyDataSetChanged()
-        }
-        if (beforeSize == 0 && entity != null) {
-            scrollPosition = list.indexOf(entity)
-        } else {
-            _scrollPosition = INVALID_POSITION
-        }
+        diff.dispatchUpdatesTo(contentListAdapter)
+        scrollPosition = list.indexOf(entity)
+    }
+
+    private class DiffCallback(
+        private val old: List<ContentEntity>,
+        private val new: List<ContentEntity>
+    ): DiffUtil.Callback() {
+        override fun getOldListSize(): Int = old.size
+
+        override fun getNewListSize(): Int = new.size
+
+        override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
+            old[oldItemPosition].id == new[newItemPosition].id
+
+        override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
+            old[oldItemPosition].name == new[newItemPosition].name
     }
 
     fun terminate() {

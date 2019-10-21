@@ -13,6 +13,7 @@ import net.mm2d.dmsexplorer.util.StringJoiner
 class CdsContentEntity(
     override val cdsObject: CdsObject
 ) : ContentEntity {
+    override val id: String = cdsObject.objectId
     private var selectedRes: Tag? = null
     override val type: ContentType
     override var uri: Uri? = null
