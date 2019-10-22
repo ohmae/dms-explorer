@@ -117,9 +117,9 @@ class UpdateChecker(
 
     private fun isUpdateAvailable(info: UpdateInfo.Mobile): Boolean {
         return Build.VERSION.SDK_INT >= info.minSdkVersion
-                && currentVersion < info.versionCode
-                && isInclude(info.targetInclude)
-                && !isExclude(info.targetExclude)
+            && currentVersion < info.versionCode
+            && isInclude(info.targetInclude)
+            && !isExclude(info.targetExclude)
     }
 
     private fun isInclude(ranges: List<Int>): Boolean {

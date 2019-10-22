@@ -19,7 +19,7 @@ object PipHelpers {
     private val MOCK = MovieActivityPipHelperEmpty()
 
     fun isSupported(context: Context): Boolean = Build.VERSION.SDK_INT >= Build.VERSION_CODES.O &&
-            context.packageManager.hasSystemFeature(PackageManager.FEATURE_PICTURE_IN_PICTURE)
+        context.packageManager.hasSystemFeature(PackageManager.FEATURE_PICTURE_IN_PICTURE)
 
     fun getMovieHelper(activity: Activity): MovieActivityPipHelper =
         if (isSupported(activity)) MovieActivityPipHelperOreo(activity) else MOCK

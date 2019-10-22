@@ -20,8 +20,8 @@ internal data class UpdateInfo(
 ) {
     val isValid: Boolean
         get() = mobile.versionName.isNotEmpty()
-                && mobile.versionCode != 0
-                && mobile.targetInclude.isNotEmpty()
+            && mobile.versionCode != 0
+            && mobile.targetInclude.isNotEmpty()
 
     @JsonClass(generateAdapter = true)
     internal data class Mobile(

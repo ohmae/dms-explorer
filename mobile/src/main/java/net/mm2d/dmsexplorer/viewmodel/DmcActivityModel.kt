@@ -138,8 +138,8 @@ class DmcActivityModel(
         val serverModel = repository.mediaServerModel
             ?: throw IllegalStateException()
         subtitle = (rendererModel.name
-                + "  ←  "
-                + serverModel.mediaServer.friendlyName)
+            + "  ←  "
+            + serverModel.mediaServer.friendlyName)
         propertyAdapter = PropertyAdapter.ofContent(activity, entity)
         imageResource = getImageResource(entity)
         seekBarListener = object : ScrubBarListener {

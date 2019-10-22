@@ -38,15 +38,15 @@ internal class AndroidLan(context: Context) : Lan() {
             val network = connectivityManager.activeNetwork ?: return false
             val capabilities = connectivityManager.getNetworkCapabilities(network) ?: return false
             return capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) ||
-                    capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET) ||
-                    capabilities.hasTransport(NetworkCapabilities.TRANSPORT_VPN) ||
-                    (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O &&
-                            capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI_AWARE))
+                capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET) ||
+                capabilities.hasTransport(NetworkCapabilities.TRANSPORT_VPN) ||
+                (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O &&
+                    capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI_AWARE))
         }
         val ni = connectivityManager.activeNetworkInfo ?: return false
         return ni.isConnected
-                && (ni.type == ConnectivityManager.TYPE_WIFI
-                || ni.type == ConnectivityManager.TYPE_ETHERNET)
+            && (ni.type == ConnectivityManager.TYPE_WIFI
+            || ni.type == ConnectivityManager.TYPE_ETHERNET)
     }
 
     private fun isUsableInterface(netIf: NetworkInterface): Boolean {
