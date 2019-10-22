@@ -43,6 +43,7 @@
     <string name="prop_chapter_info">章节信息：</string>
     <string name="action_settings">设置</string>
     <string name="action_update">更新</string>
+    <string name="action_sort">Sort</string>
     <string name="title_activity_settings">设置</string>
     <string name="pref_header_playback">播放</string>
     <string name="pref_message_launch_app_on">通过此应用程序播放。</string>
@@ -79,6 +80,8 @@
     <string name="pref_header_expert">专家</string>
     <string name="pref_title_for_expert">专家设置</string>
     <string name="pref_message_for_expert">此设置适用于希望保留详细信息的人。根据如何设置，操作变得不可能或操作可能变得不稳定。请仅出现问题时可自行解决的人进行设置</string>
+    <string name="pref_category_content_list">Customize Content List</string>
+    <string name="pref_title_content_sort">Sort settings</string>
     <string name="pref_category_orientation">屏幕方向</string>
     <string name="pref_title_category_orientation">谨慎</string>
     <string name="pref_message_category_orientation">这些设置高度依赖于设备。在某些情况下，可能无法应用设置或显示可能会受到干扰。如果遇到问题，请将设置恢复为“未指定”</string>
@@ -137,4 +140,18 @@
     <string name="cancel">取消</string>
     <string name="dialog_title_delete">警告：删除</string>
     <string name="dialog_message_delete">将从服务器中删除“%1$s”。\n删除操作无法撤消。\n可以吗？</string>
+    <string name="dialog_title_sort">Sort</string>
+    <string name="dialog_message_sort">[experimental feature]\nSet content sorting key / order. If a problem occurs, change it back to \"None\". If you change in a folder with a large amount of content, app may freeze.</string>
+    <string name="dialog_sort_key">Sort key</string>
+    <string name="dialog_sort_key_none">None (default)</string>
+    <string name="dialog_sort_key_name">Name</string>
+    <string name="dialog_sort_key_date">Date</string>
+    <string name="dialog_sort_order">Sort order</string>
+    <string name="dialog_sort_order_ascending">ascending</string>
+    <string name="dialog_sort_order_descending">descending</string>
+    <string name="pref_summary_sort_key_none">None</string>
+    <string name="pref_summary_sort_key_name">Name</string>
+    <string name="pref_summary_sort_key_date">Date</string>
+    <string name="pref_summary_sort_order_ascending">ascending</string>
+    <string name="pref_summary_sort_order_descending">descending</string>
 </resources>

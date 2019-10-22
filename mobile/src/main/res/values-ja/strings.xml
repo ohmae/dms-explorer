@@ -43,6 +43,7 @@
     <string name="prop_chapter_info">チャプター情報:</string>
     <string name="action_settings">設定</string>
     <string name="action_update">アップデート</string>
+    <string name="action_sort">並べ替え</string>
     <string name="title_activity_settings">設定</string>
     <string name="pref_header_playback">再生</string>
     <string name="pref_message_launch_app_on">このアプリで開きます</string>
@@ -79,6 +80,8 @@
     <string name="pref_header_expert">玄人</string>
     <string name="pref_title_for_expert">玄人向け設定</string>
     <string name="pref_message_for_expert">この設定は細部までこだわりたい人向けの設定です。設定の仕方によっては操作不能になったり動作が不安定になる可能性もあります。問題が発生したときに自己解決できる方のみ設定を行ってください</string>
+    <string name="pref_category_content_list">コンテンツリストのカスタマイズ</string>
+    <string name="pref_title_content_sort">並べ替え設定</string>
     <string name="pref_category_orientation">画面の向き</string>
     <string name="pref_title_category_orientation">注意</string>
     <string name="pref_message_category_orientation">機種依存性の高い機能です。設定が反映されなかったり、表示に乱れが発生する可能性があります。問題が発生した場合は「未指定」に戻してお使いください</string>
@@ -137,4 +140,18 @@
     <string name="cancel">キャンセル</string>
     <string name="dialog_title_delete">注意：削除</string>
     <string name="dialog_message_delete">「%1$s」をサーバーから削除します。\n削除すると元に戻せません。\n削除しますか？</string>
+    <string name="dialog_title_sort">並べ替え設定</string>
+    <string name="dialog_message_sort">[試験的機能]\nコンテンツの表示順序を設定します。問題が発生した場合は「なし」に戻してください。コンテンツが大量にあるフォルダで変更するとフリーズする可能性があります。</string>
+    <string name="dialog_sort_key">並べ替え</string>
+    <string name="dialog_sort_key_none">なし(default)</string>
+    <string name="dialog_sort_key_name">名前順</string>
+    <string name="dialog_sort_key_date">日付順</string>
+    <string name="dialog_sort_order">順序</string>
+    <string name="dialog_sort_order_ascending">昇順</string>
+    <string name="dialog_sort_order_descending">降順</string>
+    <string name="pref_summary_sort_key_none">なし</string>
+    <string name="pref_summary_sort_key_name">名前順</string>
+    <string name="pref_summary_sort_key_date">日付順</string>
+    <string name="pref_summary_sort_order_ascending">昇順</string>
+    <string name="pref_summary_sort_order_descending">降順</string>
 </resources>

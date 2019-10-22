@@ -283,6 +283,12 @@ class MediaServerModel(
         return sb.toString()
     }
 
+    fun onUpdateSortSettings() {
+        historyStack.forEach {
+            it.onUpdateSortSettings()
+        }
+    }
+
     override fun onStart() {
         exploreListener.onStart()
     }

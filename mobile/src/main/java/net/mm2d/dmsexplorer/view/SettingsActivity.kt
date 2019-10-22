@@ -27,8 +27,10 @@ import net.mm2d.dmsexplorer.domain.tabs.CustomTabsHelper
 import net.mm2d.dmsexplorer.settings.Key
 import net.mm2d.dmsexplorer.settings.Orientation
 import net.mm2d.dmsexplorer.settings.Settings
+import net.mm2d.dmsexplorer.settings.SortKey.*
 import net.mm2d.dmsexplorer.util.AttrUtils
 import net.mm2d.dmsexplorer.view.base.PreferenceFragmentBase
+import net.mm2d.dmsexplorer.view.dialog.SortDialog
 import net.mm2d.dmsexplorer.view.eventrouter.EventNotifier
 import net.mm2d.dmsexplorer.view.eventrouter.EventObserver
 import net.mm2d.dmsexplorer.view.eventrouter.EventRouter
@@ -122,7 +124,7 @@ class SettingsActivity : PreferenceActivityCompat() {
         private var setFromCode: Boolean = false
 
         override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
-            val context = activity
+            val activity = activity!!
             val finishNotifier = EventRouter.createFinishNotifier()
             addPreferencesFromResource(R.xml.pref_view)
             findPreference<Preference>(Key.DARK_THEME.name)?.setOnPreferenceChangeListener { preference, _ ->
@@ -132,14 +134,14 @@ class SettingsActivity : PreferenceActivityCompat() {
                 }
                 val switchPreference = preference as SwitchPreference
                 val checked = switchPreference.isChecked
-                AlertDialog.Builder(context!!)
+                AlertDialog.Builder(activity)
                     .setTitle(R.string.dialog_title_change_theme)
                     .setMessage(R.string.dialog_message_change_theme)
                     .setPositiveButton(R.string.ok) { _, _ ->
                         setFromCode = true
                         switchPreference.isChecked = !checked
                         finishNotifier.send()
-                        Handler().postDelayed({ ServerListActivity.start(context) }, 500)
+                        Handler().postDelayed({ ServerListActivity.start(activity) }, 500)
                     }
                     .setNegativeButton(R.string.cancel, null)
                     .show()
@@ -148,12 +150,13 @@ class SettingsActivity : PreferenceActivityCompat() {
         }
     }
 
-    class ExpertPreferenceFragment : PreferenceFragmentBase() {
+    class ExpertPreferenceFragment : PreferenceFragmentBase(), SortDialog.OnUpdateSortSettings {
         private lateinit var orientationSettingsNotifier: EventNotifier
 
         override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
+            val activity = activity!!
             orientationSettingsNotifier = EventRouter.createOrientationSettingsNotifier()
-            val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(activity!!)
+            val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(activity)
             addPreferencesFromResource(R.xml.pref_expert)
             val preferences = ORIENTATION_KEYS.mapNotNull { findPreference<ListPreference>(it) }
             val listener = createBindSummaryListener()
@@ -164,6 +167,36 @@ class SettingsActivity : PreferenceActivityCompat() {
             }
             findPreference<Preference>(Key.ORIENTATION_COLLECTIVE.name)
                 ?.onPreferenceChangeListener = createCollectiveSettingListener(preferences)
+            findPreference<Preference>(Key.SORT_KEY.name)
+                ?.let {
+                    it.onPreferenceClickListener = Preference.OnPreferenceClickListener {
+                        SortDialog.show(this)
+                        true
+                    }
+                    it.summary = makeSortSummary()
+                }
+        }
+
+        override fun onUpdateSortSettings() {
+            findPreference<Preference>(Key.SORT_KEY.name)?.summary = makeSortSummary()
+        }
+
+        private fun makeSortSummary(): String {
+            val settings = Settings.get()
+            val keyId = when (settings.sortKey) {
+                NONE -> R.string.pref_summary_sort_key_none
+                NAME -> R.string.pref_summary_sort_key_name
+                DATE -> R.string.pref_summary_sort_key_date
+            }
+            val orderId = when (settings.isAscendingSortOrder) {
+                true -> R.string.pref_summary_sort_order_ascending
+                else -> R.string.pref_summary_sort_order_descending
+            }
+            return if (settings.sortKey == NONE) {
+                getString(keyId)
+            } else {
+                getString(keyId) + " - " + getString(orderId)
+            }
         }
 
         private fun createBindSummaryListener(): OnPreferenceChangeListener {

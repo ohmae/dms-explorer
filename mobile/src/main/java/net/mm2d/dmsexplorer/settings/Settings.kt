@@ -162,6 +162,14 @@ class Settings private constructor(
         get() = storage.readLong(Key.LOG_SEND_TIME)
         set(time) = storage.writeLong(Key.LOG_SEND_TIME, time)
 
+    var sortKey: SortKey
+        get() = SortKey.of(storage.readString(Key.SORT_KEY))
+        set(value) = storage.writeString(Key.SORT_KEY, value.name)
+
+    var isAscendingSortOrder: Boolean
+        get() = storage.readBoolean(Key.SORT_ORDER_ASCENDING)
+        set(value) = storage.writeBoolean(Key.SORT_ORDER_ASCENDING, value)
+
     val dump: Bundle
         get() {
             val keys = listOf(
@@ -187,7 +195,9 @@ class Settings private constructor(
                 Key.ORIENTATION_PHOTO,
                 Key.ORIENTATION_DMC,
                 Key.REPEAT_MODE_MOVIE,
-                Key.REPEAT_MODE_MUSIC
+                Key.REPEAT_MODE_MUSIC,
+                Key.SORT_KEY,
+                Key.SORT_ORDER_ASCENDING
             )
             val bundle = Bundle()
             keys.forEach {

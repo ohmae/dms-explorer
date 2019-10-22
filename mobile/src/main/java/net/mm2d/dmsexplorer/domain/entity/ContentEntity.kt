@@ -17,6 +17,7 @@ interface ContentEntity {
     val cdsObject: Any
     val name: String
     val description: String
+    val date: Long
     val artUri: Uri
     val iconUri: Uri
     val type: ContentType

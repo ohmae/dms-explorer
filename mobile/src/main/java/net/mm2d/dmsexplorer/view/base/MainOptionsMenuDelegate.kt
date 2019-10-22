@@ -21,11 +21,13 @@ import net.mm2d.dmsexplorer.view.eventrouter.EventRouter
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
  */
 internal class MainOptionsMenuDelegate(
-    private val activity: BaseActivity
+    private val activity: BaseActivity,
+    menuResId: Int
 ) : OptionsMenuDelegate {
     private val settings: Settings = Settings.get()
     private val updateAvailabilityObserver: EventObserver =
         EventRouter.createUpdateAvailabilityObserver()
+    private val menuResId = if (menuResId != 0) menuResId else R.menu.main
 
     override fun onCreate(savedInstanceState: Bundle?) {
         updateAvailabilityObserver.register { activity.invalidateOptionsMenu() }
@@ -36,7 +38,7 @@ internal class MainOptionsMenuDelegate(
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        activity.menuInflater.inflate(R.menu.main, menu)
+        activity.menuInflater.inflate(menuResId, menu)
         menu.findItem(R.id.action_update).isVisible = settings.isUpdateAvailable
         return true
     }

@@ -148,6 +148,13 @@ enum class Key(
         Long::class, 0L
     ),
 
+    SORT_KEY(
+        String::class, SortKey.NONE.name
+    ),
+    SORT_ORDER_ASCENDING(
+        Boolean::class, true
+    ),
+
     // OldKeys
     @Deprecated("")
     LAUNCH_APP_MOVIE,

@@ -11,6 +11,8 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.KeyEvent
+import android.view.MenuItem
+import net.mm2d.dmsexplorer.R
 
 import net.mm2d.dmsexplorer.settings.Settings
 import net.mm2d.dmsexplorer.view.base.BaseActivity
@@ -22,7 +24,9 @@ import net.mm2d.dmsexplorer.view.dialog.DeleteDialog.OnDeleteListener
  *
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
  */
-class ContentListActivity : BaseActivity(true), OnDeleteListener {
+class ContentListActivity :
+    BaseActivity(true, R.menu.content_list),
+    OnDeleteListener {
     private lateinit var settings: Settings
     private lateinit var delegate: ContentListActivityDelegate
 
@@ -48,6 +52,9 @@ class ContentListActivity : BaseActivity(true), OnDeleteListener {
         super.onStart()
         delegate.onStart()
     }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean =
+        delegate.onOptionsItemSelected(item) || super.onOptionsItemSelected(item)
 
     override fun onBackPressed() {
         if (delegate.onBackPressed()) {

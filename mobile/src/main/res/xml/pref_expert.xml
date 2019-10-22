@@ -16,6 +16,16 @@
     </PreferenceCategory>
 
     <PreferenceCategory
+        android:title="@string/pref_category_content_list"
+        >
+        <Preference
+            android:key="SORT_KEY"
+            android:title="@string/pref_title_content_sort"
+            app:iconSpaceReserved="false"
+            />
+    </PreferenceCategory>
+
+    <PreferenceCategory
         android:title="@string/pref_category_movie_ui"
         >
         <SwitchPreference

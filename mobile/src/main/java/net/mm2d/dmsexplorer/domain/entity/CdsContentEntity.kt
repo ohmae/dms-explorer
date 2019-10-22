@@ -22,6 +22,10 @@ class CdsContentEntity(
         private set
     override val name: String
         get() = cdsObject.title
+    override val date: Long =
+        cdsObject.getDateValue(CdsObject.UPNP_SCHEDULED_START_TIME)?.time ?: cdsObject.getDateValue(
+            CdsObject.DC_DATE
+        )?.time ?: 0L
 
     override val description: String
         get() {

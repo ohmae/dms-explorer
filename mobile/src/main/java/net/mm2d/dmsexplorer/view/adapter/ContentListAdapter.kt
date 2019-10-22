@@ -19,7 +19,6 @@ import net.mm2d.dmsexplorer.databinding.ContentListItemBinding
 import net.mm2d.dmsexplorer.domain.entity.ContentEntity
 import net.mm2d.dmsexplorer.util.FeatureUtils
 import net.mm2d.dmsexplorer.viewmodel.ContentItemModel
-import java.util.*
 
 /**
  * CDSのコンテンツリストをRecyclerViewへ表示するためのAdapter。
@@ -28,13 +27,14 @@ import java.util.*
  */
 class ContentListAdapter(context: Context) : RecyclerView.Adapter<ContentListAdapter.ViewHolder>() {
     private val inflater: LayoutInflater = LayoutInflater.from(context)
-    private val list = ArrayList<ContentEntity>()
     private var clickListener: ((View, ContentEntity) -> Unit)? = null
     private var longClickListener: ((View, ContentEntity) -> Unit)? = null
     private var selectedEntity: ContentEntity? = null
     private val hasTouchScreen: Boolean = FeatureUtils.hasTouchScreen(context)
     private val translationZ: Float =
         context.resources.getDimension(R.dimen.list_item_focus_elevation)
+
+    var list = emptyList<ContentEntity>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(
@@ -54,29 +54,6 @@ class ContentListAdapter(context: Context) : RecyclerView.Adapter<ContentListAda
 
     fun setOnItemLongClickListener(listener: ((View, ContentEntity) -> Unit)?) {
         longClickListener = listener
-    }
-
-    fun clear() {
-        list.clear()
-    }
-
-    fun getList(): List<ContentEntity> = list
-
-    fun addAll(entities: Collection<ContentEntity>) {
-        list.addAll(entities)
-    }
-
-    fun add(entity: ContentEntity): Int {
-        list.add(entity)
-        return list.size - 1
-    }
-
-    fun remove(entity: ContentEntity): Int {
-        val position = list.indexOf(entity)
-        if (position >= 0) {
-            list.removeAt(position)
-        }
-        return position
     }
 
     fun indexOf(entity: ContentEntity): Int = list.indexOf(entity)

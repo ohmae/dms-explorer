@@ -24,7 +24,8 @@ import java.util.concurrent.atomic.AtomicBoolean
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
  */
 abstract class BaseActivity @JvmOverloads constructor(
-    private val mainMenu: Boolean = false
+    private val mainMenu: Boolean = false,
+    private val menuResId: Int = 0
 ) :
     AppCompatActivity() {
     private val finishAfterTransitionLatch = AtomicBoolean()
@@ -37,7 +38,7 @@ abstract class BaseActivity @JvmOverloads constructor(
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         delegate = if (mainMenu)
-            MainOptionsMenuDelegate(this)
+            MainOptionsMenuDelegate(this, menuResId)
         else
             BaseOptionsMenuDelegate(this)
         delegate.onCreate(savedInstanceState)

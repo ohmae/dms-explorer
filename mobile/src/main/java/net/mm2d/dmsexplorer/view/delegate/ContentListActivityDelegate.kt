@@ -9,6 +9,7 @@ package net.mm2d.dmsexplorer.view.delegate
 
 import android.os.Bundle
 import android.view.KeyEvent
+import android.view.MenuItem
 import androidx.annotation.CallSuper
 import androidx.core.view.doOnLayout
 import androidx.databinding.DataBindingUtil
@@ -84,6 +85,14 @@ abstract class ContentListActivityDelegate internal constructor(
         val view = recyclerView.getChildAt(0)
         outState.putInt(KEY_SCROLL_POSITION, recyclerView.getChildAdapterPosition(view))
         outState.putInt(KEY_SCROLL_OFFSET, -view.top)
+    }
+
+    fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == R.id.action_sort) {
+            model?.onSortMenuClicked()
+            return true
+        }
+        return false
     }
 
     fun onBackPressed(): Boolean {

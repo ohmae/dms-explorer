@@ -7,14 +7,16 @@
 
 package net.mm2d.dmsexplorer.domain.entity
 
+import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import net.mm2d.android.upnp.cds.CdsObject
 import net.mm2d.dmsexplorer.domain.model.ExploreListener
 import net.mm2d.dmsexplorer.domain.model.ExploreListenerAdapter
+import net.mm2d.dmsexplorer.settings.Settings
+import net.mm2d.dmsexplorer.settings.SortKey.*
 import net.mm2d.log.Logger
-import java.util.*
 
 /**
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
@@ -23,7 +25,8 @@ class ContentDirectoryEntity private constructor(
     val parentId: String,
     override val parentName: String
 ) : DirectoryEntity {
-    private val list = ArrayList<ContentEntity>()
+    private val list = mutableListOf<ContentEntity>()
+    private var sortedList = emptyList<ContentEntity>()
     private var entryListener: ExploreListener = ENTRY_LISTENER
     @Volatile
     override var isInProgress = true
@@ -32,7 +35,7 @@ class ContentDirectoryEntity private constructor(
     private var disposable: Disposable? = null
 
     override val entities: List<ContentEntity>
-        get() = list
+        get() = sortedList
 
     private var _selectedEntity: ContentEntity? = null
     override var selectedEntity: ContentEntity?
@@ -75,6 +78,7 @@ class ContentDirectoryEntity private constructor(
         _selectedEntity = null
         isInProgress = true
         list.clear()
+        sortedList = emptyList()
         entryListener.onStart()
     }
 
@@ -84,13 +88,39 @@ class ContentDirectoryEntity private constructor(
             .subscribeOn(Schedulers.io())
             .subscribe({ cdsObject ->
                 list.add(CdsContentEntity(cdsObject))
-                entryListener.onUpdate(list)
+                sort()
+                entryListener.onUpdate(sortedList)
             }, {
                 Logger.w(it)
             }, {
                 isInProgress = false
                 entryListener.onComplete()
             })
+    }
+
+    private fun sort() {
+        val settings = Settings.get()
+        val isAscending = settings.isAscendingSortOrder
+        sortedList = when (settings.sortKey) {
+            NONE -> list.toList()
+            NAME -> {
+                if (isAscending) list.sortedBy { it.name }
+                else list.sortedByDescending { it.name }
+            }
+            DATE -> {
+                if (isAscending) list.sortedBy { it.date }
+                else list.sortedByDescending { it.date }
+            }
+        }
+    }
+
+    fun onUpdateSortSettings() {
+        Completable.fromAction {
+            sort()
+            entryListener.onUpdate(sortedList)
+        }
+            .subscribeOn(Schedulers.io())
+            .subscribe()
     }
 
     companion object {
