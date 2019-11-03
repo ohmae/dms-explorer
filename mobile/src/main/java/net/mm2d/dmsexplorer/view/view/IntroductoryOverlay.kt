@@ -67,10 +67,10 @@ class IntroductoryOverlay private constructor(
 
     init {
         LayoutInflater.from(context).inflate(R.layout.introductory_overlay, this)
-        if (!titleText.isNullOrEmpty()) {
+        if (titleText.isNotEmpty()) {
             title.text = titleText
         }
-        if (!subtitleText.isNullOrEmpty()) {
+        if (subtitleText.isNotEmpty()) {
             subtitle.text = subtitleText
         }
         margin = activity.resources

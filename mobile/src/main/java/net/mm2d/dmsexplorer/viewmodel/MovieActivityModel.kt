@@ -96,9 +96,7 @@ class MovieActivityModel(
         movieActivityPipHelper.register()
         muteAlertHelper = MuteAlertHelper(activity)
         val targetModel = repository.playbackTargetModel
-        if (targetModel == null || targetModel.uri === Uri.EMPTY) {
-            throw IllegalStateException()
-        }
+        check(!(targetModel == null || targetModel.uri === Uri.EMPTY))
         updateTargetModel()
     }
 

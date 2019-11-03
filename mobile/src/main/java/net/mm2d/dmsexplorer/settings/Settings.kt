@@ -18,7 +18,7 @@ import net.mm2d.dmsexplorer.domain.entity.ContentType
 import net.mm2d.dmsexplorer.settings.theme.Theme
 import net.mm2d.dmsexplorer.settings.theme.ThemeParams
 import net.mm2d.log.Logger
-import java.util.concurrent.TimeUnit
+import java.util.concurrent.TimeUnit.SECONDS
 import java.util.concurrent.locks.ReentrantLock
 import kotlin.concurrent.withLock
 
@@ -338,9 +338,7 @@ class Settings private constructor(
                         Logger.e("!!!!!!!!!! BLOCK !!!!!!!!!!")
                     }
                     try {
-                        if (!condition.await(1, TimeUnit.SECONDS)) {
-                            throw IllegalStateException("Settings initialization timeout")
-                        }
+                        check(condition.await(1, SECONDS)) { "Settings initialization timeout" }
                     } catch (e: InterruptedException) {
                         Logger.w(e)
                     }

@@ -168,15 +168,9 @@ enum class Key(
 
     init {
         if (defaultValue != null) {
-            if (type == null) {
-                throw IllegalArgumentException()
-            }
-            if (!type.isInstance(defaultValue)) {
-                throw IllegalArgumentException()
-            }
-        } else if (type != null) {
-            throw IllegalArgumentException()
-        }
+            requireNotNull(type)
+            require(type.isInstance(defaultValue))
+        } else require(type == null)
     }
 
     internal val isReadWriteKey: Boolean

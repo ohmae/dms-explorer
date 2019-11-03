@@ -58,16 +58,12 @@ class AvControlPointManager {
      * Searchパケットを一つ投げるのみであり、定期的に実行するにはアプリ側での実装が必要。
      */
     fun search() {
-        if (!initialized.get()) {
-            throw IllegalStateException("ControlPoint is not initialized")
-        }
+        check(initialized.get()) { "ControlPoint is not initialized" }
         controlPoint?.search(null)
     }
 
     fun addPinnedDevice(location: String) {
-        if (!initialized.get()) {
-            throw IllegalStateException("ControlPoint is not initialized")
-        }
+        check(initialized.get()) { "ControlPoint is not initialized" }
         controlPoint?.tryAddPinnedDevice(location)
     }
 
@@ -97,9 +93,7 @@ class AvControlPointManager {
      * 処理を開始する。
      */
     fun start() {
-        if (!initialized.get()) {
-            throw IllegalStateException("ControlPoint is not initialized")
-        }
+        check(initialized.get()) { "ControlPoint is not initialized" }
         controlPoint?.start()
     }
 

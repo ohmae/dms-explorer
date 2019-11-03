@@ -70,9 +70,7 @@ class PhotoActivityModel(
             ContextCompat.getColor(activity, R.color.translucent_control)
 
         val uri = targetModel.uri
-        if (uri === Uri.EMPTY) {
-            throw IllegalStateException()
-        }
+        check(!(uri === Uri.EMPTY))
         Downloader.create(uri.toString())
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())

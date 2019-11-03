@@ -61,9 +61,7 @@ class SettingsStorage(context: Context) {
      * @param value 書き込む値
      */
     fun writeBoolean(key: Key, value: Boolean) {
-        if (!key.isBooleanKey) {
-            throw IllegalArgumentException(key.name + " is not key for boolean")
-        }
+        require(key.isBooleanKey) { key.name + " is not key for boolean" }
         preferences.edit()
             .putBoolean(key.name, value)
             .apply()
@@ -76,9 +74,7 @@ class SettingsStorage(context: Context) {
      * @return 読み出したboolean値
      */
     fun readBoolean(key: Key): Boolean {
-        if (!key.isBooleanKey) {
-            throw IllegalArgumentException(key.name + " is not key for boolean")
-        }
+        require(key.isBooleanKey) { key.name + " is not key for boolean" }
         return preferences.getBoolean(key.name, key.defaultBoolean)
     }
 
@@ -89,9 +85,7 @@ class SettingsStorage(context: Context) {
      * @param value 書き込む値
      */
     fun writeInt(key: Key, value: Int) {
-        if (!key.isIntKey) {
-            throw IllegalArgumentException(key.name + " is not key for int")
-        }
+        require(key.isIntKey) { key.name + " is not key for int" }
         preferences.edit()
             .putInt(key.name, value)
             .apply()
@@ -104,9 +98,7 @@ class SettingsStorage(context: Context) {
      * @return 読み出したint値
      */
     fun readInt(key: Key): Int {
-        if (!key.isIntKey) {
-            throw IllegalArgumentException(key.name + " is not key for int")
-        }
+        require(key.isIntKey) { key.name + " is not key for int" }
         return preferences.getInt(key.name, key.defaultInt)
     }
 
@@ -117,9 +109,7 @@ class SettingsStorage(context: Context) {
      * @param value 書き込む値
      */
     fun writeLong(key: Key, value: Long) {
-        if (!key.isLongKey) {
-            throw IllegalArgumentException(key.name + " is not key for long")
-        }
+        require(key.isLongKey) { key.name + " is not key for long" }
         preferences.edit()
             .putLong(key.name, value)
             .apply()
@@ -132,9 +122,7 @@ class SettingsStorage(context: Context) {
      * @return 読み出したlong値
      */
     fun readLong(key: Key): Long {
-        if (!key.isLongKey) {
-            throw IllegalArgumentException(key.name + " is not key for long")
-        }
+        require(key.isLongKey) { key.name + " is not key for long" }
         return preferences.getLong(key.name, key.defaultLong)
     }
 
@@ -145,9 +133,7 @@ class SettingsStorage(context: Context) {
      * @param value 書き込む値
      */
     fun writeString(key: Key, value: String) {
-        if (!key.isStringKey) {
-            throw IllegalArgumentException(key.name + " is not key for String")
-        }
+        require(key.isStringKey) { key.name + " is not key for String" }
         preferences.edit()
             .putString(key.name, value)
             .apply()
@@ -160,9 +146,7 @@ class SettingsStorage(context: Context) {
      * @return 読み出したString値
      */
     fun readString(key: Key): String {
-        if (!key.isStringKey) {
-            throw IllegalArgumentException(key.name + " is not key for String")
-        }
+        require(key.isStringKey) { key.name + " is not key for String" }
         return preferences.getString(key.name, key.defaultString)!!
     }
 

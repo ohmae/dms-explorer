@@ -37,9 +37,7 @@ class MediaRenderer internal constructor(
     private val pause: Action?
 
     init {
-        if (!device.deviceType.startsWith(Avt.MR_DEVICE_TYPE)) {
-            throw IllegalArgumentException("device is not MediaRenderer")
-        }
+        require(device.deviceType.startsWith(Avt.MR_DEVICE_TYPE)) { "device is not MediaRenderer" }
         avTransport = findService(device, Avt.AVT_SERVICE_ID)
         setAvTransportUri = findAction(avTransport, SET_AV_TRANSPORT_URI)
         getPositionInfo = findAction(avTransport, GET_POSITION_INFO)

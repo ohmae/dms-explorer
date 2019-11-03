@@ -127,9 +127,7 @@ class DmcActivityModel(
         }
 
     init {
-        if (targetModel.uri === Uri.EMPTY) {
-            throw IllegalStateException()
-        }
+        check(!(targetModel.uri === Uri.EMPTY))
         rendererModel.setStatusListener(this)
         val entity = targetModel.contentEntity
         title = AribUtils.toDisplayableString(entity.name)

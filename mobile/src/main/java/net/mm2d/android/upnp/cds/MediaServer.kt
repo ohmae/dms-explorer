@@ -37,9 +37,7 @@ internal constructor(device: Device) : DeviceWrapper(device) {
     private val destroyObject: Action?
 
     init {
-        if (!device.deviceType.startsWith(Cds.MS_DEVICE_TYPE)) {
-            throw IllegalArgumentException("device is not MediaServer")
-        }
+        require(device.deviceType.startsWith(Cds.MS_DEVICE_TYPE)) { "device is not MediaServer" }
         cdsService = device.findServiceById(Cds.CDS_SERVICE_ID)
             ?: throw IllegalArgumentException("Device don't have cds service")
         browse = cdsService.findAction(BROWSE)
