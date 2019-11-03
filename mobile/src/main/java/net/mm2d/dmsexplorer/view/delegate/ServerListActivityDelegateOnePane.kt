@@ -16,7 +16,6 @@ import android.view.View
 import androidx.annotation.RequiresApi
 import androidx.core.app.SharedElementCallback
 import kotlinx.android.synthetic.main.server_list_item.view.*
-import net.mm2d.android.util.ActivityUtils
 import net.mm2d.android.view.TransitionListenerAdapter
 import net.mm2d.dmsexplorer.Const
 import net.mm2d.dmsexplorer.databinding.ServerListActivityBinding
@@ -91,15 +90,6 @@ internal class ServerListActivityDelegateOnePane(
     }
 
     private fun startServerDetailActivity(v: View) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            startServerDetailActivityLollipop(v)
-        } else {
-            startServerDetailActivityJellyBean(v)
-        }
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    private fun startServerDetailActivityLollipop(v: View) {
         val intent = ServerDetailActivity.makeIntent(activity)
         val accent = v.accent
         val option = ActivityOptions.makeSceneTransitionAnimation(
@@ -107,11 +97,6 @@ internal class ServerListActivityDelegateOnePane(
         ).toBundle()
         activity.startActivity(intent, option)
         hasReenterTransition = true
-    }
-
-    private fun startServerDetailActivityJellyBean(v: View) {
-        val intent = ServerDetailActivity.makeIntent(activity)
-        activity.startActivity(intent, ActivityUtils.makeScaleUpAnimationBundle(v))
     }
 
     companion object {

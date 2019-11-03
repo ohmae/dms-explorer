@@ -8,7 +8,6 @@
 package net.mm2d.dmsexplorer.view.adapter
 
 import android.content.Context
-import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -160,9 +159,7 @@ class ServerListAdapter(
                 v.scaleX = 1.0f
                 v.scaleY = 1.0f
             }
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                v.translationZ = if (focus) translationZ else 0.0f
-            }
+            v.translationZ = if (focus) translationZ else 0.0f
         }
     }
 

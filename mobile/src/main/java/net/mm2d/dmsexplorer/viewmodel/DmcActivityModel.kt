@@ -15,9 +15,9 @@ import androidx.annotation.DrawableRes
 import androidx.core.app.ActivityCompat
 import androidx.databinding.BaseObservable
 import androidx.databinding.Bindable
+import androidx.databinding.library.baseAdapters.BR
 import net.mm2d.android.util.AribUtils
 import net.mm2d.android.util.Toaster
-import net.mm2d.dmsexplorer.BR
 import net.mm2d.dmsexplorer.R
 import net.mm2d.dmsexplorer.Repository
 import net.mm2d.dmsexplorer.domain.entity.ContentEntity

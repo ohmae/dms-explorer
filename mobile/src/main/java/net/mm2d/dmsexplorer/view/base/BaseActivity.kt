@@ -7,12 +7,10 @@
 
 package net.mm2d.dmsexplorer.view.base
 
-import android.os.Build
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.annotation.CallSuper
-import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NavUtils
 import androidx.core.app.TaskStackBuilder
@@ -86,17 +84,12 @@ abstract class BaseActivity @JvmOverloads constructor(
         try {
             super.onBackPressed()
         } catch (ignored: IllegalStateException) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                finishAfterTransition()
-            } else {
-                finish()
-            }
+            finishAfterTransition()
         }
     }
 
     protected open fun updateOrientationSettings() {}
 
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     override fun finishAfterTransition() {
         if (finishAfterTransitionLatch.getAndSet(true)) {
             return

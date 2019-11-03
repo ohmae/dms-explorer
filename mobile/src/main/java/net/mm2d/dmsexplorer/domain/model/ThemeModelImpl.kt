@@ -8,7 +8,6 @@
 package net.mm2d.dmsexplorer.domain.model
 
 import android.app.Activity
-import android.os.Build
 import androidx.annotation.ColorInt
 import net.mm2d.android.util.ActivityLifecycleCallbacksAdapter
 import net.mm2d.dmsexplorer.util.ColorUtils
@@ -25,11 +24,8 @@ class ThemeModelImpl : ActivityLifecycleCallbacksAdapter(), ThemeModel {
         @ColorInt toolbarColor: Int,
         @ColorInt statusBarColor: Int
     ) {
-        val color =
-            if (statusBarColor != 0) statusBarColor else ColorUtils.getDarkerColor(toolbarColor)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            activity.window.statusBarColor = color
-        }
+        val color = if (statusBarColor != 0) statusBarColor else ColorUtils.getDarkerColor(toolbarColor)
+        activity.window.statusBarColor = color
         map[activity.javaClass.name] = toolbarColor
     }
 

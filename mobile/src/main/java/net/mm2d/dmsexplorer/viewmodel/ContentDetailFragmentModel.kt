@@ -11,13 +11,13 @@ import android.graphics.Color
 import android.view.View
 import androidx.databinding.BaseObservable
 import androidx.databinding.Bindable
+import androidx.databinding.library.baseAdapters.BR
 import androidx.fragment.app.FragmentActivity
 import com.google.android.material.snackbar.Snackbar
 import net.mm2d.android.upnp.avt.MediaRenderer
 import net.mm2d.android.upnp.avt.MrControlPoint
 import net.mm2d.android.upnp.avt.MrControlPoint.MrDiscoveryListener
 import net.mm2d.android.util.toDisplayableString
-import net.mm2d.dmsexplorer.BR
 import net.mm2d.dmsexplorer.R
 import net.mm2d.dmsexplorer.Repository
 import net.mm2d.dmsexplorer.settings.Settings

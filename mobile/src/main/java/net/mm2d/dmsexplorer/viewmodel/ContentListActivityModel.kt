@@ -13,13 +13,13 @@ import android.os.Looper
 import android.view.View
 import androidx.databinding.BaseObservable
 import androidx.databinding.Bindable
+import androidx.databinding.library.baseAdapters.BR
 import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView.ItemAnimator
 import androidx.recyclerview.widget.RecyclerView.LayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout.OnRefreshListener
-import net.mm2d.dmsexplorer.BR
 import net.mm2d.dmsexplorer.Const
 import net.mm2d.dmsexplorer.R
 import net.mm2d.dmsexplorer.Repository

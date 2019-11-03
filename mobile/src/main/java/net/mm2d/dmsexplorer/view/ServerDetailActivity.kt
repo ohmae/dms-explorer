@@ -9,12 +9,10 @@ package net.mm2d.dmsexplorer.view
 
 import android.content.Context
 import android.content.Intent
-import android.os.Build
 import android.os.Bundle
 import android.transition.Transition
 import android.view.View
 import android.view.ViewAnimationUtils
-import androidx.annotation.RequiresApi
 import androidx.databinding.DataBindingUtil
 import net.mm2d.android.view.TransitionListenerAdapter
 import net.mm2d.dmsexplorer.Const
@@ -62,7 +60,6 @@ class ServerDetailActivity : BaseActivity(true) {
         }
         binding.toolbarBackground.visibility = View.INVISIBLE
         window.sharedElementEnterTransition.addListener(object : TransitionListenerAdapter() {
-            @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
             override fun onTransitionEnd(transition: Transition) {
                 transition.removeListener(this)
                 startAnimation(binding.toolbarBackground)
@@ -70,7 +67,6 @@ class ServerDetailActivity : BaseActivity(true) {
         })
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private fun startAnimation(background: View) {
         if (!background.isAttachedToWindow) {
             return

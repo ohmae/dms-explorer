@@ -123,13 +123,13 @@ class UpdateChecker(
     }
 
     private fun isInclude(ranges: List<Int>): Boolean {
-        for (i in 0 until ranges.size step 2) {
-            if (i + 1 < ranges.size) {
-                if (ranges[i] <= currentVersion && ranges[i + 1] >= currentVersion) {
+        ranges.chunked(2).forEach {
+            if (it.size == 2) {
+                if (it[0] <= currentVersion && it[1] >= currentVersion) {
                     return true
                 }
             } else {
-                if (ranges[i] <= currentVersion) {
+                if (it[0] <= currentVersion) {
                     return true
                 }
             }

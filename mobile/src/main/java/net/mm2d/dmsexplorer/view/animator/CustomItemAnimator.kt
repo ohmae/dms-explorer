@@ -20,7 +20,6 @@ import android.animation.AnimatorListenerAdapter
 import android.animation.TimeInterpolator
 import android.animation.ValueAnimator
 import android.content.Context
-import android.os.Build
 import androidx.core.view.ViewCompat
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
@@ -77,10 +76,7 @@ class CustomItemAnimator(context: Context) : SimpleItemAnimator() {
 
     init {
         val density = context.resources.displayMetrics.density
-        val translationY = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
-            ADDING_TRANSLATION_Y
-        else
-            ADDING_TRANSLATION_Y_KITKAT
+        val translationY = ADDING_TRANSLATION_Y
         addingTranslationY = (translationY * density + 0.5f).toInt()
     }
 
@@ -643,7 +639,6 @@ class CustomItemAnimator(context: Context) : SimpleItemAnimator() {
         private const val ADDING_ANIMATION_DELAY = 16L
         private const val ADDING_ANIMATION_DELAY_MAX = 500L
         private const val ADDING_TRANSLATION_Y = 200
-        private const val ADDING_TRANSLATION_Y_KITKAT = 50
 
         private var sDefaultInterpolator: TimeInterpolator? = null
     }

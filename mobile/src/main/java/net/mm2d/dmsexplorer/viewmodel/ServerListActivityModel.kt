@@ -15,13 +15,13 @@ import android.view.View
 import androidx.databinding.BaseObservable
 import androidx.databinding.Bindable
 import androidx.databinding.DataBindingUtil
+import androidx.databinding.library.baseAdapters.BR
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView.ItemAnimator
 import androidx.recyclerview.widget.RecyclerView.LayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout.OnRefreshListener
 import net.mm2d.android.upnp.cds.MediaServer
 import net.mm2d.android.upnp.cds.MsControlPoint.MsDiscoveryListener
-import net.mm2d.dmsexplorer.BR
 import net.mm2d.dmsexplorer.R
 import net.mm2d.dmsexplorer.Repository
 import net.mm2d.dmsexplorer.databinding.ServerListItemBinding

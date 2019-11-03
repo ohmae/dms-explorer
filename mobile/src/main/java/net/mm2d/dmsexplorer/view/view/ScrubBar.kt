@@ -12,7 +12,6 @@ import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
-import android.os.Build
 import android.os.Parcel
 import android.os.Parcelable
 import android.os.Parcelable.Creator
@@ -431,20 +430,10 @@ class ScrubBar @JvmOverloads constructor(
         }
 
         private fun getColorAccent(context: Context): Int {
-            val colorAttr = getColorAccentId(context)
+            val colorAttr = android.R.attr.colorAccent
             val outValue = TypedValue()
             context.theme.resolveAttribute(colorAttr, outValue, true)
             return outValue.data
-        }
-
-        private fun getColorAccentId(context: Context): Int {
-            return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                android.R.attr.colorAccent
-            } else context.resources.getIdentifier(
-                "colorAccent",
-                "attr",
-                context.packageName
-            )
         }
     }
 }

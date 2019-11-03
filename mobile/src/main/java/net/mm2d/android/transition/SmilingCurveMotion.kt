@@ -9,17 +9,14 @@ package net.mm2d.android.transition
 
 import android.content.Context
 import android.graphics.Path
-import android.os.Build
 import android.transition.PathMotion
 import android.util.AttributeSet
-import androidx.annotation.RequiresApi
 
 /**
  * マテリアルデザインにある下に凸な曲線のモーションを実現する。
  *
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
  */
-@RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
 class SmilingCurveMotion(context: Context, attrs: AttributeSet) : PathMotion(context, attrs) {
     override fun getPath(startX: Float, startY: Float, endX: Float, endY: Float) = Path().also {
         it.moveTo(startX, startY)

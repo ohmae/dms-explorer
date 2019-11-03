@@ -12,8 +12,8 @@ import android.os.Handler
 import android.os.Looper
 import androidx.databinding.BaseObservable
 import androidx.databinding.Bindable
+import androidx.databinding.library.baseAdapters.BR
 import net.mm2d.android.util.Toaster
-import net.mm2d.dmsexplorer.BR
 import net.mm2d.dmsexplorer.R
 import net.mm2d.dmsexplorer.domain.model.PlayerModel
 import net.mm2d.dmsexplorer.domain.model.PlayerModel.StatusListener

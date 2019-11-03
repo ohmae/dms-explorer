@@ -123,16 +123,12 @@ class MsControlPoint : ControlPointWrapper {
         server: MediaServer,
         value: String
     ) {
-        containerUpdateIdsListener?.let {
+        containerUpdateIdsListener?.let { it ->
             val values = value.split(',')
             if (values.isEmpty() || values.size % 2 != 0) {
                 return
             }
-            val ids = ArrayList<String>()
-            for (i in 0 until values.size step 2) {
-                ids.add(values[i])
-            }
-            it.onContainerUpdateIds(server, ids)
+            it.onContainerUpdateIds(server, values.chunked(2) { it[0] })
         }
     }
 

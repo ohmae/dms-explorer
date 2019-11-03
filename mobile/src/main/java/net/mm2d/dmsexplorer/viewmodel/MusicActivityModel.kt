@@ -13,12 +13,12 @@ import androidx.annotation.DrawableRes
 import androidx.core.app.ActivityCompat
 import androidx.databinding.BaseObservable
 import androidx.databinding.Bindable
+import androidx.databinding.library.baseAdapters.BR
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.functions.Consumer
 import io.reactivex.schedulers.Schedulers
 import net.mm2d.android.util.AribUtils
 import net.mm2d.android.util.Toaster
-import net.mm2d.dmsexplorer.BR
 import net.mm2d.dmsexplorer.Repository
 import net.mm2d.dmsexplorer.domain.model.MediaServerModel
 import net.mm2d.dmsexplorer.domain.model.MusicPlayerModel
