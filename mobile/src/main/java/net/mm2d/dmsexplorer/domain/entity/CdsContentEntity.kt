@@ -11,9 +11,9 @@ import net.mm2d.dmsexplorer.util.StringJoiner
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
  */
 class CdsContentEntity(
-    override val cdsObject: CdsObject
+    override val rawEntity: CdsObject
 ) : ContentEntity {
-    override val id: String = cdsObject.objectId
+    override val id: String = rawEntity.objectId
     private var selectedRes: Tag? = null
     override val type: ContentType
     override var uri: Uri? = null
@@ -21,10 +21,10 @@ class CdsContentEntity(
     override var mimeType: String? = null
         private set
     override val name: String
-        get() = cdsObject.title
+        get() = rawEntity.title
     override val date: Long
-        get() = cdsObject.getDateValue(CdsObject.UPNP_SCHEDULED_START_TIME)?.time
-            ?: cdsObject.getDateValue(CdsObject.DC_DATE)?.time
+        get() = rawEntity.getDateValue(CdsObject.UPNP_SCHEDULED_START_TIME)?.time
+            ?: rawEntity.getDateValue(CdsObject.DC_DATE)?.time
             ?: 0L
 
     override val description: String
@@ -32,17 +32,17 @@ class CdsContentEntity(
             val stringJoiner = StringJoiner()
             when (type) {
                 ContentType.MOVIE -> {
-                    stringJoiner.join(CdsFormatter.makeChannel(cdsObject))
-                    stringJoiner.join(CdsFormatter.makeScheduleOrDate(cdsObject))
+                    stringJoiner.join(CdsFormatter.makeChannel(rawEntity))
+                    stringJoiner.join(CdsFormatter.makeScheduleOrDate(rawEntity))
                 }
                 ContentType.MUSIC -> {
-                    stringJoiner.join(CdsFormatter.makeArtistsSimple(cdsObject))
-                    stringJoiner.join(CdsFormatter.makeAlbum(cdsObject), " / ")
+                    stringJoiner.join(CdsFormatter.makeArtistsSimple(rawEntity))
+                    stringJoiner.join(CdsFormatter.makeAlbum(rawEntity), " / ")
                 }
-                ContentType.PHOTO -> stringJoiner.join(CdsFormatter.makeDate(cdsObject))
+                ContentType.PHOTO -> stringJoiner.join(CdsFormatter.makeDate(rawEntity))
                 ContentType.CONTAINER -> {
-                    stringJoiner.join(CdsFormatter.makeChannel(cdsObject))
-                    stringJoiner.join(CdsFormatter.makeDate(cdsObject), ' ')
+                    stringJoiner.join(CdsFormatter.makeChannel(rawEntity))
+                    stringJoiner.join(CdsFormatter.makeDate(rawEntity), ' ')
                 }
                 else -> {
                 }
@@ -54,7 +54,7 @@ class CdsContentEntity(
 
     override val artUri: Uri
         get() {
-            val uri = cdsObject.getValue(CdsObject.UPNP_ALBUM_ART_URI)
+            val uri = rawEntity.getValue(CdsObject.UPNP_ALBUM_ART_URI)
             return if (uri.isNullOrEmpty()) {
                 Uri.EMPTY
             } else Uri.parse(uri)
@@ -64,14 +64,14 @@ class CdsContentEntity(
         get() = Uri.EMPTY
 
     override val resourceCount: Int
-        get() = cdsObject.getResourceCount()
+        get() = rawEntity.getResourceCount()
 
     override val isProtected: Boolean
-        get() = cdsObject.hasProtectedResource()
+        get() = rawEntity.hasProtectedResource()
 
     init {
-        type = getType(cdsObject)
-        selectedRes = cdsObject.getTag(CdsObject.RES)
+        type = getType(rawEntity)
+        selectedRes = rawEntity.getTag(CdsObject.RES)
         updateUri()
     }
 
@@ -99,13 +99,13 @@ class CdsContentEntity(
     override fun hasResource(): Boolean = resourceCount != 0
 
     override fun canDelete(): Boolean =
-        cdsObject.getIntValue(CdsObject.RESTRICTED, -1) == 0
+        rawEntity.getIntValue(CdsObject.RESTRICTED, -1) == 0
 
     override fun selectResource(index: Int) {
         if (index < 0 || index >= resourceCount) {
             throw IndexOutOfBoundsException()
         }
-        selectedRes = cdsObject.getTag(CdsObject.RES, index)
+        selectedRes = rawEntity.getTag(CdsObject.RES, index)
         updateUri()
     }
 }

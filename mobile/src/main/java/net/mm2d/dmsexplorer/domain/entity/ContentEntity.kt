@@ -14,7 +14,7 @@ import android.net.Uri
  */
 interface ContentEntity {
     val id: String
-    val cdsObject: Any
+    val rawEntity: Any
     val name: String
     val description: String
     val date: Long

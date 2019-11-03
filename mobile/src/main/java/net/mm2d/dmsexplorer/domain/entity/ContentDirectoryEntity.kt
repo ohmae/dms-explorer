@@ -64,7 +64,7 @@ class ContentDirectoryEntity private constructor(
             return null
         }
         _selectedEntity = entity
-        val cdsObject = entity.cdsObject as CdsObject
+        val cdsObject = entity.rawEntity as CdsObject
         return ContentDirectoryEntity(cdsObject.objectId, cdsObject.title)
     }
 

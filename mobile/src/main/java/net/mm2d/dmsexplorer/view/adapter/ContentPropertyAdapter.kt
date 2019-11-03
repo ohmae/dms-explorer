@@ -23,7 +23,7 @@ internal class ContentPropertyAdapter(
     entity: ContentEntity
 ) : PropertyAdapter(context) {
     init {
-        setCdsObjectInfo(context, this, entity.cdsObject as CdsObject)
+        setCdsObjectInfo(context, this, entity.rawEntity as CdsObject)
     }
 
     private fun setCdsObjectInfo(

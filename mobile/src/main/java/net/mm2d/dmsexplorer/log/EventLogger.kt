@@ -80,7 +80,7 @@ object EventLogger {
     fun sendSendContent() {
         val targetModel = Repository.get().playbackTargetModel ?: return
         val entity = targetModel.contentEntity
-        val cdsObject = entity.cdsObject as CdsObject
+        val cdsObject = entity.rawEntity as CdsObject
         val bundle = Bundle()
         bundle.putString(Param.ITEM_VARIANT, cdsObject.getValue(CdsObject.RES_PROTOCOL_INFO))
         bundle.putString(Param.CONTENT_TYPE, getTypeString(entity.type))
@@ -95,7 +95,7 @@ object EventLogger {
     fun sendPlayContent(playMyself: Boolean) {
         val targetModel = Repository.get().playbackTargetModel ?: return
         val entity = targetModel.contentEntity
-        val cdsObject = entity.cdsObject as CdsObject
+        val cdsObject = entity.rawEntity as CdsObject
         val bundle = Bundle()
         bundle.putString(Param.ITEM_VARIANT, cdsObject.getValue(CdsObject.RES_PROTOCOL_INFO))
         bundle.putString(Param.CONTENT_TYPE, getTypeString(entity.type))

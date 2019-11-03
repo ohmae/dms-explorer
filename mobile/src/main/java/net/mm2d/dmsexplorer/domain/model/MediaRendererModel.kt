@@ -113,7 +113,7 @@ class MediaRendererModel(
         mediaRenderer.clearAVTransportURI()
             .subscribeOn(Schedulers.io())
             .subscribe()
-        val cdsObject = entity?.cdsObject as CdsObject
+        val cdsObject = entity?.rawEntity as CdsObject
         mediaRenderer.setAVTransportURI(cdsObject, uri.toString())
             .subscribeOn(Schedulers.io())
             .flatMap { mediaRenderer.play() }
