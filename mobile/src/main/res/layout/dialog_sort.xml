@@ -32,45 +32,11 @@
             android:textSize="@dimen/text_size_main"
             />
 
-        <RadioGroup
+        <Spinner
             android:id="@+id/sort_key"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            >
-
-            <RadioButton
-                android:id="@+id/sort_key_none"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingTop="8dp"
-                android:paddingBottom="8dp"
-                android:text="@string/dialog_sort_key_none"
-                android:textColor="?attr/themeSubTextColor"
-                android:textSize="@dimen/text_size_message"
-                />
-
-            <RadioButton
-                android:id="@+id/sort_key_name"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingTop="8dp"
-                android:paddingBottom="8dp"
-                android:text="@string/dialog_sort_key_name"
-                android:textColor="?attr/themeSubTextColor"
-                android:textSize="@dimen/text_size_message"
-                />
-
-            <RadioButton
-                android:id="@+id/sort_key_date"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingTop="8dp"
-                android:paddingBottom="8dp"
-                android:text="@string/dialog_sort_key_date"
-                android:textColor="?attr/themeSubTextColor"
-                android:textSize="@dimen/text_size_message"
-                />
-        </RadioGroup>
+            />
 
         <TextView
             android:layout_width="wrap_content"
