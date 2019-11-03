@@ -15,10 +15,10 @@ import android.util.Pair
 import android.view.View
 import androidx.annotation.RequiresApi
 import androidx.core.app.SharedElementCallback
+import kotlinx.android.synthetic.main.server_list_item.view.*
 import net.mm2d.android.util.ActivityUtils
 import net.mm2d.android.view.TransitionListenerAdapter
 import net.mm2d.dmsexplorer.Const
-import net.mm2d.dmsexplorer.R
 import net.mm2d.dmsexplorer.databinding.ServerListActivityBinding
 import net.mm2d.dmsexplorer.view.ServerDetailActivity
 import net.mm2d.dmsexplorer.view.base.BaseActivity
@@ -101,7 +101,7 @@ internal class ServerListActivityDelegateOnePane(
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private fun startServerDetailActivityLollipop(v: View) {
         val intent = ServerDetailActivity.makeIntent(activity)
-        val accent = v.findViewById<View>(R.id.accent)
+        val accent = v.accent
         val option = ActivityOptions.makeSceneTransitionAnimation(
             activity, Pair(accent, Const.SHARE_ELEMENT_NAME_DEVICE_ICON)
         ).toBundle()

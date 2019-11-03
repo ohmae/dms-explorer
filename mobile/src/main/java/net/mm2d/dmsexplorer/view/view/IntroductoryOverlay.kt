@@ -21,11 +21,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.OvershootInterpolator
 import android.widget.RelativeLayout
-import android.widget.TextView
 import androidx.annotation.ColorInt
 import androidx.annotation.ColorRes
 import androidx.annotation.StringRes
 import androidx.core.content.ContextCompat
+import kotlinx.android.synthetic.main.introductory_overlay.view.*
 import net.mm2d.android.util.DisplaySizeUtils
 import net.mm2d.android.util.ViewUtils
 import net.mm2d.dmsexplorer.R
@@ -52,7 +52,6 @@ class IntroductoryOverlay private constructor(
 ) : RelativeLayout(activity, null, 0) {
     private val circlePaint: Paint
     private val erasePaint: Paint
-    private val title: TextView
     private val removeTask = Runnable { this.dismiss() }
     private val margin: Int
 
@@ -68,11 +67,9 @@ class IntroductoryOverlay private constructor(
 
     init {
         LayoutInflater.from(context).inflate(R.layout.introductory_overlay, this)
-        title = findViewById(R.id.title)
         if (!titleText.isNullOrEmpty()) {
             title.text = titleText
         }
-        val subtitle = findViewById<TextView>(R.id.subtitle)
         if (!subtitleText.isNullOrEmpty()) {
             subtitle.text = subtitleText
         }
