@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">DMS Explorer</string>
     <string name="title_device_select">设备选择</string>
@@ -28,9 +28,9 @@
     <string name="action_next_description">跳到下一个</string>
     <string name="action_previous_title">上一个</string>
     <string name="action_previous_description">跳到上一个</string>
-    <string name="prop_title">标题:</string>
-    <string name="prop_channel">通道:</string>
-    <string name="prop_date">日期:</string>
+    <string name="prop_title">标题：</string>
+    <string name="prop_channel">通道：</string>
+    <string name="prop_date">日期：</string>
     <string name="prop_schedule">时间表：</string>
     <string name="prop_genre">类型：</string>
     <string name="prop_album">专辑：</string>
@@ -43,7 +43,7 @@
     <string name="prop_chapter_info">章节信息：</string>
     <string name="action_settings">设置</string>
     <string name="action_update">更新</string>
-    <string name="action_sort">Sort</string>
+    <string name="action_sort">排序</string>
     <string name="title_activity_settings">设置</string>
     <string name="pref_header_playback">播放</string>
     <string name="pref_message_launch_app_on">通过此应用程序播放。</string>
@@ -80,8 +80,8 @@
     <string name="pref_header_expert">专家</string>
     <string name="pref_title_for_expert">专家设置</string>
     <string name="pref_message_for_expert">此设置适用于希望保留详细信息的人。根据如何设置，操作变得不可能或操作可能变得不稳定。请仅出现问题时可自行解决的人进行设置</string>
-    <string name="pref_category_content_list">Customize Content List</string>
-    <string name="pref_title_content_sort">Sort settings</string>
+    <string name="pref_category_content_list">自定义内容列表</string>
+    <string name="pref_title_content_sort">排序设置</string>
     <string name="pref_category_orientation">屏幕方向</string>
     <string name="pref_title_category_orientation">谨慎</string>
     <string name="pref_message_category_orientation">这些设置高度依赖于设备。在某些情况下，可能无法应用设置或显示可能会受到干扰。如果遇到问题，请将设置恢复为“未指定”</string>
@@ -140,18 +140,18 @@
     <string name="cancel">取消</string>
     <string name="dialog_title_delete">警告：删除</string>
     <string name="dialog_message_delete">将从服务器中删除“%1$s”。\n删除操作无法撤消。\n可以吗？</string>
-    <string name="dialog_title_sort">Sort</string>
-    <string name="dialog_message_sort">[experimental feature]\nSet content sorting key / order. If a problem occurs, change it back to \"None\". If you change in a folder with a large amount of content, app may freeze.</string>
-    <string name="dialog_sort_key">Sort key</string>
-    <string name="dialog_sort_key_none">None (default)</string>
-    <string name="dialog_sort_key_name">Name</string>
-    <string name="dialog_sort_key_date">Date</string>
-    <string name="dialog_sort_order">Sort order</string>
-    <string name="dialog_sort_order_ascending">ascending</string>
-    <string name="dialog_sort_order_descending">descending</string>
-    <string name="pref_summary_sort_key_none">None</string>
-    <string name="pref_summary_sort_key_name">Name</string>
-    <string name="pref_summary_sort_key_date">Date</string>
-    <string name="pref_summary_sort_order_ascending">ascending</string>
-    <string name="pref_summary_sort_order_descending">descending</string>
+    <string name="dialog_title_sort">排序</string>
+    <string name="dialog_message_sort">[实验功能]\n设置内容排序 方式/顺序。如果出现问题，请将其更改回\"无\"。如果在包含大量内容的文件夹中进行更改，应用可能会冻结。</string>
+    <string name="dialog_sort_key">排序方式</string>
+    <string name="dialog_sort_key_none">无（默认）</string>
+    <string name="dialog_sort_key_name">名称</string>
+    <string name="dialog_sort_key_date">日期</string>
+    <string name="dialog_sort_order">排序顺序</string>
+    <string name="dialog_sort_order_ascending">升序</string>
+    <string name="dialog_sort_order_descending">降序</string>
+    <string name="pref_summary_sort_key_none">无</string>
+    <string name="pref_summary_sort_key_name">名称</string>
+    <string name="pref_summary_sort_key_date">日期</string>
+    <string name="pref_summary_sort_order_ascending">升序</string>
+    <string name="pref_summary_sort_order_descending">降序</string>
 </resources>
