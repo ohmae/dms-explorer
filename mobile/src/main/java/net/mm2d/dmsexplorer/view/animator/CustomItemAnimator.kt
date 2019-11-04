@@ -478,13 +478,13 @@ class CustomItemAnimator(context: Context) : SimpleItemAnimator() {
         }
         // animations should be ended by the cancel above.
         //noinspection PointlessBooleanExpression,ConstantConditions
-        check(DEBUG && !(removeAnimations.remove(item))) { "after animation is cancelled, item should not be in removeAnimations list" }
+        check(!DEBUG || !removeAnimations.remove(item)) { "after animation is cancelled, item should not be in removeAnimations list" }
         //noinspection PointlessBooleanExpression,ConstantConditions
-        check(DEBUG && !(addAnimations.remove(item))) { "after animation is cancelled, item should not be in addAnimations list" }
+        check(!DEBUG || !addAnimations.remove(item)) { "after animation is cancelled, item should not be in addAnimations list" }
         //noinspection PointlessBooleanExpression,ConstantConditions
-        check(DEBUG && !(changeAnimations.remove(item))) { "after animation is cancelled, item should not be in changeAnimations list" }
+        check(!DEBUG || !changeAnimations.remove(item)) { "after animation is cancelled, item should not be in changeAnimations list" }
         //noinspection PointlessBooleanExpression,ConstantConditions
-        check(DEBUG && !(moveAnimations.remove(item))) { "after animation is cancelled, item should not be in moveAnimations list" }
+        check(!DEBUG || !moveAnimations.remove(item)) { "after animation is cancelled, item should not be in moveAnimations list" }
         dispatchFinishedWhenDone()
     }
 
