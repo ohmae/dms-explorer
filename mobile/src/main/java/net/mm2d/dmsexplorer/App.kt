@@ -16,7 +16,6 @@ import net.mm2d.dmsexplorer.domain.AppRepository
 import net.mm2d.dmsexplorer.log.EventLogger
 import net.mm2d.dmsexplorer.settings.Settings
 import net.mm2d.dmsexplorer.util.update.UpdateChecker
-import net.mm2d.dmsexplorer.view.eventrouter.EventRouter
 import net.mm2d.log.Logger
 
 /**
@@ -31,7 +30,6 @@ open class App : Application() {
         RxJavaPlugins.setErrorHandler { logError(it) }
         DebugData.initialize(this)
         Settings.initialize(this)
-        EventRouter.initialize(this)
         EventLogger.initialize(this)
         EventLogger.sendDailyLog()
         Repository.set(AppRepository(this))

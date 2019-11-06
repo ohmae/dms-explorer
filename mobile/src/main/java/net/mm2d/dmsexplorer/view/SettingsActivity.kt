@@ -31,7 +31,6 @@ import net.mm2d.dmsexplorer.settings.SortKey.*
 import net.mm2d.dmsexplorer.util.AttrUtils
 import net.mm2d.dmsexplorer.view.base.PreferenceFragmentBase
 import net.mm2d.dmsexplorer.view.dialog.SortDialog
-import net.mm2d.dmsexplorer.view.eventrouter.EventNotifier
 import net.mm2d.dmsexplorer.view.eventrouter.EventObserver
 import net.mm2d.dmsexplorer.view.eventrouter.EventRouter
 import net.mm2d.preference.Header
@@ -125,7 +124,6 @@ class SettingsActivity : PreferenceActivityCompat() {
 
         override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
             val activity = activity!!
-            val finishNotifier = EventRouter.createFinishNotifier()
             addPreferencesFromResource(R.xml.pref_view)
             findPreference<Preference>(Key.DARK_THEME.name)?.setOnPreferenceChangeListener { preference, _ ->
                 if (setFromCode) {
@@ -140,7 +138,7 @@ class SettingsActivity : PreferenceActivityCompat() {
                     .setPositiveButton(R.string.ok) { _, _ ->
                         setFromCode = true
                         switchPreference.isChecked = !checked
-                        finishNotifier.send()
+                        EventRouter.notifyFinish()
                         Handler().postDelayed({ ServerListActivity.start(activity) }, 500)
                     }
                     .setNegativeButton(R.string.cancel, null)
@@ -151,11 +149,8 @@ class SettingsActivity : PreferenceActivityCompat() {
     }
 
     class ExpertPreferenceFragment : PreferenceFragmentBase(), SortDialog.OnUpdateSortSettings {
-        private lateinit var orientationSettingsNotifier: EventNotifier
-
         override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
             val activity = activity!!
-            orientationSettingsNotifier = EventRouter.createOrientationSettingsNotifier()
             val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(activity)
             addPreferencesFromResource(R.xml.pref_expert)
             val preferences = ORIENTATION_KEYS.mapNotNull { findPreference<ListPreference>(it) }
@@ -203,7 +198,7 @@ class SettingsActivity : PreferenceActivityCompat() {
             return OnPreferenceChangeListener { preference, value ->
                 val orientation = Orientation.of(value.toString())
                 preference.summary = orientation.getName(preference.context)
-                orientationSettingsNotifier.send()
+                EventRouter.notifyOrientationSettings()
                 true
             }
         }
@@ -216,7 +211,7 @@ class SettingsActivity : PreferenceActivityCompat() {
                     p.value = stringValue
                     p.summary = summary
                 }
-                orientationSettingsNotifier.send()
+                EventRouter.notifyOrientationSettings()
                 false // Do not write the value of collective setting
             }
         }

@@ -7,38 +7,30 @@
 
 package net.mm2d.dmsexplorer.view.eventrouter
 
-import android.content.Context
-import androidx.localbroadcastmanager.content.LocalBroadcastManager
+import net.mm2d.dmsexplorer.view.eventrouter.Event.*
 
 /**
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
  */
 object EventRouter {
-    private const val ACTION_UPDATE_AVAILABILITY = "ACTION_UPDATE_AVAILABILITY"
-    private const val ACTION_ORIENTATION_SETTINGS = "ACTION_ORIENTATION_SETTINGS"
-    private const val ACTION_FINISH = "ACTION_FINISH"
-
-    private lateinit var localBroadcastManager: LocalBroadcastManager
-
-    fun initialize(context: Context) {
-        localBroadcastManager = LocalBroadcastManager.getInstance(context)
+    fun notifyFinish() {
+        EventBus.notify(EVENT_FINISH)
     }
 
-    fun createFinishNotifier(): EventNotifier =
-        LocalBroadcastNotifier(localBroadcastManager, ACTION_FINISH)
+    fun notifyOrientationSettings() {
+        EventBus.notify(EVENT_ORIENTATION_SETTINGS)
+    }
+
+    fun notifyUpdateAvailabilityNotifier() {
+        EventBus.notify(EVENT_UPDATE_AVAILABILITY)
+    }
 
     fun createFinishObserver(): EventObserver =
-        LocalBroadcastObserver(localBroadcastManager, ACTION_FINISH)
-
-    fun createOrientationSettingsNotifier(): EventNotifier =
-        LocalBroadcastNotifier(localBroadcastManager, ACTION_ORIENTATION_SETTINGS)
+        RxEventObserver(EVENT_FINISH)
 
     fun createOrientationSettingsObserver(): EventObserver =
-        LocalBroadcastObserver(localBroadcastManager, ACTION_ORIENTATION_SETTINGS, true)
-
-    fun createUpdateAvailabilityNotifier(): EventNotifier =
-        LocalBroadcastNotifier(localBroadcastManager, ACTION_UPDATE_AVAILABILITY)
+        RxEventObserver(EVENT_ORIENTATION_SETTINGS, true)
 
     fun createUpdateAvailabilityObserver(): EventObserver =
-        LocalBroadcastObserver(localBroadcastManager, ACTION_UPDATE_AVAILABILITY)
+        RxEventObserver(EVENT_UPDATE_AVAILABILITY)
 }

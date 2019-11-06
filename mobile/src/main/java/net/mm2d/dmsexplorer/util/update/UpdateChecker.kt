@@ -84,7 +84,7 @@ class UpdateChecker(
         if (settings.isUpdateAvailable == before) {
             return
         }
-        EventRouter.createUpdateAvailabilityNotifier().send()
+        EventRouter.notifyUpdateAvailabilityNotifier()
     }
 
     private fun checkAndSave(
