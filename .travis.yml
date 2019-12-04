@@ -13,7 +13,6 @@ before_install:
   - echo yes | sdkmanager "platforms;android-28"
 
 script:
-  - ./gradlew :mobile:check
   - ./gradlew :mobile:jacocoTestReport
 
 after_success:

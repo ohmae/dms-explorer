@@ -36,6 +36,7 @@ android {
             debuggable true
             applicationIdSuffix = ".debug"
             versionNameSuffix = "d"
+            testCoverageEnabled true
         }
         release {
             shrinkResources true
@@ -56,6 +57,11 @@ android {
     }
     testOptions {
         unitTests.includeAndroidResources = true
+        unitTests.all {
+            jacoco {
+                includeNoLocationClasses = true
+            }
+        }
     }
 }
 
@@ -101,11 +107,18 @@ jacoco {
     toolVersion = "0.8.3"
 }
 
-task jacoco(type: JacocoReport, dependsOn: "testDebug") {
+task jacocoTestReport(
+    type: JacocoReport,
+    dependsOn: "testDebugUnitTest",
+    group: "verification"
+) {
     reports {
         xml.enabled = true
         html.enabled = true
     }
+    getSourceDirectories().from = "${project.projectDir}/src/main/java"
+    getClassDirectories().from = fileTree(dir: "${buildDir}/tmp/kotlin-classes/debug")
+    getExecutionData().from = "${buildDir}/jacoco/testDebugUnitTest.exec"
 }
 
 dependencyUpdates.resolutionStrategy {
