@@ -116,7 +116,7 @@ task jacocoTestReport(
         xml.enabled = true
         html.enabled = true
     }
-    getSourceDirectories().from = "${project.projectDir}/src/main/java"
+    getSourceDirectories().from = "${projectDir}/src/main/java"
     getClassDirectories().from = fileTree(dir: "${buildDir}/tmp/kotlin-classes/debug")
     getExecutionData().from = "${buildDir}/jacoco/testDebugUnitTest.exec"
 }
