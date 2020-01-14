@@ -7,7 +7,6 @@
 
 package net.mm2d.dmsexplorer.viewmodel.adapter
 
-import androidx.annotation.ColorRes
 import androidx.databinding.BindingAdapter
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 
@@ -19,8 +18,9 @@ object SwipeRefreshLayoutBindingAdapter {
     @JvmStatic
     fun setColorSchemeResources(
         view: SwipeRefreshLayout,
-        @ColorRes vararg colorResIds: Int
+        colorResIds: IntArray?
     ) {
+        colorResIds ?: return
         view.setColorSchemeResources(*colorResIds)
     }
 }
