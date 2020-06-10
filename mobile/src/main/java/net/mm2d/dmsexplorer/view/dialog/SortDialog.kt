@@ -21,7 +21,6 @@ import androidx.appcompat.widget.SwitchCompat
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
-import androidx.lifecycle.Lifecycle
 import kotlinx.android.synthetic.main.dialog_sort.view.*
 import net.mm2d.dmsexplorer.R
 import net.mm2d.dmsexplorer.Repository
@@ -33,7 +32,7 @@ import net.mm2d.dmsexplorer.settings.SortKey
  */
 class SortDialog : DialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        val activity = activity!!
+        val activity = requireActivity()
         val settings = Settings.get()
         val parent = activity.window.decorView as ViewGroup
         val view = activity.layoutInflater.inflate(R.layout.dialog_sort, parent, false)
@@ -106,14 +105,14 @@ class SortDialog : DialogFragment() {
         private fun newInstance(): SortDialog = SortDialog()
 
         fun show(activity: FragmentActivity) {
-            if (activity.lifecycle.currentState != Lifecycle.State.RESUMED) {
+            if (activity.supportFragmentManager.isStateSaved) {
                 return
             }
             newInstance().show(activity.supportFragmentManager, "")
         }
 
         fun show(fragment: Fragment) {
-            if (fragment.lifecycle.currentState != Lifecycle.State.RESUMED) {
+            if (fragment.parentFragmentManager.isStateSaved) {
                 return
             }
             newInstance().show(fragment.childFragmentManager, "")

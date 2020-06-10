@@ -13,7 +13,6 @@ import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentActivity
-import androidx.lifecycle.Lifecycle
 import net.mm2d.android.util.AribUtils
 import net.mm2d.android.util.Toaster
 import net.mm2d.dmsexplorer.R
@@ -37,7 +36,7 @@ class DeleteDialog : DialogFragment() {
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        val context = activity!!
+        val context = requireActivity()
         val builder = AlertDialog.Builder(context)
         val model = Repository.get().mediaServerModel
         if (model == null) {
@@ -74,7 +73,7 @@ class DeleteDialog : DialogFragment() {
         private fun newInstance(): DeleteDialog = DeleteDialog()
 
         fun show(activity: FragmentActivity) {
-            if (activity.lifecycle.currentState != Lifecycle.State.RESUMED) {
+            if (activity.supportFragmentManager.isStateSaved) {
                 return
             }
             newInstance().show(activity.supportFragmentManager, "")

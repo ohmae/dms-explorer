@@ -12,7 +12,6 @@ import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentActivity
-import androidx.lifecycle.Lifecycle
 import net.mm2d.android.util.LaunchUtils
 import net.mm2d.dmsexplorer.Const
 import net.mm2d.dmsexplorer.R
@@ -23,7 +22,7 @@ import net.mm2d.dmsexplorer.R
 class UpdateDialog : DialogFragment() {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        val context = activity!!
+        val context = requireActivity()
         return AlertDialog.Builder(context)
             .setTitle(R.string.dialog_title_update)
             .setMessage(R.string.dialog_message_update)
@@ -41,7 +40,7 @@ class UpdateDialog : DialogFragment() {
         private fun newInstance(): UpdateDialog = UpdateDialog()
 
         fun show(activity: FragmentActivity) {
-            if (activity.lifecycle.currentState != Lifecycle.State.RESUMED) {
+            if (activity.supportFragmentManager.isStateSaved) {
                 return
             }
             newInstance().show(activity.supportFragmentManager, "")

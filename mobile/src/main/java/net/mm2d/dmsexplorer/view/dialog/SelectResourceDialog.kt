@@ -12,7 +12,6 @@ import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentActivity
-import androidx.lifecycle.Lifecycle
 import net.mm2d.dmsexplorer.R
 import net.mm2d.dmsexplorer.Repository
 import net.mm2d.dmsexplorer.util.ItemSelectUtils
@@ -24,7 +23,7 @@ import net.mm2d.dmsexplorer.util.ItemSelectUtils
  */
 class SelectResourceDialog : DialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        val activity = activity!!
+        val activity = requireActivity()
         val choices = Repository.get().playbackTargetModel?.createResChoices()
             ?: return AlertDialog.Builder(activity).create()
         return AlertDialog.Builder(activity)
@@ -44,7 +43,7 @@ class SelectResourceDialog : DialogFragment() {
         private fun newInstance(): SelectResourceDialog = SelectResourceDialog()
 
         fun show(activity: FragmentActivity) {
-            if (activity.lifecycle.currentState != Lifecycle.State.RESUMED) {
+            if (activity.supportFragmentManager.isStateSaved) {
                 return
             }
             newInstance().show(activity.supportFragmentManager, "")

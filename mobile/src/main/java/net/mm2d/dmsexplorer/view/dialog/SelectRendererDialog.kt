@@ -14,7 +14,6 @@ import androidx.appcompat.app.AlertDialog
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentActivity
-import androidx.lifecycle.Lifecycle
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import net.mm2d.dmsexplorer.R
@@ -32,7 +31,7 @@ import net.mm2d.dmsexplorer.view.adapter.RendererListAdapter
 class SelectRendererDialog : DialogFragment() {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        val activity = activity!!
+        val activity = requireActivity()
         val builder = AlertDialog.Builder(activity)
         val model = Repository.get().controlPointModel
         val cp = model.mrControlPoint
@@ -70,7 +69,7 @@ class SelectRendererDialog : DialogFragment() {
         private fun newInstance(): SelectRendererDialog = SelectRendererDialog()
 
         fun show(activity: FragmentActivity) {
-            if (activity.lifecycle.currentState != Lifecycle.State.RESUMED) {
+            if (activity.supportFragmentManager.isStateSaved) {
                 return
             }
             newInstance().show(activity.supportFragmentManager, "")
