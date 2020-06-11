@@ -3,8 +3,6 @@
 -keepattributes *Annotation*
 -keepattributes SourceFile,LineNumberTable
 -keep public class * extends java.lang.Exception
--keep class com.crashlytics.** { *; }
--dontwarn com.crashlytics.**
 
 # call from preference-header
 -keep public class * extends net.mm2d.dmsexplorer.view.base.PreferenceFragmentBase
