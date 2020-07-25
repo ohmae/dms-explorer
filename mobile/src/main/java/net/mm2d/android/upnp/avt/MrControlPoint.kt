@@ -76,24 +76,24 @@ class MrControlPoint : ControlPointWrapper {
      * @param device Device
      * @return MediaRenderer
      */
-    private fun createMediaRenderer(device: Device): MediaRenderer {
-        return MediaRenderer(this, device)
-    }
+    private fun createMediaRenderer(device: Device): MediaRenderer =
+        MediaRenderer(this, device)
 
     private fun discoverDevice(device: Device) {
-        if (device.deviceType.startsWith(Avt.MR_DEVICE_TYPE) && device.findServiceById(Avt.AVT_SERVICE_ID) != null) {
+        if (device.deviceType.startsWith(Avt.MR_DEVICE_TYPE) &&
+            device.findServiceById(Avt.AVT_SERVICE_ID) != null
+        ) {
             discoverMrDevice(device)
             return
         }
-        for (embeddedDevice in device.deviceList) {
-            discoverDevice(embeddedDevice)
+        device.deviceList.forEach {
+            discoverDevice(it)
         }
     }
 
     private fun discoverMrDevice(device: Device) {
-        val renderer: MediaRenderer
-        try {
-            renderer = createMediaRenderer(device)
+        val renderer: MediaRenderer = try {
+            createMediaRenderer(device)
         } catch (ignored: IllegalArgumentException) {
             return
         }

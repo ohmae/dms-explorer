@@ -65,7 +65,7 @@ internal constructor(device: Device) : DeviceWrapper(device) {
         Single.never()
     } else Single.create { emitter: SingleEmitter<Int> ->
         val result =
-            destroyObject.invokeSync(Collections.singletonMap(OBJECT_ID, objectId), false)
+            destroyObject.invokeSync(mapOf(OBJECT_ID to objectId), false)
         val errorDescription = result[Action.ERROR_DESCRIPTION_KEY]
         if (!errorDescription.isNullOrEmpty()) {
             Logger.e { errorDescription }

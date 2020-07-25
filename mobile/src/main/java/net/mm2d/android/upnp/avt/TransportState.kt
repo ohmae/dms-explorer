@@ -21,10 +21,7 @@ enum class TransportState {
     OTHER;
 
     companion object {
-        private val MAP = values()
-            .map { it.name to it }
-            .toMap()
-
-        fun of(value: String?): TransportState = MAP[value] ?: OTHER
+        fun of(value: String?): TransportState =
+            values().firstOrNull { it.name == value } ?: OTHER
     }
 }

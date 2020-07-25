@@ -38,14 +38,13 @@ class Tag(
      */
     fun getAttribute(name: String?): String? = attributes[name]
 
-    override fun toString(): String {
-        val sb = StringBuilder()
-        sb.append(value)
-        attributes.forEach {
-            sb.append("\n@${it.key} => ${it.value}")
+    override fun toString(): String =
+        buildString {
+            append(value)
+            attributes.forEach {
+                append("\n@${it.key} => ${it.value}")
+            }
         }
-        return sb.toString()
-    }
 
     override fun writeToParcel(dest: Parcel, flags: Int) {
         dest.writeString(name)

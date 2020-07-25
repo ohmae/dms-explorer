@@ -9,7 +9,7 @@ package net.mm2d.android.upnp.cds
 
 import net.mm2d.android.upnp.ControlPointWrapper
 import net.mm2d.upnp.Adapter.discoveryListener
-import net.mm2d.upnp.Adapter.notifyEventListener
+import net.mm2d.upnp.Adapter.eventListener
 import net.mm2d.upnp.ControlPoint
 import net.mm2d.upnp.Device
 import java.util.*
@@ -28,16 +28,18 @@ class MsControlPoint : ControlPointWrapper {
         { lostDevice(it) }
     )
 
-    private val notifyEventListener = notifyEventListener { service, _, variable, value ->
+    private val eventListener = eventListener { service, _, properties ->
         val udn = service.device.udn
         val server = getDevice(udn)
         if (server == null || service.serviceId != Cds.CDS_SERVICE_ID) {
-            return@notifyEventListener
+            return@eventListener
         }
-        if (variable == Cds.CONTAINER_UPDATE_IDS) {
-            onNotifyContainerUpdateIds(server, value)
-        } else if (variable == Cds.SYSTEM_UPDATE_ID) {
-            onNotifySystemUpdateId(server, value)
+        properties.forEach {
+            if (it.first == Cds.CONTAINER_UPDATE_IDS) {
+                onNotifyContainerUpdateIds(server, it.second)
+            } else if (it.first == Cds.SYSTEM_UPDATE_ID) {
+                onNotifySystemUpdateId(server, it.second)
+            }
         }
     }
 
@@ -145,9 +147,7 @@ class MsControlPoint : ControlPointWrapper {
      * @param device Device
      * @return MediaServer
      */
-    private fun createMediaServer(device: Device): MediaServer {
-        return MediaServer(device)
-    }
+    private fun createMediaServer(device: Device): MediaServer = MediaServer(device)
 
     private fun discoverDevice(device: Device) {
         if (device.deviceType.startsWith(Cds.MS_DEVICE_TYPE)) {
@@ -225,7 +225,7 @@ class MsControlPoint : ControlPointWrapper {
         initialized.set(true)
         mediaServerMap.clear()
         controlPoint.addDiscoveryListener(discoveryListener)
-        controlPoint.addNotifyEventListener(notifyEventListener)
+        controlPoint.addEventListener(eventListener)
     }
 
     /**
@@ -238,7 +238,7 @@ class MsControlPoint : ControlPointWrapper {
             return
         }
         controlPoint.removeDiscoveryListener(discoveryListener)
-        controlPoint.removeNotifyEventListener(notifyEventListener)
+        controlPoint.removeEventListener(eventListener)
         mediaServerMap.clear()
     }
 }

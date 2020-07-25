@@ -183,10 +183,7 @@ abstract class DeviceWrapper(
      * @param name  データの名前
      * @param value 格納する値
      */
-    fun putBooleanTag(
-        name: String,
-        value: Boolean
-    ) {
+    fun putBooleanTag(name: String, value: Boolean) {
         arguments.putBoolean(name, value)
     }
 
@@ -197,10 +194,7 @@ abstract class DeviceWrapper(
      * @param defaultValue 格納されていなかった場合のデフォルト値
      * @return データの値
      */
-    fun getBooleanTag(
-        name: String,
-        defaultValue: Boolean
-    ): Boolean {
+    fun getBooleanTag(name: String, defaultValue: Boolean): Boolean {
         return arguments.getBoolean(name, defaultValue)
     }
 
@@ -210,10 +204,7 @@ abstract class DeviceWrapper(
      * @param name  データの名前
      * @param value 格納する値
      */
-    fun putIntTag(
-        name: String,
-        value: Int
-    ) {
+    fun putIntTag(name: String, value: Int) {
         arguments.putInt(name, value)
     }
 
@@ -224,10 +215,7 @@ abstract class DeviceWrapper(
      * @param defaultValue 格納されていなかった場合のデフォルト値
      * @return データの値
      */
-    fun getIntTag(
-        name: String,
-        defaultValue: Int
-    ): Int {
+    fun getIntTag(name: String, defaultValue: Int): Int {
         return arguments.getInt(name, defaultValue)
     }
 
@@ -237,10 +225,7 @@ abstract class DeviceWrapper(
      * @param name  データの名前
      * @param value 格納する値
      */
-    fun putLongTag(
-        name: String,
-        value: Long
-    ) {
+    fun putLongTag(name: String, value: Long) {
         arguments.putLong(name, value)
     }
 
@@ -251,10 +236,7 @@ abstract class DeviceWrapper(
      * @param defaultValue 格納されていなかった場合のデフォルト値
      * @return データの値
      */
-    fun getLongTag(
-        name: String,
-        defaultValue: Long
-    ): Long {
+    fun getLongTag(name: String, defaultValue: Long): Long {
         return arguments.getLong(name, defaultValue)
     }
 
@@ -264,10 +246,7 @@ abstract class DeviceWrapper(
      * @param name  データの名前
      * @param value 格納する値
      */
-    fun putStringTag(
-        name: String,
-        value: String?
-    ) {
+    fun putStringTag(name: String, value: String?) {
         arguments.putString(name, value)
     }
 
@@ -277,9 +256,8 @@ abstract class DeviceWrapper(
      * @param name データの名前
      * @return データの値
      */
-    fun getStringTag(name: String): String? {
-        return arguments.getString(name)
-    }
+    fun getStringTag(name: String): String? =
+        arguments.getString(name)
 
     override fun equals(other: Any?): Boolean {
         if (other === this) {
@@ -291,11 +269,7 @@ abstract class DeviceWrapper(
         return device == other.device
     }
 
-    override fun hashCode(): Int {
-        return device.hashCode()
-    }
+    override fun hashCode(): Int = device.hashCode()
 
-    override fun toString(): String {
-        return friendlyName
-    }
+    override fun toString(): String = friendlyName
 }

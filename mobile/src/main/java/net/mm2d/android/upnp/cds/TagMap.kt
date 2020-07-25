@@ -91,26 +91,25 @@ internal class TagMap(
      */
     fun getTagList(tagName: String?): List<Tag>? = map[tagName ?: ""]
 
-    override fun toString(): String {
-        val sb = StringBuilder()
-        map.forEach { entry ->
-            for (i in entry.value.indices) {
-                val tag = entry.value[i]
-                sb.append(entry.key)
-                if (entry.value.size == 1) {
-                    sb.append(" => ")
-                } else {
-                    sb.append("[$i] => ")
-                }
-                sb.append(tag.value)
-                sb.append("\n")
-                tag.attributes.forEach {
-                    sb.append("      @${it.key} => ${it.value}\n")
+    override fun toString(): String =
+        buildString {
+            map.forEach { entry ->
+                for (i in entry.value.indices) {
+                    val tag = entry.value[i]
+                    append(entry.key)
+                    if (entry.value.size == 1) {
+                        append(" => ")
+                    } else {
+                        append("[$i] => ")
+                    }
+                    append(tag.value)
+                    append("\n")
+                    tag.attributes.forEach {
+                        append("      @${it.key} => ${it.value}\n")
+                    }
                 }
             }
         }
-        return sb.toString()
-    }
 
     override fun hashCode(): Int = map.hashCode()
 

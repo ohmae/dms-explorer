@@ -14,7 +14,6 @@ import android.os.Build
 import net.mm2d.upnp.util.NetworkUtils
 import java.net.Inet4Address
 import java.net.NetworkInterface
-import java.net.SocketException
 
 /**
  * 実機環境でのLAN接続情報を扱うクラス。
@@ -25,23 +24,25 @@ internal class AndroidLan(context: Context) : Lan() {
     private val connectivityManager = context.applicationContext
         .getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
 
-    override fun getAvailableInterfaces(): Collection<NetworkInterface> {
-        if (!hasAvailableInterface()) {
-            return emptyList()
+    override fun getAvailableInterfaces(): Collection<NetworkInterface> =
+        if (hasAvailableInterface()) {
+            NetworkUtils.getNetworkInterfaceList().filter { isUsableInterface(it) }
+        } else {
+            emptyList()
         }
-        return NetworkUtils.getNetworkInterfaceList()
-            .filter { isUsableInterface(it) }
-    }
 
     override fun hasAvailableInterface(): Boolean {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             val network = connectivityManager.activeNetwork ?: return false
             val capabilities = connectivityManager.getNetworkCapabilities(network) ?: return false
             return capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) ||
+                capabilities.hasTransport(NetworkCapabilities.TRANSPORT_BLUETOOTH) ||
                 capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET) ||
                 capabilities.hasTransport(NetworkCapabilities.TRANSPORT_VPN) ||
                 (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O &&
-                    capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI_AWARE))
+                    capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI_AWARE)) ||
+                (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1 &&
+                    capabilities.hasTransport(NetworkCapabilities.TRANSPORT_LOWPAN))
         }
         val ni = connectivityManager.activeNetworkInfo ?: return false
         return ni.isConnected
@@ -49,14 +50,11 @@ internal class AndroidLan(context: Context) : Lan() {
             || ni.type == ConnectivityManager.TYPE_ETHERNET)
     }
 
-    private fun isUsableInterface(netIf: NetworkInterface): Boolean {
-        try {
-            if (!netIf.isUp || !netIf.supportsMulticast() || netIf.isLoopback) {
-                return false
-            }
-            return netIf.interfaceAddresses.any { it.address is Inet4Address }
-        } catch (ignored: SocketException) {
+    private fun isUsableInterface(netIf: NetworkInterface): Boolean =
+        if (netIf.isUp && netIf.supportsMulticast() && !netIf.isLoopback) {
+            runCatching { netIf.interfaceAddresses.any { it.address is Inet4Address } }
+                .getOrDefault(false)
+        } else {
+            false
         }
-        return false
-    }
 }

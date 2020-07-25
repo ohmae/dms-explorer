@@ -9,12 +9,11 @@ package net.mm2d.android.upnp.cds
 
 import net.mm2d.log.Logger
 import net.mm2d.upnp.util.XmlUtils
-import net.mm2d.upnp.util.forEachElement
+import net.mm2d.upnp.util.siblingElements
 import org.w3c.dom.Document
 import org.w3c.dom.Element
 import org.xml.sax.SAXException
 import java.io.IOException
-import java.util.*
 import javax.xml.parsers.ParserConfigurationException
 
 /**
@@ -39,16 +38,12 @@ internal object CdsObjectFactory {
         if (xml.isNullOrEmpty()) {
             return emptyList()
         }
-        val list = ArrayList<CdsObject>()
         try {
             val document = XmlUtils.newDocument(false, xml)
             val rootTag = createRootTag(document)
-            document.documentElement.firstChild.forEachElement {
-                val cdsObject = createCdsObject(udn, it, rootTag)
-                if (cdsObject != null) {
-                    list.add(cdsObject)
-                }
-            }
+            val firstChild = document.documentElement.firstChild ?: return emptyList()
+            return firstChild.siblingElements()
+                .mapNotNull { createCdsObject(udn, it, rootTag) }
         } catch (e: ParserConfigurationException) {
             Logger.w(e)
         } catch (e: SAXException) {
@@ -56,8 +51,8 @@ internal object CdsObjectFactory {
         } catch (e: IOException) {
             Logger.w(e)
         }
+        return emptyList()
 
-        return list
     }
 
     /**
@@ -77,9 +72,9 @@ internal object CdsObjectFactory {
         try {
             val document = XmlUtils.newDocument(false, xml)
             val rootTag = createRootTag(document)
-            document.documentElement.firstChild?.forEachElement {
-                return createCdsObject(udn, it, rootTag)
-            }
+            val firstChild = document.documentElement.firstChild ?: return null
+            return firstChild.siblingElements().firstOrNull()
+                ?.let { createCdsObject(udn, it, rootTag) }
         } catch (e: ParserConfigurationException) {
             Logger.w(e)
         } catch (e: SAXException) {

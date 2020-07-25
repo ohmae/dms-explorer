@@ -16,12 +16,9 @@ import net.mm2d.android.upnp.cds.CdsObject
 object ChapterFetcherFactory {
     private val FACTORIES = arrayOf(SonyFetcherFactory(), PanasonicFetcherFactory())
 
-    fun create(cdsObject: CdsObject): Single<List<Int>> {
-        FACTORIES.forEach { factory ->
-            factory.create(cdsObject)?.let {
-                return it
-            }
-        }
-        return Single.never()
-    }
+    fun create(cdsObject: CdsObject): Single<List<Int>> =
+        FACTORIES.asSequence()
+            .mapNotNull { it.create(cdsObject) }
+            .firstOrNull()
+            ?: Single.never()
 }

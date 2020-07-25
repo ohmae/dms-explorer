@@ -38,11 +38,10 @@ abstract class Lan {
          * @param context コンテキスト
          * @return インスタンス
          */
-        fun createInstance(context: Context): Lan {
-            return if (RuntimeEnvironment.isEmulator)
+        fun createInstance(context: Context): Lan =
+            if (RuntimeEnvironment.isEmulator)
                 EmulatorLan()
             else
                 AndroidLan(context)
-        }
     }
 }

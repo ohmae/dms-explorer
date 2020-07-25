@@ -51,10 +51,10 @@ class MediaRenderer internal constructor(
     fun isSupportPause(): Boolean = pause != null
 
     fun getPositionInfo(): Single<Map<String, String>> =
-        invoke(getPositionInfo, Collections.singletonMap(INSTANCE_ID, "0"))
+        invoke(getPositionInfo, mapOf(INSTANCE_ID to "0"))
 
     fun getTransportInfo(): Single<Map<String, String>> =
-        invoke(getTransportInfo, Collections.singletonMap(INSTANCE_ID, "0"))
+        invoke(getTransportInfo, mapOf(INSTANCE_ID to "0"))
 
     /**
      * AVTransportサービスを購読する。
@@ -73,56 +73,47 @@ class MediaRenderer internal constructor(
     fun setAVTransportURI(
         cdsObject: CdsObject,
         uri: String
-    ): Single<Map<String, String>> {
-        val metadata = CdsObjectXmlConverter.convert(cdsObject)
-        if (metadata.isNullOrEmpty()) {
-            return Single.error(IllegalStateException("empty meta data"))
+    ): Single<Map<String, String>> =
+        CdsObjectXmlConverter.convert(cdsObject).let { metadata ->
+            if (metadata.isNullOrEmpty()) {
+                Single.error(IllegalStateException("empty meta data"))
+            } else {
+                invoke(
+                    setAvTransportUri,
+                    mapOf(INSTANCE_ID to "0", CURRENT_URI to uri, CURRENT_URI_META_DATA to metadata)
+                )
+            }
         }
-        return invoke(
-            setAvTransportUri, mapOf(
-                INSTANCE_ID to "0",
-                CURRENT_URI to uri,
-                CURRENT_URI_META_DATA to metadata
-            )
-        )
-    }
 
-    fun clearAVTransportURI(): Single<Map<String, String>> = invoke(
-        setAvTransportUri, mapOf(
-            INSTANCE_ID to "0",
-            CURRENT_URI to null,
-            CURRENT_URI_META_DATA to null
+    fun clearAVTransportURI(): Single<Map<String, String>> =
+        invoke(
+            setAvTransportUri,
+            mapOf(INSTANCE_ID to "0", CURRENT_URI to null, CURRENT_URI_META_DATA to null)
         )
+
+    fun play(): Single<Map<String, String>> = invoke(
+        play, mapOf(INSTANCE_ID to "0", SPEED to "1")
     )
 
-    fun play(): Single<Map<String, String>> {
-        val argument = HashMap<String, String>()
-        argument[INSTANCE_ID] = "0"
-        argument[SPEED] = "1"
-        return invoke(play, argument)
-    }
-
     fun stop(): Single<Map<String, String>> =
-        invoke(stop, Collections.singletonMap(INSTANCE_ID, "0"))
+        invoke(stop, mapOf(INSTANCE_ID to "0"))
 
     fun pause(): Single<Map<String, String>> = if (pause == null) {
         Single.error(IllegalStateException("pause is not supported"))
-    } else invoke(pause, Collections.singletonMap(INSTANCE_ID, "0"))
+    } else invoke(pause, mapOf(INSTANCE_ID to "0"))
 
     fun seek(time: Long): Single<Map<String, String>> {
         val unitArg = seek.findArgument(UNIT)
             ?: return Single.error(IllegalStateException("no unit argument"))
         val argument = HashMap<String, String>()
         argument[INSTANCE_ID] = "0"
-        val timeText = makeTimeText(time)
-        val unit = unitArg.relatedStateVariable
-        val list = unit.allowedValueList
+        val list = unitArg.relatedStateVariable.allowedValueList
         when {
             list.contains(UNIT_REL_TIME) -> argument[UNIT] = UNIT_REL_TIME
             list.contains(UNIT_ABS_TIME) -> argument[UNIT] = UNIT_ABS_TIME
             else -> return Single.error(IllegalStateException("no supported unit"))
         }
-        argument[TARGET] = timeText
+        argument[TARGET] = makeTimeText(time)
         return invoke(seek, argument)
     }
 
@@ -131,8 +122,7 @@ class MediaRenderer internal constructor(
         argument: Map<String, String?>
     ): Single<Map<String, String>> = Single.create { emitter ->
         try {
-            val result = action.invokeSync(argument, false)
-            emitter.onSuccess(result)
+            emitter.onSuccess(action.invokeSync(argument, false))
         } catch (e: IOException) {
             emitter.onError(e)
         }
