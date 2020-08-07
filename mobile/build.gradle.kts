@@ -1,14 +1,20 @@
-apply plugin: "com.android.application"
-apply plugin: "kotlin-android"
-apply plugin: "kotlin-android-extensions"
-apply plugin: "kotlin-kapt"
-apply plugin: "jacoco"
-apply plugin: "com.github.ben-manes.versions"
+import com.android.build.gradle.internal.api.BaseVariantOutputImpl
+import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
+import groovy.lang.Closure
 
-def applicationName = "DmsExplorer"
-def versionMajor = 0
-def versionMinor = 7
-def versionPatch = 55
+plugins {
+    id("com.android.application")
+    id("kotlin-android")
+    id("kotlin-android-extensions")
+    id("kotlin-kapt")
+    jacoco
+    id("com.github.ben-manes.versions")
+}
+
+val applicationName = "DmsExplorer"
+val versionMajor = 0
+val versionMinor = 7
+val versionPatch = 55
 
 android {
     compileSdkVersion(29)
@@ -19,7 +25,7 @@ android {
         targetSdkVersion(29)
         versionCode = versionMajor * 10000 + versionMinor * 100 + versionPatch
         versionName = "${versionMajor}.${versionMinor}.${versionPatch}"
-        archivesBaseName = "${applicationName}-${versionName}"
+        base.archivesBaseName = "${applicationName}-${versionName}"
         resConfigs("en", "ja", "ru", "zh-rCN")
         vectorDrawables.useSupportLibrary = true
         multiDexEnabled = true
@@ -35,37 +41,40 @@ android {
         dataBinding = true
     }
     buildTypes {
-        debug {
-            debuggable = true
+        getByName("debug") {
+            isDebuggable = true
             applicationIdSuffix = ".debug"
             versionNameSuffix = "d"
-            testCoverageEnabled = true
+            isTestCoverageEnabled = true
         }
-        release {
-            shrinkResources = true
-            minifyEnabled = true
+        getByName("release") {
+            isShrinkResources = true
+            isMinifyEnabled = true
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
     }
-    applicationVariants.all { variant ->
-        if (variant.buildType.name == "release") {
-            variant.outputs.all {
-                outputFileName = "${applicationName}-${versionName}.apk"
+    applicationVariants.all {
+        if (buildType.name == "release") {
+            outputs.all {
+                (this as BaseVariantOutputImpl).outputFileName = "${applicationName}-${versionName}.apk"
             }
         }
     }
     lintOptions {
-        abortOnError = false
+        isAbortOnError = false
     }
     testOptions {
-        unitTests.includeAndroidResources = true
-        unitTests.all {
-            jacoco {
-                includeNoLocationClasses = true
+        unitTests.isIncludeAndroidResources = true
+        @Suppress("UNCHECKED_CAST")
+        unitTests.all(closureOf<Test> {
+            extensions.configure(JacocoTaskExtension::class.java) {
+                isIncludeNoLocationClasses = true
             }
-        }
+        } as Closure<Test>)
     }
 }
+
+val kotlinVersion: String by project
 
 dependencies {
     implementation("androidx.appcompat:appcompat:1.2.0")
@@ -109,28 +118,27 @@ jacoco {
     toolVersion = "0.8.5"
 }
 
-task jacocoTestReport(
-    type: JacocoReport,
-    dependsOn: "testDebugUnitTest",
-    group: "verification"
-) {
+tasks.create<JacocoReport>("jacocoTestReport") {
+    group = "verification"
+    dependsOn("testDebugUnitTest")
     reports {
-        xml.enabled = true
-        html.enabled = true
+        xml.isEnabled = true
+        html.isEnabled = true
     }
-    getSourceDirectories().from = "${projectDir}/src/main/java"
-    getClassDirectories().from = fileTree(dir: "${buildDir}/tmp/kotlin-classes/debug")
-    getExecutionData().from = "${buildDir}/jacoco/testDebugUnitTest.exec"
+    sourceDirectories.setFrom("${projectDir}/src/main/java")
+    classDirectories.setFrom(fileTree("${buildDir}/tmp/kotlin-classes/debug"))
+    executionData.setFrom("${buildDir}/jacoco/testDebugUnitTest.exec")
 }
 
-def isNonStable = { String version ->
-    def stableKeyword = ['RELEASE', 'FINAL', 'GA'].any { it -> version.toUpperCase().contains(it) }
-    def regex = /^[0-9,.v-]+(-r)?$/
-    return !stableKeyword && !(version ==~ regex)
+fun isNonStable(version: String): Boolean {
+    val stableKeyword = listOf("RELEASE", "FINAL", "GA").any { version.toUpperCase().contains(it) }
+    val regex = "^[0-9,.v-]+(-r)?$".toRegex()
+    val isStable = stableKeyword || regex.matches(version)
+    return isStable.not()
 }
 
-dependencyUpdates.configure {
+tasks.named("dependencyUpdates", DependencyUpdatesTask::class.java).configure {
     rejectVersionIf {
-        isNonStable(it.candidate.version) && !isNonStable(it.currentVersion)
+        isNonStable(candidate.version) && !isNonStable(currentVersion)
     }
 }

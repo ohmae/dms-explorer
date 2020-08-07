@@ -1,5 +1,5 @@
 buildscript {
-    ext.kotlinVersion = "1.3.72"
+    val kotlinVersion: String by extra("1.3.72")
     repositories {
         google()
         jcenter()
@@ -19,6 +19,6 @@ allprojects {
     }
 }
 
-task clean(type: Delete) {
-    delete rootProject.buildDir
+tasks.create("clean", Delete::class) {
+    delete(rootProject.buildDir)
 }
