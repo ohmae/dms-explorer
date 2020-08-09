@@ -74,8 +74,6 @@ android {
     }
 }
 
-val kotlinVersion: String by project
-
 dependencies {
     implementation("androidx.appcompat:appcompat:1.2.0")
     implementation("androidx.cardview:cardview:1.0.0")
@@ -86,14 +84,14 @@ dependencies {
     implementation("androidx.exifinterface:exifinterface:1.2.0")
     implementation("androidx.core:core-ktx:1.3.1")
     implementation("com.google.android.material:material:1.2.0")
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion")
-    implementation("org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion")
+    implementation(kotlin("stdlib"))
+    implementation(kotlin("reflect"))
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.8")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.8")
     implementation("net.mm2d:mmupnp:3.1.1")
     implementation("net.mm2d:preference:0.2.3")
     implementation("net.opacapp:multiline-collapsingtoolbar:27.1.1")
-    implementation("com.squareup.okhttp3:okhttp:4.8.0")
+    implementation("com.squareup.okhttp3:okhttp:4.8.1")
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.squareup.retrofit2:adapter-rxjava2:2.9.0")
     implementation("com.squareup.retrofit2:converter-moshi:2.9.0")
