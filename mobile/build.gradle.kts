@@ -86,10 +86,10 @@ dependencies {
     implementation("com.google.android.material:material:1.2.0")
     implementation(kotlin("stdlib"))
     implementation(kotlin("reflect"))
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.8")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.8")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.9")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.9")
     implementation("net.mm2d:mmupnp:3.1.1")
-    implementation("net.mm2d:preference:0.2.3")
+    implementation("net.mm2d:preference:0.2.4")
     implementation("net.opacapp:multiline-collapsingtoolbar:27.1.1")
     implementation("com.squareup.okhttp3:okhttp:4.8.1")
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
@@ -128,15 +128,13 @@ tasks.create<JacocoReport>("jacocoTestReport") {
     executionData.setFrom("${buildDir}/jacoco/testDebugUnitTest.exec")
 }
 
-fun isNonStable(version: String): Boolean {
-    val stableKeyword = listOf("RELEASE", "FINAL", "GA").any { version.toUpperCase().contains(it) }
+fun isStable(version: String): Boolean {
+    val versionUpperCase = version.toUpperCase()
+    val hasStableKeyword = listOf("RELEASE", "FINAL", "GA").any { versionUpperCase.contains(it) }
     val regex = "^[0-9,.v-]+(-r)?$".toRegex()
-    val isStable = stableKeyword || regex.matches(version)
-    return isStable.not()
+    return hasStableKeyword || regex.matches(version)
 }
 
-tasks.named("dependencyUpdates", DependencyUpdatesTask::class.java).configure {
-    rejectVersionIf {
-        isNonStable(candidate.version) && !isNonStable(currentVersion)
-    }
+tasks.named<DependencyUpdatesTask>("dependencyUpdates").configure {
+    rejectVersionIf { !isStable(candidate.version) }
 }
