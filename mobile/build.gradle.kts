@@ -82,6 +82,8 @@ dependencies {
     implementation("androidx.browser:browser:1.2.0")
     implementation("androidx.exifinterface:exifinterface:1.2.0")
     implementation("androidx.core:core-ktx:1.3.1")
+    implementation("androidx.lifecycle:lifecycle-runtime:2.2.0")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.2.0")
     implementation("com.google.android.material:material:1.2.0")
     implementation(kotlin("stdlib"))
     implementation(kotlin("reflect"))

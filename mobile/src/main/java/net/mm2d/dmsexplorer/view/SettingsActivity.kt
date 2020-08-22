@@ -31,7 +31,6 @@ import net.mm2d.dmsexplorer.settings.SortKey.*
 import net.mm2d.dmsexplorer.util.AttrUtils
 import net.mm2d.dmsexplorer.view.base.PreferenceFragmentBase
 import net.mm2d.dmsexplorer.view.dialog.SortDialog
-import net.mm2d.dmsexplorer.view.eventrouter.EventObserver
 import net.mm2d.dmsexplorer.view.eventrouter.EventRouter
 import net.mm2d.preference.Header
 import net.mm2d.preference.PreferenceActivityCompat
@@ -42,8 +41,6 @@ import net.mm2d.preference.PreferenceActivityCompat
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
  */
 class SettingsActivity : PreferenceActivityCompat() {
-    private lateinit var finishObserver: EventObserver
-
     override fun onBuildHeaders(target: MutableList<Header>) {
         loadHeadersFromResource(R.xml.pref_headers, target)
         Settings.get()
@@ -61,14 +58,9 @@ class SettingsActivity : PreferenceActivityCompat() {
             AttrUtils.resolveColor(this, R.attr.colorPrimary, Color.BLACK),
             ContextCompat.getColor(this, R.color.defaultStatusBar)
         )
-        finishObserver = EventRouter.createFinishObserver().also {
-            it.register { finish() }
+        EventRouter.observeFinish(this) {
+            finish()
         }
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        finishObserver.unregister()
     }
 
     override fun onIsMultiPane(): Boolean = isXLargeTablet(this)

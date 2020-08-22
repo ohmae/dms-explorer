@@ -7,30 +7,55 @@
 
 package net.mm2d.dmsexplorer.view.eventrouter
 
-import net.mm2d.dmsexplorer.view.eventrouter.Event.*
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.channels.BroadcastChannel
+import kotlinx.coroutines.flow.asFlow
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
 /**
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
  */
 object EventRouter {
+    private val finishChannel = BroadcastChannel<Unit>(1)
+    private val orientationSettingsChannel = BroadcastChannel<Unit>(1)
+    private val updateAvailabilityChannel = BroadcastChannel<Unit>(1)
+
     fun notifyFinish() {
-        EventBus.notify(EVENT_FINISH)
+        GlobalScope.launch {
+            finishChannel.send(Unit)
+        }
+    }
+
+    fun observeFinish(owner: LifecycleOwner, callback: () -> Unit) {
+        owner.lifecycleScope.launch {
+            finishChannel.asFlow().collect { callback() }
+        }
     }
 
     fun notifyOrientationSettings() {
-        EventBus.notify(EVENT_ORIENTATION_SETTINGS)
+        GlobalScope.launch {
+            orientationSettingsChannel.send(Unit)
+        }
+    }
+
+    fun observeOrientationSettings(owner: LifecycleOwner, callback: () -> Unit) {
+        owner.lifecycleScope.launch {
+            orientationSettingsChannel.asFlow().collect { callback() }
+        }
     }
 
     fun notifyUpdateAvailabilityNotifier() {
-        EventBus.notify(EVENT_UPDATE_AVAILABILITY)
+        GlobalScope.launch {
+            updateAvailabilityChannel.send(Unit)
+        }
     }
 
-    fun createFinishObserver(): EventObserver =
-        RxEventObserver(EVENT_FINISH)
-
-    fun createOrientationSettingsObserver(): EventObserver =
-        RxEventObserver(EVENT_ORIENTATION_SETTINGS, true)
-
-    fun createUpdateAvailabilityObserver(): EventObserver =
-        RxEventObserver(EVENT_UPDATE_AVAILABILITY)
+    fun observeUpdateAvailability(owner: LifecycleOwner, callback: () -> Unit) {
+        owner.lifecycleScope.launch {
+            updateAvailabilityChannel.asFlow().collect { callback() }
+        }
+    }
 }

@@ -14,7 +14,6 @@ import net.mm2d.dmsexplorer.R
 import net.mm2d.dmsexplorer.settings.Settings
 import net.mm2d.dmsexplorer.view.SettingsActivity
 import net.mm2d.dmsexplorer.view.dialog.UpdateDialog
-import net.mm2d.dmsexplorer.view.eventrouter.EventObserver
 import net.mm2d.dmsexplorer.view.eventrouter.EventRouter
 
 /**
@@ -25,16 +24,15 @@ internal class MainOptionsMenuDelegate(
     menuResId: Int
 ) : OptionsMenuDelegate {
     private val settings: Settings = Settings.get()
-    private val updateAvailabilityObserver: EventObserver =
-        EventRouter.createUpdateAvailabilityObserver()
     private val menuResId = if (menuResId != 0) menuResId else R.menu.main
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        updateAvailabilityObserver.register { activity.invalidateOptionsMenu() }
+        EventRouter.observeUpdateAvailability(activity) {
+            activity.invalidateOptionsMenu()
+        }
     }
 
     override fun onDestroy() {
-        updateAvailabilityObserver.unregister()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

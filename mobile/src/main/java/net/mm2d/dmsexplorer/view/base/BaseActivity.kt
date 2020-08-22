@@ -14,7 +14,6 @@ import androidx.annotation.CallSuper
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NavUtils
 import androidx.core.app.TaskStackBuilder
-import net.mm2d.dmsexplorer.view.eventrouter.EventObserver
 import net.mm2d.dmsexplorer.view.eventrouter.EventRouter
 import java.util.concurrent.atomic.AtomicBoolean
 
@@ -29,8 +28,6 @@ abstract class BaseActivity @JvmOverloads constructor(
     private val finishAfterTransitionLatch = AtomicBoolean()
     private val finishLatch = AtomicBoolean()
     private lateinit var delegate: OptionsMenuDelegate
-    private lateinit var finishObserver: EventObserver
-    private lateinit var orientationSettingsObserver: EventObserver
 
     @CallSuper
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -40,11 +37,11 @@ abstract class BaseActivity @JvmOverloads constructor(
         else
             BaseOptionsMenuDelegate(this)
         delegate.onCreate(savedInstanceState)
-        finishObserver = EventRouter.createFinishObserver().also {
-            it.register { finish() }
+        EventRouter.observeFinish(this) {
+            finish()
         }
-        orientationSettingsObserver = EventRouter.createOrientationSettingsObserver().also {
-            it.register { updateOrientationSettings() }
+        EventRouter.observeOrientationSettings(this) {
+            updateOrientationSettings()
         }
     }
 
@@ -52,8 +49,6 @@ abstract class BaseActivity @JvmOverloads constructor(
     override fun onDestroy() {
         super.onDestroy()
         delegate.onDestroy()
-        finishObserver.unregister()
-        orientationSettingsObserver.unregister()
     }
 
     open fun navigateUpTo() {

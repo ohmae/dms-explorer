@@ -14,7 +14,9 @@ import android.view.MenuItem
 /**
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
  */
-internal class BaseOptionsMenuDelegate(private val mActivity: BaseActivity) : OptionsMenuDelegate {
+internal class BaseOptionsMenuDelegate(
+    private val activity: BaseActivity
+) : OptionsMenuDelegate {
     override fun onCreate(savedInstanceState: Bundle?) = Unit
     override fun onDestroy() = Unit
     override fun onCreateOptionsMenu(menu: Menu): Boolean = false
@@ -22,7 +24,7 @@ internal class BaseOptionsMenuDelegate(private val mActivity: BaseActivity) : Op
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             android.R.id.home -> {
-                mActivity.navigateUpTo()
+                activity.navigateUpTo()
                 return true
             }
         }
