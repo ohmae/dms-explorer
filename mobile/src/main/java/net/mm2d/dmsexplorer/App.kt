@@ -15,7 +15,7 @@ import net.mm2d.dmsexplorer.debug.DebugData
 import net.mm2d.dmsexplorer.domain.AppRepository
 import net.mm2d.dmsexplorer.log.EventLogger
 import net.mm2d.dmsexplorer.settings.Settings
-import net.mm2d.dmsexplorer.util.update.UpdateChecker
+import net.mm2d.dmsexplorer.util.UpdateChecker
 import net.mm2d.log.Logger
 
 /**
@@ -33,7 +33,7 @@ open class App : Application() {
         EventLogger.initialize(this)
         EventLogger.sendDailyLog()
         Repository.set(AppRepository(this))
-        UpdateChecker().check()
+        UpdateChecker.check(this)
     }
 
     open fun initForDebug() = Unit

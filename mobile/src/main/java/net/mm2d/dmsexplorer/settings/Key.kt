@@ -134,16 +134,6 @@ enum class Key(
         Boolean::class, false
     ),
 
-    UPDATE_FETCH_TIME(
-        Long::class, 0L
-    ),
-    UPDATE_AVAILABLE(
-        Boolean::class, false
-    ),
-    UPDATE_JSON(
-        String::class, ""
-    ),
-
     LOG_SEND_TIME(
         Long::class, 0L
     ),
@@ -156,14 +146,12 @@ enum class Key(
     ),
 
     // OldKeys
-    @Deprecated("")
-    LAUNCH_APP_MOVIE,
-    @Deprecated("")
-    LAUNCH_APP_MUSIC,
-    @Deprecated("")
-    LAUNCH_APP_PHOTO,
-    @Deprecated("")
-    MUSIC_AUTO_PLAY,
+    @Deprecated("removed")
+    UPDATE_FETCH_TIME,
+    @Deprecated("removed")
+    UPDATE_AVAILABLE,
+    @Deprecated("removed")
+    UPDATE_JSON,
     ;
 
     init {

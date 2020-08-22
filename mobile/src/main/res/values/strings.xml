@@ -134,8 +134,6 @@
     <string name="repeat_introduction_subtitle">You can select the repeat mode.</string>
     <string name="dialog_title_select_resource">Resource</string>
     <string name="dialog_title_select_device">Playback device</string>
-    <string name="dialog_title_update">Update</string>
-    <string name="dialog_message_update">A newer version is available. Version up is recommended.</string>
     <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
     <string name="dialog_title_delete">Caution : Delete</string>

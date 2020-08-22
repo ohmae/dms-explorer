@@ -77,26 +77,6 @@ class Settings private constructor(
         get() = storage.readBoolean(Key.DELETE_FUNCTION_ENABLED)
 
     /**
-     * アップデートファイルを取得した時刻
-     */
-    val updateFetchTime: Long
-        get() = storage.readLong(Key.UPDATE_FETCH_TIME)
-
-    /**
-     * アップデートが利用できるか否か
-     */
-    var isUpdateAvailable: Boolean
-        get() = storage.readBoolean(Key.UPDATE_AVAILABLE)
-        set(available) = storage.writeBoolean(Key.UPDATE_AVAILABLE, available)
-
-    /**
-     * update.jsonの文字列
-     */
-    var updateJson: String
-        get() = storage.readString(Key.UPDATE_JSON)
-        set(json) = storage.writeString(Key.UPDATE_JSON, if (json.isEmpty()) "" else json)
-
-    /**
      * ブラウズ画面の画面の向き設定を返す。
      *
      * @return ブラウズ画面の画面の向き設定

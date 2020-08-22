@@ -27,14 +27,15 @@ internal object Maintainer {
      * | value | App Version |  状態              |
      * |-------|-------------|--------------------|
      * |  0    | 0.6.20-     |サポート終了 v0.7.38|
-     * |  1    | 0.7.0-      |現在                |
+     * |  1    | 0.7.0-      |                    |
+     * |  2    | 0.7.56-     |現在                |
      *
      * 設定フォーマットを変更した場合は、
      * 旧バージョンからのマイグレーション処理を記述し、設定を持ち越せるようにする。
      * マイグレーションを打ち切った場合は、
      * 設定バージョンが現在のものでなければクリアを行い初期設定で起動するようにする。
      */
-    private const val SETTINGS_VERSION = 1
+    private const val SETTINGS_VERSION = 2
 
     /**
      * 起動時に一度だけ呼び出され、SharedPreferencesのメンテナンスを行う。
@@ -42,12 +43,15 @@ internal object Maintainer {
      * @param storage SettingsStorage
      */
     fun maintain(storage: SettingsStorage) {
-        if (storage.readInt(Key.SETTINGS_VERSION) != SETTINGS_VERSION) {
+        val version = storage.readInt(Key.SETTINGS_VERSION)
+        if (version <= 0) {
             storage.clear()
             storage.writeInt(Key.SETTINGS_VERSION, SETTINGS_VERSION)
-            storage.writeInt(Key.APP_VERSION, BuildConfig.VERSION_CODE)
-            writeDefaultValue(storage, false)
-            return
+        } else if (version == 1) {
+            storage.writeInt(Key.SETTINGS_VERSION, SETTINGS_VERSION)
+            storage.remove(Key.UPDATE_FETCH_TIME)
+            storage.remove(Key.UPDATE_AVAILABLE)
+            storage.remove(Key.UPDATE_JSON)
         }
         if (storage.readInt(Key.APP_VERSION) != BuildConfig.VERSION_CODE) {
             storage.writeInt(Key.APP_VERSION, BuildConfig.VERSION_CODE)

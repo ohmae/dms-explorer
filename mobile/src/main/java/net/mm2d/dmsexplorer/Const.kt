@@ -25,8 +25,6 @@ object Const {
 
     const val SHARE_ELEMENT_NAME_DEVICE_ICON = "SHARE_ELEMENT_NAME_DEVICE_ICON"
 
-    const val URL_UPDATE_BASE = "https://ohmae.github.io/DmsExplorer/"
-    const val URL_UPDATE_PATH = "json/update.json"
     const val URL_GITHUB_PROJECT = "https://github.com/ohmae/DmsExplorer"
     const val URL_PRIVACY_POLICY =
         "https://github.com/ohmae/DmsExplorer/blob/develop/PRIVACY-POLICY.md"

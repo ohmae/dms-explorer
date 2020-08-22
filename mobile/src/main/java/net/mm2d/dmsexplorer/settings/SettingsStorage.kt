@@ -55,6 +55,17 @@ class SettingsStorage(context: Context) {
     }
 
     /**
+     * keyの値を削除する
+     *
+     * @param key Key
+     */
+    fun remove(key: Key) {
+        preferences.edit()
+            .remove(key.name)
+            .apply()
+    }
+
+    /**
      * boolean値を書き込む。
      *
      * @param key   Key

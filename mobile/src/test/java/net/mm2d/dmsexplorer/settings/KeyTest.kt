@@ -25,22 +25,22 @@ class KeyTest {
         assertThat(Key.VERSION_NUMBER.isReadWriteKey).isFalse()
     }
 
-    @Test(expected = TypeCastException::class)
+    @Test(expected = NullPointerException::class)
     fun getDefaultBoolean_表示用Key() {
         Key.VERSION_NUMBER.defaultBoolean
     }
 
-    @Test(expected = TypeCastException::class)
+    @Test(expected = NullPointerException::class)
     fun getDefaultInteger_表示用Key() {
         Key.VERSION_NUMBER.defaultInt
     }
 
-    @Test(expected = TypeCastException::class)
+    @Test(expected = NullPointerException::class)
     fun getDefaultLong_表示用Key() {
         Key.VERSION_NUMBER.defaultLong
     }
 
-    @Test(expected = TypeCastException::class)
+    @Test(expected = NullPointerException::class)
     fun getDefaultString_表示用Key() {
         Key.VERSION_NUMBER.defaultString
     }
@@ -93,31 +93,6 @@ class KeyTest {
     @Test(expected = ClassCastException::class)
     fun getDefaultString_Integer用Key() {
         Key.SETTINGS_VERSION.defaultString
-    }
-
-    @Test
-    fun getValueType_Long用Key() {
-        assertThat(Key.UPDATE_FETCH_TIME.isLongKey).isTrue()
-    }
-
-    @Test(expected = ClassCastException::class)
-    fun getDefaultBoolean_Long用Key() {
-        Key.UPDATE_FETCH_TIME.defaultBoolean
-    }
-
-    @Test(expected = ClassCastException::class)
-    fun getDefaultInteger_Long用Key() {
-        Key.UPDATE_FETCH_TIME.defaultInt
-    }
-
-    @Test
-    fun getDefaultLong_Long用Key() {
-        Key.UPDATE_FETCH_TIME.defaultLong
-    }
-
-    @Test(expected = ClassCastException::class)
-    fun getDefaultString_Long用Key() {
-        Key.UPDATE_FETCH_TIME.defaultString
     }
 
     @Test
