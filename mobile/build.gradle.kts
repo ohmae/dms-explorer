@@ -14,7 +14,7 @@ plugins {
 val applicationName = "DmsExplorer"
 val versionMajor = 0
 val versionMinor = 7
-val versionPatch = 55
+val versionPatch = 56
 
 android {
     compileSdkVersion(29)
@@ -26,7 +26,6 @@ android {
         versionCode = versionMajor * 10000 + versionMinor * 100 + versionPatch
         versionName = "${versionMajor}.${versionMinor}.${versionPatch}"
         base.archivesBaseName = "${applicationName}-${versionName}"
-        resConfigs("en", "ja", "ru", "zh-rCN")
         vectorDrawables.useSupportLibrary = true
         multiDexEnabled = true
     }
@@ -89,7 +88,7 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.9")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.9")
     implementation("net.mm2d:mmupnp:3.1.1")
-    implementation("net.mm2d:preference:0.2.4")
+    implementation("net.mm2d:preference:0.2.5")
     implementation("net.opacapp:multiline-collapsingtoolbar:27.1.1")
     implementation("com.squareup.okhttp3:okhttp:4.8.1")
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
