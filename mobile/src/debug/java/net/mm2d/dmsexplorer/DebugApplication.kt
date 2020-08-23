@@ -13,11 +13,9 @@ import android.os.StrictMode
 import android.os.StrictMode.VmPolicy
 import android.util.Log
 import com.facebook.stetho.Stetho
-import com.facebook.stetho.okhttp3.StethoInterceptor
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import net.mm2d.dmsexplorer.util.OkHttpClientHolder
 import net.mm2d.log.DefaultSender
 import net.mm2d.log.Logger
 
@@ -59,6 +57,5 @@ class DebugApplication : App() {
 
     private fun setUpStetho() {
         Stetho.initializeWithDefaults(this)
-        OkHttpClientHolder.addNetworkInterceptor(StethoInterceptor())
     }
 }
