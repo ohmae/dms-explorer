@@ -28,9 +28,11 @@ class ContentDirectoryEntity private constructor(
     private val list = mutableListOf<ContentEntity>()
     private var sortedList = emptyList<ContentEntity>()
     private var entryListener: ExploreListener = ENTRY_LISTENER
+
     @Volatile
     override var isInProgress = true
         private set
+
     @Volatile
     private var disposable: Disposable? = null
 

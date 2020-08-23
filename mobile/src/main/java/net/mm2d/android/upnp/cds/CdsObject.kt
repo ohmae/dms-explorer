@@ -21,36 +21,44 @@ interface CdsObject : Parcelable {
      * MediaServerのUDN
      */
     val udn: String
+
     /**
      * アイテムであるか否か
      */
     val isItem: Boolean
+
     /**
      * コンテナであるか否か
      */
     val isContainer: Boolean
         get() = !isItem
+
     /**
      * Typeの値
      */
     @get:ContentType
     val type: Int
+
     /**
      * \@idの値
      */
     val objectId: String
+
     /**
      * \@parentIDの値
      */
     val parentId: String
+
     /**
      * upnp:classの値
      */
     val upnpClass: String
+
     /**
      * dc:titleの値
      */
     val title: String
+
     /**
      * ルートタグ情報
      *
@@ -171,6 +179,7 @@ interface CdsObject : Parcelable {
 
         // XML関係の定義
         const val DIDL_LITE = "DIDL-Lite"
+
         /**
          * "item".
          *
@@ -180,6 +189,7 @@ interface CdsObject : Parcelable {
          * Any object which derives from the item class is expressed via the DIDL-Lite item structure.
          */
         const val ITEM = "item"
+
         /**
          * "container".
          *
@@ -196,6 +206,7 @@ interface CdsObject : Parcelable {
          * and cannot be used in a search or sort criterion.
          */
         const val CONTAINER = "container"
+
         /**
          * "@id".
          *
@@ -205,6 +216,7 @@ interface CdsObject : Parcelable {
          * Namespace: DIDL-Lite / Type: string
          */
         const val ID = "@id"
+
         /**
          * "@parentID".
          *
@@ -215,6 +227,7 @@ interface CdsObject : Parcelable {
          * Namespace: DIDL-Lite / Type: string
          */
         const val PARENT_ID = "@parentID"
+
         /**
          * "@restricted".
          *
@@ -224,6 +237,7 @@ interface CdsObject : Parcelable {
          * Namespace: DIDL-Lite / Type: boolean
          */
         const val RESTRICTED = "@restricted"
+
         /**
          * "@childCount".
          *
@@ -233,6 +247,7 @@ interface CdsObject : Parcelable {
          * Namespace: DIDL-Lite / Type: integer
          */
         const val CHILD_COUNT = "@childCount"
+
         /**
          * "@searchable".
          *
@@ -243,6 +258,7 @@ interface CdsObject : Parcelable {
          * Namespace: DIDL-Lite / Type: boolean
          */
         const val SEARCHABLE = "@searchable"
+
         /**
          * "dc:title".
          *
@@ -256,6 +272,7 @@ interface CdsObject : Parcelable {
          * Namespace: Dublin Core / Type: string
          */
         const val DC_TITLE = "dc:title"
+
         /**
          * "dc:date".
          *
@@ -264,6 +281,7 @@ interface CdsObject : Parcelable {
          * Namespace: Dublin Core / Type: string
          */
         const val DC_DATE = "dc:date"
+
         /**
          * "dc:creator".
          *
@@ -272,6 +290,7 @@ interface CdsObject : Parcelable {
          * Namespace: Dublin Core / Type: string
          */
         const val DC_CREATOR = "dc:creator"
+
         /**
          * "dc:description".
          *
@@ -285,6 +304,7 @@ interface CdsObject : Parcelable {
          * Namespace: Dublin Core / Type: string
          */
         const val DC_DESCRIPTION = "dc:description"
+
         /**
          * "upnp:longDescription".
          *
@@ -294,6 +314,7 @@ interface CdsObject : Parcelable {
          * Namespace: UPnP / Type: string
          */
         const val UPNP_LONG_DESCRIPTION = "upnp:longDescription"
+
         /**
          * "object.item.imageItem".
          *
@@ -301,6 +322,7 @@ interface CdsObject : Parcelable {
          * represents a piece of content that, when rendered, generates some still image.
          */
         const val IMAGE_ITEM = "object.item.imageItem"
+
         /**
          * "object.item.audioItem".
          *
@@ -308,6 +330,7 @@ interface CdsObject : Parcelable {
          * represents a piece of content that, when rendered, generates some audio.
          */
         const val AUDIO_ITEM = "object.item.audioItem"
+
         /**
          * "object.item.videoItem".
          *
@@ -315,6 +338,7 @@ interface CdsObject : Parcelable {
          * represents a piece of content that, when rendered, generates some video.
          */
         const val VIDEO_ITEM = "object.item.videoItem"
+
         /**
          * "upnp:class".
          *
@@ -323,6 +347,7 @@ interface CdsObject : Parcelable {
          * Namespace: UPnP / Type: string
          */
         const val UPNP_CLASS = "upnp:class"
+
         /**
          * "upnp:genre".
          *
@@ -339,6 +364,7 @@ interface CdsObject : Parcelable {
          * Namespace: UPnP / Type: string
          */
         const val UPNP_GENRE = "upnp:genre"
+
         /**
          * "upnp:actor".
          *
@@ -347,6 +373,7 @@ interface CdsObject : Parcelable {
          * Namespace: UPnP / Type: string, not standardized by the Content Directory Service.
          */
         const val UPNP_ACTOR = "upnp:actor"
+
         /**
          * "upnp:actor@role".
          *
@@ -355,6 +382,7 @@ interface CdsObject : Parcelable {
          * Namespace: UPnP / Type: string
          */
         const val UPNP_ACTOR_ROLE = "upnp:actor@role"
+
         /**
          * "upnp:artist".
          *
@@ -363,6 +391,7 @@ interface CdsObject : Parcelable {
          * Namespace: UPnP / Type: string
          */
         const val UPNP_ARTIST = "upnp:artist"
+
         /**
          * "upnp:artist@role".
          *
@@ -371,6 +400,7 @@ interface CdsObject : Parcelable {
          * Namespace: UPnP / Type: string
          */
         const val UPNP_ARTIST_ROLE = "upnp:artist@role"
+
         /**
          * "upnp:author".
          *
@@ -379,6 +409,7 @@ interface CdsObject : Parcelable {
          * Namespace: UPnP / Type: string
          */
         const val UPNP_AUTHOR = "upnp:author"
+
         /**
          * "upnp:author@role".
          *
@@ -387,6 +418,7 @@ interface CdsObject : Parcelable {
          * Namespace: UPnP / Type: string
          */
         const val UPNP_AUTHOR_ROLE = "upnp:author@role"
+
         /**
          * "upnp:producer".
          *
@@ -395,6 +427,7 @@ interface CdsObject : Parcelable {
          * Namespace: UPnP / Type: string
          */
         const val UPNP_PRODUCER = "upnp:producer"
+
         /**
          * "upnp:director".
          *
@@ -403,6 +436,7 @@ interface CdsObject : Parcelable {
          * Namespace: UPnP / Type: string
          */
         const val UPNP_DIRECTOR = "upnp:director"
+
         /**
          * "dc:publisher".
          *
@@ -413,6 +447,7 @@ interface CdsObject : Parcelable {
          * Namespace: Dublin Core / Type: string
          */
         const val DC_PUBLISHER = "dc:publisher"
+
         /**
          * "dc:contributor".
          *
@@ -432,6 +467,7 @@ interface CdsObject : Parcelable {
          * Namespace: UPnP / Type: string
          */
         const val UPNP_ALBUM = "upnp:album"
+
         /**
          * "upnp:albumArtURI".
          *
@@ -441,6 +477,7 @@ interface CdsObject : Parcelable {
          * Namespace: UPnP / Type: URI
          */
         const val UPNP_ALBUM_ART_URI = "upnp:albumArtURI"
+
         /**
          * "upnp:channelName".
          *
@@ -455,6 +492,7 @@ interface CdsObject : Parcelable {
          * Namespace: UPnP / Type: string, not standardized by the Content Directory Service.
          */
         const val UPNP_CHANNEL_NAME = "upnp:channelName"
+
         /**
          * "upnp:channelNr".
          *
@@ -474,6 +512,7 @@ interface CdsObject : Parcelable {
          * Namespace: UPnP / Type: integer
          */
         const val UPNP_CHANNEL_NR = "upnp:channelNr"
+
         /**
          * "upnp:scheduledStartTime".
          *
@@ -495,6 +534,7 @@ interface CdsObject : Parcelable {
          * Namespace: UPnP / Type: string
          */
         const val UPNP_SCHEDULED_START_TIME = "upnp:scheduledStartTime"
+
         /**
          * "upnp:scheduledEndTime".
          *
@@ -518,6 +558,7 @@ interface CdsObject : Parcelable {
          * Namespace: UPnP / Type: string
          */
         const val UPNP_SCHEDULED_END_TIME = "upnp:scheduledEndTime"
+
         /**
          * "upnp:icon".
          *
@@ -532,6 +573,7 @@ interface CdsObject : Parcelable {
          * Namespace: UPnP / Type: URI
          */
         const val UPNP_ICON = "upnp:icon"
+
         /**
          * "upnp:icon@arib:resolution".
          *
@@ -546,6 +588,7 @@ interface CdsObject : Parcelable {
          * Namespace: ARIB / Type: pattern string
          */
         const val UPNP_ICON_ARIB_RESOLUTION = "upnp:icon@arib:resolution"
+
         /**
          * "upnp:rating".
          *
@@ -561,6 +604,7 @@ interface CdsObject : Parcelable {
          * Namespace: UPnP / Type: string, not standardized by the Content Directory Service.
          */
         const val UPNP_RATING = "upnp:rating"
+
         /**
          * "res".
          *
@@ -570,6 +614,7 @@ interface CdsObject : Parcelable {
          * Namespace: DIDL-Lite / Type: URI
          */
         const val RES = "res"
+
         /**
          * "res@size".
          *
@@ -578,12 +623,14 @@ interface CdsObject : Parcelable {
          * Namespace: DIDL-Lite / Type: unsigned long
          */
         const val RES_SIZE = "res@size"
+
         /**
          * "size".
          *
          * @see .RES_SIZE
          */
         const val SIZE = "size"
+
         /**
          * "res@duration".
          *
@@ -605,12 +652,14 @@ interface CdsObject : Parcelable {
          * <pre>
         </pre></pre> */
         const val RES_DURATION = "res@duration"
+
         /**
          * "duration".
          *
          * @see .RES_DURATION
          */
         const val DURATION = "duration"
+
         /**
          * "res@resolution".
          *
@@ -626,12 +675,14 @@ interface CdsObject : Parcelable {
          * Namespace: DIDL-Lite / Type: pattern string
          */
         const val RES_RESOLUTION = "res@resolution"
+
         /**
          * "resolution".
          *
          * @see .RES_RESOLUTION
          */
         const val RESOLUTION = "resolution"
+
         /**
          * "res@protocolInfo".
          *
@@ -642,12 +693,14 @@ interface CdsObject : Parcelable {
          * Namespace: DIDL-Lite / Type: string
          */
         const val RES_PROTOCOL_INFO = "res@protocolInfo"
+
         /**
          * "protocolInfo".
          *
          * @see .RES_PROTOCOL_INFO
          */
         const val PROTOCOL_INFO = "protocolInfo"
+
         /**
          * "res@bitrate".
          *
@@ -656,12 +709,14 @@ interface CdsObject : Parcelable {
          * Namespace: DIDL-Lite / Type: unsigned integer
          */
         const val RES_BITRATE = "res@bitrate"
+
         /**
          * "bitrate".
          *
          * @see .RES_BITRATE
          */
         const val BITRATE = "bitrate"
+
         /**
          * "arib:objectType".
          *
@@ -672,6 +727,7 @@ interface CdsObject : Parcelable {
          * Namespace: ARIB / Type: string
          */
         const val ARIB_OBJECT_TYPE = "arib:objectType"
+
         /**
          * "arib:audioComponentType".
          *
@@ -684,6 +740,7 @@ interface CdsObject : Parcelable {
          * Namespace: ARIB / Type: unsigned integer
          */
         const val ARIB_AUDIO_COMPONENT_TYPE = "arib:audioComponentType"
+
         /**
          * "arib:audioComponentType@qualityIndicator".
          *
@@ -694,6 +751,7 @@ interface CdsObject : Parcelable {
          * Namespace: ARIB / Type: unsigned integer
          */
         const val ARIB_AUDIO_COMPONENT_TYPE_QI = "arib:audioComponentType@qualityIndicator"
+
         /**
          * "arib:caProgramInfo".
          *
@@ -705,6 +763,7 @@ interface CdsObject : Parcelable {
          * Namespace: ARIB / Type: boolean
          */
         const val ARIB_CA_PROGRAM_INFO = "arib:caProgramInfo"
+
         /**
          * "arib:caProgramInfo@price".
          *
@@ -721,6 +780,7 @@ interface CdsObject : Parcelable {
          * Namespace: ARIB / Type: CSV string
          */
         const val ARIB_CA_PROGRAM_INFO_PRICE = "arib:caProgramInfo@price"
+
         /**
          * "arib:caProgramInfo@available".
          *
@@ -733,6 +793,7 @@ interface CdsObject : Parcelable {
          * Namespace: ARIB / Type: boolean
          */
         const val ARIB_CA_PROGRAM_INFO_AVAILABLE = "arib:caProgramInfo@available"
+
         /**
          * "arib:captionInfo".
          *
@@ -747,6 +808,7 @@ interface CdsObject : Parcelable {
          * Namespace: ARIB / Type: boolean
          */
         const val ARIB_CAPTION_INFO = "arib:captionInfo"
+
         /**
          * "arib:copyControlInfo".
          *
@@ -761,6 +823,7 @@ interface CdsObject : Parcelable {
          * Namespace: ARIB / Type: CSV string
          */
         const val ARIB_COPY_CONTROL_INFO = "arib:copyControlInfo"
+
         /**
          * "arib:dataProgramInfo".
          *
@@ -774,6 +837,7 @@ interface CdsObject : Parcelable {
          * Namespace: ARIB / Type: boolean
          */
         const val ARIB_DATE_PROGRAM_INFO = "arib:dataProgramInfo"
+
         /**
          * "arib:dataProgramInfo@sync".
          *
@@ -785,6 +849,7 @@ interface CdsObject : Parcelable {
          * Namespace: ARIB / Type: boolean
          */
         const val ARIB_DATE_PROGRAM_INFO_SYNC = "arib:dataProgramInfo@sync"
+
         /**
          * "arib:longDescription".
          *
@@ -802,6 +867,7 @@ interface CdsObject : Parcelable {
          * Namespace: ARIB / Type: string
          */
         const val ARIB_LONG_DESCRIPTION = "arib:longDescription"
+
         /**
          * "arib:multiESInfo".
          *
@@ -814,6 +880,7 @@ interface CdsObject : Parcelable {
          * Namespace: ARIB / Type: boolean
          */
         const val ARIB_MULTI_ES_INFO = "arib:multiESInfo"
+
         /**
          * "arib:multiViewInfo".
          *
@@ -825,6 +892,7 @@ interface CdsObject : Parcelable {
          * Namespace: ARIB / Type: boolean
          */
         const val ARIB_MULTI_VIEW_INFO = "arib:multiViewInfo"
+
         /**
          * "arib:videoComponentType".
          *
@@ -842,18 +910,22 @@ interface CdsObject : Parcelable {
          * 未定義
          */
         const val TYPE_UNKNOWN = 0
+
         /**
          * 動画
          */
         const val TYPE_VIDEO = 1
+
         /**
          * 音楽
          */
         const val TYPE_AUDIO = 2
+
         /**
          * 画像
          */
         const val TYPE_IMAGE = 3
+
         /**
          * コンテナ
          */

@@ -79,7 +79,7 @@ class ControlPointModel(
         @Volatile
         private var shutdownRequest: Boolean = false
 
-        internal fun shutdownRequest() {
+        fun shutdownRequest() {
             interrupt()
             shutdownRequest = true
         }

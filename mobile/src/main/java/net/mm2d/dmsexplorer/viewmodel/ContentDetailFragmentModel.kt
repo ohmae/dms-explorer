@@ -41,6 +41,7 @@ class ContentDetailFragmentModel(
     private val isProtected: Boolean
 
     private val canDelete: Boolean
+
     @get:Bindable
     var canSend: Boolean = false
         private set

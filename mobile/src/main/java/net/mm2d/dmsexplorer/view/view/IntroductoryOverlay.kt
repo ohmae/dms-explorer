@@ -85,7 +85,7 @@ class IntroductoryOverlay private constructor(
         }
         isVisible = true
         adjustNavigation()
-        ViewUtils.execAfterAllocateSize(view, Runnable {
+        ViewUtils.execAfterAllocateSize(view, {
             setUpDrawingParam()
             setUpAnimation()
             (activity.window.decorView as ViewGroup).addView(this)
@@ -95,7 +95,7 @@ class IntroductoryOverlay private constructor(
 
     override fun onConfigurationChanged(newConfig: Configuration) {
         adjustNavigation()
-        ViewUtils.execOnLayout(view, Runnable {
+        ViewUtils.execOnLayout(view, {
             setUpDrawingParam()
             invalidate()
         })
@@ -196,8 +196,10 @@ class IntroductoryOverlay private constructor(
         private var view: View? = null
         private var titleText: String? = null
         private var subtitleText: String? = null
+
         @ColorInt
         private var overlayColor: Int = 0
+
         @ColorInt
         private var dimmerColor: Int = 0
         private var timeout: Long = 0

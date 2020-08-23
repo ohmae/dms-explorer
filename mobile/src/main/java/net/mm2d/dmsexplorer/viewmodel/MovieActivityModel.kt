@@ -54,6 +54,7 @@ class MovieActivityModel(
 
     val controlPanelParam: ControlPanelParam
     val canUsePictureInPicture = PipHelpers.isSupported(activity)
+
     @ColorInt
     val background: Int
     val currentProgress: Int
@@ -62,9 +63,11 @@ class MovieActivityModel(
     @get:Bindable
     var title = ""
         private set
+
     @get:Bindable
     lateinit var controlPanelModel: ControlPanelModel
         private set
+
     @get:Bindable
     var rightNavigationSize: Int = 0
         private set(size) {
@@ -72,6 +75,7 @@ class MovieActivityModel(
             field = size
             notifyPropertyChanged(BR.rightNavigationSize)
         }
+
     @get:Bindable
     var repeatIconId: Int = repeatMode.iconId
         set(@DrawableRes id) {

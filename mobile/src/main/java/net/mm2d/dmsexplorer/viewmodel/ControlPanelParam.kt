@@ -22,12 +22,14 @@ class ControlPanelParam : BaseObservable() {
             field = padding
             notifyPropertyChanged(BR.bottomPadding)
         }
+
     @get:Bindable
     var marginRight: Int = 0
         set(margin) {
             field = margin
             notifyPropertyChanged(BR.marginRight)
         }
+
     @get:Bindable
     var backgroundColor: Int = 0
         set(@ColorInt color) {

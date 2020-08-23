@@ -75,7 +75,7 @@ abstract class MediaPlayerModel(
         }
 
     init {
-        mediaControl.setOnPreparedListener(OnPreparedListener { onPrepared(it) })
+        mediaControl.setOnPreparedListener({ onPrepared(it) })
     }
 
     override fun canPause(): Boolean = true
@@ -96,15 +96,15 @@ abstract class MediaPlayerModel(
 
     override fun setStatusListener(listener: StatusListener) {
         statusListener = listener
-        mediaControl.setOnErrorListener(OnErrorListener { _, what, extra ->
+        mediaControl.setOnErrorListener({ _, what, extra ->
             logError(what, extra)
             statusListener.onError(what, extra)
         })
-        mediaControl.setOnInfoListener(OnInfoListener { _, what, extra ->
+        mediaControl.setOnInfoListener({ _, what, extra ->
             logInfo(what, extra)
             statusListener.onInfo(what, extra)
         })
-        mediaControl.setOnCompletionListener(OnCompletionListener {
+        mediaControl.setOnCompletionListener({
             handler.removeCallbacks(getPositionTask)
             statusListener.onCompletion()
         })

@@ -23,7 +23,7 @@ class SettingsStorage(context: Context) {
         private var preferences: SharedPreferences? = null
 
         @Synchronized
-        internal fun get(context: Context): SharedPreferences {
+        fun get(context: Context): SharedPreferences {
             preferences?.let {
                 return it
             }

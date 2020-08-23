@@ -45,7 +45,7 @@ class SortDialog : DialogFragment() {
         sortOrder.isChecked = settings.isAscendingSortOrder
 
         val sortKey: Spinner = view.sort_key
-        sortKey.adapter = ArrayAdapter<String>(
+        sortKey.adapter = ArrayAdapter(
             activity,
             android.R.layout.simple_list_item_1,
             list.map { getString(it.stringRes) })

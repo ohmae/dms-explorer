@@ -38,6 +38,7 @@ enum class RepeatMode(
         R.drawable.ic_play_once,
         R.string.toast_repeat_play_once
     ),
+
     /**
      * フォルダ内を最後まで連続再生。
      */
@@ -46,6 +47,7 @@ enum class RepeatMode(
         R.drawable.ic_sequential,
         R.string.toast_repeat_sequential
     ),
+
     /**
      * 全体をループ再生。
      */
@@ -54,6 +56,7 @@ enum class RepeatMode(
         R.drawable.ic_repeat_all,
         R.string.toast_repeat_repeat_all
     ),
+
     /**
      * １項目をループ再生。
      */

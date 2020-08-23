@@ -45,18 +45,23 @@ class MusicActivityModel(
     private var playStartTime: Long = 0
     private var finishing: Boolean = false
     val controlPanelParam: ControlPanelParam = ControlPanelParam()
+
     @get:Bindable
     var title = ""
         private set
+
     @get:Bindable
     var controlColor: Int = 0
         private set
+
     @get:Bindable
     lateinit var controlPanelModel: ControlPanelModel
         private set
+
     @get:Bindable
     lateinit var propertyAdapter: PropertyAdapter
         private set
+
     @get:Bindable
     var imageBinary: ByteArray? = null
         set(imageBinary) {
@@ -129,7 +134,7 @@ class MusicActivityModel(
         Downloader.create(uri.toString())
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(Consumer<ByteArray> { imageBinary = it }
+            .subscribe(Consumer { imageBinary = it }
             ).isDisposed
     }
 

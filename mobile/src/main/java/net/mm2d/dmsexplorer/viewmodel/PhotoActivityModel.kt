@@ -38,20 +38,24 @@ class PhotoActivityModel(
         ?: throw IllegalStateException()
 
     val title: String
+
     @ColorInt
     val background: Int
+
     @get:Bindable
     var imageBinary: ByteArray? = null
         set(imageBinary) {
             field = imageBinary
             notifyPropertyChanged(BR.imageBinary)
         }
+
     @get:Bindable
     var isLoading = true
         set(loading) {
             field = loading
             notifyPropertyChanged(BR.loading)
         }
+
     @get:Bindable
     var rightNavigationSize: Int = 0
         set(size) {

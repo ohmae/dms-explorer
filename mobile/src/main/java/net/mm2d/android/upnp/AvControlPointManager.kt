@@ -31,12 +31,14 @@ class AvControlPointManager {
     private val handler = Handler(Looper.getMainLooper())
     private val initialized = AtomicBoolean()
     private var controlPoint: ControlPoint? = null
+
     /**
      * MsControlPointのインスタンスを返す。
      *
      * @return MsControlPoint
      */
     val msControlPoint = MsControlPoint()
+
     /**
      * MrControlPointのインスタンスを返す。
      *

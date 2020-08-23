@@ -25,7 +25,7 @@ object DisplaySizeUtils {
      * @return ディスプレイサイズ
      * @see Display.getSize
      */
-    fun getSize(activity: Activity): Point {
+    private fun getSize(activity: Activity): Point {
         val display = activity.windowManager.defaultDisplay
         val point = Point()
         display.getSize(point)

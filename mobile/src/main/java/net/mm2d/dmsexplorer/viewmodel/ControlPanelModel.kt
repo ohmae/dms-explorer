@@ -44,6 +44,7 @@ class ControlPanelModel internal constructor(
     @get:Bindable
     var progressText = makeTimeText(0)
         private set
+
     @get:Bindable
     var durationText = makeTimeText(0)
         private set
@@ -55,12 +56,14 @@ class ControlPanelModel internal constructor(
             field = playing
             playButtonResId = if (playing) R.drawable.ic_pause else R.drawable.ic_play
         }
+
     @get:Bindable
     var isPrepared: Boolean = false
         private set(prepared) {
             field = prepared
             notifyPropertyChanged(BR.prepared)
         }
+
     @get:Bindable
     var duration: Int = 0
         private set(duration) {
@@ -72,6 +75,7 @@ class ControlPanelModel internal constructor(
             setDurationText(duration)
             isPrepared = true
         }
+
     @get:Bindable
     var progress: Int = 0
         private set(progress) {
@@ -82,30 +86,35 @@ class ControlPanelModel internal constructor(
             field = progress
             notifyPropertyChanged(BR.progress)
         }
+
     @get:Bindable
     var isSeekable: Boolean = false
         private set(seekable) {
             field = seekable
             notifyPropertyChanged(BR.seekable)
         }
+
     @get:Bindable
     var playButtonResId = R.drawable.ic_play
         private set(playButtonResId) {
             field = playButtonResId
             notifyPropertyChanged(BR.playButtonResId)
         }
+
     @get:Bindable
     var scrubText = ""
         private set(scrubText) {
             field = scrubText
             notifyPropertyChanged(BR.scrubText)
         }
+
     @get:Bindable
     var isNextEnabled: Boolean = false
         set(nextEnabled) {
             field = nextEnabled
             notifyPropertyChanged(BR.nextEnabled)
         }
+
     @get:Bindable
     var isPreviousEnabled: Boolean = false
         set(previousEnabled) {

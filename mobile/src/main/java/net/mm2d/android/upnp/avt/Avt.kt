@@ -15,10 +15,12 @@ internal object Avt {
      * MediaRendererのデバイスタイプ。
      */
     const val MR_DEVICE_TYPE = "urn:schemas-upnp-org:device:MediaRenderer"
+
     /**
      * AVTransportのサービスID。
      */
     const val AVT_SERVICE_ID = "urn:upnp-org:serviceId:AVTransport"
+
     /**
      * ConnectionManagerのサービスID。
      */

@@ -16,7 +16,6 @@ import net.mm2d.log.Logger
 import net.mm2d.upnp.Action
 import net.mm2d.upnp.Device
 import net.mm2d.upnp.Service
-import java.util.*
 
 /**
  * MediaServerを表現するクラス。

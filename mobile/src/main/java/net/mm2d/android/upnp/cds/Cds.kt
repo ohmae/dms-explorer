@@ -17,14 +17,17 @@ internal object Cds {
      * MediaServerのデバイスタイプ。
      */
     const val MS_DEVICE_TYPE = "urn:schemas-upnp-org:device:MediaServer"
+
     /**
      * ContentDirectoryのサービスID。
      */
     const val CDS_SERVICE_ID = "urn:upnp-org:serviceId:ContentDirectory"
+
     /**
      * ContainerUpdateIDsのタイプ名。
      */
     const val CONTAINER_UPDATE_IDS = "ContainerUpdateIDs"
+
     /**
      * SystemUpdateIDのタイプ名。
      */

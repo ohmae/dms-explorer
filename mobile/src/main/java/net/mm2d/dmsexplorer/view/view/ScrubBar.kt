@@ -37,36 +37,52 @@ class ScrubBar @JvmOverloads constructor(
 ) : View(context, attrs, defStyleAttr) {
     private val paint: Paint
     private var scrubBarListener = LISTENER
+
     @Dimension(unit = Dimension.PX)
     private val trackWidth: Float
+
     @Dimension(unit = Dimension.PX)
     private val trackWidthHalf: Float
+
     @Dimension(unit = Dimension.PX)
     private val smallThumbRadius: Float
+
     @Dimension(unit = Dimension.PX)
     private val largeThumbRadius: Float
+
     @Dimension(unit = Dimension.PX)
     private var scrubUnitLength: Int = 0
+
     @ColorInt
     private var enabledProgressColor: Int = 0
+
     @ColorInt
     private var enabledTrackColor = DEFAULT_ENABLED_TRACK_COLOR
+
     @ColorInt
     private var enabledSectionColor = DEFAULT_ENABLED_SECTION_COLOR
+
     @ColorInt
     private var disabledProgressColor = DEFAULT_DISABLED_PROGRESS_COLOR
+
     @ColorInt
     private var disabledTrackColor = DEFAULT_DISABLED_TRACK_COLOR
+
     @ColorInt
     private var disabledSectionColor = DEFAULT_DISABLED_SECTION_COLOR
+
     @ColorInt
     private var progressColor: Int = 0
+
     @ColorInt
     private var trackColor: Int = 0
+
     @ColorInt
     private var sectionColor: Int = 0
+
     @ColorInt
     private var topBackgroundColor: Int = 0
+
     @ColorInt
     private var bottomBackgroundColor: Int = 0
 
@@ -178,7 +194,7 @@ class ScrubBar @JvmOverloads constructor(
         var max: Int = 0
         var chapterList: List<Int> = emptyList()
 
-        internal constructor(superState: Parcelable) : super(superState)
+        constructor(superState: Parcelable) : super(superState)
 
         private constructor(parcel: Parcel) : super(parcel) {
             progress = parcel.readInt()
@@ -390,20 +406,28 @@ class ScrubBar @JvmOverloads constructor(
     companion object {
         @Dimension(unit = Dimension.DP)
         private val TRACK_WIDTH_DP = 3
+
         @Dimension(unit = Dimension.DP)
         private val SMALL_THUMB_RADIUS_DP = 4
+
         @Dimension(unit = Dimension.DP)
         private val LARGE_THUMB_RADIUS_DP = 8
+
         @Dimension(unit = Dimension.DP)
         private val SCRUB_UNIT_LENGTH_DP = 150
+
         @ColorInt
         private val DEFAULT_ENABLED_TRACK_COLOR = Color.argb(0x66, 0xff, 0xff, 0xff)
+
         @ColorInt
         private val DEFAULT_ENABLED_SECTION_COLOR = Color.argb(0xff, 0xff, 0xff, 0x0)
+
         @ColorInt
         private val DEFAULT_DISABLED_PROGRESS_COLOR = Color.argb(0xff, 0x80, 0x80, 0x80)
+
         @ColorInt
         private val DEFAULT_DISABLED_TRACK_COLOR = Color.argb(0x66, 0x60, 0x60, 0x60)
+
         @ColorInt
         private val DEFAULT_DISABLED_SECTION_COLOR = Color.argb(0x66, 0xff, 0xff, 0x0)
 

@@ -70,11 +70,11 @@ class MediaRendererModel(
             mediaRenderer.getPositionInfo()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(Consumer<Map<String, String>> { onGetPositionInfo(it) })
+                .subscribe(Consumer { onGetPositionInfo(it) })
             mediaRenderer.getTransportInfo()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(Consumer<Map<String, String>> { onGetTransportInfo(it) })
+                .subscribe(Consumer { onGetTransportInfo(it) })
         }
     }
 

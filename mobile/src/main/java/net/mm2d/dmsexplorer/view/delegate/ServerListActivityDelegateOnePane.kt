@@ -72,7 +72,7 @@ internal class ServerListActivityDelegateOnePane(
     override fun onStart() {
         if (hasReenterTransition) {
             hasReenterTransition = false
-            execAfterTransitionOnce(Runnable { binding.model?.updateListAdapter() })
+            execAfterTransitionOnce({ binding.model?.updateListAdapter() })
             return
         }
         binding.model?.updateListAdapter()

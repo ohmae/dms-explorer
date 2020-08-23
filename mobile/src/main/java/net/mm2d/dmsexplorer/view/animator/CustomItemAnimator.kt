@@ -24,8 +24,7 @@ import androidx.core.view.ViewCompat
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import androidx.recyclerview.widget.SimpleItemAnimator
-import java.util.ArrayList
-import kotlin.Comparator
+import java.util.*
 
 // copy from android-27/android/support/v7/widget/DefaultItemAnimator.java
 
@@ -53,21 +52,21 @@ class CustomItemAnimator(context: Context) : SimpleItemAnimator() {
     private val removeAnimations = ArrayList<ViewHolder>()
     private val changeAnimations = ArrayList<ViewHolder>()
 
-    private class MoveInfo internal constructor(
-        internal val holder: ViewHolder,
-        internal val fromX: Int,
-        internal val fromY: Int,
-        internal val toX: Int,
-        internal val toY: Int
+    private class MoveInfo(
+        val holder: ViewHolder,
+        val fromX: Int,
+        val fromY: Int,
+        val toX: Int,
+        val toY: Int
     )
 
-    private class ChangeInfo internal constructor(
-        internal var oldHolder: ViewHolder?,
-        internal var newHolder: ViewHolder?,
-        internal val fromX: Int,
-        internal val fromY: Int,
-        internal val toX: Int,
-        internal val toY: Int
+    private class ChangeInfo(
+        var oldHolder: ViewHolder?,
+        var newHolder: ViewHolder?,
+        val fromX: Int,
+        val fromY: Int,
+        val toX: Int,
+        val toY: Int
     ) {
         override fun toString(): String {
             return "ChangeInfo{oldHolder=$oldHolder, newHolder=$newHolder, fromX=$fromX, fromY=$fromY, toX=$toX, toY=$toY}"
@@ -142,7 +141,7 @@ class CustomItemAnimator(context: Context) : SimpleItemAnimator() {
             pendingAdditions.clear()
             val adder = Runnable {
                 var delay = addAnimations.size * ADDING_ANIMATION_DELAY
-                additions.sortWith(Comparator { o1, o2 -> o1.adapterPosition - o2.adapterPosition })
+                additions.sortWith({ o1, o2 -> o1.adapterPosition - o2.adapterPosition })
                 for (holder in additions) {
                     animateAddImpl(holder, delay)
                     delay = minOf(delay + ADDING_ANIMATION_DELAY, ADDING_ANIMATION_DELAY_MAX)

@@ -76,6 +76,6 @@ object ImageViewBindingAdapter {
         imageView: ImageView,
         bitmap: Bitmap
     ) {
-        ViewUtils.execAfterAllocateSize(imageView, Runnable { imageView.setImageBitmap(bitmap) })
+        ViewUtils.execAfterAllocateSize(imageView, { imageView.setImageBitmap(bitmap) })
     }
 }

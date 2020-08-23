@@ -30,6 +30,7 @@ class MediaServerModel(
 ) : ExploreListener {
     private val handler = Handler(Looper.getMainLooper())
     private val historyStack = LinkedList<ContentDirectoryEntity>()
+
     @Volatile
     private var exploreListener: ExploreListener = EXPLORE_LISTENER
 

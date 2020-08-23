@@ -48,6 +48,7 @@ class DmcActivityModel(
     val title: String
     val subtitle: String
     val propertyAdapter: PropertyAdapter
+
     @DrawableRes
     val imageResource: Int
     val isPlayControlEnabled: Boolean
@@ -57,16 +58,19 @@ class DmcActivityModel(
     @get:Bindable
     var progressText = makeTimeText(0)
         private set
+
     @get:Bindable
     var durationText = makeTimeText(0)
         private set
     private var mPlaying: Boolean = false
+
     @get:Bindable
     var isPrepared: Boolean = false
         private set(prepared) {
             field = prepared
             notifyPropertyChanged(BR.prepared)
         }
+
     @get:Bindable
     var duration: Int = 0
         set(duration) {
@@ -79,6 +83,7 @@ class DmcActivityModel(
             isPrepared = true
             setChapterInfoEnabled()
         }
+
     @get:Bindable
     var progress: Int = 0
         set(progress) {
@@ -86,18 +91,21 @@ class DmcActivityModel(
             field = progress
             notifyPropertyChanged(BR.progress)
         }
+
     @get:Bindable
     var isSeekable: Boolean = false
         private set(seekable) {
             field = seekable
             notifyPropertyChanged(BR.seekable)
         }
+
     @get:Bindable
     var scrubText = ""
         private set(scrubText) {
             field = scrubText
             notifyPropertyChanged(BR.scrubText)
         }
+
     @get:Bindable
     var chapterList = emptyList<Int>()
         private set(chapterList) {
@@ -116,9 +124,11 @@ class DmcActivityModel(
                 propertyAdapter.notifyItemInserted(count)
             }
         }
+
     @get:Bindable
     var isChapterInfoEnabled: Boolean = false
         private set
+
     @get:Bindable
     var playButtonResId: Int = R.drawable.ic_play
         private set(resId) {

@@ -31,6 +31,7 @@ class ContentItemModel(
     val title: String
     val description: String
     val hasDescription: Boolean
+
     @DrawableRes
     val imageResource: Int
     val isProtected: Boolean

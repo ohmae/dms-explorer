@@ -45,14 +45,17 @@ enum class Key(
     COPYRIGHT,
     LICENSE,
     SOURCE_CODE,
+
     // 設定バージョン
     SETTINGS_VERSION(
         Int::class, -1
     ),
+
     // アプリバージョン
     APP_VERSION(
         Int::class, -1
     ),
+
     // PreferenceActivity用
     PLAY_MOVIE_MYSELF(
         Boolean::class, true
@@ -148,8 +151,10 @@ enum class Key(
     // OldKeys
     @Deprecated("removed")
     UPDATE_FETCH_TIME,
+
     @Deprecated("removed")
     UPDATE_AVAILABLE,
+
     @Deprecated("removed")
     UPDATE_JSON,
     ;
