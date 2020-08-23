@@ -25,7 +25,7 @@ internal class MainOptionsMenuDelegate(
     private val menuResId = if (menuResId != 0) menuResId else R.menu.main
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        EventRouter.observeUpdateAvailability(activity) {
+        EventRouter.observeUpdateAvailable(activity) {
             activity.invalidateOptionsMenu()
         }
     }

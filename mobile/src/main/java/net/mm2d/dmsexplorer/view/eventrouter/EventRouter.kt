@@ -51,11 +51,11 @@ object EventRouter {
     fun updateAvailable(): Boolean =
         updateAvailableLiveData.value == true
 
-    fun notifyUpdateAvailability(available: Boolean) {
+    fun notifyUpdateAvailable(available: Boolean) {
         updateAvailableLiveData.postValue(available)
     }
 
-    fun observeUpdateAvailability(owner: LifecycleOwner, callback: (Boolean) -> Unit) {
+    fun observeUpdateAvailable(owner: LifecycleOwner, callback: (Boolean) -> Unit) {
         updateAvailableLiveData.observe(owner, { callback(it) })
     }
 }
