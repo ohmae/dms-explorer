@@ -31,6 +31,7 @@ abstract class BaseActivity @JvmOverloads constructor(
 
     @CallSuper
     override fun onCreate(savedInstanceState: Bundle?) {
+        updateOrientationSettings()
         super.onCreate(savedInstanceState)
         delegate = if (mainMenu)
             MainOptionsMenuDelegate(this, menuResId)

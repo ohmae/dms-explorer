@@ -68,11 +68,9 @@ class MovieActivity : BaseActivity() {
         savedInstanceState?.let {
             model.restoreSaveProgress(it.getInt(KEY_POSITION, 0))
         }
-    }
-
-    override fun onResume() {
-        super.onResume()
-        model?.adjustPanel(this)
+        binding.root.addOnLayoutChangeListener { _, _, _, _, _, _, _, _, _ ->
+            model.adjustPanel(this)
+        }
     }
 
     override fun onDestroy() {
