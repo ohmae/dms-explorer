@@ -17,12 +17,12 @@ val versionMinor = 7
 val versionPatch = 59
 
 android {
-    compileSdkVersion(29)
+    compileSdkVersion(30)
 
     defaultConfig {
         applicationId = "net.mm2d.dmsexplorer"
         minSdkVersion(21)
-        targetSdkVersion(29)
+        targetSdkVersion(30)
         versionCode = versionMajor * 10000 + versionMinor * 100 + versionPatch
         versionName = "${versionMajor}.${versionMinor}.${versionPatch}"
         base.archivesBaseName = "${applicationName}-${versionName}"
@@ -76,16 +76,16 @@ android {
 dependencies {
     implementation("androidx.appcompat:appcompat:1.2.0")
     implementation("androidx.cardview:cardview:1.0.0")
-    implementation("androidx.constraintlayout:constraintlayout:2.0.0")
+    implementation("androidx.constraintlayout:constraintlayout:2.0.1")
     implementation("androidx.palette:palette:1.0.0")
     implementation("androidx.recyclerview:recyclerview:1.1.0")
     implementation("androidx.preference:preference:1.1.1")
     implementation("androidx.browser:browser:1.2.0")
-    implementation("androidx.exifinterface:exifinterface:1.2.0")
+    implementation("androidx.exifinterface:exifinterface:1.3.0")
     implementation("androidx.core:core-ktx:1.3.1")
     implementation("androidx.lifecycle:lifecycle-runtime:2.2.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.2.0")
-    implementation("com.google.android.material:material:1.2.0")
+    implementation("com.google.android.material:material:1.2.1")
     implementation("com.google.android.play:core:1.8.0")
     implementation("com.google.android.play:core-ktx:1.8.1")
     implementation(kotlin("stdlib"))
@@ -105,7 +105,7 @@ dependencies {
     testImplementation("junit:junit:4.13")
     testImplementation("io.mockk:mockk:1.10.0")
     testImplementation("com.google.truth:truth:1.0.1")
-    testImplementation("org.robolectric:robolectric:4.3.1")
+    testImplementation("org.robolectric:robolectric:4.4")
 }
 
 jacoco {
