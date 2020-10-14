@@ -81,7 +81,7 @@ class WebViewActivity : BaseActivity() {
                 return true
             }
         }
-        webView.loadUrl(intent.getStringExtra(KEY_URL))
+        webView.loadUrl(intent.getStringExtra(KEY_URL) ?: "")
         webView.setOnTouchListener { _, event ->
             if (event.action == MotionEvent.ACTION_UP) {
                 settleAppBar(binding.appBar)

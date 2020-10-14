@@ -1,6 +1,5 @@
 import com.android.build.gradle.internal.api.BaseVariantOutputImpl
 import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
-import groovy.lang.Closure
 
 plugins {
     id("com.android.application")
@@ -64,29 +63,28 @@ android {
     }
     testOptions {
         unitTests.isIncludeAndroidResources = true
-        @Suppress("UNCHECKED_CAST")
-        unitTests.all(closureOf<Test> {
-            extensions.configure(JacocoTaskExtension::class.java) {
-                isIncludeNoLocationClasses = true
-            }
-        } as Closure<Test>)
+    }
+}
+
+tasks.withType<Test> {
+    configure<JacocoTaskExtension> {
+        isIncludeNoLocationClasses = true
     }
 }
 
 dependencies {
     implementation("androidx.appcompat:appcompat:1.2.0")
     implementation("androidx.cardview:cardview:1.0.0")
-    implementation("androidx.constraintlayout:constraintlayout:2.0.1")
-    implementation("androidx.palette:palette:1.0.0")
+    implementation("androidx.constraintlayout:constraintlayout:2.0.2")
+    implementation("androidx.palette:palette-ktx:1.0.0")
     implementation("androidx.recyclerview:recyclerview:1.1.0")
-    implementation("androidx.preference:preference:1.1.1")
+    implementation("androidx.preference:preference-ktx:1.1.1")
     implementation("androidx.browser:browser:1.2.0")
     implementation("androidx.exifinterface:exifinterface:1.3.0")
-    implementation("androidx.core:core-ktx:1.3.1")
-    implementation("androidx.lifecycle:lifecycle-runtime:2.2.0")
+    implementation("androidx.core:core-ktx:1.3.2")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.2.0")
     implementation("com.google.android.material:material:1.2.1")
-    implementation("com.google.android.play:core:1.8.0")
+    implementation("com.google.android.play:core:1.8.2")
     implementation("com.google.android.play:core-ktx:1.8.1")
     implementation(kotlin("stdlib"))
     implementation(kotlin("reflect"))
@@ -95,15 +93,15 @@ dependencies {
     implementation("net.mm2d:mmupnp:3.1.1")
     implementation("net.mm2d:preference:0.2.5")
     implementation("net.opacapp:multiline-collapsingtoolbar:27.1.1")
-    implementation("io.reactivex.rxjava2:rxjava:2.2.19")
+    implementation("io.reactivex.rxjava2:rxjava:2.2.20")
     implementation("io.reactivex.rxjava2:rxandroid:2.1.1")
     implementation("io.reactivex.rxjava2:rxkotlin:2.4.0")
 
     debugImplementation("com.facebook.stetho:stetho:1.5.1")
     debugImplementation("com.facebook.stetho:stetho-okhttp3:1.5.1")
 
-    testImplementation("junit:junit:4.13")
-    testImplementation("io.mockk:mockk:1.10.0")
+    testImplementation("junit:junit:4.13.1")
+    testImplementation("io.mockk:mockk:1.10.2")
     testImplementation("com.google.truth:truth:1.0.1")
     testImplementation("org.robolectric:robolectric:4.4")
 }
