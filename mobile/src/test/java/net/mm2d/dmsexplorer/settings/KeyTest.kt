@@ -7,18 +7,18 @@
 
 package net.mm2d.dmsexplorer.settings
 
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.google.common.truth.Truth.assertThat
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
 
 /**
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
  */
 @Suppress("TestFunctionName", "NonAsciiCharacters")
-@RunWith(RobolectricTestRunner::class)
-@Config(manifest = Config.NONE, sdk = [28])
+@RunWith(AndroidJUnit4::class)
+@Config(manifest = Config.NONE, sdk = [29])
 class KeyTest {
     @Test
     fun getValueType_表示用Key() {
