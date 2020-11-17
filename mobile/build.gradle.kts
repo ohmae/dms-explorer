@@ -88,8 +88,8 @@ dependencies {
     implementation("com.google.android.play:core-ktx:1.8.1")
     implementation(kotlin("stdlib"))
     implementation(kotlin("reflect"))
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.9")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.9")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.1")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.4.1")
     implementation("net.mm2d:mmupnp:3.1.1")
     implementation("net.mm2d:preference:0.2.5")
     implementation("net.opacapp:multiline-collapsingtoolbar:27.1.1")
@@ -104,6 +104,7 @@ dependencies {
     testImplementation("io.mockk:mockk:1.10.2")
     testImplementation("com.google.truth:truth:1.1")
     testImplementation("org.robolectric:robolectric:4.4")
+    testImplementation("androidx.test.ext:junit:1.1.2")
 }
 
 jacoco {
