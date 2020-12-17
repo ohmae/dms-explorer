@@ -11,6 +11,7 @@ import android.content.Context
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import androidx.core.os.bundleOf
 import net.mm2d.android.upnp.cds.CdsObject
 import net.mm2d.dmsexplorer.Repository
 import net.mm2d.dmsexplorer.domain.entity.ContentType
@@ -81,27 +82,24 @@ object EventLogger {
         val targetModel = Repository.get().playbackTargetModel ?: return
         val entity = targetModel.contentEntity
         val cdsObject = entity.rawEntity as CdsObject
-        val bundle = Bundle()
-        bundle.putString(Param.ITEM_VARIANT, cdsObject.getValue(CdsObject.RES_PROTOCOL_INFO))
-        bundle.putString(Param.CONTENT_TYPE, getTypeString(entity.type))
-        bundle.putString(
-            Param.ORIGIN,
-            if (cdsObject.hasProtectedResource()) VALUE_DLNA_DTCP else VALUE_DLNA
-        )
-        bundle.putString(Param.DESTINATION, VALUE_DMR)
-        sender?.logEvent(Event.SELECT_CONTENT, bundle)
+        sender?.logEvent(Event.SELECT_CONTENT, bundleOf(
+            Param.ITEM_VARIANT to cdsObject.getValue(CdsObject.RES_PROTOCOL_INFO),
+            Param.CONTENT_TYPE to getTypeString(entity.type),
+            Param.ORIGIN to if (cdsObject.hasProtectedResource()) VALUE_DLNA_DTCP else VALUE_DLNA,
+            Param.DESTINATION to VALUE_DMR,
+        ))
     }
 
     fun sendPlayContent(playMyself: Boolean) {
         val targetModel = Repository.get().playbackTargetModel ?: return
         val entity = targetModel.contentEntity
         val cdsObject = entity.rawEntity as CdsObject
-        val bundle = Bundle()
-        bundle.putString(Param.ITEM_VARIANT, cdsObject.getValue(CdsObject.RES_PROTOCOL_INFO))
-        bundle.putString(Param.CONTENT_TYPE, getTypeString(entity.type))
-        bundle.putString(Param.ORIGIN, VALUE_DLNA)
-        bundle.putString(Param.DESTINATION, if (playMyself) VALUE_MYSELF else VALUE_OTHER)
-        sender?.logEvent(Event.SELECT_CONTENT, bundle)
+        sender?.logEvent(Event.SELECT_CONTENT, bundleOf(
+            Param.ITEM_VARIANT to cdsObject.getValue(CdsObject.RES_PROTOCOL_INFO),
+            Param.CONTENT_TYPE to getTypeString(entity.type),
+            Param.ORIGIN to VALUE_DLNA,
+            Param.DESTINATION to if (playMyself) VALUE_MYSELF else VALUE_OTHER,
+        ))
     }
 
     private fun getTypeString(type: ContentType): String = type.name.toLowerCase(Locale.ENGLISH)

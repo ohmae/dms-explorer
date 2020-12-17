@@ -11,8 +11,8 @@ import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import android.os.Bundle
 import androidx.browser.customtabs.*
+import androidx.core.os.bundleOf
 import java.util.*
 
 /**
@@ -55,7 +55,7 @@ class CustomTabsHelper(
                 return
             }
             val otherLikelyBundles = urls.subList(1, urls.size).map {
-                Bundle().apply { putParcelable(CustomTabsService.KEY_URL, Uri.parse(it)) }
+                bundleOf(CustomTabsService.KEY_URL to Uri.parse(it))
             }
             session.mayLaunchUrl(Uri.parse(urls[0]), null, otherLikelyBundles)
         } catch (ignored: Exception) {
