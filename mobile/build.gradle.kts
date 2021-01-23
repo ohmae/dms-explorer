@@ -90,7 +90,7 @@ dependencies {
     implementation(kotlin("reflect"))
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.2")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.4.2")
-    implementation("net.mm2d:mmupnp:3.1.1")
+    implementation("net.mm2d:mmupnp:3.1.2")
     implementation("net.mm2d:preference:0.2.5")
     implementation("net.opacapp:multiline-collapsingtoolbar:27.1.1")
     implementation("io.reactivex.rxjava2:rxjava:2.2.20")
@@ -101,9 +101,9 @@ dependencies {
     debugImplementation("com.facebook.stetho:stetho-okhttp3:1.5.1")
 
     testImplementation("junit:junit:4.13.1")
-    testImplementation("io.mockk:mockk:1.10.3")
-    testImplementation("com.google.truth:truth:1.1")
-    testImplementation("org.robolectric:robolectric:4.4")
+    testImplementation("io.mockk:mockk:1.10.5")
+    testImplementation("com.google.truth:truth:1.1.1")
+    testImplementation("org.robolectric:robolectric:4.5")
     testImplementation("androidx.test.ext:junit:1.1.2")
 }
 
