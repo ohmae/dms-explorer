@@ -17,6 +17,7 @@ val versionPatch = 59
 
 android {
     compileSdkVersion(30)
+    buildToolsVersion("30.0.3")
 
     defaultConfig {
         applicationId = "net.mm2d.dmsexplorer"

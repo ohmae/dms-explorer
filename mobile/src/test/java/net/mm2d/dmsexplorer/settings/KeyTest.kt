@@ -13,12 +13,9 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.annotation.Config
 
-/**
- * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
- */
 @Suppress("TestFunctionName", "NonAsciiCharacters")
 @RunWith(AndroidJUnit4::class)
-@Config(manifest = Config.NONE, sdk = [29])
+@Config(manifest = Config.NONE)
 class KeyTest {
     @Test
     fun getValueType_表示用Key() {

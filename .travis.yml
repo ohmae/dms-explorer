@@ -5,12 +5,12 @@ android:
   components:
     - tools
     - platform-tools
-    - build-tools-29.0.2
-    - android-29
+    - build-tools-30.0.3
+    - android-30
 
 before_install:
   - chmod +x gradlew
-  - echo yes | sdkmanager "platforms;android-28"
+  - echo yes | sdkmanager "platforms;android-30"
 
 script:
   - ./gradlew :mobile:jacocoTestReport
