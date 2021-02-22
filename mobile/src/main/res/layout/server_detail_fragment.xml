@@ -26,7 +26,7 @@
             android:translationZ="@dimen/app_bar_elevation"
             >
 
-            <net.opacapp.multilinecollapsingtoolbar.CollapsingToolbarLayout
+            <com.google.android.material.appbar.CollapsingToolbarLayout
                 android:id="@+id/toolbar_layout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -69,7 +69,7 @@
                     app:popupTheme="@style/AppTheme.PopupOverlay"
                     />
 
-            </net.opacapp.multilinecollapsingtoolbar.CollapsingToolbarLayout>
+            </com.google.android.material.appbar.CollapsingToolbarLayout>
         </com.google.android.material.appbar.AppBarLayout>
 
         <androidx.recyclerview.widget.RecyclerView
