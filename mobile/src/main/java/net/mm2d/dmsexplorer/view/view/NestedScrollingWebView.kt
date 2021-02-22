@@ -42,6 +42,7 @@ class NestedScrollingWebView
     init {
         isNestedScrollingEnabled = true
         touchSlop = ViewConfiguration.get(context).scaledTouchSlop
+        setBackgroundColor(0)
     }
 
     override fun onAttachedToWindow() {
