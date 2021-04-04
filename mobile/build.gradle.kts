@@ -83,7 +83,7 @@ dependencies {
     implementation("androidx.browser:browser:1.3.0")
     implementation("androidx.exifinterface:exifinterface:1.3.2")
     implementation("androidx.core:core-ktx:1.3.2")
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.3.0")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.3.1")
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
     implementation("com.google.android.material:material:1.3.0")
     implementation("com.google.android.play:core:1.10.0")
@@ -97,14 +97,17 @@ dependencies {
     implementation("io.reactivex.rxjava2:rxandroid:2.1.1")
     implementation("io.reactivex.rxjava2:rxkotlin:2.4.0")
 
-    debugImplementation("com.facebook.stetho:stetho:1.5.1")
-    debugImplementation("com.facebook.stetho:stetho-okhttp3:1.5.1")
-
     testImplementation("junit:junit:4.13.2")
-    testImplementation("io.mockk:mockk:1.10.6")
+    testImplementation("io.mockk:mockk:1.11.0")
     testImplementation("com.google.truth:truth:1.1.2")
     testImplementation("org.robolectric:robolectric:4.5.1")
     testImplementation("androidx.test.ext:junit:1.1.2")
+
+    debugImplementation("com.squareup.leakcanary:leakcanary-android:2.7")
+    debugImplementation("com.facebook.flipper:flipper:0.83.0")
+    debugImplementation("com.facebook.soloader:soloader:0.10.1")
+    debugImplementation("com.facebook.flipper:flipper-network-plugin:0.83.0")
+    debugImplementation("com.facebook.flipper:flipper-leakcanary2-plugin:0.83.0")
 }
 
 jacoco {

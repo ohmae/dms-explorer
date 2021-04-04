@@ -8,6 +8,9 @@
 package net.mm2d.dmsexplorer
 
 import android.app.Application
+import android.os.StrictMode
+import android.os.StrictMode.ThreadPolicy
+import android.os.StrictMode.VmPolicy
 import io.reactivex.exceptions.OnErrorNotImplementedException
 import io.reactivex.exceptions.UndeliverableException
 import io.reactivex.plugins.RxJavaPlugins
@@ -26,7 +29,7 @@ import net.mm2d.log.Logger
 open class App : Application() {
     override fun onCreate() {
         super.onCreate()
-        initForDebug()
+        initializeOverrideWhenDebug()
         RxJavaPlugins.setErrorHandler { logError(it) }
         DebugData.initialize(this)
         Settings.initialize(this)
@@ -36,7 +39,14 @@ open class App : Application() {
         UpdateChecker.check(this)
     }
 
-    open fun initForDebug() = Unit
+    protected open fun initializeOverrideWhenDebug() {
+        setUpStrictMode()
+    }
+
+    private fun setUpStrictMode() {
+        StrictMode.setThreadPolicy(ThreadPolicy.LAX)
+        StrictMode.setVmPolicy(VmPolicy.LAX)
+    }
 
     private fun logError(e: Throwable) {
         when (e) {
