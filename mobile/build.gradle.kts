@@ -78,7 +78,7 @@ dependencies {
     implementation("androidx.cardview:cardview:1.0.0")
     implementation("androidx.constraintlayout:constraintlayout:2.0.4")
     implementation("androidx.palette:palette-ktx:1.0.0")
-    implementation("androidx.recyclerview:recyclerview:1.1.0")
+    implementation("androidx.recyclerview:recyclerview:1.2.0")
     implementation("androidx.preference:preference-ktx:1.1.1")
     implementation("androidx.browser:browser:1.3.0")
     implementation("androidx.exifinterface:exifinterface:1.3.2")
@@ -104,10 +104,10 @@ dependencies {
     testImplementation("androidx.test.ext:junit:1.1.2")
 
     debugImplementation("com.squareup.leakcanary:leakcanary-android:2.7")
-    debugImplementation("com.facebook.flipper:flipper:0.83.0")
+    debugImplementation("com.facebook.flipper:flipper:0.85.0")
     debugImplementation("com.facebook.soloader:soloader:0.10.1")
-    debugImplementation("com.facebook.flipper:flipper-network-plugin:0.83.0")
-    debugImplementation("com.facebook.flipper:flipper-leakcanary2-plugin:0.83.0")
+    debugImplementation("com.facebook.flipper:flipper-network-plugin:0.85.0")
+    debugImplementation("com.facebook.flipper:flipper-leakcanary2-plugin:0.85.0")
 }
 
 jacoco {
