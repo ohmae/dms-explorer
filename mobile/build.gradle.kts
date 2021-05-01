@@ -92,7 +92,7 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.3")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.4.3")
     implementation("net.mm2d.mmupnp:mmupnp:3.1.3")
-    implementation("net.mm2d.preference:preference:0.2.6")
+    implementation("net.mm2d.preference:preference:0.2.7")
     implementation("io.reactivex.rxjava2:rxjava:2.2.21")
     implementation("io.reactivex.rxjava2:rxandroid:2.1.1")
     implementation("io.reactivex.rxjava2:rxkotlin:2.4.0")
@@ -104,10 +104,10 @@ dependencies {
     testImplementation("androidx.test.ext:junit:1.1.2")
 
     debugImplementation("com.squareup.leakcanary:leakcanary-android:2.7")
-    debugImplementation("com.facebook.flipper:flipper:0.85.0")
+    debugImplementation("com.facebook.flipper:flipper:0.87.0")
     debugImplementation("com.facebook.soloader:soloader:0.10.1")
-    debugImplementation("com.facebook.flipper:flipper-network-plugin:0.85.0")
-    debugImplementation("com.facebook.flipper:flipper-leakcanary2-plugin:0.85.0")
+    debugImplementation("com.facebook.flipper:flipper-network-plugin:0.87.0")
+    debugImplementation("com.facebook.flipper:flipper-leakcanary2-plugin:0.87.0")
 }
 
 jacoco {
