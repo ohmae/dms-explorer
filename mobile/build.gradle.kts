@@ -25,7 +25,7 @@ android {
         targetSdkVersion(30)
         versionCode = versionMajor * 10000 + versionMinor * 100 + versionPatch
         versionName = "${versionMajor}.${versionMinor}.${versionPatch}"
-        base.archivesBaseName = "${applicationName}-${versionName}"
+        base.archivesName.set("${applicationName}-${versionName}")
         vectorDrawables.useSupportLibrary = true
         multiDexEnabled = true
     }
@@ -104,10 +104,10 @@ dependencies {
     testImplementation("androidx.test.ext:junit:1.1.2")
 
     debugImplementation("com.squareup.leakcanary:leakcanary-android:2.7")
-    debugImplementation("com.facebook.flipper:flipper:0.92.0")
+    debugImplementation("com.facebook.flipper:flipper:0.95.0")
     debugImplementation("com.facebook.soloader:soloader:0.10.1")
-    debugImplementation("com.facebook.flipper:flipper-network-plugin:0.92.0")
-    debugImplementation("com.facebook.flipper:flipper-leakcanary2-plugin:0.92.0")
+    debugImplementation("com.facebook.flipper:flipper-network-plugin:0.95.0")
+    debugImplementation("com.facebook.flipper:flipper-leakcanary2-plugin:0.95.0")
 }
 
 jacoco {
@@ -118,8 +118,8 @@ tasks.create<JacocoReport>("jacocoTestReport") {
     group = "verification"
     dependsOn("testDebugUnitTest")
     reports {
-        xml.isEnabled = true
-        html.isEnabled = true
+        xml.required.set(true)
+        html.required.set(true)
     }
     sourceDirectories.setFrom("${projectDir}/src/main/java")
     classDirectories.setFrom(fileTree("${buildDir}/tmp/kotlin-classes/debug"))
