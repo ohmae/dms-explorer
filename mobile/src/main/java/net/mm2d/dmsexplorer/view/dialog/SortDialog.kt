@@ -21,9 +21,9 @@ import androidx.appcompat.widget.SwitchCompat
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
-import kotlinx.android.synthetic.main.dialog_sort.view.*
 import net.mm2d.dmsexplorer.R
 import net.mm2d.dmsexplorer.Repository
+import net.mm2d.dmsexplorer.databinding.DialogSortBinding
 import net.mm2d.dmsexplorer.settings.Settings
 import net.mm2d.dmsexplorer.settings.SortKey
 
@@ -35,8 +35,8 @@ class SortDialog : DialogFragment() {
         val activity = requireActivity()
         val settings = Settings.get()
         val parent = activity.window.decorView as ViewGroup
-        val view = activity.layoutInflater.inflate(R.layout.dialog_sort, parent, false)
-        val sortOrder: SwitchCompat = view.sort_order
+        val binding = DialogSortBinding.inflate(activity.layoutInflater, parent, false)
+        val sortOrder: SwitchCompat = binding.sortOrder
         sortOrder.setOnCheckedChangeListener { _, isChecked ->
             val id =
                 if (isChecked) R.string.dialog_sort_order_ascending else R.string.dialog_sort_order_descending
@@ -44,7 +44,7 @@ class SortDialog : DialogFragment() {
         }
         sortOrder.isChecked = settings.isAscendingSortOrder
 
-        val sortKey: Spinner = view.sort_key
+        val sortKey: Spinner = binding.sortKey
         sortKey.adapter = ArrayAdapter(
             activity,
             android.R.layout.simple_list_item_1,
@@ -60,7 +60,7 @@ class SortDialog : DialogFragment() {
         parentFragment
         return AlertDialog.Builder(activity)
             .setTitle(R.string.dialog_title_sort)
-            .setView(view)
+            .setView(binding.root)
             .setPositiveButton(R.string.ok) { _, _ ->
                 val key = list[sortKey.selectedItemPosition].sortKey
                 val isAscending = sortOrder.isChecked

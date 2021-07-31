@@ -4,7 +4,6 @@ import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
 plugins {
     id("com.android.application")
     id("kotlin-android")
-    id("kotlin-android-extensions")
     id("kotlin-kapt")
     jacoco
     id("com.github.ben-manes.versions")
@@ -16,13 +15,13 @@ val versionMinor = 7
 val versionPatch = 59
 
 android {
-    compileSdkVersion(30)
-    buildToolsVersion("30.0.3")
+    compileSdk = 30
+    buildToolsVersion = "30.0.3"
 
     defaultConfig {
         applicationId = "net.mm2d.dmsexplorer"
-        minSdkVersion(21)
-        targetSdkVersion(30)
+        minSdk = 21
+        targetSdk = 30
         versionCode = versionMajor * 10000 + versionMinor * 100 + versionPatch
         versionName = "${versionMajor}.${versionMinor}.${versionPatch}"
         base.archivesName.set("${applicationName}-${versionName}")
@@ -38,6 +37,7 @@ android {
     }
     buildFeatures {
         dataBinding = true
+        viewBinding = true
     }
     buildTypes {
         getByName("debug") {
@@ -74,7 +74,7 @@ tasks.withType<Test> {
 }
 
 dependencies {
-    implementation("androidx.appcompat:appcompat:1.3.0")
+    implementation("androidx.appcompat:appcompat:1.3.1")
     implementation("androidx.cardview:cardview:1.0.0")
     implementation("androidx.constraintlayout:constraintlayout:2.0.4")
     implementation("androidx.palette:palette-ktx:1.0.0")
@@ -89,8 +89,8 @@ dependencies {
     implementation("com.google.android.play:core:1.10.0")
     implementation("com.google.android.play:core-ktx:1.8.1")
     implementation(kotlin("reflect"))
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.0")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.1")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.1")
     implementation("net.mm2d.mmupnp:mmupnp:3.1.3")
     implementation("net.mm2d.preference:preference:0.2.7")
     implementation("io.reactivex.rxjava2:rxjava:2.2.21")
@@ -100,14 +100,14 @@ dependencies {
     testImplementation("junit:junit:4.13.2")
     testImplementation("io.mockk:mockk:1.12.0")
     testImplementation("com.google.truth:truth:1.1.3")
-    testImplementation("org.robolectric:robolectric:4.6")
+    testImplementation("org.robolectric:robolectric:4.6.1")
     testImplementation("androidx.test.ext:junit:1.1.3")
 
     debugImplementation("com.squareup.leakcanary:leakcanary-android:2.7")
-    debugImplementation("com.facebook.flipper:flipper:0.96.1")
+    debugImplementation("com.facebook.flipper:flipper:0.100.0")
     debugImplementation("com.facebook.soloader:soloader:0.10.1")
-    debugImplementation("com.facebook.flipper:flipper-network-plugin:0.96.1")
-    debugImplementation("com.facebook.flipper:flipper-leakcanary2-plugin:0.96.1")
+    debugImplementation("com.facebook.flipper:flipper-network-plugin:0.100.0")
+    debugImplementation("com.facebook.flipper:flipper-leakcanary2-plugin:0.100.0")
 }
 
 jacoco {

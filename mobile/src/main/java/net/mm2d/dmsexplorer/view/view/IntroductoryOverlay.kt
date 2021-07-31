@@ -15,7 +15,6 @@ import android.app.Activity
 import android.content.res.Configuration
 import android.graphics.*
 import android.graphics.Bitmap.Config
-import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
@@ -25,10 +24,10 @@ import androidx.annotation.ColorInt
 import androidx.annotation.ColorRes
 import androidx.annotation.StringRes
 import androidx.core.content.ContextCompat
-import kotlinx.android.synthetic.main.introductory_overlay.view.*
 import net.mm2d.android.util.DisplaySizeUtils
 import net.mm2d.android.util.ViewUtils
 import net.mm2d.dmsexplorer.R
+import net.mm2d.dmsexplorer.databinding.IntroductoryOverlayBinding
 import net.mm2d.dmsexplorer.util.ViewLayoutUtils
 import java.util.concurrent.TimeUnit
 import kotlin.math.hypot
@@ -50,6 +49,7 @@ class IntroductoryOverlay private constructor(
     private val dimmerColor: Int,
     private val timeout: Long
 ) : RelativeLayout(activity, null, 0) {
+    private val binding: IntroductoryOverlayBinding = IntroductoryOverlayBinding.inflate(activity.layoutInflater, this)
     private val circlePaint: Paint
     private val erasePaint: Paint
     private val removeTask = Runnable { this.dismiss() }
@@ -66,12 +66,11 @@ class IntroductoryOverlay private constructor(
     private var isVisible: Boolean = false
 
     init {
-        LayoutInflater.from(context).inflate(R.layout.introductory_overlay, this)
         if (titleText.isNotEmpty()) {
-            title.text = titleText
+            binding.title.text = titleText
         }
         if (subtitleText.isNotEmpty()) {
-            subtitle.text = subtitleText
+            binding.subtitle.text = subtitleText
         }
         margin = activity.resources
             .getDimensionPixelSize(R.dimen.introduction_title_margin_horizontal)
@@ -112,7 +111,7 @@ class IntroductoryOverlay private constructor(
 
     private fun adjustNavigation() {
         val size = DisplaySizeUtils.getNavigationBarArea(activity)
-        ViewLayoutUtils.setLayoutMarginRight(title, margin + size.x)
+        ViewLayoutUtils.setLayoutMarginRight(binding.title, margin + size.x)
     }
 
     private fun setUpDrawingParam() {
