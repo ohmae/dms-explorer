@@ -76,7 +76,7 @@ tasks.withType<Test> {
 dependencies {
     implementation("androidx.appcompat:appcompat:1.3.1")
     implementation("androidx.cardview:cardview:1.0.0")
-    implementation("androidx.constraintlayout:constraintlayout:2.1.0")
+    implementation("androidx.constraintlayout:constraintlayout:2.1.1")
     implementation("androidx.palette:palette-ktx:1.0.0")
     implementation("androidx.recyclerview:recyclerview:1.2.1")
     implementation("androidx.preference:preference-ktx:1.1.1")
@@ -86,7 +86,7 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.3.1")
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
     implementation("com.google.android.material:material:1.4.0")
-    implementation("com.google.android.play:core:1.10.1")
+    implementation("com.google.android.play:core:1.10.2")
     implementation("com.google.android.play:core-ktx:1.8.1")
     implementation(kotlin("reflect"))
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.2")
@@ -104,10 +104,10 @@ dependencies {
     testImplementation("androidx.test.ext:junit:1.1.3")
 
     debugImplementation("com.squareup.leakcanary:leakcanary-android:2.7")
-    debugImplementation("com.facebook.flipper:flipper:0.105.0")
+    debugImplementation("com.facebook.flipper:flipper:0.114.0")
     debugImplementation("com.facebook.soloader:soloader:0.10.1")
-    debugImplementation("com.facebook.flipper:flipper-network-plugin:0.105.0")
-    debugImplementation("com.facebook.flipper:flipper-leakcanary2-plugin:0.105.0")
+    debugImplementation("com.facebook.flipper:flipper-network-plugin:0.114.0")
+    debugImplementation("com.facebook.flipper:flipper-leakcanary2-plugin:0.114.0")
 }
 
 jacoco {
