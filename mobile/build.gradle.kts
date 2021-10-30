@@ -82,8 +82,8 @@ dependencies {
     implementation("androidx.preference:preference-ktx:1.1.1")
     implementation("androidx.browser:browser:1.3.0")
     implementation("androidx.exifinterface:exifinterface:1.3.3")
-    implementation("androidx.core:core-ktx:1.6.0")
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.3.1")
+    implementation("androidx.core:core-ktx:1.7.0")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.4.0")
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
     implementation("com.google.android.material:material:1.4.0")
     implementation("com.google.android.play:core:1.10.2")
@@ -104,10 +104,10 @@ dependencies {
     testImplementation("androidx.test.ext:junit:1.1.3")
 
     debugImplementation("com.squareup.leakcanary:leakcanary-android:2.7")
-    debugImplementation("com.facebook.flipper:flipper:0.115.0")
+    debugImplementation("com.facebook.flipper:flipper:0.117.0")
     debugImplementation("com.facebook.soloader:soloader:0.10.1")
-    debugImplementation("com.facebook.flipper:flipper-network-plugin:0.115.0")
-    debugImplementation("com.facebook.flipper:flipper-leakcanary2-plugin:0.115.0")
+    debugImplementation("com.facebook.flipper:flipper-network-plugin:0.117.0")
+    debugImplementation("com.facebook.flipper:flipper-leakcanary2-plugin:0.117.0")
 }
 
 jacoco {
