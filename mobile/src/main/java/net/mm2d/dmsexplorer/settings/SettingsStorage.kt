@@ -9,6 +9,7 @@ package net.mm2d.dmsexplorer.settings
 
 import android.content.Context
 import android.content.SharedPreferences
+import androidx.core.content.edit
 import androidx.preference.PreferenceManager
 
 /**
@@ -39,9 +40,7 @@ class SettingsStorage(context: Context) {
      * 書き込まれている内容を消去する。
      */
     fun clear() {
-        preferences.edit()
-            .clear()
-            .apply()
+        preferences.edit { clear() }
     }
 
     /**
@@ -60,9 +59,7 @@ class SettingsStorage(context: Context) {
      * @param key Key
      */
     fun remove(key: Key) {
-        preferences.edit()
-            .remove(key.name)
-            .apply()
+        preferences.edit { remove(key.name) }
     }
 
     /**
@@ -73,9 +70,7 @@ class SettingsStorage(context: Context) {
      */
     fun writeBoolean(key: Key, value: Boolean) {
         require(key.isBooleanKey) { key.name + " is not key for boolean" }
-        preferences.edit()
-            .putBoolean(key.name, value)
-            .apply()
+        preferences.edit { putBoolean(key.name, value) }
     }
 
     /**
@@ -97,9 +92,7 @@ class SettingsStorage(context: Context) {
      */
     fun writeInt(key: Key, value: Int) {
         require(key.isIntKey) { key.name + " is not key for int" }
-        preferences.edit()
-            .putInt(key.name, value)
-            .apply()
+        preferences.edit { putInt(key.name, value) }
     }
 
     /**
@@ -121,9 +114,7 @@ class SettingsStorage(context: Context) {
      */
     fun writeLong(key: Key, value: Long) {
         require(key.isLongKey) { key.name + " is not key for long" }
-        preferences.edit()
-            .putLong(key.name, value)
-            .apply()
+        preferences.edit { putLong(key.name, value) }
     }
 
     /**
@@ -145,9 +136,7 @@ class SettingsStorage(context: Context) {
      */
     fun writeString(key: Key, value: String) {
         require(key.isStringKey) { key.name + " is not key for String" }
-        preferences.edit()
-            .putString(key.name, value)
-            .apply()
+        preferences.edit { putString(key.name, value) }
     }
 
     /**
