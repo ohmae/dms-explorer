@@ -15,13 +15,12 @@ val versionMinor = 7
 val versionPatch = 59
 
 android {
-    compileSdk = 30
-    buildToolsVersion = "30.0.3"
+    compileSdk = 31
 
     defaultConfig {
         applicationId = "net.mm2d.dmsexplorer"
         minSdk = 21
-        targetSdk = 30
+        targetSdk = 31
         versionCode = versionMajor * 10000 + versionMinor * 100 + versionPatch
         versionName = "${versionMajor}.${versionMinor}.${versionPatch}"
         base.archivesName.set("${applicationName}-${versionName}")
@@ -80,7 +79,7 @@ dependencies {
     implementation("androidx.palette:palette-ktx:1.0.0")
     implementation("androidx.recyclerview:recyclerview:1.2.1")
     implementation("androidx.preference:preference-ktx:1.1.1")
-    implementation("androidx.browser:browser:1.3.0")
+    implementation("androidx.browser:browser:1.4.0")
     implementation("androidx.exifinterface:exifinterface:1.3.3")
     implementation("androidx.core:core-ktx:1.7.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.4.0")
@@ -104,10 +103,10 @@ dependencies {
     testImplementation("androidx.test.ext:junit:1.1.3")
 
     debugImplementation("com.squareup.leakcanary:leakcanary-android:2.7")
-    debugImplementation("com.facebook.flipper:flipper:0.117.0")
-    debugImplementation("com.facebook.soloader:soloader:0.10.1")
-    debugImplementation("com.facebook.flipper:flipper-network-plugin:0.117.0")
-    debugImplementation("com.facebook.flipper:flipper-leakcanary2-plugin:0.117.0")
+    debugImplementation("com.facebook.flipper:flipper:0.119.0")
+    debugImplementation("com.facebook.soloader:soloader:0.10.3")
+    debugImplementation("com.facebook.flipper:flipper-network-plugin:0.119.0")
+    debugImplementation("com.facebook.flipper:flipper-leakcanary2-plugin:0.119.0")
 }
 
 jacoco {
