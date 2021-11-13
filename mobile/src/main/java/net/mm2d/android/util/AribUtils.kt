@@ -90,7 +90,7 @@ private val array = SparseArray<String>().apply {
  */
 fun String.toDisplayableString(): String = StringBuilder().also { sb ->
     toCharArray().forEach {
-        sb.append(array.get(it.toInt(), it.toString()))
+        sb.append(array.get(it.code, it.toString()))
     }
 }.toString()
 

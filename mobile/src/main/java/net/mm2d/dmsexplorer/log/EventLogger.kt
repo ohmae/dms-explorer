@@ -102,5 +102,5 @@ object EventLogger {
         ))
     }
 
-    private fun getTypeString(type: ContentType): String = type.name.toLowerCase(Locale.ENGLISH)
+    private fun getTypeString(type: ContentType): String = type.name.lowercase(Locale.ENGLISH)
 }

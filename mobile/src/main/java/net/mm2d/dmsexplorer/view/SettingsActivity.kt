@@ -13,6 +13,7 @@ import android.content.res.Configuration
 import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
+import android.os.Looper
 import android.view.MenuItem
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
@@ -115,7 +116,7 @@ class SettingsActivity : PreferenceActivityCompat() {
         private var setFromCode: Boolean = false
 
         override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
-            val activity = activity!!
+            val activity = requireActivity()
             addPreferencesFromResource(R.xml.pref_view)
             findPreference<Preference>(Key.DARK_THEME.name)?.setOnPreferenceChangeListener { preference, _ ->
                 if (setFromCode) {
@@ -131,7 +132,7 @@ class SettingsActivity : PreferenceActivityCompat() {
                         setFromCode = true
                         switchPreference.isChecked = !checked
                         EventRouter.notifyFinish()
-                        Handler().postDelayed({ ServerListActivity.start(activity) }, 500)
+                        Handler(Looper.getMainLooper()).postDelayed({ ServerListActivity.start(activity) }, 500)
                     }
                     .setNegativeButton(R.string.cancel, null)
                     .show()
@@ -142,7 +143,7 @@ class SettingsActivity : PreferenceActivityCompat() {
 
     class ExpertPreferenceFragment : PreferenceFragmentBase(), SortDialog.OnUpdateSortSettings {
         override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
-            val activity = activity!!
+            val activity = requireActivity()
             val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(activity)
             addPreferencesFromResource(R.xml.pref_expert)
             val preferences = ORIENTATION_KEYS.mapNotNull { findPreference<ListPreference>(it) }
@@ -221,7 +222,7 @@ class SettingsActivity : PreferenceActivityCompat() {
 
     class InformationPreferenceFragment : PreferenceFragmentBase() {
         override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
-            val activity = activity!!
+            val activity = requireActivity()
             addPreferencesFromResource(R.xml.pref_information)
             findPreference<Preference>(Key.PLAY_STORE.name)?.setOnPreferenceClickListener {
                 LaunchUtils.openGooglePlay(activity, Const.PACKAGE_NAME)

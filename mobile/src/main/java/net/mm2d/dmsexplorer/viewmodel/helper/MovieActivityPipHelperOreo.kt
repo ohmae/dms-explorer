@@ -168,7 +168,7 @@ internal class MovieActivityPipHelperOreo(
                 context,
                 Const.REQUEST_CODE_ACTION_PLAY,
                 Intent(Const.ACTION_PLAY),
-                PendingIntent.FLAG_UPDATE_CURRENT
+                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
             )
 
         private fun makeNextPendingIntent(context: Context): PendingIntent =
@@ -176,7 +176,7 @@ internal class MovieActivityPipHelperOreo(
                 context,
                 Const.REQUEST_CODE_ACTION_NEXT,
                 Intent(Const.ACTION_NEXT),
-                PendingIntent.FLAG_UPDATE_CURRENT
+                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
             )
 
         private fun makePreviousPendingIntent(context: Context): PendingIntent =
@@ -184,7 +184,7 @@ internal class MovieActivityPipHelperOreo(
                 context,
                 Const.REQUEST_CODE_ACTION_PREVIOUS,
                 Intent(Const.ACTION_PREV),
-                PendingIntent.FLAG_UPDATE_CURRENT
+                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
             )
     }
 }

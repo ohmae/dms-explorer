@@ -84,7 +84,7 @@
             android:name=".view.SettingsActivity"
             android:label="@string/title_activity_settings"
             android:theme="@style/AppTheme.Settings"
-            ></activity>
+            />
         <activity
             android:name=".view.MovieActivity"
             android:configChanges="keyboardHidden|orientation|screenSize|smallestScreenSize|screenLayout"
@@ -139,7 +139,7 @@
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:launchMode="singleTop"
             android:theme="@style/DarkTheme.NoActionBar"
-            ></activity>
+            />
 
         <service
             android:name=".domain.tabs.KeepAliveService"

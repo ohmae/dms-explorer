@@ -29,8 +29,8 @@ class ServerDetailFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        val activity = activity!!
+    ): View {
+        val activity = requireActivity()
         val binding: ServerDetailFragmentBinding = DataBindingUtil
             .inflate(inflater, R.layout.server_detail_fragment, container, false)
         try {

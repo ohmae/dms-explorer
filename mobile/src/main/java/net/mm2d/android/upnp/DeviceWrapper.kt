@@ -164,7 +164,7 @@ abstract class DeviceWrapper(
      *
      * @return Locationヘッダの値
      */
-    val location: String?
+    val location: String
         get() = device.location
 
     private fun searchIcon(): Icon? {

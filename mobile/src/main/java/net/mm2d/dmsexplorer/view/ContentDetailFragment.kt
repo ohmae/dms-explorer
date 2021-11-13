@@ -30,14 +30,14 @@ class ContentDetailFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         val binding = DataBindingUtil.inflate<ContentDetailFragmentBinding>(
             inflater,
             R.layout.content_detail_fragment,
             container,
             false
         )
-        val activity = activity!!
+        val activity = requireActivity()
         try {
             model = ContentDetailFragmentModel(activity, Repository.get())
             binding.model = model

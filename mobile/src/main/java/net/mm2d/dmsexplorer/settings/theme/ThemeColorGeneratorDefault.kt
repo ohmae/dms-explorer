@@ -20,7 +20,7 @@ internal class ThemeColorGeneratorDefault : ThemeColorGenerator {
     }
 
     private fun extractSeed(title: String): Int {
-        return (if (title.isEmpty()) ' ' else title[0]).toInt()
+        return (if (title.isEmpty()) ' ' else title[0]).code
     }
 
     @ColorInt
