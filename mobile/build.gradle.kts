@@ -59,7 +59,7 @@ android {
         }
     }
     lint {
-        isAbortOnError = false
+        abortOnError = true
     }
     testOptions {
         unitTests.isIncludeAndroidResources = true
@@ -78,11 +78,11 @@ dependencies {
     implementation("androidx.constraintlayout:constraintlayout:2.1.3")
     implementation("androidx.palette:palette-ktx:1.0.0")
     implementation("androidx.recyclerview:recyclerview:1.2.1")
-    implementation("androidx.preference:preference-ktx:1.1.1")
+    implementation("androidx.preference:preference-ktx:1.2.0")
     implementation("androidx.browser:browser:1.4.0")
     implementation("androidx.exifinterface:exifinterface:1.3.3")
     implementation("androidx.core:core-ktx:1.7.0")
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.4.0")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.4.1")
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
     implementation("com.google.android.material:material:1.5.0")
     implementation("com.google.android.play:core:1.10.3")
@@ -103,14 +103,14 @@ dependencies {
     testImplementation("androidx.test.ext:junit:1.1.3")
 
     debugImplementation("com.squareup.leakcanary:leakcanary-android:2.8.1")
-    debugImplementation("com.facebook.flipper:flipper:0.129.0")
+    debugImplementation("com.facebook.flipper:flipper:0.136.0")
     debugImplementation("com.facebook.soloader:soloader:0.10.3")
-    debugImplementation("com.facebook.flipper:flipper-network-plugin:0.129.0")
-    debugImplementation("com.facebook.flipper:flipper-leakcanary2-plugin:0.129.0")
+    debugImplementation("com.facebook.flipper:flipper-network-plugin:0.136.0")
+    debugImplementation("com.facebook.flipper:flipper-leakcanary2-plugin:0.136.0")
 }
 
 jacoco {
-    toolVersion = "0.8.5"
+    toolVersion = "0.8.7"
 }
 
 tasks.create<JacocoReport>("jacocoTestReport") {

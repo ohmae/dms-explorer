@@ -23,7 +23,7 @@ abstract class PreferenceFragmentBase : PreferenceFragmentCompat() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         val view = super.onCreateView(inflater, container, savedInstanceState)
         listView.overScrollMode = RecyclerView.OVER_SCROLL_NEVER
         ViewLayoutUtils.setPaddingBottom(container!!, 0)
