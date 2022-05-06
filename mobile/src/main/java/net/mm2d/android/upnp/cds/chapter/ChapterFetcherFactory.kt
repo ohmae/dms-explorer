@@ -14,7 +14,11 @@ import net.mm2d.android.upnp.cds.CdsObject
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
  */
 object ChapterFetcherFactory {
-    private val FACTORIES = arrayOf(SonyFetcherFactory(), PanasonicFetcherFactory())
+    private val FACTORIES = arrayOf(
+        SonyFetcherFactory(),
+        PanasonicFetcherFactory(),
+        SharpFetcherFactory(),
+    )
 
     fun create(cdsObject: CdsObject): Single<List<Int>> =
         FACTORIES.asSequence()
