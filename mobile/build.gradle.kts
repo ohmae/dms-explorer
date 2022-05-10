@@ -19,6 +19,7 @@ val versionPatch = 61
 android {
     compileSdk = 31
 
+    namespace = "net.mm2d.dmsexplorer"
     defaultConfig {
         applicationId = "net.mm2d.dmsexplorer"
         minSdk = 21
@@ -105,10 +106,10 @@ dependencies {
     testImplementation("androidx.test.ext:junit:1.1.3")
 
     debugImplementation("com.squareup.leakcanary:leakcanary-android:2.9.1")
-    debugImplementation("com.facebook.flipper:flipper:0.144.0")
+    debugImplementation("com.facebook.flipper:flipper:0.145.0")
     debugImplementation("com.facebook.soloader:soloader:0.10.3")
-    debugImplementation("com.facebook.flipper:flipper-network-plugin:0.144.0")
-    debugImplementation("com.facebook.flipper:flipper-leakcanary2-plugin:0.144.0")
+    debugImplementation("com.facebook.flipper:flipper-network-plugin:0.145.0")
+    debugImplementation("com.facebook.flipper:flipper-leakcanary2-plugin:0.145.0")
 
     // for release
 }
