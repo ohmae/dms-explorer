@@ -72,6 +72,7 @@ android {
 tasks.withType<Test> {
     configure<JacocoTaskExtension> {
         isIncludeNoLocationClasses = true
+        excludes = listOf("jdk.internal.*")
     }
 }
 
@@ -127,7 +128,7 @@ tasks.create<JacocoReport>("jacocoTestReport") {
     }
     sourceDirectories.setFrom("${projectDir}/src/main/java")
     classDirectories.setFrom(fileTree("${buildDir}/tmp/kotlin-classes/debug"))
-    executionData.setFrom("${buildDir}/jacoco/testDebugUnitTest.exec")
+    executionData.setFrom("${buildDir}/outputs/unit_test_code_coverage/debugUnitTest/testDebugUnitTest.exec")
 }
 
 fun isStable(version: String): Boolean {
