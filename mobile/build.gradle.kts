@@ -30,6 +30,26 @@ android {
         vectorDrawables.useSupportLibrary = true
         multiDexEnabled = true
     }
+    applicationVariants.all {
+        if (buildType.name == "release") {
+            outputs.all {
+                (this as BaseVariantOutputImpl).outputFileName = "${applicationName}-${versionName}.apk"
+            }
+        }
+    }
+    buildTypes {
+        debug {
+            isDebuggable = true
+            applicationIdSuffix = ".debug"
+            versionNameSuffix = "d"
+            isTestCoverageEnabled = true
+        }
+        release {
+            isShrinkResources = true
+            isMinifyEnabled = true
+            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+        }
+    }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
@@ -41,38 +61,11 @@ android {
         dataBinding = true
         viewBinding = true
     }
-    buildTypes {
-        getByName("debug") {
-            isDebuggable = true
-            applicationIdSuffix = ".debug"
-            versionNameSuffix = "d"
-            isTestCoverageEnabled = true
-        }
-        getByName("release") {
-            isShrinkResources = true
-            isMinifyEnabled = true
-            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
-        }
-    }
-    applicationVariants.all {
-        if (buildType.name == "release") {
-            outputs.all {
-                (this as BaseVariantOutputImpl).outputFileName = "${applicationName}-${versionName}.apk"
-            }
-        }
-    }
     lint {
         abortOnError = true
     }
     testOptions {
         unitTests.isIncludeAndroidResources = true
-    }
-}
-
-tasks.withType<Test> {
-    configure<JacocoTaskExtension> {
-        isIncludeNoLocationClasses = true
-        excludes = listOf("jdk.internal.*")
     }
 }
 
@@ -107,16 +100,23 @@ dependencies {
     testImplementation("androidx.test.ext:junit:1.1.3")
 
     debugImplementation("com.squareup.leakcanary:leakcanary-android:2.9.1")
-    debugImplementation("com.facebook.flipper:flipper:0.147.1")
+    debugImplementation("com.facebook.flipper:flipper:0.148.0")
     debugImplementation("com.facebook.soloader:soloader:0.10.3")
-    debugImplementation("com.facebook.flipper:flipper-network-plugin:0.147.1")
-    debugImplementation("com.facebook.flipper:flipper-leakcanary2-plugin:0.147.1")
+    debugImplementation("com.facebook.flipper:flipper-network-plugin:0.148.0")
+    debugImplementation("com.facebook.flipper:flipper-leakcanary2-plugin:0.148.0")
 
     // for release
 }
 
 jacoco {
     toolVersion = "0.8.8"
+}
+
+tasks.withType<Test> {
+    configure<JacocoTaskExtension> {
+        isIncludeNoLocationClasses = true
+        excludes = listOf("jdk.internal.*")
+    }
 }
 
 tasks.create<JacocoReport>("jacocoTestReport") {
