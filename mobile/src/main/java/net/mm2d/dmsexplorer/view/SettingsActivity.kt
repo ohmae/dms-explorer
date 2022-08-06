@@ -14,7 +14,6 @@ import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.view.MenuItem
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.preference.*
@@ -74,12 +73,9 @@ class SettingsActivity : PreferenceActivityCompat() {
             || ExpertPreferenceFragment::class.java.name == fragmentName
             || InformationPreferenceFragment::class.java.name == fragmentName)
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == android.R.id.home) {
-            onBackPressed()
-            return true
-        }
-        return super.onOptionsItemSelected(item)
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressedDispatcher.onBackPressed()
+        return true
     }
 
     class PlaybackPreferenceFragment : PreferenceFragmentBase() {
