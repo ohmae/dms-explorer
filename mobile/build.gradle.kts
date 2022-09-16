@@ -70,7 +70,7 @@ android {
 }
 
 dependencies {
-    implementation("androidx.appcompat:appcompat:1.4.2")
+    implementation("androidx.appcompat:appcompat:1.5.1")
     implementation("androidx.cardview:cardview:1.0.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     implementation("androidx.palette:palette-ktx:1.0.0")
@@ -78,9 +78,9 @@ dependencies {
     implementation("androidx.preference:preference-ktx:1.2.0")
     implementation("androidx.browser:browser:1.4.0")
     implementation("androidx.activity:activity-ktx:1.5.1")
-    implementation("androidx.fragment:fragment-ktx:1.5.1")
+    implementation("androidx.fragment:fragment-ktx:1.5.2")
     implementation("androidx.exifinterface:exifinterface:1.3.3")
-    implementation("androidx.core:core-ktx:1.8.0")
+    implementation("androidx.core:core-ktx:1.9.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.5.1")
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
     implementation("com.google.android.material:material:1.6.1")
@@ -96,16 +96,16 @@ dependencies {
     implementation("io.reactivex.rxjava2:rxkotlin:2.4.0")
 
     testImplementation("junit:junit:4.13.2")
-    testImplementation("io.mockk:mockk:1.12.5")
+    testImplementation("io.mockk:mockk:1.12.8")
     testImplementation("com.google.truth:truth:1.1.3")
-    testImplementation("org.robolectric:robolectric:4.8.1")
+    testImplementation("org.robolectric:robolectric:4.8.2")
     testImplementation("androidx.test.ext:junit:1.1.3")
 
     debugImplementation("com.squareup.leakcanary:leakcanary-android:2.9.1")
-    debugImplementation("com.facebook.flipper:flipper:0.157.0")
+    debugImplementation("com.facebook.flipper:flipper:0.164.0")
     debugImplementation("com.facebook.soloader:soloader:0.10.4")
-    debugImplementation("com.facebook.flipper:flipper-network-plugin:0.157.0")
-    debugImplementation("com.facebook.flipper:flipper-leakcanary2-plugin:0.157.0")
+    debugImplementation("com.facebook.flipper:flipper-network-plugin:0.164.0")
+    debugImplementation("com.facebook.flipper:flipper-leakcanary2-plugin:0.164.0")
 
     // for release
 }
