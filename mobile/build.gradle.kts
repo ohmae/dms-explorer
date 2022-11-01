@@ -42,7 +42,7 @@ android {
             isDebuggable = true
             applicationIdSuffix = ".debug"
             versionNameSuffix = "d"
-            isTestCoverageEnabled = true
+            enableAndroidTestCoverage = true
         }
         release {
             isShrinkResources = true
@@ -77,9 +77,9 @@ dependencies {
     implementation("androidx.recyclerview:recyclerview:1.2.1")
     implementation("androidx.preference:preference-ktx:1.2.0")
     implementation("androidx.browser:browser:1.4.0")
-    implementation("androidx.activity:activity-ktx:1.6.0")
-    implementation("androidx.fragment:fragment-ktx:1.5.3")
-    implementation("androidx.exifinterface:exifinterface:1.3.4")
+    implementation("androidx.activity:activity-ktx:1.6.1")
+    implementation("androidx.fragment:fragment-ktx:1.5.4")
+    implementation("androidx.exifinterface:exifinterface:1.3.5")
     implementation("androidx.core:core-ktx:1.9.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.5.1")
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
@@ -102,10 +102,10 @@ dependencies {
     testImplementation("androidx.test.ext:junit:1.1.3")
 
     debugImplementation("com.squareup.leakcanary:leakcanary-android:2.9.1")
-    debugImplementation("com.facebook.flipper:flipper:0.171.1")
+    debugImplementation("com.facebook.flipper:flipper:0.173.0")
     debugImplementation("com.facebook.soloader:soloader:0.10.4")
-    debugImplementation("com.facebook.flipper:flipper-network-plugin:0.171.1")
-    debugImplementation("com.facebook.flipper:flipper-leakcanary2-plugin:0.171.1")
+    debugImplementation("com.facebook.flipper:flipper-network-plugin:0.173.0")
+    debugImplementation("com.facebook.flipper:flipper-leakcanary2-plugin:0.173.0")
 
     // for release
 }
