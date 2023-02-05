@@ -55,7 +55,7 @@ abstract class BaseActivity @JvmOverloads constructor(
     open fun navigateUpTo() {
         val upIntent = NavUtils.getParentActivityIntent(this)
         if (upIntent == null) {
-            onBackPressed()
+            onBackPressedDispatcher.onBackPressed()
             return
         }
         if (NavUtils.shouldUpRecreateTask(this, upIntent)) {
@@ -75,14 +75,6 @@ abstract class BaseActivity @JvmOverloads constructor(
 
     override fun onPrepareOptionsMenu(menu: Menu): Boolean =
         delegate.onPrepareOptionsMenu(menu) || super.onPrepareOptionsMenu(menu)
-
-    override fun onBackPressed() {
-        try {
-            super.onBackPressed()
-        } catch (ignored: IllegalStateException) {
-            finishAfterTransition()
-        }
-    }
 
     protected open fun updateOrientationSettings() {}
 

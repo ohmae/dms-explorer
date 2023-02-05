@@ -69,6 +69,7 @@ internal class MovieActivityPipHelperOreo(
                     activity.packageName
                 )
             } else {
+                @Suppress("DEPRECATION")
                 appOps.checkOpNoThrow(
                     AppOpsManager.OPSTR_PICTURE_IN_PICTURE,
                     android.os.Process.myUid(),

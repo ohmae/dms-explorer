@@ -71,6 +71,9 @@ class MovieActivity : BaseActivity() {
         binding.root.addOnLayoutChangeListener { _, _, _, _, _, _, _, _, _ ->
             model.adjustPanel(this)
         }
+        addOnPictureInPictureModeChangedListener {
+            fullscreenHelper.onPictureInPictureModeChanged(it.isInPictureInPictureMode)
+        }
     }
 
     override fun onDestroy() {
@@ -87,11 +90,6 @@ class MovieActivity : BaseActivity() {
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
         model?.updateTargetModel()
-    }
-
-    override fun onPictureInPictureModeChanged(isInPictureInPictureMode: Boolean) {
-        super.onPictureInPictureModeChanged(isInPictureInPictureMode)
-        fullscreenHelper.onPictureInPictureModeChanged(isInPictureInPictureMode)
     }
 
     override fun dispatchKeyEvent(event: KeyEvent): Boolean {

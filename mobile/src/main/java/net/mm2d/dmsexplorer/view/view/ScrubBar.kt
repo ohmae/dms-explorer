@@ -24,8 +24,6 @@ import androidx.annotation.Dimension
 import androidx.annotation.IntDef
 import java.util.*
 import kotlin.math.abs
-import kotlin.math.max
-import kotlin.math.min
 
 /**
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
@@ -98,13 +96,13 @@ class ScrubBar @JvmOverloads constructor(
         set(progress) = setProgressInternal(progress, false)
 
     var max: Int = 0
-        set(max) {
-            val max = max(0, max)
+        set(value) {
+            val max = value.coerceAtLeast(0)
             if (max == this.max) {
                 return
             }
             field = max
-            _progress = min(_progress, max)
+            _progress = _progress.coerceAtMost(max)
             invalidate()
         }
 
@@ -386,12 +384,12 @@ class ScrubBar @JvmOverloads constructor(
         progress: Int,
         fromUser: Boolean
     ) {
-        val progress = progress.coerceIn(0, max)
-        if (progress == _progress) {
+        val newProgress = progress.coerceIn(0, max)
+        if (newProgress == _progress) {
             return
         }
-        _progress = progress
-        scrubBarListener.onProgressChanged(this, progress, fromUser)
+        _progress = newProgress
+        scrubBarListener.onProgressChanged(this, newProgress, fromUser)
         invalidate()
     }
 
