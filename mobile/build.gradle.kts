@@ -77,11 +77,11 @@ dependencies {
     implementation("androidx.recyclerview:recyclerview:1.3.0")
     implementation("androidx.preference:preference-ktx:1.2.0")
     implementation("androidx.browser:browser:1.5.0")
-    implementation("androidx.activity:activity-ktx:1.6.1")
-    implementation("androidx.fragment:fragment-ktx:1.5.5")
+    implementation("androidx.activity:activity-ktx:1.7.0")
+    implementation("androidx.fragment:fragment-ktx:1.5.6")
     implementation("androidx.exifinterface:exifinterface:1.3.6")
     implementation("androidx.core:core-ktx:1.9.0")
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.0")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.1")
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
     implementation("com.google.android.material:material:1.8.0")
     implementation("com.google.android.play:core:1.10.3")
@@ -102,10 +102,10 @@ dependencies {
     testImplementation("androidx.test.ext:junit:1.1.5")
 
     debugImplementation("com.squareup.leakcanary:leakcanary-android:2.10")
-    debugImplementation("com.facebook.flipper:flipper:0.186.0")
+    debugImplementation("com.facebook.flipper:flipper:0.187.1")
     debugImplementation("com.facebook.soloader:soloader:0.10.5")
-    debugImplementation("com.facebook.flipper:flipper-network-plugin:0.186.0")
-    debugImplementation("com.facebook.flipper:flipper-leakcanary2-plugin:0.186.0")
+    debugImplementation("com.facebook.flipper:flipper-network-plugin:0.187.1")
+    debugImplementation("com.facebook.flipper:flipper-leakcanary2-plugin:0.187.1")
 
     // for release
 }
