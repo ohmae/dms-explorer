@@ -84,20 +84,20 @@ class IntroductoryOverlay private constructor(
         }
         isVisible = true
         adjustNavigation()
-        ViewUtils.execAfterAllocateSize(view, {
+        ViewUtils.execAfterAllocateSize(view) {
             setUpDrawingParam()
             setUpAnimation()
             (activity.window.decorView as ViewGroup).addView(this)
             postDelayed(removeTask, timeout)
-        })
+        }
     }
 
     override fun onConfigurationChanged(newConfig: Configuration) {
         adjustNavigation()
-        ViewUtils.execOnLayout(view, {
+        ViewUtils.execOnLayout(view) {
             setUpDrawingParam()
             invalidate()
-        })
+        }
     }
 
     private fun setUpAnimation() {

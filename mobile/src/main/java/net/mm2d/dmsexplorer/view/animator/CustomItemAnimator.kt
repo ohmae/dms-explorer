@@ -141,7 +141,7 @@ class CustomItemAnimator(context: Context) : SimpleItemAnimator() {
             pendingAdditions.clear()
             val adder = Runnable {
                 var delay = addAnimations.size * ADDING_ANIMATION_DELAY
-                additions.sortWith({ o1, o2 -> o1.adapterPosition - o2.adapterPosition })
+                additions.sortWith { o1, o2 -> o1.absoluteAdapterPosition - o2.absoluteAdapterPosition }
                 for (holder in additions) {
                     animateAddImpl(holder, delay)
                     delay = minOf(delay + ADDING_ANIMATION_DELAY, ADDING_ANIMATION_DELAY_MAX)
