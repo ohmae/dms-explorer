@@ -9,8 +9,6 @@ package net.mm2d.dmsexplorer.settings.theme
 
 import androidx.annotation.DrawableRes
 import net.mm2d.dmsexplorer.R
-import net.mm2d.dmsexplorer.settings.theme.ThemeParams.PreferenceHeaderConverter
-import net.mm2d.preference.Header
 
 /**
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
@@ -24,10 +22,7 @@ enum class Theme(val params: ThemeParams) {
             popupThemeId = R.style.AppTheme_PopupOverlay,
             fullscreenThemeId = R.style.AppTheme_FullScreen,
             settingsThemeId = R.style.AppTheme_Settings,
-            preferenceHeaderConverter = object : PreferenceHeaderConverter {
-                override fun convert(headers: List<Header>) {
-                }
-            },
+            preferenceHeaderConverter = { },
             themeColorGenerator = ThemeColorGeneratorDefault(),
             serverColorExtractor = ServerColorExtractorDefault()
         )
@@ -40,11 +35,9 @@ enum class Theme(val params: ThemeParams) {
             popupThemeId = R.style.DarkTheme_PopupOverlay,
             fullscreenThemeId = R.style.DarkTheme_FullScreen,
             settingsThemeId = R.style.DarkTheme_Settings,
-            preferenceHeaderConverter = object : PreferenceHeaderConverter {
-                override fun convert(headers: List<Header>) {
-                    for (header in headers) {
-                        header.iconRes = convertIcon(header.iconRes)
-                    }
+            preferenceHeaderConverter = { headers ->
+                for (header in headers) {
+                    header.iconRes = convertIcon(header.iconRes)
                 }
             },
             themeColorGenerator = ThemeColorGeneratorDark(),
