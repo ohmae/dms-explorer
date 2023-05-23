@@ -60,7 +60,8 @@ class PhotoActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.photo_activity)
         fullscreenHelper = FullscreenHelper(
-            rootView = binding.getRoot(),
+            window = window,
+            rootView = binding.root,
             topView = binding.toolbar
         )
         repository = Repository.get()

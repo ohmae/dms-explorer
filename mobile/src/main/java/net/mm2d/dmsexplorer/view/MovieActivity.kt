@@ -40,7 +40,8 @@ class MovieActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.movie_activity)
         fullscreenHelper = FullscreenHelper(
-            rootView = binding.getRoot(),
+            window = window,
+            rootView = binding.root,
             topView = binding.toolbar,
             bottomView = binding.controlPanel.root
         )
