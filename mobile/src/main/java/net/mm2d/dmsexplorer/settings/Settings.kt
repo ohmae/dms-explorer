@@ -245,13 +245,6 @@ class Settings private constructor(
     }
 
     /**
-     * アップデートファイルを取得した時刻を更新する。
-     */
-    fun setUpdateFetchTime() {
-        storage.writeLong(Key.UPDATE_FETCH_TIME, System.currentTimeMillis())
-    }
-
-    /**
      * 動画再生の最初にUIを表示するか
      *
      * @return 動画再生の最初にUIを表示するときtrue
