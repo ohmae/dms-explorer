@@ -4,9 +4,9 @@ import java.util.Locale
 
 plugins {
     id("com.android.application")
-    kotlin("android")
-    kotlin("kapt")
-    jacoco
+    id("org.jetbrains.kotlin.android")
+    id("org.jetbrains.kotlin.kapt")
+    id("org.gradle.jacoco")
     id("com.github.ben-manes.versions")
 
     // for release
