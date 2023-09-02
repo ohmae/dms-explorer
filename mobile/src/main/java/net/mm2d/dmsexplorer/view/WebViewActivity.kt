@@ -32,13 +32,13 @@ import net.mm2d.dmsexplorer.view.base.BaseActivity
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
  */
 class WebViewActivity : BaseActivity() {
+    private lateinit var binding: WebViewActivityBinding
 
     @SuppressLint("SetJavaScriptEnabled", "ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(Settings.get().themeParams.noActionBarThemeId)
         super.onCreate(savedInstanceState)
-        val binding = DataBindingUtil
-            .setContentView<WebViewActivityBinding>(this, R.layout.web_view_activity)
+        binding = DataBindingUtil.setContentView(this, R.layout.web_view_activity)
         val intent = intent
         setSupportActionBar(binding.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
@@ -81,13 +81,22 @@ class WebViewActivity : BaseActivity() {
                 return true
             }
         }
-        webView.loadUrl(intent.getStringExtra(KEY_URL) ?: "")
         webView.setOnTouchListener { _, event ->
             if (event.action == MotionEvent.ACTION_UP) {
                 settleAppBar(binding.appBar)
             }
             false
         }
+        if (savedInstanceState == null) {
+            webView.loadUrl(intent.getStringExtra(KEY_URL) ?: "")
+        } else {
+            webView.restoreState(savedInstanceState)
+        }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        binding.webView.saveState(outState)
     }
 
     private fun settleAppBar(appBar: AppBarLayout) {
