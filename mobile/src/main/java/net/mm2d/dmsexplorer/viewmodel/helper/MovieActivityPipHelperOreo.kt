@@ -21,6 +21,7 @@ import android.view.View
 import androidx.annotation.DrawableRes
 import androidx.annotation.RequiresApi
 import androidx.annotation.StringRes
+import androidx.core.content.ContextCompat
 import net.mm2d.dmsexplorer.Const
 import net.mm2d.dmsexplorer.R
 import net.mm2d.dmsexplorer.viewmodel.ControlPanelModel
@@ -82,7 +83,12 @@ internal class MovieActivityPipHelperOreo(
     }
 
     override fun register() {
-        activity.registerReceiver(controlReceiver, makeIntentFilter())
+        ContextCompat.registerReceiver(
+            activity,
+            controlReceiver,
+            makeIntentFilter(),
+            ContextCompat.RECEIVER_EXPORTED
+        )
     }
 
     private fun makeIntentFilter(): IntentFilter = IntentFilter().also {

@@ -47,7 +47,7 @@ class SelectRendererDialog : DialogFragment() {
             ItemSelectUtils.sendSelectedRenderer(activity)
             dismiss()
         }
-        val inflater = LayoutInflater.from(activity)
+        val inflater = activity.layoutInflater
         val binding = DataBindingUtil.inflate<RendererSelectDialogBinding>(
             inflater,
             R.layout.renderer_select_dialog, null, false
