@@ -15,7 +15,7 @@ plugins {
 val applicationName = "DmsExplorer"
 val versionMajor = 0
 val versionMinor = 7
-val versionPatch = 66
+val versionPatch = 67
 
 android {
     compileSdk = 34
