@@ -69,7 +69,7 @@ class ContentDetailFragmentModel(
     fun getPlayBackgroundTint(): Int = if (isProtected)
         AttrUtils.resolveColor(activity, R.attr.themeFabDisable, Color.BLACK)
     else
-        AttrUtils.resolveColor(activity, R.attr.colorAccent, Color.BLACK)
+        AttrUtils.resolveColor(activity, androidx.appcompat.R.attr.colorAccent, Color.BLACK)
 
     init {
         val model = repository.mediaServerModel ?: throw IllegalStateException()

@@ -46,7 +46,7 @@ class WebViewActivity : BaseActivity() {
 
         Repository.get().themeModel.setThemeColor(
             this,
-            AttrUtils.resolveColor(this, R.attr.colorPrimary, Color.BLACK),
+            AttrUtils.resolveColor(this, androidx.appcompat.R.attr.colorPrimary, Color.BLACK),
             ContextCompat.getColor(this, R.color.defaultStatusBar)
         )
 

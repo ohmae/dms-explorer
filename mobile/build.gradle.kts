@@ -81,8 +81,8 @@ dependencies {
     implementation("androidx.palette:palette-ktx:1.0.0")
     implementation("androidx.recyclerview:recyclerview:1.3.2")
     implementation("androidx.preference:preference-ktx:1.2.1")
-    implementation("androidx.browser:browser:1.6.0")
-    implementation("androidx.activity:activity-ktx:1.8.0")
+    implementation("androidx.browser:browser:1.7.0")
+    implementation("androidx.activity:activity-ktx:1.8.1")
     implementation("androidx.fragment:fragment-ktx:1.6.2")
     implementation("androidx.exifinterface:exifinterface:1.3.6")
     implementation("androidx.core:core-ktx:1.12.0")
@@ -106,10 +106,10 @@ dependencies {
     testImplementation("androidx.test.ext:junit:1.1.5")
 
     debugImplementation("com.squareup.leakcanary:leakcanary-android:2.12")
-    debugImplementation("com.facebook.flipper:flipper:0.237.0")
+    debugImplementation("com.facebook.flipper:flipper:0.238.0")
     debugImplementation("com.facebook.soloader:soloader:0.10.5")
-    debugImplementation("com.facebook.flipper:flipper-network-plugin:0.237.0")
-    debugImplementation("com.facebook.flipper:flipper-leakcanary2-plugin:0.237.0")
+    debugImplementation("com.facebook.flipper:flipper-network-plugin:0.238.0")
+    debugImplementation("com.facebook.flipper:flipper-leakcanary2-plugin:0.238.0")
 
     // for release
 }
@@ -133,8 +133,8 @@ tasks.create<JacocoReport>("jacocoTestReport") {
         html.required.set(true)
     }
     sourceDirectories.setFrom("${projectDir}/src/main/java")
-    classDirectories.setFrom(fileTree("${buildDir}/tmp/kotlin-classes/debug"))
-    executionData.setFrom("${buildDir}/outputs/unit_test_code_coverage/debugUnitTest/testDebugUnitTest.exec")
+    classDirectories.setFrom(fileTree("${layout.buildDirectory}/tmp/kotlin-classes/debug"))
+    executionData.setFrom("${layout.buildDirectory}/outputs/unit_test_code_coverage/debugUnitTest/testDebugUnitTest.exec")
 }
 
 fun isStable(version: String): Boolean {
