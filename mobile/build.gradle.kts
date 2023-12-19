@@ -8,6 +8,7 @@ plugins {
     id("org.jetbrains.kotlin.kapt")
     id("org.gradle.jacoco")
     id("com.github.ben-manes.versions")
+    id("org.jetbrains.kotlinx.kover")
 
     // for release
 }
@@ -73,6 +74,8 @@ android {
     }
 }
 
+val ktlint by configurations.creating
+
 dependencies {
     implementation(kotlin("reflect"))
     implementation("androidx.appcompat:appcompat:1.6.1")
@@ -82,13 +85,13 @@ dependencies {
     implementation("androidx.recyclerview:recyclerview:1.3.2")
     implementation("androidx.preference:preference-ktx:1.2.1")
     implementation("androidx.browser:browser:1.7.0")
-    implementation("androidx.activity:activity-ktx:1.8.1")
+    implementation("androidx.activity:activity-ktx:1.8.2")
     implementation("androidx.fragment:fragment-ktx:1.6.2")
-    implementation("androidx.exifinterface:exifinterface:1.3.6")
+    implementation("androidx.exifinterface:exifinterface:1.3.7")
     implementation("androidx.core:core-ktx:1.12.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.2")
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
-    implementation("com.google.android.material:material:1.10.0")
+    implementation("com.google.android.material:material:1.11.0")
     implementation("com.google.android.play:core:1.10.3")
     implementation("com.google.android.play:core-ktx:1.8.1")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
@@ -106,35 +109,50 @@ dependencies {
     testImplementation("androidx.test.ext:junit:1.1.5")
 
     debugImplementation("com.squareup.leakcanary:leakcanary-android:2.12")
-    debugImplementation("com.facebook.flipper:flipper:0.240.0")
+    debugImplementation("com.facebook.flipper:flipper:0.242.0")
     debugImplementation("com.facebook.soloader:soloader:0.10.5")
-    debugImplementation("com.facebook.flipper:flipper-network-plugin:0.240.0")
-    debugImplementation("com.facebook.flipper:flipper-leakcanary2-plugin:0.240.0")
+    debugImplementation("com.facebook.flipper:flipper-network-plugin:0.242.0")
+    debugImplementation("com.facebook.flipper:flipper-leakcanary2-plugin:0.242.0")
+
+    ktlint("com.pinterest.ktlint:ktlint-cli:1.0.1") {
+        attributes {
+            attribute(Bundling.BUNDLING_ATTRIBUTE, objects.named(Bundling.EXTERNAL))
+        }
+    }
 
     // for release
 }
 
-jacoco {
-    toolVersion = "0.8.10"
+val ktlintCheck by tasks.registering(JavaExec::class) {
+    group = LifecycleBasePlugin.VERIFICATION_GROUP
+    description = "Check Kotlin code style"
+    classpath = ktlint
+    mainClass.set("com.pinterest.ktlint.Main")
+    args(
+        "**/src/**/*.kt",
+        "**.kts",
+        "!**/build/**",
+    )
+    isIgnoreExitValue = true
 }
 
-tasks.withType<Test> {
-    configure<JacocoTaskExtension> {
-        isIncludeNoLocationClasses = true
-        excludes = listOf("jdk.internal.*")
-    }
+tasks.named<DefaultTask>("check") {
+    dependsOn(ktlintCheck)
 }
 
-tasks.create<JacocoReport>("jacocoTestReport") {
-    group = "verification"
-    dependsOn("testDebugUnitTest")
-    reports {
-        xml.required.set(true)
-        html.required.set(true)
-    }
-    sourceDirectories.setFrom("${projectDir}/src/main/java")
-    classDirectories.setFrom(fileTree("${layout.buildDirectory}/tmp/kotlin-classes/debug"))
-    executionData.setFrom("${layout.buildDirectory}/outputs/unit_test_code_coverage/debugUnitTest/testDebugUnitTest.exec")
+tasks.register<JavaExec>("ktlintFormat") {
+    group = LifecycleBasePlugin.VERIFICATION_GROUP
+    description = "Check Kotlin code style and format"
+    classpath = ktlint
+    mainClass.set("com.pinterest.ktlint.Main")
+    jvmArgs("--add-opens=java.base/java.lang=ALL-UNNAMED")
+    args(
+        "-F",
+        "**/src/**/*.kt",
+        "**.kts",
+        "!**/build/**",
+    )
+    isIgnoreExitValue = true
 }
 
 fun isStable(version: String): Boolean {
