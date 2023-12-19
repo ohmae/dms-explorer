@@ -8,7 +8,6 @@
 package net.mm2d.dmsexplorer.settings.theme
 
 import androidx.annotation.StyleRes
-
 import net.mm2d.preference.Header
 
 /**
@@ -28,7 +27,7 @@ class ThemeParams(
     val popupThemeId: Int,
     val preferenceHeaderConverter: PreferenceHeaderConverter,
     val themeColorGenerator: ThemeColorGenerator,
-    val serverColorExtractor: ServerColorExtractor
+    val serverColorExtractor: ServerColorExtractor,
 ) {
     fun interface PreferenceHeaderConverter {
         fun convert(headers: List<Header>)

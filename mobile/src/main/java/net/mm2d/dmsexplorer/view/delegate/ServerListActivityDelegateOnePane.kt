@@ -27,7 +27,7 @@ import net.mm2d.dmsexplorer.view.base.BaseActivity
  */
 internal class ServerListActivityDelegateOnePane(
     activity: BaseActivity,
-    binding: ServerListActivityBinding
+    binding: ServerListActivityBinding,
 ) : ServerListActivityDelegate(activity, binding) {
     private var hasReenterTransition: Boolean = false
     override val isTwoPane: Boolean = false
@@ -54,7 +54,7 @@ internal class ServerListActivityDelegateOnePane(
         activity.setExitSharedElementCallback(object : SharedElementCallback() {
             override fun onMapSharedElements(
                 names: List<String>,
-                sharedElements: MutableMap<String, View>
+                sharedElements: MutableMap<String, View>,
             ) {
                 sharedElements.clear()
                 binding.model?.findSharedView()?.let {
@@ -93,7 +93,8 @@ internal class ServerListActivityDelegateOnePane(
         val intent = ServerDetailActivity.makeIntent(activity)
         val accent = v.findViewById<View>(R.id.accent)
         val option = ActivityOptions.makeSceneTransitionAnimation(
-            activity, Pair(accent, Const.SHARE_ELEMENT_NAME_DEVICE_ICON)
+            activity,
+            Pair(accent, Const.SHARE_ELEMENT_NAME_DEVICE_ICON),
         ).toBundle()
         activity.startActivity(intent, option)
         hasReenterTransition = true

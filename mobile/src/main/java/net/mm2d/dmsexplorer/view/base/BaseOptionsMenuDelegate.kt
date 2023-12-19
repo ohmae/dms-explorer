@@ -15,7 +15,7 @@ import android.view.MenuItem
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
  */
 internal class BaseOptionsMenuDelegate(
-    private val activity: BaseActivity
+    private val activity: BaseActivity,
 ) : OptionsMenuDelegate {
     override fun onCreate(savedInstanceState: Bundle?) = Unit
     override fun onDestroy() = Unit

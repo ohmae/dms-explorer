@@ -32,13 +32,13 @@ import net.mm2d.log.Logger
  */
 @RequiresApi(api = Build.VERSION_CODES.O)
 internal class MovieActivityPipHelperOreo(
-    private val activity: Activity
+    private val activity: Activity,
 ) : MovieActivityPipHelper {
     private var controlPanelModel: ControlPanelModel? = null
     private val controlReceiver = object : BroadcastReceiver() {
         override fun onReceive(
             context: Context,
-            intent: Intent
+            intent: Intent,
         ) {
             val action = intent.action
             val model = controlPanelModel
@@ -51,7 +51,7 @@ internal class MovieActivityPipHelperOreo(
                     activity.setPictureInPictureParams(
                         PictureInPictureParams.Builder()
                             .setActions(makeActions(model.isPlaying))
-                            .build()
+                            .build(),
                     )
                 }
                 Const.ACTION_NEXT -> model.onClickNext()
@@ -67,14 +67,14 @@ internal class MovieActivityPipHelperOreo(
                 appOps.unsafeCheckOpNoThrow(
                     AppOpsManager.OPSTR_PICTURE_IN_PICTURE,
                     android.os.Process.myUid(),
-                    activity.packageName
+                    activity.packageName,
                 )
             } else {
                 @Suppress("DEPRECATION")
                 appOps.checkOpNoThrow(
                     AppOpsManager.OPSTR_PICTURE_IN_PICTURE,
                     android.os.Process.myUid(),
-                    activity.packageName
+                    activity.packageName,
                 )
             } == AppOpsManager.MODE_ALLOWED
         } catch (ignored: Exception) {
@@ -87,7 +87,7 @@ internal class MovieActivityPipHelperOreo(
             activity,
             controlReceiver,
             makeIntentFilter(),
-            ContextCompat.RECEIVER_EXPORTED
+            ContextCompat.RECEIVER_EXPORTED,
         )
     }
 
@@ -137,28 +137,30 @@ internal class MovieActivityPipHelperOreo(
         }
         return if (max >= 3) {
             listOf(makePreviousAction(), makePlayAction(isPlaying), makeNextAction())
-        } else listOf(makePlayAction(isPlaying))
+        } else {
+            listOf(makePlayAction(isPlaying))
+        }
     }
 
     private fun makePlayAction(isPlaying: Boolean): RemoteAction = RemoteAction(
         makeIcon(if (isPlaying) R.drawable.ic_pause else R.drawable.ic_play),
         getString(R.string.action_play_title),
         getString(R.string.action_play_description),
-        makePlayPendingIntent(activity)
+        makePlayPendingIntent(activity),
     )
 
     private fun makeNextAction(): RemoteAction = RemoteAction(
         makeIcon(R.drawable.ic_skip_next),
         getString(R.string.action_next_title),
         getString(R.string.action_next_description),
-        makeNextPendingIntent(activity)
+        makeNextPendingIntent(activity),
     )
 
     private fun makePreviousAction(): RemoteAction = RemoteAction(
         makeIcon(R.drawable.ic_skip_previous),
         getString(R.string.action_previous_title),
         getString(R.string.action_previous_description),
-        makePreviousPendingIntent(activity)
+        makePreviousPendingIntent(activity),
     )
 
     private fun getString(@StringRes resId: Int): String =
@@ -175,7 +177,7 @@ internal class MovieActivityPipHelperOreo(
                 context,
                 Const.REQUEST_CODE_ACTION_PLAY,
                 Intent(Const.ACTION_PLAY),
-                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE,
             )
 
         private fun makeNextPendingIntent(context: Context): PendingIntent =
@@ -183,7 +185,7 @@ internal class MovieActivityPipHelperOreo(
                 context,
                 Const.REQUEST_CODE_ACTION_NEXT,
                 Intent(Const.ACTION_NEXT),
-                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE,
             )
 
         private fun makePreviousPendingIntent(context: Context): PendingIntent =
@@ -191,7 +193,7 @@ internal class MovieActivityPipHelperOreo(
                 context,
                 Const.REQUEST_CODE_ACTION_PREVIOUS,
                 Intent(Const.ACTION_PREV),
-                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE,
             )
     }
 }

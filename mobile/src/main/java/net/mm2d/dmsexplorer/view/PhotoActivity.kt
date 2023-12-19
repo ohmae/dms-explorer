@@ -42,7 +42,7 @@ class PhotoActivity : BaseActivity() {
         override fun onPageScrolled(
             position: Int,
             positionOffset: Float,
-            positionOffsetPixels: Int
+            positionOffsetPixels: Int,
         ) = Unit
 
         override fun onPageSelected(position: Int) = Unit
@@ -62,7 +62,7 @@ class PhotoActivity : BaseActivity() {
         fullscreenHelper = FullscreenHelper(
             window = window,
             rootView = binding.root,
-            topView = binding.toolbar
+            topView = binding.toolbar,
         )
         repository = Repository.get()
         val serverModel = repository.mediaServerModel
@@ -142,9 +142,10 @@ class PhotoActivity : BaseActivity() {
     }
 
     private fun move(index: Int): Boolean {
-        return if (index == 0)
+        return if (index == 0) {
             serverModel.selectPreviousEntity(MediaServerModel.SCAN_MODE_SEQUENTIAL)
-        else
+        } else {
             serverModel.selectNextEntity(MediaServerModel.SCAN_MODE_SEQUENTIAL)
+        }
     }
 }

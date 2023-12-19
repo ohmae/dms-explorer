@@ -22,7 +22,7 @@ object OpenUriUtils {
 
     internal fun getBrowserPackages(
         context: Context,
-        update: Boolean = false
+        update: Boolean = false,
     ): Set<String> {
         if (!update) {
             browserPackages?.let {
@@ -47,7 +47,7 @@ object OpenUriUtils {
 
     internal fun getDefaultBrowserPackage(
         context: Context,
-        update: Boolean = false
+        update: Boolean = false,
     ): String? {
         if (!update) {
             defaultBrowserPackage?.let {
@@ -68,7 +68,9 @@ object OpenUriUtils {
         val packageName = browserInfo.activityInfo.packageName
         return if (getBrowserPackages(context).contains(packageName)) {
             packageName
-        } else null
+        } else {
+            null
+        }
     }
 
     private fun makeBrowseIntent(uri: String): Intent {
@@ -81,7 +83,7 @@ object OpenUriUtils {
 
     fun hasDefaultAppOtherThanBrowser(
         context: Context,
-        uri: String
+        uri: String,
     ): Boolean {
         val pm = context.packageManager
         val intent = makeBrowseIntent(uri)

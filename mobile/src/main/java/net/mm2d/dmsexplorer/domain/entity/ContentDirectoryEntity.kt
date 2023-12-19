@@ -23,7 +23,7 @@ import net.mm2d.log.Logger
  */
 class ContentDirectoryEntity private constructor(
     val parentId: String,
-    override val parentName: String
+    override val parentName: String,
 ) : DirectoryEntity {
     private val list = mutableListOf<ContentEntity>()
     private var sortedList = emptyList<ContentEntity>()

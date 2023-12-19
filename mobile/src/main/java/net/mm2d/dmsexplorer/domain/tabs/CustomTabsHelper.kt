@@ -19,7 +19,7 @@ import java.util.*
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
  */
 class CustomTabsHelper(
-    private val context: Context
+    private val context: Context,
 ) : CustomTabsServiceConnection() {
     private var bound: Boolean = false
     var session: CustomTabsSession? = null
@@ -65,7 +65,7 @@ class CustomTabsHelper(
 
     override fun onCustomTabsServiceConnected(
         name: ComponentName,
-        client: CustomTabsClient
+        client: CustomTabsClient,
     ) {
         try {
             client.warmup(0)
@@ -84,7 +84,7 @@ class CustomTabsHelper(
             "com.android.chrome", // Chrome
             "com.chrome.beta", // Chrome Beta
             "com.chrome.dev", // Chrome Dev
-            "com.chrome.canary"   // Chrome Canary
+            "com.chrome.canary", // Chrome Canary
         )
         private const val ACTION_CUSTOM_TABS_CONNECTION =
             "android.support.customtabs.action.CustomTabsService"
@@ -96,10 +96,11 @@ class CustomTabsHelper(
 
         fun addKeepAliveExtra(
             context: Context,
-            intent: Intent
+            intent: Intent,
         ) {
             val keepAliveIntent = Intent().setClassName(
-                context.packageName, KeepAliveService::class.java.canonicalName!!
+                context.packageName,
+                KeepAliveService::class.java.canonicalName!!,
             )
             intent.putExtra(EXTRA_CUSTOM_TABS_KEEP_ALIVE, keepAliveIntent)
         }

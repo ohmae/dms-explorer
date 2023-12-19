@@ -55,17 +55,21 @@ class DeleteDialog : DialogFragment() {
             .setMessage(
                 getString(
                     R.string.dialog_message_delete,
-                    AribUtils.toDisplayableString(entity.name)
-                )
+                    AribUtils.toDisplayableString(entity.name),
+                ),
             )
             .setNegativeButton(R.string.cancel, null)
             .setPositiveButton(R.string.ok) { _, _ ->
-                model.delete(entity, Runnable {
-                    Toaster.show(applicationContext, R.string.toast_delete_succeed)
-                    onDeleteListener?.onDelete()
-                }, Runnable {
-                    Toaster.show(applicationContext, R.string.toast_delete_error)
-                })
+                model.delete(
+                    entity,
+                    Runnable {
+                        Toaster.show(applicationContext, R.string.toast_delete_succeed)
+                        onDeleteListener?.onDelete()
+                    },
+                    Runnable {
+                        Toaster.show(applicationContext, R.string.toast_delete_error)
+                    },
+                )
             }.create()
     }
 

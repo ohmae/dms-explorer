@@ -22,7 +22,7 @@ import java.util.concurrent.atomic.AtomicBoolean
  */
 abstract class BaseActivity @JvmOverloads constructor(
     private val mainMenu: Boolean = false,
-    private val menuResId: Int = 0
+    private val menuResId: Int = 0,
 ) :
     AppCompatActivity() {
     private val finishAfterTransitionLatch = AtomicBoolean()
@@ -33,10 +33,11 @@ abstract class BaseActivity @JvmOverloads constructor(
     override fun onCreate(savedInstanceState: Bundle?) {
         updateOrientationSettings()
         super.onCreate(savedInstanceState)
-        delegate = if (mainMenu)
+        delegate = if (mainMenu) {
             MainOptionsMenuDelegate(this, menuResId)
-        else
+        } else {
             BaseOptionsMenuDelegate(this)
+        }
         delegate.onCreate(savedInstanceState)
         EventRouter.observeFinish(this) {
             finish()

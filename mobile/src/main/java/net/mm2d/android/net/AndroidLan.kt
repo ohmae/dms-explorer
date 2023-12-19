@@ -39,15 +39,21 @@ internal class AndroidLan(context: Context) : Lan() {
                 capabilities.hasTransport(NetworkCapabilities.TRANSPORT_BLUETOOTH) ||
                 capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET) ||
                 capabilities.hasTransport(NetworkCapabilities.TRANSPORT_VPN) ||
-                (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O &&
-                    capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI_AWARE)) ||
-                (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1 &&
-                    capabilities.hasTransport(NetworkCapabilities.TRANSPORT_LOWPAN))
+                (
+                    Build.VERSION.SDK_INT >= Build.VERSION_CODES.O &&
+                        capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI_AWARE)
+                    ) ||
+                (
+                    Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1 &&
+                        capabilities.hasTransport(NetworkCapabilities.TRANSPORT_LOWPAN)
+                    )
         }
         val ni = connectivityManager.activeNetworkInfo ?: return false
-        return ni.isConnected
-            && (ni.type == ConnectivityManager.TYPE_WIFI
-            || ni.type == ConnectivityManager.TYPE_ETHERNET)
+        return ni.isConnected &&
+            (
+                ni.type == ConnectivityManager.TYPE_WIFI ||
+                    ni.type == ConnectivityManager.TYPE_ETHERNET
+                )
     }
 
     private fun isUsableInterface(netIf: NetworkInterface): Boolean =

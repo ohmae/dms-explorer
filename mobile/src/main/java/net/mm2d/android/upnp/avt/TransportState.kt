@@ -18,7 +18,8 @@ enum class TransportState {
     PAUSED_RECORDING,
     RECORDING,
     NO_MEDIA_PRESENT,
-    OTHER;
+    OTHER,
+    ;
 
     companion object {
         fun of(value: String?): TransportState =

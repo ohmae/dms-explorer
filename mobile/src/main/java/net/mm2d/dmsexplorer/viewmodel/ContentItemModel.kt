@@ -24,7 +24,7 @@ import net.mm2d.dmsexplorer.settings.Settings
 class ContentItemModel(
     context: Context,
     entity: ContentEntity,
-    val selected: Boolean
+    val selected: Boolean,
 ) {
     val accentBackground: Drawable
     val accentText: String

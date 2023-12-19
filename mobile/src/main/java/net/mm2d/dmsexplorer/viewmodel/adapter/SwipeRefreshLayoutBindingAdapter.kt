@@ -18,7 +18,7 @@ object SwipeRefreshLayoutBindingAdapter {
     @JvmStatic
     fun setColorSchemeResources(
         view: SwipeRefreshLayout,
-        colorResIds: IntArray?
+        colorResIds: IntArray?,
     ) {
         colorResIds ?: return
         view.setColorSchemeResources(*colorResIds)

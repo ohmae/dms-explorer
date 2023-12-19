@@ -27,15 +27,15 @@ android {
         minSdk = 21
         targetSdk = 34
         versionCode = versionMajor * 10000 + versionMinor * 100 + versionPatch
-        versionName = "${versionMajor}.${versionMinor}.${versionPatch}"
-        base.archivesName.set("${applicationName}-${versionName}")
+        versionName = "$versionMajor.$versionMinor.$versionPatch"
+        base.archivesName.set("$applicationName-$versionName")
         vectorDrawables.useSupportLibrary = true
         multiDexEnabled = true
     }
     applicationVariants.all {
         if (buildType.name == "release") {
             outputs.all {
-                (this as BaseVariantOutputImpl).outputFileName = "${applicationName}-${versionName}.apk"
+                (this as BaseVariantOutputImpl).outputFileName = "$applicationName-$versionName.apk"
             }
         }
     }

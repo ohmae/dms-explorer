@@ -25,7 +25,7 @@ import java.util.concurrent.atomic.AtomicBoolean
 class MsControlPoint : ControlPointWrapper {
     private val discoveryListener = discoveryListener(
         { discoverDevice(it) },
-        { lostDevice(it) }
+        { lostDevice(it) },
     )
 
     private val eventListener = eventListener { service, _, properties ->
@@ -101,7 +101,7 @@ class MsControlPoint : ControlPointWrapper {
          */
         fun onContainerUpdateIds(
             server: MediaServer,
-            ids: List<String>
+            ids: List<String>,
         )
     }
 
@@ -117,13 +117,13 @@ class MsControlPoint : ControlPointWrapper {
          */
         fun onSystemUpdateId(
             server: MediaServer,
-            id: String
+            id: String,
         )
     }
 
     private fun onNotifyContainerUpdateIds(
         server: MediaServer,
-        value: String
+        value: String,
     ) {
         containerUpdateIdsListener?.let { it ->
             val values = value.split(',')
@@ -136,7 +136,7 @@ class MsControlPoint : ControlPointWrapper {
 
     private fun onNotifySystemUpdateId(
         server: MediaServer,
-        value: String
+        value: String,
     ) {
         systemUpdateIdListener?.onSystemUpdateId(server, value)
     }

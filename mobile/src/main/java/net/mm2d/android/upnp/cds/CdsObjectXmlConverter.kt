@@ -58,7 +58,7 @@ object CdsObjectXmlConverter {
     private fun makeElement(
         document: Document,
         tagName: String,
-        tag: Tag
+        tag: Tag,
     ): Element {
         val element = document.createElement(tagName)
         val value = tag.value
@@ -73,7 +73,7 @@ object CdsObjectXmlConverter {
 
     private fun makeRootElement(
         document: Document,
-        cdsObject: CdsObject
+        cdsObject: CdsObject,
     ): Element {
         val element = document.createElement(CdsObject.DIDL_LITE)
         cdsObject.rootTag.attributes.forEach {
@@ -84,7 +84,7 @@ object CdsObjectXmlConverter {
 
     private fun makeItemElement(
         document: Document,
-        cdsObject: CdsObject
+        cdsObject: CdsObject,
     ): Element {
         val tag = cdsObject.getTag("") ?: throw IllegalArgumentException()
         return makeElement(document, CdsObject.ITEM, tag)

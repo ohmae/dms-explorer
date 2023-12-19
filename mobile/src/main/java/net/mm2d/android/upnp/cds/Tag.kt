@@ -28,7 +28,7 @@ import java.util.*
 class Tag(
     val name: String,
     val value: String,
-    val attributes: Map<String, String>
+    val attributes: Map<String, String>,
 ) : Parcelable {
     /**
      * 属性値を返す。
@@ -95,7 +95,7 @@ class Tag(
         private fun create(element: Element, value: String): Tag = Tag(
             element.tagName,
             value,
-            element.attributes.asIterable().map { it.nodeName to it.nodeValue }.toMap()
+            element.attributes.asIterable().map { it.nodeName to it.nodeValue }.toMap(),
         )
     }
 }

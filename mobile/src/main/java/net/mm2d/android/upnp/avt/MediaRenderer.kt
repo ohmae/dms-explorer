@@ -25,7 +25,7 @@ import java.util.concurrent.TimeUnit
  */
 class MediaRenderer internal constructor(
     private val mrControlPoint: MrControlPoint,
-    device: Device
+    device: Device,
 ) : DeviceWrapper(device) {
     private val avTransport: Service
     private val setAvTransportUri: Action
@@ -72,7 +72,7 @@ class MediaRenderer internal constructor(
 
     fun setAVTransportURI(
         cdsObject: CdsObject,
-        uri: String
+        uri: String,
     ): Single<Map<String, String>> =
         CdsObjectXmlConverter.convert(cdsObject).let { metadata ->
             if (metadata.isNullOrEmpty()) {
@@ -80,7 +80,7 @@ class MediaRenderer internal constructor(
             } else {
                 invoke(
                     setAvTransportUri,
-                    mapOf(INSTANCE_ID to "0", CURRENT_URI to uri, CURRENT_URI_META_DATA to metadata)
+                    mapOf(INSTANCE_ID to "0", CURRENT_URI to uri, CURRENT_URI_META_DATA to metadata),
                 )
             }
         }
@@ -88,11 +88,12 @@ class MediaRenderer internal constructor(
     fun clearAVTransportURI(): Single<Map<String, String>> =
         invoke(
             setAvTransportUri,
-            mapOf(INSTANCE_ID to "0", CURRENT_URI to null, CURRENT_URI_META_DATA to null)
+            mapOf(INSTANCE_ID to "0", CURRENT_URI to null, CURRENT_URI_META_DATA to null),
         )
 
     fun play(): Single<Map<String, String>> = invoke(
-        play, mapOf(INSTANCE_ID to "0", SPEED to "1")
+        play,
+        mapOf(INSTANCE_ID to "0", SPEED to "1"),
     )
 
     fun stop(): Single<Map<String, String>> =
@@ -100,7 +101,9 @@ class MediaRenderer internal constructor(
 
     fun pause(): Single<Map<String, String>> = if (pause == null) {
         Single.error(IllegalStateException("pause is not supported"))
-    } else invoke(pause, mapOf(INSTANCE_ID to "0"))
+    } else {
+        invoke(pause, mapOf(INSTANCE_ID to "0"))
+    }
 
     fun seek(time: Long): Single<Map<String, String>> {
         val unitArg = seek.findArgument(UNIT)
@@ -119,7 +122,7 @@ class MediaRenderer internal constructor(
 
     private operator fun invoke(
         action: Action,
-        argument: Map<String, String?>
+        argument: Map<String, String?>,
     ): Single<Map<String, String>> = Single.create { emitter ->
         try {
             emitter.onSuccess(action.invokeSync(argument, false))
@@ -184,13 +187,13 @@ class MediaRenderer internal constructor(
 
         private fun findService(
             device: Device,
-            id: String
+            id: String,
         ): Service = device.findServiceById(id)
             ?: throw IllegalArgumentException("Device doesn't have $id")
 
         private fun findAction(
             service: Service,
-            name: String
+            name: String,
         ): Action = service.findAction(name)
             ?: throw IllegalArgumentException("Service doesn't have $name")
 
@@ -204,7 +207,9 @@ class MediaRenderer internal constructor(
             val progress = parseCount(result[REL_TIME])
             return if (progress >= 0) {
                 progress
-            } else parseCount(result[ABS_TIME])
+            } else {
+                parseCount(result[ABS_TIME])
+            }
         }
 
         /**

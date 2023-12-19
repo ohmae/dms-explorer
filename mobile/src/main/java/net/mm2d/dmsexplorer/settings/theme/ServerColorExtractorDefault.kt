@@ -37,7 +37,7 @@ internal class ServerColorExtractorDefault : ServerColorExtractor {
 
     private fun extractFromPalette(
         server: MediaServer,
-        palette: Palette?
+        palette: Palette?,
     ) {
         val friendlyName = server.friendlyName
         var expandedColor = GENERATOR.getExpandedToolbarColor(friendlyName)

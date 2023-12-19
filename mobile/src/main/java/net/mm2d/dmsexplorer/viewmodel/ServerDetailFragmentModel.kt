@@ -32,7 +32,7 @@ import net.mm2d.upnp.Icon
  */
 class ServerDetailFragmentModel(
     private val context: Context,
-    repository: Repository
+    repository: Repository,
 ) {
     val collapsedColor: Int
     val expandedColor: Int
@@ -64,7 +64,7 @@ class ServerDetailFragmentModel(
     private fun createIconDrawable(
         context: Context,
         server: MediaServer,
-        icon: Bitmap?
+        icon: Bitmap?,
     ): Drawable {
         if (icon != null) {
             return BitmapDrawable(context.resources, icon)

@@ -19,7 +19,7 @@ object ViewBindingAdapter {
     @JvmStatic
     fun setLayoutMarginRight(
         view: View,
-        margin: Int
+        margin: Int,
     ) {
         ViewLayoutUtils.setLayoutMarginRight(view, margin)
     }

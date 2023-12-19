@@ -36,7 +36,7 @@ import kotlin.reflect.KClass
  */
 enum class Key(
     private val type: KClass<*>? = null,
-    private val defaultValue: Any? = null
+    private val defaultValue: Any? = null,
 ) {
     // 表示用
     VERSION_NUMBER,
@@ -48,104 +48,133 @@ enum class Key(
 
     // 設定バージョン
     SETTINGS_VERSION(
-        Int::class, -1
+        Int::class,
+        -1,
     ),
 
     // アプリバージョン
     APP_VERSION(
-        Int::class, -1
+        Int::class,
+        -1,
     ),
 
     // PreferenceActivity用
     PLAY_MOVIE_MYSELF(
-        Boolean::class, true
+        Boolean::class,
+        true,
     ),
     PLAY_MUSIC_MYSELF(
-        Boolean::class, true
+        Boolean::class,
+        true,
     ),
     PLAY_PHOTO_MYSELF(
-        Boolean::class, true
+        Boolean::class,
+        true,
     ),
 
     USE_CUSTOM_TABS(
-        Boolean::class, true
+        Boolean::class,
+        true,
     ),
     SHOULD_SHOW_DEVICE_DETAIL_ON_TAP(
-        Boolean::class, true
+        Boolean::class,
+        true,
     ),
     SHOULD_SHOW_CONTENT_DETAIL_ON_TAP(
-        Boolean::class, true
+        Boolean::class,
+        true,
     ),
     DELETE_FUNCTION_ENABLED(
-        Boolean::class, false
+        Boolean::class,
+        false,
     ),
 
     DARK_THEME(
-        Boolean::class, false
+        Boolean::class,
+        false,
     ),
 
     DO_NOT_SHOW_MOVIE_UI_ON_START(
-        Boolean::class, false
+        Boolean::class,
+        false,
     ),
     DO_NOT_SHOW_MOVIE_UI_ON_TOUCH(
-        Boolean::class, false
+        Boolean::class,
+        false,
     ),
     DO_NOT_SHOW_TITLE_IN_MOVIE_UI(
-        Boolean::class, false
+        Boolean::class,
+        false,
     ),
     IS_MOVIE_UI_BACKGROUND_TRANSPARENT(
-        Boolean::class, false
+        Boolean::class,
+        false,
     ),
 
     DO_NOT_SHOW_PHOTO_UI_ON_START(
-        Boolean::class, false
+        Boolean::class,
+        false,
     ),
     DO_NOT_SHOW_PHOTO_UI_ON_TOUCH(
-        Boolean::class, false
+        Boolean::class,
+        false,
     ),
     DO_NOT_SHOW_TITLE_IN_PHOTO_UI(
-        Boolean::class, false
+        Boolean::class,
+        false,
     ),
     IS_PHOTO_UI_BACKGROUND_TRANSPARENT(
-        Boolean::class, false
+        Boolean::class,
+        false,
     ),
 
     ORIENTATION_COLLECTIVE, // 一括設定用
     ORIENTATION_BROWSE(
-        String::class, Orientation.UNSPECIFIED.name
+        String::class,
+        Orientation.UNSPECIFIED.name,
     ),
     ORIENTATION_MOVIE(
-        String::class, Orientation.UNSPECIFIED.name
+        String::class,
+        Orientation.UNSPECIFIED.name,
     ),
     ORIENTATION_MUSIC(
-        String::class, Orientation.UNSPECIFIED.name
+        String::class,
+        Orientation.UNSPECIFIED.name,
     ),
     ORIENTATION_PHOTO(
-        String::class, Orientation.UNSPECIFIED.name
+        String::class,
+        Orientation.UNSPECIFIED.name,
     ),
     ORIENTATION_DMC(
-        String::class, Orientation.UNSPECIFIED.name
+        String::class,
+        Orientation.UNSPECIFIED.name,
     ),
 
     REPEAT_MODE_MOVIE(
-        String::class, RepeatMode.PLAY_ONCE.name
+        String::class,
+        RepeatMode.PLAY_ONCE.name,
     ),
     REPEAT_MODE_MUSIC(
-        String::class, RepeatMode.PLAY_ONCE.name
+        String::class,
+        RepeatMode.PLAY_ONCE.name,
     ),
     REPEAT_INTRODUCED(
-        Boolean::class, false
+        Boolean::class,
+        false,
     ),
 
     LOG_SEND_TIME(
-        Long::class, 0L
+        Long::class,
+        0L,
     ),
 
     SORT_KEY(
-        String::class, SortKey.NONE.name
+        String::class,
+        SortKey.NONE.name,
     ),
     SORT_ORDER_ASCENDING(
-        Boolean::class, true
+        Boolean::class,
+        true,
     ),
 
     // OldKeys
@@ -163,7 +192,9 @@ enum class Key(
         if (defaultValue != null) {
             requireNotNull(type)
             require(type.isInstance(defaultValue))
-        } else require(type == null)
+        } else {
+            require(type == null)
+        }
     }
 
     internal val isReadWriteKey: Boolean

@@ -8,7 +8,6 @@
 package net.mm2d.dmsexplorer.domain.model
 
 import android.app.Activity
-
 import androidx.annotation.ColorInt
 
 /**
@@ -18,7 +17,7 @@ interface ThemeModel {
     fun setThemeColor(
         activity: Activity,
         @ColorInt toolbarColor: Int,
-        @ColorInt statusBarColor: Int
+        @ColorInt statusBarColor: Int,
     )
 
     @ColorInt

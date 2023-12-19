@@ -24,8 +24,8 @@ enum class Theme(val params: ThemeParams) {
             settingsThemeId = R.style.AppTheme_Settings,
             preferenceHeaderConverter = { },
             themeColorGenerator = ThemeColorGeneratorDefault(),
-            serverColorExtractor = ServerColorExtractorDefault()
-        )
+            serverColorExtractor = ServerColorExtractorDefault(),
+        ),
     ),
     DARK(
         ThemeParams(
@@ -41,9 +41,9 @@ enum class Theme(val params: ThemeParams) {
                 }
             },
             themeColorGenerator = ThemeColorGeneratorDark(),
-            serverColorExtractor = ServerColorExtractorDark()
-        )
-    )
+            serverColorExtractor = ServerColorExtractorDark(),
+        ),
+    ),
 }
 
 @DrawableRes

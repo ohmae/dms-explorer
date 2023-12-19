@@ -14,7 +14,7 @@ import android.media.MediaPlayer.*
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
  */
 class MediaPlayerControl(
-    private val mediaPlayer: MediaPlayer
+    private val mediaPlayer: MediaPlayer,
 ) : MediaControl {
     override val currentPosition: Int
         get() = try {

@@ -29,7 +29,7 @@ internal class CdsObjectImpl(
     override val udn: String,
     override val isItem: Boolean,
     override val rootTag: Tag,
-    internal val tagMap: TagMap
+    internal val tagMap: TagMap,
 ) : CdsObject {
     override val objectId: String = tagMap.getValue(CdsObject.ID)
         ?: throw IllegalArgumentException("Malformed item")
@@ -68,7 +68,7 @@ internal class CdsObjectImpl(
     override fun hasProtectedResource(): Boolean =
         getTagList(CdsObject.RES)?.find {
             PropertyParser.extractMimeTypeFromProtocolInfo(
-                it.getAttribute(CdsObject.PROTOCOL_INFO)
+                it.getAttribute(CdsObject.PROTOCOL_INFO),
             ) == "application/x-dtcp1"
         } != null
 
@@ -106,7 +106,7 @@ internal class CdsObjectImpl(
         fun create(
             udn: String,
             element: Element,
-            rootTag: Tag
+            rootTag: Tag,
         ) = CdsObjectImpl(
             udn,
             when (element.tagName) {
@@ -115,14 +115,14 @@ internal class CdsObjectImpl(
                 else -> throw IllegalArgumentException()
             },
             rootTag,
-            parseElement(element)
+            parseElement(element),
         )
 
         private fun create(parcel: Parcel) = CdsObjectImpl(
             parcel.readString()!!,
             parcel.readByte().toInt() != 0,
             parcel.readParcelable(Tag::class.java.classLoader)!!,
-            parcel.readParcelable(TagMap::class.java.classLoader)!!
+            parcel.readParcelable(TagMap::class.java.classLoader)!!,
         )
 
         /**
@@ -145,7 +145,7 @@ internal class CdsObjectImpl(
         @ContentType
         private fun getType(
             isItem: Boolean,
-            upnpClass: String
+            upnpClass: String,
         ): Int = if (!isItem) {
             TYPE_CONTAINER
         } else if (upnpClass.startsWith(IMAGE_ITEM)) {

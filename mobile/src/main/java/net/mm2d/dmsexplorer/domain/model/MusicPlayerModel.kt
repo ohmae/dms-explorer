@@ -22,7 +22,7 @@ import java.io.IOException
  */
 class MusicPlayerModel private constructor(
     private val context: Context,
-    private val mediaPlayer: MediaPlayer
+    private val mediaPlayer: MediaPlayer,
 ) : MediaPlayerModel(MediaPlayerControl(mediaPlayer)) {
     constructor(context: Context) : this(context, MediaPlayer())
 
@@ -42,7 +42,7 @@ class MusicPlayerModel private constructor(
             AudioAttributes.Builder()
                 .setUsage(AudioAttributes.USAGE_MEDIA)
                 .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
-                .build()
+                .build(),
         )
     }
 }

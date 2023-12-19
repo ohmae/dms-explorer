@@ -29,13 +29,13 @@ class ContentDetailFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
         val binding = DataBindingUtil.inflate<ContentDetailFragmentBinding>(
             inflater,
             R.layout.content_detail_fragment,
             container,
-            false
+            false,
         )
         val activity = requireActivity()
         try {

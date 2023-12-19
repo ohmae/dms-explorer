@@ -33,7 +33,7 @@ internal object CdsObjectFactory {
      */
     fun parseDirectChildren(
         udn: String,
-        xml: String?
+        xml: String?,
     ): List<CdsObject> {
         if (xml.isNullOrEmpty()) {
             return emptyList()
@@ -52,7 +52,6 @@ internal object CdsObjectFactory {
             Logger.w(e)
         }
         return emptyList()
-
     }
 
     /**
@@ -64,7 +63,7 @@ internal object CdsObjectFactory {
      */
     fun parseMetadata(
         udn: String,
-        xml: String?
+        xml: String?,
     ): CdsObject? {
         if (xml.isNullOrEmpty()) {
             return null
@@ -99,7 +98,7 @@ internal object CdsObjectFactory {
     private fun createCdsObject(
         udn: String,
         element: Element,
-        rootTag: Tag
+        rootTag: Tag,
     ): CdsObject? = try {
         CdsObjectImpl.create(udn, element, rootTag)
     } catch (e: IllegalArgumentException) {

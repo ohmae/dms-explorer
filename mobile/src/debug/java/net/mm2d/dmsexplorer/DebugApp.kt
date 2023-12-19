@@ -41,13 +41,15 @@ class DebugApp : App() {
 
     private fun setUpLogger() {
         Logger.setLogLevel(Logger.DEBUG)
-        Logger.setSender(DefaultSender.create { level, tag, message ->
-            GlobalScope.launch(Dispatchers.Main) {
-                message.split("\n").forEach {
-                    Log.println(level, tag, it)
+        Logger.setSender(
+            DefaultSender.create { level, tag, message ->
+                GlobalScope.launch(Dispatchers.Main) {
+                    message.split("\n").forEach {
+                        Log.println(level, tag, it)
+                    }
                 }
-            }
-        })
+            },
+        )
         DefaultSender.appendThread(true)
     }
 
@@ -76,7 +78,7 @@ class DebugApp : App() {
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             detectContentUriWithoutPermission()
-            //detectUntaggedSockets()
+            // detectUntaggedSockets()
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             detectCredentialProtectedWhileLocked()

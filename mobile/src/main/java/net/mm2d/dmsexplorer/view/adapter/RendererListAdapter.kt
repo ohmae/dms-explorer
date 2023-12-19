@@ -24,7 +24,7 @@ import java.util.*
  */
 class RendererListAdapter(
     private val context: Context,
-    renderers: Collection<MediaRenderer>?
+    renderers: Collection<MediaRenderer>?,
 ) : RecyclerView.Adapter<RendererListAdapter.ViewHolder>() {
     private val inflater: LayoutInflater = LayoutInflater.from(context)
     private val list: MutableList<MediaRenderer> = renderers?.let { ArrayList(it) } ?: ArrayList()
@@ -37,8 +37,8 @@ class RendererListAdapter(
                 inflater,
                 R.layout.renderer_list_item,
                 parent,
-                false
-            )
+                false,
+            ),
         )
     }
 
@@ -80,7 +80,7 @@ class RendererListAdapter(
     }
 
     inner class ViewHolder(
-        private val binding: RendererListItemBinding
+        private val binding: RendererListItemBinding,
     ) : RecyclerView.ViewHolder(binding.root) {
         private var mediaRenderer: MediaRenderer? = null
 

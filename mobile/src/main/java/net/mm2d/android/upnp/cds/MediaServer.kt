@@ -62,14 +62,16 @@ internal constructor(device: Device) : DeviceWrapper(device) {
 
     fun destroyObject(objectId: String): Single<Int> = if (destroyObject == null) {
         Single.never()
-    } else Single.create { emitter: SingleEmitter<Int> ->
-        val result =
-            destroyObject.invokeSync(mapOf(OBJECT_ID to objectId), false)
-        val errorDescription = result[Action.ERROR_DESCRIPTION_KEY]
-        if (!errorDescription.isNullOrEmpty()) {
-            Logger.e { errorDescription }
+    } else {
+        Single.create { emitter: SingleEmitter<Int> ->
+            val result =
+                destroyObject.invokeSync(mapOf(OBJECT_ID to objectId), false)
+            val errorDescription = result[Action.ERROR_DESCRIPTION_KEY]
+            if (!errorDescription.isNullOrEmpty()) {
+                Logger.e { errorDescription }
+            }
+            emitter.onSuccess(result[Action.ERROR_CODE_KEY]?.toIntOrNull() ?: NO_ERROR)
         }
-        emitter.onSuccess(result[Action.ERROR_CODE_KEY]?.toIntOrNull() ?: NO_ERROR)
     }
 
     /**
@@ -83,7 +85,7 @@ internal constructor(device: Device) : DeviceWrapper(device) {
     fun browse(
         objectId: String,
         startingIndex: Int,
-        requestedCount: Int
+        requestedCount: Int,
     ): Observable<CdsObject> = browse(objectId, "*", null, startingIndex, requestedCount)
 
     /**
@@ -101,7 +103,7 @@ internal constructor(device: Device) : DeviceWrapper(device) {
         filter: String? = "*",
         sortCriteria: String? = null,
         startingIndex: Int = 0,
-        requestedCount: Int = 0
+        requestedCount: Int = 0,
     ): Observable<CdsObject> {
         val argument = BrowseArgument()
             .setObjectId(objectId)
@@ -145,7 +147,7 @@ internal constructor(device: Device) : DeviceWrapper(device) {
      */
     fun browseMetadata(
         objectId: String,
-        filter: String? = "*"
+        filter: String? = "*",
     ): Single<CdsObject> = Single.create { emitter: SingleEmitter<CdsObject> ->
         val argument = BrowseArgument()
             .setObjectId(objectId)

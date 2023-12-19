@@ -8,7 +8,6 @@
 package net.mm2d.dmsexplorer.log
 
 import android.content.Context
-
 import net.mm2d.dmsexplorer.BuildConfig
 
 /**

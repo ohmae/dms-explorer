@@ -9,11 +9,9 @@ package net.mm2d.dmsexplorer.util
 
 import android.app.Activity
 import android.view.View
-
 import net.mm2d.dmsexplorer.R
 import net.mm2d.dmsexplorer.settings.Settings
 import net.mm2d.dmsexplorer.view.view.IntroductoryOverlay
-
 import java.util.concurrent.TimeUnit
 
 /**

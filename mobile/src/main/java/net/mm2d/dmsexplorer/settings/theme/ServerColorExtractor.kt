@@ -8,7 +8,6 @@
 package net.mm2d.dmsexplorer.settings.theme
 
 import android.graphics.Bitmap
-
 import net.mm2d.android.upnp.cds.MediaServer
 
 /**

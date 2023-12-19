@@ -26,7 +26,7 @@ import java.util.*
 class MediaServerModel(
     context: Context,
     val mediaServer: MediaServer,
-    private val playbackTargetObserver: (ContentEntity?) -> Unit
+    private val playbackTargetObserver: (ContentEntity?) -> Unit,
 ) : ExploreListener {
     private val handler = Handler(Looper.getMainLooper())
     private val historyStack = LinkedList<ContentDirectoryEntity>()
@@ -75,7 +75,7 @@ class MediaServerModel(
     fun delete(
         entity: ContentEntity,
         successCallback: Runnable?,
-        errorCallback: Runnable?
+        errorCallback: Runnable?,
     ) {
         val doNothing = Runnable { }
         val onSuccess = successCallback ?: doNothing
@@ -164,7 +164,7 @@ class MediaServerModel(
 
     private fun findPrevious(
         current: ContentEntity?,
-        @ScanMode scanMode: Int
+        @ScanMode scanMode: Int,
     ): ContentEntity? {
         val directory = historyStack.peekFirst()
         if (current == null || directory == null) {
@@ -180,7 +180,7 @@ class MediaServerModel(
 
     private fun findPreviousSequential(
         current: ContentEntity,
-        list: List<ContentEntity>
+        list: List<ContentEntity>,
     ): ContentEntity? {
         val index = list.indexOf(current)
         if (index - 1 < 0) {
@@ -197,7 +197,7 @@ class MediaServerModel(
 
     private fun findPreviousLoop(
         current: ContentEntity,
-        list: List<ContentEntity>
+        list: List<ContentEntity>,
     ): ContentEntity? {
         val size = list.size
         val index = list.indexOf(current)
@@ -219,7 +219,7 @@ class MediaServerModel(
 
     private fun findNext(
         current: ContentEntity?,
-        @ScanMode scanMode: Int
+        @ScanMode scanMode: Int,
     ): ContentEntity? {
         if (historyStack.isEmpty()) {
             return null
@@ -237,7 +237,7 @@ class MediaServerModel(
 
     private fun findNextSequential(
         current: ContentEntity,
-        list: List<ContentEntity>
+        list: List<ContentEntity>,
     ): ContentEntity? {
         val size = list.size
         val index = list.indexOf(current)
@@ -255,7 +255,7 @@ class MediaServerModel(
 
     private fun findNextLoop(
         current: ContentEntity,
-        list: List<ContentEntity>
+        list: List<ContentEntity>,
     ): ContentEntity? {
         val size = list.size
         val index = list.indexOf(current)

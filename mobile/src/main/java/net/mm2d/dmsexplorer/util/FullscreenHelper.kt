@@ -25,7 +25,7 @@ class FullscreenHelper(
     window: Window,
     rootView: View,
     private val topView: View? = null,
-    private val bottomView: View? = null
+    private val bottomView: View? = null,
 ) {
     private val controller: WindowInsetsControllerCompat = WindowInsetsControllerCompat(window, rootView)
     private val handler: Handler = Handler(Looper.getMainLooper())

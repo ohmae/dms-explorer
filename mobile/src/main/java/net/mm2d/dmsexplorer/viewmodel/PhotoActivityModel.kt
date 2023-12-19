@@ -32,7 +32,7 @@ import net.mm2d.dmsexplorer.view.base.BaseActivity
  */
 class PhotoActivityModel(
     private val activity: BaseActivity,
-    repository: Repository
+    repository: Repository,
 ) : BaseObservable() {
     private val targetModel: PlaybackTargetModel = repository.playbackTargetModel
         ?: throw IllegalStateException()
@@ -65,26 +65,31 @@ class PhotoActivityModel(
 
     init {
         val settings = Settings.get()
-        title = if (settings.shouldShowTitleInPhotoUi())
+        title = if (settings.shouldShowTitleInPhotoUi()) {
             targetModel.title.toDisplayableString()
-        else ""
-        background = if (settings.isPhotoUiBackgroundTransparent)
+        } else {
+            ""
+        }
+        background = if (settings.isPhotoUiBackgroundTransparent) {
             Color.TRANSPARENT
-        else
+        } else {
             ContextCompat.getColor(activity, R.color.translucent_control)
+        }
 
         val uri = targetModel.uri
         check(!(uri === Uri.EMPTY))
         Downloader.create(uri.toString())
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({ data ->
-                val model = repository.playbackTargetModel
-                if (model?.uri == uri) {
-                    isLoading = false
-                    imageBinary = data
-                }
-            }, { Toaster.show(activity, R.string.toast_download_error) }
+            .subscribe(
+                { data ->
+                    val model = repository.playbackTargetModel
+                    if (model?.uri == uri) {
+                        isLoading = false
+                        imageBinary = data
+                    }
+                },
+                { Toaster.show(activity, R.string.toast_download_error) },
             )
     }
 

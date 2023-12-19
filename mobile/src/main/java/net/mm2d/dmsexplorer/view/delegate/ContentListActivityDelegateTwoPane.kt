@@ -25,7 +25,7 @@ import net.mm2d.dmsexplorer.view.base.BaseActivity
  */
 internal class ContentListActivityDelegateTwoPane(
     activity: BaseActivity,
-    binding: ContentListActivityBinding
+    binding: ContentListActivityBinding,
 ) : ContentListActivityDelegate(activity, binding) {
     private var fragment: Fragment? = null
     override val isTwoPane: Boolean = true

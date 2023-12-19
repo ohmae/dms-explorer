@@ -33,7 +33,7 @@ import java.util.regex.Pattern
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
  */
 abstract class PropertyAdapter(
-    protected val context: Context
+    protected val context: Context,
 ) : Adapter<ViewHolder>() {
     private val list: MutableList<Entry> = ArrayList()
     private val inflater: LayoutInflater = LayoutInflater.from(context)
@@ -53,8 +53,9 @@ abstract class PropertyAdapter(
         if (list[position].type != Type.DESCRIPTION) 0 else 1
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder = ViewHolder(
-        context, inflater,
-        DataBindingUtil.inflate(inflater, R.layout.property_list_item, parent, false)
+        context,
+        inflater,
+        DataBindingUtil.inflate(inflater, R.layout.property_list_item, parent, false),
     )
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -67,19 +68,19 @@ abstract class PropertyAdapter(
         TITLE,
         TEXT,
         LINK,
-        DESCRIPTION
+        DESCRIPTION,
     }
 
     class Entry(
         val name: String,
         val value: String,
-        val type: Type
+        val type: Type,
     )
 
     class ViewHolder(
         private val context: Context,
         private val inflater: LayoutInflater,
-        private val binding: PropertyListItemBinding
+        private val binding: PropertyListItemBinding,
     ) : RecyclerView.ViewHolder(binding.root), OnClickListener {
 
         fun applyItem(entry: Entry) {

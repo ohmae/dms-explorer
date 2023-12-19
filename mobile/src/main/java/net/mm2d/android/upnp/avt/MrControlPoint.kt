@@ -23,7 +23,7 @@ import java.util.concurrent.atomic.AtomicBoolean
 class MrControlPoint : ControlPointWrapper {
     private val discoveryListener = discoveryListener(
         { discoverDevice(it) },
-        { lostDevice(it) }
+        { lostDevice(it) },
     )
     private val notifyEventListener = notifyEventListener { _, _, _, _ -> }
     private val initialized = AtomicBoolean()

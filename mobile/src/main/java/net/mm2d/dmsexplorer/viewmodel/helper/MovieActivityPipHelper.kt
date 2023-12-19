@@ -8,7 +8,6 @@
 package net.mm2d.dmsexplorer.viewmodel.helper
 
 import android.view.View
-
 import net.mm2d.dmsexplorer.viewmodel.ControlPanelModel
 
 /**

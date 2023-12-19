@@ -20,7 +20,7 @@ import net.mm2d.dmsexplorer.view.eventrouter.EventRouter
  */
 internal class MainOptionsMenuDelegate(
     private val activity: BaseActivity,
-    menuResId: Int
+    menuResId: Int,
 ) : OptionsMenuDelegate {
     private val menuResId = if (menuResId != 0) menuResId else R.menu.main
 

@@ -18,7 +18,7 @@ internal class DebugSender : Sender {
 
     override fun logEvent(
         @Size(min = 1L, max = 40L) name: String,
-        params: Bundle?
+        params: Bundle?,
     ) {
         Logger.i { "\nname: " + name + "\nparams: " + dumpBundle(params) }
     }

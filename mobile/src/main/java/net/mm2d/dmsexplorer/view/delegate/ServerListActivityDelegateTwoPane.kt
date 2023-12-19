@@ -22,7 +22,7 @@ import net.mm2d.dmsexplorer.view.base.BaseActivity
  */
 internal class ServerListActivityDelegateTwoPane(
     activity: BaseActivity,
-    binding: ServerListActivityBinding
+    binding: ServerListActivityBinding,
 ) : ServerListActivityDelegate(activity, binding) {
     private var fragment: Fragment? = null
 

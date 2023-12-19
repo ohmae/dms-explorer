@@ -29,7 +29,7 @@ object ImageViewBindingAdapter {
     @JvmStatic
     fun setImageBinary(
         imageView: ImageView,
-        binary: ByteArray?
+        binary: ByteArray?,
     ) {
         if (binary == null) {
             imageView.setImageDrawable(null)
@@ -40,13 +40,13 @@ object ImageViewBindingAdapter {
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
                 { bitmap -> setImageBitmap(imageView, bitmap) },
-                { showToast(imageView.context) }
+                { showToast(imageView.context) },
             )
     }
 
     private fun createDecoder(
         imageView: ImageView,
-        binary: ByteArray?
+        binary: ByteArray?,
     ): Single<Bitmap> {
         val width = imageView.width
         val height = imageView.height
@@ -74,7 +74,7 @@ object ImageViewBindingAdapter {
 
     private fun setImageBitmap(
         imageView: ImageView,
-        bitmap: Bitmap
+        bitmap: Bitmap,
     ) {
         ViewUtils.execAfterAllocateSize(imageView) { imageView.setImageBitmap(bitmap) }
     }

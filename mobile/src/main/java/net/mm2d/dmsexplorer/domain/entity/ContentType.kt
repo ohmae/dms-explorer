@@ -12,7 +12,7 @@ package net.mm2d.dmsexplorer.domain.entity
  */
 enum class ContentType(
     val isPlayable: Boolean,
-    val hasDuration: Boolean
+    val hasDuration: Boolean,
 ) {
     MOVIE(true, true),
     MUSIC(true, true),

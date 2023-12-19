@@ -48,7 +48,8 @@ class SortDialog : DialogFragment() {
         sortKey.adapter = ArrayAdapter(
             activity,
             android.R.layout.simple_list_item_1,
-            list.map { getString(it.stringRes) })
+            list.map { getString(it.stringRes) },
+        )
         sortKey.onItemSelectedListener = object : OnItemSelectedListener {
             override fun onNothingSelected(parent: AdapterView<*>) = Unit
 
@@ -92,14 +93,14 @@ class SortDialog : DialogFragment() {
     private class SpinnerItem(
         val sortKey: SortKey,
         @StringRes
-        val stringRes: Int
+        val stringRes: Int,
     )
 
     companion object {
         private val list = listOf(
             SpinnerItem(SortKey.NONE, R.string.dialog_sort_key_none),
             SpinnerItem(SortKey.NAME, R.string.dialog_sort_key_name),
-            SpinnerItem(SortKey.DATE, R.string.dialog_sort_key_date)
+            SpinnerItem(SortKey.DATE, R.string.dialog_sort_key_date),
         )
 
         private fun newInstance(): SortDialog = SortDialog()

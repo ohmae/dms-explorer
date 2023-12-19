@@ -21,7 +21,7 @@ import java.util.concurrent.TimeUnit
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
  */
 abstract class MediaPlayerModel(
-    private val mediaControl: MediaControl
+    private val mediaControl: MediaControl,
 ) : PlayerModel {
     private val handler = Handler(Looper.getMainLooper())
     private var statusListener: StatusListener = STATUS_LISTENER

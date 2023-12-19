@@ -47,7 +47,7 @@ class IntroductoryOverlay private constructor(
     overlayColor: Int,
     @ColorInt
     private val dimmerColor: Int,
-    private val timeout: Long
+    private val timeout: Long,
 ) : RelativeLayout(activity, null, 0) {
     private val binding: IntroductoryOverlayBinding = IntroductoryOverlayBinding.inflate(activity.layoutInflater, this)
     private val circlePaint: Paint
@@ -190,7 +190,7 @@ class IntroductoryOverlay private constructor(
     }
 
     class Builder(
-        val activity: Activity
+        val activity: Activity,
     ) {
         private var view: View? = null
         private var titleText: String? = null
@@ -217,7 +217,7 @@ class IntroductoryOverlay private constructor(
                 subtitleText,
                 overlayColor,
                 dimmerColor,
-                if (timeout < ANIMATION_DURATION) DEFAULT_TIMEOUT else timeout
+                if (timeout < ANIMATION_DURATION) DEFAULT_TIMEOUT else timeout,
             )
         }
 

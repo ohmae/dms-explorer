@@ -30,7 +30,7 @@ import kotlin.concurrent.withLock
  * @param storage SettingsStorage
  */
 class Settings private constructor(
-    private val storage: SettingsStorage
+    private val storage: SettingsStorage,
 ) {
     /**
      * 動画再生をアプリで行うか否か
@@ -177,7 +177,7 @@ class Settings private constructor(
                 Key.REPEAT_MODE_MOVIE,
                 Key.REPEAT_MODE_MUSIC,
                 Key.SORT_KEY,
-                Key.SORT_ORDER_ASCENDING
+                Key.SORT_ORDER_ASCENDING,
             )
             val bundle = Bundle()
             keys.forEach {

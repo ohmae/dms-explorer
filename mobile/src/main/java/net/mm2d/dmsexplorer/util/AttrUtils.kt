@@ -21,7 +21,7 @@ object AttrUtils {
     fun resolveColor(
         context: Context,
         @AttrRes attr: Int,
-        @ColorInt defaultColor: Int
+        @ColorInt defaultColor: Int,
     ): Int = resolveColor(context, 0, attr, defaultColor)
 
     @ColorInt
@@ -29,7 +29,7 @@ object AttrUtils {
         context: Context,
         @StyleRes style: Int,
         @AttrRes attr: Int,
-        @ColorInt defaultColor: Int
+        @ColorInt defaultColor: Int,
     ): Int = context.obtainStyledAttributes(style, intArrayOf(attr)).use {
         it.getColor(0, defaultColor)
     }

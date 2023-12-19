@@ -29,7 +29,7 @@ import net.mm2d.dmsexplorer.viewmodel.ServerListActivityModel.ServerSelectListen
  */
 abstract class ServerListActivityDelegate internal constructor(
     protected val activity: BaseActivity,
-    val binding: ServerListActivityBinding
+    val binding: ServerListActivityBinding,
 ) : ServerSelectListener {
 
     protected abstract val isTwoPane: Boolean
@@ -86,16 +86,18 @@ abstract class ServerListActivityDelegate internal constructor(
         fun create(activity: BaseActivity): ServerListActivityDelegate {
             val binding = DataBindingUtil.setContentView<ServerListActivityBinding>(
                 activity,
-                R.layout.server_list_activity
+                R.layout.server_list_activity,
             )
             return if (binding.serverDetailContainer == null) {
                 ServerListActivityDelegateOnePane(activity, binding)
-            } else ServerListActivityDelegateTwoPane(activity, binding)
+            } else {
+                ServerListActivityDelegateTwoPane(activity, binding)
+            }
         }
 
         fun startCdsListActivity(
             context: Context,
-            v: View
+            v: View,
         ) {
             val intent = ContentListActivity.makeIntent(context)
             val option = ActivityOptions

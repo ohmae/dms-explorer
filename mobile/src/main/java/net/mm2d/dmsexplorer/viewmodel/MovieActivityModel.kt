@@ -40,7 +40,7 @@ import net.mm2d.dmsexplorer.viewmodel.helper.PipHelpers
 class MovieActivityModel(
     private val activity: BaseActivity,
     private val videoView: VideoView,
-    private val repository: Repository
+    private val repository: Repository,
 ) : BaseObservable() {
     private val serverModel: MediaServerModel? = repository.mediaServerModel
     private val settings: Settings = Settings.get()
@@ -89,10 +89,11 @@ class MovieActivityModel(
         }
 
     init {
-        background = if (settings.isMovieUiBackgroundTransparent)
+        background = if (settings.isMovieUiBackgroundTransparent) {
             Color.TRANSPARENT
-        else
+        } else {
             ContextCompat.getColor(activity, R.color.translucent_control)
+        }
         controlPanelParam = ControlPanelParam()
         controlPanelParam.backgroundColor = background
 
@@ -119,9 +120,11 @@ class MovieActivityModel(
         controlPanelModel.setSkipControlListener(this::onNext, this::onPrevious)
         movieActivityPipHelper.setControlPanelModel(controlPanelModel)
         playerModel.setUri(targetModel.uri, null)
-        title = if (settings.shouldShowTitleInMovieUi())
+        title = if (settings.shouldShowTitleInMovieUi()) {
             targetModel.title.toDisplayableString()
-        else ""
+        } else {
+            ""
+        }
 
         notifyPropertyChanged(BR.title)
         notifyPropertyChanged(BR.controlPanelModel)

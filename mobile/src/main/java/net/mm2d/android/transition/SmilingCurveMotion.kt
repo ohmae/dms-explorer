@@ -24,13 +24,15 @@ class SmilingCurveMotion(context: Context, attrs: AttributeSet) : PathMotion(con
             it.quadTo(
                 centerInRatio(startX, endX, 1f, 3f),
                 centerInRatio(startY, endY, 3f, 1f),
-                endX, endY
+                endX,
+                endY,
             )
         } else {
             it.quadTo(
                 centerInRatio(startX, endX, 3f, 1f),
                 centerInRatio(startY, endY, 1f, 3f),
-                endX, endY
+                endX,
+                endY,
             )
         }
     }

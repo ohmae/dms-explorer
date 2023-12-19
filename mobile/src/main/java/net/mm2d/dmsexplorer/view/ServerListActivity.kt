@@ -43,7 +43,7 @@ class ServerListActivity : BaseActivity(true) {
         repository.themeModel.setThemeColor(
             this,
             AttrUtils.resolveColor(this, androidx.appcompat.R.attr.colorPrimary, Color.BLACK),
-            ContextCompat.getColor(this, R.color.defaultStatusBar)
+            ContextCompat.getColor(this, R.color.defaultStatusBar),
         )
 
         if (savedInstanceState == null) {

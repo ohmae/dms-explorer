@@ -22,7 +22,7 @@ class ThemeModelImpl : ActivityLifecycleCallbacksAdapter(), ThemeModel {
     override fun setThemeColor(
         activity: Activity,
         @ColorInt toolbarColor: Int,
-        @ColorInt statusBarColor: Int
+        @ColorInt statusBarColor: Int,
     ) {
         val color = if (statusBarColor != 0) statusBarColor else ColorUtils.getDarkerColor(toolbarColor)
         activity.window.statusBarColor = color

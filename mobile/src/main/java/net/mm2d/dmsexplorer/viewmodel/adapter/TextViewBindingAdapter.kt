@@ -21,7 +21,7 @@ object TextViewBindingAdapter {
     @JvmStatic
     fun setUnderlineFlag(
         view: TextView,
-        underline: Boolean
+        underline: Boolean,
     ) {
         view.paintFlags = if (underline) {
             view.paintFlags or Paint.UNDERLINE_TEXT_FLAG
@@ -34,7 +34,7 @@ object TextViewBindingAdapter {
     @JvmStatic
     fun setTextColorAttr(
         view: TextView,
-        attr: Int
+        attr: Int,
     ) {
         view.setTextColor(AttrUtils.resolveColor(view.context, attr, Color.BLACK))
     }

@@ -50,9 +50,9 @@ open class App : Application() {
 
     private fun logError(e: Throwable) {
         when (e) {
-            is UndeliverableException
+            is UndeliverableException,
             -> Logger.w(e.cause, "UndeliverableException:")
-            is OnErrorNotImplementedException
+            is OnErrorNotImplementedException,
             -> Logger.w(e.cause, "OnErrorNotImplementedException:")
             else
             -> Logger.w(e)

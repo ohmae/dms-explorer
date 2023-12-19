@@ -29,7 +29,7 @@ object ViewLayoutUtils {
         @Px left: Int = paddingLeft,
         @Px top: Int = paddingTop,
         @Px right: Int = paddingRight,
-        @Px bottom: Int = paddingBottom
+        @Px bottom: Int = paddingBottom,
     ) {
         setPadding(left, top, right, bottom)
     }

@@ -22,7 +22,7 @@ abstract class PreferenceFragmentBase : PreferenceFragmentCompat() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
         val view = super.onCreateView(inflater, container, savedInstanceState)
         listView.overScrollMode = RecyclerView.OVER_SCROLL_NEVER

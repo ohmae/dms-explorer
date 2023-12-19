@@ -17,7 +17,7 @@ import net.mm2d.dmsexplorer.domain.entity.ContentEntity
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
  */
 class PlaybackTargetModel(
-    val contentEntity: ContentEntity
+    val contentEntity: ContentEntity,
 ) {
     private val cdsObject: CdsObject = contentEntity.rawEntity as CdsObject
     private var targetRes: Tag? = cdsObject.getTag(CdsObject.RES)

@@ -14,7 +14,7 @@ import android.widget.VideoView
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
  */
 class VideoViewControl(
-    private val videoView: VideoView
+    private val videoView: VideoView,
 ) : MediaControl {
     override val currentPosition: Int
         get() = try {
@@ -67,7 +67,7 @@ class VideoViewControl(
             listener == null || listener.onError(
                 mediaPlayer,
                 what,
-                extra
+                extra,
             )
         }
     }

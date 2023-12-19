@@ -22,14 +22,14 @@ import net.mm2d.dmsexplorer.view.base.BaseActivity
  */
 internal class ContentListActivityDelegateOnePane(
     activity: BaseActivity,
-    binding: ContentListActivityBinding
+    binding: ContentListActivityBinding,
 ) : ContentListActivityDelegate(activity, binding) {
 
     override val isTwoPane: Boolean = false
 
     override fun onSelect(
         v: View,
-        entity: ContentEntity
+        entity: ContentEntity,
     ) {
         startDetailActivity(v)
     }

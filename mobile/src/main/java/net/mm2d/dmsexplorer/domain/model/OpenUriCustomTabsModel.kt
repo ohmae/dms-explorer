@@ -24,7 +24,7 @@ import net.mm2d.dmsexplorer.domain.tabs.OpenUriUtils
  */
 class OpenUriCustomTabsModel(
     private val helper: CustomTabsHelper,
-    private val themeModel: ThemeModel
+    private val themeModel: ThemeModel,
 ) : OpenUriModel {
     private var useCustomTabs: Boolean = false
 
@@ -33,8 +33,8 @@ class OpenUriCustomTabsModel(
     }
 
     override fun openUri(context: Context, uri: String) {
-        if (!useCustomTabs || !URLUtil.isNetworkUrl(uri)
-            || OpenUriUtils.hasDefaultAppOtherThanBrowser(context, uri)
+        if (!useCustomTabs || !URLUtil.isNetworkUrl(uri) ||
+            OpenUriUtils.hasDefaultAppOtherThanBrowser(context, uri)
         ) {
             LaunchUtils.openUri(context, uri)
             return

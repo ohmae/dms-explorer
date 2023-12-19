@@ -28,7 +28,7 @@ class NestedScrollingWebView
 @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
-    defStyleAttr: Int = 0
+    defStyleAttr: Int = 0,
 ) : WebView(context, attrs, defStyleAttr), NestedScrollingChild {
     private val helper: NestedScrollingChildHelper = NestedScrollingChildHelper(this)
     private val touchSlop: Int
@@ -65,7 +65,8 @@ class NestedScrollingWebView
             MotionEvent.ACTION_DOWN -> startY = event.rawY
             MotionEvent.ACTION_MOVE -> onTouchMove(event)
             MotionEvent.ACTION_UP,
-            MotionEvent.ACTION_CANCEL -> onTouchEnd()
+            MotionEvent.ACTION_CANCEL,
+            -> onTouchEnd()
         }
         prevY = event.rawY
         return super.onTouchEvent(event)
@@ -120,26 +121,26 @@ class NestedScrollingWebView
         dyConsumed: Int,
         dxUnconsumed: Int,
         dyUnconsumed: Int,
-        offsetInWindow: IntArray?
+        offsetInWindow: IntArray?,
     ): Boolean = helper.dispatchNestedScroll(
         dxConsumed,
         dyConsumed,
         dxUnconsumed,
         dyUnconsumed,
-        offsetInWindow
+        offsetInWindow,
     )
 
     override fun dispatchNestedPreScroll(
         dx: Int,
         dy: Int,
         consumed: IntArray?,
-        offsetInWindow: IntArray?
+        offsetInWindow: IntArray?,
     ): Boolean = helper.dispatchNestedPreScroll(dx, dy, consumed, offsetInWindow)
 
     override fun dispatchNestedFling(
         velocityX: Float,
         velocityY: Float,
-        consumed: Boolean
+        consumed: Boolean,
     ): Boolean = helper.dispatchNestedFling(velocityX, velocityY, consumed)
 
     override fun dispatchNestedPreFling(velocityX: Float, velocityY: Float): Boolean =
@@ -147,7 +148,7 @@ class NestedScrollingWebView
 
     class Behavior(
         context: Context,
-        attrs: AttributeSet?
+        attrs: AttributeSet?,
     ) : AppBarLayout.ScrollingViewBehavior(context, attrs) {
         var scrollByUser = true
         private var prevBottom = 0
@@ -155,7 +156,7 @@ class NestedScrollingWebView
         override fun onDependentViewChanged(
             parent: androidx.coordinatorlayout.widget.CoordinatorLayout,
             child: View,
-            dependency: View
+            dependency: View,
         ): Boolean {
             if (!scrollByUser) {
                 val dy = dependency.bottom - prevBottom

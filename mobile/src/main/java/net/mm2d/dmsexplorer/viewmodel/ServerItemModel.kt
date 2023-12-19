@@ -24,7 +24,7 @@ import net.mm2d.dmsexplorer.settings.Settings
 class ServerItemModel(
     context: Context,
     server: MediaServer,
-    val selected: Boolean
+    val selected: Boolean,
 ) {
     var accentBackground: Drawable?
     var accentText: String?

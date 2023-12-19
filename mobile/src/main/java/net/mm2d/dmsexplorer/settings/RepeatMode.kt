@@ -28,7 +28,7 @@ import net.mm2d.dmsexplorer.R
 enum class RepeatMode(
     private val order: Int,
     @DrawableRes val iconId: Int,
-    @StringRes val messageId: Int
+    @StringRes val messageId: Int,
 ) {
     /**
      * １項目のみ再生。
@@ -36,7 +36,7 @@ enum class RepeatMode(
     PLAY_ONCE(
         0,
         R.drawable.ic_play_once,
-        R.string.toast_repeat_play_once
+        R.string.toast_repeat_play_once,
     ),
 
     /**
@@ -45,7 +45,7 @@ enum class RepeatMode(
     SEQUENTIAL(
         1,
         R.drawable.ic_sequential,
-        R.string.toast_repeat_sequential
+        R.string.toast_repeat_sequential,
     ),
 
     /**
@@ -54,7 +54,7 @@ enum class RepeatMode(
     REPEAT_ALL(
         2,
         R.drawable.ic_repeat_all,
-        R.string.toast_repeat_repeat_all
+        R.string.toast_repeat_repeat_all,
     ),
 
     /**
@@ -63,8 +63,9 @@ enum class RepeatMode(
     REPEAT_ONE(
         3,
         R.drawable.ic_repeat_one,
-        R.string.toast_repeat_repeat_one
-    );
+        R.string.toast_repeat_repeat_one,
+    ),
+    ;
 
     /**
      * トグルしたときの次のモードを返す。

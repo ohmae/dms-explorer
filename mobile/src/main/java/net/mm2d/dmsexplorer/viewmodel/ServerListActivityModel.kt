@@ -39,7 +39,7 @@ class ServerListActivityModel(
     context: Context,
     repository: Repository,
     private val serverSelectListener: ServerSelectListener,
-    private val twoPane: Boolean
+    private val twoPane: Boolean,
 ) : BaseObservable() {
     val refreshColors =
         intArrayOf(R.color.progress1, R.color.progress2, R.color.progress3, R.color.progress4)

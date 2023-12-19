@@ -35,7 +35,7 @@ import net.mm2d.dmsexplorer.viewmodel.helper.MuteAlertHelper
  */
 class MusicActivityModel(
     private val activity: BaseActivity,
-    private val repository: Repository
+    private val repository: Repository,
 ) : BaseObservable() {
     private val serverModel: MediaServerModel? = repository.mediaServerModel
     private val settings: Settings = Settings.get()
@@ -134,7 +134,8 @@ class MusicActivityModel(
         Downloader.create(uri.toString())
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(Consumer { imageBinary = it }
+            .subscribe(
+                Consumer { imageBinary = it },
             ).isDisposed
     }
 

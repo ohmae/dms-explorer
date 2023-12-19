@@ -9,7 +9,6 @@ package net.mm2d.android.upnp
 
 import net.mm2d.upnp.Icon
 
-
 /**
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
  */

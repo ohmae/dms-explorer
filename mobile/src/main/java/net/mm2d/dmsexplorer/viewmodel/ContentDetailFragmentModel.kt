@@ -31,7 +31,7 @@ import net.mm2d.dmsexplorer.view.dialog.DeleteDialog
  */
 class ContentDetailFragmentModel(
     private val activity: FragmentActivity,
-    repository: Repository
+    repository: Repository,
 ) : BaseObservable() {
     val collapsedColor: Int
     val expandedColor: Int
@@ -66,10 +66,11 @@ class ContentDetailFragmentModel(
     }
 
     @Bindable
-    fun getPlayBackgroundTint(): Int = if (isProtected)
+    fun getPlayBackgroundTint(): Int = if (isProtected) {
         AttrUtils.resolveColor(activity, R.attr.themeFabDisable, Color.BLACK)
-    else
+    } else {
         AttrUtils.resolveColor(activity, androidx.appcompat.R.attr.colorAccent, Color.BLACK)
+    }
 
     init {
         val model = repository.mediaServerModel ?: throw IllegalStateException()

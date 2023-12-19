@@ -8,7 +8,6 @@
 package net.mm2d.dmsexplorer.view.adapter
 
 import android.content.Context
-
 import net.mm2d.android.upnp.cds.CdsObject
 import net.mm2d.android.util.AribUtils
 import net.mm2d.dmsexplorer.R
@@ -20,7 +19,7 @@ import net.mm2d.dmsexplorer.domain.formatter.CdsFormatter
  */
 internal class ContentPropertyAdapter(
     context: Context,
-    entity: ContentEntity
+    entity: ContentEntity,
 ) : PropertyAdapter(context) {
     init {
         setCdsObjectInfo(context, this, entity.rawEntity as CdsObject)
@@ -29,52 +28,52 @@ internal class ContentPropertyAdapter(
     private fun setCdsObjectInfo(
         context: Context,
         adapter: PropertyAdapter,
-        cdsObject: CdsObject
+        cdsObject: CdsObject,
     ) {
         adapter.addEntry(
             context.getString(R.string.prop_title),
-            AribUtils.toDisplayableString(cdsObject.title)
+            AribUtils.toDisplayableString(cdsObject.title),
         )
         adapter.addEntry(
             context.getString(R.string.prop_channel),
-            CdsFormatter.makeChannel(cdsObject)
+            CdsFormatter.makeChannel(cdsObject),
         )
         adapter.addEntry(
             context.getString(R.string.prop_date),
-            CdsFormatter.makeDate(cdsObject)
+            CdsFormatter.makeDate(cdsObject),
         )
         adapter.addEntry(
             context.getString(R.string.prop_schedule),
-            CdsFormatter.makeSchedule(cdsObject)
+            CdsFormatter.makeSchedule(cdsObject),
         )
         adapter.addEntry(
             context.getString(R.string.prop_genre),
-            CdsFormatter.makeGenre(cdsObject)
+            CdsFormatter.makeGenre(cdsObject),
         )
         adapter.addEntry(
             context.getString(R.string.prop_album),
-            CdsFormatter.makeAlbum(cdsObject)
+            CdsFormatter.makeAlbum(cdsObject),
         )
         adapter.addEntry(
             context.getString(R.string.prop_artist),
-            CdsFormatter.makeArtists(cdsObject)
+            CdsFormatter.makeArtists(cdsObject),
         )
         adapter.addEntry(
             context.getString(R.string.prop_actor),
-            CdsFormatter.makeActors(cdsObject)
+            CdsFormatter.makeActors(cdsObject),
         )
         adapter.addEntry(
             context.getString(R.string.prop_author),
-            CdsFormatter.makeAuthors(cdsObject)
+            CdsFormatter.makeAuthors(cdsObject),
         )
         adapter.addEntry(
             context.getString(R.string.prop_creator),
-            CdsFormatter.makeCreator(cdsObject)
+            CdsFormatter.makeCreator(cdsObject),
         )
 
         adapter.addEntry(
             context.getString(R.string.prop_description),
-            CdsFormatter.makeDescription(cdsObject)
+            CdsFormatter.makeDescription(cdsObject),
         )
         val longDescriptions = CdsFormatter.parseLongDescription(cdsObject)
 
@@ -86,12 +85,12 @@ internal class ContentPropertyAdapter(
         } else {
             adapter.addEntry(
                 context.getString(R.string.prop_long_description),
-                CdsFormatter.makeUpnpLongDescription(cdsObject)
+                CdsFormatter.makeUpnpLongDescription(cdsObject),
             )
         }
         adapter.addEntry(
             CdsObject.UPNP_CLASS + ":",
-            cdsObject.upnpClass
+            cdsObject.upnpClass,
         )
     }
 }

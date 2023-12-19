@@ -43,7 +43,7 @@ class MovieActivity : BaseActivity() {
             window = window,
             rootView = binding.root,
             topView = binding.toolbar,
-            bottomView = binding.controlPanel.root
+            bottomView = binding.controlPanel.root,
         )
         val repository = Repository.get()
         try {

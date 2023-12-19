@@ -9,20 +9,19 @@ package net.mm2d.dmsexplorer.domain.tabs
 
 import android.app.Activity
 import android.os.Bundle
-
 import net.mm2d.android.util.ActivityLifecycleCallbacksAdapter
 
 /**
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
  */
 class CustomTabsBinder(
-    private val session: CustomTabsHelper
+    private val session: CustomTabsHelper,
 ) : ActivityLifecycleCallbacksAdapter() {
     private var createdCount: Int = 0
 
     override fun onActivityCreated(
         activity: Activity,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ) {
         createdCount++
         session.bind()

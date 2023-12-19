@@ -17,7 +17,7 @@ class PropertyItemModel(
     val title: CharSequence,
     type: Type,
     val description: CharSequence,
-    listener: OnClickListener?
+    listener: OnClickListener?,
 ) {
     val isLink: Boolean = type == Type.LINK
     val enableDescription: Boolean = type !== Type.TITLE && description.isNotEmpty()

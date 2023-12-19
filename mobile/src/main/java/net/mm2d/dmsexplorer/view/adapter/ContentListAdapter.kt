@@ -37,7 +37,7 @@ class ContentListAdapter(context: Context) : RecyclerView.Adapter<ContentListAda
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(
-            DataBindingUtil.inflate(inflater, R.layout.content_list_item, parent, false)
+            DataBindingUtil.inflate(inflater, R.layout.content_list_item, parent, false),
         )
     }
 
@@ -86,7 +86,7 @@ class ContentListAdapter(context: Context) : RecyclerView.Adapter<ContentListAda
     }
 
     inner class ViewHolder(
-        private val binding: ContentListItemBinding
+        private val binding: ContentListItemBinding,
     ) : RecyclerView.ViewHolder(binding.root) {
         private var contentEntity: ContentEntity? = null
 

@@ -8,7 +8,6 @@
 package net.mm2d.dmsexplorer.domain.model
 
 import android.net.Uri
-
 import net.mm2d.dmsexplorer.domain.entity.ContentEntity
 
 /**

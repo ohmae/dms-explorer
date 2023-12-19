@@ -23,7 +23,7 @@ import net.mm2d.dmsexplorer.settings.Settings
  */
 class RendererItemModel(
     context: Context,
-    renderer: MediaRenderer
+    renderer: MediaRenderer,
 ) {
     var accentBackground: Drawable?
     var accentText: String?

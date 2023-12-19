@@ -16,7 +16,7 @@ import java.util.*
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
  */
 class RootCdsObject(
-    override val udn: String
+    override val udn: String,
 ) : CdsObject {
     override val isItem: Boolean = false
     override val type: Int = TYPE_CONTAINER

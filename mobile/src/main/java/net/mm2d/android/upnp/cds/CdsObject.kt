@@ -650,7 +650,7 @@ interface CdsObject : Parcelable {
          * The string may be preceded by an optional + or – sign,
          * and the decimal point itself may be omitted if there are no fractional second digits.
          * <pre>
-        </pre></pre> */
+         </pre></pre> */
         const val RES_DURATION = "res@duration"
 
         /**

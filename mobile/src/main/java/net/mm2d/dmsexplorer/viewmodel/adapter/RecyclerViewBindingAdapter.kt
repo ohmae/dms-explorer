@@ -21,7 +21,7 @@ object RecyclerViewBindingAdapter {
     @JvmStatic
     fun setScrollPosition(
         view: RecyclerView,
-        position: Int
+        position: Int,
     ) {
         if (position < 0) {
             return
@@ -32,7 +32,7 @@ object RecyclerViewBindingAdapter {
 
     private fun scrollToCenter(
         view: RecyclerView,
-        position: Int
+        position: Int,
     ) {
         val child = findPositionView(view, position) ?: return
         val dy = (child.top - (view.height - child.height) / 2f).toInt()
@@ -41,7 +41,7 @@ object RecyclerViewBindingAdapter {
 
     private fun findPositionView(
         view: RecyclerView,
-        position: Int
+        position: Int,
     ): View? {
         val child = view.getChildAt(0) ?: return null
         val top = view.getChildAdapterPosition(child)

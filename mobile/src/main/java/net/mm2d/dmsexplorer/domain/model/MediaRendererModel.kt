@@ -30,7 +30,7 @@ import java.util.concurrent.TimeUnit
  */
 class MediaRendererModel(
     context: Context,
-    val mediaRenderer: MediaRenderer
+    val mediaRenderer: MediaRenderer,
 ) : PlayerModel {
     private var statusListener: StatusListener = STATUS_LISTENER
     private val handler = Handler(Looper.getMainLooper())
@@ -108,7 +108,7 @@ class MediaRendererModel(
     @SuppressLint("CheckResult")
     override fun setUri(
         uri: Uri,
-        entity: ContentEntity?
+        entity: ContentEntity?,
     ) {
         mediaRenderer.clearAVTransportURI()
             .subscribeOn(Schedulers.io())

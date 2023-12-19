@@ -11,7 +11,6 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Matrix
 import androidx.exifinterface.media.ExifInterface
-
 import java.io.ByteArrayInputStream
 import java.io.IOException
 
@@ -68,7 +67,7 @@ object BitmapUtils {
         sourceWidth: Int,
         sourceHeight: Int,
         targetWidth: Int,
-        targetHeight: Int
+        targetHeight: Int,
     ): Int {
         // sourceの方が横長なら幅で合わせる、縦長なら高さで合わせる
         return if (targetWidth == 0 || targetHeight == 0) {
@@ -99,7 +98,7 @@ object BitmapUtils {
     private fun extractOrientation(data: ByteArray): Int = try {
         ExifInterface(ByteArrayInputStream(data)).getAttributeInt(
             ExifInterface.TAG_ORIENTATION,
-            ExifInterface.ORIENTATION_UNDEFINED
+            ExifInterface.ORIENTATION_UNDEFINED,
         )
     } catch (ignored: IOException) {
         ExifInterface.ORIENTATION_UNDEFINED
@@ -128,7 +127,8 @@ object BitmapUtils {
                 matrix.postScale(-1f, 1f)
             }
             ExifInterface.ORIENTATION_NORMAL,
-            ExifInterface.ORIENTATION_UNDEFINED ->
+            ExifInterface.ORIENTATION_UNDEFINED,
+            ->
                 return base
             else ->
                 return base
@@ -141,13 +141,15 @@ object BitmapUtils {
             ExifInterface.ORIENTATION_TRANSPOSE,
             ExifInterface.ORIENTATION_ROTATE_90,
             ExifInterface.ORIENTATION_TRANSVERSE,
-            ExifInterface.ORIENTATION_ROTATE_270 ->
+            ExifInterface.ORIENTATION_ROTATE_270,
+            ->
                 decode(binary, height, width)
             ExifInterface.ORIENTATION_UNDEFINED,
             ExifInterface.ORIENTATION_NORMAL,
             ExifInterface.ORIENTATION_FLIP_HORIZONTAL,
             ExifInterface.ORIENTATION_ROTATE_180,
-            ExifInterface.ORIENTATION_FLIP_VERTICAL ->
+            ExifInterface.ORIENTATION_FLIP_VERTICAL,
+            ->
                 decode(binary, width, height)
             else ->
                 decode(binary, width, height)

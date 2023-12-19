@@ -28,7 +28,7 @@ import java.util.*
  */
 class ControlPanelModel internal constructor(
     private val context: Context,
-    private val playerModel: PlayerModel
+    private val playerModel: PlayerModel,
 ) : BaseObservable(), StatusListener {
     private var repeatMode = RepeatMode.PLAY_ONCE
     private var error: Boolean = false
@@ -126,7 +126,7 @@ class ControlPanelModel internal constructor(
         override fun onProgressChanged(
             seekBar: ScrubBar,
             progress: Int,
-            fromUser: Boolean
+            fromUser: Boolean,
         ) {
             if (fromUser) {
                 setProgressText(progress)
@@ -146,7 +146,7 @@ class ControlPanelModel internal constructor(
 
         override fun onAccuracyChanged(
             seekBar: ScrubBar,
-            @Accuracy accuracy: Int
+            @Accuracy accuracy: Int,
         ) {
             scrubText = getScrubText(accuracy)
         }
@@ -200,9 +200,11 @@ class ControlPanelModel internal constructor(
         repeatMode = mode
         isNextEnabled = when (mode) {
             RepeatMode.PLAY_ONCE,
-            RepeatMode.REPEAT_ONE -> false
+            RepeatMode.REPEAT_ONE,
+            -> false
             RepeatMode.SEQUENTIAL,
-            RepeatMode.REPEAT_ALL -> true
+            RepeatMode.REPEAT_ALL,
+            -> true
         }
     }
 
@@ -259,7 +261,7 @@ class ControlPanelModel internal constructor(
 
     override fun onError(
         what: Int,
-        extra: Int
+        extra: Int,
     ): Boolean {
         error = true
         Toaster.show(context, R.string.toast_player_error)
@@ -270,7 +272,7 @@ class ControlPanelModel internal constructor(
 
     override fun onInfo(
         what: Int,
-        extra: Int
+        extra: Int,
     ): Boolean = false
 
     override fun onCompletion() {
@@ -285,10 +287,11 @@ class ControlPanelModel internal constructor(
 
     companion object {
         private fun makeTimeText(millisecond: Int): String = String.format(
-            Locale.US, "%01d:%02d:%02d",
+            Locale.US,
+            "%01d:%02d:%02d",
             (millisecond / 3600000).toLong(),
             (millisecond / 60000 % 60).toLong(),
-            (millisecond / 1000 % 60).toLong()
+            (millisecond / 1000 % 60).toLong(),
         )
     }
 }

@@ -18,7 +18,7 @@ import net.mm2d.dmsexplorer.util.StringJoiner
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
  */
 class CdsContentEntity(
-    override val rawEntity: CdsObject
+    override val rawEntity: CdsObject,
 ) : ContentEntity {
     override val id: String = rawEntity.objectId
     private var selectedRes: Tag? = null
@@ -56,7 +56,9 @@ class CdsContentEntity(
             }
             return if (stringJoiner.isNotEmpty()) {
                 stringJoiner.toString()
-            } else ""
+            } else {
+                ""
+            }
         }
 
     override val artUri: Uri
@@ -64,7 +66,9 @@ class CdsContentEntity(
             val uri = rawEntity.getValue(CdsObject.UPNP_ALBUM_ART_URI)
             return if (uri.isNullOrEmpty()) {
                 Uri.EMPTY
-            } else Uri.parse(uri)
+            } else {
+                Uri.parse(uri)
+            }
         }
 
     override val iconUri: Uri

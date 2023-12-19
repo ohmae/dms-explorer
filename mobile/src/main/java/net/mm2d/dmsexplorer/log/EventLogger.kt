@@ -82,24 +82,30 @@ object EventLogger {
         val targetModel = Repository.get().playbackTargetModel ?: return
         val entity = targetModel.contentEntity
         val cdsObject = entity.rawEntity as CdsObject
-        sender?.logEvent(Event.SELECT_CONTENT, bundleOf(
-            Param.ITEM_VARIANT to cdsObject.getValue(CdsObject.RES_PROTOCOL_INFO),
-            Param.CONTENT_TYPE to getTypeString(entity.type),
-            Param.ORIGIN to if (cdsObject.hasProtectedResource()) VALUE_DLNA_DTCP else VALUE_DLNA,
-            Param.DESTINATION to VALUE_DMR,
-        ))
+        sender?.logEvent(
+            Event.SELECT_CONTENT,
+            bundleOf(
+                Param.ITEM_VARIANT to cdsObject.getValue(CdsObject.RES_PROTOCOL_INFO),
+                Param.CONTENT_TYPE to getTypeString(entity.type),
+                Param.ORIGIN to if (cdsObject.hasProtectedResource()) VALUE_DLNA_DTCP else VALUE_DLNA,
+                Param.DESTINATION to VALUE_DMR,
+            ),
+        )
     }
 
     fun sendPlayContent(playMyself: Boolean) {
         val targetModel = Repository.get().playbackTargetModel ?: return
         val entity = targetModel.contentEntity
         val cdsObject = entity.rawEntity as CdsObject
-        sender?.logEvent(Event.SELECT_CONTENT, bundleOf(
-            Param.ITEM_VARIANT to cdsObject.getValue(CdsObject.RES_PROTOCOL_INFO),
-            Param.CONTENT_TYPE to getTypeString(entity.type),
-            Param.ORIGIN to VALUE_DLNA,
-            Param.DESTINATION to if (playMyself) VALUE_MYSELF else VALUE_OTHER,
-        ))
+        sender?.logEvent(
+            Event.SELECT_CONTENT,
+            bundleOf(
+                Param.ITEM_VARIANT to cdsObject.getValue(CdsObject.RES_PROTOCOL_INFO),
+                Param.CONTENT_TYPE to getTypeString(entity.type),
+                Param.ORIGIN to VALUE_DLNA,
+                Param.DESTINATION to if (playMyself) VALUE_MYSELF else VALUE_OTHER,
+            ),
+        )
     }
 
     private fun getTypeString(type: ContentType): String = type.name.lowercase(Locale.ENGLISH)

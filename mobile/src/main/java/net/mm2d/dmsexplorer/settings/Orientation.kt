@@ -21,28 +21,29 @@ import net.mm2d.log.Logger
 enum class Orientation(
     private val value: Int,
     @StringRes
-    private val nameId: Int
+    private val nameId: Int,
 ) {
     UNSPECIFIED(
         ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED,
-        R.string.orientation_unspecified
+        R.string.orientation_unspecified,
     ),
     PORTRAIT(
         ActivityInfo.SCREEN_ORIENTATION_PORTRAIT,
-        R.string.orientation_portrait
+        R.string.orientation_portrait,
     ),
     LANDSCAPE(
         ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE,
-        R.string.orientation_landscape
+        R.string.orientation_landscape,
     ),
     REVERSE_PORTRAIT(
         ActivityInfo.SCREEN_ORIENTATION_REVERSE_PORTRAIT,
-        R.string.orientation_reverse_portrait
+        R.string.orientation_reverse_portrait,
     ),
     REVERSE_LANDSCAPE(
         ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE,
-        R.string.orientation_reverse_landscape
-    );
+        R.string.orientation_reverse_landscape,
+    ),
+    ;
 
     fun getName(context: Context): String = context.getString(nameId)
 

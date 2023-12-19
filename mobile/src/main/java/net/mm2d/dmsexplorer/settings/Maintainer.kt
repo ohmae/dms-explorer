@@ -78,7 +78,7 @@ internal object Maintainer {
      */
     private fun writeDefaultValue(
         storage: SettingsStorage,
-        overwrite: Boolean
+        overwrite: Boolean,
     ) {
         for (key in Key.values()) {
             storage.writeDefault(key, overwrite)

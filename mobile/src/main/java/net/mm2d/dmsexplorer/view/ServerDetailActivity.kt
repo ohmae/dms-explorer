@@ -80,7 +80,10 @@ class ServerDetailActivity : BaseActivity(true) {
         val cy = background.height - iconCenter
         ViewAnimationUtils.createCircularReveal(
             background,
-            cx.toInt(), cy.toInt(), iconRadius, sqrt((cx * cx + cy * cy).toDouble()).toFloat()
+            cx.toInt(),
+            cy.toInt(),
+            iconRadius,
+            sqrt((cx * cx + cy * cy).toDouble()).toFloat(),
         ).start()
     }
 

@@ -31,7 +31,7 @@ import kotlin.math.abs
 class ScrubBar @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
-    defStyleAttr: Int = 0
+    defStyleAttr: Int = 0,
 ) : View(context, attrs, defStyleAttr) {
     private val paint: Paint
     private var scrubBarListener = LISTENER
@@ -211,7 +211,7 @@ class ScrubBar @JvmOverloads constructor(
 
         override fun writeToParcel(
             out: Parcel,
-            flags: Int
+            flags: Int,
         ) {
             super.writeToParcel(out, flags)
             out.writeInt(progress)
@@ -259,13 +259,13 @@ class ScrubBar @JvmOverloads constructor(
 
     override fun onMeasure(
         widthMeasureSpec: Int,
-        heightMeasureSpec: Int
+        heightMeasureSpec: Int,
     ) {
         val w = (trackWidth + paddingLeft.toFloat() + paddingRight.toFloat()).toInt()
         val h = (trackWidth + paddingTop.toFloat() + paddingBottom.toFloat()).toInt()
         setMeasuredDimension(
             resolveSizeAndState(w, widthMeasureSpec, 0),
-            resolveSizeAndState(h, heightMeasureSpec, 0)
+            resolveSizeAndState(h, heightMeasureSpec, 0),
         )
     }
 
@@ -382,7 +382,7 @@ class ScrubBar @JvmOverloads constructor(
 
     private fun setProgressInternal(
         progress: Int,
-        fromUser: Boolean
+        fromUser: Boolean,
     ) {
         val newProgress = progress.coerceIn(0, max)
         if (newProgress == _progress) {
@@ -434,16 +434,22 @@ class ScrubBar @JvmOverloads constructor(
         const val ACCURACY_QUARTER = 2
 
         private val ACCURACY_RANKS = intArrayOf(
-            ACCURACY_NORMAL, ACCURACY_HALF, ACCURACY_QUARTER
+            ACCURACY_NORMAL,
+            ACCURACY_HALF,
+            ACCURACY_QUARTER,
         )
         private val ACCURACY = floatArrayOf(
-            1.1f, 0.5f, 0.25f
+            1.1f,
+            0.5f,
+            0.25f,
         )
         private val RANK_MAX = ACCURACY_RANKS.size - 1
 
         private val LISTENER: ScrubBarListener = object : ScrubBarListener {
             override fun onProgressChanged(
-                seekBar: ScrubBar, progress: Int, fromUser: Boolean
+                seekBar: ScrubBar,
+                progress: Int,
+                fromUser: Boolean,
             ) = Unit
 
             override fun onStartTrackingTouch(seekBar: ScrubBar) = Unit

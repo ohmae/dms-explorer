@@ -9,7 +9,6 @@ package net.mm2d.dmsexplorer.viewmodel.helper
 
 import android.content.Context
 import android.media.AudioManager
-
 import net.mm2d.android.util.Toaster
 import net.mm2d.dmsexplorer.R
 
@@ -17,7 +16,7 @@ import net.mm2d.dmsexplorer.R
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
  */
 class MuteAlertHelper(
-    private val context: Context
+    private val context: Context,
 ) {
     private val audioManager: AudioManager =
         context.getSystemService(Context.AUDIO_SERVICE) as AudioManager

@@ -36,7 +36,7 @@ import java.util.*
  */
 class DmcActivityModel(
     private val activity: Activity,
-    repository: Repository
+    repository: Repository,
 ) : BaseObservable(), StatusListener {
     private val handler = Handler(Looper.getMainLooper())
     private val targetModel: PlaybackTargetModel = repository.playbackTargetModel
@@ -119,7 +119,7 @@ class DmcActivityModel(
                 val count = propertyAdapter.itemCount
                 propertyAdapter.addEntry(
                     activity.getString(R.string.prop_chapter_info),
-                    makeChapterString(chapterList)
+                    makeChapterString(chapterList),
                 )
                 propertyAdapter.notifyItemInserted(count)
             }
@@ -145,16 +145,18 @@ class DmcActivityModel(
         isPlayControlEnabled = hasDuration && rendererModel.canPause()
         val serverModel = repository.mediaServerModel
             ?: throw IllegalStateException()
-        subtitle = (rendererModel.name
-            + "  ←  "
-            + serverModel.mediaServer.friendlyName)
+        subtitle = (
+            rendererModel.name +
+                "  ←  " +
+                serverModel.mediaServer.friendlyName
+            )
         propertyAdapter = PropertyAdapter.ofContent(activity, entity)
         imageResource = getImageResource(entity)
         seekBarListener = object : ScrubBarListener {
             override fun onProgressChanged(
                 seekBar: ScrubBar,
                 progress: Int,
-                fromUser: Boolean
+                fromUser: Boolean,
             ) {
                 if (fromUser) {
                     setProgressText(progress)
@@ -174,7 +176,7 @@ class DmcActivityModel(
 
             override fun onAccuracyChanged(
                 seekBar: ScrubBar,
-                @Accuracy accuracy: Int
+                @Accuracy accuracy: Int,
             ) {
                 scrubText = getAccuracyText(accuracy)
             }
@@ -258,7 +260,7 @@ class DmcActivityModel(
 
     override fun onError(
         what: Int,
-        extra: Int
+        extra: Int,
     ): Boolean {
         Toaster.show(activity, R.string.toast_command_error)
         return false
@@ -266,7 +268,7 @@ class DmcActivityModel(
 
     override fun onInfo(
         what: Int,
-        extra: Int
+        extra: Int,
     ): Boolean {
         return false
     }

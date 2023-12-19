@@ -40,7 +40,7 @@ class ContentListActivityModel(
     private val activity: FragmentActivity,
     repository: Repository,
     private val cdsSelectListener: CdsSelectListener,
-    private val twoPane: Boolean
+    private val twoPane: Boolean,
 ) : BaseObservable(), ExploreListener {
     val refreshColors =
         intArrayOf(R.color.progress1, R.color.progress2, R.color.progress3, R.color.progress4)
@@ -93,7 +93,7 @@ class ContentListActivityModel(
     interface CdsSelectListener {
         fun onSelect(
             v: View,
-            entity: ContentEntity
+            entity: ContentEntity,
         )
 
         fun onLostSelection()
@@ -101,7 +101,7 @@ class ContentListActivityModel(
         fun onExecute(
             v: View,
             entity: ContentEntity,
-            selected: Boolean
+            selected: Boolean,
         )
     }
 
@@ -128,7 +128,7 @@ class ContentListActivityModel(
 
     private fun onItemClick(
         v: View,
-        entity: ContentEntity
+        entity: ContentEntity,
     ) {
         if (mediaServerModel.enterChild(entity)) {
             cdsSelectListener.onLostSelection()
@@ -150,7 +150,7 @@ class ContentListActivityModel(
 
     private fun onItemLongClick(
         v: View,
-        entity: ContentEntity
+        entity: ContentEntity,
     ) {
         if (mediaServerModel.enterChild(entity)) {
             cdsSelectListener.onLostSelection()
@@ -223,7 +223,7 @@ class ContentListActivityModel(
 
     private class DiffCallback(
         private val old: List<ContentEntity>,
-        private val new: List<ContentEntity>
+        private val new: List<ContentEntity>,
     ) : DiffUtil.Callback() {
         override fun getOldListSize(): Int = old.size
 

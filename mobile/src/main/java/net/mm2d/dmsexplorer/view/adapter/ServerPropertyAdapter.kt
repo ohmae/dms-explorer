@@ -8,7 +8,6 @@
 package net.mm2d.dmsexplorer.view.adapter
 
 import android.content.Context
-
 import net.mm2d.android.upnp.cds.MediaServer
 
 /**
@@ -16,7 +15,7 @@ import net.mm2d.android.upnp.cds.MediaServer
  */
 internal class ServerPropertyAdapter(
     context: Context,
-    server: MediaServer
+    server: MediaServer,
 ) : PropertyAdapter(context) {
     init {
         setServerInfo(this, server)
@@ -24,7 +23,7 @@ internal class ServerPropertyAdapter(
 
     private fun setServerInfo(
         adapter: PropertyAdapter,
-        server: MediaServer
+        server: MediaServer,
     ) {
         adapter.addEntry("FriendlyName:", server.friendlyName)
         adapter.addEntry("SerialNumber:", server.serialNumber)

@@ -20,7 +20,7 @@ object FloatingActionButtonBindingAdapter {
     @JvmStatic
     fun setShow(
         view: FloatingActionButton,
-        show: Boolean
+        show: Boolean,
     ) {
         if (show) {
             view.show()
@@ -33,7 +33,7 @@ object FloatingActionButtonBindingAdapter {
     @JvmStatic
     fun setBackgroundTint(
         view: FloatingActionButton,
-        @ColorInt color: Int
+        @ColorInt color: Int,
     ) {
         view.backgroundTintList = ColorStateList.valueOf(color)
     }

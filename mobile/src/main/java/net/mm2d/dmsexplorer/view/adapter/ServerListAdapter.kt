@@ -26,7 +26,7 @@ import net.mm2d.dmsexplorer.viewmodel.ServerItemModel
  */
 class ServerListAdapter(
     private val context: Context,
-    servers: Collection<MediaServer>?
+    servers: Collection<MediaServer>?,
 ) : RecyclerView.Adapter<ServerListAdapter.ViewHolder>() {
     private val inflater: LayoutInflater = LayoutInflater.from(context)
     private val list: MutableList<MediaServer> = servers?.let { ArrayList(it) } ?: ArrayList()
@@ -39,16 +39,16 @@ class ServerListAdapter(
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
-        viewType: Int
+        viewType: Int,
     ): ViewHolder {
         return ViewHolder(
-            DataBindingUtil.inflate(inflater, R.layout.server_list_item, parent, false)
+            DataBindingUtil.inflate(inflater, R.layout.server_list_item, parent, false),
         )
     }
 
     override fun onBindViewHolder(
         holder: ViewHolder,
-        position: Int
+        position: Int,
     ) {
         holder.applyItem(list[position])
     }
@@ -114,7 +114,7 @@ class ServerListAdapter(
     }
 
     inner class ViewHolder(
-        private val binding: ServerListItemBinding
+        private val binding: ServerListItemBinding,
     ) : RecyclerView.ViewHolder(binding.root) {
         private var mediaServer: MediaServer? = null
 
@@ -150,7 +150,7 @@ class ServerListAdapter(
 
         private fun onFocusChange(
             v: View,
-            focus: Boolean
+            focus: Boolean,
         ) {
             if (focus) {
                 v.scaleX = FOCUS_SCALE

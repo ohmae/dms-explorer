@@ -28,7 +28,7 @@ class ServerDetailFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
         val activity = requireActivity()
         val binding: ServerDetailFragmentBinding = DataBindingUtil

@@ -9,4 +9,4 @@ package net.mm2d.dmsexplorer
 /**
  * Fake class for testing.
  */
-class TestApplication: App()
+class TestApplication : App()

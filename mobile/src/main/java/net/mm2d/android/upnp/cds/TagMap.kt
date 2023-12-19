@@ -21,7 +21,7 @@ import androidx.collection.ArrayMap
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
  */
 internal class TagMap(
-    val map: Map<String, List<Tag>>
+    val map: Map<String, List<Tag>>,
 ) : Parcelable {
     /**
      * XPATH風の指定で示された値を返す。
@@ -68,7 +68,9 @@ internal class TagMap(
         val tag = getTag(tagName, index) ?: return null
         return if (attrName.isNullOrEmpty()) {
             tag.value
-        } else tag.getAttribute(attrName)
+        } else {
+            tag.getAttribute(attrName)
+        }
     }
 
     /**

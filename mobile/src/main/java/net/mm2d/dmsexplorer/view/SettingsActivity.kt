@@ -56,7 +56,7 @@ class SettingsActivity : PreferenceActivityCompat() {
         Repository.get().themeModel.setThemeColor(
             this,
             AttrUtils.resolveColor(this, androidx.appcompat.R.attr.colorPrimary, Color.BLACK),
-            ContextCompat.getColor(this, R.color.defaultStatusBar)
+            ContextCompat.getColor(this, R.color.defaultStatusBar),
         )
         EventRouter.observeFinish(this) {
             finish()
@@ -66,12 +66,14 @@ class SettingsActivity : PreferenceActivityCompat() {
     override fun onIsMultiPane(): Boolean = isXLargeTablet(this)
 
     override fun isValidFragment(fragmentName: String?): Boolean =
-        (PreferenceFragmentCompat::class.java.name == fragmentName
-            || PlaybackPreferenceFragment::class.java.name == fragmentName
-            || FunctionPreferenceFragment::class.java.name == fragmentName
-            || ViewPreferenceFragment::class.java.name == fragmentName
-            || ExpertPreferenceFragment::class.java.name == fragmentName
-            || InformationPreferenceFragment::class.java.name == fragmentName)
+        (
+            PreferenceFragmentCompat::class.java.name == fragmentName ||
+                PlaybackPreferenceFragment::class.java.name == fragmentName ||
+                FunctionPreferenceFragment::class.java.name == fragmentName ||
+                ViewPreferenceFragment::class.java.name == fragmentName ||
+                ExpertPreferenceFragment::class.java.name == fragmentName ||
+                InformationPreferenceFragment::class.java.name == fragmentName
+            )
 
     override fun onSupportNavigateUp(): Boolean {
         onBackPressedDispatcher.onBackPressed()
@@ -211,7 +213,7 @@ class SettingsActivity : PreferenceActivityCompat() {
                 Key.ORIENTATION_MOVIE.name,
                 Key.ORIENTATION_MUSIC.name,
                 Key.ORIENTATION_PHOTO.name,
-                Key.ORIENTATION_DMC.name
+                Key.ORIENTATION_DMC.name,
             )
         }
     }
@@ -239,7 +241,7 @@ class SettingsActivity : PreferenceActivityCompat() {
                 WebViewActivity.start(
                     activity,
                     getString(R.string.pref_title_license),
-                    Const.URL_OPEN_SOURCE_LICENSE + "?" + query
+                    Const.URL_OPEN_SOURCE_LICENSE + "?" + query,
                 )
                 true
             }

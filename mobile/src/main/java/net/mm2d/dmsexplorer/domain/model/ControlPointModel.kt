@@ -14,7 +14,6 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.net.ConnectivityManager
 import android.net.wifi.WifiManager
-
 import net.mm2d.android.net.Lan
 import net.mm2d.android.upnp.AvControlPointManager
 import net.mm2d.android.upnp.avt.MediaRenderer
@@ -27,7 +26,6 @@ import net.mm2d.android.util.Toaster
 import net.mm2d.dmsexplorer.BuildConfig
 import net.mm2d.dmsexplorer.R
 import net.mm2d.dmsexplorer.debug.DebugData
-
 import java.util.concurrent.TimeUnit
 import java.util.concurrent.atomic.AtomicBoolean
 
@@ -37,7 +35,7 @@ import java.util.concurrent.atomic.AtomicBoolean
 class ControlPointModel(
     context: Context,
     private val selectMediaServerObserver: (MediaServer?) -> Unit,
-    private val selectMediaRendererObserver: (MediaRenderer?) -> Unit
+    private val selectMediaRendererObserver: (MediaRenderer?) -> Unit,
 ) {
     private var wifiLock: WifiManager.WifiLock? = null
     private val avControlPointManager = AvControlPointManager()
@@ -158,7 +156,7 @@ class ControlPointModel(
         if (!initialized.getAndSet(true)) {
             applicationContext.registerReceiver(
                 connectivityReceiver,
-                IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION)
+                IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION),
             )
             acquireWifiLock()
         }

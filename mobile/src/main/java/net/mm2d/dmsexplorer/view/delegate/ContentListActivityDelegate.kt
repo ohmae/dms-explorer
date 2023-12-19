@@ -27,7 +27,7 @@ import net.mm2d.dmsexplorer.viewmodel.ContentListActivityModel.CdsSelectListener
  */
 abstract class ContentListActivityDelegate internal constructor(
     protected val activity: BaseActivity,
-    val binding: ContentListActivityBinding
+    val binding: ContentListActivityBinding,
 ) : CdsSelectListener, OnDeleteListener {
     protected var model: ContentListActivityModel? = null
         private set
@@ -114,14 +114,16 @@ abstract class ContentListActivityDelegate internal constructor(
         fun create(activity: BaseActivity): ContentListActivityDelegate {
             val binding = DataBindingUtil.setContentView<ContentListActivityBinding>(
                 activity,
-                R.layout.content_list_activity
+                R.layout.content_list_activity,
             )
             return if (binding.cdsDetailContainer == null) {
                 ContentListActivityDelegateOnePane(activity, binding)
-            } else ContentListActivityDelegateTwoPane(
-                activity,
-                binding
-            )
+            } else {
+                ContentListActivityDelegateTwoPane(
+                    activity,
+                    binding,
+                )
+            }
         }
     }
 }

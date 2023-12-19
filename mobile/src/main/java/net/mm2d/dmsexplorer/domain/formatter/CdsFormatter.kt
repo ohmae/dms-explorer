@@ -80,14 +80,14 @@ object CdsFormatter {
     private fun joinTagValue(
         cdsObject: CdsObject,
         tagName: String,
-        delimiter: String
+        delimiter: String,
     ): String? = cdsObject.getTagList(tagName)
         ?.joinToString(delimiter) { it.value }
         ?.toDisplayableString()
 
     private fun joinMembers(
         cdsObject: CdsObject,
-        tagName: String
+        tagName: String,
     ): String? = cdsObject.getTagList(tagName)
         ?.joinToString("\n") {
             it.value + (it.getAttribute("role")?.let { role -> " : $role" } ?: "")
@@ -129,7 +129,9 @@ object CdsFormatter {
         val date = PropertyParser.parseDate(str) ?: return null
         return if (str.length <= 10) {
             DateFormat.format("yyyy/MM/dd (E)", date).toString()
-        } else DateFormat.format("yyyy/M/d (E) kk:mm:ss", date).toString()
+        } else {
+            DateFormat.format("yyyy/M/d (E) kk:mm:ss", date).toString()
+        }
     }
 
     fun makeSchedule(cdsObject: CdsObject): String? {

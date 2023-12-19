@@ -8,7 +8,6 @@
 package net.mm2d.android.upnp
 
 import android.os.Bundle
-
 import net.mm2d.upnp.Device
 import net.mm2d.upnp.Icon
 
@@ -32,7 +31,7 @@ abstract class DeviceWrapper(
      *
      * @return Device
      */
-    private val device: Device
+    private val device: Device,
 ) {
     private val arguments = Bundle()
     private var iconSearched: Boolean = false

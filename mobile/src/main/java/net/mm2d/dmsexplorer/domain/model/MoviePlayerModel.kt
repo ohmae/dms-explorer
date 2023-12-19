@@ -21,7 +21,7 @@ import net.mm2d.dmsexplorer.domain.model.control.VideoViewControl
  */
 class MoviePlayerModel(
     private val context: Context,
-    private val videoView: VideoView
+    private val videoView: VideoView,
 ) : MediaPlayerModel(VideoViewControl(videoView)) {
     override val name: String = "Movie Player"
     override fun setUri(uri: Uri, entity: ContentEntity?) {
@@ -35,7 +35,7 @@ class MoviePlayerModel(
                 .setUsage(AudioAttributes.USAGE_MEDIA)
                 .setFlags(AudioAttributes.FLAG_HW_AV_SYNC)
                 .setContentType(AudioAttributes.CONTENT_TYPE_MOVIE)
-                .build()
+                .build(),
         )
     }
 }

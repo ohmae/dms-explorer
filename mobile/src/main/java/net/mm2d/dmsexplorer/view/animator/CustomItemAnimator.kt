@@ -57,7 +57,7 @@ class CustomItemAnimator(context: Context) : SimpleItemAnimator() {
         val fromX: Int,
         val fromY: Int,
         val toX: Int,
-        val toY: Int
+        val toY: Int,
     )
 
     private class ChangeInfo(
@@ -66,7 +66,7 @@ class CustomItemAnimator(context: Context) : SimpleItemAnimator() {
         val fromX: Int,
         val fromY: Int,
         val toX: Int,
-        val toY: Int
+        val toY: Int,
     ) {
         override fun toString(): String {
             return "ChangeInfo{oldHolder=$oldHolder, newHolder=$newHolder, fromX=$fromX, fromY=$fromY, toX=$toX, toY=$toY}"
@@ -101,8 +101,11 @@ class CustomItemAnimator(context: Context) : SimpleItemAnimator() {
             val mover = Runnable {
                 for (moveInfo in moves) {
                     animateMoveImpl(
-                        moveInfo.holder, moveInfo.fromX, moveInfo.fromY,
-                        moveInfo.toX, moveInfo.toY
+                        moveInfo.holder,
+                        moveInfo.fromX,
+                        moveInfo.fromY,
+                        moveInfo.toX,
+                        moveInfo.toY,
                     )
                 }
                 moves.clear()
@@ -185,7 +188,8 @@ class CustomItemAnimator(context: Context) : SimpleItemAnimator() {
                     removeAnimations.remove(holder)
                     dispatchFinishedWhenDone()
                 }
-            }).start()
+            },
+        ).start()
     }
 
     override fun animateAdd(holder: ViewHolder): Boolean {
@@ -198,7 +202,7 @@ class CustomItemAnimator(context: Context) : SimpleItemAnimator() {
 
     private fun animateAddImpl(
         holder: ViewHolder,
-        delay: Long
+        delay: Long,
     ) {
         val view = holder.itemView
         val animation = view.animate()
@@ -230,7 +234,7 @@ class CustomItemAnimator(context: Context) : SimpleItemAnimator() {
         fromX: Int,
         fromY: Int,
         toX: Int,
-        toY: Int
+        toY: Int,
     ): Boolean {
         val view = holder.itemView
         val newFromX = fromX + view.translationX.toInt()
@@ -257,7 +261,7 @@ class CustomItemAnimator(context: Context) : SimpleItemAnimator() {
         fromX: Int,
         fromY: Int,
         toX: Int,
-        toY: Int
+        toY: Int,
     ) {
         val view = holder.itemView
         val deltaX = toX - fromX
@@ -299,7 +303,7 @@ class CustomItemAnimator(context: Context) : SimpleItemAnimator() {
         fromX: Int,
         fromY: Int,
         toX: Int,
-        toY: Int
+        toY: Int,
     ): Boolean {
         if (oldHolder === newHolder) {
             // Don't know how to run change animations when the same view holder is re-used.
@@ -332,7 +336,7 @@ class CustomItemAnimator(context: Context) : SimpleItemAnimator() {
         val newView = newHolder?.itemView
         if (view != null) {
             val oldViewAnim = view.animate().setDuration(
-                changeDuration
+                changeDuration,
             )
             changeAnimations.add(holder)
             oldViewAnim.translationX((changeInfo.toX - changeInfo.fromX).toFloat())
@@ -377,7 +381,7 @@ class CustomItemAnimator(context: Context) : SimpleItemAnimator() {
 
     private fun endChangeAnimation(
         infoList: MutableList<ChangeInfo>,
-        item: ViewHolder
+        item: ViewHolder,
     ) {
         for (i in infoList.indices.reversed()) {
             val changeInfo = infoList[i]
@@ -400,7 +404,7 @@ class CustomItemAnimator(context: Context) : SimpleItemAnimator() {
 
     private fun endChangeAnimationIfNecessary(
         changeInfo: ChangeInfo,
-        item: ViewHolder
+        item: ViewHolder,
     ): Boolean {
         var oldItem = false
         when {
@@ -496,17 +500,19 @@ class CustomItemAnimator(context: Context) : SimpleItemAnimator() {
     }
 
     override fun isRunning(): Boolean {
-        return (pendingAdditions.isNotEmpty()
-            || pendingChanges.isNotEmpty()
-            || pendingMoves.isNotEmpty()
-            || pendingRemovals.isNotEmpty()
-            || moveAnimations.isNotEmpty()
-            || removeAnimations.isNotEmpty()
-            || addAnimations.isNotEmpty()
-            || changeAnimations.isNotEmpty()
-            || movesList.isNotEmpty()
-            || additionsList.isNotEmpty()
-            || changesList.isNotEmpty())
+        return (
+            pendingAdditions.isNotEmpty() ||
+                pendingChanges.isNotEmpty() ||
+                pendingMoves.isNotEmpty() ||
+                pendingRemovals.isNotEmpty() ||
+                moveAnimations.isNotEmpty() ||
+                removeAnimations.isNotEmpty() ||
+                addAnimations.isNotEmpty() ||
+                changeAnimations.isNotEmpty() ||
+                movesList.isNotEmpty() ||
+                additionsList.isNotEmpty() ||
+                changesList.isNotEmpty()
+            )
     }
 
     /**
@@ -620,7 +626,7 @@ class CustomItemAnimator(context: Context) : SimpleItemAnimator() {
      */
     override fun canReuseUpdatedViewHolder(
         viewHolder: ViewHolder,
-        payloads: List<Any>
+        payloads: List<Any>,
     ): Boolean {
         return payloads.isNotEmpty() || super.canReuseUpdatedViewHolder(viewHolder, payloads)
     }
