@@ -16,8 +16,12 @@ import android.os.Handler
 import android.os.Looper
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
-import androidx.preference.*
+import androidx.preference.ListPreference
+import androidx.preference.Preference
 import androidx.preference.Preference.OnPreferenceChangeListener
+import androidx.preference.PreferenceFragmentCompat
+import androidx.preference.PreferenceManager
+import androidx.preference.SwitchPreference
 import net.mm2d.android.util.LaunchUtils
 import net.mm2d.dmsexplorer.BuildConfig
 import net.mm2d.dmsexplorer.Const
@@ -27,7 +31,7 @@ import net.mm2d.dmsexplorer.domain.tabs.CustomTabsHelper
 import net.mm2d.dmsexplorer.settings.Key
 import net.mm2d.dmsexplorer.settings.Orientation
 import net.mm2d.dmsexplorer.settings.Settings
-import net.mm2d.dmsexplorer.settings.SortKey.*
+import net.mm2d.dmsexplorer.settings.SortKey
 import net.mm2d.dmsexplorer.util.AttrUtils
 import net.mm2d.dmsexplorer.view.base.PreferenceFragmentBase
 import net.mm2d.dmsexplorer.view.dialog.SortDialog
@@ -170,15 +174,15 @@ class SettingsActivity : PreferenceActivityCompat() {
         private fun makeSortSummary(): String {
             val settings = Settings.get()
             val keyId = when (settings.sortKey) {
-                NONE -> R.string.pref_summary_sort_key_none
-                NAME -> R.string.pref_summary_sort_key_name
-                DATE -> R.string.pref_summary_sort_key_date
+                SortKey.NONE -> R.string.pref_summary_sort_key_none
+                SortKey.NAME -> R.string.pref_summary_sort_key_name
+                SortKey.DATE -> R.string.pref_summary_sort_key_date
             }
             val orderId = when (settings.isAscendingSortOrder) {
                 true -> R.string.pref_summary_sort_order_ascending
                 else -> R.string.pref_summary_sort_order_descending
             }
-            return if (settings.sortKey == NONE) {
+            return if (settings.sortKey == SortKey.NONE) {
                 getString(keyId)
             } else {
                 getString(keyId) + " - " + getString(orderId)

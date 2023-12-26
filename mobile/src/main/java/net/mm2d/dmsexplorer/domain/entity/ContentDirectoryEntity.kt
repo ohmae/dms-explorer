@@ -15,7 +15,7 @@ import net.mm2d.android.upnp.cds.CdsObject
 import net.mm2d.dmsexplorer.domain.model.ExploreListener
 import net.mm2d.dmsexplorer.domain.model.ExploreListenerAdapter
 import net.mm2d.dmsexplorer.settings.Settings
-import net.mm2d.dmsexplorer.settings.SortKey.*
+import net.mm2d.dmsexplorer.settings.SortKey
 import net.mm2d.log.Logger
 
 /**
@@ -104,9 +104,9 @@ class ContentDirectoryEntity private constructor(
         val settings = Settings.get()
         val isAscending = settings.isAscendingSortOrder
         sortedList = when (settings.sortKey) {
-            NONE -> list.toList()
-            NAME -> list.sortedByText(isAscending) { it.name }
-            DATE -> list.sortedBy(isAscending) { it.date }
+            SortKey.NONE -> list.toList()
+            SortKey.NAME -> list.sortedByText(isAscending) { it.name }
+            SortKey.DATE -> list.sortedBy(isAscending) { it.date }
         }
     }
 

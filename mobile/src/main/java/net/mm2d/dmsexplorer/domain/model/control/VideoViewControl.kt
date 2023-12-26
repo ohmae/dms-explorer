@@ -7,7 +7,10 @@
 
 package net.mm2d.dmsexplorer.domain.model.control
 
-import android.media.MediaPlayer.*
+import android.media.MediaPlayer.OnCompletionListener
+import android.media.MediaPlayer.OnErrorListener
+import android.media.MediaPlayer.OnInfoListener
+import android.media.MediaPlayer.OnPreparedListener
 import android.widget.VideoView
 
 /**

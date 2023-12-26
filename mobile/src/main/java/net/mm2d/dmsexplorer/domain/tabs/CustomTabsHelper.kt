@@ -11,9 +11,12 @@ import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import androidx.browser.customtabs.*
+import androidx.browser.customtabs.CustomTabsCallback
+import androidx.browser.customtabs.CustomTabsClient
+import androidx.browser.customtabs.CustomTabsService
+import androidx.browser.customtabs.CustomTabsServiceConnection
+import androidx.browser.customtabs.CustomTabsSession
 import androidx.core.os.bundleOf
-import java.util.*
 
 /**
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
@@ -81,10 +84,14 @@ class CustomTabsHelper(
 
     companion object {
         private val PREFERRED_PACKAGES = listOf(
-            "com.android.chrome", // Chrome
-            "com.chrome.beta", // Chrome Beta
-            "com.chrome.dev", // Chrome Dev
-            "com.chrome.canary", // Chrome Canary
+            // Chrome
+            "com.android.chrome",
+            // Chrome Beta
+            "com.chrome.beta",
+            // Chrome Dev
+            "com.chrome.dev",
+            // Chrome Canary
+            "com.chrome.canary",
         )
         private const val ACTION_CUSTOM_TABS_CONNECTION =
             "android.support.customtabs.action.CustomTabsService"
