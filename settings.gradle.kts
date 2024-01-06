@@ -7,6 +7,7 @@ pluginManagement {
         gradlePluginPortal()
     }
 }
+
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
@@ -14,9 +15,11 @@ dependencyResolutionManagement {
         mavenCentral()
     }
 }
+
 plugins {
     id("org.gradle.toolchains.foojay-resolver-convention") version ("0.7.0")
 }
+
 rootProject.name = "dms-explorer"
 include(":mobile")
 include(":tv")

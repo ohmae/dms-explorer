@@ -109,11 +109,11 @@ dependencies {
     testImplementation("org.robolectric:robolectric:4.11.1")
     testImplementation("androidx.test.ext:junit:1.1.5")
 
-    debugImplementation("com.squareup.leakcanary:leakcanary-android:2.12")
-    debugImplementation("com.facebook.flipper:flipper:0.243.0")
-    debugImplementation("com.facebook.soloader:soloader:0.10.5")
-    debugImplementation("com.facebook.flipper:flipper-network-plugin:0.243.0")
-    debugImplementation("com.facebook.flipper:flipper-leakcanary2-plugin:0.243.0")
+    debugImplementation("com.squareup.leakcanary:leakcanary-android:2.13")
+    debugImplementation("com.facebook.flipper:flipper:0.244.0")
+    debugImplementation("com.facebook.soloader:soloader:0.11.0")
+    debugImplementation("com.facebook.flipper:flipper-network-plugin:0.244.0")
+    debugImplementation("com.facebook.flipper:flipper-leakcanary2-plugin:0.244.0")
 
     ktlint("com.pinterest.ktlint:ktlint-cli:1.1.0") {
         attributes {
