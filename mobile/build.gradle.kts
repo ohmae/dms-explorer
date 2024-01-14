@@ -75,8 +75,6 @@ android {
     }
 }
 
-val ktlint by configurations.creating
-
 dependencies {
     implementation(kotlin("reflect"))
     implementation("androidx.appcompat:appcompat:1.6.1")
@@ -90,7 +88,7 @@ dependencies {
     implementation("androidx.fragment:fragment-ktx:1.6.2")
     implementation("androidx.exifinterface:exifinterface:1.3.7")
     implementation("androidx.core:core-ktx:1.12.0")
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.2")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.7.0")
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
     implementation("com.google.android.material:material:1.11.0")
     implementation("com.google.android.play:core:1.10.3")
@@ -104,7 +102,7 @@ dependencies {
     implementation("io.reactivex.rxjava2:rxkotlin:2.4.0")
 
     testImplementation("junit:junit:4.13.2")
-    testImplementation("io.mockk:mockk:1.13.8")
+    testImplementation("io.mockk:mockk:1.13.9")
     testImplementation("com.google.truth:truth:1.2.0")
     testImplementation("org.robolectric:robolectric:4.11.1")
     testImplementation("androidx.test.ext:junit:1.1.5")
@@ -115,41 +113,7 @@ dependencies {
     debugImplementation("com.facebook.flipper:flipper-network-plugin:0.244.0")
     debugImplementation("com.facebook.flipper:flipper-leakcanary2-plugin:0.244.0")
 
-    ktlint("com.pinterest.ktlint:ktlint-cli:1.1.0") {
-        attributes {
-            attribute(Bundling.BUNDLING_ATTRIBUTE, objects.named(Bundling.EXTERNAL))
-        }
-    }
-
     // for release
-}
-
-tasks.register<JavaExec>("ktlint") {
-    group = LifecycleBasePlugin.VERIFICATION_GROUP
-    description = "Check Kotlin code style"
-    classpath = ktlint
-    mainClass.set("com.pinterest.ktlint.Main")
-    args(
-        "**/src/**/*.kt",
-        "**.kts",
-        "!**/build/**",
-    )
-    isIgnoreExitValue = true
-}
-
-tasks.register<JavaExec>("ktlintFormat") {
-    group = LifecycleBasePlugin.VERIFICATION_GROUP
-    description = "Check Kotlin code style and format"
-    classpath = ktlint
-    mainClass.set("com.pinterest.ktlint.Main")
-    jvmArgs("--add-opens=java.base/java.lang=ALL-UNNAMED")
-    args(
-        "-F",
-        "**/src/**/*.kt",
-        "**.kts",
-        "!**/build/**",
-    )
-    isIgnoreExitValue = true
 }
 
 fun isStable(version: String): Boolean {
