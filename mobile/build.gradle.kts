@@ -103,15 +103,15 @@ dependencies {
 
     testImplementation("junit:junit:4.13.2")
     testImplementation("io.mockk:mockk:1.13.9")
-    testImplementation("com.google.truth:truth:1.2.0")
+    testImplementation("com.google.truth:truth:1.3.0")
     testImplementation("org.robolectric:robolectric:4.11.1")
     testImplementation("androidx.test.ext:junit:1.1.5")
 
     debugImplementation("com.squareup.leakcanary:leakcanary-android:2.13")
-    debugImplementation("com.facebook.flipper:flipper:0.244.0")
+    debugImplementation("com.facebook.flipper:flipper:0.245.0")
     debugImplementation("com.facebook.soloader:soloader:0.11.0")
-    debugImplementation("com.facebook.flipper:flipper-network-plugin:0.244.0")
-    debugImplementation("com.facebook.flipper:flipper-leakcanary2-plugin:0.244.0")
+    debugImplementation("com.facebook.flipper:flipper-network-plugin:0.245.0")
+    debugImplementation("com.facebook.flipper:flipper-leakcanary2-plugin:0.245.0")
 
     // for release
 }
