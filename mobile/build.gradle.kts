@@ -93,8 +93,8 @@ dependencies {
     implementation("com.google.android.material:material:1.11.0")
     implementation("com.google.android.play:core:1.10.3")
     implementation("com.google.android.play:core-ktx:1.8.1")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.8.0")
     implementation("net.mm2d.mmupnp:mmupnp:3.1.6")
     implementation("net.mm2d.preference:preference:0.3.2")
     implementation("io.reactivex.rxjava2:rxjava:2.2.21")
@@ -102,16 +102,16 @@ dependencies {
     implementation("io.reactivex.rxjava2:rxkotlin:2.4.0")
 
     testImplementation("junit:junit:4.13.2")
-    testImplementation("io.mockk:mockk:1.13.9")
-    testImplementation("com.google.truth:truth:1.3.0")
+    testImplementation("io.mockk:mockk:1.13.10")
+    testImplementation("com.google.truth:truth:1.4.2")
     testImplementation("org.robolectric:robolectric:4.11.1")
     testImplementation("androidx.test.ext:junit:1.1.5")
 
     debugImplementation("com.squareup.leakcanary:leakcanary-android:2.13")
-    debugImplementation("com.facebook.flipper:flipper:0.245.0")
+    debugImplementation("com.facebook.flipper:flipper:0.247.0")
     debugImplementation("com.facebook.soloader:soloader:0.11.0")
-    debugImplementation("com.facebook.flipper:flipper-network-plugin:0.245.0")
-    debugImplementation("com.facebook.flipper:flipper-leakcanary2-plugin:0.245.0")
+    debugImplementation("com.facebook.flipper:flipper-network-plugin:0.247.0")
+    debugImplementation("com.facebook.flipper:flipper-leakcanary2-plugin:0.247.0")
 
     // for release
 }

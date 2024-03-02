@@ -1,7 +1,7 @@
 plugins {
-    id("com.android.application") version "8.2.2" apply false
+    id("com.android.application") version "8.3.0" apply false
     id("org.jetbrains.kotlin.android") version "1.9.22" apply false
-    id("com.github.ben-manes.versions") version "0.50.0" apply false
+    id("com.github.ben-manes.versions") version "0.51.0" apply false
     id("org.jetbrains.kotlinx.kover") version "0.7.4" apply false
 
     // for release
@@ -10,7 +10,7 @@ plugins {
 val ktlint: Configuration by configurations.creating
 
 dependencies {
-    ktlint("com.pinterest.ktlint:ktlint-cli:1.1.1") {
+    ktlint("com.pinterest.ktlint:ktlint-cli:1.2.1") {
         attributes {
             attribute(Bundling.BUNDLING_ATTRIBUTE, objects.named(Bundling.EXTERNAL))
         }
