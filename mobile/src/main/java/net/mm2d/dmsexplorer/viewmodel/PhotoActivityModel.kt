@@ -7,16 +7,17 @@
 
 package net.mm2d.dmsexplorer.viewmodel
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.graphics.Color
 import android.net.Uri
 import androidx.annotation.ColorInt
 import androidx.core.content.ContextCompat
 import androidx.databinding.BaseObservable
-import androidx.databinding.Bindable
-import androidx.databinding.library.baseAdapters.BR
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
 import net.mm2d.android.util.DisplaySizeUtils
 import net.mm2d.android.util.Toaster
 import net.mm2d.android.util.toDisplayableString
@@ -30,54 +31,48 @@ import net.mm2d.dmsexplorer.view.base.BaseActivity
 /**
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
  */
+@SuppressLint("CheckResult")
 class PhotoActivityModel(
     private val activity: BaseActivity,
-    repository: Repository,
+    private val repository: Repository,
 ) : BaseObservable() {
-    private val targetModel: PlaybackTargetModel = repository.playbackTargetModel
-        ?: throw IllegalStateException()
-
-    val title: String
+    private val titleFlow: MutableStateFlow<String> = MutableStateFlow("")
+    fun getTitleFlow(): Flow<String> = titleFlow
 
     @ColorInt
     val background: Int
 
-    @get:Bindable
-    var imageBinary: ByteArray? = null
-        set(imageBinary) {
-            field = imageBinary
-            notifyPropertyChanged(BR.imageBinary)
-        }
+    private val imageBinaryFlow: MutableStateFlow<ByteArray?> = MutableStateFlow(null)
+    fun getImageBinaryFlow(): Flow<ByteArray?> = imageBinaryFlow
 
-    @get:Bindable
-    var isLoading = true
-        set(loading) {
-            field = loading
-            notifyPropertyChanged(BR.loading)
-        }
+    private val isLoadingFlow: MutableStateFlow<Boolean> = MutableStateFlow(true)
+    fun getIsLoadingFlow(): Flow<Boolean> = isLoadingFlow
 
-    @get:Bindable
-    var rightNavigationSize: Int = 0
-        set(size) {
-            field = size
-            notifyPropertyChanged(BR.rightNavigationSize)
-        }
+    private val rightNavigationSizeFlow: MutableStateFlow<Int> = MutableStateFlow(0)
+    fun getRightNavigationSizeFlow(): Flow<Int> = rightNavigationSizeFlow
 
     init {
         val settings = Settings.get()
-        title = if (settings.shouldShowTitleInPhotoUi()) {
-            targetModel.title.toDisplayableString()
-        } else {
-            ""
-        }
         background = if (settings.isPhotoUiBackgroundTransparent) {
             Color.TRANSPARENT
         } else {
             ContextCompat.getColor(activity, R.color.translucent_control)
         }
+    }
 
+    fun update() {
+        val settings = Settings.get()
+        val targetModel: PlaybackTargetModel = repository.playbackTargetModel ?: return
+        titleFlow.tryEmit(
+            if (settings.shouldShowTitleInPhotoUi()) {
+                targetModel.title.toDisplayableString()
+            } else {
+                ""
+            }
+        )
         val uri = targetModel.uri
-        check(!(uri === Uri.EMPTY))
+        check(uri !== Uri.EMPTY)
+        imageBinaryFlow.tryEmit(null)
         Downloader.create(uri.toString())
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
@@ -85,8 +80,8 @@ class PhotoActivityModel(
                 { data ->
                     val model = repository.playbackTargetModel
                     if (model?.uri == uri) {
-                        isLoading = false
-                        imageBinary = data
+                        imageBinaryFlow.tryEmit(data)
+                        isLoadingFlow.tryEmit(false)
                     }
                 },
                 { Toaster.show(activity, R.string.toast_download_error) },
@@ -94,7 +89,7 @@ class PhotoActivityModel(
     }
 
     fun adjustPanel(activity: Activity) {
-        rightNavigationSize = DisplaySizeUtils.getNavigationBarArea(activity).x
+        rightNavigationSizeFlow.tryEmit(DisplaySizeUtils.getNavigationBarArea(activity).x)
     }
 
     fun onClickBack() {

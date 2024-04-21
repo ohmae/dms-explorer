@@ -10,10 +10,10 @@ package net.mm2d.dmsexplorer.viewmodel
 import android.graphics.Color
 import android.view.View
 import androidx.databinding.BaseObservable
-import androidx.databinding.Bindable
-import androidx.databinding.library.baseAdapters.BR
 import androidx.fragment.app.FragmentActivity
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
 import net.mm2d.android.upnp.avt.MediaRenderer
 import net.mm2d.android.upnp.avt.MrControlPoint
 import net.mm2d.android.upnp.avt.MrControlPoint.MrDiscoveryListener
@@ -42,16 +42,11 @@ class ContentDetailFragmentModel(
 
     private val canDelete: Boolean
 
-    @get:Bindable
-    var canSend: Boolean = false
-        private set
+    private val canSendFlow: MutableStateFlow<Boolean> = MutableStateFlow(false)
+    fun getCanSendFlow(): Flow<Boolean> = canSendFlow
 
-    @get:Bindable
-    var isDeleteEnabled: Boolean = false
-        private set(enabled) {
-            field = enabled
-            notifyPropertyChanged(BR.deleteEnabled)
-        }
+    private val isDeleteEnabledFlow: MutableStateFlow<Boolean> = MutableStateFlow(false)
+    fun getIsDeleteEnabledFlow(): Flow<Boolean> = isDeleteEnabledFlow
 
     private val settings: Settings
     private val mrControlPoint: MrControlPoint
@@ -65,7 +60,6 @@ class ContentDetailFragmentModel(
         }
     }
 
-    @Bindable
     fun getPlayBackgroundTint(): Int = if (isProtected) {
         AttrUtils.resolveColor(activity, R.attr.themeFabDisable, Color.BLACK)
     } else {
@@ -91,7 +85,7 @@ class ContentDetailFragmentModel(
         hasResource = entity.hasResource()
         isProtected = entity.isProtected
         canDelete = model.canDelete(entity)
-        isDeleteEnabled = settings.isDeleteFunctionEnabled && canDelete
+        isDeleteEnabledFlow.tryEmit(settings.isDeleteFunctionEnabled && canDelete)
 
         mrControlPoint = repository.controlPointModel.mrControlPoint
         updateCanSend()
@@ -99,12 +93,11 @@ class ContentDetailFragmentModel(
     }
 
     fun onResume() {
-        isDeleteEnabled = settings.isDeleteFunctionEnabled && canDelete
+        isDeleteEnabledFlow.tryEmit(settings.isDeleteFunctionEnabled && canDelete)
     }
 
     private fun updateCanSend() {
-        canSend = mrControlPoint.deviceListSize > 0 && hasResource
-        notifyPropertyChanged(BR.canSend)
+        canSendFlow.tryEmit(mrControlPoint.deviceListSize > 0 && hasResource)
     }
 
     fun terminate() {
@@ -132,11 +125,11 @@ class ContentDetailFragmentModel(
         Snackbar.make(view, R.string.toast_not_support_drm, Snackbar.LENGTH_LONG).show()
     }
 
-    fun onClickSend(view: View) {
+    fun onClickSend() {
         ItemSelectUtils.send(activity)
     }
 
-    fun onClickDelete(view: View) {
+    fun onClickDelete() {
         DeleteDialog.show(activity)
     }
 }

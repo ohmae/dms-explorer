@@ -13,7 +13,6 @@ import android.os.Bundle
 import android.transition.Transition
 import android.view.View
 import android.view.ViewAnimationUtils
-import androidx.databinding.DataBindingUtil
 import net.mm2d.android.view.TransitionListenerAdapter
 import net.mm2d.dmsexplorer.Const
 import net.mm2d.dmsexplorer.R
@@ -37,14 +36,12 @@ class ServerDetailActivity : BaseActivity(true) {
         setTheme(settings.themeParams.noActionBarThemeId)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.server_detail_activity)
-        binding = DataBindingUtil.findBinding(findViewById(R.id.server_detail_fragment))
-            ?: return finish()
+        val fragment = supportFragmentManager.findFragmentById(R.id.server_detail_fragment) as ServerDetailFragment
+        binding = fragment.binding
         binding.serverDetailToolbar.popupTheme = settings.themeParams.popupThemeId
         setSupportActionBar(binding.serverDetailToolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        binding.model?.let {
-            Repository.get().themeModel.setThemeColor(this, it.collapsedColor, 0)
-        }
+        Repository.get().themeModel.setThemeColor(this, fragment.model.collapsedColor, 0)
         prepareTransition(savedInstanceState != null)
     }
 

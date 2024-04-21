@@ -1,99 +1,84 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout
+<androidx.coordinatorlayout.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?attr/themeFragmentBackground"
     >
 
-    <data>
-
-        <variable
-            name="model"
-            type="net.mm2d.dmsexplorer.viewmodel.ServerDetailFragmentModel"/>
-    </data>
-
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/app_bar"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="?attr/themeFragmentBackground"
+        android:layout_height="@dimen/app_bar_height"
+        android:theme="@style/AppTheme.AppBarOverlay"
+        android:translationZ="@dimen/app_bar_elevation"
         >
 
-        <com.google.android.material.appbar.AppBarLayout
-            android:id="@+id/app_bar"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/app_bar_height"
-            android:theme="@style/AppTheme.AppBarOverlay"
-            android:translationZ="@dimen/app_bar_elevation"
-            >
-
-            <com.google.android.material.appbar.CollapsingToolbarLayout
-                android:id="@+id/toolbar_layout"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:contentScrimColor="@{model.collapsedColor}"
-                app:collapsedTitleTextAppearance="@style/CollapsedToolbarText"
-                app:expandedTitleTextAppearance="@style/ExpandedToolbarText"
-                app:layout_scrollFlags="scroll|exitUntilCollapsed"
-                >
-
-                <FrameLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="?attr/themeToolbarBackgroundDefault"
-                    app:layout_collapseMode="parallax"
-                    >
-
-                    <View
-                        android:id="@+id/toolbar_background"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="@{model.expandedColor}"
-                        />
-
-                    <ImageView
-                        android:id="@+id/toolbar_icon"
-                        android:layout_width="@dimen/expanded_toolbar_icon_size"
-                        android:layout_height="@dimen/expanded_toolbar_icon_size"
-                        android:layout_gravity="bottom|end"
-                        android:layout_margin="@dimen/expanded_toolbar_icon_margin"
-                        android:src="@{model.icon}"
-                        />
-                </FrameLayout>
-
-                <androidx.appcompat.widget.Toolbar
-                    android:id="@+id/server_detail_toolbar"
-                    android:layout_width="match_parent"
-                    android:layout_height="?attr/actionBarSize"
-                    android:title="@{model.title}"
-                    app:layout_collapseMode="pin"
-                    app:popupTheme="@style/AppTheme.PopupOverlay"
-                    />
-
-            </com.google.android.material.appbar.CollapsingToolbarLayout>
-        </com.google.android.material.appbar.AppBarLayout>
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/server_detail"
+        <com.google.android.material.appbar.CollapsingToolbarLayout
+            android:id="@+id/toolbar_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:clipToPadding="false"
-            android:paddingBottom="@dimen/server_property_margin"
-            app:adapter="@{model.propertyAdapter}"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"
-            tools:listitem="@layout/property_list_item"
-            />
+            app:collapsedTitleTextAppearance="@style/CollapsedToolbarText"
+            app:expandedTitleTextAppearance="@style/ExpandedToolbarText"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed"
+            >
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fab"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|end"
-            android:layout_margin="@dimen/fab_margin"
-            android:onClick="@{model::onClickFab}"
-            app:rippleColor="@color/fabRipple"
-            app:srcCompat="@drawable/ic_arrow_forward"
-            />
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="?attr/themeToolbarBackgroundDefault"
+                app:layout_collapseMode="parallax"
+                >
 
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
-</layout>
+                <View
+                    android:id="@+id/toolbar_background"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    />
+
+                <ImageView
+                    android:id="@+id/toolbar_icon"
+                    android:layout_width="@dimen/expanded_toolbar_icon_size"
+                    android:layout_height="@dimen/expanded_toolbar_icon_size"
+                    android:layout_gravity="bottom|end"
+                    android:layout_margin="@dimen/expanded_toolbar_icon_margin"
+                    tools:ignore="ContentDescription"
+                    />
+            </FrameLayout>
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/server_detail_toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                app:layout_collapseMode="pin"
+                app:popupTheme="@style/AppTheme.PopupOverlay"
+                />
+
+        </com.google.android.material.appbar.CollapsingToolbarLayout>
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/server_detail"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipToPadding="false"
+        android:paddingBottom="@dimen/server_property_margin"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        tools:listitem="@layout/property_list_item"
+        />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="@dimen/fab_margin"
+        app:rippleColor="@color/fabRipple"
+        app:srcCompat="@drawable/ic_arrow_forward"
+        tools:ignore="ContentDescription"
+        />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

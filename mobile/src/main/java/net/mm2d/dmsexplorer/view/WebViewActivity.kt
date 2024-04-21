@@ -19,7 +19,6 @@ import android.webkit.WebChromeClient
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.core.content.ContextCompat
-import androidx.databinding.DataBindingUtil
 import com.google.android.material.appbar.AppBarLayout
 import net.mm2d.dmsexplorer.R
 import net.mm2d.dmsexplorer.Repository
@@ -38,7 +37,8 @@ class WebViewActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(Settings.get().themeParams.noActionBarThemeId)
         super.onCreate(savedInstanceState)
-        binding = DataBindingUtil.setContentView(this, R.layout.web_view_activity)
+        binding = WebViewActivityBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         val intent = intent
         setSupportActionBar(binding.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)

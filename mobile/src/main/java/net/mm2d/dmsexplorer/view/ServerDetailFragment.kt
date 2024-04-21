@@ -8,10 +8,7 @@
 package net.mm2d.dmsexplorer.view
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import net.mm2d.dmsexplorer.R
 import net.mm2d.dmsexplorer.Repository
@@ -23,24 +20,26 @@ import net.mm2d.dmsexplorer.viewmodel.ServerDetailFragmentModel
  *
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
  */
-class ServerDetailFragment : Fragment() {
+class ServerDetailFragment : Fragment(R.layout.server_detail_fragment) {
+    lateinit var binding: ServerDetailFragmentBinding
+    lateinit var model: ServerDetailFragmentModel
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?,
-    ): View {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        binding = ServerDetailFragmentBinding.bind(view)
         val activity = requireActivity()
-        val binding: ServerDetailFragmentBinding = DataBindingUtil
-            .inflate(inflater, R.layout.server_detail_fragment, container, false)
-        try {
-            binding.model = ServerDetailFragmentModel(activity, Repository.get())
+        model = try {
+            ServerDetailFragmentModel(activity, Repository.get())
         } catch (ignored: IllegalStateException) {
             activity.finish()
-            return binding.root
+            return
         }
-
-        return binding.root
+        binding.toolbarLayout.setContentScrimColor(model.collapsedColor)
+        binding.toolbarBackground.setBackgroundColor(model.expandedColor)
+        binding.toolbarIcon.setImageDrawable(model.icon)
+        binding.serverDetailToolbar.title = model.title
+        binding.serverDetail.adapter = model.propertyAdapter
+        binding.fab.setOnClickListener { model.onClickFab(it) }
     }
 
     companion object {

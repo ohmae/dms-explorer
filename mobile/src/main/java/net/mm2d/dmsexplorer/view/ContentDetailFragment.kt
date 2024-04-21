@@ -7,12 +7,16 @@
 
 package net.mm2d.dmsexplorer.view
 
+import android.content.res.ColorStateList
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.flowWithLifecycle
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import net.mm2d.dmsexplorer.R
 import net.mm2d.dmsexplorer.Repository
 import net.mm2d.dmsexplorer.databinding.ContentDetailFragmentBinding
@@ -23,30 +27,41 @@ import net.mm2d.dmsexplorer.viewmodel.ContentDetailFragmentModel
  *
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
  */
-class ContentDetailFragment : Fragment() {
-    private var model: ContentDetailFragmentModel? = null
+class ContentDetailFragment : Fragment(R.layout.content_detail_fragment) {
+    lateinit var binding: ContentDetailFragmentBinding
+    var model: ContentDetailFragmentModel? = null
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?,
-    ): View {
-        val binding = DataBindingUtil.inflate<ContentDetailFragmentBinding>(
-            inflater,
-            R.layout.content_detail_fragment,
-            container,
-            false,
-        )
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        binding = ContentDetailFragmentBinding.bind(view)
         val activity = requireActivity()
-        try {
-            model = ContentDetailFragmentModel(activity, Repository.get())
-            binding.model = model
+        val model = try {
+            ContentDetailFragmentModel(activity, Repository.get())
         } catch (ignored: IllegalStateException) {
             activity.finish()
-            return binding.root
+            return
         }
-
-        return binding.root
+        this.model = model
+        binding.toolbarLayout.setContentScrimColor(model.collapsedColor)
+        binding.toolbarBackground.setBackgroundColor(model.expandedColor)
+        binding.cdsDetailToolbar.title = model.title
+        binding.cdsDetail.adapter = model.propertyAdapter
+        binding.fabDelete.setOnClickListener { model.onClickDelete() }
+        model.getIsDeleteEnabledFlow()
+            .flowWithLifecycle(viewLifecycleOwner.lifecycle)
+            .distinctUntilChanged()
+            .onEach { if (it) binding.fabDelete.show() else binding.fabDelete.hide()}
+            .launchIn(viewLifecycleOwner.lifecycleScope)
+        binding.fabSend.setOnClickListener { model.onClickSend() }
+        model.getCanSendFlow()
+            .flowWithLifecycle(viewLifecycleOwner.lifecycle)
+            .distinctUntilChanged()
+            .onEach { if (it) binding.fabSend.show() else binding.fabSend.hide() }
+            .launchIn(viewLifecycleOwner.lifecycleScope)
+        binding.fabPlay.setOnClickListener { model.onClickPlay(it) }
+        binding.fabPlay.setOnLongClickListener { model.onLongClickPlay(it) }
+        binding.fabPlay.isVisible = model.hasResource
+        binding.fabPlay.backgroundTintList = ColorStateList.valueOf(model.getPlayBackgroundTint())
     }
 
     override fun onDestroyView() {

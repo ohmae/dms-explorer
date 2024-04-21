@@ -10,10 +10,8 @@ package net.mm2d.dmsexplorer.view
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import androidx.databinding.DataBindingUtil
 import net.mm2d.dmsexplorer.R
 import net.mm2d.dmsexplorer.Repository
-import net.mm2d.dmsexplorer.databinding.ContentDetailFragmentBinding
 import net.mm2d.dmsexplorer.domain.entity.ContentEntity
 import net.mm2d.dmsexplorer.domain.model.MediaServerModel
 import net.mm2d.dmsexplorer.settings.Settings
@@ -39,9 +37,9 @@ class ContentDetailActivity : BaseActivity(true), OnDeleteListener {
         setContentView(R.layout.content_detail_activity)
         val repository = Repository.get()
         val serverModel = repository.mediaServerModel
-        val binding: ContentDetailFragmentBinding? =
-            DataBindingUtil.findBinding(findViewById(R.id.cds_detail_fragment))
-        if (binding == null || serverModel == null) {
+        val fragment = supportFragmentManager.findFragmentById(R.id.cds_detail_fragment) as ContentDetailFragment
+        val binding = fragment.binding
+        if (serverModel == null) {
             finish()
             return
         }
@@ -51,7 +49,7 @@ class ContentDetailActivity : BaseActivity(true), OnDeleteListener {
         setSupportActionBar(binding.cdsDetailToolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        val model = binding.model
+        val model = fragment.model
         if (model != null) {
             repository.themeModel.setThemeColor(this, model.collapsedColor, 0)
         }

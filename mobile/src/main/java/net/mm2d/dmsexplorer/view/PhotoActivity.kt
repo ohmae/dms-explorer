@@ -12,9 +12,16 @@ import android.os.Bundle
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.MotionEvent
-import androidx.databinding.DataBindingUtil
+import android.widget.FrameLayout
+import androidx.core.view.isVisible
+import androidx.core.view.updateLayoutParams
+import androidx.lifecycle.flowWithLifecycle
+import androidx.lifecycle.lifecycleScope
 import androidx.viewpager.widget.ViewPager
 import androidx.viewpager.widget.ViewPager.OnPageChangeListener
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import net.mm2d.dmsexplorer.R
 import net.mm2d.dmsexplorer.Repository
 import net.mm2d.dmsexplorer.databinding.PhotoActivityBinding
@@ -25,6 +32,7 @@ import net.mm2d.dmsexplorer.util.FullscreenHelper
 import net.mm2d.dmsexplorer.view.base.BaseActivity
 import net.mm2d.dmsexplorer.view.view.ViewPagerAdapter
 import net.mm2d.dmsexplorer.viewmodel.PhotoActivityModel
+import net.mm2d.dmsexplorer.viewmodel.adapter.ImageViewBindingAdapter
 
 /**
  * 静止画表示のActivity。
@@ -58,7 +66,8 @@ class PhotoActivity : BaseActivity() {
         settings = Settings.get()
         setTheme(settings.themeParams.fullscreenThemeId)
         super.onCreate(savedInstanceState)
-        binding = DataBindingUtil.setContentView(this, R.layout.photo_activity)
+        binding = PhotoActivityBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         fullscreenHelper = FullscreenHelper(
             window = window,
             rootView = binding.root,
@@ -77,8 +86,7 @@ class PhotoActivity : BaseActivity() {
             finish()
             return
         }
-
-        binding.model = model
+        model.update()
         model.adjustPanel(this)
         if (settings.shouldShowPhotoUiOnStart()) {
             fullscreenHelper.showNavigation()
@@ -94,6 +102,38 @@ class PhotoActivity : BaseActivity() {
         }
         binding.viewPager.setCurrentItem(1, false)
         binding.viewPager.addOnPageChangeListener(onPageChangeListener)
+        model.getImageBinaryFlow()
+            .flowWithLifecycle(lifecycle)
+            .distinctUntilChanged()
+            .onEach {
+                ImageViewBindingAdapter.setImageBinary(binding.imageView, it)
+            }
+            .launchIn(lifecycleScope)
+        model.getIsLoadingFlow()
+            .flowWithLifecycle(lifecycle)
+            .distinctUntilChanged()
+            .onEach {
+                binding.progressBar.isVisible = it
+            }
+            .launchIn(lifecycleScope)
+        binding.toolbar.setBackgroundColor(model.background)
+        model.getRightNavigationSizeFlow()
+            .flowWithLifecycle(lifecycle)
+            .distinctUntilChanged()
+            .onEach {
+                binding.toolbar.updateLayoutParams<FrameLayout.LayoutParams> {
+                    rightMargin = it
+                }
+            }
+            .launchIn(lifecycleScope)
+        binding.toolbarBack.setOnClickListener { model.onClickBack() }
+        model.getTitleFlow()
+            .flowWithLifecycle(lifecycle)
+            .distinctUntilChanged()
+            .onEach {
+                binding.toolbarTitle.text = it
+            }
+            .launchIn(lifecycleScope)
     }
 
     override fun onDestroy() {
@@ -135,8 +175,7 @@ class PhotoActivity : BaseActivity() {
             finish()
             return
         }
-        model = PhotoActivityModel(this, repository)
-        binding.model = model
+        model.update()
         binding.viewPager.setCurrentItem(1, false)
         EventLogger.sendPlayContent(true)
     }

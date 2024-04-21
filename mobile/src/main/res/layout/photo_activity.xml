@@ -1,85 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout
+<FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     >
 
-    <data>
-
-        <variable
-            name="model"
-            type="net.mm2d.dmsexplorer.viewmodel.PhotoActivityModel"/>
-
-        <import type="android.view.View"/>
-    </data>
-
-    <FrameLayout
-        android:id="@+id/root"
+    <ImageView
+        android:id="@+id/image_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_gravity="center"
+        tools:ignore="ContentDescription"
+        />
+
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        />
+
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/view_pager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        />
+
+    <LinearLayout
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="@dimen/status_bar_size"
         >
 
         <ImageView
-            android:id="@+id/image_view"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            app:imageBinary="@{model.imageBinary}"
-            tools:ignore="ContentDescription"
-            />
-
-        <ProgressBar
-            android:id="@+id/progress_bar"
+            android:id="@+id/toolbar_back"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:visibility="@{model.loading ? View.VISIBLE : View.GONE}"
+            android:layout_gravity="center_vertical"
+            android:layout_marginEnd="@dimen/toolbar_button_margin"
+            android:background="@drawable/bg_tool_button"
+            android:focusable="true"
+            android:padding="@dimen/toolbar_button_padding"
+            app:srcCompat="@drawable/ic_arrow_back"
             />
 
-        <androidx.viewpager.widget.ViewPager
-            android:id="@+id/view_pager"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            />
-
-        <LinearLayout
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/toolbar_title"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@{model.background}"
-            android:orientation="horizontal"
-            android:paddingTop="@dimen/status_bar_size"
-            app:layout_marginRight="@{model.rightNavigationSize}"
-            >
+            android:layout_gravity="center_vertical"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:singleLine="true"
+            android:textColor="#FFFFFF"
+            android:textSize="@dimen/text_size_toolbar"
+            />
 
-            <ImageView
-                android:id="@+id/toolbar_back"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginEnd="@dimen/toolbar_button_margin"
-                android:background="@drawable/bg_tool_button"
-                android:focusable="true"
-                android:onClick="@{() -> model.onClickBack()}"
-                android:padding="@dimen/toolbar_button_padding"
-                app:srcCompat="@drawable/ic_arrow_back"
-                />
+    </LinearLayout>
 
-            <TextView
-                android:id="@+id/toolbar_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:ellipsize="end"
-                android:maxLines="1"
-                android:singleLine="true"
-                android:text="@{model.title}"
-                android:textColor="#FFFFFF"
-                android:textSize="@dimen/text_size_toolbar"
-                />
-
-        </LinearLayout>
-
-    </FrameLayout>
-</layout>
+</FrameLayout>
