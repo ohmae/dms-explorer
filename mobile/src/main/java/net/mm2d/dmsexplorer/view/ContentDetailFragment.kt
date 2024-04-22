@@ -50,7 +50,7 @@ class ContentDetailFragment : Fragment(R.layout.content_detail_fragment) {
         model.getIsDeleteEnabledFlow()
             .flowWithLifecycle(viewLifecycleOwner.lifecycle)
             .distinctUntilChanged()
-            .onEach { if (it) binding.fabDelete.show() else binding.fabDelete.hide()}
+            .onEach { if (it) binding.fabDelete.show() else binding.fabDelete.hide() }
             .launchIn(viewLifecycleOwner.lifecycleScope)
         binding.fabSend.setOnClickListener { model.onClickSend() }
         model.getCanSendFlow()

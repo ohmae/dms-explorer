@@ -12,7 +12,12 @@ import android.view.KeyEvent
 import android.view.MenuItem
 import androidx.annotation.CallSuper
 import androidx.core.view.doOnLayout
-import androidx.databinding.DataBindingUtil
+import androidx.core.view.updatePaddingRelative
+import androidx.lifecycle.flowWithLifecycle
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import net.mm2d.dmsexplorer.R
 import net.mm2d.dmsexplorer.Repository
 import net.mm2d.dmsexplorer.databinding.ContentListActivityBinding
@@ -21,6 +26,7 @@ import net.mm2d.dmsexplorer.view.base.BaseActivity
 import net.mm2d.dmsexplorer.view.dialog.DeleteDialog.OnDeleteListener
 import net.mm2d.dmsexplorer.viewmodel.ContentListActivityModel
 import net.mm2d.dmsexplorer.viewmodel.ContentListActivityModel.CdsSelectListener
+import net.mm2d.dmsexplorer.viewmodel.adapter.RecyclerViewBindingAdapter
 
 /**
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
@@ -46,7 +52,44 @@ abstract class ContentListActivityDelegate internal constructor(
         }
         this.model = model
         binding.toolbar.popupTheme = Settings.get().themeParams.popupThemeId
-        binding.model = model
+        binding.toolbar.setBackgroundColor(model.toolbarBackground)
+        binding.toolbar.title = model.title
+        model.getSubtitleFlow()
+            .flowWithLifecycle(activity.lifecycle)
+            .distinctUntilChanged()
+            .onEach { binding.toolbar.subtitle = it }
+            .launchIn(activity.lifecycleScope)
+        binding.swipeRefreshLayout.setColorSchemeColors(*model.refreshColors)
+        binding.swipeRefreshLayout.setDistanceToTriggerSync(model.distanceToTriggerSync)
+        binding.swipeRefreshLayout.setOnRefreshListener(model.onRefreshListener)
+        binding.swipeRefreshLayout.setProgressBackgroundColorSchemeColor(model.progressBackground)
+        model.getIsRefreshingFlow()
+            .flowWithLifecycle(activity.lifecycle)
+            .distinctUntilChanged()
+            .onEach { binding.swipeRefreshLayout.isRefreshing = it }
+            .launchIn(activity.lifecycleScope)
+
+        binding.recyclerView.itemAnimator = model.itemAnimator
+        binding.recyclerView.layoutManager = model.cdsListLayoutManager
+        binding.recyclerView.adapter = model.contentListAdapter
+        val padding = activity.resources.getDimensionPixelSize(
+            if (model.focusable) R.dimen.list_scale_padding else R.dimen.list_non_scale_padding,
+        )
+
+        if (binding.cdsDetailContainer != null) {
+            binding.recyclerView.updatePaddingRelative(start = padding)
+        } else {
+            binding.recyclerView.updatePaddingRelative(start = padding, end = padding)
+        }
+
+        model.getScrollPositionFlow()
+            .flowWithLifecycle(activity.lifecycle)
+            .distinctUntilChanged()
+            .onEach {
+                RecyclerViewBindingAdapter.setScrollPosition(binding.recyclerView, it)
+            }
+            .launchIn(activity.lifecycleScope)
+
         activity.setSupportActionBar(binding.toolbar)
         activity.supportActionBar?.setDisplayHomeAsUpEnabled(true)
         savedInstanceState?.let { restoreScroll(it) }
@@ -112,10 +155,9 @@ abstract class ContentListActivityDelegate internal constructor(
         private const val KEY_SCROLL_OFFSET = "KEY_SCROLL_OFFSET"
 
         fun create(activity: BaseActivity): ContentListActivityDelegate {
-            val binding = DataBindingUtil.setContentView<ContentListActivityBinding>(
-                activity,
-                R.layout.content_list_activity,
-            )
+            val binding = ContentListActivityBinding.inflate(activity.layoutInflater)
+            activity.setContentView(binding.root)
+
             return if (binding.cdsDetailContainer == null) {
                 ContentListActivityDelegateOnePane(activity, binding)
             } else {

@@ -68,7 +68,7 @@ class PhotoActivityModel(
                 targetModel.title.toDisplayableString()
             } else {
                 ""
-            }
+            },
         )
         val uri = targetModel.uri
         check(uri !== Uri.EMPTY)

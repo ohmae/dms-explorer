@@ -12,14 +12,14 @@ import android.os.Handler
 import android.os.Looper
 import android.view.View
 import androidx.databinding.BaseObservable
-import androidx.databinding.Bindable
-import androidx.databinding.library.baseAdapters.BR
 import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView.ItemAnimator
 import androidx.recyclerview.widget.RecyclerView.LayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout.OnRefreshListener
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
 import net.mm2d.dmsexplorer.Const
 import net.mm2d.dmsexplorer.R
 import net.mm2d.dmsexplorer.Repository
@@ -56,20 +56,11 @@ class ContentListActivityModel(
     val focusable: Boolean
     val contentListAdapter: ContentListAdapter
 
-    @get:Bindable
-    var subtitle = ""
-        set(subtitle) {
-            field = subtitle
-            notifyPropertyChanged(BR.subtitle)
-        }
+    private val subtitleFlow: MutableStateFlow<String> = MutableStateFlow("")
+    fun getSubtitleFlow(): Flow<String> = subtitleFlow
 
-    @get:Bindable
-    var isRefreshing: Boolean = false
-        set(refreshing) {
-            field = refreshing
-            notifyPropertyChanged(BR.refreshing)
-        }
-    private var _scrollPosition = INVALID_POSITION
+    private val isRefreshingFlow: MutableStateFlow<Boolean> = MutableStateFlow(false)
+    fun getIsRefreshingFlow(): Flow<Boolean> = isRefreshingFlow
 
     private val handler = Handler(Looper.getMainLooper())
     private val mediaServerModel: MediaServerModel
@@ -80,15 +71,8 @@ class ContentListActivityModel(
             return mediaServerModel.selectedEntity?.type?.isPlayable == true
         }
 
-    // 選択項目を中央に表示させる処理
-    // FIXME: DataBindingを使ったことで返って複雑化してしまっている
-    var scrollPosition: Int
-        @Bindable
-        get() = _scrollPosition
-        set(position) {
-            _scrollPosition = position
-            notifyPropertyChanged(BR.scrollPosition)
-        }
+    private val scrollPositionFlow: MutableStateFlow<Int> = MutableStateFlow(INVALID_POSITION)
+    fun getScrollPositionFlow(): Flow<Int> = scrollPositionFlow
 
     interface CdsSelectListener {
         fun onSelect(
@@ -174,7 +158,7 @@ class ContentListActivityModel(
         }
         val index = contentListAdapter.indexOf(entity)
         if (index >= 0) {
-            scrollPosition = index
+            scrollPositionFlow.value = index
         }
     }
 
@@ -189,7 +173,7 @@ class ContentListActivityModel(
 
     override fun onStart() {
         setSize(0)
-        isRefreshing = true
+        isRefreshingFlow.value = true
         handler.post { updateList(emptyList()) }
     }
 
@@ -199,15 +183,15 @@ class ContentListActivityModel(
     }
 
     override fun onComplete() {
-        isRefreshing = false
+        isRefreshingFlow.value = false
     }
 
     private fun setSize(size: Int) {
-        subtitle = "[$size] ${mediaServerModel.path}"
+        subtitleFlow.value = "[$size] ${mediaServerModel.path}"
     }
 
     private val scrollPositionTask = Runnable {
-        scrollPosition = contentListAdapter.list.indexOf(mediaServerModel.selectedEntity)
+        scrollPositionFlow.value = contentListAdapter.list.indexOf(mediaServerModel.selectedEntity)
     }
 
     private fun updateList(list: List<ContentEntity>) {
