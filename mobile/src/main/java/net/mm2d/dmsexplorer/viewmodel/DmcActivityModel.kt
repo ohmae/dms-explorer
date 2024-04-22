@@ -14,8 +14,8 @@ import android.os.Looper
 import androidx.annotation.DrawableRes
 import androidx.core.app.ActivityCompat
 import androidx.databinding.BaseObservable
-import androidx.databinding.Bindable
-import androidx.databinding.library.baseAdapters.BR
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
 import net.mm2d.android.util.AribUtils
 import net.mm2d.android.util.Toaster
 import net.mm2d.dmsexplorer.R
@@ -29,7 +29,7 @@ import net.mm2d.dmsexplorer.view.adapter.PropertyAdapter
 import net.mm2d.dmsexplorer.view.view.ScrubBar
 import net.mm2d.dmsexplorer.view.view.ScrubBar.Accuracy
 import net.mm2d.dmsexplorer.view.view.ScrubBar.ScrubBarListener
-import java.util.*
+import java.util.Locale
 
 /**
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
@@ -48,93 +48,70 @@ class DmcActivityModel(
     val title: String
     val subtitle: String
     val propertyAdapter: PropertyAdapter
-
-    @DrawableRes
     val imageResource: Int
     val isPlayControlEnabled: Boolean
     val hasDuration: Boolean
     val seekBarListener: ScrubBarListener
 
-    @get:Bindable
-    var progressText = makeTimeText(0)
-        private set
+    private val progressTextFlow: MutableStateFlow<String> = MutableStateFlow(makeTimeText(0))
+    fun getProgressTextFlow(): Flow<String> = progressTextFlow
 
-    @get:Bindable
-    var durationText = makeTimeText(0)
-        private set
+    private val durationTextFlow: MutableStateFlow<String> = MutableStateFlow(makeTimeText(0))
+    fun getDurationTextFlow(): Flow<String> = durationTextFlow
+
     private var mPlaying: Boolean = false
 
-    @get:Bindable
-    var isPrepared: Boolean = false
-        private set(prepared) {
-            field = prepared
-            notifyPropertyChanged(BR.prepared)
-        }
+    private val isPreparedFlow: MutableStateFlow<Boolean> = MutableStateFlow(false)
+    fun getIsPreparedFlow(): Flow<Boolean> = isPreparedFlow
 
-    @get:Bindable
-    var duration: Int = 0
-        set(duration) {
-            field = duration
-            notifyPropertyChanged(BR.duration)
-            if (duration > 0) {
-                isSeekable = true
-            }
-            setDurationText(duration)
-            isPrepared = true
-            setChapterInfoEnabled()
+    private val durationFlow: MutableStateFlow<Int> = MutableStateFlow(0)
+    fun getDurationFlow(): Flow<Int> = durationFlow
+    private fun setDuration(duration: Int) {
+        durationFlow.value = duration
+        if (duration > 0) {
+            isSeekableFlow.value = true
         }
+        setDurationText(duration)
+        isPreparedFlow.value = true
+        setChapterInfoEnabled()
+    }
 
-    @get:Bindable
-    var progress: Int = 0
-        set(progress) {
-            setProgressText(progress)
-            field = progress
-            notifyPropertyChanged(BR.progress)
+    private val progressFlow: MutableStateFlow<Int> = MutableStateFlow(0)
+    fun getProgressFlow(): Flow<Int> = progressFlow
+    private fun setProgress(progress: Int) {
+        progressFlow.value = progress
+        setProgressText(progress)
+    }
+
+    private val isSeekableFlow: MutableStateFlow<Boolean> = MutableStateFlow(false)
+    fun getIsSeekableFlow(): Flow<Boolean> = isSeekableFlow
+
+    private val scrubTextFlow: MutableStateFlow<String> = MutableStateFlow("")
+    fun getScrubTextFlow(): Flow<String> = scrubTextFlow
+
+    private val chapterListFlow: MutableStateFlow<List<Int>> = MutableStateFlow(emptyList())
+    fun getChapterListFlow(): Flow<List<Int>> = chapterListFlow
+    private fun setChapterList(chapterList: List<Int>) {
+        chapterListFlow.value = chapterList
+        setChapterInfoEnabled()
+        if (chapterList.isEmpty()) {
+            return
         }
-
-    @get:Bindable
-    var isSeekable: Boolean = false
-        private set(seekable) {
-            field = seekable
-            notifyPropertyChanged(BR.seekable)
+        handler.post {
+            val count = propertyAdapter.itemCount
+            propertyAdapter.addEntry(
+                activity.getString(R.string.prop_chapter_info),
+                makeChapterString(chapterList),
+            )
+            propertyAdapter.notifyItemInserted(count)
         }
+    }
 
-    @get:Bindable
-    var scrubText = ""
-        private set(scrubText) {
-            field = scrubText
-            notifyPropertyChanged(BR.scrubText)
-        }
+    private val isChapterInfoEnabledFlow: MutableStateFlow<Boolean> = MutableStateFlow(false)
+    fun getIsChapterInfoEnabledFlow(): Flow<Boolean> = isChapterInfoEnabledFlow
 
-    @get:Bindable
-    var chapterList = emptyList<Int>()
-        private set(chapterList) {
-            field = chapterList
-            notifyPropertyChanged(BR.chapterList)
-            setChapterInfoEnabled()
-            if (chapterList.isEmpty()) {
-                return
-            }
-            handler.post {
-                val count = propertyAdapter.itemCount
-                propertyAdapter.addEntry(
-                    activity.getString(R.string.prop_chapter_info),
-                    makeChapterString(chapterList),
-                )
-                propertyAdapter.notifyItemInserted(count)
-            }
-        }
-
-    @get:Bindable
-    var isChapterInfoEnabled: Boolean = false
-        private set
-
-    @get:Bindable
-    var playButtonResId: Int = R.drawable.ic_play
-        private set(resId) {
-            field = resId
-            notifyPropertyChanged(BR.playButtonResId)
-        }
+    private val playButtonResIdFlow: MutableStateFlow<Int> = MutableStateFlow(R.drawable.ic_play)
+    fun getPlayButtonResIdFlow(): Flow<Int> = playButtonResIdFlow
 
     init {
         check(!(targetModel.uri === Uri.EMPTY))
@@ -171,14 +148,14 @@ class DmcActivityModel(
             override fun onStopTrackingTouch(seekBar: ScrubBar) {
                 rendererModel.seekTo(seekBar.progress)
                 handler.postDelayed(trackingCancelTask, TRACKING_DELAY)
-                scrubText = ""
+                scrubTextFlow.value = ""
             }
 
             override fun onAccuracyChanged(
                 seekBar: ScrubBar,
                 @Accuracy accuracy: Int,
             ) {
-                scrubText = getAccuracyText(accuracy)
+                scrubTextFlow.value = getAccuracyText(accuracy)
             }
         }
     }
@@ -193,13 +170,11 @@ class DmcActivityModel(
     }
 
     private fun setProgressText(progress: Int) {
-        progressText = makeTimeText(progress)
-        notifyPropertyChanged(BR.progressText)
+        progressTextFlow.value = makeTimeText(progress)
     }
 
     private fun setDurationText(duration: Int) {
-        durationText = makeTimeText(duration)
-        notifyPropertyChanged(BR.durationText)
+        durationTextFlow.value = makeTimeText(duration)
     }
 
     private fun setPlaying(playing: Boolean) {
@@ -207,7 +182,7 @@ class DmcActivityModel(
             return
         }
         mPlaying = playing
-        playButtonResId = if (playing) R.drawable.ic_pause else R.drawable.ic_play
+        playButtonResIdFlow.value = if (playing) R.drawable.ic_pause else R.drawable.ic_play
     }
 
     private fun getAccuracyText(accuracy: Int): String {
@@ -220,8 +195,7 @@ class DmcActivityModel(
     }
 
     private fun setChapterInfoEnabled() {
-        isChapterInfoEnabled = duration != 0 && chapterList.isNotEmpty()
-        notifyPropertyChanged(BR.chapterInfoEnabled)
+        isChapterInfoEnabledFlow.value = durationFlow.value != 0 && chapterListFlow.value.isNotEmpty()
     }
 
     fun onClickPlay() {
@@ -241,12 +215,12 @@ class DmcActivityModel(
     }
 
     override fun notifyDuration(duration: Int) {
-        this.duration = duration
+        setDuration(duration)
     }
 
     override fun notifyProgress(progress: Int) {
         if (!tracking) {
-            this.progress = progress
+            setProgress(progress)
         }
     }
 
@@ -255,7 +229,7 @@ class DmcActivityModel(
     }
 
     override fun notifyChapterList(chapterList: List<Int>) {
-        this.chapterList = chapterList
+        setChapterList(chapterList)
     }
 
     override fun onError(

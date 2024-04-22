@@ -1,198 +1,166 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginBottom="@dimen/seek_padding_top_negative"
+    android:orientation="vertical"
     >
 
-    <data>
-
-        <variable
-            name="model"
-            type="net.mm2d.dmsexplorer.viewmodel.DmcActivityModel"/>
-
-        <import type="android.view.View"/>
-    </data>
-
-    <LinearLayout
-        android:id="@+id/root"
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:theme="@style/AppTheme.AppBarOverlay"
+        />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
         android:layout_marginBottom="@dimen/seek_padding_top_negative"
+        android:layout_weight="1"
+        >
+
+        <ImageView
+            android:id="@+id/image"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:adjustViewBounds="true"
+            android:alpha="0.15"
+            tools:ignore="ContentDescription"
+            />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/detail"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:overScrollMode="never"
+            android:paddingTop="@dimen/control_height"
+            android:paddingBottom="@dimen/control_height"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:listitem="@layout/property_list_item"
+            />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/control_height"
+            android:layout_gravity="top"
+            android:background="@drawable/fade_bottom_to_top"
+            />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/control_height"
+            android:layout_gravity="bottom"
+            android:background="@drawable/fade_top_to_bottom"
+            />
+    </FrameLayout>
+
+    <RelativeLayout
+        android:id="@+id/control_panel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
         >
 
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:subtitle="@{model.subtitle}"
-            android:theme="@style/AppTheme.AppBarOverlay"
-            android:title="@{model.title}"
-            />
-
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_marginBottom="@dimen/seek_padding_top_negative"
-            android:layout_weight="1"
-            >
-
-            <ImageView
-                android:id="@+id/image"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:adjustViewBounds="true"
-                android:alpha="0.15"
-                android:imageResource="@{model.imageResource}"
-                tools:ignore="ContentDescription"
-                />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/detail"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:clipToPadding="false"
-                android:overScrollMode="never"
-                android:paddingBottom="@dimen/control_height"
-                android:paddingTop="@dimen/control_height"
-                app:adapter="@{model.propertyAdapter}"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                tools:listitem="@layout/property_list_item"
-                />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/control_height"
-                android:layout_gravity="top"
-                android:background="@drawable/fade_bottom_to_top"
-                />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/control_height"
-                android:layout_gravity="bottom"
-                android:background="@drawable/fade_top_to_bottom"
-                />
-        </FrameLayout>
-
-        <RelativeLayout
+        <net.mm2d.dmsexplorer.view.view.ScrubBar
+            android:id="@+id/seek_bar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:visibility="@{model.hasDuration ? View.VISIBLE : View.GONE}"
+            android:layout_alignParentTop="true"
+            android:paddingTop="@dimen/seek_padding_top"
+            android:paddingBottom="@dimen/seek_padding"
+            />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/seek_bar"
+            android:orientation="horizontal"
+            android:paddingBottom="@dimen/seek_padding"
             >
 
-            <net.mm2d.dmsexplorer.view.view.ScrubBar
-                android:id="@+id/seek_bar"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:chapterList="@{model.chapterList}"
-                android:enabled="@{model.seekable}"
-                android:max="@{model.duration}"
-                android:paddingBottom="@dimen/seek_padding"
-                android:paddingTop="@dimen/seek_padding_top"
-                android:progress="@{model.progress}"
-                android:scrubBarListener="@{model.seekBarListener}"
-                />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/seek_bar"
-                android:orientation="horizontal"
-                android:paddingBottom="@dimen/seek_padding"
-                >
-
-                <TextView
-                    android:id="@+id/text_progress"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="top"
-                    android:layout_marginStart="@dimen/control_counter_margin"
-                    android:text="@{model.progressText}"
-                    android:textColor="@color/textPrimary"
-                    android:textSize="@dimen/text_size_counter"
-                    />
-
-                <Space
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"
-                    />
-
-                <ImageView
-                    android:id="@+id/previous"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/bg_control_button"
-                    android:clickable="true"
-                    android:onClick="@{() -> model.onClickPrevious()}"
-                    android:padding="@dimen/control_button_padding"
-                    android:visibility="@{model.chapterInfoEnabled ? View.VISIBLE : View.INVISIBLE}"
-                    app:srcCompat="@drawable/ic_skip_previous"
-                    />
-
-                <ImageView
-                    android:id="@+id/play"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/control_button_margin"
-                    android:layout_marginLeft="@dimen/control_button_margin"
-                    android:layout_marginRight="@dimen/control_button_margin"
-                    android:layout_marginStart="@dimen/control_button_margin"
-                    android:background="@drawable/bg_control_button"
-                    android:enabled="@{model.prepared}"
-                    android:imageResource="@{model.playButtonResId}"
-                    android:onClick="@{() -> model.onClickPlay()}"
-                    android:padding="@dimen/control_button_padding"
-                    android:visibility="@{model.isPlayControlEnabled ? View.VISIBLE : View.INVISIBLE}"
-                    />
-
-                <ImageView
-                    android:id="@+id/next"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/bg_control_button"
-                    android:clickable="true"
-                    android:onClick="@{() -> model.onClickNext()}"
-                    android:padding="@dimen/control_button_padding"
-                    android:visibility="@{model.chapterInfoEnabled ? View.VISIBLE : View.INVISIBLE}"
-                    app:srcCompat="@drawable/ic_skip_next"
-                    />
-
-                <Space
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"
-                    />
-
-                <TextView
-                    android:id="@+id/text_duration"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="top"
-                    android:layout_marginEnd="@dimen/control_counter_margin"
-                    android:text="@{model.durationText}"
-                    android:textColor="@color/textPrimary"
-                    android:textSize="@dimen/text_size_counter"
-                    />
-            </LinearLayout>
-
             <TextView
+                android:id="@+id/text_progress"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="@dimen/scrub_margin_top"
-                android:focusable="false"
-                android:focusableInTouchMode="false"
-                android:text="@{model.scrubText}"
-                android:textColor="@color/textScrub"
-                android:textSize="@dimen/text_size_scrub"
-                tools:ignore="SpUsage"
+                android:layout_gravity="top"
+                android:layout_marginStart="@dimen/control_counter_margin"
+                android:textColor="@color/textPrimary"
+                android:textSize="@dimen/text_size_counter"
                 />
-        </RelativeLayout>
-    </LinearLayout>
-</layout>
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                />
+
+            <ImageView
+                android:id="@+id/previous"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_control_button"
+                android:clickable="true"
+                android:padding="@dimen/control_button_padding"
+                app:srcCompat="@drawable/ic_skip_previous"
+                />
+
+            <ImageView
+                android:id="@+id/play"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/control_button_margin"
+                android:layout_marginLeft="@dimen/control_button_margin"
+                android:layout_marginEnd="@dimen/control_button_margin"
+                android:layout_marginRight="@dimen/control_button_margin"
+                android:background="@drawable/bg_control_button"
+                android:padding="@dimen/control_button_padding"
+                />
+
+            <ImageView
+                android:id="@+id/next"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_control_button"
+                android:clickable="true"
+                android:padding="@dimen/control_button_padding"
+                app:srcCompat="@drawable/ic_skip_next"
+                />
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                />
+
+            <TextView
+                android:id="@+id/text_duration"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top"
+                android:layout_marginEnd="@dimen/control_counter_margin"
+                android:textColor="@color/textPrimary"
+                android:textSize="@dimen/text_size_counter"
+                />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/text_scrub"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/scrub_margin_top"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:textColor="@color/textScrub"
+            android:textSize="@dimen/text_size_scrub"
+            tools:ignore="SpUsage"
+            />
+    </RelativeLayout>
+</LinearLayout>
