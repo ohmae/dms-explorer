@@ -13,13 +13,13 @@ import android.os.Handler
 import android.os.Looper
 import android.view.View
 import androidx.databinding.BaseObservable
-import androidx.databinding.Bindable
 import androidx.databinding.DataBindingUtil
-import androidx.databinding.library.baseAdapters.BR
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView.ItemAnimator
 import androidx.recyclerview.widget.RecyclerView.LayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout.OnRefreshListener
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
 import net.mm2d.android.upnp.cds.MediaServer
 import net.mm2d.android.upnp.cds.MsControlPoint.MsDiscoveryListener
 import net.mm2d.dmsexplorer.R
@@ -53,19 +53,13 @@ class ServerListActivityModel(
     val focusable: Boolean
 
     val serverListAdapter: ServerListAdapter
-    private var _refreshing: Boolean = false
 
     private val handler = Handler(Looper.getMainLooper())
     private val controlPointModel: ControlPointModel = repository.controlPointModel
     private val settings: Settings = Settings.get()
 
-    var isRefreshing: Boolean
-        @Bindable
-        get() = _refreshing
-        set(refreshing) {
-            _refreshing = refreshing
-            notifyPropertyChanged(BR.refreshing)
-        }
+    private val isRefreshingFlow: MutableStateFlow<Boolean> = MutableStateFlow(false)
+    fun getIsRefreshingFlow(): Flow<Boolean> = isRefreshingFlow
 
     interface ServerSelectListener {
         fun onSelect(v: View)
@@ -77,7 +71,7 @@ class ServerListActivityModel(
         serverListAdapter = ServerListAdapter(context, controlPointModel.mediaServerList)
         serverListAdapter.setOnItemClickListener(::onItemClick)
         serverListAdapter.setOnItemLongClickListener(::onItemLongClick)
-        _refreshing = serverListAdapter.itemCount == 0
+        isRefreshingFlow.value = serverListAdapter.itemCount == 0
         controlPointModel.setMsDiscoveryListener(object : MsDiscoveryListener {
             override fun onDiscover(server: MediaServer) {
                 handler.post { onDiscoverServer(server) }
@@ -147,7 +141,7 @@ class ServerListActivityModel(
     }
 
     private fun onDiscoverServer(server: MediaServer) {
-        isRefreshing = false
+        isRefreshingFlow.value = false
         if (controlPointModel.numberOfMediaServer == serverListAdapter.itemCount + 1) {
             val position = serverListAdapter.add(server)
             serverListAdapter.notifyItemInserted(position)

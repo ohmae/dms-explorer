@@ -46,7 +46,7 @@ internal class ServerListActivityDelegateTwoPane(
     }
 
     override fun onStart() {
-        binding.model?.updateListAdapter()
+        model.updateListAdapter()
         updateFragmentState()
     }
 
@@ -75,7 +75,7 @@ internal class ServerListActivityDelegateTwoPane(
     }
 
     private fun updateFragmentState() {
-        if (binding.model?.hasSelectedMediaServer() == true) {
+        if (model.hasSelectedMediaServer()) {
             setDetailFragment(false)
             return
         }

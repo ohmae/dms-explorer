@@ -13,7 +13,12 @@ import android.os.Bundle
 import android.view.View
 import androidx.annotation.CallSuper
 import androidx.core.view.doOnLayout
-import androidx.databinding.DataBindingUtil
+import androidx.core.view.updatePaddingRelative
+import androidx.lifecycle.flowWithLifecycle
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import net.mm2d.dmsexplorer.R
 import net.mm2d.dmsexplorer.Repository
 import net.mm2d.dmsexplorer.databinding.ServerListActivityBinding
@@ -33,15 +38,40 @@ abstract class ServerListActivityDelegate internal constructor(
 ) : ServerSelectListener {
 
     protected abstract val isTwoPane: Boolean
+    protected lateinit var model: ServerListActivityModel
 
     @CallSuper
     open fun onCreate(savedInstanceState: Bundle?) {
         val binding = binding
         val activity = activity
         binding.toolbar.popupTheme = Settings.get().themeParams.popupThemeId
-        binding.model = ServerListActivityModel(activity, Repository.get(), this, isTwoPane)
+        model = ServerListActivityModel(activity, Repository.get(), this, isTwoPane)
         activity.setSupportActionBar(binding.toolbar)
         activity.supportActionBar?.setTitle(R.string.title_device_select)
+
+        binding.swipeRefreshLayout.setColorSchemeResources(*model.refreshColors)
+        binding.swipeRefreshLayout.setDistanceToTriggerSync(model.distanceToTriggerSync)
+        binding.swipeRefreshLayout.setProgressBackgroundColorSchemeColor(model.progressBackground)
+        binding.swipeRefreshLayout.setOnRefreshListener(model.onRefreshListener)
+        model.getIsRefreshingFlow()
+            .flowWithLifecycle(activity.lifecycle)
+            .distinctUntilChanged()
+            .onEach { binding.swipeRefreshLayout.isRefreshing = it }
+            .launchIn(activity.lifecycleScope)
+
+        binding.recyclerView.adapter = model.serverListAdapter
+        binding.recyclerView.layoutManager = model.serverListLayoutManager
+        binding.recyclerView.itemAnimator = model.itemAnimator
+
+        val padding = activity.resources.getDimensionPixelSize(
+            if (model.focusable) R.dimen.list_scale_padding else R.dimen.list_non_scale_padding,
+        )
+        if (binding.serverDetailContainer != null) {
+            binding.recyclerView.updatePaddingRelative(start = padding)
+        } else {
+            binding.recyclerView.updatePaddingRelative(start = padding, end = padding)
+        }
+
         if (savedInstanceState != null) {
             restoreScroll(savedInstanceState)
         }
@@ -84,10 +114,9 @@ abstract class ServerListActivityDelegate internal constructor(
         private const val KEY_SCROLL_OFFSET = "KEY_SCROLL_OFFSET"
 
         fun create(activity: BaseActivity): ServerListActivityDelegate {
-            val binding = DataBindingUtil.setContentView<ServerListActivityBinding>(
-                activity,
-                R.layout.server_list_activity,
-            )
+            val binding = ServerListActivityBinding.inflate(activity.layoutInflater)
+            activity.setContentView(binding.root)
+
             return if (binding.serverDetailContainer == null) {
                 ServerListActivityDelegateOnePane(activity, binding)
             } else {

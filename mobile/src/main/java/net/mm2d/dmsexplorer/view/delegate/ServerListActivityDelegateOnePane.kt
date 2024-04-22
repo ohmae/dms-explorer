@@ -8,12 +8,10 @@
 package net.mm2d.dmsexplorer.view.delegate
 
 import android.app.ActivityOptions
-import android.os.Build
 import android.os.Bundle
 import android.transition.Transition
 import android.util.Pair
 import android.view.View
-import androidx.annotation.RequiresApi
 import androidx.core.app.SharedElementCallback
 import net.mm2d.android.view.TransitionListenerAdapter
 import net.mm2d.dmsexplorer.Const
@@ -57,7 +55,7 @@ internal class ServerListActivityDelegateOnePane(
                 sharedElements: MutableMap<String, View>,
             ) {
                 sharedElements.clear()
-                binding.model?.findSharedView()?.let {
+                model.findSharedView()?.let {
                     sharedElements[Const.SHARE_ELEMENT_NAME_DEVICE_ICON] = it
                 }
             }
@@ -72,16 +70,15 @@ internal class ServerListActivityDelegateOnePane(
     override fun onStart() {
         if (hasReenterTransition) {
             hasReenterTransition = false
-            execAfterTransitionOnce { binding.model?.updateListAdapter() }
+            execAfterTransitionOnce { model.updateListAdapter() }
             return
         }
-        binding.model?.updateListAdapter()
+        model.updateListAdapter()
     }
 
     private fun execAfterTransitionOnce(task: Runnable) {
         activity.window.sharedElementExitTransition
             .addListener(object : TransitionListenerAdapter() {
-                @RequiresApi(api = Build.VERSION_CODES.KITKAT)
                 override fun onTransitionEnd(transition: Transition) {
                     task.run()
                     transition.removeListener(this)
