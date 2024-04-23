@@ -13,7 +13,6 @@ import android.os.Handler
 import android.os.Looper
 import androidx.annotation.DrawableRes
 import androidx.core.app.ActivityCompat
-import androidx.databinding.BaseObservable
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import net.mm2d.android.util.AribUtils
@@ -37,7 +36,7 @@ import java.util.Locale
 class DmcActivityModel(
     private val activity: Activity,
     repository: Repository,
-) : BaseObservable(), StatusListener {
+) : StatusListener {
     private val handler = Handler(Looper.getMainLooper())
     private val targetModel: PlaybackTargetModel = repository.playbackTargetModel
         ?: throw IllegalStateException()

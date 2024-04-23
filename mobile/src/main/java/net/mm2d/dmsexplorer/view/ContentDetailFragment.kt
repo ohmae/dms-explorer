@@ -12,14 +12,10 @@ import android.os.Bundle
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.flowWithLifecycle
-import androidx.lifecycle.lifecycleScope
-import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
 import net.mm2d.dmsexplorer.R
 import net.mm2d.dmsexplorer.Repository
 import net.mm2d.dmsexplorer.databinding.ContentDetailFragmentBinding
+import net.mm2d.dmsexplorer.util.observe
 import net.mm2d.dmsexplorer.viewmodel.ContentDetailFragmentModel
 
 /**
@@ -47,17 +43,13 @@ class ContentDetailFragment : Fragment(R.layout.content_detail_fragment) {
         binding.cdsDetailToolbar.title = model.title
         binding.cdsDetail.adapter = model.propertyAdapter
         binding.fabDelete.setOnClickListener { model.onClickDelete() }
-        model.getIsDeleteEnabledFlow()
-            .flowWithLifecycle(viewLifecycleOwner.lifecycle)
-            .distinctUntilChanged()
-            .onEach { if (it) binding.fabDelete.show() else binding.fabDelete.hide() }
-            .launchIn(viewLifecycleOwner.lifecycleScope)
+        model.getIsDeleteEnabledFlow().observe(viewLifecycleOwner) {
+            if (it) binding.fabDelete.show() else binding.fabDelete.hide()
+        }
         binding.fabSend.setOnClickListener { model.onClickSend() }
-        model.getCanSendFlow()
-            .flowWithLifecycle(viewLifecycleOwner.lifecycle)
-            .distinctUntilChanged()
-            .onEach { if (it) binding.fabSend.show() else binding.fabSend.hide() }
-            .launchIn(viewLifecycleOwner.lifecycleScope)
+        model.getCanSendFlow().observe(viewLifecycleOwner) {
+            if (it) binding.fabSend.show() else binding.fabSend.hide()
+        }
         binding.fabPlay.setOnClickListener { model.onClickPlay(it) }
         binding.fabPlay.setOnLongClickListener { model.onLongClickPlay(it) }
         binding.fabPlay.isVisible = model.hasResource

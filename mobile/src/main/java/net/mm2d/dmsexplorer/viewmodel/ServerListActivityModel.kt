@@ -12,7 +12,6 @@ import android.graphics.Color
 import android.os.Handler
 import android.os.Looper
 import android.view.View
-import androidx.databinding.BaseObservable
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView.ItemAnimator
@@ -40,7 +39,7 @@ class ServerListActivityModel(
     repository: Repository,
     private val serverSelectListener: ServerSelectListener,
     private val twoPane: Boolean,
-) : BaseObservable() {
+) {
     val refreshColors =
         intArrayOf(R.color.progress1, R.color.progress2, R.color.progress3, R.color.progress4)
     val progressBackground: Int =

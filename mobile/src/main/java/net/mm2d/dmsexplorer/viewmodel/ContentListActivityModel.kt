@@ -11,7 +11,6 @@ import android.graphics.Color
 import android.os.Handler
 import android.os.Looper
 import android.view.View
-import androidx.databinding.BaseObservable
 import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -41,7 +40,7 @@ class ContentListActivityModel(
     repository: Repository,
     private val cdsSelectListener: CdsSelectListener,
     private val twoPane: Boolean,
-) : BaseObservable(), ExploreListener {
+) : ExploreListener {
     val refreshColors =
         intArrayOf(R.color.progress1, R.color.progress2, R.color.progress3, R.color.progress4)
     val progressBackground: Int =

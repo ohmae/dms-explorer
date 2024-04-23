@@ -12,14 +12,10 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
-import androidx.lifecycle.flowWithLifecycle
-import androidx.lifecycle.lifecycleScope
-import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
 import net.mm2d.dmsexplorer.Repository
 import net.mm2d.dmsexplorer.databinding.DmcActivityBinding
 import net.mm2d.dmsexplorer.settings.Settings
+import net.mm2d.dmsexplorer.util.observe
 import net.mm2d.dmsexplorer.view.base.BaseActivity
 import net.mm2d.dmsexplorer.viewmodel.DmcActivityModel
 
@@ -45,64 +41,24 @@ class DmcActivity : BaseActivity() {
             binding.image.setImageResource(model.imageResource)
             binding.detail.adapter = model.propertyAdapter
             binding.controlPanel.isVisible = model.hasDuration
-            model.getChapterListFlow()
-                .flowWithLifecycle(lifecycle)
-                .distinctUntilChanged()
-                .onEach { binding.seekBar.chapterList = it }
-                .launchIn(lifecycleScope)
-            model.getIsSeekableFlow()
-                .flowWithLifecycle(lifecycle)
-                .distinctUntilChanged()
-                .onEach { binding.seekBar.isEnabled = it }
-                .launchIn(lifecycleScope)
-            model.getDurationFlow()
-                .flowWithLifecycle(lifecycle)
-                .distinctUntilChanged()
-                .onEach { binding.seekBar.max = it }
-                .launchIn(lifecycleScope)
-            model.getProgressFlow()
-                .flowWithLifecycle(lifecycle)
-                .distinctUntilChanged()
-                .onEach { binding.seekBar.progress = it }
-                .launchIn(lifecycleScope)
+            model.getChapterListFlow().observe(this) { binding.seekBar.chapterList = it }
+            model.getIsSeekableFlow().observe(this) { binding.seekBar.isEnabled = it }
+            model.getDurationFlow().observe(this) { binding.seekBar.max = it }
+            model.getProgressFlow().observe(this) { binding.seekBar.progress = it }
             binding.seekBar.setScrubBarListener(model.seekBarListener)
-            model.getProgressTextFlow()
-                .flowWithLifecycle(lifecycle)
-                .distinctUntilChanged()
-                .onEach { binding.textProgress.text = it }
-                .launchIn(lifecycleScope)
-            model.getIsChapterInfoEnabledFlow()
-                .flowWithLifecycle(lifecycle)
-                .distinctUntilChanged()
-                .onEach {
-                    binding.previous.isInvisible = !it
-                    binding.next.isInvisible = !it
-                }
-                .launchIn(lifecycleScope)
+            model.getProgressTextFlow().observe(this) { binding.textProgress.text = it }
+            model.getIsChapterInfoEnabledFlow().observe(this) {
+                binding.previous.isInvisible = !it
+                binding.next.isInvisible = !it
+            }
             binding.previous.setOnClickListener { model.onClickPrevious() }
             binding.next.setOnClickListener { model.onClickNext() }
-            model.getPlayButtonResIdFlow()
-                .flowWithLifecycle(lifecycle)
-                .distinctUntilChanged()
-                .onEach { binding.play.setImageResource(it) }
-                .launchIn(lifecycleScope)
+            model.getPlayButtonResIdFlow().observe(this) { binding.play.setImageResource(it) }
             binding.play.isInvisible = !model.isPlayControlEnabled
             binding.play.setOnClickListener { model.onClickPlay() }
-            model.getIsPreparedFlow()
-                .flowWithLifecycle(lifecycle)
-                .distinctUntilChanged()
-                .onEach { binding.play.isEnabled = it }
-                .launchIn(lifecycleScope)
-            model.getDurationTextFlow()
-                .flowWithLifecycle(lifecycle)
-                .distinctUntilChanged()
-                .onEach { binding.textDuration.text = it }
-                .launchIn(lifecycleScope)
-            model.getScrubTextFlow()
-                .flowWithLifecycle(lifecycle)
-                .distinctUntilChanged()
-                .onEach { binding.textScrub.text = it }
-                .launchIn(lifecycleScope)
+            model.getIsPreparedFlow().observe(this) { binding.play.isEnabled = it }
+            model.getDurationTextFlow().observe(this) { binding.textDuration.text = it }
+            model.getScrubTextFlow().observe(this) { binding.textScrub.text = it }
         } catch (ignored: IllegalStateException) {
             finish()
             return

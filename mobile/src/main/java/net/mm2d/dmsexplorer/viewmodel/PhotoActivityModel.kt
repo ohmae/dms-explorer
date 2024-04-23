@@ -13,7 +13,6 @@ import android.graphics.Color
 import android.net.Uri
 import androidx.annotation.ColorInt
 import androidx.core.content.ContextCompat
-import androidx.databinding.BaseObservable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import kotlinx.coroutines.flow.Flow
@@ -35,7 +34,7 @@ import net.mm2d.dmsexplorer.view.base.BaseActivity
 class PhotoActivityModel(
     private val activity: BaseActivity,
     private val repository: Repository,
-) : BaseObservable() {
+) {
     private val titleFlow: MutableStateFlow<String> = MutableStateFlow("")
     fun getTitleFlow(): Flow<String> = titleFlow
 

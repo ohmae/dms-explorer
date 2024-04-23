@@ -15,13 +15,8 @@ import android.view.MotionEvent
 import android.widget.FrameLayout
 import androidx.core.view.isVisible
 import androidx.core.view.updateLayoutParams
-import androidx.lifecycle.flowWithLifecycle
-import androidx.lifecycle.lifecycleScope
 import androidx.viewpager.widget.ViewPager
 import androidx.viewpager.widget.ViewPager.OnPageChangeListener
-import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
 import net.mm2d.dmsexplorer.R
 import net.mm2d.dmsexplorer.Repository
 import net.mm2d.dmsexplorer.databinding.PhotoActivityBinding
@@ -29,6 +24,7 @@ import net.mm2d.dmsexplorer.domain.model.MediaServerModel
 import net.mm2d.dmsexplorer.log.EventLogger
 import net.mm2d.dmsexplorer.settings.Settings
 import net.mm2d.dmsexplorer.util.FullscreenHelper
+import net.mm2d.dmsexplorer.util.observe
 import net.mm2d.dmsexplorer.view.base.BaseActivity
 import net.mm2d.dmsexplorer.view.view.ViewPagerAdapter
 import net.mm2d.dmsexplorer.viewmodel.PhotoActivityModel
@@ -102,38 +98,22 @@ class PhotoActivity : BaseActivity() {
         }
         binding.viewPager.setCurrentItem(1, false)
         binding.viewPager.addOnPageChangeListener(onPageChangeListener)
-        model.getImageBinaryFlow()
-            .flowWithLifecycle(lifecycle)
-            .distinctUntilChanged()
-            .onEach {
-                ImageViewBindingAdapter.setImageBinary(binding.imageView, it)
-            }
-            .launchIn(lifecycleScope)
-        model.getIsLoadingFlow()
-            .flowWithLifecycle(lifecycle)
-            .distinctUntilChanged()
-            .onEach {
-                binding.progressBar.isVisible = it
-            }
-            .launchIn(lifecycleScope)
+        model.getImageBinaryFlow().observe(this) {
+            ImageViewBindingAdapter.setImageBinary(binding.imageView, it)
+        }
+        model.getIsLoadingFlow().observe(this) {
+            binding.progressBar.isVisible = it
+        }
         binding.toolbar.setBackgroundColor(model.background)
-        model.getRightNavigationSizeFlow()
-            .flowWithLifecycle(lifecycle)
-            .distinctUntilChanged()
-            .onEach {
-                binding.toolbar.updateLayoutParams<FrameLayout.LayoutParams> {
-                    rightMargin = it
-                }
+        model.getRightNavigationSizeFlow().observe(this) {
+            binding.toolbar.updateLayoutParams<FrameLayout.LayoutParams> {
+                rightMargin = it
             }
-            .launchIn(lifecycleScope)
+        }
         binding.toolbarBack.setOnClickListener { model.onClickBack() }
-        model.getTitleFlow()
-            .flowWithLifecycle(lifecycle)
-            .distinctUntilChanged()
-            .onEach {
-                binding.toolbarTitle.text = it
-            }
-            .launchIn(lifecycleScope)
+        model.getTitleFlow().observe(this) {
+            binding.toolbarTitle.text = it
+        }
     }
 
     override fun onDestroy() {

@@ -13,15 +13,11 @@ import android.view.MenuItem
 import androidx.annotation.CallSuper
 import androidx.core.view.doOnLayout
 import androidx.core.view.updatePaddingRelative
-import androidx.lifecycle.flowWithLifecycle
-import androidx.lifecycle.lifecycleScope
-import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
 import net.mm2d.dmsexplorer.R
 import net.mm2d.dmsexplorer.Repository
 import net.mm2d.dmsexplorer.databinding.ContentListActivityBinding
 import net.mm2d.dmsexplorer.settings.Settings
+import net.mm2d.dmsexplorer.util.observe
 import net.mm2d.dmsexplorer.view.base.BaseActivity
 import net.mm2d.dmsexplorer.view.dialog.DeleteDialog.OnDeleteListener
 import net.mm2d.dmsexplorer.viewmodel.ContentListActivityModel
@@ -54,20 +50,12 @@ abstract class ContentListActivityDelegate internal constructor(
         binding.toolbar.popupTheme = Settings.get().themeParams.popupThemeId
         binding.toolbar.setBackgroundColor(model.toolbarBackground)
         binding.toolbar.title = model.title
-        model.getSubtitleFlow()
-            .flowWithLifecycle(activity.lifecycle)
-            .distinctUntilChanged()
-            .onEach { binding.toolbar.subtitle = it }
-            .launchIn(activity.lifecycleScope)
+        model.getSubtitleFlow().observe(activity) { binding.toolbar.subtitle = it }
         binding.swipeRefreshLayout.setColorSchemeColors(*model.refreshColors)
         binding.swipeRefreshLayout.setDistanceToTriggerSync(model.distanceToTriggerSync)
         binding.swipeRefreshLayout.setOnRefreshListener(model.onRefreshListener)
         binding.swipeRefreshLayout.setProgressBackgroundColorSchemeColor(model.progressBackground)
-        model.getIsRefreshingFlow()
-            .flowWithLifecycle(activity.lifecycle)
-            .distinctUntilChanged()
-            .onEach { binding.swipeRefreshLayout.isRefreshing = it }
-            .launchIn(activity.lifecycleScope)
+        model.getIsRefreshingFlow().observe(activity) { binding.swipeRefreshLayout.isRefreshing = it }
 
         binding.recyclerView.itemAnimator = model.itemAnimator
         binding.recyclerView.layoutManager = model.cdsListLayoutManager
@@ -82,14 +70,9 @@ abstract class ContentListActivityDelegate internal constructor(
             binding.recyclerView.updatePaddingRelative(start = padding, end = padding)
         }
 
-        model.getScrollPositionFlow()
-            .flowWithLifecycle(activity.lifecycle)
-            .distinctUntilChanged()
-            .onEach {
-                RecyclerViewBindingAdapter.setScrollPosition(binding.recyclerView, it)
-            }
-            .launchIn(activity.lifecycleScope)
-
+        model.getScrollPositionFlow().observe(activity) {
+            RecyclerViewBindingAdapter.setScrollPosition(binding.recyclerView, it)
+        }
         activity.setSupportActionBar(binding.toolbar)
         activity.supportActionBar?.setDisplayHomeAsUpEnabled(true)
         savedInstanceState?.let { restoreScroll(it) }

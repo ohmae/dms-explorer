@@ -14,16 +14,12 @@ import android.view.View
 import androidx.annotation.CallSuper
 import androidx.core.view.doOnLayout
 import androidx.core.view.updatePaddingRelative
-import androidx.lifecycle.flowWithLifecycle
-import androidx.lifecycle.lifecycleScope
-import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
 import net.mm2d.dmsexplorer.R
 import net.mm2d.dmsexplorer.Repository
 import net.mm2d.dmsexplorer.databinding.ServerListActivityBinding
 import net.mm2d.dmsexplorer.log.EventLogger
 import net.mm2d.dmsexplorer.settings.Settings
+import net.mm2d.dmsexplorer.util.observe
 import net.mm2d.dmsexplorer.view.ContentListActivity
 import net.mm2d.dmsexplorer.view.base.BaseActivity
 import net.mm2d.dmsexplorer.viewmodel.ServerListActivityModel
@@ -53,12 +49,7 @@ abstract class ServerListActivityDelegate internal constructor(
         binding.swipeRefreshLayout.setDistanceToTriggerSync(model.distanceToTriggerSync)
         binding.swipeRefreshLayout.setProgressBackgroundColorSchemeColor(model.progressBackground)
         binding.swipeRefreshLayout.setOnRefreshListener(model.onRefreshListener)
-        model.getIsRefreshingFlow()
-            .flowWithLifecycle(activity.lifecycle)
-            .distinctUntilChanged()
-            .onEach { binding.swipeRefreshLayout.isRefreshing = it }
-            .launchIn(activity.lifecycleScope)
-
+        model.getIsRefreshingFlow().observe(activity) { binding.swipeRefreshLayout.isRefreshing = it }
         binding.recyclerView.adapter = model.serverListAdapter
         binding.recyclerView.layoutManager = model.serverListLayoutManager
         binding.recyclerView.itemAnimator = model.itemAnimator

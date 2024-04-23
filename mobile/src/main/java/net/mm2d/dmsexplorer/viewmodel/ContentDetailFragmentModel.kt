@@ -9,7 +9,6 @@ package net.mm2d.dmsexplorer.viewmodel
 
 import android.graphics.Color
 import android.view.View
-import androidx.databinding.BaseObservable
 import androidx.fragment.app.FragmentActivity
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.flow.Flow
@@ -32,7 +31,7 @@ import net.mm2d.dmsexplorer.view.dialog.DeleteDialog
 class ContentDetailFragmentModel(
     private val activity: FragmentActivity,
     repository: Repository,
-) : BaseObservable() {
+) {
     val collapsedColor: Int
     val expandedColor: Int
     val title: String
