@@ -24,7 +24,6 @@ import androidx.core.view.ViewCompat
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import androidx.recyclerview.widget.SimpleItemAnimator
-import java.util.*
 
 // copy from android-27/android/support/v7/widget/DefaultItemAnimator.java
 
@@ -413,6 +412,7 @@ class CustomItemAnimator(context: Context) : SimpleItemAnimator() {
                 changeInfo.oldHolder = null
                 oldItem = true
             }
+
             else -> return false
         }
         item.itemView.alpha = 1f

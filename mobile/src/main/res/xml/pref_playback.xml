@@ -3,9 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     >
 
-    <PreferenceCategory
-        android:title="@string/pref_category_movie"
-        >
+    <PreferenceCategory android:title="@string/pref_category_movie">
         <SwitchPreference
             android:defaultValue="true"
             android:key="PLAY_MOVIE_MYSELF"
@@ -16,9 +14,7 @@
             />
     </PreferenceCategory>
 
-    <PreferenceCategory
-        android:title="@string/pref_category_music"
-        >
+    <PreferenceCategory android:title="@string/pref_category_music">
         <SwitchPreference
             android:defaultValue="true"
             android:key="PLAY_MUSIC_MYSELF"
@@ -29,9 +25,7 @@
             />
     </PreferenceCategory>
 
-    <PreferenceCategory
-        android:title="@string/pref_category_photo"
-        >
+    <PreferenceCategory android:title="@string/pref_category_photo">
         <SwitchPreference
             android:defaultValue="true"
             android:key="PLAY_PHOTO_MYSELF"

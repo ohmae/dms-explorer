@@ -9,9 +9,10 @@
 
         <variable
             name="model"
-            type="net.mm2d.dmsexplorer.viewmodel.ServerItemModel"/>
+            type="net.mm2d.dmsexplorer.viewmodel.ServerItemModel"
+            />
 
-        <import type="android.view.View"/>
+        <import type="android.view.View" />
     </data>
 
     <androidx.cardview.widget.CardView

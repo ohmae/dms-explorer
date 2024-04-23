@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+<layer-list
+    xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:bottom="8dp"
         android:left="8dp"
@@ -7,8 +8,8 @@
         android:top="8dp"
         >
         <shape>
-            <corners android:radius="24dp"/>
-            <solid android:color="@android:color/black"/>
+            <corners android:radius="24dp" />
+            <solid android:color="@android:color/black" />
         </shape>
     </item>
 </layer-list>

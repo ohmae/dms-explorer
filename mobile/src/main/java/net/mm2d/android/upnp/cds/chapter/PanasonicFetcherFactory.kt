@@ -19,7 +19,6 @@ import org.w3c.dom.Node
 import org.xml.sax.SAXException
 import java.io.IOException
 import java.net.URL
-import java.util.*
 import java.util.concurrent.TimeUnit
 import javax.xml.parsers.ParserConfigurationException
 

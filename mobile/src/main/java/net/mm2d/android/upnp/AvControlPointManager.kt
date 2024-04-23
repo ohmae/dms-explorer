@@ -15,7 +15,7 @@ import net.mm2d.upnp.Adapter.iconFilter
 import net.mm2d.upnp.ControlPoint
 import net.mm2d.upnp.ControlPointFactory
 import java.net.NetworkInterface
-import java.util.*
+import java.util.Collections
 import java.util.concurrent.atomic.AtomicBoolean
 
 /**

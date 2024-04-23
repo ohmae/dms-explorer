@@ -44,10 +44,12 @@ internal class MainOptionsMenuDelegate(
                 activity.navigateUpTo()
                 return true
             }
+
             R.id.action_settings -> {
                 SettingsActivity.start(activity)
                 return true
             }
+
             R.id.action_update -> {
                 UpdateChecker.tryToUpdate(activity)
                 return true

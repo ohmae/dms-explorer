@@ -5,5 +5,5 @@
     android:interpolator="@android:interpolator/accelerate_decelerate"
     android:startDelay="0"
     >
-    <pathMotion class="net.mm2d.android.transition.SmilingCurveMotion"/>
+    <pathMotion class="net.mm2d.android.transition.SmilingCurveMotion" />
 </changeBounds>

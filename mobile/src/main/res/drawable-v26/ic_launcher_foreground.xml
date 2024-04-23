@@ -15,8 +15,7 @@
         android:fillColor="#2962ff"
         android:pathData="M69.76,50.1 L47.7,37.37A4.5,4.5 0,0 0,41 41.26V66.74a4.5,4.5 0,0 0,6.75 3.89L69.76,57.9A4.51,4.51 0,0 0,69.76 50.1Z"
         />
-    <path
-        android:pathData="M0,54h108v40h-108z">
+    <path android:pathData="M0,54h108v40h-108z">
         <aapt:attr name="android:fillColor">
             <gradient
                 android:endColor="#00000000"
@@ -26,8 +25,7 @@
                 android:startX="54"
                 android:startY="54"
                 android:type="linear"
-                >
-            </gradient>
+                ></gradient>
         </aapt:attr>
     </path>
 </vector>

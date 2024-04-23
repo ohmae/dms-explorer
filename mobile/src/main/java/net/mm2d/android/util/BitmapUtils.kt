@@ -110,26 +110,34 @@ object BitmapUtils {
         when (orientation) {
             ExifInterface.ORIENTATION_FLIP_HORIZONTAL ->
                 matrix.postScale(-1f, 1f)
+
             ExifInterface.ORIENTATION_FLIP_VERTICAL ->
                 matrix.postScale(1f, -1f)
+
             ExifInterface.ORIENTATION_ROTATE_90 ->
                 matrix.postRotate(90f)
+
             ExifInterface.ORIENTATION_ROTATE_180 ->
                 matrix.postRotate(180f)
+
             ExifInterface.ORIENTATION_ROTATE_270 ->
                 matrix.postRotate(270f)
+
             ExifInterface.ORIENTATION_TRANSPOSE -> {
                 matrix.postRotate(90f)
                 matrix.postScale(-1f, 1f)
             }
+
             ExifInterface.ORIENTATION_TRANSVERSE -> {
                 matrix.postRotate(270f)
                 matrix.postScale(-1f, 1f)
             }
+
             ExifInterface.ORIENTATION_NORMAL,
             ExifInterface.ORIENTATION_UNDEFINED,
             ->
                 return base
+
             else ->
                 return base
         }
@@ -144,6 +152,7 @@ object BitmapUtils {
             ExifInterface.ORIENTATION_ROTATE_270,
             ->
                 decode(binary, height, width)
+
             ExifInterface.ORIENTATION_UNDEFINED,
             ExifInterface.ORIENTATION_NORMAL,
             ExifInterface.ORIENTATION_FLIP_HORIZONTAL,
@@ -151,6 +160,7 @@ object BitmapUtils {
             ExifInterface.ORIENTATION_FLIP_VERTICAL,
             ->
                 decode(binary, width, height)
+
             else ->
                 decode(binary, width, height)
         }

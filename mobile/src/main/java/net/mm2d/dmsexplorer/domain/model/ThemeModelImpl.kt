@@ -11,7 +11,6 @@ import android.app.Activity
 import androidx.annotation.ColorInt
 import net.mm2d.android.util.ActivityLifecycleCallbacksAdapter
 import net.mm2d.dmsexplorer.util.ColorUtils
-import java.util.*
 
 /**
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)

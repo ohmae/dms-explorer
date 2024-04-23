@@ -175,6 +175,7 @@ class ControlPanelModel internal constructor(
             RepeatMode.PLAY_ONCE,
             RepeatMode.REPEAT_ONE,
             -> false
+
             RepeatMode.SEQUENTIAL,
             RepeatMode.REPEAT_ALL,
             -> true

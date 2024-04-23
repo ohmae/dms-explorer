@@ -1,13 +1,10 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--suppress AndroidElementNotAllowed -->
+<?xml version="1.0" encoding="utf-8"?><!--suppress AndroidElementNotAllowed -->
 <PreferenceScreen
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     >
 
-    <PreferenceCategory
-        android:title="@string/pref_title_for_expert"
-        >
+    <PreferenceCategory android:title="@string/pref_title_for_expert">
         <Preference
             android:selectable="false"
             android:summary="@string/pref_message_for_expert"
@@ -15,9 +12,7 @@
             />
     </PreferenceCategory>
 
-    <PreferenceCategory
-        android:title="@string/pref_category_content_list"
-        >
+    <PreferenceCategory android:title="@string/pref_category_content_list">
         <Preference
             android:key="SORT_KEY"
             android:title="@string/pref_title_content_sort"
@@ -25,9 +20,7 @@
             />
     </PreferenceCategory>
 
-    <PreferenceCategory
-        android:title="@string/pref_category_movie_ui"
-        >
+    <PreferenceCategory android:title="@string/pref_category_movie_ui">
         <SwitchPreference
             android:defaultValue="false"
             android:key="DO_NOT_SHOW_MOVIE_UI_ON_START"
@@ -58,9 +51,7 @@
             />
     </PreferenceCategory>
 
-    <PreferenceCategory
-        android:title="@string/pref_category_photo_ui"
-        >
+    <PreferenceCategory android:title="@string/pref_category_photo_ui">
         <SwitchPreference
             android:defaultValue="false"
             android:key="DO_NOT_SHOW_PHOTO_UI_ON_START"
@@ -90,9 +81,7 @@
             app:iconSpaceReserved="false"
             />
     </PreferenceCategory>
-    <PreferenceCategory
-        android:title="@string/pref_category_orientation"
-        >
+    <PreferenceCategory android:title="@string/pref_category_orientation">
         <Preference
             android:selectable="false"
             android:summary="@string/pref_message_category_orientation"

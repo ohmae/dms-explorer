@@ -12,7 +12,6 @@ import android.os.Parcelable
 import android.os.Parcelable.Creator
 import net.mm2d.upnp.util.asIterable
 import org.w3c.dom.Element
-import java.util.*
 
 /**
  * シンプルなXMLのタグ情報を表現するクラス

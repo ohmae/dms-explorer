@@ -1,88 +1,69 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?attr/themeCardBackground"
+    android:baselineAligned="false"
+    android:orientation="horizontal"
     >
 
-    <data>
-
-        <variable
-            name="model"
-            type="net.mm2d.dmsexplorer.viewmodel.RendererItemModel"/>
-
-        <import type="android.view.View"/>
-    </data>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="?attr/themeCardBackground"
-        android:baselineAligned="false"
-        android:orientation="horizontal"
+    <FrameLayout
+        android:id="@+id/accent"
+        android:layout_width="@dimen/accent_size"
+        android:layout_height="@dimen/accent_size"
+        android:layout_margin="@dimen/icon_margin"
         >
 
-        <FrameLayout
-            android:id="@+id/accent"
+        <TextView
+            android:id="@+id/text_accent"
             android:layout_width="@dimen/accent_size"
             android:layout_height="@dimen/accent_size"
-            android:layout_margin="@dimen/icon_margin"
-            >
-
-            <TextView
-                android:id="@+id/text_accent"
-                android:layout_width="@dimen/accent_size"
-                android:layout_height="@dimen/accent_size"
-                android:layout_gravity="center_vertical"
-                android:background="@{model.accentBackground}"
-                android:gravity="center"
-                android:text="@{model.accentText}"
-                android:textColor="@color/textPrimary"
-                android:textSize="@dimen/text_size_accent"
-                android:visibility="@{model.accentIcon == null ? View.VISIBLE : View.INVISIBLE}"
-                tools:ignore="SpUsage"/>
-
-            <ImageView
-                android:id="@+id/image_accent"
-                android:layout_width="@dimen/accent_size"
-                android:layout_height="@dimen/accent_size"
-                android:imageBitmap="@{model.accentIcon}"
-                android:scaleType="fitCenter"
-                android:visibility="@{model.accentIcon != null ? View.VISIBLE : View.INVISIBLE}"
-                tools:ignore="ContentDescription"
-                />
-
-        </FrameLayout>
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:layout_weight="1"
-            android:orientation="vertical"
-            >
+            android:gravity="center"
+            android:textColor="@color/textPrimary"
+            android:textSize="@dimen/text_size_accent"
+            tools:ignore="SpUsage"
+            />
 
-            <TextView
-                android:id="@+id/text_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/small_margin"
-                android:layout_marginTop="@dimen/default_margin"
-                android:text="@{model.title}"
-                android:textColor="?attr/themeTextColor"
-                android:textSize="@dimen/text_size_main"
-                />
+        <ImageView
+            android:id="@+id/image_accent"
+            android:layout_width="@dimen/accent_size"
+            android:layout_height="@dimen/accent_size"
+            android:scaleType="fitCenter"
+            tools:ignore="ContentDescription"
+            />
 
-            <TextView
-                android:id="@+id/text_description"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/default_margin"
-                android:text="@{model.description}"
-                android:textColor="?attr/themeSubTextColor"
-                android:textSize="@dimen/text_size_sub"
-                />
+    </FrameLayout>
 
-        </LinearLayout>
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        >
+
+        <TextView
+            android:id="@+id/text_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/default_margin"
+            android:layout_marginBottom="@dimen/small_margin"
+            android:textColor="?attr/themeTextColor"
+            android:textSize="@dimen/text_size_main"
+            />
+
+        <TextView
+            android:id="@+id/text_description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/default_margin"
+            android:textColor="?attr/themeSubTextColor"
+            android:textSize="@dimen/text_size_sub"
+            />
 
     </LinearLayout>
-</layout>
+
+</LinearLayout>

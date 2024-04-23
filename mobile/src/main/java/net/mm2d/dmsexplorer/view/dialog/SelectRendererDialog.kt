@@ -10,7 +10,6 @@ package net.mm2d.dmsexplorer.view.dialog
 import android.app.Dialog
 import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -47,12 +46,8 @@ class SelectRendererDialog : DialogFragment() {
             dismiss()
         }
         val inflater = activity.layoutInflater
-        val binding = DataBindingUtil.inflate<RendererSelectDialogBinding>(
-            inflater,
-            R.layout.renderer_select_dialog,
-            null,
-            false,
-        )
+        val binding = RendererSelectDialogBinding.inflate(inflater)
+
         binding.recyclerView.layoutManager = LinearLayoutManager(activity)
         binding.recyclerView.addItemDecoration(
             DividerItemDecoration(

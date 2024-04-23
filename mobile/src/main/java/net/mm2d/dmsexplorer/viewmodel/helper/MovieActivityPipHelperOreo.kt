@@ -58,6 +58,7 @@ internal class MovieActivityPipHelperOreo(
                             .build(),
                     )
                 }
+
                 Const.ACTION_NEXT -> model.onClickNext()
                 Const.ACTION_PREV -> model.onClickPrevious()
             }

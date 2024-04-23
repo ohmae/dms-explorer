@@ -8,11 +8,12 @@
 
         <variable
             name="model"
-            type="net.mm2d.dmsexplorer.viewmodel.PropertyItemModel"/>
+            type="net.mm2d.dmsexplorer.viewmodel.PropertyItemModel"
+            />
 
-        <import type="net.mm2d.dmsexplorer.R"/>
+        <import type="net.mm2d.dmsexplorer.R" />
 
-        <import type="android.view.View"/>
+        <import type="android.view.View" />
     </data>
 
     <LinearLayout

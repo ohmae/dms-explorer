@@ -4,9 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     >
 
-    <PreferenceCategory
-        android:title="@string/pref_category_link"
-        >
+    <PreferenceCategory android:title="@string/pref_category_link">
 
         <SwitchPreference
             android:defaultValue="true"
@@ -18,9 +16,7 @@
             />
     </PreferenceCategory>
 
-    <PreferenceCategory
-        android:title="@string/pref_category_tap_and_long_tap_operation"
-        >
+    <PreferenceCategory android:title="@string/pref_category_tap_and_long_tap_operation">
 
         <SwitchPreference
             android:defaultValue="true"
@@ -41,8 +37,7 @@
             />
     </PreferenceCategory>
 
-    <PreferenceCategory
-        android:title="@string/pref_category_delete">
+    <PreferenceCategory android:title="@string/pref_category_delete">
 
         <SwitchPreference
             android:defaultValue="false"

@@ -16,7 +16,8 @@ import net.mm2d.android.upnp.cds.CdsObject
 import net.mm2d.dmsexplorer.Repository
 import net.mm2d.dmsexplorer.domain.entity.ContentType
 import net.mm2d.dmsexplorer.settings.Settings
-import java.util.*
+import java.util.Locale
+import java.util.TimeZone
 import java.util.concurrent.TimeUnit
 
 /**

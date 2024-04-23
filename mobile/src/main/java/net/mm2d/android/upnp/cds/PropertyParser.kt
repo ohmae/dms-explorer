@@ -51,10 +51,13 @@ object PropertyParser {
             when {
                 value.length <= 10 ->
                     parseD(value)
+
                 value.length <= 19 ->
                     parseT(value)
+
                 value.lastIndexOf(':') == 22 ->
                     parseZ(value.substring(0, 22) + value.substring(23))
+
                 else ->
                     parseZ(value)
             }

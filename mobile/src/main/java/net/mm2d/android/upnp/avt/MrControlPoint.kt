@@ -12,7 +12,7 @@ import net.mm2d.upnp.Adapter.discoveryListener
 import net.mm2d.upnp.Adapter.notifyEventListener
 import net.mm2d.upnp.ControlPoint
 import net.mm2d.upnp.Device
-import java.util.*
+import java.util.Collections
 import java.util.concurrent.atomic.AtomicBoolean
 
 /**

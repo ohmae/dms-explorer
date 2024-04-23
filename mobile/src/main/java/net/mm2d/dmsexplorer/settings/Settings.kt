@@ -184,10 +184,13 @@ class Settings private constructor(
                 when {
                     it.isBooleanKey ->
                         bundle.putString(it.name, if (storage.readBoolean(it)) "on" else "off")
+
                     it.isIntKey ->
                         bundle.putString(it.name, storage.readInt(it).toString())
+
                     it.isLongKey ->
                         bundle.putString(it.name, storage.readLong(it).toString())
+
                     it.isStringKey ->
                         bundle.putString(it.name, storage.readString(it))
                 }

@@ -20,7 +20,7 @@ import net.mm2d.android.upnp.cds.CdsObject.Companion.TYPE_VIDEO
 import net.mm2d.android.upnp.cds.CdsObject.Companion.VIDEO_ITEM
 import net.mm2d.upnp.util.forEachElement
 import org.w3c.dom.Element
-import java.util.*
+import java.util.Date
 
 /**
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)

@@ -18,7 +18,7 @@ import net.mm2d.android.upnp.cds.CdsObject
 import net.mm2d.android.upnp.cds.MediaServer
 import net.mm2d.dmsexplorer.domain.entity.ContentDirectoryEntity
 import net.mm2d.dmsexplorer.domain.entity.ContentEntity
-import java.util.*
+import java.util.LinkedList
 
 /**
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)

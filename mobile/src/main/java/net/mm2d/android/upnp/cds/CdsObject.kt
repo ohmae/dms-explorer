@@ -9,7 +9,7 @@ package net.mm2d.android.upnp.cds
 
 import android.os.Parcelable
 import androidx.annotation.IntDef
-import java.util.*
+import java.util.Date
 
 /**
  * ContentDirectoryServiceのObjectを表現するクラス。

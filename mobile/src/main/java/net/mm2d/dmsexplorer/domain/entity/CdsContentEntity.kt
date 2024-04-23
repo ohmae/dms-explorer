@@ -42,15 +42,18 @@ class CdsContentEntity(
                     stringJoiner.join(CdsFormatter.makeChannel(rawEntity))
                     stringJoiner.join(CdsFormatter.makeScheduleOrDate(rawEntity))
                 }
+
                 ContentType.MUSIC -> {
                     stringJoiner.join(CdsFormatter.makeArtistsSimple(rawEntity))
                     stringJoiner.join(CdsFormatter.makeAlbum(rawEntity), " / ")
                 }
+
                 ContentType.PHOTO -> stringJoiner.join(CdsFormatter.makeDate(rawEntity))
                 ContentType.CONTAINER -> {
                     stringJoiner.join(CdsFormatter.makeChannel(rawEntity))
                     stringJoiner.join(CdsFormatter.makeDate(rawEntity), ' ')
                 }
+
                 else -> {
                 }
             }

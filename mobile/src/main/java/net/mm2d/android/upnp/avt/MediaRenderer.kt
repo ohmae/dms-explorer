@@ -15,7 +15,7 @@ import net.mm2d.upnp.Action
 import net.mm2d.upnp.Device
 import net.mm2d.upnp.Service
 import java.io.IOException
-import java.util.*
+import java.util.Locale
 import java.util.concurrent.TimeUnit
 
 /**

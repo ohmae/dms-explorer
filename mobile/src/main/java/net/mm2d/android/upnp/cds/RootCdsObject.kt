@@ -10,7 +10,7 @@ package net.mm2d.android.upnp.cds
 import android.os.Parcel
 import android.os.Parcelable.Creator
 import net.mm2d.android.upnp.cds.CdsObject.Companion.TYPE_CONTAINER
-import java.util.*
+import java.util.Date
 
 /**
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)

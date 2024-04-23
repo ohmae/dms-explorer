@@ -24,7 +24,6 @@ import net.mm2d.dmsexplorer.databinding.PropertyListItemBinding
 import net.mm2d.dmsexplorer.domain.entity.ContentEntity
 import net.mm2d.dmsexplorer.view.adapter.PropertyAdapter.ViewHolder
 import net.mm2d.dmsexplorer.viewmodel.PropertyItemModel
-import java.util.*
 import java.util.regex.Pattern
 
 /**

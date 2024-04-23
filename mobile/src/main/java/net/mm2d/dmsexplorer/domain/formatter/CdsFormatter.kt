@@ -14,7 +14,6 @@ import net.mm2d.android.upnp.cds.PropertyParser
 import net.mm2d.android.upnp.cds.Tag
 import net.mm2d.android.util.toDisplayableString
 import net.mm2d.dmsexplorer.R
-import java.util.*
 
 /**
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)

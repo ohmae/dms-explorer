@@ -7,7 +7,5 @@
         android:id="@android:id/mask"
         android:drawable="@drawable/bg_tool_button_mask"
         />
-    <item
-        android:drawable="@drawable/bg_tool_button_normal"
-        />
+    <item android:drawable="@drawable/bg_tool_button_normal" />
 </ripple>

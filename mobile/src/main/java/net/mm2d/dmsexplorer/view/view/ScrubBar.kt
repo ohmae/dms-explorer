@@ -22,7 +22,6 @@ import android.view.View
 import androidx.annotation.ColorInt
 import androidx.annotation.Dimension
 import androidx.annotation.IntDef
-import java.util.*
 import kotlin.math.abs
 
 /**
@@ -317,17 +316,20 @@ class ScrubBar @JvmOverloads constructor(
                 dragging = true
                 onTouchStart(event)
             }
+
             MotionEvent.ACTION_MOVE -> {
                 if (dragging) {
                     onTouchMove(event)
                 }
             }
+
             MotionEvent.ACTION_CANCEL, MotionEvent.ACTION_UP -> {
                 if (dragging) {
                     dragging = false
                     onTouchEnd(event)
                 }
             }
+
             else -> {
             }
         }

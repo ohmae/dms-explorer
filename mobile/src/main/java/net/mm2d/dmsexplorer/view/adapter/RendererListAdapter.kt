@@ -11,13 +11,11 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import net.mm2d.android.upnp.avt.MediaRenderer
-import net.mm2d.dmsexplorer.R
 import net.mm2d.dmsexplorer.databinding.RendererListItemBinding
 import net.mm2d.dmsexplorer.viewmodel.RendererItemModel
-import java.util.*
 
 /**
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
@@ -33,12 +31,7 @@ class RendererListAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(
-            DataBindingUtil.inflate(
-                inflater,
-                R.layout.renderer_list_item,
-                parent,
-                false,
-            ),
+            RendererListItemBinding.inflate(inflater, parent, false),
         )
     }
 
@@ -91,8 +84,14 @@ class RendererListAdapter(
 
         fun applyItem(renderer: MediaRenderer) {
             mediaRenderer = renderer
-            binding.model = RendererItemModel(context, renderer)
-            binding.executePendingBindings()
+            val model = RendererItemModel(context, renderer)
+            binding.textAccent.setBackground(model.accentBackground)
+            binding.textAccent.text = model.accentText
+            binding.textAccent.isVisible = model.accentIcon == null
+            binding.imageAccent.setImageBitmap(model.accentIcon)
+            binding.imageAccent.isVisible = model.accentIcon != null
+            binding.textTitle.text = model.title
+            binding.textDescription.text = model.description
         }
 
         private fun onClick(v: View) {

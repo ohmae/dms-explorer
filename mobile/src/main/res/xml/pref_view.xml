@@ -4,9 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     >
 
-    <PreferenceCategory
-        android:title="@string/pref_category_theme"
-        >
+    <PreferenceCategory android:title="@string/pref_category_theme">
         <SwitchPreference
             android:defaultValue="false"
             android:key="DARK_THEME"

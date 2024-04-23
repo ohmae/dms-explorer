@@ -52,8 +52,10 @@ open class App : Application() {
         when (e) {
             is UndeliverableException,
             -> Logger.w(e.cause, "UndeliverableException:")
+
             is OnErrorNotImplementedException,
             -> Logger.w(e.cause, "OnErrorNotImplementedException:")
+
             else
             -> Logger.w(e)
         }

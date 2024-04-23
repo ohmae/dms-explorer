@@ -8,8 +8,7 @@
 package net.mm2d.dmsexplorer.domain.entity
 
 import java.text.Collator
-import java.util.*
-import kotlin.Comparator
+import java.util.Locale
 
 /**
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
