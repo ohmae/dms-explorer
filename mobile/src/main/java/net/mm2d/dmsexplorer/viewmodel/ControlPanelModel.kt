@@ -10,7 +10,6 @@ package net.mm2d.dmsexplorer.viewmodel
 import android.content.Context
 import android.os.Handler
 import android.os.Looper
-import androidx.databinding.BaseObservable
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import net.mm2d.android.util.Toaster
@@ -29,7 +28,7 @@ import java.util.Locale
 class ControlPanelModel internal constructor(
     private val context: Context,
     private val playerModel: PlayerModel,
-) : BaseObservable(), StatusListener {
+) : StatusListener {
     private var repeatMode = RepeatMode.PLAY_ONCE
     private var error: Boolean = false
     var isSkipped: Boolean = false

@@ -5,8 +5,6 @@ import java.util.Locale
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
-    id("org.jetbrains.kotlin.kapt")
-    id("org.gradle.jacoco")
     id("com.github.ben-manes.versions")
     id("org.jetbrains.kotlinx.kover")
 
@@ -60,7 +58,6 @@ android {
         jvmTarget = "1.8"
     }
     buildFeatures {
-        dataBinding = true
         viewBinding = true
     }
     lint {
