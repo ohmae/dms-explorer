@@ -13,12 +13,12 @@ import android.net.Uri
 import android.widget.Toast
 import android.widget.VideoView
 import androidx.annotation.ColorInt
-import androidx.annotation.DrawableRes
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.databinding.BaseObservable
-import androidx.databinding.Bindable
-import androidx.databinding.library.baseAdapters.BR
+import kotlinx.coroutines.channels.BufferOverflow.DROP_OLDEST
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
 import net.mm2d.android.util.DisplaySizeUtils
 import net.mm2d.android.util.Toaster
 import net.mm2d.android.util.toDisplayableString
@@ -41,7 +41,7 @@ class MovieActivityModel(
     private val activity: BaseActivity,
     private val videoView: VideoView,
     private val repository: Repository,
-) : BaseObservable() {
+) {
     private val serverModel: MediaServerModel? = repository.mediaServerModel
     private val settings: Settings = Settings.get()
     private var onChangeContentListener: (() -> Unit)? = null
@@ -58,30 +58,31 @@ class MovieActivityModel(
     @ColorInt
     val background: Int
     val currentProgress: Int
-        get() = controlPanelModel.progress
+        get() = controlPanelModel.getProgress()
 
-    @get:Bindable
-    var title = ""
-        private set
+    private val titleFlow: MutableStateFlow<String> = MutableStateFlow("")
+    fun getTitleFlow(): Flow<String> = titleFlow
 
-    @get:Bindable
-    lateinit var controlPanelModel: ControlPanelModel
-        private set
-
-    @get:Bindable
-    var rightNavigationSize: Int = 0
-        private set(size) {
-            controlPanelParam.marginRight = size
-            field = size
-            notifyPropertyChanged(BR.rightNavigationSize)
+    private val controlPanelModelFlow: MutableSharedFlow<ControlPanelModel> =
+        MutableSharedFlow(replay = 1, onBufferOverflow = DROP_OLDEST)
+    var controlPanelModel: ControlPanelModel
+        get() = controlPanelModelFlow.replayCache.first()
+        private set(value) {
+            controlPanelModelFlow.tryEmit(value)
         }
 
-    @get:Bindable
-    var repeatIconId: Int = repeatMode.iconId
-        set(@DrawableRes id) {
-            field = id
-            notifyPropertyChanged(BR.repeatIconId)
-        }
+    fun getControlPanelModelFlow(): Flow<ControlPanelModel> = controlPanelModelFlow
+
+    private val rightNavigationSizeFlow: MutableStateFlow<Int> = MutableStateFlow(0)
+    fun getRightNavigationSizeFlow(): Flow<Int> = rightNavigationSizeFlow
+    private fun setRightNavigationSize(size: Int) {
+        rightNavigationSizeFlow.value = size
+        controlPanelParam.setMarginRight(size)
+    }
+
+    private val repeatIconIdFlow: MutableStateFlow<Int> = MutableStateFlow(repeatMode.iconId)
+    fun getRepeatIconIdFlow(): Flow<Int> = repeatIconIdFlow
+
     private val isTooShortPlayTime: Boolean
         get() {
             val playTime = System.currentTimeMillis() - playStartTime
@@ -95,7 +96,7 @@ class MovieActivityModel(
             ContextCompat.getColor(activity, R.color.translucent_control)
         }
         controlPanelParam = ControlPanelParam()
-        controlPanelParam.backgroundColor = background
+        controlPanelParam.setBackgroundColor(background)
 
         movieActivityPipHelper = PipHelpers.getMovieHelper(activity)
         movieActivityPipHelper.register()
@@ -114,26 +115,24 @@ class MovieActivityModel(
         playStartTime = System.currentTimeMillis()
         muteAlertHelper.alertIfMuted()
         val playerModel = MoviePlayerModel(activity, videoView)
-        controlPanelModel = ControlPanelModel(activity, playerModel)
+        val controlPanelModel = ControlPanelModel(activity, playerModel)
         controlPanelModel.setRepeatMode(repeatMode)
         controlPanelModel.setOnCompletionListener(this::onCompletion)
         controlPanelModel.setSkipControlListener(this::onNext, this::onPrevious)
+        this.controlPanelModel = controlPanelModel
         movieActivityPipHelper.setControlPanelModel(controlPanelModel)
         playerModel.setUri(targetModel.uri, null)
-        title = if (settings.shouldShowTitleInMovieUi()) {
+        titleFlow.value = if (settings.shouldShowTitleInMovieUi()) {
             targetModel.title.toDisplayableString()
         } else {
             ""
         }
-
-        notifyPropertyChanged(BR.title)
-        notifyPropertyChanged(BR.controlPanelModel)
     }
 
     fun adjustPanel(activity: Activity) {
         val size = DisplaySizeUtils.getNavigationBarArea(activity)
-        rightNavigationSize = size.x
-        controlPanelParam.bottomPadding = size.y
+        setRightNavigationSize(size.x)
+        controlPanelParam.setBottomPadding(size.y)
     }
 
     fun terminate() {
@@ -156,7 +155,7 @@ class MovieActivityModel(
     fun onClickRepeat() {
         repeatMode = repeatMode.next()
         controlPanelModel.setRepeatMode(repeatMode)
-        repeatIconId = repeatMode.iconId
+        repeatIconIdFlow.value = repeatMode.iconId
         settings.repeatModeMovie = repeatMode
         showRepeatToast()
     }
@@ -215,8 +214,10 @@ class MovieActivityModel(
             RepeatMode.PLAY_ONCE -> false
             RepeatMode.SEQUENTIAL ->
                 serverModel?.selectNextEntity(MediaServerModel.SCAN_MODE_SEQUENTIAL) ?: false
+
             RepeatMode.REPEAT_ALL ->
                 serverModel?.selectNextEntity(MediaServerModel.SCAN_MODE_LOOP) ?: false
+
             RepeatMode.REPEAT_ONE -> false
         }
     }
@@ -226,8 +227,10 @@ class MovieActivityModel(
             RepeatMode.PLAY_ONCE -> false
             RepeatMode.SEQUENTIAL ->
                 serverModel?.selectPreviousEntity(MediaServerModel.SCAN_MODE_SEQUENTIAL) ?: false
+
             RepeatMode.REPEAT_ALL ->
                 serverModel?.selectPreviousEntity(MediaServerModel.SCAN_MODE_LOOP) ?: false
+
             RepeatMode.REPEAT_ONE -> false
         }
     }

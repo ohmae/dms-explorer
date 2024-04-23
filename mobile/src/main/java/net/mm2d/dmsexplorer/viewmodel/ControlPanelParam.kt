@@ -7,33 +7,28 @@
 
 package net.mm2d.dmsexplorer.viewmodel
 
-import androidx.annotation.ColorInt
-import androidx.databinding.BaseObservable
-import androidx.databinding.Bindable
-import androidx.databinding.library.baseAdapters.BR
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
 
 /**
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
  */
-class ControlPanelParam : BaseObservable() {
-    @get:Bindable
-    var bottomPadding: Int = 0
-        set(padding) {
-            field = padding
-            notifyPropertyChanged(BR.bottomPadding)
-        }
+class ControlPanelParam {
+    private val bottomPaddingFlow: MutableStateFlow<Int> = MutableStateFlow(0)
+    fun getBottomPaddingFlow(): Flow<Int> = bottomPaddingFlow
+    fun setBottomPadding(padding: Int) {
+        bottomPaddingFlow.value = padding
+    }
 
-    @get:Bindable
-    var marginRight: Int = 0
-        set(margin) {
-            field = margin
-            notifyPropertyChanged(BR.marginRight)
-        }
+    private val marginRightFlow: MutableStateFlow<Int> = MutableStateFlow(0)
+    fun getMarginRightFlow(): Flow<Int> = marginRightFlow
+    fun setMarginRight(margin: Int) {
+        marginRightFlow.value = margin
+    }
 
-    @get:Bindable
-    var backgroundColor: Int = 0
-        set(@ColorInt color) {
-            field = color
-            notifyPropertyChanged(BR.backgroundColor)
-        }
+    private val backgroundColorFlow: MutableStateFlow<Int> = MutableStateFlow(0)
+    fun getBackgroundColorFlow(): Flow<Int> = backgroundColorFlow
+    fun setBackgroundColor(color: Int) {
+        backgroundColorFlow.value = color
+    }
 }

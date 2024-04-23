@@ -9,14 +9,14 @@ package net.mm2d.dmsexplorer.viewmodel
 
 import android.net.Uri
 import android.widget.Toast
-import androidx.annotation.DrawableRes
 import androidx.core.app.ActivityCompat
-import androidx.databinding.BaseObservable
-import androidx.databinding.Bindable
-import androidx.databinding.library.baseAdapters.BR
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.functions.Consumer
 import io.reactivex.schedulers.Schedulers
+import kotlinx.coroutines.channels.BufferOverflow
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
 import net.mm2d.android.util.AribUtils
 import net.mm2d.android.util.Toaster
 import net.mm2d.dmsexplorer.Repository
@@ -36,7 +36,7 @@ import net.mm2d.dmsexplorer.viewmodel.helper.MuteAlertHelper
 class MusicActivityModel(
     private val activity: BaseActivity,
     private val repository: Repository,
-) : BaseObservable() {
+) {
     private val serverModel: MediaServerModel? = repository.mediaServerModel
     private val settings: Settings = Settings.get()
     private var repeatMode: RepeatMode = settings.repeatModeMusic
@@ -46,39 +46,40 @@ class MusicActivityModel(
     private var finishing: Boolean = false
     val controlPanelParam: ControlPanelParam = ControlPanelParam()
 
-    @get:Bindable
-    var title = ""
-        private set
+    private val titleFlow: MutableStateFlow<String> = MutableStateFlow("")
+    fun getTitleFlow(): Flow<String> = titleFlow
 
-    @get:Bindable
-    var controlColor: Int = 0
-        private set
+    private val controlColorFlow: MutableStateFlow<Int> = MutableStateFlow(0)
+    fun getControlColorFlow(): Flow<Int> = controlColorFlow
 
-    @get:Bindable
-    lateinit var controlPanelModel: ControlPanelModel
-        private set
+    private val controlPanelModelFlow: MutableStateFlow<ControlPanelModel> =
+        MutableStateFlow(ControlPanelModel(activity, MusicPlayerModel(activity)))
 
-    @get:Bindable
-    lateinit var propertyAdapter: PropertyAdapter
-        private set
-
-    @get:Bindable
-    var imageBinary: ByteArray? = null
-        set(imageBinary) {
-            field = imageBinary
-            notifyPropertyChanged(BR.imageBinary)
+    fun getControlPanelModelFlow(): Flow<ControlPanelModel> = controlPanelModelFlow
+    private var controlPanelModel: ControlPanelModel
+        get() = controlPanelModelFlow.value
+        private set(value) {
+            controlPanelModelFlow.value = value
         }
+
+    private val propertyAdapterFlow: MutableSharedFlow<PropertyAdapter> =
+        MutableSharedFlow(replay = 1, onBufferOverflow = BufferOverflow.DROP_OLDEST)
+
+    fun getPropertyAdapterFlow(): Flow<PropertyAdapter> = propertyAdapterFlow
+    private var propertyAdapter: PropertyAdapter
+        get() = propertyAdapterFlow.replayCache.first()
+        set(value) {
+            propertyAdapterFlow.tryEmit(value)
+        }
+
+    private val imageBinaryFlow: MutableStateFlow<ByteArray?> = MutableStateFlow(null)
+    fun getImageBinaryFlow(): Flow<ByteArray?> = imageBinaryFlow
 
     val currentProgress: Int
-        get() = controlPanelModel.progress
+        get() = controlPanelModel.getProgress()
 
-    @DrawableRes
-    @get:Bindable
-    var repeatIconId: Int = repeatMode.iconId
-        set(@DrawableRes id) {
-            field = id
-            notifyPropertyChanged(BR.repeatIconId)
-        }
+    private val repeatIconIdFlow: MutableStateFlow<Int> = MutableStateFlow(repeatMode.iconId)
+    fun getRepeatIconIdFlow(): Flow<Int> = repeatIconIdFlow
 
     private val isTooShortPlayTime: Boolean
         get() {
@@ -108,26 +109,21 @@ class MusicActivityModel(
         }
         playerModel.setUri(targetModel.uri, null)
 
-        title = AribUtils.toDisplayableString(targetModel.title)
+        titleFlow.value = AribUtils.toDisplayableString(targetModel.title)
         val generator = settings
             .themeParams
             .themeColorGenerator
-        controlColor = generator.getControlColor(title)
+        controlColorFlow.value = generator.getControlColor(titleFlow.value)
         propertyAdapter = PropertyAdapter.ofContent(activity, targetModel.contentEntity)
-        repository.themeModel.setThemeColor(activity, controlColor, 0)
+        repository.themeModel.setThemeColor(activity, controlColorFlow.value, 0)
 
-        notifyPropertyChanged(BR.title)
-        notifyPropertyChanged(BR.controlColor)
-        notifyPropertyChanged(BR.propertyAdapter)
-        notifyPropertyChanged(BR.controlPanelModel)
-
-        controlPanelParam.backgroundColor = controlColor
+        controlPanelParam.setBackgroundColor(controlColorFlow.value)
 
         loadArt(targetModel.contentEntity.artUri)
     }
 
     private fun loadArt(uri: Uri) {
-        imageBinary = null
+        imageBinaryFlow.value = null
         if (uri === Uri.EMPTY) {
             return
         }
@@ -135,7 +131,7 @@ class MusicActivityModel(
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
-                Consumer { imageBinary = it },
+                Consumer { imageBinaryFlow.value = it },
             ).isDisposed
     }
 
@@ -150,7 +146,7 @@ class MusicActivityModel(
     fun onClickRepeat() {
         repeatMode = repeatMode.next()
         controlPanelModel.setRepeatMode(repeatMode)
-        repeatIconId = repeatMode.iconId
+        repeatIconIdFlow.value = repeatMode.iconId
         settings.repeatModeMusic = repeatMode
 
         showRepeatToast()
@@ -202,8 +198,10 @@ class MusicActivityModel(
         RepeatMode.PLAY_ONCE -> false
         RepeatMode.SEQUENTIAL ->
             serverModel?.selectNextEntity(MediaServerModel.SCAN_MODE_SEQUENTIAL) ?: false
+
         RepeatMode.REPEAT_ALL ->
             serverModel?.selectNextEntity(MediaServerModel.SCAN_MODE_LOOP) ?: false
+
         RepeatMode.REPEAT_ONE -> false
     }
 
@@ -211,8 +209,10 @@ class MusicActivityModel(
         RepeatMode.PLAY_ONCE -> false
         RepeatMode.SEQUENTIAL ->
             serverModel?.selectPreviousEntity(MediaServerModel.SCAN_MODE_SEQUENTIAL) ?: false
+
         RepeatMode.REPEAT_ALL ->
             serverModel?.selectPreviousEntity(MediaServerModel.SCAN_MODE_LOOP) ?: false
+
         RepeatMode.REPEAT_ONE -> false
     }
 

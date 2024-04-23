@@ -1,145 +1,111 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/root"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
     >
 
-    <data>
-
-        <variable
-            name="model"
-            type="net.mm2d.dmsexplorer.viewmodel.ControlPanelModel"/>
-
-        <variable
-            name="param"
-            type="net.mm2d.dmsexplorer.viewmodel.ControlPanelParam"/>
-
-        <import type="android.view.View"/>
-    </data>
-
-    <RelativeLayout
+    <net.mm2d.dmsexplorer.view.view.ScrubBar
+        android:id="@+id/seek_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_marginRight="@{param.marginRight}"
+        android:layout_alignParentTop="true"
+        android:paddingTop="@dimen/seek_padding_top"
+        android:paddingBottom="@dimen/seek_padding"
+        />
+
+    <LinearLayout
+        android:id="@+id/control_panel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/seek_bar"
+        android:orientation="horizontal"
         >
 
-        <net.mm2d.dmsexplorer.view.view.ScrubBar
-            android:id="@+id/seek_bar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:bottomBackgroundColor="@{param.backgroundColor}"
-            android:enabled="@{model.seekable}"
-            android:max="@{model.duration}"
-            android:paddingBottom="@dimen/seek_padding"
-            android:paddingTop="@dimen/seek_padding_top"
-            android:progress="@{model.progress}"
-            android:scrubBarListener="@{model.seekBarListener}"
-            />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/seek_bar"
-            android:background="@{param.backgroundColor}"
-            android:orientation="horizontal"
-            android:paddingBottom="@{param.bottomPadding + (int)@dimen/seek_padding}"
-            >
-
-            <TextView
-                android:id="@+id/text_progress"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="top"
-                android:layout_marginStart="@dimen/control_counter_margin"
-                android:text="@{model.progressText}"
-                android:textColor="@color/textPrimary"
-                android:textSize="@dimen/text_size_counter"
-                />
-
-            <Space
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                />
-
-            <ImageView
-                android:id="@+id/previous"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:alpha="@{model.previousEnabled ? 1.0f : 0.5f}"
-                android:background="@drawable/bg_control_button"
-                android:enabled="@{model.previousEnabled}"
-                android:focusable="true"
-                android:onClick="@{() -> model.onClickPrevious()}"
-                android:padding="@dimen/control_button_padding"
-                app:srcCompat="@drawable/ic_skip_previous"
-                />
-
-            <ImageView
-                android:id="@+id/play_pause"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/control_button_margin"
-                android:layout_marginLeft="@dimen/control_button_margin"
-                android:layout_marginRight="@dimen/control_button_margin"
-                android:layout_marginStart="@dimen/control_button_margin"
-                android:background="@drawable/bg_control_button"
-                android:enabled="@{model.prepared}"
-                android:focusable="true"
-                android:imageResource="@{model.playButtonResId}"
-                android:onClick="@{() -> model.onClickPlayPause()}"
-                android:padding="@dimen/control_button_padding"
-                >
-
-                <requestFocus/>
-            </ImageView>
-
-            <ImageView
-                android:id="@+id/next"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:alpha="@{model.nextEnabled ? 1.0f : 0.5f}"
-                android:background="@drawable/bg_control_button"
-                android:enabled="@{model.nextEnabled}"
-                android:focusable="true"
-                android:onClick="@{() -> model.onClickNext()}"
-                android:padding="@dimen/control_button_padding"
-                app:srcCompat="@drawable/ic_skip_next"
-                />
-
-            <Space
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                />
-
-            <TextView
-                android:id="@+id/text_duration"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="top"
-                android:layout_marginEnd="@dimen/control_counter_margin"
-                android:text="@{model.durationText}"
-                android:textColor="@color/textPrimary"
-                android:textSize="@dimen/text_size_counter"
-                />
-        </LinearLayout>
-
         <TextView
+            android:id="@+id/text_progress"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="@dimen/scrub_margin_top"
-            android:focusable="false"
-            android:focusableInTouchMode="false"
-            android:text="@{model.scrubText}"
-            android:textColor="@color/textScrub"
-            android:textSize="@dimen/text_size_scrub"
-            tools:ignore="SpUsage"
+            android:layout_gravity="top"
+            android:layout_marginStart="@dimen/control_counter_margin"
+            android:textColor="@color/textPrimary"
+            android:textSize="@dimen/text_size_counter"
             />
-    </RelativeLayout>
-</layout>
+
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            />
+
+        <ImageView
+            android:id="@+id/previous"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_control_button"
+            android:focusable="true"
+            android:padding="@dimen/control_button_padding"
+            app:srcCompat="@drawable/ic_skip_previous"
+            />
+
+        <ImageView
+            android:id="@+id/play_pause"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/control_button_margin"
+            android:layout_marginLeft="@dimen/control_button_margin"
+            android:layout_marginEnd="@dimen/control_button_margin"
+            android:layout_marginRight="@dimen/control_button_margin"
+            android:background="@drawable/bg_control_button"
+            android:focusable="true"
+            android:padding="@dimen/control_button_padding"
+            >
+
+            <requestFocus />
+        </ImageView>
+
+        <ImageView
+            android:id="@+id/next"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_control_button"
+            android:focusable="true"
+            android:padding="@dimen/control_button_padding"
+            app:srcCompat="@drawable/ic_skip_next"
+            />
+
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            />
+
+        <TextView
+            android:id="@+id/text_duration"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top"
+            android:layout_marginEnd="@dimen/control_counter_margin"
+            android:textColor="@color/textPrimary"
+            android:textSize="@dimen/text_size_counter"
+            />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/scrub_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/scrub_margin_top"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
+        android:textColor="@color/textScrub"
+        android:textSize="@dimen/text_size_scrub"
+        tools:ignore="SpUsage"
+        />
+</RelativeLayout>

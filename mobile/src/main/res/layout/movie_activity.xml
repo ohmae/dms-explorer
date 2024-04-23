@@ -1,102 +1,79 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout
+<FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     >
 
-    <data>
-
-        <variable
-            name="model"
-            type="net.mm2d.dmsexplorer.viewmodel.MovieActivityModel"/>
-
-        <import type="android.view.View"/>
-    </data>
-
-    <FrameLayout
-        android:id="@+id/root"
+    <VideoView
+        android:id="@+id/video_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_gravity="center"
+        />
+
+    <LinearLayout
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="@dimen/status_bar_size"
         >
 
-        <VideoView
-            android:id="@+id/video_view"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
+        <ImageView
+            android:id="@+id/toolbar_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginEnd="@dimen/toolbar_button_margin"
+            android:background="@drawable/bg_tool_button"
+            android:focusable="true"
+            android:padding="@dimen/toolbar_button_padding"
+            app:srcCompat="@drawable/ic_arrow_back"
             />
 
-        <LinearLayout
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/toolbar_title"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:background="@{model.background}"
-            android:orientation="horizontal"
-            android:paddingTop="@dimen/status_bar_size"
-            app:layout_marginRight="@{model.rightNavigationSize}"
-            >
-
-            <ImageView
-                android:id="@+id/toolbar_back"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginEnd="@dimen/toolbar_button_margin"
-                android:background="@drawable/bg_tool_button"
-                android:focusable="true"
-                android:onClick="@{() -> model.onClickBack()}"
-                android:padding="@dimen/toolbar_button_padding"
-                app:srcCompat="@drawable/ic_arrow_back"
-                />
-
-            <TextView
-                android:id="@+id/toolbar_title"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_weight="1"
-                android:ellipsize="end"
-                android:maxLines="1"
-                android:singleLine="true"
-                android:text="@{model.title}"
-                android:textColor="#FFFFFF"
-                android:textSize="@dimen/text_size_toolbar"
-                />
-
-            <ImageView
-                android:id="@+id/picture_in_picture_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                android:background="@drawable/bg_tool_button"
-                android:focusable="true"
-                android:onClick="@{() -> model.onClickPictureInPicture()}"
-                android:padding="@dimen/toolbar_button_padding"
-                android:visibility="@{model.canUsePictureInPicture ? View.VISIBLE : View.GONE}"
-                app:srcCompat="@drawable/ic_picture_in_picture"
-                />
-
-            <ImageView
-                android:id="@+id/repeat_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                android:background="@drawable/bg_tool_button"
-                android:focusable="true"
-                android:imageResource="@{model.repeatIconId}"
-                android:onClick="@{() -> model.onClickRepeat()}"
-                android:padding="@dimen/toolbar_button_padding"
-                />
-        </LinearLayout>
-
-        <include
-            android:id="@+id/control_panel"
-            layout="@layout/control_panel"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            app:model="@{model.controlPanelModel}"
-            app:param="@{model.controlPanelParam}"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:singleLine="true"
+            android:textColor="#FFFFFF"
+            android:textSize="@dimen/text_size_toolbar"
             />
-    </FrameLayout>
-</layout>
+
+        <ImageView
+            android:id="@+id/picture_in_picture_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:background="@drawable/bg_tool_button"
+            android:focusable="true"
+            android:padding="@dimen/toolbar_button_padding"
+            app:srcCompat="@drawable/ic_picture_in_picture"
+            />
+
+        <ImageView
+            android:id="@+id/repeat_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:background="@drawable/bg_tool_button"
+            android:focusable="true"
+            android:padding="@dimen/toolbar_button_padding"
+            />
+    </LinearLayout>
+
+    <include
+        android:id="@+id/control_panel"
+        layout="@layout/control_panel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        />
+</FrameLayout>

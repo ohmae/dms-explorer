@@ -11,8 +11,8 @@ import android.content.Context
 import android.os.Handler
 import android.os.Looper
 import androidx.databinding.BaseObservable
-import androidx.databinding.Bindable
-import androidx.databinding.library.baseAdapters.BR
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
 import net.mm2d.android.util.Toaster
 import net.mm2d.dmsexplorer.R
 import net.mm2d.dmsexplorer.domain.model.PlayerModel
@@ -21,7 +21,7 @@ import net.mm2d.dmsexplorer.settings.RepeatMode
 import net.mm2d.dmsexplorer.view.view.ScrubBar
 import net.mm2d.dmsexplorer.view.view.ScrubBar.Accuracy
 import net.mm2d.dmsexplorer.view.view.ScrubBar.ScrubBarListener
-import java.util.*
+import java.util.Locale
 
 /**
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
@@ -41,86 +41,59 @@ class ControlPanelModel internal constructor(
     private val handler = Handler(Looper.getMainLooper())
     private val onCompletionTask = Runnable { onCompletion() }
 
-    @get:Bindable
-    var progressText = makeTimeText(0)
-        private set
+    private val progressTextFlow: MutableStateFlow<String> = MutableStateFlow(makeTimeText(0))
+    fun getProgressTextFlow(): Flow<String> = progressTextFlow
+    private val durationTextFlow: MutableStateFlow<String> = MutableStateFlow(makeTimeText(0))
+    fun getDurationTextFlow(): Flow<String> = durationTextFlow
 
-    @get:Bindable
-    var durationText = makeTimeText(0)
-        private set
     var isPlaying: Boolean = false
         private set(playing) {
             if (isPlaying == playing) {
                 return
             }
             field = playing
-            playButtonResId = if (playing) R.drawable.ic_pause else R.drawable.ic_play
+            playButtonResIdFlow.value = if (playing) R.drawable.ic_pause else R.drawable.ic_play
         }
 
-    @get:Bindable
-    var isPrepared: Boolean = false
-        private set(prepared) {
-            field = prepared
-            notifyPropertyChanged(BR.prepared)
-        }
+    private val isPrepredFlow: MutableStateFlow<Boolean> = MutableStateFlow(false)
+    fun getIsPreparedFlow(): Flow<Boolean> = isPrepredFlow
 
-    @get:Bindable
-    var duration: Int = 0
-        private set(duration) {
-            field = duration
-            notifyPropertyChanged(BR.duration)
-            if (duration > 0) {
-                isSeekable = true
-            }
-            setDurationText(duration)
-            isPrepared = true
+    private val durationFlow: MutableStateFlow<Int> = MutableStateFlow(0)
+    fun getDurationFlow(): Flow<Int> = durationFlow
+    private fun setDuration(duration: Int) {
+        durationFlow.value = duration
+        if (duration > 0) {
+            isSeekableFlow.value = true
         }
+        setDurationText(duration)
+        isPrepredFlow.value = true
+    }
 
-    @get:Bindable
-    var progress: Int = 0
-        private set(progress) {
-            if (tracking) {
-                return
-            }
-            setProgressText(progress)
-            field = progress
-            notifyPropertyChanged(BR.progress)
+    private val progressFlow: MutableStateFlow<Int> = MutableStateFlow(0)
+    fun getProgressFlow(): Flow<Int> = progressFlow
+    fun getProgress(): Int = progressFlow.value
+    private fun setProgress(progress: Int) {
+        if (tracking) {
+            return
         }
+        setProgressText(progress)
+        progressFlow.value = progress
+    }
 
-    @get:Bindable
-    var isSeekable: Boolean = false
-        private set(seekable) {
-            field = seekable
-            notifyPropertyChanged(BR.seekable)
-        }
+    private val isSeekableFlow: MutableStateFlow<Boolean> = MutableStateFlow(false)
+    fun getIsSeekableFlow(): Flow<Boolean> = isSeekableFlow
 
-    @get:Bindable
-    var playButtonResId = R.drawable.ic_play
-        private set(playButtonResId) {
-            field = playButtonResId
-            notifyPropertyChanged(BR.playButtonResId)
-        }
+    private val playButtonResIdFlow: MutableStateFlow<Int> = MutableStateFlow(R.drawable.ic_play)
+    fun getPlayButtonResIdFlow(): Flow<Int> = playButtonResIdFlow
 
-    @get:Bindable
-    var scrubText = ""
-        private set(scrubText) {
-            field = scrubText
-            notifyPropertyChanged(BR.scrubText)
-        }
+    private val scrubTextFlow: MutableStateFlow<String> = MutableStateFlow("")
+    fun getScrubTextFlow(): Flow<String> = scrubTextFlow
 
-    @get:Bindable
-    var isNextEnabled: Boolean = false
-        set(nextEnabled) {
-            field = nextEnabled
-            notifyPropertyChanged(BR.nextEnabled)
-        }
+    private val isNextEnabledFlow: MutableStateFlow<Boolean> = MutableStateFlow(false)
+    fun getIsNextEnabledFlow(): Flow<Boolean> = isNextEnabledFlow
 
-    @get:Bindable
-    var isPreviousEnabled: Boolean = false
-        set(previousEnabled) {
-            field = previousEnabled
-            notifyPropertyChanged(BR.previousEnabled)
-        }
+    private val isPreviousEnabledFlow: MutableStateFlow<Boolean> = MutableStateFlow(false)
+    fun getIsPreviousEnabledFlow(): Flow<Boolean> = isPreviousEnabledFlow
 
     val seekBarListener: ScrubBarListener = object : ScrubBarListener {
         override fun onProgressChanged(
@@ -141,20 +114,20 @@ class ControlPanelModel internal constructor(
             tracking = false
             isSkipped = true
             playerModel.seekTo(seekBar.progress)
-            scrubText = ""
+            scrubTextFlow.value = ""
         }
 
         override fun onAccuracyChanged(
             seekBar: ScrubBar,
             @Accuracy accuracy: Int,
         ) {
-            scrubText = getScrubText(accuracy)
+            scrubTextFlow.value = getScrubText(accuracy)
         }
     }
 
     init {
         playerModel.setStatusListener(this)
-        isPreviousEnabled = true
+        isPreviousEnabledFlow.value = true
     }
 
     internal fun terminate() {
@@ -198,7 +171,7 @@ class ControlPanelModel internal constructor(
 
     fun setRepeatMode(mode: RepeatMode) {
         repeatMode = mode
-        isNextEnabled = when (mode) {
+        isNextEnabledFlow.value = when (mode) {
             RepeatMode.PLAY_ONCE,
             RepeatMode.REPEAT_ONE,
             -> false
@@ -209,7 +182,7 @@ class ControlPanelModel internal constructor(
     }
 
     fun onClickNext() {
-        if (!isNextEnabled) {
+        if (!isNextEnabledFlow.value) {
             return
         }
         if (!playerModel.next()) {
@@ -218,7 +191,7 @@ class ControlPanelModel internal constructor(
     }
 
     fun onClickPrevious() {
-        if (!isPreviousEnabled) {
+        if (!isPreviousEnabledFlow.value) {
             return
         }
         if (!playerModel.previous()) {
@@ -227,13 +200,11 @@ class ControlPanelModel internal constructor(
     }
 
     private fun setProgressText(progress: Int) {
-        progressText = makeTimeText(progress)
-        notifyPropertyChanged(BR.progressText)
+        progressTextFlow.value = makeTimeText(progress)
     }
 
     private fun setDurationText(duration: Int) {
-        durationText = makeTimeText(duration)
-        notifyPropertyChanged(BR.durationText)
+        durationTextFlow.value = makeTimeText(duration)
     }
 
     private fun getScrubText(accuracy: Int): String {
@@ -246,11 +217,11 @@ class ControlPanelModel internal constructor(
     }
 
     override fun notifyDuration(duration: Int) {
-        this.duration = duration
+        durationFlow.value = duration
     }
 
     override fun notifyProgress(progress: Int) {
-        this.progress = progress
+        progressFlow.value = progress
     }
 
     override fun notifyPlayingState(playing: Boolean) {
