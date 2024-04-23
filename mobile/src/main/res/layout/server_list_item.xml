@@ -1,108 +1,86 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout
+<androidx.cardview.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/list_card_margin"
+    android:focusable="true"
+    app:cardBackgroundColor="?attr/themeCardBackground"
+    app:cardCornerRadius="@dimen/list_card_radius"
     >
 
-    <data>
-
-        <variable
-            name="model"
-            type="net.mm2d.dmsexplorer.viewmodel.ServerItemModel"
-            />
-
-        <import type="android.view.View" />
-    </data>
-
-    <androidx.cardview.widget.CardView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/list_card_margin"
-        android:focusable="true"
-        app:cardBackgroundColor="?attr/themeCardBackground"
-        app:cardCornerRadius="@dimen/list_card_radius"
+        android:background="@drawable/bg_list_item"
+        android:orientation="horizontal"
         >
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/bg_list_item"
-            android:orientation="horizontal"
+        <View
+            android:id="@+id/mark"
+            android:layout_width="@dimen/list_focus_mark_width"
+            android:layout_height="match_parent"
+            android:background="@color/markListItemSelected"
+            />
+
+        <FrameLayout
+            android:id="@+id/accent"
+            android:layout_width="@dimen/accent_size"
+            android:layout_height="@dimen/accent_size"
+            android:layout_gravity="center_vertical"
+            android:layout_margin="@dimen/icon_margin"
             >
 
-            <View
-                android:id="@+id/mark"
-                android:layout_width="@dimen/list_focus_mark_width"
-                android:layout_height="match_parent"
-                android:background="@color/markListItemSelected"
-                android:visibility="@{model.selected ? View.VISIBLE : View.INVISIBLE}"
-                />
-
-            <FrameLayout
-                android:id="@+id/accent"
+            <TextView
+                android:id="@+id/text_accent"
                 android:layout_width="@dimen/accent_size"
                 android:layout_height="@dimen/accent_size"
                 android:layout_gravity="center_vertical"
-                android:layout_margin="@dimen/icon_margin"
-                >
+                android:gravity="center"
+                android:textColor="@color/textPrimary"
+                android:textSize="@dimen/text_size_accent"
+                tools:ignore="SpUsage"
+                />
 
-                <TextView
-                    android:id="@+id/text_accent"
-                    android:layout_width="@dimen/accent_size"
-                    android:layout_height="@dimen/accent_size"
-                    android:layout_gravity="center_vertical"
-                    android:background="@{model.accentBackground}"
-                    android:gravity="center"
-                    android:text="@{model.accentText}"
-                    android:textColor="@color/textPrimary"
-                    android:textSize="@dimen/text_size_accent"
-                    android:visibility="@{model.accentIcon == null ? View.VISIBLE : View.INVISIBLE}"
-                    tools:ignore="SpUsage"
-                    />
+            <ImageView
+                android:id="@+id/image_accent"
+                android:layout_width="@dimen/accent_size"
+                android:layout_height="@dimen/accent_size"
+                android:scaleType="fitCenter"
+                tools:ignore="ContentDescription"
+                />
 
-                <ImageView
-                    android:id="@+id/image_accent"
-                    android:layout_width="@dimen/accent_size"
-                    android:layout_height="@dimen/accent_size"
-                    android:imageBitmap="@{model.accentIcon}"
-                    android:scaleType="fitCenter"
-                    android:visibility="@{model.accentIcon != null ? View.VISIBLE : View.INVISIBLE}"
-                    tools:ignore="ContentDescription"
-                    />
+        </FrameLayout>
 
-            </FrameLayout>
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            >
 
-            <LinearLayout
-                android:layout_width="0dp"
+            <TextView
+                android:id="@+id/text_title"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_weight="1"
-                android:orientation="vertical"
-                >
+                android:layout_marginTop="@dimen/default_margin"
+                android:layout_marginBottom="@dimen/small_margin"
+                android:textColor="?attr/themeTextColor"
+                android:textSize="@dimen/text_size_main"
+                />
 
-                <TextView
-                    android:id="@+id/text_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/small_margin"
-                    android:layout_marginTop="@dimen/default_margin"
-                    android:text="@{model.title}"
-                    android:textColor="?attr/themeTextColor"
-                    android:textSize="@dimen/text_size_main"
-                    />
+            <TextView
+                android:id="@+id/text_description"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/default_margin"
+                android:textColor="?attr/themeSubTextColor"
+                android:textSize="@dimen/text_size_sub"
+                />
 
-                <TextView
-                    android:id="@+id/text_description"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/default_margin"
-                    android:text="@{model.description}"
-                    android:textColor="?attr/themeSubTextColor"
-                    android:textSize="@dimen/text_size_sub"
-                    />
-
-            </LinearLayout>
         </LinearLayout>
-    </androidx.cardview.widget.CardView>
-</layout>
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

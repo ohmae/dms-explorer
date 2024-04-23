@@ -12,7 +12,6 @@ import android.graphics.Color
 import android.os.Handler
 import android.os.Looper
 import android.view.View
-import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView.ItemAnimator
 import androidx.recyclerview.widget.RecyclerView.LayoutManager
@@ -106,8 +105,8 @@ class ServerListActivityModel(
             return null
         }
         val listItem = serverListLayoutManager.findViewByPosition(position) ?: return null
-        val binding = DataBindingUtil.findBinding<ServerListItemBinding>(listItem)
-        return binding?.accent
+        val binding = ServerListItemBinding.bind(listItem)
+        return binding.accent
     }
 
     fun hasSelectedMediaServer(): Boolean {

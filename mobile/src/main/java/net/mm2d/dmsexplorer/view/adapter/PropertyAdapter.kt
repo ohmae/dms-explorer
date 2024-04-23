@@ -14,7 +14,8 @@ import android.view.View
 import android.view.View.OnClickListener
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.databinding.DataBindingUtil
+import androidx.core.view.isVisible
+import androidx.core.view.updatePadding
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.Adapter
 import net.mm2d.android.upnp.cds.MediaServer
@@ -24,6 +25,7 @@ import net.mm2d.dmsexplorer.databinding.PropertyListItemBinding
 import net.mm2d.dmsexplorer.domain.entity.ContentEntity
 import net.mm2d.dmsexplorer.view.adapter.PropertyAdapter.ViewHolder
 import net.mm2d.dmsexplorer.viewmodel.PropertyItemModel
+import net.mm2d.dmsexplorer.viewmodel.adapter.TextViewBindingAdapter
 import java.util.regex.Pattern
 
 /**
@@ -54,7 +56,7 @@ abstract class PropertyAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder = ViewHolder(
         context,
         inflater,
-        DataBindingUtil.inflate(inflater, R.layout.property_list_item, parent, false),
+        PropertyListItemBinding.inflate(inflater, parent, false),
     )
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -87,8 +89,30 @@ abstract class PropertyAdapter(
             if (entry.type == Type.DESCRIPTION) {
                 value = setUpDescription(entry)
             }
-            binding.model = PropertyItemModel(entry.name, entry.type, value, this)
-            binding.executePendingBindings()
+            val model = PropertyItemModel(entry.name, entry.type, value, this)
+            val margin = context.resources.getDimensionPixelSize(R.dimen.property_margin_bottom)
+            binding.root.updatePadding(bottom = if (model.enableDescription) margin else 0)
+            binding.title.text = model.title
+            binding.description.text = model.description
+            val marginLink = context.resources.getDimensionPixelSize(R.dimen.property_margin_link)
+            val marginNormal = context.resources.getDimensionPixelSize(R.dimen.property_margin_normal)
+            binding.description.updatePadding(
+                top = if (model.isLink) marginLink else marginNormal,
+                bottom = if (model.isLink) marginLink else marginNormal,
+            )
+            if (model.isLink) {
+                binding.description.setBackgroundResource(R.drawable.bg_link_text)
+            } else {
+                binding.description.background = null
+            }
+            binding.description.isVisible = model.enableDescription
+            binding.description.setTextIsSelectable(!model.isLink)
+            binding.description.setOnClickListener(model.onClickListener)
+            TextViewBindingAdapter.setTextColorAttr(
+                binding.description,
+                if (model.isLink) R.attr.themeLinkColor else R.attr.themeTextColor
+            )
+            TextViewBindingAdapter.setUnderlineFlag(binding.description, model.isLink)
         }
 
         private fun setUpDescription(entry: Entry): String {

@@ -11,7 +11,6 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Bitmap
 import android.widget.ImageView
-import androidx.databinding.BindingAdapter
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -25,8 +24,6 @@ import net.mm2d.dmsexplorer.R
  */
 object ImageViewBindingAdapter {
     @SuppressLint("CheckResult")
-    @BindingAdapter("imageBinary")
-    @JvmStatic
     fun setImageBinary(
         imageView: ImageView,
         binary: ByteArray?,

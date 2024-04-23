@@ -1,57 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/container"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingLeft="@dimen/horizontal_padding"
+    android:paddingTop="@dimen/property_margin"
+    android:paddingRight="@dimen/horizontal_padding"
     >
 
-    <data>
-
-        <variable
-            name="model"
-            type="net.mm2d.dmsexplorer.viewmodel.PropertyItemModel"
-            />
-
-        <import type="net.mm2d.dmsexplorer.R" />
-
-        <import type="android.view.View" />
-    </data>
-
-    <LinearLayout
-        android:id="@+id/container"
-        android:layout_width="match_parent"
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:paddingBottom="@{model.enableDescription ? @dimen/property_margin_bottom : 0}"
-        android:paddingLeft="@dimen/horizontal_padding"
-        android:paddingRight="@dimen/horizontal_padding"
-        android:paddingTop="@dimen/property_margin"
-        >
+        android:layout_marginBottom="4dp"
+        android:textColor="?attr/themePropertyTitleColor"
+        android:textSize="@dimen/text_size_sub"
+        />
 
-        <TextView
-            android:id="@+id/title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="4dp"
-            android:text="@{model.title}"
-            android:textColor="?attr/themePropertyTitleColor"
-            android:textSize="@dimen/text_size_sub"
-            />
+    <TextView
+        android:id="@+id/description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/text_size_main"
+        />
 
-        <TextView
-            android:id="@+id/description"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@{model.isLink ? @drawable/bg_link_text : null}"
-            android:onClickListener="@{model.onClickListener}"
-            android:paddingBottom="@{model.isLink ? @dimen/property_margin_link : @dimen/property_margin_normal}"
-            android:paddingTop="@{model.isLink ? @dimen/property_margin_link : @dimen/property_margin_normal}"
-            android:text="@{model.description}"
-            android:textIsSelectable="@{!model.isLink}"
-            android:textSize="@dimen/text_size_main"
-            android:visibility="@{model.enableDescription ? View.VISIBLE : View.GONE}"
-            app:textColorAttr="@{model.isLink ? R.attr.themeLinkColor : R.attr.themeTextColor}"
-            app:underline="@{model.isLink}"
-            />
-
-    </LinearLayout>
-</layout>
+</LinearLayout>

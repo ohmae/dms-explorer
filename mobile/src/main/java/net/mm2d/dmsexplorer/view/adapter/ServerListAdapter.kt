@@ -11,7 +11,7 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
+import androidx.core.view.isInvisible
 import androidx.recyclerview.widget.RecyclerView
 import net.mm2d.android.upnp.cds.MediaServer
 import net.mm2d.dmsexplorer.R
@@ -42,7 +42,7 @@ class ServerListAdapter(
         viewType: Int,
     ): ViewHolder {
         return ViewHolder(
-            DataBindingUtil.inflate(inflater, R.layout.server_list_item, parent, false),
+            ServerListItemBinding.inflate(inflater, parent, false),
         )
     }
 
@@ -131,8 +131,15 @@ class ServerListAdapter(
             mediaServer = server
             val selected = server == selectedServer
             itemView.isSelected = selected
-            binding.model = ServerItemModel(context, server, selected)
-            binding.executePendingBindings()
+            val model = ServerItemModel(context, server, selected)
+            binding.mark.isInvisible = !model.selected
+            binding.textAccent.setBackground(model.accentBackground)
+            binding.textAccent.text = model.accentText
+            binding.textAccent.isInvisible = model.accentIcon != null
+            binding.imageAccent.setImageBitmap(model.accentIcon)
+            binding.imageAccent.isInvisible = model.accentIcon == null
+            binding.textTitle.text = model.title
+            binding.textDescription.text = model.description
         }
 
         private fun onClick(v: View) {

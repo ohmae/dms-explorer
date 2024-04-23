@@ -8,17 +8,12 @@
 package net.mm2d.dmsexplorer.viewmodel.adapter
 
 import android.view.View
-import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
 
 /**
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
  */
 object RecyclerViewBindingAdapter {
-    // 選択項目を中央に表示させる処理
-    // FIXME: DataBindingを使ったことで返って複雑化してしまっている
-    @BindingAdapter("scrollPosition")
-    @JvmStatic
     fun setScrollPosition(
         view: RecyclerView,
         position: Int,

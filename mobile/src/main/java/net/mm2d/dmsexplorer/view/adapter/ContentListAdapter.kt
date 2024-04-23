@@ -11,7 +11,8 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
+import androidx.core.view.isInvisible
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import net.mm2d.dmsexplorer.R
 import net.mm2d.dmsexplorer.databinding.ContentListItemBinding
@@ -37,7 +38,7 @@ class ContentListAdapter(context: Context) : RecyclerView.Adapter<ContentListAda
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(
-            DataBindingUtil.inflate(inflater, R.layout.content_list_item, parent, false),
+            ContentListItemBinding.inflate(inflater, parent, false),
         )
     }
 
@@ -103,8 +104,15 @@ class ContentListAdapter(context: Context) : RecyclerView.Adapter<ContentListAda
             contentEntity = entity
             val selected = entity == selectedEntity
             itemView.isSelected = selected
-            binding.model = ContentItemModel(itemView.context, entity, selected)
-            binding.executePendingBindings()
+            val model = ContentItemModel(itemView.context, entity, selected)
+            binding.mark.isInvisible = !model.selected
+            binding.textAccent.text = model.accentText
+            binding.textAccent.background = model.accentBackground
+            binding.textTitle.text = model.title
+            binding.textDescription.text = model.description
+            binding.textDescription.isVisible = model.hasDescription
+            binding.image.setImageResource(model.imageResource)
+            binding.lock.isVisible = model.isProtected
         }
 
         private fun onClick(v: View) {

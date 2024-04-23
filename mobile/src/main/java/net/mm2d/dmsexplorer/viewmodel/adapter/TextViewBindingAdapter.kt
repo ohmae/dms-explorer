@@ -10,15 +10,12 @@ package net.mm2d.dmsexplorer.viewmodel.adapter
 import android.graphics.Color
 import android.graphics.Paint
 import android.widget.TextView
-import androidx.databinding.BindingAdapter
 import net.mm2d.dmsexplorer.util.AttrUtils
 
 /**
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
  */
 object TextViewBindingAdapter {
-    @BindingAdapter("underline")
-    @JvmStatic
     fun setUnderlineFlag(
         view: TextView,
         underline: Boolean,
@@ -30,8 +27,6 @@ object TextViewBindingAdapter {
         }
     }
 
-    @BindingAdapter("textColorAttr")
-    @JvmStatic
     fun setTextColorAttr(
         view: TextView,
         attr: Int,
