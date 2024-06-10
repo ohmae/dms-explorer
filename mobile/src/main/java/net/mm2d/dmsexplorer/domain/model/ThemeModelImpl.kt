@@ -15,7 +15,9 @@ import net.mm2d.dmsexplorer.util.ColorUtils
 /**
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
  */
-class ThemeModelImpl : ActivityLifecycleCallbacksAdapter(), ThemeModel {
+class ThemeModelImpl :
+    ActivityLifecycleCallbacksAdapter(),
+    ThemeModel {
     private val map = HashMap<String, Int>()
 
     override fun setThemeColor(

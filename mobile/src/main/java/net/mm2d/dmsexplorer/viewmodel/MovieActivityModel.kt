@@ -209,8 +209,8 @@ class MovieActivityModel(
         }
     }
 
-    private fun selectNext(): Boolean {
-        return when (repeatMode) {
+    private fun selectNext(): Boolean =
+        when (repeatMode) {
             RepeatMode.PLAY_ONCE -> false
             RepeatMode.SEQUENTIAL ->
                 serverModel?.selectNextEntity(MediaServerModel.SCAN_MODE_SEQUENTIAL) ?: false
@@ -220,10 +220,9 @@ class MovieActivityModel(
 
             RepeatMode.REPEAT_ONE -> false
         }
-    }
 
-    private fun selectPrevious(): Boolean {
-        return when (repeatMode) {
+    private fun selectPrevious(): Boolean =
+        when (repeatMode) {
             RepeatMode.PLAY_ONCE -> false
             RepeatMode.SEQUENTIAL ->
                 serverModel?.selectPreviousEntity(MediaServerModel.SCAN_MODE_SEQUENTIAL) ?: false
@@ -233,7 +232,6 @@ class MovieActivityModel(
 
             RepeatMode.REPEAT_ONE -> false
         }
-    }
 
     companion object {
         private const val TOO_SHORT_PLAY_TIME = 2000L

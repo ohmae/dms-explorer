@@ -40,11 +40,7 @@ class ServerListAdapter(
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int,
-    ): ViewHolder {
-        return ViewHolder(
-            ServerListItemBinding.inflate(inflater, parent, false),
-        )
-    }
+    ): ViewHolder = ViewHolder(ServerListItemBinding.inflate(inflater, parent, false))
 
     override fun onBindViewHolder(
         holder: ViewHolder,
@@ -53,13 +49,9 @@ class ServerListAdapter(
         holder.applyItem(list[position])
     }
 
-    override fun getItemCount(): Int {
-        return list.size
-    }
+    override fun getItemCount(): Int = list.size
 
-    fun indexOf(server: MediaServer): Int {
-        return list.indexOf(server)
-    }
+    fun indexOf(server: MediaServer): Int = list.indexOf(server)
 
     fun setOnItemClickListener(listener: ((View, MediaServer) -> Unit)?) {
         clickListener = listener

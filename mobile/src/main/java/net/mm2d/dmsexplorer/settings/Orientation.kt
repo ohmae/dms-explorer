@@ -57,10 +57,9 @@ enum class Orientation(
     }
 
     companion object {
-        private val map = values().map { it.name to it }.toMap()
+        private val map = entries.map { it.name to it }.toMap()
 
-        fun of(name: String): Orientation {
-            return map.getOrElse(name) { UNSPECIFIED }
-        }
+        fun of(name: String): Orientation =
+            map.getOrElse(name) { UNSPECIFIED }
     }
 }

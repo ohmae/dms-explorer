@@ -78,9 +78,8 @@ class MediaRendererModel(
         }
     }
 
-    override fun canPause(): Boolean {
-        return mediaRenderer.isSupportPause()
-    }
+    override fun canPause(): Boolean =
+        mediaRenderer.isSupportPause()
 
     override fun terminate() {
         if (!started) {

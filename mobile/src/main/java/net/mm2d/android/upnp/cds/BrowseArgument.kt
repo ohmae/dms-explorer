@@ -48,9 +48,7 @@ internal class BrowseArgument {
         argument[REQUESTED_COUNT] = requestCount.toString()
     }
 
-    fun get(): Map<String, String?> {
-        return argument
-    }
+    fun get(): Map<String, String?> = argument
 
     companion object {
         private const val OBJECT_ID = "ObjectID"

@@ -67,9 +67,8 @@ class CustomItemAnimator(context: Context) : SimpleItemAnimator() {
         val toX: Int,
         val toY: Int,
     ) {
-        override fun toString(): String {
-            return "ChangeInfo{oldHolder=$oldHolder, newHolder=$newHolder, fromX=$fromX, fromY=$fromY, toX=$toX, toY=$toY}"
-        }
+        override fun toString(): String =
+            "ChangeInfo{oldHolder=$oldHolder, newHolder=$newHolder, fromX=$fromX, fromY=$fromY, toX=$toX, toY=$toY}"
     }
 
     init {
@@ -499,21 +498,19 @@ class CustomItemAnimator(context: Context) : SimpleItemAnimator() {
         endAnimation(holder)
     }
 
-    override fun isRunning(): Boolean {
-        return (
-            pendingAdditions.isNotEmpty() ||
-                pendingChanges.isNotEmpty() ||
-                pendingMoves.isNotEmpty() ||
-                pendingRemovals.isNotEmpty() ||
-                moveAnimations.isNotEmpty() ||
-                removeAnimations.isNotEmpty() ||
-                addAnimations.isNotEmpty() ||
-                changeAnimations.isNotEmpty() ||
-                movesList.isNotEmpty() ||
-                additionsList.isNotEmpty() ||
-                changesList.isNotEmpty()
-            )
-    }
+    override fun isRunning(): Boolean = (
+        pendingAdditions.isNotEmpty() ||
+            pendingChanges.isNotEmpty() ||
+            pendingMoves.isNotEmpty() ||
+            pendingRemovals.isNotEmpty() ||
+            moveAnimations.isNotEmpty() ||
+            removeAnimations.isNotEmpty() ||
+            addAnimations.isNotEmpty() ||
+            changeAnimations.isNotEmpty() ||
+            movesList.isNotEmpty() ||
+            additionsList.isNotEmpty() ||
+            changesList.isNotEmpty()
+        )
 
     /**
      * Check the state of currently pending and running animations. If there are none
@@ -627,9 +624,7 @@ class CustomItemAnimator(context: Context) : SimpleItemAnimator() {
     override fun canReuseUpdatedViewHolder(
         viewHolder: ViewHolder,
         payloads: List<Any>,
-    ): Boolean {
-        return payloads.isNotEmpty() || super.canReuseUpdatedViewHolder(viewHolder, payloads)
-    }
+    ): Boolean = payloads.isNotEmpty() || super.canReuseUpdatedViewHolder(viewHolder, payloads)
 
     companion object {
         private const val DEBUG = false

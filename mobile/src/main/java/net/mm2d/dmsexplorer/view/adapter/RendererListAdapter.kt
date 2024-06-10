@@ -29,11 +29,8 @@ class RendererListAdapter(
     private var clickListener: ((View, MediaRenderer) -> Unit)? = null
     private var longClickListener: ((View, MediaRenderer) -> Unit)? = null
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return ViewHolder(
-            RendererListItemBinding.inflate(inflater, parent, false),
-        )
-    }
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
+        ViewHolder(RendererListItemBinding.inflate(inflater, parent, false))
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.applyItem(list[position])

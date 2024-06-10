@@ -36,11 +36,8 @@ class ContentListAdapter(context: Context) : RecyclerView.Adapter<ContentListAda
 
     var list = emptyList<ContentEntity>()
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return ViewHolder(
-            ContentListItemBinding.inflate(inflater, parent, false),
-        )
-    }
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
+        ViewHolder(ContentListItemBinding.inflate(inflater, parent, false))
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.applyItem(list[position])

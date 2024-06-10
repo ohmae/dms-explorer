@@ -15,19 +15,17 @@ import androidx.palette.graphics.Palette.Swatch
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
  */
 object PaletteUtils {
-    fun selectLightSwatch(palette: Palette): Swatch? {
-        return palette.vibrantSwatch
+    fun selectLightSwatch(palette: Palette): Swatch? =
+        palette.vibrantSwatch
             ?: palette.mutedSwatch
             ?: palette.dominantSwatch
-    }
 
-    fun selectDarkSwatch(palette: Palette): Swatch? {
-        return palette.darkVibrantSwatch
+    fun selectDarkSwatch(palette: Palette): Swatch? =
+        palette.darkVibrantSwatch
             ?: palette.darkMutedSwatch
             ?: palette.vibrantSwatch
             ?: palette.mutedSwatch
             ?: palette.dominantSwatch
-    }
 }
 
 fun Bitmap.generatePalette(): Palette = Palette.Builder(this).generate()

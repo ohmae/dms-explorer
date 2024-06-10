@@ -264,13 +264,12 @@ class IntroductoryOverlay private constructor(
         private const val ANIMATION_DURATION: Long = 400
         private val DEFAULT_TIMEOUT = TimeUnit.SECONDS.toMillis(5)
 
-        private fun makeCirclePaint(@ColorInt color: Int): Paint {
-            return Paint().also {
+        private fun makeCirclePaint(@ColorInt color: Int): Paint =
+            Paint().also {
                 it.color = color
                 it.xfermode = PorterDuffXfermode(PorterDuff.Mode.SRC)
                 it.isAntiAlias = true
             }
-        }
 
         private fun makeErasePaint(): Paint = Paint().also {
             it.color = Color.BLACK

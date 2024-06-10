@@ -109,9 +109,7 @@ class ServerListActivityModel(
         return binding.accent
     }
 
-    fun hasSelectedMediaServer(): Boolean {
-        return controlPointModel.selectedMediaServer != null
-    }
+    fun hasSelectedMediaServer(): Boolean = controlPointModel.selectedMediaServer != null
 
     private fun onItemClick(v: View, server: MediaServer) {
         val alreadySelected = controlPointModel.isSelectedMediaServer(server)

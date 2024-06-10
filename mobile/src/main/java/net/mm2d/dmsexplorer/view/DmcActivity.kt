@@ -85,8 +85,7 @@ class DmcActivity : BaseActivity() {
          * @param context コンテキスト
          * @return このActivityを起動するためのIntent
          */
-        fun makeIntent(context: Context): Intent {
-            return Intent(context, DmcActivity::class.java)
-        }
+        fun makeIntent(context: Context): Intent =
+            Intent(context, DmcActivity::class.java)
     }
 }

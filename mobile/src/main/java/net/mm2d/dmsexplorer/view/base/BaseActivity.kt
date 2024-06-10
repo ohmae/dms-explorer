@@ -23,8 +23,7 @@ import java.util.concurrent.atomic.AtomicBoolean
 abstract class BaseActivity @JvmOverloads constructor(
     private val mainMenu: Boolean = false,
     private val menuResId: Int = 0,
-) :
-    AppCompatActivity() {
+) : AppCompatActivity() {
     private val finishAfterTransitionLatch = AtomicBoolean()
     private val finishLatch = AtomicBoolean()
     private lateinit var delegate: OptionsMenuDelegate

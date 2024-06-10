@@ -82,7 +82,8 @@ abstract class PropertyAdapter(
         private val context: Context,
         private val inflater: LayoutInflater,
         private val binding: PropertyListItemBinding,
-    ) : RecyclerView.ViewHolder(binding.root), OnClickListener {
+    ) : RecyclerView.ViewHolder(binding.root),
+        OnClickListener {
 
         fun applyItem(entry: Entry) {
             var value = entry.value
@@ -110,7 +111,7 @@ abstract class PropertyAdapter(
             binding.description.setOnClickListener(model.onClickListener)
             TextViewBindingAdapter.setTextColorAttr(
                 binding.description,
-                if (model.isLink) R.attr.themeLinkColor else R.attr.themeTextColor
+                if (model.isLink) R.attr.themeLinkColor else R.attr.themeTextColor,
             )
             TextViewBindingAdapter.setUnderlineFlag(binding.description, model.isLink)
         }

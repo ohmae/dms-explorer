@@ -30,7 +30,9 @@ class MediaServer
  *
  * @param device デバイス
  */
-internal constructor(device: Device) : DeviceWrapper(device) {
+internal constructor(
+    device: Device,
+) : DeviceWrapper(device) {
     private val cdsService: Service
     private val browse: Action
     private val destroyObject: Action?

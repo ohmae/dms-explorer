@@ -67,11 +67,12 @@ class VideoViewControl(
 
     override fun setOnErrorListener(listener: OnErrorListener?) {
         videoView.setOnErrorListener { mediaPlayer, what, extra ->
-            listener == null || listener.onError(
-                mediaPlayer,
-                what,
-                extra,
-            )
+            listener == null ||
+                listener.onError(
+                    mediaPlayer,
+                    what,
+                    extra,
+                )
         }
     }
 

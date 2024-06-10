@@ -209,9 +209,7 @@ class MsControlPoint : ControlPointWrapper {
      * @param udn UDN
      * @return MediaServer、見つからない場合null
      */
-    override fun getDevice(udn: String?): MediaServer? {
-        return mediaServerMap[udn]
-    }
+    override fun getDevice(udn: String?): MediaServer? = mediaServerMap[udn]
 
     /**
      * 初期化する。

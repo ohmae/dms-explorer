@@ -160,11 +160,10 @@ class PhotoActivity : BaseActivity() {
         EventLogger.sendPlayContent(true)
     }
 
-    private fun move(index: Int): Boolean {
-        return if (index == 0) {
+    private fun move(index: Int): Boolean =
+        if (index == 0) {
             serverModel.selectPreviousEntity(MediaServerModel.SCAN_MODE_SEQUENTIAL)
         } else {
             serverModel.selectNextEntity(MediaServerModel.SCAN_MODE_SEQUENTIAL)
         }
-    }
 }

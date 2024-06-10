@@ -29,7 +29,8 @@ class NestedScrollingWebView
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0,
-) : WebView(context, attrs, defStyleAttr), NestedScrollingChild {
+) : WebView(context, attrs, defStyleAttr),
+    NestedScrollingChild {
     private val helper: NestedScrollingChildHelper = NestedScrollingChildHelper(this)
     private val touchSlop: Int
     private val buffer = IntArray(2)

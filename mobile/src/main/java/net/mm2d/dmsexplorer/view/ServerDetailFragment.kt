@@ -50,8 +50,6 @@ class ServerDetailFragment : Fragment(R.layout.server_detail_fragment) {
          *
          * @return インスタンス
          */
-        fun newInstance(): ServerDetailFragment {
-            return ServerDetailFragment()
-        }
+        fun newInstance(): ServerDetailFragment = ServerDetailFragment()
     }
 }

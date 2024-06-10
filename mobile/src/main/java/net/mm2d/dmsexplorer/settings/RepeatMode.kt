@@ -72,20 +72,19 @@ enum class RepeatMode(
      *
      * @return 次のモード
      */
-    operator fun next(): RepeatMode {
-        return orderOf((order + 1) % length)
-    }
+    operator fun next(): RepeatMode =
+        orderOf((order + 1) % length)
 
     companion object {
         private val orderMap: SparseArray<RepeatMode>
-        private val nameMap = values().map { it.name to it }.toMap()
+        private val nameMap = entries.map { it.name to it }.toMap()
         private val length: Int
 
         init {
-            val values = values()
+            val values = entries.toTypedArray()
             length = values.size
             orderMap = SparseArray()
-            values().forEach {
+            values.forEach {
                 orderMap.put(it.order, it)
             }
         }
@@ -96,9 +95,8 @@ enum class RepeatMode(
          * @param order 順序値
          * @return 該当するEnum値、該当するものがない場合デフォルト値
          */
-        private fun orderOf(order: Int): RepeatMode {
-            return orderMap.get(order, PLAY_ONCE)
-        }
+        private fun orderOf(order: Int): RepeatMode =
+            orderMap.get(order, PLAY_ONCE)
 
         /**
          * モードを表現する文字列から該当するEnum値を返す。

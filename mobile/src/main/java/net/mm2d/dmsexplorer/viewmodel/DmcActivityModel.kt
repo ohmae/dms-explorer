@@ -184,14 +184,13 @@ class DmcActivityModel(
         playButtonResIdFlow.value = if (playing) R.drawable.ic_pause else R.drawable.ic_play
     }
 
-    private fun getAccuracyText(accuracy: Int): String {
-        return when (accuracy) {
+    private fun getAccuracyText(accuracy: Int): String =
+        when (accuracy) {
             ScrubBar.ACCURACY_NORMAL -> activity.getString(R.string.seek_bar_scrub_normal)
             ScrubBar.ACCURACY_HALF -> activity.getString(R.string.seek_bar_scrub_half)
             ScrubBar.ACCURACY_QUARTER -> activity.getString(R.string.seek_bar_scrub_quarter)
             else -> ""
         }
-    }
 
     private fun setChapterInfoEnabled() {
         isChapterInfoEnabledFlow.value = durationFlow.value != 0 && chapterListFlow.value.isNotEmpty()
@@ -242,9 +241,7 @@ class DmcActivityModel(
     override fun onInfo(
         what: Int,
         extra: Int,
-    ): Boolean {
-        return false
-    }
+    ): Boolean = false
 
     override fun onCompletion() {
         ActivityCompat.finishAfterTransition(activity)
@@ -255,14 +252,13 @@ class DmcActivityModel(
         private const val EN_SPACE: Char = 0x2002.toChar() // &ensp;
 
         @DrawableRes
-        private fun getImageResource(entity: ContentEntity): Int {
-            return when (entity.type) {
+        private fun getImageResource(entity: ContentEntity): Int =
+            when (entity.type) {
                 ContentType.MOVIE -> R.drawable.ic_movie
                 ContentType.MUSIC -> R.drawable.ic_music
                 ContentType.PHOTO -> R.drawable.ic_image
                 else -> 0
             }
-        }
 
         private fun makeTimeText(millisecond: Int): String {
             val second = (millisecond / 1000 % 60).toLong()

@@ -33,7 +33,8 @@ class OpenUriCustomTabsModel(
     }
 
     override fun openUri(context: Context, uri: String) {
-        if (!useCustomTabs || !URLUtil.isNetworkUrl(uri) ||
+        if (!useCustomTabs ||
+            !URLUtil.isNetworkUrl(uri) ||
             OpenUriUtils.hasDefaultAppOtherThanBrowser(context, uri)
         ) {
             LaunchUtils.openUri(context, uri)

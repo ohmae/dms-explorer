@@ -49,9 +49,8 @@ class SettingsStorage(context: Context) {
      * @param key Key
      * @return 含まれている場合true
      */
-    operator fun contains(key: Key): Boolean {
-        return preferences.contains(key.name)
-    }
+    operator fun contains(key: Key): Boolean =
+        preferences.contains(key.name)
 
     /**
      * keyの値を削除する

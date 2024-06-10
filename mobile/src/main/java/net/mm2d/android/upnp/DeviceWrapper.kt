@@ -193,9 +193,8 @@ abstract class DeviceWrapper(
      * @param defaultValue 格納されていなかった場合のデフォルト値
      * @return データの値
      */
-    fun getBooleanTag(name: String, defaultValue: Boolean): Boolean {
-        return arguments.getBoolean(name, defaultValue)
-    }
+    fun getBooleanTag(name: String, defaultValue: Boolean): Boolean =
+        arguments.getBoolean(name, defaultValue)
 
     /**
      * 任意の値を登録する。
@@ -214,9 +213,8 @@ abstract class DeviceWrapper(
      * @param defaultValue 格納されていなかった場合のデフォルト値
      * @return データの値
      */
-    fun getIntTag(name: String, defaultValue: Int): Int {
-        return arguments.getInt(name, defaultValue)
-    }
+    fun getIntTag(name: String, defaultValue: Int): Int =
+        arguments.getInt(name, defaultValue)
 
     /**
      * 任意の値を登録する。
@@ -235,9 +233,8 @@ abstract class DeviceWrapper(
      * @param defaultValue 格納されていなかった場合のデフォルト値
      * @return データの値
      */
-    fun getLongTag(name: String, defaultValue: Long): Long {
-        return arguments.getLong(name, defaultValue)
-    }
+    fun getLongTag(name: String, defaultValue: Long): Long =
+        arguments.getLong(name, defaultValue)
 
     /**
      * 任意の値を登録する。

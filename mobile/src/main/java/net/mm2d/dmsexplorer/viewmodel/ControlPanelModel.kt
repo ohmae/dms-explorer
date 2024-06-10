@@ -207,14 +207,13 @@ class ControlPanelModel internal constructor(
         durationTextFlow.value = makeTimeText(duration)
     }
 
-    private fun getScrubText(accuracy: Int): String {
-        return when (accuracy) {
+    private fun getScrubText(accuracy: Int): String =
+        when (accuracy) {
             ScrubBar.ACCURACY_NORMAL -> context.getString(R.string.seek_bar_scrub_normal)
             ScrubBar.ACCURACY_HALF -> context.getString(R.string.seek_bar_scrub_half)
             ScrubBar.ACCURACY_QUARTER -> context.getString(R.string.seek_bar_scrub_quarter)
             else -> ""
         }
-    }
 
     override fun notifyDuration(duration: Int) {
         durationFlow.value = duration

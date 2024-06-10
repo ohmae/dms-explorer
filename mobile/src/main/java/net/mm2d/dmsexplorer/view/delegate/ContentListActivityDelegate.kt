@@ -30,7 +30,8 @@ import net.mm2d.dmsexplorer.viewmodel.adapter.RecyclerViewBindingAdapter
 abstract class ContentListActivityDelegate internal constructor(
     protected val activity: BaseActivity,
     val binding: ContentListActivityBinding,
-) : CdsSelectListener, OnDeleteListener {
+) : CdsSelectListener,
+    OnDeleteListener {
     protected var model: ContentListActivityModel? = null
         private set
 
@@ -121,9 +122,7 @@ abstract class ContentListActivityDelegate internal constructor(
         return false
     }
 
-    fun onBackPressed(): Boolean {
-        return model?.onBackPressed() == true
-    }
+    fun onBackPressed(): Boolean = model?.onBackPressed() == true
 
     fun onKeyLongPress(keyCode: Int, event: KeyEvent): Boolean {
         if (keyCode == KeyEvent.KEYCODE_BACK) {

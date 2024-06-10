@@ -222,13 +222,8 @@ class ScrubBar @JvmOverloads constructor(
         }
 
         companion object CREATOR : Creator<SavedState> {
-            override fun createFromParcel(`in`: Parcel): SavedState {
-                return SavedState(`in`)
-            }
-
-            override fun newArray(size: Int): Array<SavedState?> {
-                return arrayOfNulls(size)
-            }
+            override fun createFromParcel(`in`: Parcel): SavedState = SavedState(`in`)
+            override fun newArray(size: Int): Array<SavedState?> = arrayOfNulls(size)
         }
     }
 

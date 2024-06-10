@@ -143,7 +143,9 @@ class SettingsActivity : PreferenceActivityCompat() {
         }
     }
 
-    class ExpertPreferenceFragment : PreferenceFragmentBase(), SortDialog.OnUpdateSortSettings {
+    class ExpertPreferenceFragment :
+        PreferenceFragmentBase(),
+        SortDialog.OnUpdateSortSettings {
         override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
             val activity = requireActivity()
             val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(activity)
@@ -189,17 +191,16 @@ class SettingsActivity : PreferenceActivityCompat() {
             }
         }
 
-        private fun createBindSummaryListener(): OnPreferenceChangeListener {
-            return OnPreferenceChangeListener { preference, value ->
+        private fun createBindSummaryListener(): OnPreferenceChangeListener =
+            OnPreferenceChangeListener { preference, value ->
                 val orientation = Orientation.of(value.toString())
                 preference.summary = orientation.getName(preference.context)
                 EventRouter.notifyOrientationSettings()
                 true
             }
-        }
 
-        private fun createCollectiveSettingListener(preferences: List<ListPreference>): OnPreferenceChangeListener {
-            return OnPreferenceChangeListener { preference, value ->
+        private fun createCollectiveSettingListener(preferences: List<ListPreference>): OnPreferenceChangeListener =
+            OnPreferenceChangeListener { preference, value ->
                 val stringValue = value.toString()
                 val summary = Orientation.of(stringValue).getName(preference.context)
                 for (p in preferences) {
@@ -209,7 +210,6 @@ class SettingsActivity : PreferenceActivityCompat() {
                 EventRouter.notifyOrientationSettings()
                 false // Do not write the value of collective setting
             }
-        }
 
         companion object {
             private val ORIENTATION_KEYS = arrayOf(

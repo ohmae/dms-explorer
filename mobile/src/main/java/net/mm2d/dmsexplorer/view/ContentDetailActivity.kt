@@ -23,7 +23,9 @@ import net.mm2d.dmsexplorer.view.dialog.DeleteDialog.OnDeleteListener
  *
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
  */
-class ContentDetailActivity : BaseActivity(true), OnDeleteListener {
+class ContentDetailActivity :
+    BaseActivity(true),
+    OnDeleteListener {
     private lateinit var settings: Settings
     private lateinit var mediaServerModel: MediaServerModel
     private var contentEntity: ContentEntity? = null
