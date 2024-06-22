@@ -1,8 +1,8 @@
 plugins {
-    id("com.android.application") version "8.4.1" apply false
+    id("com.android.application") version "8.5.0" apply false
     id("org.jetbrains.kotlin.android") version "2.0.0" apply false
     id("com.github.ben-manes.versions") version "0.51.0" apply false
-    id("org.jetbrains.kotlinx.kover") version "0.8.0" apply false
+    id("org.jetbrains.kotlinx.kover") version "0.8.1" apply false
 
     // for release
 }

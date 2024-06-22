@@ -79,10 +79,10 @@ dependencies {
     implementation("androidx.preference:preference-ktx:1.2.1")
     implementation("androidx.browser:browser:1.8.0")
     implementation("androidx.activity:activity-ktx:1.9.0")
-    implementation("androidx.fragment:fragment-ktx:1.7.1")
+    implementation("androidx.fragment:fragment-ktx:1.8.0")
     implementation("androidx.exifinterface:exifinterface:1.3.7")
     implementation("androidx.core:core-ktx:1.13.1")
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.8.1")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.8.2")
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
     implementation("com.google.android.material:material:1.12.0")
     implementation("com.google.android.play:app-update-ktx:2.1.0")
@@ -117,5 +117,5 @@ fun isStable(version: String): Boolean {
 }
 
 tasks.named<DependencyUpdatesTask>("dependencyUpdates").configure {
-    rejectVersionIf { !isStable(candidate.version) }
+    rejectVersionIf { !isStable(candidate.version) && isStable(currentVersion) }
 }
