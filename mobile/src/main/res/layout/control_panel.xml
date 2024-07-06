@@ -63,6 +63,7 @@
             android:background="@drawable/bg_control_button"
             android:focusable="true"
             android:padding="@dimen/control_button_padding"
+            app:srcCompat="@drawable/ic_play"
             >
 
             <requestFocus />

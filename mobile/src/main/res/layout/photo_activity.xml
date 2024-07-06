@@ -34,7 +34,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:paddingTop="@dimen/status_bar_size"
+        android:fitsSystemWindows="true"
         >
 
         <ImageView

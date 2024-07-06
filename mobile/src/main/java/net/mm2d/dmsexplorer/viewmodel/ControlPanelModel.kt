@@ -216,11 +216,11 @@ class ControlPanelModel internal constructor(
         }
 
     override fun notifyDuration(duration: Int) {
-        durationFlow.value = duration
+        setDuration(duration)
     }
 
     override fun notifyProgress(progress: Int) {
-        progressFlow.value = progress
+        setProgress(progress)
     }
 
     override fun notifyPlayingState(playing: Boolean) {
