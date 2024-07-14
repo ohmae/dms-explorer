@@ -96,8 +96,8 @@ dependencies {
 
     testImplementation("junit:junit:4.13.2")
     testImplementation("io.mockk:mockk:1.13.11")
-    testImplementation("com.google.truth:truth:1.4.3")
-    testImplementation("org.robolectric:robolectric:4.12.2")
+    testImplementation("com.google.truth:truth:1.4.4")
+    testImplementation("org.robolectric:robolectric:4.13")
     testImplementation("androidx.test.ext:junit:1.2.1")
 
     debugImplementation("com.squareup.leakcanary:leakcanary-android:2.14")
