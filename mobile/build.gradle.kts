@@ -1,5 +1,6 @@
 import com.android.build.gradle.internal.api.BaseVariantOutputImpl
 import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import java.util.Locale
 
 plugins {
@@ -54,8 +55,10 @@ android {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
-    kotlinOptions {
-        jvmTarget = "1.8"
+    kotlin {
+        compilerOptions {
+            jvmTarget = JvmTarget.JVM_1_8
+        }
     }
     buildFeatures {
         viewBinding = true
@@ -78,11 +81,11 @@ dependencies {
     implementation("androidx.recyclerview:recyclerview:1.3.2")
     implementation("androidx.preference:preference-ktx:1.2.1")
     implementation("androidx.browser:browser:1.8.0")
-    implementation("androidx.activity:activity-ktx:1.9.0")
-    implementation("androidx.fragment:fragment-ktx:1.8.1")
+    implementation("androidx.activity:activity-ktx:1.9.1")
+    implementation("androidx.fragment:fragment-ktx:1.8.2")
     implementation("androidx.exifinterface:exifinterface:1.3.7")
     implementation("androidx.core:core-ktx:1.13.1")
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.8.3")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.8.4")
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
     implementation("com.google.android.material:material:1.12.0")
     implementation("com.google.android.play:app-update-ktx:2.1.0")
@@ -95,16 +98,16 @@ dependencies {
     implementation("io.reactivex.rxjava2:rxkotlin:2.4.0")
 
     testImplementation("junit:junit:4.13.2")
-    testImplementation("io.mockk:mockk:1.13.11")
+    testImplementation("io.mockk:mockk:1.13.12")
     testImplementation("com.google.truth:truth:1.4.4")
     testImplementation("org.robolectric:robolectric:4.13")
     testImplementation("androidx.test.ext:junit:1.2.1")
 
     debugImplementation("com.squareup.leakcanary:leakcanary-android:2.14")
-    debugImplementation("com.facebook.flipper:flipper:0.250.0")
+    debugImplementation("com.facebook.flipper:flipper:0.261.0")
     debugImplementation("com.facebook.soloader:soloader:0.11.0")
-    debugImplementation("com.facebook.flipper:flipper-network-plugin:0.250.0")
-    debugImplementation("com.facebook.flipper:flipper-leakcanary2-plugin:0.250.0")
+    debugImplementation("com.facebook.flipper:flipper-network-plugin:0.261.0")
+    debugImplementation("com.facebook.flipper:flipper-leakcanary2-plugin:0.261.0")
 
     // for release
 }

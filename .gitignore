@@ -1,9 +1,11 @@
+*.aap
 *.iml
 .gradle
 /local.properties
 /.idea/caches
 /.idea/copyright
 /.idea/deploymentTargetDropDown.xml
+/.idea/deploymentTargetSelector.xml
 /.idea/dictionaries
 /.idea/kotlinc.xml
 /.idea/libraries
@@ -17,6 +19,8 @@
 /.idea/jarRepositories.xml
 /.idea/appInsightsSettings.xml
 /.idea/migrations.xml
+/.idea/compiler.xml
+/.idea/other.xml
 .DS_Store
 /build
 /captures
