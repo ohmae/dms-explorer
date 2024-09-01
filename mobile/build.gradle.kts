@@ -104,10 +104,10 @@ dependencies {
     testImplementation("androidx.test.ext:junit:1.2.1")
 
     debugImplementation("com.squareup.leakcanary:leakcanary-android:2.14")
-    debugImplementation("com.facebook.flipper:flipper:0.263.0")
+    debugImplementation("com.facebook.flipper:flipper:0.264.0")
     debugImplementation("com.facebook.soloader:soloader:0.11.0")
-    debugImplementation("com.facebook.flipper:flipper-network-plugin:0.263.0")
-    debugImplementation("com.facebook.flipper:flipper-leakcanary2-plugin:0.263.0")
+    debugImplementation("com.facebook.flipper:flipper-network-plugin:0.264.0")
+    debugImplementation("com.facebook.flipper:flipper-leakcanary2-plugin:0.264.0")
 
     // for release
 }
