@@ -10,8 +10,13 @@ package net.mm2d.dmsexplorer.view
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.view.ViewGroup
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
+import androidx.core.view.updateLayoutParams
+import androidx.core.view.updatePadding
 import net.mm2d.dmsexplorer.Repository
 import net.mm2d.dmsexplorer.databinding.DmcActivityBinding
 import net.mm2d.dmsexplorer.settings.Settings
@@ -62,6 +67,13 @@ class DmcActivity : BaseActivity() {
         } catch (ignored: IllegalStateException) {
             finish()
             return
+        }
+
+        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { view, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            view.updatePadding(systemBars.left, 0, systemBars.right, systemBars.bottom)
+            binding.toolbar.updateLayoutParams<ViewGroup.MarginLayoutParams> { topMargin = systemBars.top }
+            insets
         }
     }
 

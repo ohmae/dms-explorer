@@ -15,10 +15,16 @@ import android.graphics.Color
 import android.os.Bundle
 import android.view.MotionEvent
 import android.view.View
+import android.view.ViewGroup
 import android.webkit.WebChromeClient
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.core.content.ContextCompat
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updateLayoutParams
+import androidx.core.view.updatePadding
 import com.google.android.material.appbar.AppBarLayout
 import net.mm2d.dmsexplorer.R
 import net.mm2d.dmsexplorer.Repository
@@ -37,6 +43,7 @@ class WebViewActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(Settings.get().themeParams.noActionBarThemeId)
         super.onCreate(savedInstanceState)
+        WindowCompat.setDecorFitsSystemWindows(window, false)
         binding = WebViewActivityBinding.inflate(layoutInflater)
         setContentView(binding.root)
         val intent = intent
@@ -91,6 +98,12 @@ class WebViewActivity : BaseActivity() {
             webView.loadUrl(intent.getStringExtra(KEY_URL) ?: "")
         } else {
             webView.restoreState(savedInstanceState)
+        }
+        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { view, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            view.updatePadding(systemBars.left, 0, systemBars.right, systemBars.bottom)
+            binding.toolbar.updateLayoutParams<ViewGroup.MarginLayoutParams> { topMargin = systemBars.top }
+            insets
         }
     }
 

@@ -8,6 +8,11 @@
 package net.mm2d.dmsexplorer.view
 
 import android.os.Bundle
+import android.view.ViewGroup
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updateLayoutParams
 import androidx.core.view.updatePadding
 import androidx.core.view.updatePaddingRelative
 import kotlinx.coroutines.Job
@@ -36,6 +41,7 @@ class MusicActivity : BaseActivity() {
         settings = Settings.get()
         setTheme(settings.themeParams.noActionBarThemeId)
         super.onCreate(savedInstanceState)
+        WindowCompat.setDecorFitsSystemWindows(window, false)
         val repository = Repository.get()
         val binding: MusicActivityBinding = MusicActivityBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -71,6 +77,12 @@ class MusicActivity : BaseActivity() {
             model?.restoreSaveProgress(it.getInt(KEY_POSITION, 0))
         }
         RepeatIntroductionUtils.show(this, binding.repeatButton)
+        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { view, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            view.updatePadding(systemBars.left, 0, systemBars.right, systemBars.bottom)
+            binding.toolbar.updateLayoutParams<ViewGroup.MarginLayoutParams> { topMargin = systemBars.top }
+            insets
+        }
     }
 
     private fun applyControlPanelParam(binding: ControlPanelBinding, param: ControlPanelParam) {

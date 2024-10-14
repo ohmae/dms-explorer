@@ -12,6 +12,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.KeyEvent
 import android.view.MenuItem
+import androidx.core.view.WindowCompat
 import net.mm2d.dmsexplorer.R
 import net.mm2d.dmsexplorer.settings.Settings
 import net.mm2d.dmsexplorer.view.base.BaseActivity
@@ -33,6 +34,7 @@ class ContentListActivity :
         settings = Settings.get()
         setTheme(settings.themeParams.listThemeId)
         super.onCreate(savedInstanceState)
+        WindowCompat.setDecorFitsSystemWindows(window, false)
         delegate = ContentListActivityDelegate.create(this)
         delegate.onCreate(savedInstanceState)
     }

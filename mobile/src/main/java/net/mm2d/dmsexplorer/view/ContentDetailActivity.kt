@@ -10,6 +10,12 @@ package net.mm2d.dmsexplorer.view
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.view.ViewGroup
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updateLayoutParams
+import androidx.core.view.updatePadding
 import net.mm2d.dmsexplorer.R
 import net.mm2d.dmsexplorer.Repository
 import net.mm2d.dmsexplorer.domain.entity.ContentEntity
@@ -36,6 +42,7 @@ class ContentDetailActivity :
         settings = Settings.get()
         setTheme(settings.themeParams.noActionBarThemeId)
         super.onCreate(savedInstanceState)
+        WindowCompat.setDecorFitsSystemWindows(window, false)
         setContentView(R.layout.content_detail_activity)
         val repository = Repository.get()
         val serverModel = repository.mediaServerModel
@@ -54,6 +61,13 @@ class ContentDetailActivity :
         val model = fragment.model
         if (model != null) {
             repository.themeModel.setThemeColor(this, model.collapsedColor, 0)
+        }
+
+        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { view, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            view.updatePadding(systemBars.left, 0, systemBars.right, systemBars.bottom)
+            binding.toolbar.updateLayoutParams<ViewGroup.MarginLayoutParams> { topMargin = systemBars.top }
+            insets
         }
     }
 

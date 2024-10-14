@@ -12,6 +12,7 @@ import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import androidx.core.content.ContextCompat
+import androidx.core.view.WindowCompat
 import net.mm2d.dmsexplorer.R
 import net.mm2d.dmsexplorer.Repository
 import net.mm2d.dmsexplorer.domain.model.ControlPointModel
@@ -37,6 +38,7 @@ class ServerListActivity : BaseActivity(true) {
         settings = Settings.get()
         setTheme(settings.themeParams.listThemeId)
         super.onCreate(savedInstanceState)
+        WindowCompat.setDecorFitsSystemWindows(window, false)
         val repository = Repository.get()
         controlPointModel = repository.controlPointModel
 

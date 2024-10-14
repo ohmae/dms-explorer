@@ -13,6 +13,12 @@ import android.os.Bundle
 import android.transition.Transition
 import android.view.View
 import android.view.ViewAnimationUtils
+import android.view.ViewGroup
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updateLayoutParams
+import androidx.core.view.updatePadding
 import net.mm2d.android.view.TransitionListenerAdapter
 import net.mm2d.dmsexplorer.Const
 import net.mm2d.dmsexplorer.R
@@ -35,6 +41,7 @@ class ServerDetailActivity : BaseActivity(true) {
         settings = Settings.get()
         setTheme(settings.themeParams.noActionBarThemeId)
         super.onCreate(savedInstanceState)
+        WindowCompat.setDecorFitsSystemWindows(window, false)
         setContentView(R.layout.server_detail_activity)
         val fragment = supportFragmentManager.findFragmentById(R.id.server_detail_fragment) as ServerDetailFragment
         binding = fragment.binding
@@ -43,6 +50,12 @@ class ServerDetailActivity : BaseActivity(true) {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         Repository.get().themeModel.setThemeColor(this, fragment.model.collapsedColor, 0)
         prepareTransition(savedInstanceState != null)
+        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { view, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            view.updatePadding(systemBars.left, 0, systemBars.right, systemBars.bottom)
+            binding.toolbar.updateLayoutParams<ViewGroup.MarginLayoutParams> { topMargin = systemBars.top }
+            insets
+        }
     }
 
     override fun updateOrientationSettings() {

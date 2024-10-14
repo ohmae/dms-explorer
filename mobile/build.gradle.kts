@@ -18,13 +18,13 @@ val versionMinor = 7
 val versionPatch = 69
 
 android {
-    compileSdk = 34
+    compileSdk = 35
 
     namespace = "net.mm2d.dmsexplorer"
     defaultConfig {
         applicationId = "net.mm2d.dmsexplorer"
         minSdk = 21
-        targetSdk = 34
+        targetSdk = 35
         versionCode = versionMajor * 10000 + versionMinor * 100 + versionPatch
         versionName = "$versionMajor.$versionMinor.$versionPatch"
         base.archivesName.set("$applicationName-$versionName")

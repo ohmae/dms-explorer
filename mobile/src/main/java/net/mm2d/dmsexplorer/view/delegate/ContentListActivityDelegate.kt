@@ -10,8 +10,13 @@ package net.mm2d.dmsexplorer.view.delegate
 import android.os.Bundle
 import android.view.KeyEvent
 import android.view.MenuItem
+import android.view.ViewGroup
 import androidx.annotation.CallSuper
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.doOnLayout
+import androidx.core.view.updateLayoutParams
+import androidx.core.view.updatePadding
 import androidx.core.view.updatePaddingRelative
 import net.mm2d.dmsexplorer.R
 import net.mm2d.dmsexplorer.Repository
@@ -78,6 +83,13 @@ abstract class ContentListActivityDelegate internal constructor(
         activity.supportActionBar?.setDisplayHomeAsUpEnabled(true)
         savedInstanceState?.let { restoreScroll(it) }
         repository.themeModel.setThemeColor(activity, model.toolbarBackground, 0)
+
+        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { view, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            view.updatePadding(systemBars.left, 0, systemBars.right, systemBars.bottom)
+            binding.toolbar.updateLayoutParams<ViewGroup.MarginLayoutParams> { topMargin = systemBars.top }
+            insets
+        }
     }
 
     @CallSuper

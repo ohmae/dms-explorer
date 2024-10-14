@@ -38,7 +38,7 @@ class ContentDetailFragment : Fragment(R.layout.content_detail_fragment) {
             return
         }
         this.model = model
-        binding.toolbarLayout.setContentScrimColor(model.collapsedColor)
+        binding.toolbar.setContentScrimColor(model.collapsedColor)
         binding.toolbarBackground.setBackgroundColor(model.expandedColor)
         binding.cdsDetailToolbar.title = model.title
         binding.cdsDetail.adapter = model.propertyAdapter

@@ -12,7 +12,11 @@ import android.content.res.Configuration
 import android.os.Bundle
 import android.view.KeyEvent
 import android.view.MotionEvent
+import android.view.ViewGroup
 import android.widget.FrameLayout
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isVisible
 import androidx.core.view.updateLayoutParams
 import androidx.core.view.updatePadding
@@ -46,6 +50,7 @@ class MovieActivity : BaseActivity() {
         settings = Settings.get()
         setTheme(settings.themeParams.fullscreenThemeId)
         super.onCreate(savedInstanceState)
+        WindowCompat.setDecorFitsSystemWindows(window, false)
         binding = MovieActivityBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -103,6 +108,15 @@ class MovieActivity : BaseActivity() {
         }
         addOnPictureInPictureModeChangedListener {
             fullscreenHelper.onPictureInPictureModeChanged(it.isInPictureInPictureMode)
+        }
+        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { view, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            view.updatePadding(systemBars.left, 0, systemBars.right, 0)
+            binding.toolbar.updateLayoutParams<ViewGroup.MarginLayoutParams> { topMargin = systemBars.top }
+            binding.controlPanel.root.updateLayoutParams<ViewGroup.MarginLayoutParams> {
+                bottomMargin = systemBars.bottom
+            }
+            insets
         }
     }
 

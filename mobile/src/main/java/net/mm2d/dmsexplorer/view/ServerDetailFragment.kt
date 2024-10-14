@@ -34,7 +34,7 @@ class ServerDetailFragment : Fragment(R.layout.server_detail_fragment) {
             activity.finish()
             return
         }
-        binding.toolbarLayout.setContentScrimColor(model.collapsedColor)
+        binding.toolbar.setContentScrimColor(model.collapsedColor)
         binding.toolbarBackground.setBackgroundColor(model.expandedColor)
         binding.toolbarIcon.setImageDrawable(model.icon)
         binding.serverDetailToolbar.title = model.title

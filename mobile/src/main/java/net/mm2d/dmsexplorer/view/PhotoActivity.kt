@@ -12,9 +12,14 @@ import android.os.Bundle
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.MotionEvent
+import android.view.ViewGroup
 import android.widget.FrameLayout
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isVisible
 import androidx.core.view.updateLayoutParams
+import androidx.core.view.updatePadding
 import androidx.viewpager.widget.ViewPager
 import androidx.viewpager.widget.ViewPager.OnPageChangeListener
 import net.mm2d.dmsexplorer.R
@@ -62,6 +67,7 @@ class PhotoActivity : BaseActivity() {
         settings = Settings.get()
         setTheme(settings.themeParams.fullscreenThemeId)
         super.onCreate(savedInstanceState)
+        WindowCompat.setDecorFitsSystemWindows(window, false)
         binding = PhotoActivityBinding.inflate(layoutInflater)
         setContentView(binding.root)
         fullscreenHelper = FullscreenHelper(
@@ -113,6 +119,12 @@ class PhotoActivity : BaseActivity() {
         binding.toolbarBack.setOnClickListener { model.onClickBack() }
         model.getTitleFlow().observe(this) {
             binding.toolbarTitle.text = it
+        }
+        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { view, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            view.updatePadding(systemBars.left, 0, systemBars.right, systemBars.bottom)
+            binding.toolbar.updateLayoutParams<ViewGroup.MarginLayoutParams> { topMargin = systemBars.top }
+            insets
         }
     }
 
