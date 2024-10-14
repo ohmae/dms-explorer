@@ -1,6 +1,6 @@
 [versions]
-androidGradlePlugin = "8.6.1"
-kotlin = "2.0.20"
+androidGradlePlugin = "8.7.0"
+kotlin = "2.0.21"
 kover = "0.8.3"
 gradleVersionsPlugin = "0.51.0"
 kotlinxCoroutines = "1.9.0"
@@ -8,7 +8,7 @@ kotlinxCoroutines = "1.9.0"
 androidxCore = "1.13.1"
 androidxAppCompat = "1.7.0"
 androidxActivity = "1.9.2"
-androidxFragment = "1.8.3"
+androidxFragment = "1.8.4"
 androidxBrowser = "1.8.0"
 androidxConstraintLayout = "2.1.4"
 androidxLifecycle = "2.8.6"
@@ -29,14 +29,14 @@ preference = "0.3.2"
 
 # test
 junit = "4.13.2"
-mockk = "1.13.12"
+mockk = "1.13.13"
 truth = "1.4.4"
 robolectric = "4.13"
 androidxJunit = "1.2.1"
 
 # debug
 leakcanary = "2.14"
-flipper = "0.267.1"
+flipper = "0.269.0"
 soloader = "0.12.1"
 
 ktlint = "1.3.1"
