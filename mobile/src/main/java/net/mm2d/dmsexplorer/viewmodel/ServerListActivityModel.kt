@@ -13,11 +13,16 @@ import android.os.Handler
 import android.os.Looper
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView.ItemAnimator
 import androidx.recyclerview.widget.RecyclerView.LayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout.OnRefreshListener
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.launch
 import net.mm2d.android.upnp.cds.MediaServer
 import net.mm2d.android.upnp.cds.MsControlPoint.MsDiscoveryListener
 import net.mm2d.dmsexplorer.R
@@ -28,7 +33,6 @@ import net.mm2d.dmsexplorer.settings.Settings
 import net.mm2d.dmsexplorer.util.AttrUtils
 import net.mm2d.dmsexplorer.util.FeatureUtils
 import net.mm2d.dmsexplorer.view.adapter.ServerListAdapter
-import net.mm2d.dmsexplorer.view.animator.CustomItemAnimator
 
 /**
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
@@ -39,6 +43,7 @@ class ServerListActivityModel(
     private val serverSelectListener: ServerSelectListener,
     private val twoPane: Boolean,
 ) {
+    private val scope = CoroutineScope(Dispatchers.Main + SupervisorJob())
     val refreshColors =
         intArrayOf(R.color.progress1, R.color.progress2, R.color.progress3, R.color.progress4)
     val progressBackground: Int =
@@ -46,7 +51,6 @@ class ServerListActivityModel(
     val distanceToTriggerSync: Int =
         context.resources.getDimensionPixelOffset(R.dimen.distance_to_trigger_sync)
     val onRefreshListener: OnRefreshListener
-    val itemAnimator: ItemAnimator
     val serverListLayoutManager: LayoutManager
     val focusable: Boolean
 
@@ -58,6 +62,8 @@ class ServerListActivityModel(
 
     private val isRefreshingFlow: MutableStateFlow<Boolean> = MutableStateFlow(false)
     fun getIsRefreshingFlow(): Flow<Boolean> = isRefreshingFlow
+    private val shouldShowHelpFlow: MutableStateFlow<Boolean> = MutableStateFlow(false)
+    fun getShouldShowHelpFlow(): Flow<Boolean> = shouldShowHelpFlow
 
     interface ServerSelectListener {
         fun onSelect(v: View)
@@ -69,7 +75,6 @@ class ServerListActivityModel(
         serverListAdapter = ServerListAdapter(context, controlPointModel.mediaServerList)
         serverListAdapter.setOnItemClickListener(::onItemClick)
         serverListAdapter.setOnItemLongClickListener(::onItemLongClick)
-        isRefreshingFlow.value = serverListAdapter.itemCount == 0
         controlPointModel.setMsDiscoveryListener(object : MsDiscoveryListener {
             override fun onDiscover(server: MediaServer) {
                 handler.post { onDiscoverServer(server) }
@@ -82,11 +87,29 @@ class ServerListActivityModel(
 
         focusable = !FeatureUtils.hasTouchScreen(context)
         serverListLayoutManager = LinearLayoutManager(context)
-        itemAnimator = CustomItemAnimator(context)
         onRefreshListener = OnRefreshListener {
+            setRefreshing()
             controlPointModel.restart {
                 serverListAdapter.clear()
                 serverListAdapter.notifyDataSetChanged()
+            }
+        }
+        if (serverListAdapter.itemCount == 0) {
+            setRefreshing()
+        }
+    }
+
+    private var job: Job? = null
+    private fun setRefreshing() {
+        isRefreshingFlow.value = true
+        shouldShowHelpFlow.value = false
+
+        job?.cancel()
+        job = scope.launch {
+            delay(7000)
+            if (isRefreshingFlow.value) {
+                isRefreshingFlow.value = false
+                shouldShowHelpFlow.value = true
             }
         }
     }
@@ -138,6 +161,7 @@ class ServerListActivityModel(
 
     private fun onDiscoverServer(server: MediaServer) {
         isRefreshingFlow.value = false
+        shouldShowHelpFlow.value = false
         if (controlPointModel.numberOfMediaServer == serverListAdapter.itemCount + 1) {
             val position = serverListAdapter.add(server)
             serverListAdapter.notifyItemInserted(position)

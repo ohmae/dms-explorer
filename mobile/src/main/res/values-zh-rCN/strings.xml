@@ -152,4 +152,7 @@
     <string name="pref_summary_sort_key_date">日期</string>
     <string name="pref_summary_sort_order_ascending">升序</string>
     <string name="pref_summary_sort_order_descending">降序</string>
+    <string name="help_text">DLNA server not found. Please check the following.</string>
+    <string name="help_text1">WiFi or wired LAN connection is required. It will not work over a cellular line.</string>
+    <string name="help_text2">Make sure that a DLNA server is connected to the connected network. Also, make sure that the DLNA server is enabled in the settings of your server, etc. For information on how to set this up, contact the server manufacturer.</string>
 </resources>

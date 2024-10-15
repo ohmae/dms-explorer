@@ -10,7 +10,6 @@ package net.mm2d.dmsexplorer.settings
 import android.app.Activity
 import android.content.Context
 import android.content.pm.ActivityInfo
-import android.util.Log
 import androidx.annotation.StringRes
 import net.mm2d.dmsexplorer.R
 import net.mm2d.log.Logger
@@ -48,7 +47,6 @@ enum class Orientation(
     fun getName(context: Context): String = context.getString(nameId)
 
     fun setRequestedOrientation(activity: Activity) {
-        Log.e("XXXX", "setRequestedOrientation: $activity $value")
         try {
             activity.requestedOrientation = value
         } catch (e: Exception) {

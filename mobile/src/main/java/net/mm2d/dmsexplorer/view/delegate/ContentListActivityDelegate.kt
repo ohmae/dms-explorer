@@ -63,7 +63,6 @@ abstract class ContentListActivityDelegate internal constructor(
         binding.swipeRefreshLayout.setProgressBackgroundColorSchemeColor(model.progressBackground)
         model.getIsRefreshingFlow().observe(activity) { binding.swipeRefreshLayout.isRefreshing = it }
 
-        binding.recyclerView.itemAnimator = model.itemAnimator
         binding.recyclerView.layoutManager = model.cdsListLayoutManager
         binding.recyclerView.adapter = model.contentListAdapter
         val padding = activity.resources.getDimensionPixelSize(

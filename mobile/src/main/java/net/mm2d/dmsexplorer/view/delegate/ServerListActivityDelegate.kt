@@ -13,12 +13,15 @@ import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.CallSuper
+import androidx.core.os.ConfigurationCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.doOnLayout
+import androidx.core.view.isVisible
 import androidx.core.view.updateLayoutParams
 import androidx.core.view.updatePadding
 import androidx.core.view.updatePaddingRelative
+import net.mm2d.dmsexplorer.Const
 import net.mm2d.dmsexplorer.R
 import net.mm2d.dmsexplorer.Repository
 import net.mm2d.dmsexplorer.databinding.ServerListActivityBinding
@@ -26,9 +29,11 @@ import net.mm2d.dmsexplorer.log.EventLogger
 import net.mm2d.dmsexplorer.settings.Settings
 import net.mm2d.dmsexplorer.util.observe
 import net.mm2d.dmsexplorer.view.ContentListActivity
+import net.mm2d.dmsexplorer.view.WebViewActivity
 import net.mm2d.dmsexplorer.view.base.BaseActivity
 import net.mm2d.dmsexplorer.viewmodel.ServerListActivityModel
 import net.mm2d.dmsexplorer.viewmodel.ServerListActivityModel.ServerSelectListener
+import java.util.Locale
 
 /**
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
@@ -55,9 +60,14 @@ abstract class ServerListActivityDelegate internal constructor(
         binding.swipeRefreshLayout.setProgressBackgroundColorSchemeColor(model.progressBackground)
         binding.swipeRefreshLayout.setOnRefreshListener(model.onRefreshListener)
         model.getIsRefreshingFlow().observe(activity) { binding.swipeRefreshLayout.isRefreshing = it }
+        model.getShouldShowHelpFlow().observe(activity) { binding.help.isVisible = it }
         binding.recyclerView.adapter = model.serverListAdapter
         binding.recyclerView.layoutManager = model.serverListLayoutManager
-        binding.recyclerView.itemAnimator = model.itemAnimator
+        binding.help.setOnClickListener {
+            val lang = ConfigurationCompat.getLocales(activity.resources.configuration).get(0)
+            val url = if (lang == Locale.JAPAN) Const.URL_HELP_JA else Const.URL_HELP
+            WebViewActivity.start(activity, "HELP", url)
+        }
 
         val padding = activity.resources.getDimensionPixelSize(
             if (model.focusable) R.dimen.list_scale_padding else R.dimen.list_non_scale_padding,

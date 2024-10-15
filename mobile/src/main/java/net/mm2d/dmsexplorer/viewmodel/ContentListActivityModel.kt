@@ -14,7 +14,6 @@ import android.view.View
 import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView.ItemAnimator
 import androidx.recyclerview.widget.RecyclerView.LayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout.OnRefreshListener
 import kotlinx.coroutines.flow.Flow
@@ -29,7 +28,6 @@ import net.mm2d.dmsexplorer.settings.Settings
 import net.mm2d.dmsexplorer.util.AttrUtils
 import net.mm2d.dmsexplorer.util.FeatureUtils
 import net.mm2d.dmsexplorer.view.adapter.ContentListAdapter
-import net.mm2d.dmsexplorer.view.animator.CustomItemAnimator
 import net.mm2d.dmsexplorer.view.dialog.SortDialog
 
 /**
@@ -48,7 +46,6 @@ class ContentListActivityModel(
     val distanceToTriggerSync: Int =
         activity.resources.getDimensionPixelOffset(R.dimen.distance_to_trigger_sync)
     val onRefreshListener: OnRefreshListener
-    val itemAnimator: ItemAnimator
     val cdsListLayoutManager: LayoutManager
     val title: String
     val toolbarBackground: Int
@@ -99,7 +96,6 @@ class ContentListActivityModel(
 
         focusable = !FeatureUtils.hasTouchScreen(activity)
         cdsListLayoutManager = LinearLayoutManager(activity)
-        itemAnimator = CustomItemAnimator(activity)
         title = mediaServerModel.title
         onRefreshListener = OnRefreshListener { mediaServerModel.reload() }
         val server = mediaServerModel.mediaServer

@@ -152,4 +152,7 @@
     <string name="pref_summary_sort_key_date">日付順</string>
     <string name="pref_summary_sort_order_ascending">昇順</string>
     <string name="pref_summary_sort_order_descending">降順</string>
+    <string name="help_text">DLNAサーバーが見つかりません。以下の確認をお願いします。</string>
+    <string name="help_text1">WiFiもしくは有線LANによる接続が必要です。セルラー回線では動作しません</string>
+    <string name="help_text2">接続ネットワーク上にDLNAサーバーが接続されていることを確認してください。また、サーバーの設定でDLNAサーバー機能が有効になっていることを確認ください。設定方法についてはサーバーの製造元にお問い合わせください</string>
 </resources>

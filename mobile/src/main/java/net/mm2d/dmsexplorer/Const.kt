@@ -29,6 +29,8 @@ object Const {
     const val URL_PRIVACY_POLICY =
         "https://ohmae.github.io/app/dms-explorer/privacy-policy.html"
     const val URL_OPEN_SOURCE_LICENSE = "file:///android_asset/license.html"
+    const val URL_HELP = "file:///android_asset/help.html"
+    const val URL_HELP_JA = "file:///android_asset/help.ja.html"
 
     const val REQUEST_CODE_ACTION_PLAY = 1
     const val REQUEST_CODE_ACTION_NEXT = 2
