@@ -38,7 +38,15 @@ Also, if the program information contains a URL, it will automatically act as a 
 |-|-|
 
 ## Install
-<a href='https://play.google.com/store/apps/details?id=net.mm2d.dmsexplorer'><img alt='Google Play' src='https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png' width="250"/></a>
+
+Google has pointed out a violation of the Incomplete Features Policy (“Apps that install, but don’t load”) and has
+rejected this app.
+This is likely due to this app not working in environments without a DLNA server.
+Due to the nature of the app, it is difficult to resolve this issue, so unfortunately, I have decided to make DMS
+Explorer unpublished on Google Play.
+You can continue to use this app if you have already installed it, but you will no longer be able to install this app.
+
+~~[https://play.google.com/store/apps/details?id=net.mm2d.dmsexplorer](https://play.google.com/store/apps/details?id=net.mm2d.dmsexplorer)~~
 
 ### Repository by contributors
 [IzzyOnDroid](https://apt.izzysoft.de/fdroid/index/apk/net.mm2d.dmsexplorer)
