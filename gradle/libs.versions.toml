@@ -1,6 +1,6 @@
 [versions]
-androidGradlePlugin = "8.7.2"
-kotlin = "2.0.21"
+androidGradlePlugin = "8.7.3"
+kotlin = "2.1.0"
 kover = "0.8.3"
 gradleVersionsPlugin = "0.51.0"
 kotlinxCoroutines = "1.9.0"
@@ -31,15 +31,15 @@ preference = "0.3.2"
 junit = "4.13.2"
 mockk = "1.13.13"
 truth = "1.4.4"
-robolectric = "4.13"
+robolectric = "4.14.1"
 androidxJunit = "1.2.1"
 
 # debug
 leakcanary = "2.14"
-flipper = "0.271.0"
+flipper = "0.273.0"
 soloader = "0.12.1"
 
-ktlint = "1.4.0"
+ktlint = "1.5.0"
 
 # for release
 
