@@ -17,8 +17,16 @@ import android.util.AttributeSet
  *
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
  */
-class SmilingCurveMotion(context: Context, attrs: AttributeSet) : PathMotion(context, attrs) {
-    override fun getPath(startX: Float, startY: Float, endX: Float, endY: Float) = Path().also {
+class SmilingCurveMotion(
+    context: Context,
+    attrs: AttributeSet,
+) : PathMotion(context, attrs) {
+    override fun getPath(
+        startX: Float,
+        startY: Float,
+        endX: Float,
+        endY: Float,
+    ) = Path().also {
         it.moveTo(startX, startY)
         if (startY > endY) {
             it.quadTo(
@@ -37,6 +45,10 @@ class SmilingCurveMotion(context: Context, attrs: AttributeSet) : PathMotion(con
         }
     }
 
-    private fun centerInRatio(v1: Float, v2: Float, r1: Float, r2: Float): Float =
-        (v1 * r1 + v2 * r2) / (r1 + r2)
+    private fun centerInRatio(
+        v1: Float,
+        v2: Float,
+        r1: Float,
+        r2: Float,
+    ): Float = (v1 * r1 + v2 * r2) / (r1 + r2)
 }

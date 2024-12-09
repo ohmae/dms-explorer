@@ -22,7 +22,9 @@ import net.mm2d.dmsexplorer.util.ItemSelectUtils
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
  */
 class SelectResourceDialog : DialogFragment() {
-    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+    override fun onCreateDialog(
+        savedInstanceState: Bundle?,
+    ): Dialog {
         val activity = requireActivity()
         val choices = Repository.get().playbackTargetModel?.createResChoices()
             ?: return AlertDialog.Builder(activity).create()
@@ -42,7 +44,9 @@ class SelectResourceDialog : DialogFragment() {
          */
         private fun newInstance(): SelectResourceDialog = SelectResourceDialog()
 
-        fun show(activity: FragmentActivity) {
+        fun show(
+            activity: FragmentActivity,
+        ) {
             if (activity.supportFragmentManager.isStateSaved) {
                 return
             }

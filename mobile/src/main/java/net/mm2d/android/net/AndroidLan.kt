@@ -20,7 +20,9 @@ import java.net.NetworkInterface
  *
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
  */
-internal class AndroidLan(context: Context) : Lan() {
+internal class AndroidLan(
+    context: Context,
+) : Lan() {
     private val connectivityManager = context.applicationContext
         .getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
 
@@ -56,7 +58,9 @@ internal class AndroidLan(context: Context) : Lan() {
                 )
     }
 
-    private fun isUsableInterface(netIf: NetworkInterface): Boolean =
+    private fun isUsableInterface(
+        netIf: NetworkInterface,
+    ): Boolean =
         if (netIf.isUp && netIf.supportsMulticast() && !netIf.isLoopback) {
             runCatching { netIf.interfaceAddresses.any { it.address is Inet4Address } }
                 .getOrDefault(false)

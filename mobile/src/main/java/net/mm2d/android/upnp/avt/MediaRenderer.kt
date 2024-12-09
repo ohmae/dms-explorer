@@ -50,11 +50,9 @@ class MediaRenderer internal constructor(
 
     fun isSupportPause(): Boolean = pause != null
 
-    fun getPositionInfo(): Single<Map<String, String>> =
-        invoke(getPositionInfo, mapOf(INSTANCE_ID to "0"))
+    fun getPositionInfo(): Single<Map<String, String>> = invoke(getPositionInfo, mapOf(INSTANCE_ID to "0"))
 
-    fun getTransportInfo(): Single<Map<String, String>> =
-        invoke(getTransportInfo, mapOf(INSTANCE_ID to "0"))
+    fun getTransportInfo(): Single<Map<String, String>> = invoke(getTransportInfo, mapOf(INSTANCE_ID to "0"))
 
     /**
      * AVTransportサービスを購読する。
@@ -91,21 +89,24 @@ class MediaRenderer internal constructor(
             mapOf(INSTANCE_ID to "0", CURRENT_URI to null, CURRENT_URI_META_DATA to null),
         )
 
-    fun play(): Single<Map<String, String>> = invoke(
-        play,
-        mapOf(INSTANCE_ID to "0", SPEED to "1"),
-    )
+    fun play(): Single<Map<String, String>> =
+        invoke(
+            play,
+            mapOf(INSTANCE_ID to "0", SPEED to "1"),
+        )
 
-    fun stop(): Single<Map<String, String>> =
-        invoke(stop, mapOf(INSTANCE_ID to "0"))
+    fun stop(): Single<Map<String, String>> = invoke(stop, mapOf(INSTANCE_ID to "0"))
 
-    fun pause(): Single<Map<String, String>> = if (pause == null) {
-        Single.error(IllegalStateException("pause is not supported"))
-    } else {
-        invoke(pause, mapOf(INSTANCE_ID to "0"))
-    }
+    fun pause(): Single<Map<String, String>> =
+        if (pause == null) {
+            Single.error(IllegalStateException("pause is not supported"))
+        } else {
+            invoke(pause, mapOf(INSTANCE_ID to "0"))
+        }
 
-    fun seek(time: Long): Single<Map<String, String>> {
+    fun seek(
+        time: Long,
+    ): Single<Map<String, String>> {
         val unitArg = seek.findArgument(UNIT)
             ?: return Single.error(IllegalStateException("no unit argument"))
         val argument = HashMap<String, String>()
@@ -123,13 +124,14 @@ class MediaRenderer internal constructor(
     private operator fun invoke(
         action: Action,
         argument: Map<String, String?>,
-    ): Single<Map<String, String>> = Single.create { emitter ->
-        try {
-            emitter.onSuccess(action.invokeSync(argument, false))
-        } catch (e: IOException) {
-            emitter.onError(e)
+    ): Single<Map<String, String>> =
+        Single.create { emitter ->
+            try {
+                emitter.onSuccess(action.invokeSync(argument, false))
+            } catch (e: IOException) {
+                emitter.onError(e)
+            }
         }
-    }
 
     companion object {
         private const val SET_AV_TRANSPORT_URI = "SetAVTransportURI"
@@ -188,22 +190,28 @@ class MediaRenderer internal constructor(
         private fun findService(
             device: Device,
             id: String,
-        ): Service = device.findServiceById(id)
-            ?: throw IllegalArgumentException("Device doesn't have $id")
+        ): Service =
+            device.findServiceById(id)
+                ?: throw IllegalArgumentException("Device doesn't have $id")
 
         private fun findAction(
             service: Service,
             name: String,
-        ): Action = service.findAction(name)
-            ?: throw IllegalArgumentException("Service doesn't have $name")
+        ): Action =
+            service.findAction(name)
+                ?: throw IllegalArgumentException("Service doesn't have $name")
 
-        fun getCurrentTransportState(result: Map<String, String>): TransportState =
-            TransportState.of(result[CURRENT_TRANSPORT_STATE])
+        fun getCurrentTransportState(
+            result: Map<String, String>,
+        ): TransportState = TransportState.of(result[CURRENT_TRANSPORT_STATE])
 
-        fun getDuration(result: Map<String, String>): Int =
-            parseCount(result[TRACK_DURATION])
+        fun getDuration(
+            result: Map<String, String>,
+        ): Int = parseCount(result[TRACK_DURATION])
 
-        fun getProgress(result: Map<String, String>): Int {
+        fun getProgress(
+            result: Map<String, String>,
+        ): Int {
             val progress = parseCount(result[REL_TIME])
             return if (progress >= 0) {
                 progress
@@ -218,7 +226,9 @@ class MediaRenderer internal constructor(
          * @param count 変換する文字列
          * @return 変換したミリ秒時間
          */
-        private fun parseCount(count: String?): Int {
+        private fun parseCount(
+            count: String?,
+        ): Int {
             if (count.isNullOrEmpty() || count == NOT_IMPLEMENTED) {
                 return -1
             }
@@ -232,7 +242,9 @@ class MediaRenderer internal constructor(
             return (hours * ONE_HOUR + minutes * ONE_MINUTE + seconds * ONE_SECOND).toInt()
         }
 
-        private fun makeTimeText(millisecond: Long): String {
+        private fun makeTimeText(
+            millisecond: Long,
+        ): String {
             val second = millisecond / ONE_SECOND % 60
             val minute = millisecond / ONE_MINUTE % 60
             val hour = millisecond / ONE_HOUR

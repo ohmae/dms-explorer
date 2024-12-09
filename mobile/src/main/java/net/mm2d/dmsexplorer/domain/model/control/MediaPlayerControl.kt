@@ -50,7 +50,9 @@ class MediaPlayerControl(
         }
     }
 
-    override fun seekTo(position: Int) {
+    override fun seekTo(
+        position: Int,
+    ) {
         mediaPlayer.seekTo(position)
         if (!mediaPlayer.isPlaying) {
             mediaPlayer.start()
@@ -63,19 +65,27 @@ class MediaPlayerControl(
         mediaPlayer.release()
     }
 
-    override fun setOnPreparedListener(listener: OnPreparedListener?) {
+    override fun setOnPreparedListener(
+        listener: OnPreparedListener?,
+    ) {
         mediaPlayer.setOnPreparedListener(listener)
     }
 
-    override fun setOnErrorListener(listener: OnErrorListener?) {
+    override fun setOnErrorListener(
+        listener: OnErrorListener?,
+    ) {
         mediaPlayer.setOnErrorListener(listener)
     }
 
-    override fun setOnInfoListener(listener: OnInfoListener?) {
+    override fun setOnInfoListener(
+        listener: OnInfoListener?,
+    ) {
         mediaPlayer.setOnInfoListener(listener)
     }
 
-    override fun setOnCompletionListener(listener: OnCompletionListener?) {
+    override fun setOnCompletionListener(
+        listener: OnCompletionListener?,
+    ) {
         mediaPlayer.setOnCompletionListener(listener)
     }
 }

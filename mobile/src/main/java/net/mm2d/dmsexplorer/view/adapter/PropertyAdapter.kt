@@ -39,27 +39,41 @@ abstract class PropertyAdapter(
     private val list: MutableList<Entry> = ArrayList()
     private val inflater: LayoutInflater = LayoutInflater.from(context)
 
-    fun addEntry(name: String, value: String?, type: Type = Type.TEXT) {
+    fun addEntry(
+        name: String,
+        value: String?,
+        type: Type = Type.TEXT,
+    ) {
         if (value.isNullOrEmpty()) {
             return
         }
         list.add(Entry(name, value, type))
     }
 
-    fun addTitleEntry(name: String) {
+    fun addTitleEntry(
+        name: String,
+    ) {
         list.add(Entry(name, "", Type.TITLE))
     }
 
-    override fun getItemViewType(position: Int): Int =
-        if (list[position].type != Type.DESCRIPTION) 0 else 1
+    override fun getItemViewType(
+        position: Int,
+    ): Int = if (list[position].type != Type.DESCRIPTION) 0 else 1
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder = ViewHolder(
-        context,
-        inflater,
-        PropertyListItemBinding.inflate(inflater, parent, false),
-    )
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        viewType: Int,
+    ): ViewHolder =
+        ViewHolder(
+            context,
+            inflater,
+            PropertyListItemBinding.inflate(inflater, parent, false),
+        )
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+    override fun onBindViewHolder(
+        holder: ViewHolder,
+        position: Int,
+    ) {
         holder.applyItem(list[position])
     }
 
@@ -85,7 +99,9 @@ abstract class PropertyAdapter(
     ) : RecyclerView.ViewHolder(binding.root),
         OnClickListener {
 
-        fun applyItem(entry: Entry) {
+        fun applyItem(
+            entry: Entry,
+        ) {
             var value = entry.value
             if (entry.type == Type.DESCRIPTION) {
                 value = setUpDescription(entry)
@@ -116,7 +132,9 @@ abstract class PropertyAdapter(
             TextViewBindingAdapter.setUnderlineFlag(binding.description, model.isLink)
         }
 
-        private fun setUpDescription(entry: Entry): String {
+        private fun setUpDescription(
+            entry: Entry,
+        ): String {
             val layout = binding.container
             val count = layout.childCount
             for (i in count - 1 downTo 2) {
@@ -125,7 +143,10 @@ abstract class PropertyAdapter(
             return makeDescription(layout, entry.value)
         }
 
-        private fun makeDescription(parent: ViewGroup, text: String): String {
+        private fun makeDescription(
+            parent: ViewGroup,
+            text: String,
+        ): String {
             var firstNormalText = ""
             val matcher = URL_PATTERN.matcher(text)
             var lastEnd = 0
@@ -156,13 +177,19 @@ abstract class PropertyAdapter(
             return firstNormalText
         }
 
-        private fun addNormalText(parent: ViewGroup, text: String) {
+        private fun addNormalText(
+            parent: ViewGroup,
+            text: String,
+        ) {
             val normal = inflater.inflate(R.layout.normal_text_view, parent, false) as TextView
             normal.text = text
             parent.addView(normal)
         }
 
-        private fun addLinkText(parent: ViewGroup, text: String) {
+        private fun addLinkText(
+            parent: ViewGroup,
+            text: String,
+        ) {
             val link = inflater.inflate(R.layout.link_text_view, parent, false) as TextView
             link.text = text
             link.paintFlags = link.paintFlags or Paint.UNDERLINE_TEXT_FLAG
@@ -170,7 +197,9 @@ abstract class PropertyAdapter(
             parent.addView(link)
         }
 
-        override fun onClick(v: View) {
+        override fun onClick(
+            v: View,
+        ) {
             val text = (v as? TextView)?.text
             if (text.isNullOrEmpty()) {
                 return
@@ -180,14 +209,20 @@ abstract class PropertyAdapter(
     }
 
     companion object {
-        fun ofServer(context: Context, server: MediaServer): PropertyAdapter =
-            ServerPropertyAdapter(context, server)
+        fun ofServer(
+            context: Context,
+            server: MediaServer,
+        ): PropertyAdapter = ServerPropertyAdapter(context, server)
 
-        fun ofContent(context: Context, entity: ContentEntity): PropertyAdapter =
-            ContentPropertyAdapter(context, entity)
+        fun ofContent(
+            context: Context,
+            entity: ContentEntity,
+        ): PropertyAdapter = ContentPropertyAdapter(context, entity)
 
         private val URL_PATTERN = Pattern.compile("https?://[\\w/:%#$&?()~.=+\\-]+")
 
-        private fun isSpace(c: Char): Boolean = c <= '\u0020' || c == '\u00A0' || c == '\u3000'
+        private fun isSpace(
+            c: Char,
+        ): Boolean = c <= '\u0020' || c == '\u00A0' || c == '\u3000'
     }
 }

@@ -66,9 +66,13 @@ class ServerListActivityModel(
     fun getShouldShowHelpFlow(): Flow<Boolean> = shouldShowHelpFlow
 
     interface ServerSelectListener {
-        fun onSelect(v: View)
+        fun onSelect(
+            v: View,
+        )
         fun onLostSelection()
-        fun onExecute(v: View)
+        fun onExecute(
+            v: View,
+        )
     }
 
     init {
@@ -76,11 +80,15 @@ class ServerListActivityModel(
         serverListAdapter.setOnItemClickListener(::onItemClick)
         serverListAdapter.setOnItemLongClickListener(::onItemLongClick)
         controlPointModel.setMsDiscoveryListener(object : MsDiscoveryListener {
-            override fun onDiscover(server: MediaServer) {
+            override fun onDiscover(
+                server: MediaServer,
+            ) {
                 handler.post { onDiscoverServer(server) }
             }
 
-            override fun onLost(server: MediaServer) {
+            override fun onLost(
+                server: MediaServer,
+            ) {
                 handler.post { onLostServer(server) }
             }
         })
@@ -134,7 +142,10 @@ class ServerListActivityModel(
 
     fun hasSelectedMediaServer(): Boolean = controlPointModel.selectedMediaServer != null
 
-    private fun onItemClick(v: View, server: MediaServer) {
+    private fun onItemClick(
+        v: View,
+        server: MediaServer,
+    ) {
         val alreadySelected = controlPointModel.isSelectedMediaServer(server)
         serverListAdapter.setSelectedServer(server)
         controlPointModel.selectedMediaServer = server
@@ -149,7 +160,10 @@ class ServerListActivityModel(
         }
     }
 
-    private fun onItemLongClick(v: View, server: MediaServer) {
+    private fun onItemLongClick(
+        v: View,
+        server: MediaServer,
+    ) {
         serverListAdapter.setSelectedServer(server)
         controlPointModel.selectedMediaServer = server
         if (settings.shouldShowDeviceDetailOnTap()) {
@@ -159,7 +173,9 @@ class ServerListActivityModel(
         }
     }
 
-    private fun onDiscoverServer(server: MediaServer) {
+    private fun onDiscoverServer(
+        server: MediaServer,
+    ) {
         isRefreshingFlow.value = false
         shouldShowHelpFlow.value = false
         if (controlPointModel.numberOfMediaServer == serverListAdapter.itemCount + 1) {
@@ -172,7 +188,9 @@ class ServerListActivityModel(
         }
     }
 
-    private fun onLostServer(server: MediaServer) {
+    private fun onLostServer(
+        server: MediaServer,
+    ) {
         val position = serverListAdapter.remove(server)
         if (position < 0) {
             return

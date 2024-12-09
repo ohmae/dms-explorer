@@ -34,7 +34,9 @@ class PlaybackTargetModel(
         updateUri()
     }
 
-    fun setResIndex(index: Int) {
+    fun setResIndex(
+        index: Int,
+    ) {
         targetRes = cdsObject.getTag(CdsObject.RES, index)
         updateUri()
     }

@@ -59,7 +59,9 @@ class ControlPanelModel internal constructor(
 
     private val durationFlow: MutableStateFlow<Int> = MutableStateFlow(0)
     fun getDurationFlow(): Flow<Int> = durationFlow
-    private fun setDuration(duration: Int) {
+    private fun setDuration(
+        duration: Int,
+    ) {
         durationFlow.value = duration
         if (duration > 0) {
             isSeekableFlow.value = true
@@ -71,7 +73,9 @@ class ControlPanelModel internal constructor(
     private val progressFlow: MutableStateFlow<Int> = MutableStateFlow(0)
     fun getProgressFlow(): Flow<Int> = progressFlow
     fun getProgress(): Int = progressFlow.value
-    private fun setProgress(progress: Int) {
+    private fun setProgress(
+        progress: Int,
+    ) {
         if (tracking) {
             return
         }
@@ -105,11 +109,15 @@ class ControlPanelModel internal constructor(
             }
         }
 
-        override fun onStartTrackingTouch(seekBar: ScrubBar) {
+        override fun onStartTrackingTouch(
+            seekBar: ScrubBar,
+        ) {
             tracking = true
         }
 
-        override fun onStopTrackingTouch(seekBar: ScrubBar) {
+        override fun onStopTrackingTouch(
+            seekBar: ScrubBar,
+        ) {
             tracking = false
             isSkipped = true
             playerModel.seekTo(seekBar.progress)
@@ -133,15 +141,22 @@ class ControlPanelModel internal constructor(
         playerModel.terminate()
     }
 
-    internal fun restoreSaveProgress(position: Int) {
+    internal fun restoreSaveProgress(
+        position: Int,
+    ) {
         playerModel.restoreSaveProgress(position)
     }
 
-    internal fun setOnCompletionListener(listener: (() -> Unit)?) {
+    internal fun setOnCompletionListener(
+        listener: (() -> Unit)?,
+    ) {
         onCompletionListener = listener
     }
 
-    internal fun setSkipControlListener(onNext: (() -> Unit)?, onPrevious: (() -> Unit)?) {
+    internal fun setSkipControlListener(
+        onNext: (() -> Unit)?,
+        onPrevious: (() -> Unit)?,
+    ) {
         onNextListener = onNext
         onPreviousListener = onPrevious
     }
@@ -168,7 +183,9 @@ class ControlPanelModel internal constructor(
         onClickPlayPause()
     }
 
-    fun setRepeatMode(mode: RepeatMode) {
+    fun setRepeatMode(
+        mode: RepeatMode,
+    ) {
         repeatMode = mode
         isNextEnabledFlow.value = when (mode) {
             RepeatMode.PLAY_ONCE,
@@ -199,15 +216,21 @@ class ControlPanelModel internal constructor(
         }
     }
 
-    private fun setProgressText(progress: Int) {
+    private fun setProgressText(
+        progress: Int,
+    ) {
         progressTextFlow.value = makeTimeText(progress)
     }
 
-    private fun setDurationText(duration: Int) {
+    private fun setDurationText(
+        duration: Int,
+    ) {
         durationTextFlow.value = makeTimeText(duration)
     }
 
-    private fun getScrubText(accuracy: Int): String =
+    private fun getScrubText(
+        accuracy: Int,
+    ): String =
         when (accuracy) {
             ScrubBar.ACCURACY_NORMAL -> context.getString(R.string.seek_bar_scrub_normal)
             ScrubBar.ACCURACY_HALF -> context.getString(R.string.seek_bar_scrub_half)
@@ -215,19 +238,28 @@ class ControlPanelModel internal constructor(
             else -> ""
         }
 
-    override fun notifyDuration(duration: Int) {
+    override fun notifyDuration(
+        duration: Int,
+    ) {
         setDuration(duration)
     }
 
-    override fun notifyProgress(progress: Int) {
+    override fun notifyProgress(
+        progress: Int,
+    ) {
         setProgress(progress)
     }
 
-    override fun notifyPlayingState(playing: Boolean) {
+    override fun notifyPlayingState(
+        playing: Boolean,
+    ) {
         isPlaying = playing
     }
 
-    override fun notifyChapterList(chapterList: List<Int>) {}
+    override fun notifyChapterList(
+        chapterList: List<Int>,
+    ) {
+    }
 
     override fun onError(
         what: Int,
@@ -256,12 +288,15 @@ class ControlPanelModel internal constructor(
     fun hasError(): Boolean = error
 
     companion object {
-        private fun makeTimeText(millisecond: Int): String = String.format(
-            Locale.US,
-            "%01d:%02d:%02d",
-            (millisecond / 3600000).toLong(),
-            (millisecond / 60000 % 60).toLong(),
-            (millisecond / 1000 % 60).toLong(),
-        )
+        private fun makeTimeText(
+            millisecond: Int,
+        ): String =
+            String.format(
+                Locale.US,
+                "%01d:%02d:%02d",
+                (millisecond / 3600000).toLong(),
+                (millisecond / 60000 % 60).toLong(),
+                (millisecond / 1000 % 60).toLong(),
+            )
     }
 }

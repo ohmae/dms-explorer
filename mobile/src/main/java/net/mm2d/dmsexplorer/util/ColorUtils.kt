@@ -19,7 +19,10 @@ object ColorUtils {
     private const val DARKER_RATIO = 0.7f
 
     @ColorInt
-    fun getDarkerColor(@ColorInt color: Int, ratio: Float = DARKER_RATIO): Int {
+    fun getDarkerColor(
+        @ColorInt color: Int,
+        ratio: Float = DARKER_RATIO,
+    ): Int {
         val a = Color.alpha(color)
         val r = (Color.red(color) * ratio + 0.5f).toInt()
         val g = (Color.green(color) * ratio + 0.5f).toInt()

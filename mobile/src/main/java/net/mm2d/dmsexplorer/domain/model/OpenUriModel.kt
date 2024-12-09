@@ -13,8 +13,20 @@ import android.content.Context
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
  */
 interface OpenUriModel {
-    fun openUri(context: Context, uri: String)
-    fun setUseCustomTabs(use: Boolean)
-    fun mayLaunchUrl(url: String)
-    fun mayLaunchUrl(urls: List<String>)
+    fun openUri(
+        context: Context,
+        uri: String,
+    )
+
+    fun setUseCustomTabs(
+        use: Boolean,
+    )
+
+    fun mayLaunchUrl(
+        url: String,
+    )
+
+    fun mayLaunchUrl(
+        urls: List<String>,
+    )
 }

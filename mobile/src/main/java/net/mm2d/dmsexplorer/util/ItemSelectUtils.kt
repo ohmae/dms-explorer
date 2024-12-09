@@ -31,7 +31,9 @@ import net.mm2d.dmsexplorer.view.dialog.SelectResourceDialog
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
  */
 object ItemSelectUtils {
-    fun play(activity: FragmentActivity) {
+    fun play(
+        activity: FragmentActivity,
+    ) {
         val targetModel = Repository.get().playbackTargetModel ?: return
         when (targetModel.resCount) {
             0 -> Unit
@@ -40,7 +42,10 @@ object ItemSelectUtils {
         }
     }
 
-    fun play(activity: Activity, index: Int) {
+    fun play(
+        activity: Activity,
+        index: Int,
+    ) {
         val targetModel = Repository.get().playbackTargetModel ?: return
         targetModel.setResIndex(index)
         if (targetModel.uri === Uri.EMPTY) {
@@ -65,18 +70,25 @@ object ItemSelectUtils {
         }
     }
 
-    private fun getPlayerClass(type: ContentType): Class<*>? = when (type) {
-        ContentType.MOVIE -> MovieActivity::class.java
-        ContentType.MUSIC -> MusicActivity::class.java
-        ContentType.PHOTO -> PhotoActivity::class.java
-        else -> null
-    }
+    private fun getPlayerClass(
+        type: ContentType,
+    ): Class<*>? =
+        when (type) {
+            ContentType.MOVIE -> MovieActivity::class.java
+            ContentType.MUSIC -> MusicActivity::class.java
+            ContentType.PHOTO -> PhotoActivity::class.java
+            else -> null
+        }
 
-    fun send(activity: FragmentActivity) {
+    fun send(
+        activity: FragmentActivity,
+    ) {
         SelectRendererDialog.show(activity)
     }
 
-    fun sendSelectedRenderer(context: Context) {
+    fun sendSelectedRenderer(
+        context: Context,
+    ) {
         try {
             context.startActivity(DmcActivity.makeIntent(context))
             EventLogger.sendSendContent()

@@ -20,7 +20,9 @@ object ChapterFetcherFactory {
         SharpFetcherFactory(),
     )
 
-    fun create(cdsObject: CdsObject): Single<List<Int>> =
+    fun create(
+        cdsObject: CdsObject,
+    ): Single<List<Int>> =
         FACTORIES.asSequence()
             .mapNotNull { it.create(cdsObject) }
             .firstOrNull()

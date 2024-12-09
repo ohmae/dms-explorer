@@ -41,29 +41,40 @@ internal class CdsObjectImpl(
         ?: throw IllegalArgumentException("Malformed item")
     override val type: Int = getType(isItem, upnpClass)
 
-    override fun getValue(xpath: String, index: Int): String? =
-        tagMap.getValue(xpath, index)
+    override fun getValue(
+        xpath: String,
+        index: Int,
+    ): String? = tagMap.getValue(xpath, index)
 
-    override fun getValue(tagName: String?, attrName: String?, index: Int): String? =
-        tagMap.getValue(tagName, attrName, index)
+    override fun getValue(
+        tagName: String?,
+        attrName: String?,
+        index: Int,
+    ): String? = tagMap.getValue(tagName, attrName, index)
 
-    override fun getTag(tagName: String?, index: Int): Tag? =
-        tagMap.getTag(tagName, index)
+    override fun getTag(
+        tagName: String?,
+        index: Int,
+    ): Tag? = tagMap.getTag(tagName, index)
 
-    override fun getTagList(tagName: String?): List<Tag>? =
-        tagMap.getTagList(tagName)
+    override fun getTagList(
+        tagName: String?,
+    ): List<Tag>? = tagMap.getTagList(tagName)
 
-    override fun getIntValue(xpath: String, defaultValue: Int, index: Int): Int =
-        getValue(xpath, index)?.toIntOrNull() ?: defaultValue
+    override fun getIntValue(
+        xpath: String,
+        defaultValue: Int,
+        index: Int,
+    ): Int = getValue(xpath, index)?.toIntOrNull() ?: defaultValue
 
-    override fun getDateValue(xpath: String, index: Int): Date? =
-        PropertyParser.parseDate(getValue(xpath, index))
+    override fun getDateValue(
+        xpath: String,
+        index: Int,
+    ): Date? = PropertyParser.parseDate(getValue(xpath, index))
 
-    override fun getResourceCount(): Int =
-        getTagList(CdsObject.RES)?.size ?: 0
+    override fun getResourceCount(): Int = getTagList(CdsObject.RES)?.size ?: 0
 
-    override fun hasResource(): Boolean =
-        getTagList(CdsObject.RES)?.isNotEmpty() ?: false
+    override fun hasResource(): Boolean = getTagList(CdsObject.RES)?.isNotEmpty() ?: false
 
     override fun hasProtectedResource(): Boolean =
         getTagList(CdsObject.RES)?.find {
@@ -76,13 +87,18 @@ internal class CdsObjectImpl(
     override fun toDumpString(): String = tagMap.toString()
     override fun hashCode(): Int = tagMap.hashCode()
 
-    override fun equals(other: Any?): Boolean {
+    override fun equals(
+        other: Any?,
+    ): Boolean {
         if (this === other) return true
         if (other !is CdsObject) return false
         return objectId == other.objectId && udn == other.udn
     }
 
-    override fun writeToParcel(dest: Parcel, flags: Int) {
+    override fun writeToParcel(
+        dest: Parcel,
+        flags: Int,
+    ) {
         dest.writeString(udn)
         dest.writeByte((if (isItem) 1 else 0).toByte())
         dest.writeParcelable(rootTag, flags)
@@ -92,9 +108,13 @@ internal class CdsObjectImpl(
     override fun describeContents(): Int = 0
 
     companion object CREATOR : Creator<CdsObjectImpl> {
-        override fun createFromParcel(parcel: Parcel): CdsObjectImpl = create(parcel)
+        override fun createFromParcel(
+            parcel: Parcel,
+        ): CdsObjectImpl = create(parcel)
 
-        override fun newArray(size: Int): Array<CdsObjectImpl?> = arrayOfNulls(size)
+        override fun newArray(
+            size: Int,
+        ): Array<CdsObjectImpl?> = arrayOfNulls(size)
 
         /**
          * elementをもとにインスタンス作成
@@ -118,7 +138,9 @@ internal class CdsObjectImpl(
             parseElement(element),
         )
 
-        private fun create(parcel: Parcel) = CdsObjectImpl(
+        private fun create(
+            parcel: Parcel,
+        ) = CdsObjectImpl(
             parcel.readString()!!,
             parcel.readByte().toInt() != 0,
             parcel.readParcelable(Tag::class.java.classLoader)!!,
@@ -130,7 +152,9 @@ internal class CdsObjectImpl(
          *
          * @param element objectを示すelement
          */
-        private fun parseElement(element: Element): TagMap {
+        private fun parseElement(
+            element: Element,
+        ): TagMap {
             val map: MutableMap<String, MutableList<Tag>> = mutableMapOf()
             map[""] = mutableListOf(Tag.create(element, true))
             element.firstChild?.forEachElement {
@@ -146,16 +170,17 @@ internal class CdsObjectImpl(
         private fun getType(
             isItem: Boolean,
             upnpClass: String,
-        ): Int = if (!isItem) {
-            TYPE_CONTAINER
-        } else if (upnpClass.startsWith(IMAGE_ITEM)) {
-            TYPE_IMAGE
-        } else if (upnpClass.startsWith(AUDIO_ITEM)) {
-            TYPE_AUDIO
-        } else if (upnpClass.startsWith(VIDEO_ITEM)) {
-            TYPE_VIDEO
-        } else {
-            TYPE_UNKNOWN
-        }
+        ): Int =
+            if (!isItem) {
+                TYPE_CONTAINER
+            } else if (upnpClass.startsWith(IMAGE_ITEM)) {
+                TYPE_IMAGE
+            } else if (upnpClass.startsWith(AUDIO_ITEM)) {
+                TYPE_AUDIO
+            } else if (upnpClass.startsWith(VIDEO_ITEM)) {
+                TYPE_VIDEO
+            } else {
+                TYPE_UNKNOWN
+            }
     }
 }

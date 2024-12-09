@@ -25,7 +25,9 @@ import net.mm2d.dmsexplorer.viewmodel.ContentItemModel
  *
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
  */
-class ContentListAdapter(context: Context) : RecyclerView.Adapter<ContentListAdapter.ViewHolder>() {
+class ContentListAdapter(
+    context: Context,
+) : RecyclerView.Adapter<ContentListAdapter.ViewHolder>() {
     private val inflater: LayoutInflater = LayoutInflater.from(context)
     private var clickListener: ((View, ContentEntity) -> Unit)? = null
     private var longClickListener: ((View, ContentEntity) -> Unit)? = null
@@ -36,28 +38,41 @@ class ContentListAdapter(context: Context) : RecyclerView.Adapter<ContentListAda
 
     var list = emptyList<ContentEntity>()
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
-        ViewHolder(ContentListItemBinding.inflate(inflater, parent, false))
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        viewType: Int,
+    ): ViewHolder = ViewHolder(ContentListItemBinding.inflate(inflater, parent, false))
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+    override fun onBindViewHolder(
+        holder: ViewHolder,
+        position: Int,
+    ) {
         holder.applyItem(list[position])
     }
 
     override fun getItemCount(): Int = list.size
 
-    fun setOnItemClickListener(listener: ((View, ContentEntity) -> Unit)?) {
+    fun setOnItemClickListener(
+        listener: ((View, ContentEntity) -> Unit)?,
+    ) {
         clickListener = listener
     }
 
-    fun setOnItemLongClickListener(listener: ((View, ContentEntity) -> Unit)?) {
+    fun setOnItemLongClickListener(
+        listener: ((View, ContentEntity) -> Unit)?,
+    ) {
         longClickListener = listener
     }
 
-    fun indexOf(entity: ContentEntity): Int = list.indexOf(entity)
+    fun indexOf(
+        entity: ContentEntity,
+    ): Int = list.indexOf(entity)
 
     fun getSelectedEntity(): ContentEntity? = selectedEntity
 
-    fun setSelectedEntity(entity: ContentEntity?): Boolean {
+    fun setSelectedEntity(
+        entity: ContentEntity?,
+    ): Boolean {
         if (selectedEntity != null && selectedEntity == entity) {
             return false
         }
@@ -68,7 +83,9 @@ class ContentListAdapter(context: Context) : RecyclerView.Adapter<ContentListAda
         return true
     }
 
-    private fun notifyItemChangedIfPossible(entity: ContentEntity?) {
+    private fun notifyItemChangedIfPossible(
+        entity: ContentEntity?,
+    ) {
         if (entity == null) {
             return
         }
@@ -97,7 +114,9 @@ class ContentListAdapter(context: Context) : RecyclerView.Adapter<ContentListAda
             }
         }
 
-        fun applyItem(entity: ContentEntity) {
+        fun applyItem(
+            entity: ContentEntity,
+        ) {
             contentEntity = entity
             val selected = entity == selectedEntity
             itemView.isSelected = selected
@@ -112,20 +131,27 @@ class ContentListAdapter(context: Context) : RecyclerView.Adapter<ContentListAda
             binding.lock.isVisible = model.isProtected
         }
 
-        private fun onClick(v: View) {
+        private fun onClick(
+            v: View,
+        ) {
             contentEntity?.let {
                 clickListener?.invoke(v, it)
             }
         }
 
-        private fun onLongClick(v: View): Boolean {
+        private fun onLongClick(
+            v: View,
+        ): Boolean {
             contentEntity?.let {
                 longClickListener?.invoke(v, it)
             }
             return true
         }
 
-        private fun onFocusChange(v: View, focus: Boolean) {
+        private fun onFocusChange(
+            v: View,
+            focus: Boolean,
+        ) {
             if (focus) {
                 v.scaleX = FOCUS_SCALE
                 v.scaleY = FOCUS_SCALE

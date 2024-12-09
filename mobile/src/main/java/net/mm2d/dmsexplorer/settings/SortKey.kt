@@ -18,7 +18,8 @@ enum class SortKey {
 
     companion object {
         private val map = values().map { it.name to it }.toMap()
-        fun of(name: String): SortKey =
-            map.getOrElse(name) { NONE }
+        fun of(
+            name: String,
+        ): SortKey = map.getOrElse(name) { NONE }
     }
 }

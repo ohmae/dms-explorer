@@ -24,7 +24,10 @@ class ServerDetailFragment : Fragment(R.layout.server_detail_fragment) {
     lateinit var binding: ServerDetailFragmentBinding
     lateinit var model: ServerDetailFragmentModel
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?,
+    ) {
         super.onViewCreated(view, savedInstanceState)
         binding = ServerDetailFragmentBinding.bind(view)
         val activity = requireActivity()

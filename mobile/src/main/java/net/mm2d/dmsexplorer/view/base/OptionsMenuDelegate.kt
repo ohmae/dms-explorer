@@ -15,9 +15,19 @@ import android.view.MenuItem
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
  */
 internal interface OptionsMenuDelegate {
-    fun onCreate(savedInstanceState: Bundle?)
+    fun onCreate(
+        savedInstanceState: Bundle?,
+    )
     fun onDestroy()
-    fun onCreateOptionsMenu(menu: Menu): Boolean
-    fun onOptionsItemSelected(item: MenuItem): Boolean
-    fun onPrepareOptionsMenu(menu: Menu): Boolean
+    fun onCreateOptionsMenu(
+        menu: Menu,
+    ): Boolean
+
+    fun onOptionsItemSelected(
+        item: MenuItem,
+    ): Boolean
+
+    fun onPrepareOptionsMenu(
+        menu: Menu,
+    ): Boolean
 }

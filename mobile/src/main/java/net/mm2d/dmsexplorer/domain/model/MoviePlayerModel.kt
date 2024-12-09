@@ -24,11 +24,16 @@ class MoviePlayerModel(
     private val videoView: VideoView,
 ) : MediaPlayerModel(VideoViewControl(videoView)) {
     override val name: String = "Movie Player"
-    override fun setUri(uri: Uri, entity: ContentEntity?) {
+    override fun setUri(
+        uri: Uri,
+        entity: ContentEntity?,
+    ) {
         videoView.setVideoURI(uri)
     }
 
-    override fun preparePlaying(mediaPlayer: MediaPlayer) {
+    override fun preparePlaying(
+        mediaPlayer: MediaPlayer,
+    ) {
         mediaPlayer.setWakeMode(context, PowerManager.PARTIAL_WAKE_LOCK)
         mediaPlayer.setAudioAttributes(
             AudioAttributes.Builder()

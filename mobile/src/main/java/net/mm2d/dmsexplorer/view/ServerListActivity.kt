@@ -34,7 +34,9 @@ class ServerListActivity : BaseActivity(true) {
     private lateinit var controlPointModel: ControlPointModel
     private lateinit var delegate: ServerListActivityDelegate
 
-    override fun onCreate(savedInstanceState: Bundle?) {
+    override fun onCreate(
+        savedInstanceState: Bundle?,
+    ) {
         settings = Settings.get()
         setTheme(settings.themeParams.listThemeId)
         super.onCreate(savedInstanceState)
@@ -67,7 +69,9 @@ class ServerListActivity : BaseActivity(true) {
             .setRequestedOrientation(this)
     }
 
-    override fun onSaveInstanceState(outState: Bundle) {
+    override fun onSaveInstanceState(
+        outState: Bundle,
+    ) {
         delegate.prepareSaveInstanceState()
         super.onSaveInstanceState(outState)
         delegate.onSaveInstanceState(outState)
@@ -85,7 +89,9 @@ class ServerListActivity : BaseActivity(true) {
     }
 
     companion object {
-        fun start(context: Context) {
+        fun start(
+            context: Context,
+        ) {
             val intent = Intent(context, ServerListActivity::class.java)
             intent.addCategory(Intent.CATEGORY_LAUNCHER)
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)

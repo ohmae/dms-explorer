@@ -29,22 +29,33 @@ class RendererListAdapter(
     private var clickListener: ((View, MediaRenderer) -> Unit)? = null
     private var longClickListener: ((View, MediaRenderer) -> Unit)? = null
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
-        ViewHolder(RendererListItemBinding.inflate(inflater, parent, false))
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        viewType: Int,
+    ): ViewHolder = ViewHolder(RendererListItemBinding.inflate(inflater, parent, false))
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+    override fun onBindViewHolder(
+        holder: ViewHolder,
+        position: Int,
+    ) {
         holder.applyItem(list[position])
     }
 
     override fun getItemCount(): Int = list.size
 
-    fun indexOf(renderer: MediaRenderer): Int = list.indexOf(renderer)
+    fun indexOf(
+        renderer: MediaRenderer,
+    ): Int = list.indexOf(renderer)
 
-    fun setOnItemClickListener(listener: ((View, MediaRenderer) -> Unit)?) {
+    fun setOnItemClickListener(
+        listener: ((View, MediaRenderer) -> Unit)?,
+    ) {
         clickListener = listener
     }
 
-    fun setOnItemLongClickListener(listener: ((View, MediaRenderer) -> Unit)?) {
+    fun setOnItemLongClickListener(
+        listener: ((View, MediaRenderer) -> Unit)?,
+    ) {
         longClickListener = listener
     }
 
@@ -52,16 +63,22 @@ class RendererListAdapter(
         list.clear()
     }
 
-    fun addAll(renderers: Collection<MediaRenderer>) {
+    fun addAll(
+        renderers: Collection<MediaRenderer>,
+    ) {
         list.addAll(renderers)
     }
 
-    fun add(renderer: MediaRenderer): Int {
+    fun add(
+        renderer: MediaRenderer,
+    ): Int {
         list.add(renderer)
         return list.size - 1
     }
 
-    fun remove(renderer: MediaRenderer): Int {
+    fun remove(
+        renderer: MediaRenderer,
+    ): Int {
         val position = list.indexOf(renderer)
         if (position >= 0) {
             list.removeAt(position)
@@ -79,7 +96,9 @@ class RendererListAdapter(
             itemView.setOnLongClickListener(::onLongClick)
         }
 
-        fun applyItem(renderer: MediaRenderer) {
+        fun applyItem(
+            renderer: MediaRenderer,
+        ) {
             mediaRenderer = renderer
             val model = RendererItemModel(context, renderer)
             binding.textAccent.setBackground(model.accentBackground)
@@ -91,11 +110,15 @@ class RendererListAdapter(
             binding.textDescription.text = model.description
         }
 
-        private fun onClick(v: View) {
+        private fun onClick(
+            v: View,
+        ) {
             mediaRenderer?.let { clickListener?.invoke(v, it) }
         }
 
-        private fun onLongClick(v: View): Boolean {
+        private fun onLongClick(
+            v: View,
+        ): Boolean {
             mediaRenderer?.let { longClickListener?.invoke(v, it) }
             return true
         }

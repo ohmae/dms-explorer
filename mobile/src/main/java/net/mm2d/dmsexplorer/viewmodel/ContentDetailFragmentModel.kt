@@ -50,20 +50,25 @@ class ContentDetailFragmentModel(
     private val settings: Settings
     private val mrControlPoint: MrControlPoint
     private val mrDiscoveryListener = object : MrDiscoveryListener {
-        override fun onDiscover(server: MediaRenderer) {
+        override fun onDiscover(
+            server: MediaRenderer,
+        ) {
             updateCanSend()
         }
 
-        override fun onLost(server: MediaRenderer) {
+        override fun onLost(
+            server: MediaRenderer,
+        ) {
             updateCanSend()
         }
     }
 
-    fun getPlayBackgroundTint(): Int = if (isProtected) {
-        AttrUtils.resolveColor(activity, R.attr.themeFabDisable, Color.BLACK)
-    } else {
-        AttrUtils.resolveColor(activity, androidx.appcompat.R.attr.colorAccent, Color.BLACK)
-    }
+    fun getPlayBackgroundTint(): Int =
+        if (isProtected) {
+            AttrUtils.resolveColor(activity, R.attr.themeFabDisable, Color.BLACK)
+        } else {
+            AttrUtils.resolveColor(activity, androidx.appcompat.R.attr.colorAccent, Color.BLACK)
+        }
 
     init {
         val model = repository.mediaServerModel ?: throw IllegalStateException()
@@ -103,7 +108,9 @@ class ContentDetailFragmentModel(
         mrControlPoint.removeMrDiscoveryListener(mrDiscoveryListener)
     }
 
-    fun onClickPlay(view: View) {
+    fun onClickPlay(
+        view: View,
+    ) {
         if (isProtected) {
             showSnackbar(view)
         } else {
@@ -111,7 +118,9 @@ class ContentDetailFragmentModel(
         }
     }
 
-    fun onLongClickPlay(view: View): Boolean {
+    fun onLongClickPlay(
+        view: View,
+    ): Boolean {
         if (isProtected) {
             showSnackbar(view)
         } else {
@@ -120,7 +129,9 @@ class ContentDetailFragmentModel(
         return true
     }
 
-    private fun showSnackbar(view: View) {
+    private fun showSnackbar(
+        view: View,
+    ) {
         Snackbar.make(view, R.string.toast_not_support_drm, Snackbar.LENGTH_LONG).show()
     }
 

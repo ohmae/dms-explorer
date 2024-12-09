@@ -25,7 +25,9 @@ object DisplaySizeUtils {
      * @return ディスプレイサイズ
      * @see Display.getSize
      */
-    private fun getSize(activity: Activity): Point {
+    private fun getSize(
+        activity: Activity,
+    ): Point {
         val display = activity.windowManager.defaultDisplay
         val point = Point()
         display.getSize(point)
@@ -39,9 +41,12 @@ object DisplaySizeUtils {
      * @return ディスプレイサイズ
      * @see Display.getRealSize
      */
-    fun getRealSize(activity: Activity): Point = Point().also {
-        activity.windowManager.defaultDisplay.getRealSize(it)
-    }
+    fun getRealSize(
+        activity: Activity,
+    ): Point =
+        Point().also {
+            activity.windowManager.defaultDisplay.getRealSize(it)
+        }
 
     /**
      * アプリケーションエリア内のNavigationBarエリアを返す。
@@ -49,7 +54,9 @@ object DisplaySizeUtils {
      * @param activity Activity
      * @return NavigationBarのエリア
      */
-    fun getNavigationBarArea(activity: Activity): Point {
+    fun getNavigationBarArea(
+        activity: Activity,
+    ): Point {
         if (isInMultiWindowMode(activity)) {
             return Point(0, 0)
         }
@@ -58,6 +65,7 @@ object DisplaySizeUtils {
         return Point(p2.x - p1.x, p2.y - p1.y)
     }
 
-    private fun isInMultiWindowMode(activity: Activity): Boolean =
-        Build.VERSION.SDK_INT >= Build.VERSION_CODES.N && activity.isInMultiWindowMode
+    private fun isInMultiWindowMode(
+        activity: Activity,
+    ): Boolean = Build.VERSION.SDK_INT >= Build.VERSION_CODES.N && activity.isInMultiWindowMode
 }

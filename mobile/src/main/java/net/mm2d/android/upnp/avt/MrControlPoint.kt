@@ -60,14 +60,18 @@ class MrControlPoint : ControlPointWrapper {
          *
          * @param server 発見したMediaRenderer
          */
-        fun onDiscover(server: MediaRenderer)
+        fun onDiscover(
+            server: MediaRenderer,
+        )
 
         /**
          * 機器喪失時に通知される。
          *
          * @param server 喪失したMediaRenderer
          */
-        fun onLost(server: MediaRenderer)
+        fun onLost(
+            server: MediaRenderer,
+        )
     }
 
     /**
@@ -76,10 +80,13 @@ class MrControlPoint : ControlPointWrapper {
      * @param device Device
      * @return MediaRenderer
      */
-    private fun createMediaRenderer(device: Device): MediaRenderer =
-        MediaRenderer(this, device)
+    private fun createMediaRenderer(
+        device: Device,
+    ): MediaRenderer = MediaRenderer(this, device)
 
-    private fun discoverDevice(device: Device) {
+    private fun discoverDevice(
+        device: Device,
+    ) {
         if (device.deviceType.startsWith(Avt.MR_DEVICE_TYPE) &&
             device.findServiceById(Avt.AVT_SERVICE_ID) != null
         ) {
@@ -91,7 +98,9 @@ class MrControlPoint : ControlPointWrapper {
         }
     }
 
-    private fun discoverMrDevice(device: Device) {
+    private fun discoverMrDevice(
+        device: Device,
+    ) {
         val renderer: MediaRenderer = try {
             createMediaRenderer(device)
         } catch (ignored: IllegalArgumentException) {
@@ -104,7 +113,9 @@ class MrControlPoint : ControlPointWrapper {
         }
     }
 
-    private fun lostDevice(device: Device) {
+    private fun lostDevice(
+        device: Device,
+    ) {
         val renderer = mediaRendererMap.remove(device.udn) ?: return
         for (listener in mrDiscoveryListeners) {
             listener.onLost(renderer)
@@ -116,7 +127,9 @@ class MrControlPoint : ControlPointWrapper {
      *
      * @param listener リスナー
      */
-    fun addMrDiscoveryListener(listener: MrDiscoveryListener) {
+    fun addMrDiscoveryListener(
+        listener: MrDiscoveryListener,
+    ) {
         if (!mrDiscoveryListeners.contains(listener)) {
             mrDiscoveryListeners.add(listener)
         }
@@ -127,7 +140,9 @@ class MrControlPoint : ControlPointWrapper {
      *
      * @param listener リスナー
      */
-    fun removeMrDiscoveryListener(listener: MrDiscoveryListener) {
+    fun removeMrDiscoveryListener(
+        listener: MrDiscoveryListener,
+    ) {
         mrDiscoveryListeners.remove(listener)
     }
 
@@ -137,15 +152,18 @@ class MrControlPoint : ControlPointWrapper {
      * @param udn UDN
      * @return MediaRenderer、見つからない場合null
      */
-    override fun getDevice(udn: String?): MediaRenderer? =
-        mediaRendererMap[udn]
+    override fun getDevice(
+        udn: String?,
+    ): MediaRenderer? = mediaRendererMap[udn]
 
     /**
      * 初期化する。
      *
      * @param controlPoint ControlPoint
      */
-    override fun initialize(controlPoint: ControlPoint) {
+    override fun initialize(
+        controlPoint: ControlPoint,
+    ) {
         if (initialized.get()) {
             terminate(controlPoint)
         }
@@ -160,7 +178,9 @@ class MrControlPoint : ControlPointWrapper {
      *
      * @param controlPoint ControlPoint
      */
-    override fun terminate(controlPoint: ControlPoint) {
+    override fun terminate(
+        controlPoint: ControlPoint,
+    ) {
         if (!initialized.getAndSet(false)) {
             return
         }

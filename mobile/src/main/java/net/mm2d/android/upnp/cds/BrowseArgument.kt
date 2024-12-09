@@ -20,33 +20,50 @@ internal class BrowseArgument {
         setBrowseDirectChildren()
     }
 
-    fun setObjectId(objectId: String): BrowseArgument = apply {
-        argument[OBJECT_ID] = objectId
-    }
+    fun setObjectId(
+        objectId: String,
+    ): BrowseArgument =
+        apply {
+            argument[OBJECT_ID] = objectId
+        }
 
-    fun setBrowseDirectChildren(): BrowseArgument = apply {
-        argument[BROWSE_FLAG] = BROWSE_DIRECT_CHILDREN
-    }
+    fun setBrowseDirectChildren(): BrowseArgument =
+        apply {
+            argument[BROWSE_FLAG] = BROWSE_DIRECT_CHILDREN
+        }
 
-    fun setBrowseMetadata(): BrowseArgument = apply {
-        argument[BROWSE_FLAG] = BROWSE_METADATA
-    }
+    fun setBrowseMetadata(): BrowseArgument =
+        apply {
+            argument[BROWSE_FLAG] = BROWSE_METADATA
+        }
 
-    fun setFilter(filter: String?): BrowseArgument = apply {
-        argument[FILTER] = filter
-    }
+    fun setFilter(
+        filter: String?,
+    ): BrowseArgument =
+        apply {
+            argument[FILTER] = filter
+        }
 
-    fun setSortCriteria(sortCriteria: String?): BrowseArgument = apply {
-        argument[SORT_CRITERIA] = sortCriteria
-    }
+    fun setSortCriteria(
+        sortCriteria: String?,
+    ): BrowseArgument =
+        apply {
+            argument[SORT_CRITERIA] = sortCriteria
+        }
 
-    fun setStartIndex(startIndex: Int): BrowseArgument = apply {
-        argument[START_INDEX] = startIndex.toString()
-    }
+    fun setStartIndex(
+        startIndex: Int,
+    ): BrowseArgument =
+        apply {
+            argument[START_INDEX] = startIndex.toString()
+        }
 
-    fun setRequestCount(requestCount: Int): BrowseArgument = apply {
-        argument[REQUESTED_COUNT] = requestCount.toString()
-    }
+    fun setRequestCount(
+        requestCount: Int,
+    ): BrowseArgument =
+        apply {
+            argument[REQUESTED_COUNT] = requestCount.toString()
+        }
 
     fun get(): Map<String, String?> = argument
 

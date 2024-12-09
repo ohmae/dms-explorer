@@ -37,7 +37,9 @@ class MusicActivity : BaseActivity() {
     private lateinit var settings: Settings
     private var model: MusicActivityModel? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
+    override fun onCreate(
+        savedInstanceState: Bundle?,
+    ) {
         settings = Settings.get()
         setTheme(settings.themeParams.noActionBarThemeId)
         super.onCreate(savedInstanceState)
@@ -85,7 +87,10 @@ class MusicActivity : BaseActivity() {
         }
     }
 
-    private fun applyControlPanelParam(binding: ControlPanelBinding, param: ControlPanelParam) {
+    private fun applyControlPanelParam(
+        binding: ControlPanelBinding,
+        param: ControlPanelParam,
+    ) {
         param.getMarginRightFlow().observe(this) {
             binding.root.updatePadding(right = it)
         }
@@ -100,7 +105,10 @@ class MusicActivity : BaseActivity() {
 
     private val jobs: MutableList<Job> = mutableListOf()
 
-    private fun applyControlPanelModel(binding: ControlPanelBinding, model: ControlPanelModel) {
+    private fun applyControlPanelModel(
+        binding: ControlPanelBinding,
+        model: ControlPanelModel,
+    ) {
         jobs.forEach { it.cancel() }
         jobs.clear()
 
@@ -152,7 +160,9 @@ class MusicActivity : BaseActivity() {
             .setRequestedOrientation(this)
     }
 
-    override fun onSaveInstanceState(outState: Bundle) {
+    override fun onSaveInstanceState(
+        outState: Bundle,
+    ) {
         super.onSaveInstanceState(outState)
         model?.let { outState.putInt(KEY_POSITION, it.currentProgress) }
     }

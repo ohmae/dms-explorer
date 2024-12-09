@@ -20,8 +20,7 @@ import java.net.NetworkInterface
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
  */
 internal class EmulatorLan : Lan() {
-    override fun getAvailableInterfaces(): Collection<NetworkInterface> =
-        NetworkUtils.getAvailableInet4Interfaces()
+    override fun getAvailableInterfaces(): Collection<NetworkInterface> = NetworkUtils.getAvailableInet4Interfaces()
 
     override fun hasAvailableInterface(): Boolean = true
 }

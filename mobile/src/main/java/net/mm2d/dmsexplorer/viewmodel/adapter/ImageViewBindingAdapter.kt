@@ -65,7 +65,9 @@ object ImageViewBindingAdapter {
         }
     }
 
-    private fun showToast(context: Context) {
+    private fun showToast(
+        context: Context,
+    ) {
         Toaster.show(context, R.string.toast_decode_error)
     }
 

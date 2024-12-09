@@ -45,13 +45,17 @@ class FullscreenHelper(
         exitToBottom = AnimationUtils.loadAnimation(context, R.anim.exit_to_bottom)
     }
 
-    private fun postHideNavigation(interval: Long) {
+    private fun postHideNavigation(
+        interval: Long,
+    ) {
         handler.removeCallbacks(hideNavigationTask)
         handler.postDelayed(hideNavigationTask, interval)
         posted = true
     }
 
-    fun showNavigation(interval: Long = NAVIGATION_INTERVAL): Boolean {
+    fun showNavigation(
+        interval: Long = NAVIGATION_INTERVAL,
+    ): Boolean {
         if (isInPictureInPictureMode) {
             return false
         }
@@ -116,7 +120,9 @@ class FullscreenHelper(
         handler.removeCallbacks(hideNavigationTask)
     }
 
-    fun onPictureInPictureModeChanged(pip: Boolean) {
+    fun onPictureInPictureModeChanged(
+        pip: Boolean,
+    ) {
         isInPictureInPictureMode = pip
         if (pip) {
             handler.removeCallbacks(hideNavigationTask)

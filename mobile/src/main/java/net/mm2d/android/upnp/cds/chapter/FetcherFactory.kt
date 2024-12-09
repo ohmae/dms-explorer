@@ -14,5 +14,7 @@ import net.mm2d.android.upnp.cds.CdsObject
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
  */
 internal interface FetcherFactory {
-    fun create(cdsObject: CdsObject): Single<List<Int>>?
+    fun create(
+        cdsObject: CdsObject,
+    ): Single<List<Int>>?
 }

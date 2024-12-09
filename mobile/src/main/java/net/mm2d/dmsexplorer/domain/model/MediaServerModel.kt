@@ -58,7 +58,9 @@ class MediaServerModel(
         historyStack.clear()
     }
 
-    fun canDelete(entity: ContentEntity): Boolean {
+    fun canDelete(
+        entity: ContentEntity,
+    ): Boolean {
         if (!entity.canDelete()) {
             return false
         }
@@ -94,7 +96,9 @@ class MediaServerModel(
             }, { onError.run() })
     }
 
-    fun enterChild(entity: ContentEntity): Boolean {
+    fun enterChild(
+        entity: ContentEntity,
+    ): Boolean {
         val directory = historyStack.peekFirst() ?: return false
         val child = directory.enterChild(entity) ?: return false
         directory.setExploreListener(null)
@@ -103,7 +107,9 @@ class MediaServerModel(
         return true
     }
 
-    private fun prepareEntry(directory: ContentDirectoryEntity) {
+    private fun prepareEntry(
+        directory: ContentDirectoryEntity,
+    ) {
         historyStack.offerFirst(directory)
         path = makePath()
         directory.setExploreListener(this)
@@ -136,7 +142,9 @@ class MediaServerModel(
         directory.startBrowse(mediaServer.browse(directory.parentId))
     }
 
-    fun setExploreListener(listener: ExploreListener?) {
+    fun setExploreListener(
+        listener: ExploreListener?,
+    ) {
         exploreListener = listener ?: EXPLORE_LISTENER
         val directory = historyStack.peekFirst() ?: return
         exploreListener.onStart()
@@ -146,7 +154,9 @@ class MediaServerModel(
         }
     }
 
-    fun setSelectedEntity(entity: ContentEntity): Boolean {
+    fun setSelectedEntity(
+        entity: ContentEntity,
+    ): Boolean {
         val directory = historyStack.peekFirst() ?: return false
         directory.selectedEntity = entity
         updatePlaybackTarget()
@@ -157,7 +167,9 @@ class MediaServerModel(
         playbackTargetObserver.invoke(selectedEntity)
     }
 
-    fun selectPreviousEntity(@ScanMode scanMode: Int): Boolean {
+    fun selectPreviousEntity(
+        @ScanMode scanMode: Int,
+    ): Boolean {
         val nextEntity = findPrevious(selectedEntity, scanMode) ?: return false
         return setSelectedEntity(nextEntity)
     }
@@ -212,7 +224,9 @@ class MediaServerModel(
         return null
     }
 
-    fun selectNextEntity(@ScanMode scanMode: Int): Boolean {
+    fun selectNextEntity(
+        @ScanMode scanMode: Int,
+    ): Boolean {
         val nextEntity = findNext(selectedEntity, scanMode) ?: return false
         return setSelectedEntity(nextEntity)
     }
@@ -270,8 +284,10 @@ class MediaServerModel(
         return null
     }
 
-    private fun isValidEntity(current: ContentEntity, target: ContentEntity): Boolean =
-        target.type == current.type && target.hasResource() && !target.isProtected
+    private fun isValidEntity(
+        current: ContentEntity,
+        target: ContentEntity,
+    ): Boolean = target.type == current.type && target.hasResource() && !target.isProtected
 
     private fun makePath(): String {
         val sb = StringBuilder()
@@ -294,7 +310,9 @@ class MediaServerModel(
         exploreListener.onStart()
     }
 
-    override fun onUpdate(list: List<ContentEntity>) {
+    override fun onUpdate(
+        list: List<ContentEntity>,
+    ) {
         exploreListener.onUpdate(list)
     }
 

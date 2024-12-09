@@ -75,7 +75,9 @@ class MovieActivityModel(
 
     private val rightNavigationSizeFlow: MutableStateFlow<Int> = MutableStateFlow(0)
     fun getRightNavigationSizeFlow(): Flow<Int> = rightNavigationSizeFlow
-    private fun setRightNavigationSize(size: Int) {
+    private fun setRightNavigationSize(
+        size: Int,
+    ) {
         rightNavigationSizeFlow.value = size
         controlPanelParam.setMarginRight(size)
     }
@@ -129,7 +131,9 @@ class MovieActivityModel(
         }
     }
 
-    fun adjustPanel(activity: Activity) {
+    fun adjustPanel(
+        activity: Activity,
+    ) {
         val size = DisplaySizeUtils.getNavigationBarArea(activity)
         setRightNavigationSize(size.x)
         controlPanelParam.setBottomPadding(size.y)
@@ -140,11 +144,15 @@ class MovieActivityModel(
         movieActivityPipHelper.unregister()
     }
 
-    fun restoreSaveProgress(position: Int) {
+    fun restoreSaveProgress(
+        position: Int,
+    ) {
         controlPanelModel.restoreSaveProgress(position)
     }
 
-    fun setOnChangeContentListener(listener: (() -> Unit)?) {
+    fun setOnChangeContentListener(
+        listener: (() -> Unit)?,
+    ) {
         onChangeContentListener = listener
     }
 

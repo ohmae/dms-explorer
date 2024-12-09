@@ -14,5 +14,7 @@ import net.mm2d.dmsexplorer.BuildConfig
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
  */
 internal object SenderFactory {
-    fun create(context: Context): Sender = if (BuildConfig.DEBUG) DebugSender() else EmptySender()
+    fun create(
+        context: Context,
+    ): Sender = if (BuildConfig.DEBUG) DebugSender() else EmptySender()
 }

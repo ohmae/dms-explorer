@@ -37,7 +37,9 @@ class ServerDetailActivity : BaseActivity(true) {
     private lateinit var settings: Settings
     private lateinit var binding: ServerDetailFragmentBinding
 
-    override fun onCreate(savedInstanceState: Bundle?) {
+    override fun onCreate(
+        savedInstanceState: Bundle?,
+    ) {
         settings = Settings.get()
         setTheme(settings.themeParams.noActionBarThemeId)
         super.onCreate(savedInstanceState)
@@ -63,21 +65,27 @@ class ServerDetailActivity : BaseActivity(true) {
             .setRequestedOrientation(this)
     }
 
-    private fun prepareTransition(hasState: Boolean) {
+    private fun prepareTransition(
+        hasState: Boolean,
+    ) {
         binding.toolbarIcon.transitionName = Const.SHARE_ELEMENT_NAME_DEVICE_ICON
         if (hasState) {
             return
         }
         binding.toolbarBackground.visibility = View.INVISIBLE
         window.sharedElementEnterTransition.addListener(object : TransitionListenerAdapter() {
-            override fun onTransitionEnd(transition: Transition) {
+            override fun onTransitionEnd(
+                transition: Transition,
+            ) {
                 transition.removeListener(this)
                 startAnimation(binding.toolbarBackground)
             }
         })
     }
 
-    private fun startAnimation(background: View) {
+    private fun startAnimation(
+        background: View,
+    ) {
         if (!background.isAttachedToWindow) {
             return
         }
@@ -106,7 +114,8 @@ class ServerDetailActivity : BaseActivity(true) {
          * @param context コンテキスト
          * @return このActivityを起動するためのIntent
          */
-        fun makeIntent(context: Context): Intent =
-            Intent(context, ServerDetailActivity::class.java)
+        fun makeIntent(
+            context: Context,
+        ): Intent = Intent(context, ServerDetailActivity::class.java)
     }
 }

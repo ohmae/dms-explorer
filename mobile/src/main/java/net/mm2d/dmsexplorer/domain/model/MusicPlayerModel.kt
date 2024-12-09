@@ -27,7 +27,10 @@ class MusicPlayerModel private constructor(
     constructor(context: Context) : this(context, MediaPlayer())
 
     override val name: String = "Music Player"
-    override fun setUri(uri: Uri, entity: ContentEntity?) {
+    override fun setUri(
+        uri: Uri,
+        entity: ContentEntity?,
+    ) {
         try {
             mediaPlayer.setDataSource(context, uri)
             mediaPlayer.prepareAsync()
@@ -36,7 +39,9 @@ class MusicPlayerModel private constructor(
         }
     }
 
-    override fun preparePlaying(mediaPlayer: MediaPlayer) {
+    override fun preparePlaying(
+        mediaPlayer: MediaPlayer,
+    ) {
         mediaPlayer.setWakeMode(context, PowerManager.PARTIAL_WAKE_LOCK)
         mediaPlayer.setAudioAttributes(
             AudioAttributes.Builder()

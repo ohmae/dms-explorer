@@ -14,6 +14,8 @@ import net.mm2d.dmsexplorer.domain.entity.ContentEntity
  */
 class ExploreListenerAdapter : ExploreListener {
     override fun onStart() = Unit
-    override fun onUpdate(list: List<ContentEntity>) = Unit
+    override fun onUpdate(
+        list: List<ContentEntity>,
+    ) = Unit
     override fun onComplete() = Unit
 }

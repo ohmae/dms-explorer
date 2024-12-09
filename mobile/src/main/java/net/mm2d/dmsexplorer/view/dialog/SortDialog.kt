@@ -31,7 +31,9 @@ import net.mm2d.dmsexplorer.settings.SortKey
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
  */
 class SortDialog : DialogFragment() {
-    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+    override fun onCreateDialog(
+        savedInstanceState: Bundle?,
+    ): Dialog {
         val activity = requireActivity()
         val settings = Settings.get()
         val parent = activity.window.decorView as ViewGroup
@@ -51,9 +53,16 @@ class SortDialog : DialogFragment() {
             list.map { getString(it.stringRes) },
         )
         sortKey.onItemSelectedListener = object : OnItemSelectedListener {
-            override fun onNothingSelected(parent: AdapterView<*>) = Unit
+            override fun onNothingSelected(
+                parent: AdapterView<*>,
+            ) = Unit
 
-            override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
+            override fun onItemSelected(
+                parent: AdapterView<*>,
+                view: View?,
+                position: Int,
+                id: Long,
+            ) {
                 sortOrder.isEnabled = position != list.indexOfFirst { it.sortKey == SortKey.NONE }
             }
         }
@@ -105,14 +114,18 @@ class SortDialog : DialogFragment() {
 
         private fun newInstance(): SortDialog = SortDialog()
 
-        fun show(activity: FragmentActivity) {
+        fun show(
+            activity: FragmentActivity,
+        ) {
             if (activity.supportFragmentManager.isStateSaved) {
                 return
             }
             newInstance().show(activity.supportFragmentManager, "")
         }
 
-        fun show(fragment: Fragment) {
+        fun show(
+            fragment: Fragment,
+        ) {
             if (fragment.parentFragmentManager.isStateSaved) {
                 return
             }

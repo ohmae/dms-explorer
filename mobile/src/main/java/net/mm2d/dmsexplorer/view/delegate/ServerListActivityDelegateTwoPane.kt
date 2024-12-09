@@ -29,7 +29,9 @@ internal class ServerListActivityDelegateTwoPane(
     override val isTwoPane: Boolean
         get() = true
 
-    override fun onSelect(v: View) {
+    override fun onSelect(
+        v: View,
+    ) {
         setDetailFragment(true)
     }
 
@@ -37,7 +39,9 @@ internal class ServerListActivityDelegateTwoPane(
         removeDetailFragment()
     }
 
-    override fun onExecute(v: View) {
+    override fun onExecute(
+        v: View,
+    ) {
         startCdsListActivity(activity, v)
     }
 
@@ -50,7 +54,9 @@ internal class ServerListActivityDelegateTwoPane(
         updateFragmentState()
     }
 
-    private fun setDetailFragment(animate: Boolean) {
+    private fun setDetailFragment(
+        animate: Boolean,
+    ) {
         val fragment = ServerDetailFragment.newInstance()
         this.fragment = fragment
         if (animate) {

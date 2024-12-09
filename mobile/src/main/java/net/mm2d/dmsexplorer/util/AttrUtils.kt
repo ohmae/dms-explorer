@@ -30,7 +30,8 @@ object AttrUtils {
         @StyleRes style: Int,
         @AttrRes attr: Int,
         @ColorInt defaultColor: Int,
-    ): Int = context.obtainStyledAttributes(style, intArrayOf(attr)).use {
-        it.getColor(0, defaultColor)
-    }
+    ): Int =
+        context.obtainStyledAttributes(style, intArrayOf(attr)).use {
+            it.getColor(0, defaultColor)
+        }
 }

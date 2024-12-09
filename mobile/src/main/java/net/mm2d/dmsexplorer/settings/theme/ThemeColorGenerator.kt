@@ -14,17 +14,27 @@ import androidx.annotation.ColorInt
  */
 interface ThemeColorGenerator {
     @ColorInt
-    fun getIconColor(title: String): Int
+    fun getIconColor(
+        title: String,
+    ): Int
 
     @ColorInt
-    fun getCollapsedToolbarColor(title: String): Int
+    fun getCollapsedToolbarColor(
+        title: String,
+    ): Int
 
     @ColorInt
-    fun getExpandedToolbarColor(title: String): Int
+    fun getExpandedToolbarColor(
+        title: String,
+    ): Int
 
     @ColorInt
-    fun getSubToolbarColor(title: String): Int
+    fun getSubToolbarColor(
+        title: String,
+    ): Int
 
     @ColorInt
-    fun getControlColor(title: String): Int
+    fun getControlColor(
+        title: String,
+    ): Int
 }

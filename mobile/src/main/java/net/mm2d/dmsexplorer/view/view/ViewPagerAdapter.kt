@@ -17,26 +17,40 @@ import androidx.viewpager.widget.PagerAdapter
 class ViewPagerAdapter : PagerAdapter() {
     private val viewList: MutableList<View> = ArrayList()
 
-    fun add(view: View) {
+    fun add(
+        view: View,
+    ) {
         viewList.add(view)
     }
 
-    operator fun get(position: Int): View = viewList[position]
+    operator fun get(
+        position: Int,
+    ): View = viewList[position]
 
     fun clear() {
         viewList.clear()
     }
 
-    override fun instantiateItem(container: ViewGroup, position: Int): Any =
+    override fun instantiateItem(
+        container: ViewGroup,
+        position: Int,
+    ): Any =
         viewList[position].also {
             container.addView(it)
         }
 
-    override fun destroyItem(container: ViewGroup, position: Int, any: Any) {
+    override fun destroyItem(
+        container: ViewGroup,
+        position: Int,
+        any: Any,
+    ) {
         container.removeView(any as View)
     }
 
     override fun getCount(): Int = viewList.size
 
-    override fun isViewFromObject(view: View, any: Any): Boolean = view === any
+    override fun isViewFromObject(
+        view: View,
+        any: Any,
+    ): Boolean = view === any
 }

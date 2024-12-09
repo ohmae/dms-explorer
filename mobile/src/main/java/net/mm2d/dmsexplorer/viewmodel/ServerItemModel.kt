@@ -54,7 +54,9 @@ class ServerItemModel(
         }
     }
 
-    private fun makeDescription(server: MediaServer): String {
+    private fun makeDescription(
+        server: MediaServer,
+    ): String {
         val sb = StringBuilder()
         val manufacture = server.manufacture
         if (!manufacture.isNullOrEmpty()) {

@@ -15,29 +15,38 @@ import androidx.annotation.ColorInt
  */
 internal class ThemeColorGeneratorDefault : ThemeColorGenerator {
     @ColorInt
-    private fun generateColor(seed: Int, s: Int, v: Int): Int =
-        Color.HSVToColor(floatArrayOf((59 * seed % 360).toFloat(), s / 255f, v / 255f))
+    private fun generateColor(
+        seed: Int,
+        s: Int,
+        v: Int,
+    ): Int = Color.HSVToColor(floatArrayOf((59 * seed % 360).toFloat(), s / 255f, v / 255f))
 
-    private fun extractSeed(title: String): Int =
-        (if (title.isEmpty()) ' ' else title[0]).code
-
-    @ColorInt
-    override fun getIconColor(title: String): Int =
-        generateColor(extractSeed(title), 111, 237)
-
-    @ColorInt
-    override fun getCollapsedToolbarColor(title: String): Int =
-        generateColor(extractSeed(title), 185, 187)
+    private fun extractSeed(
+        title: String,
+    ): Int = (if (title.isEmpty()) ' ' else title[0]).code
 
     @ColorInt
-    override fun getExpandedToolbarColor(title: String): Int =
-        generateColor(extractSeed(title), 124, 210)
+    override fun getIconColor(
+        title: String,
+    ): Int = generateColor(extractSeed(title), 111, 237)
 
     @ColorInt
-    override fun getSubToolbarColor(title: String): Int =
-        generateColor(extractSeed(title), 34, 248)
+    override fun getCollapsedToolbarColor(
+        title: String,
+    ): Int = generateColor(extractSeed(title), 185, 187)
 
     @ColorInt
-    override fun getControlColor(title: String): Int =
-        generateColor(extractSeed(title), 192, 96)
+    override fun getExpandedToolbarColor(
+        title: String,
+    ): Int = generateColor(extractSeed(title), 124, 210)
+
+    @ColorInt
+    override fun getSubToolbarColor(
+        title: String,
+    ): Int = generateColor(extractSeed(title), 34, 248)
+
+    @ColorInt
+    override fun getControlColor(
+        title: String,
+    ): Int = generateColor(extractSeed(title), 192, 96)
 }

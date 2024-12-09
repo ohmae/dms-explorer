@@ -65,7 +65,9 @@ class DmcActivityModel(
 
     private val durationFlow: MutableStateFlow<Int> = MutableStateFlow(0)
     fun getDurationFlow(): Flow<Int> = durationFlow
-    private fun setDuration(duration: Int) {
+    private fun setDuration(
+        duration: Int,
+    ) {
         durationFlow.value = duration
         if (duration > 0) {
             isSeekableFlow.value = true
@@ -77,7 +79,9 @@ class DmcActivityModel(
 
     private val progressFlow: MutableStateFlow<Int> = MutableStateFlow(0)
     fun getProgressFlow(): Flow<Int> = progressFlow
-    private fun setProgress(progress: Int) {
+    private fun setProgress(
+        progress: Int,
+    ) {
         progressFlow.value = progress
         setProgressText(progress)
     }
@@ -90,7 +94,9 @@ class DmcActivityModel(
 
     private val chapterListFlow: MutableStateFlow<List<Int>> = MutableStateFlow(emptyList())
     fun getChapterListFlow(): Flow<List<Int>> = chapterListFlow
-    private fun setChapterList(chapterList: List<Int>) {
+    private fun setChapterList(
+        chapterList: List<Int>,
+    ) {
         chapterListFlow.value = chapterList
         setChapterInfoEnabled()
         if (chapterList.isEmpty()) {
@@ -139,12 +145,16 @@ class DmcActivityModel(
                 }
             }
 
-            override fun onStartTrackingTouch(seekBar: ScrubBar) {
+            override fun onStartTrackingTouch(
+                seekBar: ScrubBar,
+            ) {
                 handler.removeCallbacks(trackingCancelTask)
                 tracking = true
             }
 
-            override fun onStopTrackingTouch(seekBar: ScrubBar) {
+            override fun onStopTrackingTouch(
+                seekBar: ScrubBar,
+            ) {
                 rendererModel.seekTo(seekBar.progress)
                 handler.postDelayed(trackingCancelTask, TRACKING_DELAY)
                 scrubTextFlow.value = ""
@@ -168,15 +178,21 @@ class DmcActivityModel(
         rendererModel.terminate()
     }
 
-    private fun setProgressText(progress: Int) {
+    private fun setProgressText(
+        progress: Int,
+    ) {
         progressTextFlow.value = makeTimeText(progress)
     }
 
-    private fun setDurationText(duration: Int) {
+    private fun setDurationText(
+        duration: Int,
+    ) {
         durationTextFlow.value = makeTimeText(duration)
     }
 
-    private fun setPlaying(playing: Boolean) {
+    private fun setPlaying(
+        playing: Boolean,
+    ) {
         if (mPlaying == playing) {
             return
         }
@@ -184,7 +200,9 @@ class DmcActivityModel(
         playButtonResIdFlow.value = if (playing) R.drawable.ic_pause else R.drawable.ic_play
     }
 
-    private fun getAccuracyText(accuracy: Int): String =
+    private fun getAccuracyText(
+        accuracy: Int,
+    ): String =
         when (accuracy) {
             ScrubBar.ACCURACY_NORMAL -> activity.getString(R.string.seek_bar_scrub_normal)
             ScrubBar.ACCURACY_HALF -> activity.getString(R.string.seek_bar_scrub_half)
@@ -212,21 +230,29 @@ class DmcActivityModel(
         rendererModel.previous()
     }
 
-    override fun notifyDuration(duration: Int) {
+    override fun notifyDuration(
+        duration: Int,
+    ) {
         setDuration(duration)
     }
 
-    override fun notifyProgress(progress: Int) {
+    override fun notifyProgress(
+        progress: Int,
+    ) {
         if (!tracking) {
             setProgress(progress)
         }
     }
 
-    override fun notifyPlayingState(playing: Boolean) {
+    override fun notifyPlayingState(
+        playing: Boolean,
+    ) {
         setPlaying(playing)
     }
 
-    override fun notifyChapterList(chapterList: List<Int>) {
+    override fun notifyChapterList(
+        chapterList: List<Int>,
+    ) {
         setChapterList(chapterList)
     }
 
@@ -252,7 +278,9 @@ class DmcActivityModel(
         private const val EN_SPACE: Char = 0x2002.toChar() // &ensp;
 
         @DrawableRes
-        private fun getImageResource(entity: ContentEntity): Int =
+        private fun getImageResource(
+            entity: ContentEntity,
+        ): Int =
             when (entity.type) {
                 ContentType.MOVIE -> R.drawable.ic_movie
                 ContentType.MUSIC -> R.drawable.ic_music
@@ -260,14 +288,18 @@ class DmcActivityModel(
                 else -> 0
             }
 
-        private fun makeTimeText(millisecond: Int): String {
+        private fun makeTimeText(
+            millisecond: Int,
+        ): String {
             val second = (millisecond / 1000 % 60).toLong()
             val minute = (millisecond / 60000 % 60).toLong()
             val hour = (millisecond / 3600000).toLong()
             return String.format(Locale.US, "%01d:%02d:%02d", hour, minute, second)
         }
 
-        private fun makeChapterString(chapterList: List<Int>): String {
+        private fun makeChapterString(
+            chapterList: List<Int>,
+        ): String {
             val sb = StringBuilder()
             for (i in chapterList.indices) {
                 if (sb.isNotEmpty()) {

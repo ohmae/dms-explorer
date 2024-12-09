@@ -25,26 +25,56 @@ class RootCdsObject(
     override val upnpClass: String = "object.container"
     override val title: String = ""
     override val rootTag: Tag = Tag.EMPTY
-    override fun getValue(xpath: String, index: Int): String? = null
-    override fun getValue(tagName: String?, attrName: String?, index: Int): String? = null
-    override fun getTag(tagName: String?, index: Int): Tag? = null
-    override fun getTagList(tagName: String?): List<Tag>? = null
-    override fun getIntValue(xpath: String, defaultValue: Int, index: Int): Int = defaultValue
-    override fun getDateValue(xpath: String, index: Int): Date? = null
+    override fun getValue(
+        xpath: String,
+        index: Int,
+    ): String? = null
+
+    override fun getValue(
+        tagName: String?,
+        attrName: String?,
+        index: Int,
+    ): String? = null
+
+    override fun getTag(
+        tagName: String?,
+        index: Int,
+    ): Tag? = null
+
+    override fun getTagList(
+        tagName: String?,
+    ): List<Tag>? = null
+
+    override fun getIntValue(
+        xpath: String,
+        defaultValue: Int,
+        index: Int,
+    ): Int = defaultValue
+
+    override fun getDateValue(
+        xpath: String,
+        index: Int,
+    ): Date? = null
     override fun getResourceCount(): Int = 0
     override fun hasResource(): Boolean = false
     override fun hasProtectedResource(): Boolean = false
     override fun toDumpString(): String = ""
 
     override fun describeContents(): Int = 0
-    override fun writeToParcel(parcel: Parcel, flags: Int) {
+    override fun writeToParcel(
+        parcel: Parcel,
+        flags: Int,
+    ) {
         parcel.writeString(udn)
     }
 
     companion object CREATOR : Creator<RootCdsObject> {
-        override fun createFromParcel(parcel: Parcel): RootCdsObject =
-            RootCdsObject(parcel.readString()!!)
+        override fun createFromParcel(
+            parcel: Parcel,
+        ): RootCdsObject = RootCdsObject(parcel.readString()!!)
 
-        override fun newArray(size: Int): Array<RootCdsObject?> = arrayOfNulls(size)
+        override fun newArray(
+            size: Int,
+        ): Array<RootCdsObject?> = arrayOfNulls(size)
     }
 }

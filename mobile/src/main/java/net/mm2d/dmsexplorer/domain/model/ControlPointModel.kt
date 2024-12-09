@@ -54,7 +54,10 @@ class ControlPointModel(
     private var msDiscoveryListener = MS_DISCOVERY_LISTENER
 
     private val connectivityReceiver = object : BroadcastReceiver() {
-        override fun onReceive(context: Context, intent: Intent) {
+        override fun onReceive(
+            context: Context,
+            intent: Intent,
+        ) {
             if (!initializeOrTerminate(lan.hasAvailableInterface())) {
                 Toaster.show(applicationContext, R.string.no_available_network)
             }
@@ -107,7 +110,9 @@ class ControlPointModel(
         }
     }
 
-    fun setMsDiscoveryListener(listener: MsDiscoveryListener?) {
+    fun setMsDiscoveryListener(
+        listener: MsDiscoveryListener?,
+    ) {
         msDiscoveryListener = listener ?: MS_DISCOVERY_LISTENER
     }
 
@@ -115,10 +120,13 @@ class ControlPointModel(
         selectedMediaServer = null
     }
 
-    fun isSelectedMediaServer(server: MediaServer): Boolean =
-        selectedMediaServer != null && selectedMediaServer == server
+    fun isSelectedMediaServer(
+        server: MediaServer,
+    ): Boolean = selectedMediaServer != null && selectedMediaServer == server
 
-    fun setSelectedMediaRenderer(server: MediaRenderer?) {
+    fun setSelectedMediaRenderer(
+        server: MediaRenderer?,
+    ) {
         selectedMediaRenderer?.unsubscribe()
         selectedMediaRenderer = server
         selectMediaRendererObserver.invoke(server)
@@ -174,7 +182,9 @@ class ControlPointModel(
         }
     }
 
-    private fun initializeOrTerminate(initialize: Boolean): Boolean {
+    private fun initializeOrTerminate(
+        initialize: Boolean,
+    ): Boolean {
         synchronized(avControlPointManager) {
             if (initialize) {
                 val interfaces = lan.getAvailableInterfaces()
@@ -209,7 +219,9 @@ class ControlPointModel(
         msControlPoint.setMsDiscoveryListener(null)
     }
 
-    fun restart(callback: (() -> Unit)? = null) {
+    fun restart(
+        callback: (() -> Unit)? = null,
+    ) {
         if (!lan.hasAvailableInterface()) {
             Toaster.show(applicationContext, R.string.no_available_network)
             return
@@ -232,8 +244,13 @@ class ControlPointModel(
         private val TAG = ControlPointModel::class.java.simpleName
         private val SEARCH_INTERVAL = TimeUnit.SECONDS.toMillis(5)
         private val MS_DISCOVERY_LISTENER: MsDiscoveryListener = object : MsDiscoveryListener {
-            override fun onDiscover(server: MediaServer) = Unit
-            override fun onLost(server: MediaServer) = Unit
+            override fun onDiscover(
+                server: MediaServer,
+            ) = Unit
+
+            override fun onLost(
+                server: MediaServer,
+            ) = Unit
         }
     }
 }

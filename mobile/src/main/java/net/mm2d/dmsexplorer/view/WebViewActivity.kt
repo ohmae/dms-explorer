@@ -40,7 +40,9 @@ class WebViewActivity : BaseActivity() {
     private lateinit var binding: WebViewActivityBinding
 
     @SuppressLint("SetJavaScriptEnabled", "ClickableViewAccessibility")
-    override fun onCreate(savedInstanceState: Bundle?) {
+    override fun onCreate(
+        savedInstanceState: Bundle?,
+    ) {
         setTheme(Settings.get().themeParams.noActionBarThemeId)
         super.onCreate(savedInstanceState)
         WindowCompat.setDecorFitsSystemWindows(window, false)
@@ -64,7 +66,10 @@ class WebViewActivity : BaseActivity() {
             it.javaScriptEnabled = true
         }
         webView.webChromeClient = object : WebChromeClient() {
-            override fun onProgressChanged(view: WebView, newProgress: Int) {
+            override fun onProgressChanged(
+                view: WebView,
+                newProgress: Int,
+            ) {
                 binding.progress.progress = newProgress
                 if (newProgress == 100) {
                     binding.progress.visibility = View.GONE
@@ -72,16 +77,26 @@ class WebViewActivity : BaseActivity() {
             }
         }
         webView.webViewClient = object : WebViewClient() {
-            override fun onPageStarted(view: WebView, url: String?, favicon: Bitmap?) {
+            override fun onPageStarted(
+                view: WebView,
+                url: String?,
+                favicon: Bitmap?,
+            ) {
                 binding.progress.progress = 0
                 binding.progress.visibility = View.VISIBLE
             }
 
-            override fun onPageFinished(view: WebView, url: String?) {
+            override fun onPageFinished(
+                view: WebView,
+                url: String?,
+            ) {
                 binding.progress.visibility = View.GONE
             }
 
-            override fun shouldOverrideUrlLoading(view: WebView, url: String?): Boolean {
+            override fun shouldOverrideUrlLoading(
+                view: WebView,
+                url: String?,
+            ): Boolean {
                 Repository.get()
                     .openUriModel
                     .openUri(this@WebViewActivity, url ?: return true)
@@ -107,12 +122,16 @@ class WebViewActivity : BaseActivity() {
         }
     }
 
-    override fun onSaveInstanceState(outState: Bundle) {
+    override fun onSaveInstanceState(
+        outState: Bundle,
+    ) {
         super.onSaveInstanceState(outState)
         binding.webView.saveState(outState)
     }
 
-    private fun settleAppBar(appBar: AppBarLayout) {
+    private fun settleAppBar(
+        appBar: AppBarLayout,
+    ) {
         appBar.setExpanded(appBar.height / 2f + appBar.y > 0f)
     }
 
@@ -120,13 +139,21 @@ class WebViewActivity : BaseActivity() {
         private const val KEY_TITLE = "KEY_TITLE"
         private const val KEY_URL = "KEY_URL"
 
-        fun makeIntent(context: Context, title: String, url: String): Intent =
+        fun makeIntent(
+            context: Context,
+            title: String,
+            url: String,
+        ): Intent =
             Intent(context, WebViewActivity::class.java).also {
                 it.putExtra(KEY_TITLE, title)
                 it.putExtra(KEY_URL, url)
             }
 
-        fun start(context: Context, title: String, url: String) {
+        fun start(
+            context: Context,
+            title: String,
+            url: String,
+        ) {
             context.startActivity(makeIntent(context, title, url))
         }
     }

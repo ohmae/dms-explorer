@@ -27,7 +27,9 @@ class CustomTabsBinder(
         session.bind()
     }
 
-    override fun onActivityDestroyed(activity: Activity) {
+    override fun onActivityDestroyed(
+        activity: Activity,
+    ) {
         createdCount--
         if (createdCount == 0 && activity.isFinishing) {
             session.unbind()

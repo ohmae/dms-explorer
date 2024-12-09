@@ -15,12 +15,16 @@ import androidx.palette.graphics.Palette.Swatch
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
  */
 object PaletteUtils {
-    fun selectLightSwatch(palette: Palette): Swatch? =
+    fun selectLightSwatch(
+        palette: Palette,
+    ): Swatch? =
         palette.vibrantSwatch
             ?: palette.mutedSwatch
             ?: palette.dominantSwatch
 
-    fun selectDarkSwatch(palette: Palette): Swatch? =
+    fun selectDarkSwatch(
+        palette: Palette,
+    ): Swatch? =
         palette.darkVibrantSwatch
             ?: palette.darkMutedSwatch
             ?: palette.vibrantSwatch
@@ -30,6 +34,8 @@ object PaletteUtils {
 
 fun Bitmap.generatePalette(): Palette = Palette.Builder(this).generate()
 
-fun Bitmap.generatePalette(listener: (Palette?) -> Unit) {
+fun Bitmap.generatePalette(
+    listener: (Palette?) -> Unit,
+) {
     Palette.Builder(this).generate(listener)
 }

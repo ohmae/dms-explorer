@@ -30,6 +30,8 @@ class ThemeParams(
     val serverColorExtractor: ServerColorExtractor,
 ) {
     fun interface PreferenceHeaderConverter {
-        fun convert(headers: List<Header>)
+        fun convert(
+            headers: List<Header>,
+        )
     }
 }

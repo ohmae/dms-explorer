@@ -122,7 +122,9 @@ class MusicActivityModel(
         loadArt(targetModel.contentEntity.artUri)
     }
 
-    private fun loadArt(uri: Uri) {
+    private fun loadArt(
+        uri: Uri,
+    ) {
         imageBinaryFlow.value = null
         if (uri === Uri.EMPTY) {
             return
@@ -139,7 +141,9 @@ class MusicActivityModel(
         controlPanelModel.terminate()
     }
 
-    fun restoreSaveProgress(position: Int) {
+    fun restoreSaveProgress(
+        position: Int,
+    ) {
         controlPanelModel.restoreSaveProgress(position)
     }
 
@@ -194,27 +198,29 @@ class MusicActivityModel(
         }
     }
 
-    private fun selectNext(): Boolean = when (repeatMode) {
-        RepeatMode.PLAY_ONCE -> false
-        RepeatMode.SEQUENTIAL ->
-            serverModel?.selectNextEntity(MediaServerModel.SCAN_MODE_SEQUENTIAL) ?: false
+    private fun selectNext(): Boolean =
+        when (repeatMode) {
+            RepeatMode.PLAY_ONCE -> false
+            RepeatMode.SEQUENTIAL ->
+                serverModel?.selectNextEntity(MediaServerModel.SCAN_MODE_SEQUENTIAL) ?: false
 
-        RepeatMode.REPEAT_ALL ->
-            serverModel?.selectNextEntity(MediaServerModel.SCAN_MODE_LOOP) ?: false
+            RepeatMode.REPEAT_ALL ->
+                serverModel?.selectNextEntity(MediaServerModel.SCAN_MODE_LOOP) ?: false
 
-        RepeatMode.REPEAT_ONE -> false
-    }
+            RepeatMode.REPEAT_ONE -> false
+        }
 
-    private fun selectPrevious(): Boolean = when (repeatMode) {
-        RepeatMode.PLAY_ONCE -> false
-        RepeatMode.SEQUENTIAL ->
-            serverModel?.selectPreviousEntity(MediaServerModel.SCAN_MODE_SEQUENTIAL) ?: false
+    private fun selectPrevious(): Boolean =
+        when (repeatMode) {
+            RepeatMode.PLAY_ONCE -> false
+            RepeatMode.SEQUENTIAL ->
+                serverModel?.selectPreviousEntity(MediaServerModel.SCAN_MODE_SEQUENTIAL) ?: false
 
-        RepeatMode.REPEAT_ALL ->
-            serverModel?.selectPreviousEntity(MediaServerModel.SCAN_MODE_LOOP) ?: false
+            RepeatMode.REPEAT_ALL ->
+                serverModel?.selectPreviousEntity(MediaServerModel.SCAN_MODE_LOOP) ?: false
 
-        RepeatMode.REPEAT_ONE -> false
-    }
+            RepeatMode.REPEAT_ONE -> false
+        }
 
     companion object {
         private const val TOO_SHORT_PLAY_TIME = 2000L

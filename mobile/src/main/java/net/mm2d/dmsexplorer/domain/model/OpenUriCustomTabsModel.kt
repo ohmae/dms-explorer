@@ -28,11 +28,16 @@ class OpenUriCustomTabsModel(
 ) : OpenUriModel {
     private var useCustomTabs: Boolean = false
 
-    override fun setUseCustomTabs(use: Boolean) {
+    override fun setUseCustomTabs(
+        use: Boolean,
+    ) {
         useCustomTabs = use
     }
 
-    override fun openUri(context: Context, uri: String) {
+    override fun openUri(
+        context: Context,
+        uri: String,
+    ) {
         if (!useCustomTabs ||
             !URLUtil.isNetworkUrl(uri) ||
             OpenUriUtils.hasDefaultAppOtherThanBrowser(context, uri)
@@ -45,15 +50,22 @@ class OpenUriCustomTabsModel(
         }
     }
 
-    override fun mayLaunchUrl(url: String) {
+    override fun mayLaunchUrl(
+        url: String,
+    ) {
         helper.mayLaunchUrl(url)
     }
 
-    override fun mayLaunchUrl(urls: List<String>) {
+    override fun mayLaunchUrl(
+        urls: List<String>,
+    ) {
         helper.mayLaunchUrl(urls)
     }
 
-    private fun openUriOnCustomTabs(context: Context, uri: String): Boolean {
+    private fun openUriOnCustomTabs(
+        context: Context,
+        uri: String,
+    ): Boolean {
         val packageNameToBind = CustomTabsHelper.packageNameToBind
         if (packageNameToBind.isNullOrEmpty()) {
             return false
@@ -74,7 +86,9 @@ class OpenUriCustomTabsModel(
         return true
     }
 
-    private fun getToolbarColor(context: Context): Int {
+    private fun getToolbarColor(
+        context: Context,
+    ): Int {
         if (context !is Activity) {
             return DEFAULT_TOOLBAR_COLOR
         }

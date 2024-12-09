@@ -21,5 +21,7 @@ interface ThemeModel {
     )
 
     @ColorInt
-    fun getToolbarColor(activity: Activity): Int
+    fun getToolbarColor(
+        activity: Activity,
+    ): Int
 }

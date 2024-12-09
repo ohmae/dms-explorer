@@ -27,5 +27,7 @@ interface ContentEntity {
     val isProtected: Boolean
     fun hasResource(): Boolean
     fun canDelete(): Boolean
-    fun selectResource(index: Int)
+    fun selectResource(
+        index: Int,
+    )
 }

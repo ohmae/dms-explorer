@@ -14,7 +14,13 @@ import net.mm2d.android.upnp.cds.MediaServer
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
  */
 interface ServerColorExtractor {
-    operator fun invoke(server: MediaServer, icon: Bitmap?)
+    operator fun invoke(
+        server: MediaServer,
+        icon: Bitmap?,
+    )
 
-    fun invokeAsync(server: MediaServer, icon: Bitmap?)
+    fun invokeAsync(
+        server: MediaServer,
+        icon: Bitmap?,
+    )
 }

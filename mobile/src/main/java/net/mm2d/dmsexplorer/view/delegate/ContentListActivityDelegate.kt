@@ -43,7 +43,9 @@ abstract class ContentListActivityDelegate internal constructor(
     protected abstract val isTwoPane: Boolean
 
     @CallSuper
-    fun onCreate(savedInstanceState: Bundle?) {
+    fun onCreate(
+        savedInstanceState: Bundle?,
+    ) {
         val activity = activity
         val repository = Repository.get()
         val model = try {
@@ -92,7 +94,9 @@ abstract class ContentListActivityDelegate internal constructor(
     }
 
     @CallSuper
-    fun onSaveInstanceState(outState: Bundle) {
+    fun onSaveInstanceState(
+        outState: Bundle,
+    ) {
         model ?: return
         saveScroll(outState)
     }
@@ -102,7 +106,9 @@ abstract class ContentListActivityDelegate internal constructor(
         model?.syncSelectedEntity()
     }
 
-    private fun restoreScroll(savedInstanceState: Bundle) {
+    private fun restoreScroll(
+        savedInstanceState: Bundle,
+    ) {
         val position = savedInstanceState.getInt(KEY_SCROLL_POSITION, 0)
         val offset = savedInstanceState.getInt(KEY_SCROLL_OFFSET, 0)
         if (position == 0 && offset == 0) {
@@ -115,7 +121,9 @@ abstract class ContentListActivityDelegate internal constructor(
         }
     }
 
-    private fun saveScroll(outState: Bundle) {
+    private fun saveScroll(
+        outState: Bundle,
+    ) {
         val recyclerView = binding.recyclerView
         if (recyclerView.childCount == 0) {
             return
@@ -125,7 +133,9 @@ abstract class ContentListActivityDelegate internal constructor(
         outState.putInt(KEY_SCROLL_OFFSET, -view.top)
     }
 
-    fun onOptionsItemSelected(item: MenuItem): Boolean {
+    fun onOptionsItemSelected(
+        item: MenuItem,
+    ): Boolean {
         if (item.itemId == R.id.action_sort) {
             model?.onSortMenuClicked()
             return true
@@ -135,7 +145,10 @@ abstract class ContentListActivityDelegate internal constructor(
 
     fun onBackPressed(): Boolean = model?.onBackPressed() == true
 
-    fun onKeyLongPress(keyCode: Int, event: KeyEvent): Boolean {
+    fun onKeyLongPress(
+        keyCode: Int,
+        event: KeyEvent,
+    ): Boolean {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
             model?.terminate()
             return true
@@ -147,7 +160,9 @@ abstract class ContentListActivityDelegate internal constructor(
         private const val KEY_SCROLL_POSITION = "KEY_SCROLL_POSITION"
         private const val KEY_SCROLL_OFFSET = "KEY_SCROLL_OFFSET"
 
-        fun create(activity: BaseActivity): ContentListActivityDelegate {
+        fun create(
+            activity: BaseActivity,
+        ): ContentListActivityDelegate {
             val binding = ContentListActivityBinding.inflate(activity.layoutInflater)
             activity.setContentView(binding.root)
 

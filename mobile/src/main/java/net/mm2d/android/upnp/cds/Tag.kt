@@ -35,7 +35,9 @@ class Tag(
      * @param name 属性名
      * @return 属性値、見つからない場合null
      */
-    fun getAttribute(name: String?): String? = attributes[name]
+    fun getAttribute(
+        name: String?,
+    ): String? = attributes[name]
 
     override fun toString(): String =
         buildString {
@@ -45,7 +47,10 @@ class Tag(
             }
         }
 
-    override fun writeToParcel(dest: Parcel, flags: Int) {
+    override fun writeToParcel(
+        dest: Parcel,
+        flags: Int,
+    ) {
         dest.writeString(name)
         dest.writeString(value)
         dest.writeInt(attributes.size)
@@ -59,10 +64,17 @@ class Tag(
 
     companion object CREATOR : Creator<Tag> {
         val EMPTY = Tag("", "", emptyMap())
-        override fun createFromParcel(parcel: Parcel): Tag = create(parcel)
-        override fun newArray(size: Int): Array<Tag?> = arrayOfNulls(size)
+        override fun createFromParcel(
+            parcel: Parcel,
+        ): Tag = create(parcel)
 
-        private fun create(parcel: Parcel): Tag {
+        override fun newArray(
+            size: Int,
+        ): Array<Tag?> = arrayOfNulls(size)
+
+        private fun create(
+            parcel: Parcel,
+        ): Tag {
             val name = parcel.readString()!!
             val value = parcel.readString()!!
             val size = parcel.readInt()
@@ -82,8 +94,10 @@ class Tag(
          * @param element タグ情報
          * @param root    タグがitem/containerのときtrue
          */
-        fun create(element: Element, root: Boolean = false): Tag =
-            create(element, if (root) "" else element.textContent)
+        fun create(
+            element: Element,
+            root: Boolean = false,
+        ): Tag = create(element, if (root) "" else element.textContent)
 
         /**
          * インスタンス作成。
@@ -91,10 +105,14 @@ class Tag(
          * @param element タグ情報
          * @param value   タグの値
          */
-        private fun create(element: Element, value: String): Tag = Tag(
-            element.tagName,
-            value,
-            element.attributes.asIterable().map { it.nodeName to it.nodeValue }.toMap(),
-        )
+        private fun create(
+            element: Element,
+            value: String,
+        ): Tag =
+            Tag(
+                element.tagName,
+                value,
+                element.attributes.asIterable().map { it.nodeName to it.nodeValue }.toMap(),
+            )
     }
 }

@@ -44,9 +44,13 @@ enum class Orientation(
     ),
     ;
 
-    fun getName(context: Context): String = context.getString(nameId)
+    fun getName(
+        context: Context,
+    ): String = context.getString(nameId)
 
-    fun setRequestedOrientation(activity: Activity) {
+    fun setRequestedOrientation(
+        activity: Activity,
+    ) {
         try {
             activity.requestedOrientation = value
         } catch (e: Exception) {
@@ -57,7 +61,8 @@ enum class Orientation(
     companion object {
         private val map = entries.map { it.name to it }.toMap()
 
-        fun of(name: String): Orientation =
-            map.getOrElse(name) { UNSPECIFIED }
+        fun of(
+            name: String,
+        ): Orientation = map.getOrElse(name) { UNSPECIFIED }
     }
 }

@@ -26,7 +26,9 @@ import javax.xml.parsers.ParserConfigurationException
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
  */
 internal class PanasonicFetcherFactory : FetcherFactory {
-    override fun create(cdsObject: CdsObject): Single<List<Int>>? {
+    override fun create(
+        cdsObject: CdsObject,
+    ): Single<List<Int>>? {
         val url = cdsObject.getValue(CHAPTER_INFO)
         if (url.isNullOrEmpty()) {
             return null
@@ -42,7 +44,9 @@ internal class PanasonicFetcherFactory : FetcherFactory {
     }
 
     @Throws(ParserConfigurationException::class, SAXException::class, IOException::class)
-    private fun parseChapterInfo(xml: String): List<Int> {
+    private fun parseChapterInfo(
+        xml: String,
+    ): List<Int> {
         if (xml.isEmpty()) {
             return emptyList()
         }
@@ -63,7 +67,9 @@ internal class PanasonicFetcherFactory : FetcherFactory {
         return result
     }
 
-    private fun Node.findChildElementByNodeName(localName: String): Element? {
+    private fun Node.findChildElementByNodeName(
+        localName: String,
+    ): Element? {
         firstChild?.forEachElement {
             if (localName == it.nodeName) {
                 return it

@@ -38,17 +38,22 @@ object BitmapUtils {
      * @param height 表示枠の高さ
      * @return Bitmap
      */
-    fun decode(data: ByteArray, width: Int, height: Int): Bitmap? = try {
-        val options = BitmapFactory.Options().also {
-            it.inJustDecodeBounds = true
-            BitmapFactory.decodeByteArray(data, 0, data.size, it)
-            it.inSampleSize = calcSampleSize(it.outWidth, it.outHeight, width, height)
-            it.inJustDecodeBounds = false
+    fun decode(
+        data: ByteArray,
+        width: Int,
+        height: Int,
+    ): Bitmap? =
+        try {
+            val options = BitmapFactory.Options().also {
+                it.inJustDecodeBounds = true
+                BitmapFactory.decodeByteArray(data, 0, data.size, it)
+                it.inSampleSize = calcSampleSize(it.outWidth, it.outHeight, width, height)
+                it.inJustDecodeBounds = false
+            }
+            BitmapFactory.decodeByteArray(data, 0, data.size, options)
+        } catch (ignored: Exception) {
+            null
         }
-        BitmapFactory.decodeByteArray(data, 0, data.size, options)
-    } catch (ignored: Exception) {
-        null
-    }
 
     /**
      * 指定サイズに内接する画像をレンダリングするのに必要なサンプリング数を計算する。
@@ -92,19 +97,30 @@ object BitmapUtils {
      * @return Bitmap
      * @see .decode
      */
-    fun decodeWithOrientation(data: ByteArray, width: Int, height: Int): Bitmap? =
-        decode(data, width, height, extractOrientation(data))
+    fun decodeWithOrientation(
+        data: ByteArray,
+        width: Int,
+        height: Int,
+    ): Bitmap? = decode(data, width, height, extractOrientation(data))
 
-    private fun extractOrientation(data: ByteArray): Int = try {
-        ExifInterface(ByteArrayInputStream(data)).getAttributeInt(
-            ExifInterface.TAG_ORIENTATION,
-            ExifInterface.ORIENTATION_UNDEFINED,
-        )
-    } catch (ignored: IOException) {
-        ExifInterface.ORIENTATION_UNDEFINED
-    }
+    private fun extractOrientation(
+        data: ByteArray,
+    ): Int =
+        try {
+            ExifInterface(ByteArrayInputStream(data)).getAttributeInt(
+                ExifInterface.TAG_ORIENTATION,
+                ExifInterface.ORIENTATION_UNDEFINED,
+            )
+        } catch (ignored: IOException) {
+            ExifInterface.ORIENTATION_UNDEFINED
+        }
 
-    private fun decode(data: ByteArray, width: Int, height: Int, orientation: Int): Bitmap? {
+    private fun decode(
+        data: ByteArray,
+        width: Int,
+        height: Int,
+        orientation: Int,
+    ): Bitmap? {
         val base = decodeBase(data, width, height, orientation) ?: return null
         val matrix = Matrix()
         when (orientation) {
@@ -144,7 +160,12 @@ object BitmapUtils {
         return Bitmap.createBitmap(base, 0, 0, base.width, base.height, matrix, true)
     }
 
-    private fun decodeBase(binary: ByteArray, width: Int, height: Int, orientation: Int): Bitmap? =
+    private fun decodeBase(
+        binary: ByteArray,
+        width: Int,
+        height: Int,
+        orientation: Int,
+    ): Bitmap? =
         when (orientation) {
             ExifInterface.ORIENTATION_TRANSPOSE,
             ExifInterface.ORIENTATION_ROTATE_90,

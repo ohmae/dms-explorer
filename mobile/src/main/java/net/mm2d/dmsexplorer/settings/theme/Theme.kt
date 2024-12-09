@@ -13,7 +13,9 @@ import net.mm2d.dmsexplorer.R
 /**
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
  */
-enum class Theme(val params: ThemeParams) {
+enum class Theme(
+    val params: ThemeParams,
+) {
     DEFAULT(
         ThemeParams(
             htmlQuery = "t=default",
@@ -47,17 +49,20 @@ enum class Theme(val params: ThemeParams) {
 }
 
 @DrawableRes
-private fun convertIcon(@DrawableRes iconRes: Int): Int = when (iconRes) {
-    R.drawable.ic_play_settings_light -> R.drawable.ic_play_settings_dark
-    R.drawable.ic_function_settings_light -> R.drawable.ic_function_settings_dark
-    R.drawable.ic_view_settings_light -> R.drawable.ic_view_settings_dark
-    R.drawable.ic_expert_settings_light -> R.drawable.ic_expert_settings_dark
-    R.drawable.ic_info_settings_light -> R.drawable.ic_info_settings_dark
-    // for 4.x
-    R.drawable.ic_play_settings_black -> R.drawable.ic_play_settings_white
-    R.drawable.ic_function_settings_black -> R.drawable.ic_function_settings_white
-    R.drawable.ic_view_settings_black -> R.drawable.ic_view_settings_white
-    R.drawable.ic_expert_settings_black -> R.drawable.ic_expert_settings_white
-    R.drawable.ic_info_settings_black -> R.drawable.ic_info_settings_white
-    else -> iconRes
-}
+private fun convertIcon(
+    @DrawableRes iconRes: Int,
+): Int =
+    when (iconRes) {
+        R.drawable.ic_play_settings_light -> R.drawable.ic_play_settings_dark
+        R.drawable.ic_function_settings_light -> R.drawable.ic_function_settings_dark
+        R.drawable.ic_view_settings_light -> R.drawable.ic_view_settings_dark
+        R.drawable.ic_expert_settings_light -> R.drawable.ic_expert_settings_dark
+        R.drawable.ic_info_settings_light -> R.drawable.ic_info_settings_dark
+        // for 4.x
+        R.drawable.ic_play_settings_black -> R.drawable.ic_play_settings_white
+        R.drawable.ic_function_settings_black -> R.drawable.ic_function_settings_white
+        R.drawable.ic_view_settings_black -> R.drawable.ic_view_settings_white
+        R.drawable.ic_expert_settings_black -> R.drawable.ic_expert_settings_white
+        R.drawable.ic_info_settings_black -> R.drawable.ic_info_settings_white
+        else -> iconRes
+    }

@@ -48,7 +48,9 @@ open class App : Application() {
         StrictMode.setVmPolicy(VmPolicy.LAX)
     }
 
-    private fun logError(e: Throwable) {
+    private fun logError(
+        e: Throwable,
+    ) {
         when (e) {
             is UndeliverableException,
             -> Logger.w(e.cause, "UndeliverableException:")

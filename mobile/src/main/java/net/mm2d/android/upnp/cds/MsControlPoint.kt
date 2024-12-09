@@ -79,14 +79,18 @@ class MsControlPoint : ControlPointWrapper {
          *
          * @param server 発見したMediaServer
          */
-        fun onDiscover(server: MediaServer)
+        fun onDiscover(
+            server: MediaServer,
+        )
 
         /**
          * 機器喪失時に通知される。
          *
          * @param server 喪失したMediaServer
          */
-        fun onLost(server: MediaServer)
+        fun onLost(
+            server: MediaServer,
+        )
     }
 
     /**
@@ -147,9 +151,13 @@ class MsControlPoint : ControlPointWrapper {
      * @param device Device
      * @return MediaServer
      */
-    private fun createMediaServer(device: Device): MediaServer = MediaServer(device)
+    private fun createMediaServer(
+        device: Device,
+    ): MediaServer = MediaServer(device)
 
-    private fun discoverDevice(device: Device) {
+    private fun discoverDevice(
+        device: Device,
+    ) {
         if (device.deviceType.startsWith(Cds.MS_DEVICE_TYPE)) {
             discoverMsDevice(device)
             return
@@ -159,7 +167,9 @@ class MsControlPoint : ControlPointWrapper {
         }
     }
 
-    private fun discoverMsDevice(device: Device) {
+    private fun discoverMsDevice(
+        device: Device,
+    ) {
         val server: MediaServer
         try {
             server = createMediaServer(device)
@@ -171,7 +181,9 @@ class MsControlPoint : ControlPointWrapper {
         msDiscoveryListener?.onDiscover(server)
     }
 
-    private fun lostDevice(device: Device) {
+    private fun lostDevice(
+        device: Device,
+    ) {
         val server = mediaServerMap.remove(device.udn) ?: return
         msDiscoveryListener?.onLost(server)
     }
@@ -181,7 +193,9 @@ class MsControlPoint : ControlPointWrapper {
      *
      * @param listener リスナー
      */
-    fun setMsDiscoveryListener(listener: MsDiscoveryListener?) {
+    fun setMsDiscoveryListener(
+        listener: MsDiscoveryListener?,
+    ) {
         msDiscoveryListener = listener
     }
 
@@ -190,7 +204,9 @@ class MsControlPoint : ControlPointWrapper {
      *
      * @param listener リスナー
      */
-    fun setContainerUpdateIdsListener(listener: ContainerUpdateIdsListener?) {
+    fun setContainerUpdateIdsListener(
+        listener: ContainerUpdateIdsListener?,
+    ) {
         containerUpdateIdsListener = listener
     }
 
@@ -199,7 +215,9 @@ class MsControlPoint : ControlPointWrapper {
      *
      * @param listener リスナー
      */
-    fun setSystemUpdateIdListener(listener: SystemUpdateIdListener) {
+    fun setSystemUpdateIdListener(
+        listener: SystemUpdateIdListener,
+    ) {
         systemUpdateIdListener = listener
     }
 
@@ -209,14 +227,18 @@ class MsControlPoint : ControlPointWrapper {
      * @param udn UDN
      * @return MediaServer、見つからない場合null
      */
-    override fun getDevice(udn: String?): MediaServer? = mediaServerMap[udn]
+    override fun getDevice(
+        udn: String?,
+    ): MediaServer? = mediaServerMap[udn]
 
     /**
      * 初期化する。
      *
      * @param controlPoint ControlPoint
      */
-    override fun initialize(controlPoint: ControlPoint) {
+    override fun initialize(
+        controlPoint: ControlPoint,
+    ) {
         if (initialized.get()) {
             terminate(controlPoint)
         }
@@ -231,7 +253,9 @@ class MsControlPoint : ControlPointWrapper {
      *
      * @param controlPoint ControlPoint
      */
-    override fun terminate(controlPoint: ControlPoint) {
+    override fun terminate(
+        controlPoint: ControlPoint,
+    ) {
         if (!initialized.getAndSet(false)) {
             return
         }

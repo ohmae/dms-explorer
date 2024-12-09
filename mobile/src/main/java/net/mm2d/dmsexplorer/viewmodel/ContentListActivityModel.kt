@@ -172,7 +172,9 @@ class ContentListActivityModel(
         handler.post { updateList(emptyList()) }
     }
 
-    override fun onUpdate(list: List<ContentEntity>) {
+    override fun onUpdate(
+        list: List<ContentEntity>,
+    ) {
         setSize(list.size)
         handler.post { updateList(list) }
     }
@@ -181,7 +183,9 @@ class ContentListActivityModel(
         isRefreshingFlow.value = false
     }
 
-    private fun setSize(size: Int) {
+    private fun setSize(
+        size: Int,
+    ) {
         subtitleFlow.value = "[$size] ${mediaServerModel.path}"
     }
 
@@ -189,7 +193,9 @@ class ContentListActivityModel(
         scrollPositionFlow.value = contentListAdapter.list.indexOf(mediaServerModel.selectedEntity)
     }
 
-    private fun updateList(list: List<ContentEntity>) {
+    private fun updateList(
+        list: List<ContentEntity>,
+    ) {
         val entity = mediaServerModel.selectedEntity
         val oldList = contentListAdapter.list
         val diff = DiffUtil.calculateDiff(DiffCallback(oldList, list), true)
@@ -208,11 +214,15 @@ class ContentListActivityModel(
 
         override fun getNewListSize(): Int = new.size
 
-        override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
-            old[oldItemPosition].id == new[newItemPosition].id
+        override fun areItemsTheSame(
+            oldItemPosition: Int,
+            newItemPosition: Int,
+        ): Boolean = old[oldItemPosition].id == new[newItemPosition].id
 
-        override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
-            old[oldItemPosition].name == new[newItemPosition].name
+        override fun areContentsTheSame(
+            oldItemPosition: Int,
+            newItemPosition: Int,
+        ): Boolean = old[oldItemPosition].name == new[newItemPosition].name
     }
 
     fun terminate() {

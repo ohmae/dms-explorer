@@ -47,7 +47,9 @@ abstract class ServerListActivityDelegate internal constructor(
     protected lateinit var model: ServerListActivityModel
 
     @CallSuper
-    open fun onCreate(savedInstanceState: Bundle?) {
+    open fun onCreate(
+        savedInstanceState: Bundle?,
+    ) {
         val binding = binding
         val activity = activity
         binding.toolbar.popupTheme = Settings.get().themeParams.popupThemeId
@@ -93,13 +95,17 @@ abstract class ServerListActivityDelegate internal constructor(
     open fun prepareSaveInstanceState() {}
 
     @CallSuper
-    open fun onSaveInstanceState(outState: Bundle) {
+    open fun onSaveInstanceState(
+        outState: Bundle,
+    ) {
         saveScroll(outState)
     }
 
     open fun onStart() {}
 
-    private fun restoreScroll(savedInstanceState: Bundle) {
+    private fun restoreScroll(
+        savedInstanceState: Bundle,
+    ) {
         val position = savedInstanceState.getInt(KEY_SCROLL_POSITION, 0)
         val offset = savedInstanceState.getInt(KEY_SCROLL_OFFSET, 0)
         if (position == 0 && offset == 0) {
@@ -112,7 +118,9 @@ abstract class ServerListActivityDelegate internal constructor(
         }
     }
 
-    private fun saveScroll(outState: Bundle) {
+    private fun saveScroll(
+        outState: Bundle,
+    ) {
         val recyclerView = binding.recyclerView
         if (recyclerView.childCount == 0) {
             return
@@ -126,7 +134,9 @@ abstract class ServerListActivityDelegate internal constructor(
         private const val KEY_SCROLL_POSITION = "KEY_SCROLL_POSITION"
         private const val KEY_SCROLL_OFFSET = "KEY_SCROLL_OFFSET"
 
-        fun create(activity: BaseActivity): ServerListActivityDelegate {
+        fun create(
+            activity: BaseActivity,
+        ): ServerListActivityDelegate {
             val binding = ServerListActivityBinding.inflate(activity.layoutInflater)
             activity.setContentView(binding.root)
 

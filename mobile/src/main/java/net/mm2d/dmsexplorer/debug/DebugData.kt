@@ -23,7 +23,9 @@ import java.nio.charset.Charset
 object DebugData {
     private var pinnedDeviceLocationList = emptyList<String>()
 
-    fun initialize(context: Context) {
+    fun initialize(
+        context: Context,
+    ) {
         if (!BuildConfig.DEBUG || !RuntimeEnvironment.isEmulator) {
             return
         }

@@ -64,7 +64,9 @@ class AvControlPointManager {
         controlPoint?.search(null)
     }
 
-    fun addPinnedDevice(location: String) {
+    fun addPinnedDevice(
+        location: String,
+    ) {
         check(initialized.get()) { "ControlPoint is not initialized" }
         controlPoint?.tryAddPinnedDevice(location)
     }
@@ -74,7 +76,9 @@ class AvControlPointManager {
      *
      * @param interfaces 使用するインターフェース
      */
-    fun initialize(interfaces: Collection<NetworkInterface>?) {
+    fun initialize(
+        interfaces: Collection<NetworkInterface>?,
+    ) {
         if (initialized.get()) {
             terminate()
         }

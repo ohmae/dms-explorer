@@ -38,7 +38,9 @@ class ContentDetailActivity :
     private val selectedEntity: ContentEntity?
         get() = mediaServerModel.selectedEntity
 
-    override fun onCreate(savedInstanceState: Bundle?) {
+    override fun onCreate(
+        savedInstanceState: Bundle?,
+    ) {
         settings = Settings.get()
         setTheme(settings.themeParams.noActionBarThemeId)
         super.onCreate(savedInstanceState)
@@ -96,7 +98,8 @@ class ContentDetailActivity :
          * @param context コンテキスト
          * @return このActivityを起動するためのIntent
          */
-        fun makeIntent(context: Context): Intent =
-            Intent(context, ContentDetailActivity::class.java)
+        fun makeIntent(
+            context: Context,
+        ): Intent = Intent(context, ContentDetailActivity::class.java)
     }
 }

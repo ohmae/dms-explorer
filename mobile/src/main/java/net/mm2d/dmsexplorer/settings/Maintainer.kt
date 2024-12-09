@@ -42,7 +42,9 @@ internal object Maintainer {
      *
      * @param storage SettingsStorage
      */
-    fun maintain(storage: SettingsStorage) {
+    fun maintain(
+        storage: SettingsStorage,
+    ) {
         val version = storage.readInt(Key.SETTINGS_VERSION)
         if (version <= 0) {
             storage.clear()
@@ -64,7 +66,9 @@ internal object Maintainer {
      *
      * @param storage SettingsStorage
      */
-    fun reset(storage: SettingsStorage) {
+    fun reset(
+        storage: SettingsStorage,
+    ) {
         writeDefaultValue(storage, true)
         storage.writeInt(Key.SETTINGS_VERSION, SETTINGS_VERSION)
         storage.writeInt(Key.APP_VERSION, BuildConfig.VERSION_CODE)

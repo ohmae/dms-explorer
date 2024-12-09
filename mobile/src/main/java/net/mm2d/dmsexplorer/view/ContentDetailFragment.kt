@@ -27,7 +27,10 @@ class ContentDetailFragment : Fragment(R.layout.content_detail_fragment) {
     lateinit var binding: ContentDetailFragmentBinding
     var model: ContentDetailFragmentModel? = null
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?,
+    ) {
         super.onViewCreated(view, savedInstanceState)
         binding = ContentDetailFragmentBinding.bind(view)
         val activity = requireActivity()

@@ -19,12 +19,16 @@ import androidx.preference.PreferenceManager
  * @constructor
  * @param context コンテキスト
  */
-class SettingsStorage(context: Context) {
+class SettingsStorage(
+    context: Context,
+) {
     private object PreferencesHolder {
         private var preferences: SharedPreferences? = null
 
         @Synchronized
-        fun get(context: Context): SharedPreferences {
+        fun get(
+            context: Context,
+        ): SharedPreferences {
             preferences?.let {
                 return it
             }
@@ -49,15 +53,18 @@ class SettingsStorage(context: Context) {
      * @param key Key
      * @return 含まれている場合true
      */
-    operator fun contains(key: Key): Boolean =
-        preferences.contains(key.name)
+    operator fun contains(
+        key: Key,
+    ): Boolean = preferences.contains(key.name)
 
     /**
      * keyの値を削除する
      *
      * @param key Key
      */
-    fun remove(key: Key) {
+    fun remove(
+        key: Key,
+    ) {
         preferences.edit { remove(key.name) }
     }
 
@@ -67,7 +74,10 @@ class SettingsStorage(context: Context) {
      * @param key   Key
      * @param value 書き込む値
      */
-    fun writeBoolean(key: Key, value: Boolean) {
+    fun writeBoolean(
+        key: Key,
+        value: Boolean,
+    ) {
         require(key.isBooleanKey) { key.name + " is not key for boolean" }
         preferences.edit { putBoolean(key.name, value) }
     }
@@ -78,7 +88,9 @@ class SettingsStorage(context: Context) {
      * @param key Key
      * @return 読み出したboolean値
      */
-    fun readBoolean(key: Key): Boolean {
+    fun readBoolean(
+        key: Key,
+    ): Boolean {
         require(key.isBooleanKey) { key.name + " is not key for boolean" }
         return preferences.getBoolean(key.name, key.defaultBoolean)
     }
@@ -89,7 +101,10 @@ class SettingsStorage(context: Context) {
      * @param key   Key
      * @param value 書き込む値
      */
-    fun writeInt(key: Key, value: Int) {
+    fun writeInt(
+        key: Key,
+        value: Int,
+    ) {
         require(key.isIntKey) { key.name + " is not key for int" }
         preferences.edit { putInt(key.name, value) }
     }
@@ -100,7 +115,9 @@ class SettingsStorage(context: Context) {
      * @param key Key
      * @return 読み出したint値
      */
-    fun readInt(key: Key): Int {
+    fun readInt(
+        key: Key,
+    ): Int {
         require(key.isIntKey) { key.name + " is not key for int" }
         return preferences.getInt(key.name, key.defaultInt)
     }
@@ -111,7 +128,10 @@ class SettingsStorage(context: Context) {
      * @param key   Key
      * @param value 書き込む値
      */
-    fun writeLong(key: Key, value: Long) {
+    fun writeLong(
+        key: Key,
+        value: Long,
+    ) {
         require(key.isLongKey) { key.name + " is not key for long" }
         preferences.edit { putLong(key.name, value) }
     }
@@ -122,7 +142,9 @@ class SettingsStorage(context: Context) {
      * @param key Key
      * @return 読み出したlong値
      */
-    fun readLong(key: Key): Long {
+    fun readLong(
+        key: Key,
+    ): Long {
         require(key.isLongKey) { key.name + " is not key for long" }
         return preferences.getLong(key.name, key.defaultLong)
     }
@@ -133,7 +155,10 @@ class SettingsStorage(context: Context) {
      * @param key   Key
      * @param value 書き込む値
      */
-    fun writeString(key: Key, value: String) {
+    fun writeString(
+        key: Key,
+        value: String,
+    ) {
         require(key.isStringKey) { key.name + " is not key for String" }
         preferences.edit { putString(key.name, value) }
     }
@@ -144,7 +169,9 @@ class SettingsStorage(context: Context) {
      * @param key Key
      * @return 読み出したString値
      */
-    fun readString(key: Key): String {
+    fun readString(
+        key: Key,
+    ): String {
         require(key.isStringKey) { key.name + " is not key for String" }
         return preferences.getString(key.name, key.defaultString)!!
     }
@@ -155,7 +182,10 @@ class SettingsStorage(context: Context) {
      * @param key       Key
      * @param overwrite true:値を上書きする、false:値がない場合のみ書き込む
      */
-    fun writeDefault(key: Key, overwrite: Boolean) {
+    fun writeDefault(
+        key: Key,
+        overwrite: Boolean,
+    ) {
         if (!key.isReadWriteKey) {
             return
         }

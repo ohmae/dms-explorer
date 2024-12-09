@@ -54,16 +54,22 @@ class PhotoActivity : BaseActivity() {
             positionOffsetPixels: Int,
         ) = Unit
 
-        override fun onPageSelected(position: Int) = Unit
+        override fun onPageSelected(
+            position: Int,
+        ) = Unit
 
-        override fun onPageScrollStateChanged(state: Int) {
+        override fun onPageScrollStateChanged(
+            state: Int,
+        ) {
             if (state == ViewPager.SCROLL_STATE_IDLE) {
                 onScrollIdle()
             }
         }
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
+    override fun onCreate(
+        savedInstanceState: Bundle?,
+    ) {
         settings = Settings.get()
         setTheme(settings.themeParams.fullscreenThemeId)
         super.onCreate(savedInstanceState)
@@ -138,14 +144,18 @@ class PhotoActivity : BaseActivity() {
             .setRequestedOrientation(this)
     }
 
-    override fun dispatchKeyEvent(event: KeyEvent): Boolean {
+    override fun dispatchKeyEvent(
+        event: KeyEvent,
+    ): Boolean {
         if (event.action == KeyEvent.ACTION_UP && event.keyCode != KeyEvent.KEYCODE_BACK) {
             fullscreenHelper.showNavigation()
         }
         return super.dispatchKeyEvent(event)
     }
 
-    override fun dispatchTouchEvent(ev: MotionEvent): Boolean {
+    override fun dispatchTouchEvent(
+        ev: MotionEvent,
+    ): Boolean {
         val result = super.dispatchTouchEvent(ev)
         if (settings.shouldShowPhotoUiOnTouch()) {
             fullscreenHelper.showNavigation()
@@ -153,7 +163,9 @@ class PhotoActivity : BaseActivity() {
         return result
     }
 
-    override fun onConfigurationChanged(newConfig: Configuration) {
+    override fun onConfigurationChanged(
+        newConfig: Configuration,
+    ) {
         super.onConfigurationChanged(newConfig)
         model.adjustPanel(this)
     }
@@ -172,7 +184,9 @@ class PhotoActivity : BaseActivity() {
         EventLogger.sendPlayContent(true)
     }
 
-    private fun move(index: Int): Boolean =
+    private fun move(
+        index: Int,
+    ): Boolean =
         if (index == 0) {
             serverModel.selectPreviousEntity(MediaServerModel.SCAN_MODE_SEQUENTIAL)
         } else {

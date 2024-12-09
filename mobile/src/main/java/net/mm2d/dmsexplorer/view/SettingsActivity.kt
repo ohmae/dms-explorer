@@ -50,7 +50,9 @@ import net.mm2d.preference.PreferenceActivityCompat
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
  */
 class SettingsActivity : PreferenceActivityCompat() {
-    override fun onBuildHeaders(target: MutableList<Header>) {
+    override fun onBuildHeaders(
+        target: MutableList<Header>,
+    ) {
         loadHeadersFromResource(R.xml.pref_headers, target)
         Settings.get()
             .themeParams
@@ -58,7 +60,9 @@ class SettingsActivity : PreferenceActivityCompat() {
             .convert(target)
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
+    override fun onCreate(
+        savedInstanceState: Bundle?,
+    ) {
         setTheme(Settings.get().themeParams.settingsThemeId)
         super.onCreate(savedInstanceState)
         WindowCompat.setDecorFitsSystemWindows(window, false)
@@ -81,7 +85,9 @@ class SettingsActivity : PreferenceActivityCompat() {
 
     override fun onIsMultiPane(): Boolean = isXLargeTablet(this)
 
-    override fun isValidFragment(fragmentName: String?): Boolean =
+    override fun isValidFragment(
+        fragmentName: String?,
+    ): Boolean =
         (
             PreferenceFragmentCompat::class.java.name == fragmentName ||
                 PlaybackPreferenceFragment::class.java.name == fragmentName ||
@@ -97,13 +103,19 @@ class SettingsActivity : PreferenceActivityCompat() {
     }
 
     class PlaybackPreferenceFragment : PreferenceFragmentBase() {
-        override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
+        override fun onCreatePreferences(
+            savedInstanceState: Bundle?,
+            rootKey: String?,
+        ) {
             addPreferencesFromResource(R.xml.pref_playback)
         }
     }
 
     class FunctionPreferenceFragment : PreferenceFragmentBase() {
-        override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
+        override fun onCreatePreferences(
+            savedInstanceState: Bundle?,
+            rootKey: String?,
+        ) {
             addPreferencesFromResource(R.xml.pref_function)
             setUpCustomTabs()
         }
@@ -129,7 +141,10 @@ class SettingsActivity : PreferenceActivityCompat() {
     class ViewPreferenceFragment : PreferenceFragmentBase() {
         private var setFromCode: Boolean = false
 
-        override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
+        override fun onCreatePreferences(
+            savedInstanceState: Bundle?,
+            rootKey: String?,
+        ) {
             val activity = requireActivity()
             addPreferencesFromResource(R.xml.pref_view)
             findPreference<Preference>(Key.DARK_THEME.name)?.setOnPreferenceChangeListener { preference, _ ->
@@ -158,7 +173,10 @@ class SettingsActivity : PreferenceActivityCompat() {
     class ExpertPreferenceFragment :
         PreferenceFragmentBase(),
         SortDialog.OnUpdateSortSettings {
-        override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
+        override fun onCreatePreferences(
+            savedInstanceState: Bundle?,
+            rootKey: String?,
+        ) {
             val activity = requireActivity()
             val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(activity)
             addPreferencesFromResource(R.xml.pref_expert)
@@ -211,7 +229,9 @@ class SettingsActivity : PreferenceActivityCompat() {
                 true
             }
 
-        private fun createCollectiveSettingListener(preferences: List<ListPreference>): OnPreferenceChangeListener =
+        private fun createCollectiveSettingListener(
+            preferences: List<ListPreference>,
+        ): OnPreferenceChangeListener =
             OnPreferenceChangeListener { preference, value ->
                 val stringValue = value.toString()
                 val summary = Orientation.of(stringValue).getName(preference.context)
@@ -235,7 +255,10 @@ class SettingsActivity : PreferenceActivityCompat() {
     }
 
     class InformationPreferenceFragment : PreferenceFragmentBase() {
-        override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
+        override fun onCreatePreferences(
+            savedInstanceState: Bundle?,
+            rootKey: String?,
+        ) {
             val activity = requireActivity()
             addPreferencesFromResource(R.xml.pref_information)
             findPreference<Preference>(Key.PLAY_STORE.name)?.setOnPreferenceClickListener {
@@ -274,19 +297,28 @@ class SettingsActivity : PreferenceActivityCompat() {
          * @param context コンテキスト
          * @return このActivityを起動するためのIntent
          */
-        fun makeIntent(context: Context): Intent = Intent(context, SettingsActivity::class.java)
+        fun makeIntent(
+            context: Context,
+        ): Intent = Intent(context, SettingsActivity::class.java)
 
-        fun start(context: Context) {
+        fun start(
+            context: Context,
+        ) {
             context.startActivity(makeIntent(context))
         }
 
-        private fun isXLargeTablet(context: Context): Boolean =
-            context.resources.configuration.screenLayout and Configuration.SCREENLAYOUT_SIZE_MASK >= Configuration.SCREENLAYOUT_SIZE_LARGE
+        private fun isXLargeTablet(
+            context: Context,
+        ): Boolean =
+            context.resources.configuration.screenLayout and Configuration.SCREENLAYOUT_SIZE_MASK >=
+                Configuration.SCREENLAYOUT_SIZE_LARGE
 
-        private fun canUseChromeCustomTabs(): Boolean =
-            !CustomTabsHelper.packageNameToBind.isNullOrEmpty()
+        private fun canUseChromeCustomTabs(): Boolean = !CustomTabsHelper.packageNameToBind.isNullOrEmpty()
 
-        private fun openUrl(context: Context, url: String) {
+        private fun openUrl(
+            context: Context,
+            url: String,
+        ) {
             Repository.get().openUriModel.openUri(context, url)
         }
     }

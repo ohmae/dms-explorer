@@ -46,7 +46,9 @@ class MovieActivity : BaseActivity() {
     private lateinit var binding: MovieActivityBinding
     private var model: MovieActivityModel? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
+    override fun onCreate(
+        savedInstanceState: Bundle?,
+    ) {
         settings = Settings.get()
         setTheme(settings.themeParams.fullscreenThemeId)
         super.onCreate(savedInstanceState)
@@ -120,7 +122,10 @@ class MovieActivity : BaseActivity() {
         }
     }
 
-    private fun applyControlPanelParam(binding: ControlPanelBinding, param: ControlPanelParam) {
+    private fun applyControlPanelParam(
+        binding: ControlPanelBinding,
+        param: ControlPanelParam,
+    ) {
         param.getMarginRightFlow().observe(this) {
             binding.root.updatePadding(right = it)
         }
@@ -135,7 +140,10 @@ class MovieActivity : BaseActivity() {
 
     private val jobs: MutableList<Job> = mutableListOf()
 
-    private fun applyControlPanelModel(binding: ControlPanelBinding, model: ControlPanelModel) {
+    private fun applyControlPanelModel(
+        binding: ControlPanelBinding,
+        model: ControlPanelModel,
+    ) {
         jobs.forEach { it.cancel() }
         jobs.clear()
 
@@ -188,12 +196,16 @@ class MovieActivity : BaseActivity() {
             .setRequestedOrientation(this)
     }
 
-    override fun onNewIntent(intent: Intent) {
+    override fun onNewIntent(
+        intent: Intent,
+    ) {
         super.onNewIntent(intent)
         model?.updateTargetModel()
     }
 
-    override fun dispatchKeyEvent(event: KeyEvent): Boolean {
+    override fun dispatchKeyEvent(
+        event: KeyEvent,
+    ): Boolean {
         if (event.action == KeyEvent.ACTION_UP && event.keyCode != KeyEvent.KEYCODE_BACK) {
             if (fullscreenHelper.showNavigation()) {
                 binding.controlPanel.playPause.requestFocus()
@@ -210,7 +222,9 @@ class MovieActivity : BaseActivity() {
         return super.dispatchKeyEvent(event)
     }
 
-    override fun dispatchTouchEvent(ev: MotionEvent): Boolean {
+    override fun dispatchTouchEvent(
+        ev: MotionEvent,
+    ): Boolean {
         val result = super.dispatchTouchEvent(ev)
         if (settings.shouldShowMovieUiOnTouch()) {
             fullscreenHelper.showNavigation()
@@ -218,12 +232,16 @@ class MovieActivity : BaseActivity() {
         return result
     }
 
-    override fun onSaveInstanceState(outState: Bundle) {
+    override fun onSaveInstanceState(
+        outState: Bundle,
+    ) {
         super.onSaveInstanceState(outState)
         model?.let { outState.putInt(KEY_POSITION, it.currentProgress) }
     }
 
-    override fun onConfigurationChanged(newConfig: Configuration) {
+    override fun onConfigurationChanged(
+        newConfig: Configuration,
+    ) {
         super.onConfigurationChanged(newConfig)
         model?.adjustPanel(this)
     }

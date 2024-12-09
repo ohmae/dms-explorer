@@ -16,19 +16,25 @@ import kotlinx.coroutines.flow.MutableStateFlow
 class ControlPanelParam {
     private val bottomPaddingFlow: MutableStateFlow<Int> = MutableStateFlow(0)
     fun getBottomPaddingFlow(): Flow<Int> = bottomPaddingFlow
-    fun setBottomPadding(padding: Int) {
+    fun setBottomPadding(
+        padding: Int,
+    ) {
         bottomPaddingFlow.value = padding
     }
 
     private val marginRightFlow: MutableStateFlow<Int> = MutableStateFlow(0)
     fun getMarginRightFlow(): Flow<Int> = marginRightFlow
-    fun setMarginRight(margin: Int) {
+    fun setMarginRight(
+        margin: Int,
+    ) {
         marginRightFlow.value = margin
     }
 
     private val backgroundColorFlow: MutableStateFlow<Int> = MutableStateFlow(0)
     fun getBackgroundColorFlow(): Flow<Int> = backgroundColorFlow
-    fun setBackgroundColor(color: Int) {
+    fun setBackgroundColor(
+        color: Int,
+    ) {
         backgroundColorFlow.value = color
     }
 }

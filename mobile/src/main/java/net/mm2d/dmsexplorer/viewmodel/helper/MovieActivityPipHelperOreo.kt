@@ -96,21 +96,26 @@ internal class MovieActivityPipHelperOreo(
         )
     }
 
-    private fun makeIntentFilter(): IntentFilter = IntentFilter().also {
-        it.addAction(Const.ACTION_PLAY)
-        it.addAction(Const.ACTION_NEXT)
-        it.addAction(Const.ACTION_PREV)
-    }
+    private fun makeIntentFilter(): IntentFilter =
+        IntentFilter().also {
+            it.addAction(Const.ACTION_PLAY)
+            it.addAction(Const.ACTION_NEXT)
+            it.addAction(Const.ACTION_PREV)
+        }
 
     override fun unregister() {
         activity.unregisterReceiver(controlReceiver)
     }
 
-    override fun setControlPanelModel(model: ControlPanelModel?) {
+    override fun setControlPanelModel(
+        model: ControlPanelModel?,
+    ) {
         controlPanelModel = model
     }
 
-    override fun enterPictureInPictureMode(contentView: View) {
+    override fun enterPictureInPictureMode(
+        contentView: View,
+    ) {
         if (!isPictureInPictureAllowed()) {
             val intent = Intent(ACTION_PICTURE_IN_PICTURE_SETTINGS)
             intent.data = Uri.parse("package:" + activity.packageName)
@@ -131,11 +136,16 @@ internal class MovieActivityPipHelperOreo(
         }
     }
 
-    private fun makeViewRect(v: View): Rect = Rect().also {
-        v.getGlobalVisibleRect(it)
-    }
+    private fun makeViewRect(
+        v: View,
+    ): Rect =
+        Rect().also {
+            v.getGlobalVisibleRect(it)
+        }
 
-    private fun makeActions(isPlaying: Boolean): List<RemoteAction>? {
+    private fun makeActions(
+        isPlaying: Boolean,
+    ): List<RemoteAction>? {
         val max = activity.maxNumPictureInPictureActions
         if (max <= 0) {
             return null
@@ -147,37 +157,47 @@ internal class MovieActivityPipHelperOreo(
         }
     }
 
-    private fun makePlayAction(isPlaying: Boolean): RemoteAction = RemoteAction(
-        makeIcon(if (isPlaying) R.drawable.ic_pause else R.drawable.ic_play),
-        getString(R.string.action_play_title),
-        getString(R.string.action_play_description),
-        makePlayPendingIntent(activity),
-    )
+    private fun makePlayAction(
+        isPlaying: Boolean,
+    ): RemoteAction =
+        RemoteAction(
+            makeIcon(if (isPlaying) R.drawable.ic_pause else R.drawable.ic_play),
+            getString(R.string.action_play_title),
+            getString(R.string.action_play_description),
+            makePlayPendingIntent(activity),
+        )
 
-    private fun makeNextAction(): RemoteAction = RemoteAction(
-        makeIcon(R.drawable.ic_skip_next),
-        getString(R.string.action_next_title),
-        getString(R.string.action_next_description),
-        makeNextPendingIntent(activity),
-    )
+    private fun makeNextAction(): RemoteAction =
+        RemoteAction(
+            makeIcon(R.drawable.ic_skip_next),
+            getString(R.string.action_next_title),
+            getString(R.string.action_next_description),
+            makeNextPendingIntent(activity),
+        )
 
-    private fun makePreviousAction(): RemoteAction = RemoteAction(
-        makeIcon(R.drawable.ic_skip_previous),
-        getString(R.string.action_previous_title),
-        getString(R.string.action_previous_description),
-        makePreviousPendingIntent(activity),
-    )
+    private fun makePreviousAction(): RemoteAction =
+        RemoteAction(
+            makeIcon(R.drawable.ic_skip_previous),
+            getString(R.string.action_previous_title),
+            getString(R.string.action_previous_description),
+            makePreviousPendingIntent(activity),
+        )
 
-    private fun getString(@StringRes resId: Int): String =
-        activity.resources.getText(resId, "").toString()
+    private fun getString(
+        @StringRes resId: Int,
+    ): String = activity.resources.getText(resId, "").toString()
 
-    private fun makeIcon(@DrawableRes resId: Int): Icon = Icon.createWithResource(activity, resId)
+    private fun makeIcon(
+        @DrawableRes resId: Int,
+    ): Icon = Icon.createWithResource(activity, resId)
 
     companion object {
         private const val ACTION_PICTURE_IN_PICTURE_SETTINGS =
             "android.settings.PICTURE_IN_PICTURE_SETTINGS"
 
-        private fun makePlayPendingIntent(context: Context): PendingIntent =
+        private fun makePlayPendingIntent(
+            context: Context,
+        ): PendingIntent =
             PendingIntent.getBroadcast(
                 context,
                 Const.REQUEST_CODE_ACTION_PLAY,
@@ -185,7 +205,9 @@ internal class MovieActivityPipHelperOreo(
                 PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE,
             )
 
-        private fun makeNextPendingIntent(context: Context): PendingIntent =
+        private fun makeNextPendingIntent(
+            context: Context,
+        ): PendingIntent =
             PendingIntent.getBroadcast(
                 context,
                 Const.REQUEST_CODE_ACTION_NEXT,
@@ -193,7 +215,9 @@ internal class MovieActivityPipHelperOreo(
                 PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE,
             )
 
-        private fun makePreviousPendingIntent(context: Context): PendingIntent =
+        private fun makePreviousPendingIntent(
+            context: Context,
+        ): PendingIntent =
             PendingIntent.getBroadcast(
                 context,
                 Const.REQUEST_CODE_ACTION_PREVIOUS,

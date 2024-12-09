@@ -21,7 +21,9 @@ import net.mm2d.dmsexplorer.view.eventrouter.EventRouter
 object UpdateChecker {
     private const val DAYS_FOR_UPDATE = 2
 
-    fun check(context: Context) {
+    fun check(
+        context: Context,
+    ) {
         try {
             AppUpdateManagerFactory.create(context.applicationContext)
                 .appUpdateInfo
@@ -34,7 +36,9 @@ object UpdateChecker {
         }
     }
 
-    fun tryToUpdate(activity: Activity) {
+    fun tryToUpdate(
+        activity: Activity,
+    ) {
         try {
             val manager = AppUpdateManagerFactory.create(activity.applicationContext)
             manager.appUpdateInfo

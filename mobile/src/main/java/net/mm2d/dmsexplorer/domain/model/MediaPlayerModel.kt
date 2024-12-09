@@ -93,7 +93,9 @@ abstract class MediaPlayerModel(
         terminated = true
     }
 
-    override fun setStatusListener(listener: StatusListener) {
+    override fun setStatusListener(
+        listener: StatusListener,
+    ) {
         statusListener = listener
         mediaControl.setOnErrorListener { _, what, extra ->
             logError(what, extra)
@@ -109,7 +111,9 @@ abstract class MediaPlayerModel(
         })
     }
 
-    override fun restoreSaveProgress(progress: Int) {
+    override fun restoreSaveProgress(
+        progress: Int,
+    ) {
         _progress = progress
     }
 
@@ -121,7 +125,9 @@ abstract class MediaPlayerModel(
         mediaControl.pause()
     }
 
-    override fun seekTo(position: Int) {
+    override fun seekTo(
+        position: Int,
+    ) {
         mediaControl.seekTo(position)
         handler.removeCallbacks(getPositionTask)
         handler.post(getPositionTask)
@@ -137,10 +143,14 @@ abstract class MediaPlayerModel(
         return true
     }
 
-    protected abstract fun preparePlaying(mediaPlayer: MediaPlayer)
+    protected abstract fun preparePlaying(
+        mediaPlayer: MediaPlayer,
+    )
 
     @CallSuper
-    fun onPrepared(mediaPlayer: MediaPlayer) {
+    fun onPrepared(
+        mediaPlayer: MediaPlayer,
+    ) {
         preparePlaying(mediaPlayer)
         duration = duration
         handler.post(getPositionTask)
@@ -151,43 +161,58 @@ abstract class MediaPlayerModel(
         isPlaying = isPlaying
     }
 
-    private fun logError(what: Int, extra: Int) {
+    private fun logError(
+        what: Int,
+        extra: Int,
+    ) {
         Logger.e { "onError:w $what ${getErrorWhatString(what)} e $extra ${getErrorExtraString(extra)}" }
     }
 
-    private fun logInfo(what: Int, extra: Int) {
+    private fun logInfo(
+        what: Int,
+        extra: Int,
+    ) {
         Logger.d { "onInfo:w $what ${getInfoWhatString(what)} e $extra" }
     }
 
-    private fun getErrorWhatString(what: Int): String = when (what) {
-        MediaPlayer.MEDIA_ERROR_SERVER_DIED -> "MEDIA_ERROR_SERVER_DIED"
-        MediaPlayer.MEDIA_ERROR_UNKNOWN -> "MEDIA_ERROR_UNKNOWN"
-        else -> ""
-    }
+    private fun getErrorWhatString(
+        what: Int,
+    ): String =
+        when (what) {
+            MediaPlayer.MEDIA_ERROR_SERVER_DIED -> "MEDIA_ERROR_SERVER_DIED"
+            MediaPlayer.MEDIA_ERROR_UNKNOWN -> "MEDIA_ERROR_UNKNOWN"
+            else -> ""
+        }
 
-    private fun getErrorExtraString(extra: Int): String = when (extra) {
-        MediaPlayer.MEDIA_ERROR_IO -> "MEDIA_ERROR_IO"
-        MediaPlayer.MEDIA_ERROR_MALFORMED -> "MEDIA_ERROR_MALFORMED"
-        MediaPlayer.MEDIA_ERROR_TIMED_OUT -> "MEDIA_ERROR_TIMED_OUT"
-        MediaPlayer.MEDIA_ERROR_UNSUPPORTED -> "MEDIA_ERROR_UNSUPPORTED"
-        MediaPlayer.MEDIA_ERROR_NOT_VALID_FOR_PROGRESSIVE_PLAYBACK -> "MEDIA_ERROR_NOT_VALID_FOR_PROGRESSIVE_PLAYBACK"
-        MEDIA_ERROR_SYSTEM -> "MEDIA_ERROR_SYSTEM"
-        else -> ""
-    }
+    private fun getErrorExtraString(
+        extra: Int,
+    ): String =
+        when (extra) {
+            MediaPlayer.MEDIA_ERROR_IO -> "MEDIA_ERROR_IO"
+            MediaPlayer.MEDIA_ERROR_MALFORMED -> "MEDIA_ERROR_MALFORMED"
+            MediaPlayer.MEDIA_ERROR_TIMED_OUT -> "MEDIA_ERROR_TIMED_OUT"
+            MediaPlayer.MEDIA_ERROR_UNSUPPORTED -> "MEDIA_ERROR_UNSUPPORTED"
+            MediaPlayer.MEDIA_ERROR_NOT_VALID_FOR_PROGRESSIVE_PLAYBACK -> "MEDIA_ERROR_NOT_VALID_FOR_PROGRESSIVE_PLAYBACK"
+            MEDIA_ERROR_SYSTEM -> "MEDIA_ERROR_SYSTEM"
+            else -> ""
+        }
 
-    private fun getInfoWhatString(what: Int): String = when (what) {
-        MediaPlayer.MEDIA_INFO_UNKNOWN -> "MEDIA_INFO_UNKNOWN"
-        MediaPlayer.MEDIA_INFO_VIDEO_TRACK_LAGGING -> "MEDIA_INFO_VIDEO_TRACK_LAGGING"
-        MediaPlayer.MEDIA_INFO_VIDEO_RENDERING_START -> "MEDIA_INFO_VIDEO_RENDERING_START"
-        MediaPlayer.MEDIA_INFO_BUFFERING_START -> "MEDIA_INFO_BUFFERING_START"
-        MediaPlayer.MEDIA_INFO_BUFFERING_END -> "MEDIA_INFO_BUFFERING_END"
-        MediaPlayer.MEDIA_INFO_BAD_INTERLEAVING -> "MEDIA_INFO_BAD_INTERLEAVING"
-        MediaPlayer.MEDIA_INFO_NOT_SEEKABLE -> "MEDIA_INFO_NOT_SEEKABLE"
-        MediaPlayer.MEDIA_INFO_METADATA_UPDATE -> "MEDIA_INFO_METADATA_UPDATE"
-        MediaPlayer.MEDIA_INFO_UNSUPPORTED_SUBTITLE -> "MEDIA_INFO_UNSUPPORTED_SUBTITLE"
-        MediaPlayer.MEDIA_INFO_SUBTITLE_TIMED_OUT -> "MEDIA_INFO_SUBTITLE_TIMED_OUT"
-        else -> ""
-    }
+    private fun getInfoWhatString(
+        what: Int,
+    ): String =
+        when (what) {
+            MediaPlayer.MEDIA_INFO_UNKNOWN -> "MEDIA_INFO_UNKNOWN"
+            MediaPlayer.MEDIA_INFO_VIDEO_TRACK_LAGGING -> "MEDIA_INFO_VIDEO_TRACK_LAGGING"
+            MediaPlayer.MEDIA_INFO_VIDEO_RENDERING_START -> "MEDIA_INFO_VIDEO_RENDERING_START"
+            MediaPlayer.MEDIA_INFO_BUFFERING_START -> "MEDIA_INFO_BUFFERING_START"
+            MediaPlayer.MEDIA_INFO_BUFFERING_END -> "MEDIA_INFO_BUFFERING_END"
+            MediaPlayer.MEDIA_INFO_BAD_INTERLEAVING -> "MEDIA_INFO_BAD_INTERLEAVING"
+            MediaPlayer.MEDIA_INFO_NOT_SEEKABLE -> "MEDIA_INFO_NOT_SEEKABLE"
+            MediaPlayer.MEDIA_INFO_METADATA_UPDATE -> "MEDIA_INFO_METADATA_UPDATE"
+            MediaPlayer.MEDIA_INFO_UNSUPPORTED_SUBTITLE -> "MEDIA_INFO_UNSUPPORTED_SUBTITLE"
+            MediaPlayer.MEDIA_INFO_SUBTITLE_TIMED_OUT -> "MEDIA_INFO_SUBTITLE_TIMED_OUT"
+            else -> ""
+        }
 
     companion object {
         private val SKIP_MARGIN = TimeUnit.SECONDS.toMillis(3).toInt()

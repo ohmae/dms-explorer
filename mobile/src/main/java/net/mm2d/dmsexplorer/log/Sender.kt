@@ -14,5 +14,8 @@ import androidx.annotation.Size
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
  */
 internal interface Sender {
-    fun logEvent(@Size(min = 1L, max = 40L) name: String, params: Bundle?)
+    fun logEvent(
+        @Size(min = 1L, max = 40L) name: String,
+        params: Bundle?,
+    )
 }

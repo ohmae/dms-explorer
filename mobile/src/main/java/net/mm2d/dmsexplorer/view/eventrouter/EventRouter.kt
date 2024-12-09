@@ -31,7 +31,10 @@ object EventRouter {
         }
     }
 
-    fun observeFinish(owner: LifecycleOwner, callback: () -> Unit) {
+    fun observeFinish(
+        owner: LifecycleOwner,
+        callback: () -> Unit,
+    ) {
         owner.lifecycleScope.launch {
             finishChannel.collect { callback() }
         }
@@ -43,20 +46,27 @@ object EventRouter {
         }
     }
 
-    fun observeOrientationSettings(owner: LifecycleOwner, callback: () -> Unit) {
+    fun observeOrientationSettings(
+        owner: LifecycleOwner,
+        callback: () -> Unit,
+    ) {
         owner.lifecycleScope.launch {
             orientationSettingsChannel.collect { callback() }
         }
     }
 
-    fun updateAvailable(): Boolean =
-        updateAvailableLiveData.value == true
+    fun updateAvailable(): Boolean = updateAvailableLiveData.value == true
 
-    fun notifyUpdateAvailable(available: Boolean) {
+    fun notifyUpdateAvailable(
+        available: Boolean,
+    ) {
         updateAvailableLiveData.postValue(available)
     }
 
-    fun observeUpdateAvailable(owner: LifecycleOwner, callback: (Boolean) -> Unit) {
+    fun observeUpdateAvailable(
+        owner: LifecycleOwner,
+        callback: (Boolean) -> Unit,
+    ) {
         updateAvailableLiveData.observe(owner) { callback(it) }
     }
 }

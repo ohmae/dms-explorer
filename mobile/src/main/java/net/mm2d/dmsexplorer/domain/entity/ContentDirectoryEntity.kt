@@ -58,7 +58,9 @@ class ContentDirectoryEntity private constructor(
         disposable = null
     }
 
-    fun enterChild(entity: ContentEntity): ContentDirectoryEntity? {
+    fun enterChild(
+        entity: ContentEntity,
+    ): ContentDirectoryEntity? {
         if (!list.contains(entity)) {
             return null
         }
@@ -70,7 +72,9 @@ class ContentDirectoryEntity private constructor(
         return ContentDirectoryEntity(cdsObject.objectId, cdsObject.title)
     }
 
-    fun setExploreListener(listener: ExploreListener?) {
+    fun setExploreListener(
+        listener: ExploreListener?,
+    ) {
         entryListener = listener ?: ENTRY_LISTENER
     }
 
@@ -84,7 +88,9 @@ class ContentDirectoryEntity private constructor(
         entryListener.onStart()
     }
 
-    fun startBrowse(observable: Observable<CdsObject>) {
+    fun startBrowse(
+        observable: Observable<CdsObject>,
+    ) {
         entryListener.onStart()
         disposable = observable
             .subscribeOn(Schedulers.io())

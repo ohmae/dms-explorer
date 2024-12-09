@@ -15,7 +15,11 @@ import androidx.annotation.StringRes
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
  */
 object Toaster {
-    fun show(context: Context?, @StringRes resId: Int): Toast? = context?.let {
-        Toast.makeText(it, resId, Toast.LENGTH_LONG).apply { show() }
-    }
+    fun show(
+        context: Context?,
+        @StringRes resId: Int,
+    ): Toast? =
+        context?.let {
+            Toast.makeText(it, resId, Toast.LENGTH_LONG).apply { show() }
+        }
 }

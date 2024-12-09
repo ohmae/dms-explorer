@@ -31,7 +31,9 @@ internal object DownloadIcon {
      * @param icon Icon
      * @return Iconの優先度
      */
-    private fun calcScore(icon: Icon): Int {
+    private fun calcScore(
+        icon: Icon,
+    ): Int {
         val mime = icon.mimeType
         val png = MIME_PNG == mime
         val jpg = MIME_JPG == mime

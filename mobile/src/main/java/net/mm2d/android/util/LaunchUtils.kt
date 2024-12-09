@@ -29,7 +29,10 @@ object LaunchUtils {
      * @param uri     URI
      * @return 起動ができた場合true、何らかの理由で起動できない場合false
      */
-    fun openUri(context: Context, uri: String?): Boolean {
+    fun openUri(
+        context: Context,
+        uri: String?,
+    ): Boolean {
         if (uri.isNullOrEmpty()) return false
         try {
             Intent(Intent.ACTION_VIEW, Uri.parse(uri))
@@ -51,6 +54,8 @@ object LaunchUtils {
      * @param packageName 開くアプリのパッケージ名
      * @return 起動ができた場合true、何らかの理由で起動できない場合false
      */
-    fun openGooglePlay(context: Context, packageName: String?): Boolean =
-        openUri(context, "market://details?id=$packageName")
+    fun openGooglePlay(
+        context: Context,
+        packageName: String?,
+    ): Boolean = openUri(context, "market://details?id=$packageName")
 }

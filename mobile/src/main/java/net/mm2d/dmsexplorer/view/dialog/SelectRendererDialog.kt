@@ -28,7 +28,9 @@ import net.mm2d.dmsexplorer.view.adapter.RendererListAdapter
  */
 class SelectRendererDialog : DialogFragment() {
 
-    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+    override fun onCreateDialog(
+        savedInstanceState: Bundle?,
+    ): Dialog {
         val activity = requireActivity()
         val builder = AlertDialog.Builder(activity)
         val model = Repository.get().controlPointModel
@@ -64,7 +66,9 @@ class SelectRendererDialog : DialogFragment() {
     companion object {
         private fun newInstance(): SelectRendererDialog = SelectRendererDialog()
 
-        fun show(activity: FragmentActivity) {
+        fun show(
+            activity: FragmentActivity,
+        ) {
             if (activity.supportFragmentManager.isStateSaved) {
                 return
             }

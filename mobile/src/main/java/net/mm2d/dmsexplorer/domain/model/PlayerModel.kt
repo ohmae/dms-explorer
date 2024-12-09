@@ -15,12 +15,31 @@ import net.mm2d.dmsexplorer.domain.entity.ContentEntity
  */
 interface PlayerModel {
     interface StatusListener {
-        fun notifyDuration(duration: Int)
-        fun notifyProgress(progress: Int)
-        fun notifyPlayingState(playing: Boolean)
-        fun notifyChapterList(chapterList: List<Int>)
-        fun onError(what: Int, extra: Int): Boolean
-        fun onInfo(what: Int, extra: Int): Boolean
+        fun notifyDuration(
+            duration: Int,
+        )
+
+        fun notifyProgress(
+            progress: Int,
+        )
+
+        fun notifyPlayingState(
+            playing: Boolean,
+        )
+
+        fun notifyChapterList(
+            chapterList: List<Int>,
+        )
+
+        fun onError(
+            what: Int,
+            extra: Int,
+        ): Boolean
+
+        fun onInfo(
+            what: Int,
+            extra: Int,
+        ): Boolean
         fun onCompletion()
     }
 
@@ -30,12 +49,23 @@ interface PlayerModel {
     val isPlaying: Boolean
     fun canPause(): Boolean
     fun terminate()
-    fun setStatusListener(listener: StatusListener)
-    fun setUri(uri: Uri, entity: ContentEntity?)
-    fun restoreSaveProgress(progress: Int)
+    fun setStatusListener(
+        listener: StatusListener,
+    )
+
+    fun setUri(
+        uri: Uri,
+        entity: ContentEntity?,
+    )
+
+    fun restoreSaveProgress(
+        progress: Int,
+    )
     fun play()
     fun pause()
-    fun seekTo(position: Int)
+    fun seekTo(
+        position: Int,
+    )
     fun next(): Boolean
     fun previous(): Boolean
 }

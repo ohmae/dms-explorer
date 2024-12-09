@@ -5,15 +5,17 @@ charset = utf-8
 end_of_line = lf
 indent_size = 4
 indent_style = space
+max_line_length = 120
 trim_trailing_whitespace = true
 insert_final_newline = true
 
 # noinspection EditorConfigKeyCorrectness
 [{*.kt,*.kts}]
 ktlint_code_style = intellij_idea
-ktlint_function_naming_ignore_when_annotated_with = Composable
-ktlint_standard_function-signature = disabled
-ktlint_standard_class-signature = disabled
+ktlint_function_naming_ignore_when_annotated_with = Composable, Test
+ktlint_function_signature_body_expression_wrapping = multiline
+ktlint_function_signature_rule_force_multiline_when_parameter_count_greater_or_equal_than = 1
+ktlint_class_signature_rule_force_multiline_when_parameter_count_greater_or_equal_than = 1
 
 [*.json]
 indent_size = 2

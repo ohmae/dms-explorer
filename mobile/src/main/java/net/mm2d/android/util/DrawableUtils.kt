@@ -16,10 +16,15 @@ import androidx.appcompat.content.res.AppCompatResources
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
  */
 object DrawableUtils {
-    fun get(context: Context, @DrawableRes resId: Int): Drawable? =
-        AppCompatResources.getDrawable(context, resId)
+    fun get(
+        context: Context,
+        @DrawableRes resId: Int,
+    ): Drawable? = AppCompatResources.getDrawable(context, resId)
 
-    fun getOrThrow(context: Context, @DrawableRes resId: Int): Drawable =
+    fun getOrThrow(
+        context: Context,
+        @DrawableRes resId: Int,
+    ): Drawable =
         AppCompatResources.getDrawable(context, resId)
             ?: throw IllegalArgumentException("resource not found")
 }

@@ -204,7 +204,9 @@ class Settings private constructor(
      * @param type コンテンツ種別
      * @return アプリで再生する場合true
      */
-    fun isPlayMyself(type: ContentType): Boolean =
+    fun isPlayMyself(
+        type: ContentType,
+    ): Boolean =
         when (type) {
             ContentType.MOVIE -> isPlayMovieMyself
             ContentType.MUSIC -> isPlayMusicMyself
@@ -224,72 +226,63 @@ class Settings private constructor(
      *
      * @return 使用する場合true
      */
-    fun useCustomTabs(): Boolean =
-        storage.readBoolean(Key.USE_CUSTOM_TABS)
+    fun useCustomTabs(): Boolean = storage.readBoolean(Key.USE_CUSTOM_TABS)
 
     /**
      * デバイスリストのシングルタップで詳細を表示するか否か。
      *
      * @return シングルタップで詳細を表示する場合true
      */
-    fun shouldShowDeviceDetailOnTap(): Boolean =
-        storage.readBoolean(Key.SHOULD_SHOW_DEVICE_DETAIL_ON_TAP)
+    fun shouldShowDeviceDetailOnTap(): Boolean = storage.readBoolean(Key.SHOULD_SHOW_DEVICE_DETAIL_ON_TAP)
 
     /**
      * コンテンツリストのシングルタップで詳細を表示するか否か。
      *
      * @return シングルタップで詳細を表示する場合true
      */
-    fun shouldShowContentDetailOnTap(): Boolean =
-        storage.readBoolean(Key.SHOULD_SHOW_CONTENT_DETAIL_ON_TAP)
+    fun shouldShowContentDetailOnTap(): Boolean = storage.readBoolean(Key.SHOULD_SHOW_CONTENT_DETAIL_ON_TAP)
 
     /**
      * 動画再生の最初にUIを表示するか
      *
      * @return 動画再生の最初にUIを表示するときtrue
      */
-    fun shouldShowMovieUiOnStart(): Boolean =
-        !storage.readBoolean(Key.DO_NOT_SHOW_MOVIE_UI_ON_START)
+    fun shouldShowMovieUiOnStart(): Boolean = !storage.readBoolean(Key.DO_NOT_SHOW_MOVIE_UI_ON_START)
 
     /**
      * タッチしたときに動画UIを表示するか
      *
      * @return タッチしたときに動画UIを表示するときtrue
      */
-    fun shouldShowMovieUiOnTouch(): Boolean =
-        !storage.readBoolean(Key.DO_NOT_SHOW_MOVIE_UI_ON_TOUCH)
+    fun shouldShowMovieUiOnTouch(): Boolean = !storage.readBoolean(Key.DO_NOT_SHOW_MOVIE_UI_ON_TOUCH)
 
     /**
      * 動画UIでコンテンツタイトルを表示するか
      *
      * @return 動画UIでコンテンツタイトルを表示するときtrue
      */
-    fun shouldShowTitleInMovieUi(): Boolean =
-        !storage.readBoolean(Key.DO_NOT_SHOW_TITLE_IN_MOVIE_UI)
+    fun shouldShowTitleInMovieUi(): Boolean = !storage.readBoolean(Key.DO_NOT_SHOW_TITLE_IN_MOVIE_UI)
 
     /**
      * 静止画再生の最初にUIを表示するか
      *
      * @return 静止画再生の最初にUIを表示するときtrue
      */
-    fun shouldShowPhotoUiOnStart(): Boolean =
-        !storage.readBoolean(Key.DO_NOT_SHOW_PHOTO_UI_ON_START)
+    fun shouldShowPhotoUiOnStart(): Boolean = !storage.readBoolean(Key.DO_NOT_SHOW_PHOTO_UI_ON_START)
 
     /**
      * タッチしたときに静止画UIを表示するか
      *
      * @return タッチしたときに静止画UIを表示するときtrue
      */
-    fun shouldShowPhotoUiOnTouch(): Boolean =
-        !storage.readBoolean(Key.DO_NOT_SHOW_PHOTO_UI_ON_TOUCH)
+    fun shouldShowPhotoUiOnTouch(): Boolean = !storage.readBoolean(Key.DO_NOT_SHOW_PHOTO_UI_ON_TOUCH)
 
     /**
      * 静止画UIでコンテンツタイトルを表示するか
      *
      * @return 静止画UIでコンテンツタイトルを表示するときtrue
      */
-    fun shouldShowTitleInPhotoUi(): Boolean =
-        !storage.readBoolean(Key.DO_NOT_SHOW_TITLE_IN_PHOTO_UI)
+    fun shouldShowTitleInPhotoUi(): Boolean = !storage.readBoolean(Key.DO_NOT_SHOW_TITLE_IN_PHOTO_UI)
 
     companion object {
         private var settings: Settings? = null
@@ -319,13 +312,17 @@ class Settings private constructor(
          * @param context コンテキスト
          */
         @SuppressLint("CheckResult")
-        fun initialize(context: Context) {
+        fun initialize(
+            context: Context,
+        ) {
             Completable.fromAction { initializeInner(context) }
                 .subscribeOn(Schedulers.io())
                 .subscribe()
         }
 
-        private fun initializeInner(context: Context) {
+        private fun initializeInner(
+            context: Context,
+        ) {
             val storage = SettingsStorage(context)
             Maintainer.maintain(storage)
             lock.withLock {

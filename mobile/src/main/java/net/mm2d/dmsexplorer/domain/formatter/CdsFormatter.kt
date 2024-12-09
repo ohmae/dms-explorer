@@ -23,17 +23,23 @@ object CdsFormatter {
     private lateinit var BS: String
     private lateinit var CS: String
 
-    fun initialize(context: Context) {
+    fun initialize(
+        context: Context,
+    ) {
         TB = context.getString(R.string.network_tb)
         BS = context.getString(R.string.network_bs)
         CS = context.getString(R.string.network_cs)
     }
 
-    fun parseLongDescription(cdsObject: CdsObject): List<Pair<String, String>> =
+    fun parseLongDescription(
+        cdsObject: CdsObject,
+    ): List<Pair<String, String>> =
         convertLongDescription(makeLongDescription(cdsObject))
             .map { it.first.toDisplayableString() to it.second.toDisplayableString() }
 
-    private fun convertLongDescription(tagList: List<Tag>): List<Pair<String, StringBuilder>> {
+    private fun convertLongDescription(
+        tagList: List<Tag>,
+    ): List<Pair<String, StringBuilder>> {
         val list = ArrayList<Pair<String, StringBuilder>>()
         var pair: Pair<String, StringBuilder>? = null
         for (tag in tagList) {
@@ -58,7 +64,9 @@ object CdsFormatter {
         return list
     }
 
-    private fun makeLongDescription(cdsObject: CdsObject): List<Tag> {
+    private fun makeLongDescription(
+        cdsObject: CdsObject,
+    ): List<Tag> {
         val tagList = cdsObject.getTagList(CdsObject.ARIB_LONG_DESCRIPTION) ?: return emptyList()
         val size = tagList.size
         if (size <= 2) {
@@ -73,26 +81,31 @@ object CdsFormatter {
         return list
     }
 
-    fun makeUpnpLongDescription(cdsObject: CdsObject): String? =
-        cdsObject.getValue(CdsObject.UPNP_LONG_DESCRIPTION)
+    fun makeUpnpLongDescription(
+        cdsObject: CdsObject,
+    ): String? = cdsObject.getValue(CdsObject.UPNP_LONG_DESCRIPTION)
 
     private fun joinTagValue(
         cdsObject: CdsObject,
         tagName: String,
         delimiter: String,
-    ): String? = cdsObject.getTagList(tagName)
-        ?.joinToString(delimiter) { it.value }
-        ?.toDisplayableString()
+    ): String? =
+        cdsObject.getTagList(tagName)
+            ?.joinToString(delimiter) { it.value }
+            ?.toDisplayableString()
 
     private fun joinMembers(
         cdsObject: CdsObject,
         tagName: String,
-    ): String? = cdsObject.getTagList(tagName)
-        ?.joinToString("\n") {
-            it.value + (it.getAttribute("role")?.let { role -> " : $role" } ?: "")
-        }
+    ): String? =
+        cdsObject.getTagList(tagName)
+            ?.joinToString("\n") {
+                it.value + (it.getAttribute("role")?.let { role -> " : $role" } ?: "")
+            }
 
-    fun makeChannel(cdsObject: CdsObject): String? {
+    fun makeChannel(
+        cdsObject: CdsObject,
+    ): String? {
         val sb = StringBuilder()
         getNetworkString(cdsObject)?.let {
             sb.append(it)
@@ -115,7 +128,9 @@ object CdsFormatter {
         return if (sb.isEmpty()) null else sb.toString()
     }
 
-    private fun getNetworkString(cdsObject: CdsObject): String? =
+    private fun getNetworkString(
+        cdsObject: CdsObject,
+    ): String? =
         when (cdsObject.getValue(CdsObject.ARIB_OBJECT_TYPE)) {
             "ARIB_TB" -> TB
             "ARIB_BS" -> BS
@@ -123,7 +138,9 @@ object CdsFormatter {
             else -> null
         }
 
-    fun makeDate(cdsObject: CdsObject): String? {
+    fun makeDate(
+        cdsObject: CdsObject,
+    ): String? {
         val str = cdsObject.getValue(CdsObject.DC_DATE) ?: return null
         val date = PropertyParser.parseDate(str) ?: return null
         return if (str.length <= 10) {
@@ -133,7 +150,9 @@ object CdsFormatter {
         }
     }
 
-    fun makeSchedule(cdsObject: CdsObject): String? {
+    fun makeSchedule(
+        cdsObject: CdsObject,
+    ): String? {
         val start = cdsObject.getDateValue(CdsObject.UPNP_SCHEDULED_START_TIME) ?: return null
         val end = cdsObject.getDateValue(CdsObject.UPNP_SCHEDULED_END_TIME) ?: return null
         val startString = DateFormat.format("yyyy/M/d (E) kk:mm", start).toString()
@@ -145,30 +164,39 @@ object CdsFormatter {
         return "$startString ～ $endString"
     }
 
-    fun makeScheduleOrDate(cdsObject: CdsObject): String? =
-        makeSchedule(cdsObject) ?: makeDate(cdsObject)
+    fun makeScheduleOrDate(
+        cdsObject: CdsObject,
+    ): String? = makeSchedule(cdsObject) ?: makeDate(cdsObject)
 
-    fun makeGenre(cdsObject: CdsObject): String? =
-        cdsObject.getValue(CdsObject.UPNP_GENRE)
+    fun makeGenre(
+        cdsObject: CdsObject,
+    ): String? = cdsObject.getValue(CdsObject.UPNP_GENRE)
 
-    fun makeAlbum(cdsObject: CdsObject): String? =
-        cdsObject.getValue(CdsObject.UPNP_ALBUM)
+    fun makeAlbum(
+        cdsObject: CdsObject,
+    ): String? = cdsObject.getValue(CdsObject.UPNP_ALBUM)
 
-    fun makeArtists(cdsObject: CdsObject): String? =
-        joinMembers(cdsObject, CdsObject.UPNP_ARTIST)
+    fun makeArtists(
+        cdsObject: CdsObject,
+    ): String? = joinMembers(cdsObject, CdsObject.UPNP_ARTIST)
 
-    fun makeArtistsSimple(cdsObject: CdsObject): String? =
-        joinTagValue(cdsObject, CdsObject.UPNP_ARTIST, " ")
+    fun makeArtistsSimple(
+        cdsObject: CdsObject,
+    ): String? = joinTagValue(cdsObject, CdsObject.UPNP_ARTIST, " ")
 
-    fun makeActors(cdsObject: CdsObject): String? =
-        joinMembers(cdsObject, CdsObject.UPNP_ACTOR)
+    fun makeActors(
+        cdsObject: CdsObject,
+    ): String? = joinMembers(cdsObject, CdsObject.UPNP_ACTOR)
 
-    fun makeAuthors(cdsObject: CdsObject): String? =
-        joinMembers(cdsObject, CdsObject.UPNP_AUTHOR)
+    fun makeAuthors(
+        cdsObject: CdsObject,
+    ): String? = joinMembers(cdsObject, CdsObject.UPNP_AUTHOR)
 
-    fun makeCreator(cdsObject: CdsObject): String? =
-        cdsObject.getValue(CdsObject.DC_CREATOR)
+    fun makeCreator(
+        cdsObject: CdsObject,
+    ): String? = cdsObject.getValue(CdsObject.DC_CREATOR)
 
-    fun makeDescription(cdsObject: CdsObject): String? =
-        joinTagValue(cdsObject, CdsObject.DC_DESCRIPTION, "\n")
+    fun makeDescription(
+        cdsObject: CdsObject,
+    ): String? = joinTagValue(cdsObject, CdsObject.DC_DESCRIPTION, "\n")
 }

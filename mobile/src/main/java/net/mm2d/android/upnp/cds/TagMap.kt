@@ -43,7 +43,10 @@ internal class TagMap(
      * @param index インデックス値
      * @return 指定された値。見つからない場合はnull
      */
-    fun getValue(xpath: String, index: Int = 0): String? {
+    fun getValue(
+        xpath: String,
+        index: Int = 0,
+    ): String? {
         val pos = xpath.indexOf('@')
         if (pos < 0) {
             return getValue(xpath, null, index)
@@ -64,7 +67,11 @@ internal class TagMap(
      * @param index    インデックス値
      * @return 指定された値。見つからない場合はnull
      */
-    fun getValue(tagName: String?, attrName: String?, index: Int = 0): String? {
+    fun getValue(
+        tagName: String?,
+        attrName: String?,
+        index: Int = 0,
+    ): String? {
         val tag = getTag(tagName, index) ?: return null
         return if (attrName.isNullOrEmpty()) {
             tag.value
@@ -80,7 +87,10 @@ internal class TagMap(
      * @param index   インデックス値
      * @return Tagインスタンス、見つからない場合はnull
      */
-    fun getTag(tagName: String?, index: Int = 0): Tag? {
+    fun getTag(
+        tagName: String?,
+        index: Int = 0,
+    ): Tag? {
         val list = getTagList(tagName) ?: return null
         return if (index < list.size) list[index] else null
     }
@@ -91,7 +101,9 @@ internal class TagMap(
      * @param tagName タグ名、ルート要素を指定する場合はnullもしくは空文字列
      * @return Tagインスタンスリスト
      */
-    fun getTagList(tagName: String?): List<Tag>? = map[tagName ?: ""]
+    fun getTagList(
+        tagName: String?,
+    ): List<Tag>? = map[tagName ?: ""]
 
     override fun toString(): String =
         buildString {
@@ -115,13 +127,18 @@ internal class TagMap(
 
     override fun hashCode(): Int = map.hashCode()
 
-    override fun equals(other: Any?): Boolean {
+    override fun equals(
+        other: Any?,
+    ): Boolean {
         if (this === other) return true
         if (other !is TagMap) return false
         return map == other.map
     }
 
-    override fun writeToParcel(dest: Parcel, flags: Int) {
+    override fun writeToParcel(
+        dest: Parcel,
+        flags: Int,
+    ) {
         dest.writeInt(map.size)
         for ((key, list) in map) {
             dest.writeString(key)
@@ -132,10 +149,17 @@ internal class TagMap(
     override fun describeContents(): Int = 0
 
     companion object CREATOR : Creator<TagMap> {
-        override fun createFromParcel(parcel: Parcel): TagMap = create(parcel)
-        override fun newArray(size: Int): Array<TagMap?> = arrayOfNulls(size)
+        override fun createFromParcel(
+            parcel: Parcel,
+        ): TagMap = create(parcel)
 
-        private fun create(parcel: Parcel): TagMap {
+        override fun newArray(
+            size: Int,
+        ): Array<TagMap?> = arrayOfNulls(size)
+
+        private fun create(
+            parcel: Parcel,
+        ): TagMap {
             val size = parcel.readInt()
             val map = ArrayMap<String, List<Tag>>(size)
             for (i in 0 until size) {

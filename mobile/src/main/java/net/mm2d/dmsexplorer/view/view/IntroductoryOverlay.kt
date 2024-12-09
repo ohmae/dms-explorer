@@ -98,7 +98,9 @@ class IntroductoryOverlay private constructor(
         }
     }
 
-    override fun onConfigurationChanged(newConfig: Configuration) {
+    override fun onConfigurationChanged(
+        newConfig: Configuration,
+    ) {
         adjustNavigation()
         ViewUtils.execOnLayout(view) {
             setUpDrawingParam()
@@ -139,7 +141,9 @@ class IntroductoryOverlay private constructor(
         animate().alpha(0f)
             .setDuration(ANIMATION_DURATION)
             .setListener(object : AnimatorListenerAdapter() {
-                override fun onAnimationEnd(animation: Animator) {
+                override fun onAnimationEnd(
+                    animation: Animator,
+                ) {
                     dismissInner()
                 }
             }).start()
@@ -158,7 +162,9 @@ class IntroductoryOverlay private constructor(
         bufferCanvas = null
     }
 
-    override fun dispatchDraw(canvas: Canvas) {
+    override fun dispatchDraw(
+        canvas: Canvas,
+    ) {
         val width = width
         val height = height
         val animator = animator
@@ -177,7 +183,10 @@ class IntroductoryOverlay private constructor(
         super.dispatchDraw(canvas)
     }
 
-    private fun allocateBuffer(width: Int, height: Int) {
+    private fun allocateBuffer(
+        width: Int,
+        height: Int,
+    ) {
         val buffer = buffer
         if (buffer == null || buffer.width != width || buffer.height != height) {
             recycleBuffer()
@@ -188,7 +197,9 @@ class IntroductoryOverlay private constructor(
     }
 
     @SuppressLint("ClickableViewAccessibility")
-    override fun onTouchEvent(event: MotionEvent): Boolean {
+    override fun onTouchEvent(
+        event: MotionEvent,
+    ): Boolean {
         if (animator?.isRunning == false && event.action == MotionEvent.ACTION_UP) {
             dismiss()
         }
@@ -227,70 +238,103 @@ class IntroductoryOverlay private constructor(
             )
         }
 
-        fun setView(view: View): Builder = apply {
-            this.view = view
-        }
+        fun setView(
+            view: View,
+        ): Builder =
+            apply {
+                this.view = view
+            }
 
-        fun setTimeout(timeout: Long): Builder = apply {
-            this.timeout = timeout
-        }
+        fun setTimeout(
+            timeout: Long,
+        ): Builder =
+            apply {
+                this.timeout = timeout
+            }
 
-        fun setOverlayColor(@ColorRes colorId: Int): Builder = apply {
-            overlayColor = ContextCompat.getColor(activity, colorId)
-        }
+        fun setOverlayColor(
+            @ColorRes colorId: Int,
+        ): Builder =
+            apply {
+                overlayColor = ContextCompat.getColor(activity, colorId)
+            }
 
-        fun setDimmerColor(@ColorRes colorId: Int): Builder = apply {
-            dimmerColor = ContextCompat.getColor(activity, colorId)
-        }
+        fun setDimmerColor(
+            @ColorRes colorId: Int,
+        ): Builder =
+            apply {
+                dimmerColor = ContextCompat.getColor(activity, colorId)
+            }
 
-        fun setTitleText(@StringRes stringId: Int): Builder = apply {
-            titleText = activity.getString(stringId)
-        }
+        fun setTitleText(
+            @StringRes stringId: Int,
+        ): Builder =
+            apply {
+                titleText = activity.getString(stringId)
+            }
 
-        fun setTitleText(text: String): Builder = apply {
-            titleText = text
-        }
+        fun setTitleText(
+            text: String,
+        ): Builder =
+            apply {
+                titleText = text
+            }
 
-        fun setSubtitleText(@StringRes stringId: Int): Builder = apply {
-            subtitleText = activity.getString(stringId)
-        }
+        fun setSubtitleText(
+            @StringRes stringId: Int,
+        ): Builder =
+            apply {
+                subtitleText = activity.getString(stringId)
+            }
 
-        fun setSubtitleText(text: String): Builder = apply {
-            subtitleText = text
-        }
+        fun setSubtitleText(
+            text: String,
+        ): Builder =
+            apply {
+                subtitleText = text
+            }
     }
 
     companion object {
         private const val ANIMATION_DURATION: Long = 400
         private val DEFAULT_TIMEOUT = TimeUnit.SECONDS.toMillis(5)
 
-        private fun makeCirclePaint(@ColorInt color: Int): Paint =
+        private fun makeCirclePaint(
+            @ColorInt color: Int,
+        ): Paint =
             Paint().also {
                 it.color = color
                 it.xfermode = PorterDuffXfermode(PorterDuff.Mode.SRC)
                 it.isAntiAlias = true
             }
 
-        private fun makeErasePaint(): Paint = Paint().also {
-            it.color = Color.BLACK
-            it.xfermode = PorterDuffXfermode(PorterDuff.Mode.CLEAR)
-            it.isAntiAlias = true
-        }
+        private fun makeErasePaint(): Paint =
+            Paint().also {
+                it.color = Color.BLACK
+                it.xfermode = PorterDuffXfermode(PorterDuff.Mode.CLEAR)
+                it.isAntiAlias = true
+            }
 
-        private fun calcHoleRadius(viewRect: Rect): Float {
+        private fun calcHoleRadius(
+            viewRect: Rect,
+        ): Float {
             val w = viewRect.width().toDouble()
             val h = viewRect.height().toDouble()
             return hypot(w, h).toFloat() / 2f
         }
 
-        private fun calcCircleRadius(activity: Activity): Float {
+        private fun calcCircleRadius(
+            activity: Activity,
+        ): Float {
             val size = DisplaySizeUtils.getRealSize(activity)
             val x = size.x
             val y = size.y
             return min(x, y).toFloat()
         }
 
-        private fun calcCircleRadiusStart(activity: Activity): Float {
+        private fun calcCircleRadiusStart(
+            activity: Activity,
+        ): Float {
             val size = DisplaySizeUtils.getRealSize(activity)
             val x = size.x
             val y = size.y

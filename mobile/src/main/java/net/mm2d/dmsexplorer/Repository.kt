@@ -30,7 +30,9 @@ abstract class Repository {
 
         fun get(): Repository = instance
 
-        internal fun set(instance: Repository) {
+        internal fun set(
+            instance: Repository,
+        ) {
             this.instance = instance
         }
     }

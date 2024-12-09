@@ -51,13 +51,19 @@ class ServerListAdapter(
 
     override fun getItemCount(): Int = list.size
 
-    fun indexOf(server: MediaServer): Int = list.indexOf(server)
+    fun indexOf(
+        server: MediaServer,
+    ): Int = list.indexOf(server)
 
-    fun setOnItemClickListener(listener: ((View, MediaServer) -> Unit)?) {
+    fun setOnItemClickListener(
+        listener: ((View, MediaServer) -> Unit)?,
+    ) {
         clickListener = listener
     }
 
-    fun setOnItemLongClickListener(listener: ((View, MediaServer) -> Unit)?) {
+    fun setOnItemLongClickListener(
+        listener: ((View, MediaServer) -> Unit)?,
+    ) {
         longClickListener = listener
     }
 
@@ -65,16 +71,22 @@ class ServerListAdapter(
         list.clear()
     }
 
-    fun addAll(servers: Collection<MediaServer>) {
+    fun addAll(
+        servers: Collection<MediaServer>,
+    ) {
         list.addAll(servers)
     }
 
-    fun add(server: MediaServer): Int {
+    fun add(
+        server: MediaServer,
+    ): Int {
         list.add(server)
         return list.size - 1
     }
 
-    fun remove(server: MediaServer): Int {
+    fun remove(
+        server: MediaServer,
+    ): Int {
         val position = list.indexOf(server)
         if (position >= 0) {
             list.removeAt(position)
@@ -82,7 +94,9 @@ class ServerListAdapter(
         return position
     }
 
-    fun setSelectedServer(server: MediaServer?) {
+    fun setSelectedServer(
+        server: MediaServer?,
+    ) {
         if (selectedServer != null && selectedServer == server) {
             return
         }
@@ -92,7 +106,9 @@ class ServerListAdapter(
         notifyItemChangedIfPossible(server)
     }
 
-    private fun notifyItemChangedIfPossible(server: MediaServer?) {
+    private fun notifyItemChangedIfPossible(
+        server: MediaServer?,
+    ) {
         server ?: return
         val position = list.indexOf(server)
         if (position < 0) {
@@ -119,7 +135,9 @@ class ServerListAdapter(
             }
         }
 
-        fun applyItem(server: MediaServer) {
+        fun applyItem(
+            server: MediaServer,
+        ) {
             mediaServer = server
             val selected = server == selectedServer
             itemView.isSelected = selected
@@ -134,13 +152,17 @@ class ServerListAdapter(
             binding.textDescription.text = model.description
         }
 
-        private fun onClick(v: View) {
+        private fun onClick(
+            v: View,
+        ) {
             mediaServer?.let {
                 clickListener?.invoke(v, it)
             }
         }
 
-        private fun onLongClick(v: View): Boolean {
+        private fun onLongClick(
+            v: View,
+        ): Boolean {
             mediaServer?.let {
                 longClickListener?.invoke(v, it)
             }

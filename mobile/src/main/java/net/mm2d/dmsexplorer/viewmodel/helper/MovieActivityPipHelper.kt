@@ -16,6 +16,11 @@ import net.mm2d.dmsexplorer.viewmodel.ControlPanelModel
 interface MovieActivityPipHelper {
     fun register()
     fun unregister()
-    fun setControlPanelModel(model: ControlPanelModel?)
-    fun enterPictureInPictureMode(contentView: View)
+    fun setControlPanelModel(
+        model: ControlPanelModel?,
+    )
+
+    fun enterPictureInPictureMode(
+        contentView: View,
+    )
 }

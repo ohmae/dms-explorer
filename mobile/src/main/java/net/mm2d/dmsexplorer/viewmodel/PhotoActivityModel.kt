@@ -87,7 +87,9 @@ class PhotoActivityModel(
             )
     }
 
-    fun adjustPanel(activity: Activity) {
+    fun adjustPanel(
+        activity: Activity,
+    ) {
         rightNavigationSizeFlow.tryEmit(DisplaySizeUtils.getNavigationBarArea(activity).x)
     }
 

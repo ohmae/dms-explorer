@@ -54,11 +54,14 @@ class ContentItemModel(
     }
 
     @DrawableRes
-    private fun getImageResource(entity: ContentEntity): Int = when (entity.type) {
-        ContentType.CONTAINER -> R.drawable.ic_folder
-        ContentType.MOVIE -> R.drawable.ic_movie
-        ContentType.MUSIC -> R.drawable.ic_music
-        ContentType.PHOTO -> R.drawable.ic_image
-        else -> 0
-    }
+    private fun getImageResource(
+        entity: ContentEntity,
+    ): Int =
+        when (entity.type) {
+            ContentType.CONTAINER -> R.drawable.ic_folder
+            ContentType.MOVIE -> R.drawable.ic_movie
+            ContentType.MUSIC -> R.drawable.ic_music
+            ContentType.PHOTO -> R.drawable.ic_image
+            else -> 0
+        }
 }

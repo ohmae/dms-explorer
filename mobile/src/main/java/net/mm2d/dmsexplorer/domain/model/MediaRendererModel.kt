@@ -78,8 +78,7 @@ class MediaRendererModel(
         }
     }
 
-    override fun canPause(): Boolean =
-        mediaRenderer.isSupportPause()
+    override fun canPause(): Boolean = mediaRenderer.isSupportPause()
 
     override fun terminate() {
         if (!started) {
@@ -100,7 +99,9 @@ class MediaRendererModel(
         started = false
     }
 
-    override fun setStatusListener(listener: StatusListener) {
+    override fun setStatusListener(
+        listener: StatusListener,
+    ) {
         statusListener = listener
     }
 
@@ -125,7 +126,9 @@ class MediaRendererModel(
         started = true
     }
 
-    override fun restoreSaveProgress(progress: Int) {
+    override fun restoreSaveProgress(
+        progress: Int,
+    ) {
         this.progress = progress
     }
 
@@ -146,7 +149,9 @@ class MediaRendererModel(
     }
 
     @SuppressLint("CheckResult")
-    override fun seekTo(position: Int) {
+    override fun seekTo(
+        position: Int,
+    ) {
         mediaRenderer.seek(position.toLong())
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
@@ -191,7 +196,9 @@ class MediaRendererModel(
         return false
     }
 
-    private fun onGetPositionInfo(result: Map<String, String>?) {
+    private fun onGetPositionInfo(
+        result: Map<String, String>?,
+    ) {
         if (result == null) {
             handler.postDelayed(getPositionTask, 1000)
             return
@@ -214,7 +221,9 @@ class MediaRendererModel(
         handler.postDelayed(getPositionTask, interval)
     }
 
-    private fun onGetTransportInfo(result: Map<String, String>?) {
+    private fun onGetTransportInfo(
+        result: Map<String, String>?,
+    ) {
         if (result == null) {
             return
         }
@@ -231,7 +240,9 @@ class MediaRendererModel(
         }
     }
 
-    private fun setChapterList(chapterList: List<Int>) {
+    private fun setChapterList(
+        chapterList: List<Int>,
+    ) {
         this.chapterList = chapterList
         statusListener.notifyChapterList(chapterList)
     }

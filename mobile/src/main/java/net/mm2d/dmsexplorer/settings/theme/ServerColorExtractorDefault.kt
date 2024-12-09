@@ -16,14 +16,20 @@ import net.mm2d.dmsexplorer.Const
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
  */
 internal class ServerColorExtractorDefault : ServerColorExtractor {
-    override fun invoke(server: MediaServer, icon: Bitmap?) {
+    override fun invoke(
+        server: MediaServer,
+        icon: Bitmap?,
+    ) {
         if (server.getBooleanTag(Const.KEY_HAS_TOOLBAR_COLOR, false)) {
             return
         }
         extract(server, icon)
     }
 
-    override fun invokeAsync(server: MediaServer, icon: Bitmap?) {
+    override fun invokeAsync(
+        server: MediaServer,
+        icon: Bitmap?,
+    ) {
         if (server.getBooleanTag(Const.KEY_HAS_TOOLBAR_COLOR, false)) {
             return
         }
@@ -31,7 +37,10 @@ internal class ServerColorExtractorDefault : ServerColorExtractor {
             ?: extractFromPalette(server, null)
     }
 
-    private fun extract(server: MediaServer, icon: Bitmap?) {
+    private fun extract(
+        server: MediaServer,
+        icon: Bitmap?,
+    ) {
         extractFromPalette(server, icon?.generatePalette())
     }
 

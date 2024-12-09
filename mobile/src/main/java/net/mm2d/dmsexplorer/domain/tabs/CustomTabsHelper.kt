@@ -43,11 +43,15 @@ class CustomTabsHelper(
         }
     }
 
-    fun mayLaunchUrl(url: String) {
+    fun mayLaunchUrl(
+        url: String,
+    ) {
         session?.mayLaunchUrl(Uri.parse(url), null, null)
     }
 
-    fun mayLaunchUrl(urls: List<String>) {
+    fun mayLaunchUrl(
+        urls: List<String>,
+    ) {
         val session = session ?: return
         if (urls.isEmpty()) {
             return
@@ -78,7 +82,9 @@ class CustomTabsHelper(
         }
     }
 
-    override fun onServiceDisconnected(name: ComponentName) {
+    override fun onServiceDisconnected(
+        name: ComponentName,
+    ) {
         session = null
     }
 
@@ -112,12 +118,16 @@ class CustomTabsHelper(
             intent.putExtra(EXTRA_CUSTOM_TABS_KEEP_ALIVE, keepAliveIntent)
         }
 
-        private fun findPackageNameToUse(context: Context): String? {
+        private fun findPackageNameToUse(
+            context: Context,
+        ): String? {
             packageNameToBind = findPackageNameToUseInner(context)
             return packageNameToBind
         }
 
-        private fun findPackageNameToUseInner(context: Context): String? {
+        private fun findPackageNameToUseInner(
+            context: Context,
+        ): String? {
             val pm = context.packageManager
             val browsers = OpenUriUtils.getBrowserPackages(context)
             val services = pm.queryIntentServices(Intent(ACTION_CUSTOM_TABS_CONNECTION), 0)

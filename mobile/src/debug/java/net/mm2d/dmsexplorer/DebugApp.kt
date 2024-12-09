@@ -58,32 +58,34 @@ class DebugApp : App() {
         StrictMode.setVmPolicy(makeVmPolicy())
     }
 
-    private fun makeThreadPolicy(): ThreadPolicy = ThreadPolicy.Builder().apply {
-        detectAll()
-        penaltyLog()
-        penaltyDeathOnNetwork()
-    }.build()
+    private fun makeThreadPolicy(): ThreadPolicy =
+        ThreadPolicy.Builder().apply {
+            detectAll()
+            penaltyLog()
+            penaltyDeathOnNetwork()
+        }.build()
 
-    private fun makeVmPolicy(): VmPolicy = VmPolicy.Builder().apply {
-        penaltyLog()
-        detectActivityLeaks()
-        detectLeakedClosableObjects()
-        detectLeakedRegistrationObjects()
-        detectFileUriExposure()
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            detectCleartextNetwork()
-        }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            penaltyDeathOnFileUriExposure()
-        }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            detectContentUriWithoutPermission()
-            // detectUntaggedSockets()
-        }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            detectCredentialProtectedWhileLocked()
-        }
-    }.build()
+    private fun makeVmPolicy(): VmPolicy =
+        VmPolicy.Builder().apply {
+            penaltyLog()
+            detectActivityLeaks()
+            detectLeakedClosableObjects()
+            detectLeakedRegistrationObjects()
+            detectFileUriExposure()
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                detectCleartextNetwork()
+            }
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                penaltyDeathOnFileUriExposure()
+            }
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                detectContentUriWithoutPermission()
+                // detectUntaggedSockets()
+            }
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                detectCredentialProtectedWhileLocked()
+            }
+        }.build()
 
     private fun setUpFlipper() {
         LeakCanary.config = LeakCanary.config.run {

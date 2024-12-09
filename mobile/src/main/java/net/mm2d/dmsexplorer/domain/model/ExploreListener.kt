@@ -14,6 +14,8 @@ import net.mm2d.dmsexplorer.domain.entity.ContentEntity
  */
 interface ExploreListener {
     fun onStart()
-    fun onUpdate(list: List<ContentEntity>)
+    fun onUpdate(
+        list: List<ContentEntity>,
+    )
     fun onComplete()
 }

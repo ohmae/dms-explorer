@@ -29,7 +29,9 @@ import net.mm2d.dmsexplorer.settings.Settings
 /**
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
  */
-class AppRepository(application: Application) : Repository() {
+class AppRepository(
+    application: Application,
+) : Repository() {
     private val context: Context = application
     override val controlPointModel: ControlPointModel =
         ControlPointModel(context, this::updateMediaServer, this::updateMediaRenderer)
@@ -56,7 +58,9 @@ class AppRepository(application: Application) : Repository() {
         application.registerActivityLifecycleCallbacks(themeModel)
     }
 
-    private fun updateMediaServer(server: MediaServer?) {
+    private fun updateMediaServer(
+        server: MediaServer?,
+    ) {
         mediaServerModel?.terminate()
         mediaServerModel = null
         if (server != null) {
@@ -66,7 +70,9 @@ class AppRepository(application: Application) : Repository() {
         }
     }
 
-    private fun updateMediaRenderer(renderer: MediaRenderer?) {
+    private fun updateMediaRenderer(
+        renderer: MediaRenderer?,
+    ) {
         mediaRendererModel?.terminate()
         mediaRendererModel = null
         if (renderer != null) {
@@ -74,13 +80,17 @@ class AppRepository(application: Application) : Repository() {
         }
     }
 
-    private fun createMediaServerModel(server: MediaServer): MediaServerModel =
-        MediaServerModel(context, server, this::updatePlaybackTarget)
+    private fun createMediaServerModel(
+        server: MediaServer,
+    ): MediaServerModel = MediaServerModel(context, server, this::updatePlaybackTarget)
 
-    private fun createMediaRendererModel(renderer: MediaRenderer): MediaRendererModel =
-        MediaRendererModel(context, renderer)
+    private fun createMediaRendererModel(
+        renderer: MediaRenderer,
+    ): MediaRendererModel = MediaRendererModel(context, renderer)
 
-    private fun updatePlaybackTarget(entity: ContentEntity?) {
+    private fun updatePlaybackTarget(
+        entity: ContentEntity?,
+    ) {
         playbackTargetModel = if (entity != null) PlaybackTargetModel(entity) else null
     }
 }

@@ -29,7 +29,9 @@ abstract class BaseActivity @JvmOverloads constructor(
     private lateinit var delegate: OptionsMenuDelegate
 
     @CallSuper
-    override fun onCreate(savedInstanceState: Bundle?) {
+    override fun onCreate(
+        savedInstanceState: Bundle?,
+    ) {
         updateOrientationSettings()
         super.onCreate(savedInstanceState)
         delegate = if (mainMenu) {
@@ -67,14 +69,17 @@ abstract class BaseActivity @JvmOverloads constructor(
         }
     }
 
-    override fun onCreateOptionsMenu(menu: Menu): Boolean =
-        delegate.onCreateOptionsMenu(menu) || super.onCreateOptionsMenu(menu)
+    override fun onCreateOptionsMenu(
+        menu: Menu,
+    ): Boolean = delegate.onCreateOptionsMenu(menu) || super.onCreateOptionsMenu(menu)
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean =
-        delegate.onOptionsItemSelected(item) || super.onOptionsItemSelected(item)
+    override fun onOptionsItemSelected(
+        item: MenuItem,
+    ): Boolean = delegate.onOptionsItemSelected(item) || super.onOptionsItemSelected(item)
 
-    override fun onPrepareOptionsMenu(menu: Menu): Boolean =
-        delegate.onPrepareOptionsMenu(menu) || super.onPrepareOptionsMenu(menu)
+    override fun onPrepareOptionsMenu(
+        menu: Menu,
+    ): Boolean = delegate.onPrepareOptionsMenu(menu) || super.onPrepareOptionsMenu(menu)
 
     protected open fun updateOrientationSettings() {}
 

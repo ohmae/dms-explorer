@@ -62,19 +62,22 @@ internal constructor(
 
     fun hasDestroyObject(): Boolean = destroyObject != null
 
-    fun destroyObject(objectId: String): Single<Int> = if (destroyObject == null) {
-        Single.never()
-    } else {
-        Single.create { emitter: SingleEmitter<Int> ->
-            val result =
-                destroyObject.invokeSync(mapOf(OBJECT_ID to objectId), false)
-            val errorDescription = result[Action.ERROR_DESCRIPTION_KEY]
-            if (!errorDescription.isNullOrEmpty()) {
-                Logger.e { errorDescription }
+    fun destroyObject(
+        objectId: String,
+    ): Single<Int> =
+        if (destroyObject == null) {
+            Single.never()
+        } else {
+            Single.create { emitter: SingleEmitter<Int> ->
+                val result =
+                    destroyObject.invokeSync(mapOf(OBJECT_ID to objectId), false)
+                val errorDescription = result[Action.ERROR_DESCRIPTION_KEY]
+                if (!errorDescription.isNullOrEmpty()) {
+                    Logger.e { errorDescription }
+                }
+                emitter.onSuccess(result[Action.ERROR_CODE_KEY]?.toIntOrNull() ?: NO_ERROR)
             }
-            emitter.onSuccess(result[Action.ERROR_CODE_KEY]?.toIntOrNull() ?: NO_ERROR)
         }
-    }
 
     /**
      * Broseを実行する。
@@ -150,22 +153,23 @@ internal constructor(
     fun browseMetadata(
         objectId: String,
         filter: String? = "*",
-    ): Single<CdsObject> = Single.create { emitter: SingleEmitter<CdsObject> ->
-        val argument = BrowseArgument()
-            .setObjectId(objectId)
-            .setBrowseMetadata()
-            .setFilter(filter)
-            .setSortCriteria("")
-            .setStartIndex(0)
-            .setRequestCount(0)
-        val response = BrowseResponse(browse.invokeSync(argument.get(), false))
-        val result = CdsObjectFactory.parseMetadata(udn, response.result)
-        if (result == null || response.numberReturned < 0 || response.totalMatches < 0) {
-            emitter.onError(IllegalStateException())
-            return@create
+    ): Single<CdsObject> =
+        Single.create { emitter: SingleEmitter<CdsObject> ->
+            val argument = BrowseArgument()
+                .setObjectId(objectId)
+                .setBrowseMetadata()
+                .setFilter(filter)
+                .setSortCriteria("")
+                .setStartIndex(0)
+                .setRequestCount(0)
+            val response = BrowseResponse(browse.invokeSync(argument.get(), false))
+            val result = CdsObjectFactory.parseMetadata(udn, response.result)
+            if (result == null || response.numberReturned < 0 || response.totalMatches < 0) {
+                emitter.onError(IllegalStateException())
+                return@create
+            }
+            emitter.onSuccess(result)
         }
-        emitter.onSuccess(result)
-    }
 
     companion object {
         const val NO_ERROR = 0

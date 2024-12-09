@@ -34,7 +34,9 @@ object OpenUriUtils {
         }
     }
 
-    private fun getBrowserPackagesInner(context: Context): Set<String> {
+    private fun getBrowserPackagesInner(
+        context: Context,
+    ): Set<String> {
         val pm = context.packageManager
         val flags =
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) PackageManager.MATCH_ALL else 0
@@ -59,7 +61,9 @@ object OpenUriUtils {
         }
     }
 
-    private fun getDefaultBrowserPackageInner(context: Context): String? {
+    private fun getDefaultBrowserPackageInner(
+        context: Context,
+    ): String? {
         val pm = context.packageManager
         val browserInfo = pm.resolveActivity(makeBrowserTestIntent(), 0)
         if (browserInfo?.activityInfo == null) {
@@ -73,7 +77,9 @@ object OpenUriUtils {
         }
     }
 
-    private fun makeBrowseIntent(uri: String): Intent {
+    private fun makeBrowseIntent(
+        uri: String,
+    ): Intent {
         val intent = Intent(Intent.ACTION_VIEW, Uri.parse(uri))
         intent.addCategory(Intent.CATEGORY_BROWSABLE)
         return intent

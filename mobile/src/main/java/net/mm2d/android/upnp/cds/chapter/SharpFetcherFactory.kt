@@ -13,7 +13,9 @@ import java.net.URL
 import javax.xml.parsers.ParserConfigurationException
 
 class SharpFetcherFactory : FetcherFactory {
-    override fun create(cdsObject: CdsObject): Single<List<Int>>? {
+    override fun create(
+        cdsObject: CdsObject,
+    ): Single<List<Int>>? {
         val url = cdsObject.getValue(CHAPTER_INFO)
         if (url.isNullOrEmpty()) {
             return null
@@ -29,7 +31,9 @@ class SharpFetcherFactory : FetcherFactory {
     }
 
     @Throws(ParserConfigurationException::class, SAXException::class, IOException::class)
-    private fun parseChapterInfo(xml: String): List<Int> {
+    private fun parseChapterInfo(
+        xml: String,
+    ): List<Int> {
         if (xml.isEmpty()) {
             return emptyList()
         }

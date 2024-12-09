@@ -20,19 +20,28 @@ object PropertyParser {
     private val FORMAT_Z = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ", Locale.JAPAN)
 
     @Throws(ParseException::class)
-    private fun parseD(value: String): Date? = synchronized(FORMAT_D) {
-        FORMAT_D.parse(value)
-    }
+    private fun parseD(
+        value: String,
+    ): Date? =
+        synchronized(FORMAT_D) {
+            FORMAT_D.parse(value)
+        }
 
     @Throws(ParseException::class)
-    private fun parseT(value: String): Date? = synchronized(FORMAT_T) {
-        FORMAT_T.parse(value)
-    }
+    private fun parseT(
+        value: String,
+    ): Date? =
+        synchronized(FORMAT_T) {
+            FORMAT_T.parse(value)
+        }
 
     @Throws(ParseException::class)
-    private fun parseZ(value: String): Date? = synchronized(FORMAT_Z) {
-        FORMAT_Z.parse(value)
-    }
+    private fun parseZ(
+        value: String,
+    ): Date? =
+        synchronized(FORMAT_Z) {
+            FORMAT_Z.parse(value)
+        }
 
     /**
      * 与えられた文字列をパースしてDateとして戻す。
@@ -43,7 +52,9 @@ object PropertyParser {
      * @param value パースする文字列
      * @return パース結果、パースできない場合null
      */
-    fun parseDate(value: String?): Date? {
+    fun parseDate(
+        value: String?,
+    ): Date? {
         if (value.isNullOrEmpty()) {
             return null
         }
@@ -72,7 +83,9 @@ object PropertyParser {
      * @param protocolInfo protocolInfo
      * @return MimeTypeの文字列。抽出に失敗した場合null
      */
-    fun extractMimeTypeFromProtocolInfo(protocolInfo: String?): String? {
+    fun extractMimeTypeFromProtocolInfo(
+        protocolInfo: String?,
+    ): String? {
         if (protocolInfo.isNullOrEmpty()) {
             return null
         }
@@ -90,7 +103,9 @@ object PropertyParser {
      * @param protocolInfo protocolInfo
      * @return Protocolの文字列。抽出に失敗した場合null
      */
-    fun extractProtocolFromProtocolInfo(protocolInfo: String?): String? {
+    fun extractProtocolFromProtocolInfo(
+        protocolInfo: String?,
+    ): String? {
         if (protocolInfo.isNullOrEmpty()) {
             return null
         }

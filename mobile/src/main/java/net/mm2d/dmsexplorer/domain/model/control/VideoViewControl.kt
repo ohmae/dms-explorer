@@ -50,7 +50,9 @@ class VideoViewControl(
         }
     }
 
-    override fun seekTo(position: Int) {
+    override fun seekTo(
+        position: Int,
+    ) {
         videoView.seekTo(position)
         if (!videoView.isPlaying) {
             videoView.start()
@@ -61,11 +63,15 @@ class VideoViewControl(
         videoView.stopPlayback()
     }
 
-    override fun setOnPreparedListener(listener: OnPreparedListener?) {
+    override fun setOnPreparedListener(
+        listener: OnPreparedListener?,
+    ) {
         videoView.setOnPreparedListener(listener)
     }
 
-    override fun setOnErrorListener(listener: OnErrorListener?) {
+    override fun setOnErrorListener(
+        listener: OnErrorListener?,
+    ) {
         videoView.setOnErrorListener { mediaPlayer, what, extra ->
             listener == null ||
                 listener.onError(
@@ -76,11 +82,15 @@ class VideoViewControl(
         }
     }
 
-    override fun setOnInfoListener(listener: OnInfoListener?) {
+    override fun setOnInfoListener(
+        listener: OnInfoListener?,
+    ) {
         videoView.setOnInfoListener(listener)
     }
 
-    override fun setOnCompletionListener(listener: OnCompletionListener?) {
+    override fun setOnCompletionListener(
+        listener: OnCompletionListener?,
+    ) {
         videoView.setOnCompletionListener(listener)
     }
 }

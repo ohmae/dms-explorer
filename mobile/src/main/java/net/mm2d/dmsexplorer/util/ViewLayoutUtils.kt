@@ -15,13 +15,19 @@ import androidx.annotation.Px
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
  */
 object ViewLayoutUtils {
-    fun setLayoutMarginRight(view: View, @Px margin: Int) {
+    fun setLayoutMarginRight(
+        view: View,
+        @Px margin: Int,
+    ) {
         val params = view.layoutParams as? MarginLayoutParams ?: return
         params.rightMargin = margin
         view.layoutParams = params
     }
 
-    fun setPaddingBottom(view: View, @Px padding: Int) {
+    fun setPaddingBottom(
+        view: View,
+        @Px padding: Int,
+    ) {
         view.updatePadding(bottom = padding)
     }
 

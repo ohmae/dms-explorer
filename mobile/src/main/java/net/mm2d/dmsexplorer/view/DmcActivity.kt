@@ -30,7 +30,9 @@ import net.mm2d.dmsexplorer.viewmodel.DmcActivityModel
 class DmcActivity : BaseActivity() {
     private var model: DmcActivityModel? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
+    override fun onCreate(
+        savedInstanceState: Bundle?,
+    ) {
         super.onCreate(savedInstanceState)
         val binding = DmcActivityBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -97,7 +99,8 @@ class DmcActivity : BaseActivity() {
          * @param context コンテキスト
          * @return このActivityを起動するためのIntent
          */
-        fun makeIntent(context: Context): Intent =
-            Intent(context, DmcActivity::class.java)
+        fun makeIntent(
+            context: Context,
+        ): Intent = Intent(context, DmcActivity::class.java)
     }
 }

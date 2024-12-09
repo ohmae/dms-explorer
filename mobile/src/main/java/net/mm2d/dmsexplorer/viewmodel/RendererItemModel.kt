@@ -53,7 +53,9 @@ class RendererItemModel(
         }
     }
 
-    private fun makeDescription(renderer: MediaRenderer): String {
+    private fun makeDescription(
+        renderer: MediaRenderer,
+    ): String {
         val sb = StringBuilder()
         val manufacture = renderer.manufacture
         if (!manufacture.isNullOrEmpty()) {

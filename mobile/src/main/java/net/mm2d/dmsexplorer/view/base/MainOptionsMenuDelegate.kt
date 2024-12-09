@@ -24,7 +24,9 @@ internal class MainOptionsMenuDelegate(
 ) : OptionsMenuDelegate {
     private val menuResId = if (menuResId != 0) menuResId else R.menu.main
 
-    override fun onCreate(savedInstanceState: Bundle?) {
+    override fun onCreate(
+        savedInstanceState: Bundle?,
+    ) {
         EventRouter.observeUpdateAvailable(activity) {
             activity.invalidateOptionsMenu()
         }
@@ -33,12 +35,16 @@ internal class MainOptionsMenuDelegate(
     override fun onDestroy() {
     }
 
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+    override fun onCreateOptionsMenu(
+        menu: Menu,
+    ): Boolean {
         activity.menuInflater.inflate(menuResId, menu)
         return true
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+    override fun onOptionsItemSelected(
+        item: MenuItem,
+    ): Boolean {
         when (item.itemId) {
             android.R.id.home -> {
                 activity.navigateUpTo()
@@ -58,7 +64,9 @@ internal class MainOptionsMenuDelegate(
         return false
     }
 
-    override fun onPrepareOptionsMenu(menu: Menu): Boolean {
+    override fun onPrepareOptionsMenu(
+        menu: Menu,
+    ): Boolean {
         menu.findItem(R.id.action_update).isVisible = EventRouter.updateAvailable()
         return true
     }

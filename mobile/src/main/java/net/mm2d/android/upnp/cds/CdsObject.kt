@@ -86,7 +86,10 @@ interface CdsObject : Parcelable {
      * @param index インデックス値
      * @return 指定された値。見つからない場合はnull
      */
-    fun getValue(xpath: String, index: Int = 0): String?
+    fun getValue(
+        xpath: String,
+        index: Int = 0,
+    ): String?
 
     /**
      * タグ名と属性名を指定して値を取り出す。
@@ -99,7 +102,11 @@ interface CdsObject : Parcelable {
      * @param index    インデックス値
      * @return 指定された値。見つからない場合はnull
      */
-    fun getValue(tagName: String?, attrName: String?, index: Int = 0): String?
+    fun getValue(
+        tagName: String?,
+        attrName: String?,
+        index: Int = 0,
+    ): String?
 
     /**
      * 指定したタグ名、インデックスのTagインスタンスを返す。
@@ -108,7 +115,10 @@ interface CdsObject : Parcelable {
      * @param index   インデックス値
      * @return Tagインスタンス、見つからない場合はnull
      */
-    fun getTag(tagName: String?, index: Int = 0): Tag?
+    fun getTag(
+        tagName: String?,
+        index: Int = 0,
+    ): Tag?
 
     /**
      * 指定したタグ名のTagインスタンスリストを返す。
@@ -116,7 +126,9 @@ interface CdsObject : Parcelable {
      * @param tagName タグ名、ルート要素を指定する場合はnullもしくは空文字列
      * @return Tagインスタンスリスト
      */
-    fun getTagList(tagName: String?): List<Tag>?
+    fun getTagList(
+        tagName: String?,
+    ): List<Tag>?
 
     /**
      * XPATH風の指定で示された値をInt値として返す。
@@ -129,7 +141,11 @@ interface CdsObject : Parcelable {
      * @return 指定された値
      * @see .getValue
      */
-    fun getIntValue(xpath: String, defaultValue: Int, index: Int = 0): Int
+    fun getIntValue(
+        xpath: String,
+        defaultValue: Int,
+        index: Int = 0,
+    ): Int
 
     /**
      * XPATH風の指定で示された値をDateとして返す。
@@ -141,7 +157,10 @@ interface CdsObject : Parcelable {
      * @return 指定された値。値が見つからない場合、パースできない値の場合null
      * @see .getValue
      */
-    fun getDateValue(xpath: String, index: Int = 0): Date?
+    fun getDateValue(
+        xpath: String,
+        index: Int = 0,
+    ): Date?
 
     /**
      * リソースの数

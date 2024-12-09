@@ -37,12 +37,15 @@ object EventLogger {
     private const val VALUE_MYSELF = "myself"
     private const val VALUE_OTHER = "other"
 
-    fun initialize(context: Context) {
+    fun initialize(
+        context: Context,
+    ) {
         sender = SenderFactory.create(context)
     }
 
-    private fun calculateDateForLog(time: Long): Long =
-        (time + TimeZone.getDefault().rawOffset - DATE_POINT) / ONE_DAY
+    private fun calculateDateForLog(
+        time: Long,
+    ): Long = (time + TimeZone.getDefault().rawOffset - DATE_POINT) / ONE_DAY
 
     fun sendDailyLog() {
         Handler(Looper.getMainLooper()).postDelayed({
@@ -94,7 +97,9 @@ object EventLogger {
         )
     }
 
-    fun sendPlayContent(playMyself: Boolean) {
+    fun sendPlayContent(
+        playMyself: Boolean,
+    ) {
         val targetModel = Repository.get().playbackTargetModel ?: return
         val entity = targetModel.contentEntity
         val cdsObject = entity.rawEntity as CdsObject
@@ -109,5 +114,7 @@ object EventLogger {
         )
     }
 
-    private fun getTypeString(type: ContentType): String = type.name.lowercase(Locale.ENGLISH)
+    private fun getTypeString(
+        type: ContentType,
+    ): String = type.name.lowercase(Locale.ENGLISH)
 }

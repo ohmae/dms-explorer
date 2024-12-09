@@ -56,7 +56,9 @@ class ServerDetailFragmentModel(
         collapsedColor = server.getIntTag(Const.KEY_TOOLBAR_COLLAPSED_COLOR, Color.BLACK)
     }
 
-    private fun createIconBitmap(icon: Icon?): Bitmap? {
+    private fun createIconBitmap(
+        icon: Icon?,
+    ): Bitmap? {
         val binary = icon?.binary ?: return null
         return BitmapFactory.decodeByteArray(binary, 0, binary.size)
     }
@@ -78,7 +80,9 @@ class ServerDetailFragmentModel(
         }
     }
 
-    fun onClickFab(view: View) {
+    fun onClickFab(
+        view: View,
+    ) {
         val intent = ContentListActivity.makeIntent(context)
         context.startActivity(intent, ActivityUtils.makeScaleUpAnimationBundle(view))
         EventLogger.sendSelectServer()

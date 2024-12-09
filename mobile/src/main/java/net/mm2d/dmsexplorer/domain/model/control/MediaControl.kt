@@ -21,10 +21,23 @@ interface MediaControl {
     val isPlaying: Boolean
     fun play()
     fun pause()
-    fun seekTo(position: Int)
+    fun seekTo(
+        position: Int,
+    )
     fun stop()
-    fun setOnPreparedListener(listener: OnPreparedListener?)
-    fun setOnErrorListener(listener: OnErrorListener?)
-    fun setOnInfoListener(listener: OnInfoListener?)
-    fun setOnCompletionListener(listener: OnCompletionListener?)
+    fun setOnPreparedListener(
+        listener: OnPreparedListener?,
+    )
+
+    fun setOnErrorListener(
+        listener: OnErrorListener?,
+    )
+
+    fun setOnInfoListener(
+        listener: OnInfoListener?,
+    )
+
+    fun setOnCompletionListener(
+        listener: OnCompletionListener?,
+    )
 }

@@ -30,17 +30,23 @@ internal class ServerListActivityDelegateOnePane(
     private var hasReenterTransition: Boolean = false
     override val isTwoPane: Boolean = false
 
-    override fun onSelect(v: View) {
+    override fun onSelect(
+        v: View,
+    ) {
         startServerDetailActivity(v)
     }
 
     override fun onLostSelection() {}
 
-    override fun onExecute(v: View) {
+    override fun onExecute(
+        v: View,
+    ) {
         startCdsListActivity(activity, v)
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
+    override fun onCreate(
+        savedInstanceState: Bundle?,
+    ) {
         super.onCreate(savedInstanceState)
         savedInstanceState?.let {
             hasReenterTransition = it.getBoolean(KEY_HAS_REENTER_TRANSITION)
@@ -62,7 +68,9 @@ internal class ServerListActivityDelegateOnePane(
         })
     }
 
-    override fun onSaveInstanceState(outState: Bundle) {
+    override fun onSaveInstanceState(
+        outState: Bundle,
+    ) {
         super.onSaveInstanceState(outState)
         outState.putBoolean(KEY_HAS_REENTER_TRANSITION, hasReenterTransition)
     }
@@ -76,17 +84,23 @@ internal class ServerListActivityDelegateOnePane(
         model.updateListAdapter()
     }
 
-    private fun execAfterTransitionOnce(task: Runnable) {
+    private fun execAfterTransitionOnce(
+        task: Runnable,
+    ) {
         activity.window.sharedElementExitTransition
             .addListener(object : TransitionListenerAdapter() {
-                override fun onTransitionEnd(transition: Transition) {
+                override fun onTransitionEnd(
+                    transition: Transition,
+                ) {
                     task.run()
                     transition.removeListener(this)
                 }
             })
     }
 
-    private fun startServerDetailActivity(v: View) {
+    private fun startServerDetailActivity(
+        v: View,
+    ) {
         val intent = ServerDetailActivity.makeIntent(activity)
         val accent = v.findViewById<View>(R.id.accent)
         val option = ActivityOptions.makeSceneTransitionAnimation(

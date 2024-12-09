@@ -22,7 +22,8 @@ enum class TransportState {
     ;
 
     companion object {
-        fun of(value: String?): TransportState =
-            values().firstOrNull { it.name == value } ?: OTHER
+        fun of(
+            value: String?,
+        ): TransportState = values().firstOrNull { it.name == value } ?: OTHER
     }
 }

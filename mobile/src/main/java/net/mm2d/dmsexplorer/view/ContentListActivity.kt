@@ -30,7 +30,9 @@ class ContentListActivity :
     private lateinit var settings: Settings
     private lateinit var delegate: ContentListActivityDelegate
 
-    override fun onCreate(savedInstanceState: Bundle?) {
+    override fun onCreate(
+        savedInstanceState: Bundle?,
+    ) {
         settings = Settings.get()
         setTheme(settings.themeParams.listThemeId)
         super.onCreate(savedInstanceState)
@@ -44,7 +46,9 @@ class ContentListActivity :
             .setRequestedOrientation(this)
     }
 
-    override fun onSaveInstanceState(outState: Bundle) {
+    override fun onSaveInstanceState(
+        outState: Bundle,
+    ) {
         super.onSaveInstanceState(outState)
         delegate.onSaveInstanceState(outState)
     }
@@ -54,8 +58,9 @@ class ContentListActivity :
         delegate.onStart()
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean =
-        delegate.onOptionsItemSelected(item) || super.onOptionsItemSelected(item)
+    override fun onOptionsItemSelected(
+        item: MenuItem,
+    ): Boolean = delegate.onOptionsItemSelected(item) || super.onOptionsItemSelected(item)
 
     override fun onBackPressed() {
         if (delegate.onBackPressed()) {
@@ -93,6 +98,8 @@ class ContentListActivity :
          * @param context コンテキスト
          * @return このActivityを起動するためのIntent
          */
-        fun makeIntent(context: Context): Intent = Intent(context, ContentListActivity::class.java)
+        fun makeIntent(
+            context: Context,
+        ): Intent = Intent(context, ContentListActivity::class.java)
     }
 }

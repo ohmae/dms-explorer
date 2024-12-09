@@ -16,6 +16,11 @@ import net.mm2d.dmsexplorer.viewmodel.ControlPanelModel
 internal class MovieActivityPipHelperEmpty : MovieActivityPipHelper {
     override fun register() = Unit
     override fun unregister() = Unit
-    override fun setControlPanelModel(model: ControlPanelModel?) = Unit
-    override fun enterPictureInPictureMode(contentView: View) = Unit
+    override fun setControlPanelModel(
+        model: ControlPanelModel?,
+    ) = Unit
+
+    override fun enterPictureInPictureMode(
+        contentView: View,
+    ) = Unit
 }

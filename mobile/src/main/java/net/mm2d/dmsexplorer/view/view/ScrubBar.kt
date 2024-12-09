@@ -114,10 +114,24 @@ class ScrubBar @JvmOverloads constructor(
         }
 
     interface ScrubBarListener {
-        fun onProgressChanged(seekBar: ScrubBar, progress: Int, fromUser: Boolean)
-        fun onStartTrackingTouch(seekBar: ScrubBar)
-        fun onStopTrackingTouch(seekBar: ScrubBar)
-        fun onAccuracyChanged(seekBar: ScrubBar, @Accuracy accuracy: Int)
+        fun onProgressChanged(
+            seekBar: ScrubBar,
+            progress: Int,
+            fromUser: Boolean,
+        )
+
+        fun onStartTrackingTouch(
+            seekBar: ScrubBar,
+        )
+
+        fun onStopTrackingTouch(
+            seekBar: ScrubBar,
+        )
+
+        fun onAccuracyChanged(
+            seekBar: ScrubBar,
+            @Accuracy accuracy: Int,
+        )
     }
 
     init {
@@ -136,52 +150,70 @@ class ScrubBar @JvmOverloads constructor(
         sectionColor = if (isEnabled) enabledSectionColor else disabledSectionColor
     }
 
-    fun setProgressColor(@ColorInt color: Int) {
+    fun setProgressColor(
+        @ColorInt color: Int,
+    ) {
         enabledProgressColor = color
         progressColor = if (isEnabled) enabledProgressColor else disabledProgressColor
         invalidate()
     }
 
-    fun setTrackColor(@ColorInt color: Int) {
+    fun setTrackColor(
+        @ColorInt color: Int,
+    ) {
         enabledTrackColor = color
         trackColor = if (isEnabled) enabledTrackColor else disabledTrackColor
         invalidate()
     }
 
-    fun setDisabledProgressColor(@ColorInt color: Int) {
+    fun setDisabledProgressColor(
+        @ColorInt color: Int,
+    ) {
         disabledProgressColor = color
         progressColor = if (isEnabled) enabledProgressColor else disabledProgressColor
         invalidate()
     }
 
-    fun setDisabledTrackColor(@ColorInt color: Int) {
+    fun setDisabledTrackColor(
+        @ColorInt color: Int,
+    ) {
         disabledTrackColor = color
         trackColor = if (isEnabled) enabledTrackColor else disabledTrackColor
         invalidate()
     }
 
-    fun setSectionColor(@ColorInt color: Int) {
+    fun setSectionColor(
+        @ColorInt color: Int,
+    ) {
         enabledSectionColor = color
         sectionColor = if (isEnabled) enabledSectionColor else disabledSectionColor
         invalidate()
     }
 
-    fun setDisabledSectionColor(@ColorInt color: Int) {
+    fun setDisabledSectionColor(
+        @ColorInt color: Int,
+    ) {
         disabledSectionColor = color
         sectionColor = if (isEnabled) enabledSectionColor else disabledSectionColor
         invalidate()
     }
 
-    fun setScrubUnitLength(length: Int) {
+    fun setScrubUnitLength(
+        length: Int,
+    ) {
         scrubUnitLength = length
     }
 
-    fun setTopBackgroundColor(@ColorInt color: Int) {
+    fun setTopBackgroundColor(
+        @ColorInt color: Int,
+    ) {
         topBackgroundColor = color
         invalidate()
     }
 
-    fun setBottomBackgroundColor(@ColorInt color: Int) {
+    fun setBottomBackgroundColor(
+        @ColorInt color: Int,
+    ) {
         bottomBackgroundColor = color
         invalidate()
     }
@@ -222,8 +254,13 @@ class ScrubBar @JvmOverloads constructor(
         }
 
         companion object CREATOR : Creator<SavedState> {
-            override fun createFromParcel(`in`: Parcel): SavedState = SavedState(`in`)
-            override fun newArray(size: Int): Array<SavedState?> = arrayOfNulls(size)
+            override fun createFromParcel(
+                `in`: Parcel,
+            ): SavedState = SavedState(`in`)
+
+            override fun newArray(
+                size: Int,
+            ): Array<SavedState?> = arrayOfNulls(size)
         }
     }
 
@@ -236,7 +273,9 @@ class ScrubBar @JvmOverloads constructor(
         return ss
     }
 
-    override fun onRestoreInstanceState(state: Parcelable) {
+    override fun onRestoreInstanceState(
+        state: Parcelable,
+    ) {
         val ss = state as SavedState
         super.onRestoreInstanceState(ss.superState)
         max = ss.max
@@ -244,7 +283,9 @@ class ScrubBar @JvmOverloads constructor(
         chapterList = ss.chapterList
     }
 
-    override fun setEnabled(enabled: Boolean) {
+    override fun setEnabled(
+        enabled: Boolean,
+    ) {
         super.setEnabled(enabled)
         progressColor = if (enabled) enabledProgressColor else disabledProgressColor
         trackColor = if (enabled) enabledTrackColor else disabledTrackColor
@@ -263,7 +304,9 @@ class ScrubBar @JvmOverloads constructor(
         )
     }
 
-    override fun onDraw(canvas: Canvas) {
+    override fun onDraw(
+        canvas: Canvas,
+    ) {
         val paddingLeft = paddingLeft
         val areaWidth = (width - paddingLeft - paddingRight).toFloat()
         val areaHeight = (height - paddingTop - paddingBottom).toFloat()
@@ -302,7 +345,9 @@ class ScrubBar @JvmOverloads constructor(
     }
 
     @SuppressLint("ClickableViewAccessibility")
-    override fun onTouchEvent(event: MotionEvent): Boolean {
+    override fun onTouchEvent(
+        event: MotionEvent,
+    ): Boolean {
         if (!isEnabled) {
             return false
         }
@@ -331,7 +376,9 @@ class ScrubBar @JvmOverloads constructor(
         return true
     }
 
-    private fun onTouchStart(event: MotionEvent) {
+    private fun onTouchStart(
+        event: MotionEvent,
+    ) {
         startX = event.x
         startY = event.y
         val progress = getProgressByPosition(event.x)
@@ -342,7 +389,9 @@ class ScrubBar @JvmOverloads constructor(
         scrubBarListener.onAccuracyChanged(this, ACCURACY_RANKS[accuracyRank])
     }
 
-    private fun onTouchMove(event: MotionEvent) {
+    private fun onTouchMove(
+        event: MotionEvent,
+    ) {
         val dx = (event.x - startX) * ACCURACY[accuracyRank]
         val progressDiff = getProgressByDistance(dx)
         setProgressInternal(progressDiff + baseProgress, true)
@@ -357,20 +406,26 @@ class ScrubBar @JvmOverloads constructor(
         }
     }
 
-    private fun onTouchEnd(event: MotionEvent) {
+    private fun onTouchEnd(
+        event: MotionEvent,
+    ) {
         onTouchMove(event)
         scrubBarListener.onStopTrackingTouch(this)
         invalidate()
     }
 
-    private fun getProgressByPosition(x: Float): Int {
+    private fun getProgressByPosition(
+        x: Float,
+    ): Int {
         val left = paddingLeft
         val right = paddingRight
         val width = width - left - right
         return if (width == 0) 0 else ((x - left) * max / width).toInt()
     }
 
-    private fun getProgressByDistance(dx: Float): Int {
+    private fun getProgressByDistance(
+        dx: Float,
+    ): Int {
         val left = paddingLeft
         val right = paddingRight
         val width = width - left - right
@@ -390,7 +445,9 @@ class ScrubBar @JvmOverloads constructor(
         invalidate()
     }
 
-    fun setScrubBarListener(listener: ScrubBarListener?) {
+    fun setScrubBarListener(
+        listener: ScrubBarListener?,
+    ) {
         scrubBarListener = listener ?: LISTENER
     }
 
@@ -449,12 +506,23 @@ class ScrubBar @JvmOverloads constructor(
                 fromUser: Boolean,
             ) = Unit
 
-            override fun onStartTrackingTouch(seekBar: ScrubBar) = Unit
-            override fun onStopTrackingTouch(seekBar: ScrubBar) = Unit
-            override fun onAccuracyChanged(seekBar: ScrubBar, @Accuracy accuracy: Int) = Unit
+            override fun onStartTrackingTouch(
+                seekBar: ScrubBar,
+            ) = Unit
+
+            override fun onStopTrackingTouch(
+                seekBar: ScrubBar,
+            ) = Unit
+
+            override fun onAccuracyChanged(
+                seekBar: ScrubBar,
+                @Accuracy accuracy: Int,
+            ) = Unit
         }
 
-        private fun getColorAccent(context: Context): Int {
+        private fun getColorAccent(
+            context: Context,
+        ): Int {
             val colorAttr = android.R.attr.colorAccent
             val outValue = TypedValue()
             context.theme.resolveAttribute(colorAttr, outValue, true)

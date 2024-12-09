@@ -28,14 +28,18 @@ class DeleteDialog : DialogFragment() {
         fun onDelete()
     }
 
-    override fun onAttach(context: Context) {
+    override fun onAttach(
+        context: Context,
+    ) {
         super.onAttach(context)
         if (context is OnDeleteListener) {
             onDeleteListener = context
         }
     }
 
-    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+    override fun onCreateDialog(
+        savedInstanceState: Bundle?,
+    ): Dialog {
         val context = requireActivity()
         val builder = AlertDialog.Builder(context)
         val model = Repository.get().mediaServerModel
@@ -76,7 +80,9 @@ class DeleteDialog : DialogFragment() {
     companion object {
         private fun newInstance(): DeleteDialog = DeleteDialog()
 
-        fun show(activity: FragmentActivity) {
+        fun show(
+            activity: FragmentActivity,
+        ) {
             if (activity.supportFragmentManager.isStateSaved) {
                 return
             }

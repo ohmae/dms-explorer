@@ -15,7 +15,10 @@ import androidx.core.app.ActivityOptionsCompat
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
  */
 object ActivityUtils {
-    fun makeScaleUpAnimationBundle(v: View): Bundle? = ActivityOptionsCompat
-        .makeScaleUpAnimation(v, 0, 0, v.width, v.height)
-        .toBundle()
+    fun makeScaleUpAnimationBundle(
+        v: View,
+    ): Bundle? =
+        ActivityOptionsCompat
+            .makeScaleUpAnimation(v, 0, 0, v.width, v.height)
+            .toBundle()
 }

@@ -35,19 +35,25 @@ interface ControlPointWrapper {
      * @param udn UDN
      * @return 対応デバイス、見つからない場合null
      */
-    fun getDevice(udn: String?): DeviceWrapper?
+    fun getDevice(
+        udn: String?,
+    ): DeviceWrapper?
 
     /**
      * 初期化する。
      *
      * @param controlPoint ControlPoint
      */
-    fun initialize(controlPoint: ControlPoint)
+    fun initialize(
+        controlPoint: ControlPoint,
+    )
 
     /**
      * 終了する。
      *
      * @param controlPoint ControlPoint
      */
-    fun terminate(controlPoint: ControlPoint)
+    fun terminate(
+        controlPoint: ControlPoint,
+    )
 }

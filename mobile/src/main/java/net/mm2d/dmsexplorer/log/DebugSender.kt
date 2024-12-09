@@ -23,7 +23,9 @@ internal class DebugSender : Sender {
         Logger.i { "\nname: " + name + "\nparams: " + dumpBundle(params) }
     }
 
-    private fun dumpBundle(params: Bundle?): String {
+    private fun dumpBundle(
+        params: Bundle?,
+    ): String {
         if (params == null) {
             return "null"
         }
