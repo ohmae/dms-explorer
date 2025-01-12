@@ -1,9 +1,9 @@
 [versions]
-androidGradlePlugin = "8.7.3"
+androidGradlePlugin = "8.8.0"
 kotlin = "2.1.0"
-kover = "0.8.3"
+kover = "0.9.0"
 gradleVersionsPlugin = "0.51.0"
-kotlinxCoroutines = "1.9.0"
+kotlinxCoroutines = "1.10.1"
 
 androidxCore = "1.15.0"
 androidxAppCompat = "1.7.0"
@@ -29,7 +29,7 @@ preference = "0.3.2"
 
 # test
 junit = "4.13.2"
-mockk = "1.13.13"
+mockk = "1.13.14"
 truth = "1.4.4"
 robolectric = "4.14.1"
 androidxJunit = "1.2.1"
