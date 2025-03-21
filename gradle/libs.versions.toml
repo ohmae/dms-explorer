@@ -1,6 +1,6 @@
 [versions]
 androidGradlePlugin = "8.9.0"
-kotlin = "2.1.10"
+kotlin = "2.1.20"
 kover = "0.9.1"
 gradleVersionsPlugin = "0.52.0"
 kotlinxCoroutines = "1.10.1"
