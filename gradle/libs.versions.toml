@@ -1,5 +1,5 @@
 [versions]
-androidGradlePlugin = "8.10.0"
+androidGradlePlugin = "8.10.1"
 kotlin = "2.1.21"
 kover = "0.9.1"
 gradleVersionsPlugin = "0.52.0"
@@ -37,7 +37,7 @@ androidxJunit = "1.2.1"
 # debug
 leakcanary = "2.14"
 
-ktlint = "1.5.0"
+ktlint = "1.6.0"
 
 # for release
 
