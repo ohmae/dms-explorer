@@ -11,7 +11,7 @@ androidxActivity = "1.10.1"
 androidxFragment = "1.8.8"
 androidxBrowser = "1.8.0"
 androidxConstraintLayout = "2.2.1"
-androidxLifecycle = "2.9.1"
+androidxLifecycle = "2.9.2"
 androidxCardview = "1.0.0"
 androidxExifInterface = "1.4.1"
 androidxPalette = "1.0.0"
@@ -29,7 +29,7 @@ preference = "0.3.2"
 
 # test
 junit = "4.13.2"
-mockk = "1.14.4"
+mockk = "1.14.5"
 truth = "1.4.4"
 robolectric = "4.15.1"
 androidxJunit = "1.2.1"
@@ -37,7 +37,7 @@ androidxJunit = "1.2.1"
 # debug
 leakcanary = "2.14"
 
-ktlint = "1.6.0"
+ktlint = "1.7.1"
 
 # for release
 
