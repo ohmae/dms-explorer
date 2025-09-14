@@ -105,8 +105,6 @@ dependencies {
     testImplementation(libs.robolectric)
     testImplementation(libs.androidxJunit)
 
-    debugImplementation(libs.leakcanary)
-
     // for release
 }
 
