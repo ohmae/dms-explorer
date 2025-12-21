@@ -1,13 +1,13 @@
 [versions]
 androidGradlePlugin = "8.13.2"
-kotlin = "2.2.21"
+kotlin = "2.3.0"
 kover = "0.9.4"
 gradleVersionsPlugin = "0.53.0"
 kotlinxCoroutines = "1.10.2"
 
 androidxCore = "1.17.0"
 androidxAppCompat = "1.7.1"
-androidxActivity = "1.12.1"
+androidxActivity = "1.12.2"
 androidxFragment = "1.8.9"
 androidxBrowser = "1.9.0"
 androidxConstraintLayout = "2.2.1"
