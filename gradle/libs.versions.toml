@@ -2,8 +2,8 @@
 androidGradlePlugin = "9.0.0"
 kotlin = "2.3.0"
 kover = "0.9.4"
-gradleVersionsPlugin = "0.53.0"
 kotlinxCoroutines = "1.10.2"
+versionCatalogUpdate = "1.0.1"
 
 androidxCore = "1.17.0"
 androidxAppCompat = "1.7.1"
@@ -84,7 +84,7 @@ ktlint = { group = "com.pinterest.ktlint", name = "ktlint-cli", version.ref = "k
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "androidGradlePlugin" }
 kover = { id = "org.jetbrains.kotlinx.kover", version.ref = "kover" }
-gradleVersions = { id = "com.github.ben-manes.versions", version.ref = "gradleVersionsPlugin" }
+versionCatalogUpdate = { id = "nl.littlerobots.version-catalog-update", version.ref = "versionCatalogUpdate" }
 
 # for release
 
