@@ -1,7 +1,7 @@
 [versions]
 androidGradlePlugin = "9.0.0"
-kotlin = "2.3.0"
-kover = "0.9.5"
+kotlin = "2.3.10"
+kover = "0.9.6"
 kotlinxCoroutines = "1.10.2"
 versionCatalogUpdate = "1.0.1"
 
