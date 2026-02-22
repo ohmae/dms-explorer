@@ -3,7 +3,7 @@ androidGradlePlugin = "9.0.1"
 kotlin = "2.3.10"
 kover = "0.9.7"
 kotlinxCoroutines = "1.10.2"
-versionCatalogUpdate = "1.0.1"
+versionCatalogUpdate = "1.1.0"
 
 androidxCore = "1.17.0"
 androidxAppCompat = "1.7.1"
