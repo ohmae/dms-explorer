@@ -1,7 +1,7 @@
 [versions]
 androidGradlePlugin = "9.1.0"
 kotlin = "2.3.20"
-kover = "0.9.7"
+kover = "0.9.8"
 kotlinxCoroutines = "1.10.2"
 versionCatalogUpdate = "1.1.0"
 
@@ -9,7 +9,7 @@ androidxCore = "1.18.0"
 androidxAppCompat = "1.7.1"
 androidxActivity = "1.13.0"
 androidxFragment = "1.8.9"
-androidxBrowser = "1.9.0"
+androidxBrowser = "1.10.0"
 androidxConstraintLayout = "2.2.1"
 androidxLifecycle = "2.10.0"
 androidxCardview = "1.0.0"
