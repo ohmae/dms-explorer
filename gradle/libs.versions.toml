@@ -45,18 +45,18 @@ kotlinGradlePlugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plu
 kotlinRefrect = { group = "org.jetbrains.kotlin", name = "kotlin-reflect", version.ref = "kotlin" }
 kotlinxCoroutinesAndroid = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "kotlinxCoroutines" }
 
-androidxCore = { group = "androidx.core", name = "core-ktx", version.ref = "androidxCore" }
+androidxCore = { group = "androidx.core", name = "core", version.ref = "androidxCore" }
 androidxAppCompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "androidxAppCompat" }
-androidxActivity = { group = "androidx.activity", name = "activity-ktx", version.ref = "androidxActivity" }
-androidxFragment = { group = "androidx.fragment", name = "fragment-ktx", version.ref = "androidxFragment" }
+androidxActivity = { group = "androidx.activity", name = "activity", version.ref = "androidxActivity" }
+androidxFragment = { group = "androidx.fragment", name = "fragment", version.ref = "androidxFragment" }
 androidxBrowser = { group = "androidx.browser", name = "browser", version.ref = "androidxBrowser" }
 androidxConstraintLayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "androidxConstraintLayout" }
-androidxLifecycleRuntime = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "androidxLifecycle" }
+androidxLifecycleRuntime = { group = "androidx.lifecycle", name = "lifecycle-runtime", version.ref = "androidxLifecycle" }
 androidxCardview = { module = "androidx.cardview:cardview", version.ref = "androidxCardview" }
 androidxExifInterface = { module = "androidx.exifinterface:exifinterface", version.ref = "androidxExifInterface" }
-androidxPreference = { module = "androidx.preference:preference-ktx", version.ref = "androidxPreference" }
+androidxPreference = { module = "androidx.preference:preference", version.ref = "androidxPreference" }
 androidxRecyclerview = { module = "androidx.recyclerview:recyclerview", version.ref = "androidxRecyclerview" }
-androidxPalette = { module = "androidx.palette:palette-ktx", version.ref = "androidxPalette" }
+androidxPalette = { module = "androidx.palette:palette", version.ref = "androidxPalette" }
 androidxSwiperefreshlayout = { module = "androidx.swiperefreshlayout:swiperefreshlayout", version.ref = "androidxSwiperefreshlayout" }
 
 kotlinxCoroutinesCore = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinxCoroutines" }
