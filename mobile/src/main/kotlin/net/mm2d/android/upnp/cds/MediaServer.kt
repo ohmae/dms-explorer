@@ -40,10 +40,23 @@ internal constructor(
     init {
         require(device.deviceType.startsWith(Cds.MS_DEVICE_TYPE)) { "device is not MediaServer" }
         cdsService = device.findServiceById(Cds.CDS_SERVICE_ID)
+            ?: findServiceByType(device, Cds.CDS_SERVICE_TYPE)
             ?: throw IllegalArgumentException("Device don't have cds service")
         browse = cdsService.findAction(BROWSE)
             ?: throw IllegalArgumentException("Device don't have browse action")
         destroyObject = cdsService.findAction(DESTROY_OBJECT)
+    }
+
+    private fun findServiceByType(
+        device: Device,
+        serviceType: String,
+    ): Service? {
+        for (service in device.serviceList) {
+            if (service.serviceType == serviceType) {
+                return service
+            }
+        }
+        return null
     }
 
     /**
