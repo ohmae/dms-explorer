@@ -24,6 +24,11 @@ internal object Cds {
     const val CDS_SERVICE_ID = "urn:upnp-org:serviceId:ContentDirectory"
 
     /**
+     * ContentDirectoryのサービスタイプ。
+     */
+    const val CDS_SERVICE_TYPE = "urn:schemas-upnp-org:service:ContentDirectory:1"
+
+    /**
      * ContainerUpdateIDsのタイプ名。
      */
     const val CONTAINER_UPDATE_IDS = "ContainerUpdateIDs"
