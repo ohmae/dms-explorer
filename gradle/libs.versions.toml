@@ -1,8 +1,8 @@
 [versions]
-androidGradlePlugin = "9.2.0"
+androidGradlePlugin = "9.2.1"
 kotlin = "2.3.21"
 kover = "0.9.8"
-kotlinxCoroutines = "1.10.2"
+kotlinxCoroutines = "1.11.0"
 versionCatalogUpdate = "1.1.0"
 
 androidxCore = "1.18.0"
