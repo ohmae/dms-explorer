@@ -15,7 +15,7 @@ val versionPatch = 73
 
 android {
     compileSdk {
-        version = release(36)
+        version = release(37)
     }
 
     namespace = "net.mm2d.dmsexplorer"
