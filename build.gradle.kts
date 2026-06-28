@@ -19,7 +19,7 @@ versionCatalogUpdate {
     versionSelector(VersionSelectors.STABLE)
 }
 
-val ktlint: Configuration by configurations.creating
+val ktlint: Configuration = configurations.create("ktlint")
 
 dependencies {
     ktlint(libs.ktlint) {
